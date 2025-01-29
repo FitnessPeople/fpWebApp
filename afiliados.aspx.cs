@@ -1,0 +1,183 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+
+namespace fpWebApp
+{
+    public partial class afiliados : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                if (Session["idUsuario"] != null)
+                {
+                    ValidarPermisos("Afiliados");
+                    if (ViewState["SinPermiso"].ToString() == "1")
+                    {
+                        divMensaje.Visible = true;
+                        paginasperfil.Visible = true;
+                        divContenido.Visible = false;
+                    }
+                    if (ViewState["Consulta"].ToString() == "1")
+                    {
+                        string strParam = "";
+                        CargarSedes();
+                        listaAfiliados(strParam, "todas");
+
+                        if (ViewState["Exportar"].ToString() == "1")
+                        {
+                            btnExportar.Visible = true;
+                        }
+                        if (ViewState["CrearModificar"].ToString() == "1")
+                        {
+                            btnAgregar.Visible = true;
+                        }
+                    }
+                }
+                else
+                {
+                    Response.Redirect("logout.aspx");
+                }
+            }
+        }
+
+        private void ValidarPermisos(string strPagina)
+        {
+            ViewState["SinPermiso"] = "1";
+            ViewState["Consulta"] = "0";
+            ViewState["Exportar"] = "0";
+            ViewState["CrearModificar"] = "0";
+            ViewState["Borrar"] = "0";
+
+            string strQuery = "SELECT SinPermiso, Consulta, Exportar, CrearModificar, Borrar " +
+                "FROM permisos_perfiles pp, paginas p, usuarios u " +
+                "WHERE pp.idPagina = p.idPagina " +
+                "AND p.Pagina = '" + strPagina + "' " +
+                "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
+                "AND u.idPerfil = pp.idPerfil " +
+                "AND u.idUsuario = " + Session["idusuario"].ToString();
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.TraerDatos(strQuery);
+
+            if (dt.Rows.Count > 0)
+            {
+                ViewState["SinPermiso"] = dt.Rows[0]["SinPermiso"].ToString();
+                ViewState["Consulta"] = dt.Rows[0]["Consulta"].ToString();
+                ViewState["Exportar"] = dt.Rows[0]["Exportar"].ToString();
+                ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
+                ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
+            }
+
+            dt.Dispose();
+        }
+
+        private void CargarSedes()
+        {
+            string strQuery = "SELECT s.idSede, CONCAT(s.NombreSede, \" - \", cs.NombreCiudadSede) AS NombreSede " +
+                "FROM sedes s " +
+                "LEFT JOIN CiudadesSedes cs ON s.idCiudadSede = cs.idCiudadSede " +
+                "ORDER BY s.idCiudadSede, NombreSede";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            ddlSedes.DataSource = dt;
+            ddlSedes.DataBind();
+
+            dt.Dispose();
+        }
+
+        private void listaAfiliados(string strParam, string strSede)
+        {
+            string strQueryAdd = "";
+            if (strSede != "todas")
+            {
+                strQueryAdd = "AND a.idSede = " + strSede;
+            }
+            string strQuery = "SELECT *, " +
+                "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) IS NOT NULL, CONCAT('(',TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()),')'),'<i class=\"fa fa-circle-question m-r-lg m-l-lg\"></i>') AS edad, " +
+                "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 14,'danger',IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 14,'success',IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 60,'info','warning'))) badge, " +
+                "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 14,'baby',IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) >= 60,'person-walking-with-cane','')) age, " +
+                "IF(EstadoAfiliado='Activo','success',IF(EstadoAfiliado='Inactivo','danger','warning')) badge2 " +
+                "FROM Afiliados a " +
+                "LEFT JOIN generos g ON g.idGenero = a.idGenero " +
+                "LEFT JOIN sedes s ON s.idSede = a.idSede " +
+                "LEFT JOIN estadocivil ec ON ec.idEstadoCivil = a.idEstadoCivilAfiliado " +
+                "LEFT JOIN profesiones p ON p.idProfesion = a.idProfesion " +
+                "LEFT JOIN eps ON eps.idEps = a.idEps " +
+                "LEFT JOIN ciudades ON ciudades.idCiudad = a.idCiudadAfiliado " +
+                "WHERE (DocumentoAfiliado like '%" + strParam + "%' " +
+                "OR NombreAfiliado like '%" + strParam + "%' " +
+                "OR EmailAfiliado like '%" + strParam + "%' " +
+                "OR CelularAfiliado like '%" + strParam + "%') " + strQueryAdd + " " +
+                "ORDER BY idAfiliado DESC " +
+                "LIMIT 100";
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.TraerDatos(strQuery);
+
+            rpAfiliados.DataSource = dt;
+            rpAfiliados.DataBind();
+
+            dt.Dispose();
+        }
+
+        protected void rpAfiliados_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                if (ViewState["CrearModificar"].ToString() == "1")
+                {
+                    HtmlButton btnEditar = (HtmlButton)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("onClick", "window.location.href='editarafiliado?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnEditar.Visible = true;
+
+                    HtmlButton btnPlan = (HtmlButton)e.Item.FindControl("btnPlan");
+                    btnPlan.Attributes.Add("onClick", "window.location.href='planesAfil?id=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnPlan.Visible = true;
+
+                    HtmlButton btnTraspaso = (HtmlButton)e.Item.FindControl("btnTraspaso");
+                    btnTraspaso.Attributes.Add("onClick", "window.location.href='traspasosAfil?id=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnTraspaso.Visible = true;
+
+                    HtmlButton btnCortesia = (HtmlButton)e.Item.FindControl("btnCortesia");
+                    btnCortesia.Attributes.Add("onClick", "window.location.href='cortesiasAfil?id=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnCortesia.Visible = true;
+
+                    HtmlButton btnFreePass = (HtmlButton)e.Item.FindControl("btnFreePass");
+                    btnFreePass.Attributes.Add("onClick", "window.location.href='freepassAfil?id=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnFreePass.Visible = true;
+
+                    HtmlButton btnIncapacidad = (HtmlButton)e.Item.FindControl("btnIncapacidad");
+                    btnIncapacidad.Attributes.Add("onClick", "window.location.href='incapacidadesAfil?id=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnIncapacidad.Visible = true;
+
+                    HtmlButton btnCongelacion = (HtmlButton)e.Item.FindControl("btnCongelacion");
+                    btnCongelacion.Attributes.Add("onClick", "window.location.href='congelacionesAfil?id=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnCongelacion.Visible = true;
+                }
+                if (ViewState["Borrar"].ToString() == "1")
+                {
+                    HtmlButton btnEliminar = (HtmlButton)e.Item.FindControl("btnEliminar");
+                    btnEliminar.Attributes.Add("onClick", "window.location.href='eliminarafiliado?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnEliminar.Visible = true;
+                }
+            }
+        }
+
+        protected void btnBuscar_Click(object sender, EventArgs e)
+        {
+            string strParam = txbBuscar.Value.ToString();
+            listaAfiliados(strParam, ddlSedes.SelectedItem.Value.ToString());
+        }
+
+        protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string strParam = txbBuscar.Value.ToString();
+            listaAfiliados(strParam, ddlSedes.SelectedItem.Value.ToString());
+        }
+    }
+}

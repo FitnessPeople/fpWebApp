@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="obtenerafiliados.aspx.cs" Inherits="fpWebApp.obtenerafiliados" %>

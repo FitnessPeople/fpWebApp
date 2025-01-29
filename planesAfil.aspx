@@ -1,0 +1,580 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="planesAfil.aspx.cs" Inherits="fpWebApp.planesAfil" %>
+
+<%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
+<%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
+<%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
+<%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
+<%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Fitness People | Plan afiliado</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
+
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
+    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
+    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
+    <link href="css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet">
+    <link href="css/plugins/ionRangeSlider/ion.rangeSlider.skinNice.css" rel="stylesheet">
+
+    <!-- FooTable -->
+    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
+
+    <link href="css/animate.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+
+    <link href="css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+
+    <script>
+        function changeClass() {
+            var element1 = document.querySelector("#afiliados1");
+            element1.classList.replace("old", "active");
+            var element2 = document.querySelector("#afiliados2");
+            element2.classList.remove("collapse");
+        }
+    </script>
+</head>
+
+<body onload="changeClass()">
+    <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                    <i class="fa fa-person-chalkboard modal-icon"></i>
+                    <h4 class="modal-title">Guía para realizar la asignación de un plan</h4>
+                    <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <b>1. Tipo de Plan</b><br />
+                        Antes de comenzar, primero debes elegir el tipo de plan.
+                        <br />
+                        <br />
+                        <b>2. Cantidad de meses</b><br />
+                        A continuación elije el(los) mes(es) del plan. A medida que selecciones un mes, se activaran o desactivaran cortesías y regalos.<br />
+                        <em>Se irán actualizando los cambios de precio y ahorros inmediatamente.</em>
+                        <br />
+                        <br />
+                        <b>3. Cortesías y regalos</b><br />
+                        Si aplica, agrega cortesías y/o regalos según tu preferencia.
+                        <br />
+                        <br />
+                        <b>4. Resumen del plan</b><br />
+                        Asegúrate de que todos los datos ingresados son correctos y actualizados. El resumen muestra toda la información seleccionada.
+                        <br />
+                        <br />
+                        <b>5. Fecha de inicio del plan</b><br />
+                        Asegúrate de poner una fecha inicial para el plan escogido. A continuación da clic en "Agregar Plan"
+                        <br />
+                        <br />
+                        ¡Siguiendo estos pasos, estarás listo para diligenciar tu formulario sin problemas! Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="wrapper">
+
+        <uc1:navbar runat="server" ID="navbar" />
+
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom">
+                <uc1:header runat="server" ID="header" />
+            </div>
+            <div class="row wrapper border-bottom white-bg page-heading">
+
+                <%--Inicio Breadcrumb!!!--%>
+                <div class="col-sm-10">
+                    <h2><i class="fa fa-ticket text-success m-r-sm"></i>Plan afiliado</h2>
+                    <ol class="breadcrumb">
+                        <li><a href="inicio">Inicio</a></li>
+                        <li>Afiliados</li>
+                        <li class="active"><strong>Plan afiliado</strong></li>
+                    </ol>
+                </div>
+                <div class="col-sm-2">
+                </div>
+                <%--Fin Breadcrumb!!!--%>
+            </div>
+            <div class="wrapper wrapper-content animated fadeInRight">
+                <div class="row animated fadeInDown">
+                    <%--Inicio Contenido!!!!--%>
+
+                    <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
+                        <div class="p-xs">
+                            <div class="pull-left m-r-md">
+                                <i class="fa fa-triangle-exclamation text-danger mid-icon"></i>
+                            </div>
+                            <h2>Acceso Denegado</h2>
+                            <span>Lamentablemente, no tienes permiso para acceder a esta página. Por favor, verifica que estás usando una cuenta con los permisos adecuados o contacta a nuestro soporte técnico para más información. Si crees que esto es un error, no dudes en ponerte en contacto con nosotros para resolver cualquier problema. Gracias por tu comprensión.</span>
+                        </div>
+                    </div>
+
+                    <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
+
+                    <div class="row m-b-lg m-t-lg">
+                        <div class="col-md-5">
+
+                            <div class="profile-image">
+                                <asp:Literal ID="ltFoto" runat="server"></asp:Literal>
+                            </div>
+                            <div class="profile-info">
+                                <div class="">
+                                    <div>
+                                        <h2 class="no-margins"><asp:Literal ID="ltNombre" runat="server"></asp:Literal> <asp:Literal ID="ltApellido" runat="server"></asp:Literal>
+                                </h2>
+                                        <h4><asp:Literal ID="ltEmail" runat="server"></asp:Literal></h4>
+                                        <small>There are many variations of passages of Lorem Ipsum available.</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <table class="table small m-b-xs">
+                                <tbody>
+                                    <tr>
+                                        <td><strong><i class="fab fa-whatsapp"></i></strong> <asp:Literal ID="ltCelular" runat="server"></asp:Literal></td>
+                                        <td><strong><i class="fa fa-shield"></i></strong> Estado: <asp:Literal ID="ltEstado" runat="server"></asp:Literal></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong><i class="fa fa-building"></i></strong> Sede: <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
+                                        <td><strong>54</strong> Días asistidos</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong><i class="fa fa-cake"></i></strong> <asp:Literal ID="ltCumple" runat="server"></asp:Literal></td>
+                                        <td><strong>2</strong> Congelaciones</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-4">
+                            <ul class="todo-list small-list">
+                                <asp:Repeater ID="rpPlanesAfiliado" runat="server">
+                                    <ItemTemplate>
+                                        <li>
+                                            <div class="i-checks">
+                                                <small class="label label-primary pull-right"><%# Eval("DiasQueFaltan") %> días disponibles</small>
+                                                <label>
+                                                    Plan Activo: <%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
+                                                </label>
+                                                <br />
+                                                <div class="progress progress-striped active">
+                                                    <div style='width: <%# Eval("Porcentaje1") %>%' class="progress-bar progress-bar-success"></div>
+                                                    <div style='width: <%# Eval("Porcentaje2") %>%' class="progress-bar progress-bar-warning"></div>
+                                                </div>
+                                                <small class="text-muted"><%# Eval("FechaInicioPlan", "{0:dd MMM yyyy}") %> - <%# Eval("FechaFinalPlan", "{0:dd MMM yyyy}") %></small>
+                                            </div>
+                                        </li>
+                                    </ItemTemplate>
+                                </asp:Repeater>
+                            </ul>
+                        </div>
+
+
+                    </div>
+
+                    <div class="ibox float-e-margins" runat="server" id="divContenido">
+                        <div class="ibox-title">
+                            <h5>Agregar un plan al afiliado</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+
+                            <div class="row">
+                                <form role="form" id="form" runat="server">
+                                    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+                                    <%--<div class="col-sm-3 b-r">--%>
+
+                                        <%--<div class="contact-box navy-bg">
+                                            <div class="col-sm-4">
+                                                <div class="text-center">
+                                                    <asp:Literal ID="ltFoto" runat="server"></asp:Literal>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <h3><strong>
+                                                    <asp:Literal ID="ltNombre" runat="server"></asp:Literal>
+                                                    <asp:Literal ID="ltApellido" runat="server"></asp:Literal></strong></h3>
+                                                <p><i class="fa fa-envelope"></i>
+                                                    <asp:Literal ID="ltEmail" runat="server"></asp:Literal></p>
+                                                <address>
+                                                    <i class="fa fa-mobile"></i>
+                                                    <asp:Literal ID="ltCelular" runat="server"></asp:Literal><br />
+                                                    <i class="fa fa-building"></i>Sede: 
+                                                    <asp:Literal ID="ltSede" runat="server"></asp:Literal><br />
+                                                    <i class="fa fa-cake"></i>
+                                                    <asp:Literal ID="ltCumple" runat="server"></asp:Literal><br />
+                                                    <i class="fa fa-shield"></i>Estado:
+                                                    <asp:Literal ID="ltEstado" runat="server"></asp:Literal>
+                                                </address>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>--%>
+
+                                        <%--<div class="row m-xs">--%>
+                                            <%--<h4>Planes</h4>
+                                            <ul class="todo-list m-t small-list">
+                                                <asp:Repeater ID="rpPlanesAfiliado" runat="server">
+                                                    <ItemTemplate>
+                                                        <li>
+                                                            <div class="i-checks">
+                                                                <small class="label label-primary pull-right"><%# Eval("DiasQueFaltan") %> días disponibles</small>
+                                                                <label>
+                                                                    <input type="radio" value="<%# Eval("idPlan") %>" name="planes">
+                                                                    <i></i><%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
+                                                                </label>
+                                                                <br />
+                                                                <div class="progress progress-striped active">
+                                                                    <div style='width: <%# Eval("Porcentaje1") %>%' class="progress-bar progress-bar-success"></div>
+                                                                    <div style='width: <%# Eval("Porcentaje2") %>%' class="progress-bar progress-bar-warning"></div>
+                                                                </div>
+                                                                <small class="text-muted"><%# Eval("FechaInicioPlan", "{0:dd MMM yyyy}") %> - <%# Eval("FechaFinalPlan", "{0:dd MMM yyyy}") %></small>
+                                                            </div>
+                                                        </li>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </ul>--%>
+                                        <%--</div>
+
+                                    </div>--%>
+                                    <div class="col-sm-12 m-t-xs">
+                                        <asp:UpdatePanel ID="upPlanes" runat="server" UpdateMode="Always" ChildrenAsTriggers="true">
+                                            <ContentTemplate>
+                                                <div class="row">
+                                                    <div class="col-sm-3 b-r">
+                                                        <div class="form-group">
+                                                            <label>Tipo de plan:</label>
+                                                            <div class="form-group">
+                                                                <%--<asp:Button ID="btnDeluxe" runat="server" Text="Deluxe"
+                                                                    CssClass="btn btn-primary btn-outline btn-block btn-lg font-bold"
+                                                                    OnClick="btnDeluxe_Click" />
+                                                                <asp:Button ID="btnPremium" runat="server" Text="Premium"
+                                                                    CssClass="btn btn-danger btn-outline btn-block btn-lg font-bold"
+                                                                    OnClick="btnPremium_Click" />--%>
+                                                                <asp:PlaceHolder ID="phPlanes" runat="server"></asp:PlaceHolder>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <div class="form-group">
+                                                            <label>Meses del plan:</label>
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-sm-3 col-xs-3 col-xs-3">
+                                                                        <asp:Button ID="btnMes1" runat="server" Text="1"
+                                                                            CssClass="btn btn-warning btn-outline btn-block font-bold active"
+                                                                            OnClick="btnMes1_Click" />
+                                                                    </div>
+                                                                    <div class="col-sm-3 col-xs-3">
+                                                                        <asp:Button ID="btnMes2" runat="server" Text="2"
+                                                                            CssClass="btn btn-warning btn-outline btn-block font-bold"
+                                                                            OnClick="btnMes2_Click" />
+                                                                    </div>
+                                                                    <div class="col-sm-3 col-xs-3">
+                                                                        <asp:Button ID="btnMes3" runat="server" Text="3"
+                                                                            CssClass="btn btn-info btn-outline btn-block font-bold"
+                                                                            OnClick="btnMes3_Click" />
+                                                                    </div>
+                                                                    <div class="col-sm-3 col-xs-3">
+                                                                        <asp:Button ID="btnMes4" runat="server" Text="4"
+                                                                            CssClass="btn btn-danger btn-outline btn-block font-bold"
+                                                                            OnClick="btnMes4_Click" />
+                                                                    </div>
+                                                                    <div class="col-sm-3 col-xs-3">
+                                                                        <asp:Button ID="btnMes5" runat="server" Text="5"
+                                                                            CssClass="btn btn-warning btn-outline btn-block font-bold"
+                                                                            OnClick="btnMes5_Click" />
+                                                                    </div>
+                                                                    <div class="col-sm-3 col-xs-3">
+                                                                        <asp:Button ID="btnMes6" runat="server" Text="6"
+                                                                            CssClass="btn btn-info btn-outline btn-block font-bold"
+                                                                            OnClick="btnMes6_Click" />
+                                                                    </div>
+                                                                    <div class="col-sm-3 col-xs-3">
+                                                                        <asp:Button ID="btnMes7" runat="server" Text="7"
+                                                                            CssClass="btn btn-warning btn-outline btn-block font-bold"
+                                                                            OnClick="btnMes7_Click" />
+                                                                    </div>
+                                                                    <div class="col-sm-3 col-xs-3">
+                                                                        <asp:Button ID="btnMes8" runat="server" Text="8"
+                                                                            CssClass="btn btn-danger btn-outline btn-block font-bold"
+                                                                            OnClick="btnMes8_Click" />
+                                                                    </div>
+                                                                    <div class="col-sm-3 col-xs-3">
+                                                                        <asp:Button ID="btnMes9" runat="server" Text="9"
+                                                                            CssClass="btn btn-info btn-outline btn-block font-bold"
+                                                                            OnClick="btnMes9_Click" />
+                                                                    </div>
+                                                                    <div class="col-sm-3 col-xs-3">
+                                                                        <asp:Button ID="btnMes10" runat="server" Text="10"
+                                                                            CssClass="btn btn-warning btn-outline btn-block font-bold"
+                                                                            OnClick="btnMes10_Click" />
+                                                                    </div>
+                                                                    <div class="col-sm-3 col-xs-3">
+                                                                        <asp:Button ID="btnMes11" runat="server" Text="11"
+                                                                            CssClass="btn btn-warning btn-outline btn-block font-bold"
+                                                                            OnClick="btnMes11_Click" />
+                                                                    </div>
+                                                                    <div class="col-sm-3 col-xs-3">
+                                                                        <asp:Button ID="btnMes12" runat="server" Text="12"
+                                                                            CssClass="btn btn-danger btn-outline btn-block font-bold"
+                                                                            OnClick="btnMes12_Click" />
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="col-lg-3">
+                                                        <div class="widget style1 lazur-bg">
+                                                            <div class="row vertical-align">
+                                                                <div class="col-xs-3">
+                                                                    <i class="fa fa-money-bill-wave fa-3x" style="font-size: 2.3em"></i>
+                                                                </div>
+                                                                <div class="col-xs-9 text-right">
+                                                                    <span>Valor mes </span>
+                                                                    <h2 class="font-bold">
+                                                                        <asp:Literal ID="ltPrecioBase" runat="server"></asp:Literal></h2>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <div class="widget style1 bg-danger">
+                                                            <div class="row vertical-align">
+                                                                <div class="col-xs-3">
+                                                                    <i class="fa fa-tag fa-3x" style="font-size: 2.3em"></i>
+                                                                </div>
+                                                                <div class="col-xs-9 text-right">
+                                                                    <span>Descuento
+                                                                        <asp:Literal ID="ltDescuento" runat="server"></asp:Literal></span>
+                                                                    <h2 class="font-bold">
+                                                                        <asp:Literal ID="ltConDescuento" runat="server"></asp:Literal></h2>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <div class="widget style1 yellow-bg">
+                                                            <div class="row vertical-align">
+                                                                <div class="col-xs-3">
+                                                                    <i class="fa fa-cart-shopping fa-3x" style="font-size: 2.3em"></i>
+                                                                </div>
+                                                                <div class="col-xs-9 text-right">
+                                                                    <span>Total </span>
+                                                                    <h2 class="font-bold">
+                                                                        <asp:Literal ID="ltPrecioFinal" runat="server"></asp:Literal></h2>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <div class="widget style1 bg-success">
+                                                            <div class="row vertical-align">
+                                                                <div class="col-xs-3">
+                                                                    <i class="fa fa-hand-holding-dollar fa-3x" style="font-size: 2.3em"></i>
+                                                                </div>
+                                                                <div class="col-xs-9 text-right">
+                                                                    <span>Ahorro </span>
+                                                                    <h2 class="font-bold">
+                                                                        <asp:Literal ID="ltAhorro" runat="server"></asp:Literal></h2>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="col-sm-5">
+                                                        <div class="form-group">
+                                                            <label>Días de cortesía:</label>
+                                                            <div class="form-group">
+                                                                <asp:Button ID="btn7dias" runat="server" Text="7" CssClass="btn btn-info dim btn-large-dim btn-outline"
+                                                                    Style="width: 70px; font-size: 30px; height: 70px;" OnClick="btn7dias_Click" Enabled="false" />
+                                                                <asp:Button ID="btn15dias" runat="server" Text="15" CssClass="btn btn-info dim btn-large-dim btn-outline"
+                                                                    Style="width: 70px; font-size: 30px; height: 70px;" OnClick="btn15dias_Click" Enabled="false" />
+                                                                <asp:Button ID="btn30dias" runat="server" Text="30" CssClass="btn btn-info dim btn-large-dim btn-outline"
+                                                                    Style="width: 70px; font-size: 30px; height: 70px;" OnClick="btn30dias_Click" Enabled="false" />
+                                                                <asp:Button ID="btn60dias" runat="server" Text="60" CssClass="btn btn-info dim btn-large-dim btn-outline"
+                                                                    Style="width: 70px; font-size: 30px; height: 70px;" OnClick="btn60dias_Click" Enabled="false" />
+
+                                                                <%--<div class="i-checks"><label for="check15"> <input type="checkbox" id="check15" name="check15"> 15 dias </label></div>--%>
+                                                                <%--<asp:CheckBox ID="check15" runat="server" />--%>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="ddlRegalos">Regalos:</label>
+                                                            <%--<asp:DropDownList ID="ddlRegalos" runat="server" AppendDataBoundItems="true" CssClass="form-control m-b">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:ListItem Text="Camiseta" Value="Camiseta"></asp:ListItem>
+                                                                <asp:ListItem Text="Termo" Value="Termo"></asp:ListItem>
+                                                            </asp:DropDownList>--%>
+                                                            <div class="form-group">
+                                                                <asp:LinkButton ID="btnRegalo1" runat="server" OnClick="btnRegalo1_Click"
+                                                                    CssClass="btn btn-danger dim btn-large-dim btn-outline disabled"
+                                                                    Style="width: 70px; font-size: 30px; height: 70px;"><i class="fa fa-bottle-water"></i></asp:LinkButton>
+                                                                <asp:LinkButton ID="btnRegalo2" runat="server" OnClick="btnRegalo2_Click"
+                                                                    CssClass="btn btn-danger dim btn-large-dim btn-outline disabled"
+                                                                    Style="width: 70px; font-size: 30px; height: 70px;"><i class="fa fa-tshirt"></i></asp:LinkButton>
+                                                                <asp:LinkButton ID="btnRegalo3" runat="server" OnClick="btnRegalo3_Click"
+                                                                    CssClass="btn btn-danger dim btn-large-dim btn-outline disabled"
+                                                                    Style="width: 70px; font-size: 30px; height: 70px;"><i class="fa fa-laptop-medical"></i></asp:LinkButton>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-7">
+                                                        <label>Resumen:</label>
+                                                        <div class="form-group">
+                                                            <div class="panel panel-default" runat="server" id="divPanelResumen">
+                                                                <div class="panel-heading">
+                                                                    <i class="fa fa-gift"></i>
+                                                                    <asp:Literal ID="ltTituloRegalo" runat="server"></asp:Literal>
+                                                                </div>
+                                                                <div class="panel-body">
+                                                                    <p>
+                                                                        <asp:Literal ID="ltDescripcion" runat="server"></asp:Literal>
+                                                                        <asp:Literal ID="ltObservaciones" runat="server"></asp:Literal>
+                                                                        <hr />
+                                                                        <asp:Literal ID="ltCortesias" runat="server"></asp:Literal>
+                                                                        <asp:Literal ID="ltRegalos" runat="server"></asp:Literal>
+                                                                    </p>
+                                                                    <hr />
+                                                                    <div class="form-group">
+                                                                        <label>Fecha de inicio:</label>
+                                                                        <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm" runat="server" name="txbFechaInicio"></asp:TextBox>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ContentTemplate>
+                                            <Triggers>
+                                                <%--<asp:AsyncPostBackTrigger ControlID="btnDeluxe" EventName="Click" />
+                                                <asp:AsyncPostBackTrigger ControlID="btnPremium" EventName="Click" />
+                                                <asp:AsyncPostBackTrigger ControlID="btnRegalo1" EventName="Click" />--%>
+                                            </Triggers>
+                                        </asp:UpdatePanel>
+
+                                        <div>
+                                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                            <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"
+                                                onclick="window.location.href='afiliados'">
+                                                <strong>Cancelar</strong></button>
+                                            <asp:Button ID="btnAgregarPlan" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
+                                                Text="Agregar Plan" OnClick="btnAgregarPlan_Click" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                        </div>
+
+                    </div>
+
+                    <%--Fin Contenido!!!!--%>
+                </div>
+            </div>
+
+            <uc1:footer runat="server" ID="footer" />
+
+        </div>
+        <uc1:rightsidebar runat="server" ID="rightsidebar" />
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+
+    <!-- IonRangeSlider -->
+    <script src="js/plugins/ionRangeSlider/ion.rangeSlider.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="js/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Jquery Validate -->
+    <script src="js/plugins/validate/jquery.validate.min.js"></script>
+
+    <!-- Peity -->
+    <script src="js/plugins/peity/jquery.peity.min.js"></script>
+    <script src="js/demo/peity-demo.js"></script>
+
+    <!-- Jasny -->
+    <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
+
+    <script>
+
+        var ddlRegalos = document.getElementById("ddlRegalos");
+        var check15 = document.getElementById("check15");
+        ddlRegalos.setAttribute("disabled", true);
+        check15.setAttribute("checked", false);
+
+        $("#ionrange_1").ionRangeSlider({
+            grid: true,
+            values: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+            onChange: function (data) {
+                // fired on every range slider update
+                console.dir(data.fromNumber);
+                if (data.fromNumber >= 6) {
+                    console.log(data.fromNumber);
+                    ddlRegalos.removeAttribute('disabled');
+                    check15.setAttribute("checked", true);
+                }
+                else {
+                    ddlRegalos.setAttribute("disabled", true);
+                    check15.setAttribute("checked", false);
+                }
+            },
+        });
+
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+
+        $("#form").validate({
+            rules: {
+                txbFechaInicio: {
+                    required: true,
+                },
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,148 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.Odbc;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace fpWebApp
+{
+    public partial class editarusuario : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                if (Session["idUsuario"] != null)
+                {
+                    ValidarPermisos("Usuarios");
+                    if (ViewState["SinPermiso"].ToString() == "1")
+                    {
+                        divMensaje.Visible = true;
+                        paginasperfil.Visible = true;
+                        divContenido.Visible = false;
+                    }
+                    if (ViewState["CrearModificar"].ToString() == "1")
+                    {
+                        txbEmail.Attributes.Add("type", "email");
+                        CargarPerfiles();
+                        CargarEmpleados();
+                        CargarDatosUsuario();
+                    }
+                    else
+                    {
+                        divMensaje.Visible = true;
+                        paginasperfil.Visible = true;
+                        divContenido.Visible = false;
+                    }
+                }
+                else
+                {
+                    Response.Redirect("logout");
+                }
+            }
+        }
+
+        private void ValidarPermisos(string strPagina)
+        {
+            ViewState["SinPermiso"] = "1";
+            ViewState["Consulta"] = "0";
+            ViewState["Exportar"] = "0";
+            ViewState["CrearModificar"] = "0";
+            ViewState["Borrar"] = "0";
+
+            string strQuery = "SELECT SinPermiso, Consulta, Exportar, CrearModificar, Borrar " +
+                "FROM permisos_perfiles pp, paginas p, usuarios u " +
+                "WHERE pp.idPagina = p.idPagina " +
+                "AND p.Pagina = '" + strPagina + "' " +
+                "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
+                "AND u.idPerfil = pp.idPerfil " +
+                "AND u.idUsuario = " + Session["idusuario"].ToString();
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.TraerDatos(strQuery);
+
+            if (dt.Rows.Count > 0)
+            {
+                ViewState["SinPermiso"] = dt.Rows[0]["SinPermiso"].ToString();
+                ViewState["Consulta"] = dt.Rows[0]["Consulta"].ToString();
+                ViewState["Exportar"] = dt.Rows[0]["Exportar"].ToString();
+                ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
+                ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
+            }
+
+            dt.Dispose();
+        }
+
+        private void CargarPerfiles()
+        {
+            string strQuery = "SELECT * FROM Perfiles";
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.TraerDatos(strQuery);
+
+            ddlPerfiles.DataSource = dt;
+            ddlPerfiles.DataBind();
+
+            dt.Dispose();
+        }
+
+        private void CargarEmpleados()
+        {
+            string strQuery = "SELECT * FROM Empleados WHERE Estado = 'Activo' ORDER BY NombreEmpleado";
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.TraerDatos(strQuery);
+
+            ddlEmpleados.DataSource = dt;
+            ddlEmpleados.DataBind();
+
+            dt.Dispose();
+        }
+
+        private void CargarDatosUsuario()
+        {
+            string strQuery = "SELECT * FROM Usuarios WHERE idUsuario = " + Request.QueryString["editid"].ToString();
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.TraerDatos(strQuery);
+
+            txbNombre.Text = dt.Rows[0]["NombreUsuario"].ToString();
+            txbCargo.Text = dt.Rows[0]["CargoUsuario"].ToString();
+            txbEmail.Text = dt.Rows[0]["EmailUsuario"].ToString();
+            txbClave.Text = dt.Rows[0]["ClaveUsuario"].ToString();
+            ddlPerfiles.SelectedIndex = Convert.ToInt16(dt.Rows[0]["idPerfil"].ToString());
+            if (dt.Rows[0]["idEmpleado"].ToString() != "")
+            {
+                ddlEmpleados.SelectedIndex = Convert.ToInt32(ddlEmpleados.Items.IndexOf(ddlEmpleados.Items.FindByValue(dt.Rows[0]["idEmpleado"].ToString())));
+            }
+            rblEstado.Items.FindByValue(dt.Rows[0]["EstadoUsuario"].ToString()).Selected = true;
+
+            dt.Dispose();
+        }
+
+        protected void btnActualizar_Click(object sender, EventArgs e)
+        {
+            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
+            try
+            {
+                string strQuery = "UPDATE usuarios SET " +
+                "EmailUsuario = '" + txbEmail.Text.ToString() + "', ClaveUsuario = '" + txbClave.Text.ToString() + "', " +
+                "NombreUsuario = '" + txbNombre.Text.ToString() + "', CargoUsuario = '" + txbCargo.Text.ToString() + "', " +
+                "idPerfil = " + ddlPerfiles.SelectedItem.Value.ToString() + ", idEmpleado = '" + ddlEmpleados.SelectedItem.Value.ToString() + "', " +
+                "EstadoUsuario = '" + rblEstado.SelectedItem.Value.ToString() + "' " +
+                "WHERE idUsuario = " + Request.QueryString["editid"].ToString();
+                OdbcCommand command = new OdbcCommand(strQuery, myConnection);
+                myConnection.Open();
+                command.ExecuteNonQuery();
+                command.Dispose();
+                myConnection.Close();
+            }
+            catch (OdbcException ex)
+            {
+                string mensaje = ex.Message;
+                myConnection.Close();
+            }
+
+            Response.Redirect("usuarios");
+        }
+    }
+}
