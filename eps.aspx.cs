@@ -214,8 +214,8 @@ namespace fpWebApp
                 if (Request.QueryString["deleteid"] != null)
                 {
                     myConnection.Open();
-                    string strQuery = "DELETE Eps " +
-                        "WHERE idEps = " + Request.QueryString["¨deleteid"].ToString();
+                    string strQuery = "DELETE FROM Eps " +
+                        "WHERE idEps = " + Request.QueryString["deleteid"].ToString();
                     OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
                     command1.ExecuteNonQuery();
                     command1.Dispose();
