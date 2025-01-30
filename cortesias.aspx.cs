@@ -170,18 +170,17 @@ namespace fpWebApp
 
                 clasesglobales cg = new clasesglobales();
                 cg.InsertarLog(Session["idusuario"].ToString(), "Cortesias", "Nuevo registro", "El usuario agregó una cortesia al afiliado con documento " + ViewState["DocumentoAfiliado"].ToString() + ".", "", "");
+
+                Response.Redirect("afiliados");
             }
             catch (OdbcException ex)
             {
-                string mensaje = ex.Message;
-                // ltMensaje.Text = "<div class=\"ibox-content\">" +
-                // "<div class=\"alert alert-danger alert-dismissable\">" +
-                // "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
-                //"</div></div>";
+                ltMensaje.Text = "<div class=\"ibox-content\">" +
+                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
+                    "</div></div>";
                 myConnection.Close();
             }
-
-            Response.Redirect("afiliados");
         }
 
         protected void btnAfiliado_Click(object sender, EventArgs e)

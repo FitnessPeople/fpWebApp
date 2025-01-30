@@ -48,7 +48,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                     <i class="fa fa-person-chalkboard modal-icon"></i>
-                    <h4 class="modal-title">Guía para ver y editar el blog de la pagina web</h4>
+                    <h4 class="modal-title">Guía para modificar el blog de la pagina web</h4>
                     <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
                 </div>
                 <div class="modal-body">
@@ -175,20 +175,17 @@
                                     <table class="footable table toggle-arrow-small" data-page-size="10" data-filter="#filter" data-filter-minimum="3">
                                         <thead>
                                             <tr>
-                                                <th data-sort-ignore="true">Documento</th>
-                                                <th data-sort-initial="true">Nombre</th>
-                                                <th data-sort-ignore="true" data-hide="phone,tablet">Celular</th>
-                                                <th data-sort-ignore="true" data-hide="phone,tablet">Correo</th>
-                                                <th data-hide="phone,tablet">Cargo</th>
-                                                <th data-sort-ignore="true" data-hide="phone,tablet">Cumpleaños</th>
-                                                <th data-toggle="false">Estado</th>
-                                                <th data-hide="all"></th>
+                                                <th data-sort-ignore="true">Título del artículo</th>
+                                                <th data-sort-initial="true">Categoría</th>
+                                                <th data-sort-ignore="true" data-hide="all">Artículo</th>
+                                                <th data-sort-ignore="true" data-hide="phone,tablet">Etiquetas</th>
+                                                <th data-sort-ignore="true" data-hide="phone,tablet">Usuario</th>
                                                 <th data-sort-ignore="true" data-toggle="false" class="text-right"
                                                     style="display: flex; flex-wrap: nowrap; width: 100%;">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <asp:Repeater ID="rpEmpleados" runat="server">
+                                            <asp:Repeater ID="rpArticulosBlog" runat="server">
                                                 <ItemTemplate>
                                                     <tr class="feed-element">
                                                         <td><%# Eval("DocumentoEmpleado") %></td>

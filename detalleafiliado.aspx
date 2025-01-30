@@ -89,6 +89,32 @@
             </div>
         </div>
     </div>
+
+    <div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" >
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                    <h4 class="modal-title"><span id="titulo"></span></h4>
+                </div>
+                <div class="modal-body">
+            
+                    <div class="text-center m-t-md">
+                        <object data="" type="application/pdf" width="450px" height="600px" id="objFile">
+                            <embed src="" id="objEmbed">
+                                <p>Puede descargar el archivo aquí: <a href="" id="objHref">Descargar PDF</a>.</p>
+                            </embed>
+                        </object> 
+                    </div>
+                
+            
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="wrapper">
 
         <uc1:navbar runat="server" ID="navbar" />
@@ -201,15 +227,14 @@
                                     </div>
                                 </div>
                                 <div class="ibox-content">
-                                    <ul class="todo-list m-t small-list">
+                                    <ul class="todo-list small-list">
                                         <asp:Repeater ID="rpPlanesAfiliado" runat="server">
                                             <ItemTemplate>
                                                 <li>
                                                     <div class="i-checks">
                                                         <small class="label label-primary pull-right"><%# Eval("DiasQueFaltan") %> días disponibles</small>
                                                         <label>
-                                                            <input type="radio" value="<%# Eval("idPlan") %>" name="planes">
-                                                            <i></i><%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
+                                                            <%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
                                                         </label>
                                                         <br />
                                                         <div class="progress progress-striped active">

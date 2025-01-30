@@ -132,6 +132,12 @@
                     <li id="tiposincapacidads" class="old"><a href="#">Tipos de incapacidad</a></li>
                 </ul>
             </li>
+            <li>
+                <a href="#"><i class="fa fa-globe"></i><span class="nav-label">Página Web</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li id="blog" class="old"><a href="blogs"><i class="fab fa-blogger"></i>Blog</a></li>
+                </ul>
+            </li>
             <li class="special_link">
                 <a href="calendariofpadmin"><i class="fa fa-calendar"></i><span class="nav-label">Calendario FP+ Admin</span></a>
             </li>

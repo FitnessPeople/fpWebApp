@@ -396,6 +396,7 @@
                                                             </div>
                                                         </div>
                                                         <div>
+                                                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                                             <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='empleados'"><strong>Cancelar</strong></button>
                                                             <asp:Button ID="btnActualizar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Actualizar" OnClick="btnActualizar_Click" />
                                                         </div>

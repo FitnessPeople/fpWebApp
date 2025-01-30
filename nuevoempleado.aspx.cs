@@ -290,33 +290,41 @@ namespace fpWebApp
                         {
                             string strQuery = "INSERT INTO empleados " +
                             "(DocumentoEmpleado, idTipoDocumento, NombreEmpleado, TelefonoEmpleado, EmailEmpleado, " +
-                            "DireccionEmpleado, idCiudadEmpleado, CargoEmpleado, FotoEmpleado, NroContrato, " +
-                            "TipoContrato, FechaInicio, FechaFinal, Sueldo, GrupoNomina, EPS, Pension, ARL, " +
-                            "CajaCompensacion, Cesantias, Estado) " +
+                            "DireccionEmpleado, idCiudadEmpleado, CargoEmpleado, FechaNacEmpleado, FotoEmpleado, NroContrato, " +
+                            "TipoContrato, idSede, FechaInicio, FechaFinal, Sueldo, GrupoNomina, idEPS, idFondoPension, idARL, " +
+                            "idCajaComp, idCesantias, Estado) " +
                             "VALUES ('" + txbDocumento.Text.ToString() + "', " + ddlTipoDocumento.SelectedItem.Value.ToString() + ", " +
                             "'" + txbNombre.Text.ToString() + "', '" + txbTelefono.Text.ToString() + "', " +
                             "'" + txbEmail.Text.ToString() + "', '" + txbDireccion.Text.ToString() + "', " +
                             "" + ddlCiudadEmpleado.SelectedItem.Value.ToString() + ", '" + txbCargo.Text.ToString() + "', " +
+                            "'" + txbFechaNac.Text.ToString() + "'" +
                             "'" + strFilename + "', '" + txbContrato.Text.ToString() + "', " +
-                            "'" + ddlTipoContrato.SelectedItem.Value.ToString() + "', '" + txbFechaInicio.Text.ToString() + "', " +
+                            "'" + ddlTipoContrato.SelectedItem.Value.ToString() + "', " +
+                            "" + ddlSedes.SelectedItem.Value.ToString() + ", '" + txbFechaInicio.Text.ToString() + "', " +
                             "'" + txbFechaFinal.Text.ToString() + "', '" + txbSueldo.Text.ToString() + "', " +
-                            "'" + ddlGrupo.SelectedItem.Value.ToString() + "', '" + ddlEps.SelectedItem.Value.ToString() + "', " +
-                            "'" + ddlFondoPension.SelectedItem.Value.ToString() + "', '" + ddlArl.SelectedItem.Value.ToString() + "', " +
-                            "'" + ddlCajaComp.SelectedItem.Value.ToString() + "', '" + ddlCesantias.SelectedItem.Value.ToString() + "', " +
+                            "'" + ddlGrupo.SelectedItem.Value.ToString() + "', " + ddlEps.SelectedItem.Value.ToString() + ", " +
+                            "" + ddlFondoPension.SelectedItem.Value.ToString() + ", " + ddlArl.SelectedItem.Value.ToString() + ", " +
+                            "" + ddlCajaComp.SelectedItem.Value.ToString() + ", " + ddlCesantias.SelectedItem.Value.ToString() + ", " +
                             "'Activo') ";
                             OdbcCommand command = new OdbcCommand(strQuery, myConnection);
                             myConnection.Open();
                             command.ExecuteNonQuery();
                             command.Dispose();
                             myConnection.Close();
+
+                            clasesglobales cg = new clasesglobales();
+                            cg.InsertarLog(Session["idusuario"].ToString(), "Empleados", "Nuevo registro", "El usuario agregó un nuevo empleado con documento " + txbDocumento.Text.ToString() + ".", "", "");
+
+                            Response.Redirect("empleados");
                         }
                         catch (OdbcException ex)
                         {
-                            string mensaje = ex.Message;
+                            ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                "<div class=\"alert alert-danger alert-dismissable\">" +
+                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
+                                "</div></div>";
                             myConnection.Close();
                         }
-
-                        Response.Redirect("empleados");
                     }
                 }
             }

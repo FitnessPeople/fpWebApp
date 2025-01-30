@@ -244,7 +244,6 @@ namespace fpWebApp
             }
             catch (OdbcException ex)
             {
-                string mensaje = ex.Message;
                 ltMensaje.Text = "<div class=\"ibox-content\">" +
                     "<div class=\"alert alert-danger alert-dismissable\">" +
                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +

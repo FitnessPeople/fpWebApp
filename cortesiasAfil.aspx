@@ -196,14 +196,6 @@
                                                                     <label>Días de cortesía:</label>
                                                                     <div class="form-group">
                                                                         <asp:PlaceHolder ID="phDiasCortesia" runat="server"></asp:PlaceHolder>
-                                                                        <%--<asp:Button ID="btn7dias" runat="server" Text="7" CssClass="btn btn-info dim btn-large-dim btn-outline"
-                                                                            Style="width: 70px; font-size: 30px; height: 70px;" />
-                                                                        <asp:Button ID="btn15dias" runat="server" Text="15" CssClass="btn btn-info dim btn-large-dim btn-outline"
-                                                                            Style="width: 70px; font-size: 30px; height: 70px;" />
-                                                                        <asp:Button ID="btn30dias" runat="server" Text="30" CssClass="btn btn-info dim btn-large-dim btn-outline"
-                                                                            Style="width: 70px; font-size: 30px; height: 70px;" />
-                                                                        <asp:Button ID="btn60dias" runat="server" Text="60" CssClass="btn btn-info dim btn-large-dim btn-outline"
-                                                                            Style="width: 70px; font-size: 30px; height: 70px;" />--%>
                                                                     </div>
                                                                 </div>
                                                             </div>
