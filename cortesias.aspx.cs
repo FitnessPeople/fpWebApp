@@ -112,79 +112,65 @@ namespace fpWebApp
 
         }
 
-        //protected void btn7dias_Click(object sender, EventArgs e)
-        //{
-        //    ltDescripcionRegalo.Text = "Se agregarán 7 días de cortesía al final del período de su plan activo.";
-        //    ViewState["DiasCortesia"] = 7;
-        //    btn7dias.CssClass += " active";
-        //    btn15dias.CssClass = btn15dias.CssClass.Replace("active", "");
-        //    btn30dias.CssClass = btn30dias.CssClass.Replace("active", "");
-        //    btn60dias.CssClass = btn60dias.CssClass.Replace("active", "");
-        //}
-
-        //protected void btn15dias_Click(object sender, EventArgs e)
-        //{
-        //    ltDescripcionRegalo.Text = "Se agregarán 15 días de cortesía al final del período de su plan activo.";
-        //    ViewState["DiasCortesia"] = 15;
-        //    btn15dias.CssClass += " active";
-        //    btn7dias.CssClass = btn7dias.CssClass.Replace("active", "");
-        //    btn30dias.CssClass = btn30dias.CssClass.Replace("active", "");
-        //    btn60dias.CssClass = btn60dias.CssClass.Replace("active", "");
-        //}
-
-        //protected void btn30dias_Click(object sender, EventArgs e)
-        //{
-        //    ltDescripcionRegalo.Text = "Se agregarán 30 días de cortesía al final del período de su plan activo.";
-        //    ViewState["DiasCortesia"] = 30;
-        //    btn30dias.CssClass += " active";
-        //    btn7dias.CssClass = btn7dias.CssClass.Replace("active", "");
-        //    btn15dias.CssClass = btn15dias.CssClass.Replace("active", "");
-        //    btn60dias.CssClass = btn60dias.CssClass.Replace("active", "");
-        //}
-
-        //protected void btn60dias_Click(object sender, EventArgs e)
-        //{
-        //    ltDescripcionRegalo.Text = "Se agregarán 60 días de cortesía al final del período de su plan activo.";
-        //    ViewState["DiasCortesia"] = 60;
-        //    btn60dias.CssClass += " active";
-        //    btn7dias.CssClass = btn7dias.CssClass.Replace("active", "");
-        //    btn15dias.CssClass = btn15dias.CssClass.Replace("active", "");
-        //    btn30dias.CssClass = btn30dias.CssClass.Replace("active", "");
-        //}
-
         protected void btnAgregarCortesia_Click(object sender, EventArgs e)
         {
-            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
-            try
-            {
-                string strQuery = "INSERT INTO Cortesias " +
-                "(idUsuario, idAfiliadoPlan, DiasCortesia, FechaHoraCortesia, ObservacionesCortesia, EstadoCortesia) " +
-                "VALUES (" + Session["idUsuario"].ToString() + ", " +
-                "" + ViewState["idAfiliadoPlan"].ToString() + ", " + ViewState["DiasCortesia"].ToString() + ", NOW(), " +
-                "'" + txbObservaciones.Text.ToString() + "', 'Pendiente') ";
-                OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                myConnection.Open();
-                command.ExecuteNonQuery();
-                command.Dispose();
-                myConnection.Close();
-
-                clasesglobales cg = new clasesglobales();
-                cg.InsertarLog(Session["idusuario"].ToString(), "Cortesias", "Nuevo registro", "El usuario agregó una cortesia al afiliado con documento " + ViewState["DocumentoAfiliado"].ToString() + ".", "", "");
-
-                Response.Redirect("afiliados");
-            }
-            catch (OdbcException ex)
+            if (ViewState["DiasCortesia"] == null)
             {
                 ltMensaje.Text = "<div class=\"ibox-content\">" +
                     "<div class=\"alert alert-danger alert-dismissable\">" +
-                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
+                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                    "Elija cuantos días de cortesía se van a otorgar al afiliado." +
                     "</div></div>";
-                myConnection.Close();
+            }
+            else
+            {
+                if (txbObservaciones.Text.ToString() == "")
+                {
+                    ltMensaje.Text = "<div class=\"ibox-content\">" +
+                        "<div class=\"alert alert-danger alert-dismissable\">" +
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        "Escriba las observaciones de la cortesía." +
+                        "</div></div>";
+                }
+                else
+                {
+                    OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
+                    try
+                    {
+                        string strQuery = "INSERT INTO Cortesias " +
+                        "(idUsuario, idAfiliadoPlan, DiasCortesia, FechaHoraCortesia, ObservacionesCortesia, EstadoCortesia) " +
+                        "VALUES (" + Session["idUsuario"].ToString() + ", " +
+                        "" + ViewState["idAfiliadoPlan"].ToString() + ", " + ViewState["DiasCortesia"].ToString() + ", NOW(), " +
+                        "'" + txbObservaciones.Text.ToString() + "', 'Pendiente') ";
+                        OdbcCommand command = new OdbcCommand(strQuery, myConnection);
+                        myConnection.Open();
+                        command.ExecuteNonQuery();
+                        command.Dispose();
+                        myConnection.Close();
+
+                        clasesglobales cg = new clasesglobales();
+                        cg.InsertarLog(Session["idusuario"].ToString(), "Cortesias", "Nuevo registro", "El usuario agregó una cortesia al afiliado con documento " + ViewState["DocumentoAfiliado"].ToString() + ".", "", "");
+
+                        Response.Redirect("afiliados");
+                    }
+                    catch (OdbcException ex)
+                    {
+                        ltMensaje.Text = "<div class=\"ibox-content\">" +
+                            "<div class=\"alert alert-danger alert-dismissable\">" +
+                            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
+                            "</div></div>";
+                        myConnection.Close();
+                    }
+                }
             }
         }
 
         protected void btnAfiliado_Click(object sender, EventArgs e)
         {
+            ltNoPlanes.Text = "";
+            ltMensaje.Text = "";
+            btnAgregarCortesia.Enabled = true;
+            txbObservaciones.Enabled = true;
             string[] strDocumento = txbAfiliado.Text.ToString().Split('-');
             string strQuery = "SELECT * FROM Afiliados a " +
                 "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +
@@ -260,7 +246,12 @@ namespace fpWebApp
             }
             else
             {
-                ltNoPlanes.Text = "Sin planes. No es posible agregar una cortesía.";
+                rpPlanesAfiliado.DataBind();
+                ltNoPlanes.Text = "<div class=\"ibox-content\">" +
+                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                    "Sin planes. No es posible agregar una cortesía." +
+                    "</div></div>";
                 txbObservaciones.Enabled = false;
                 btnAgregarCortesia.Enabled = false;
             }

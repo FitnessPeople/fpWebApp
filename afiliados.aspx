@@ -220,7 +220,7 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td colspan="2"><%# Eval("DireccionAfiliado") %></td>
-                                                                <td><%# Eval("NombreCiudad") %></td>
+                                                                <td><%# Eval("NombreCiudad") %> - <%# Eval("NombreEstado") %></td>
                                                                 <td><%# Eval("Genero") %></td>
                                                             </tr>
                                                         </tbody>
@@ -235,7 +235,7 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td><%# Eval("EstadoCivil") %></td>
-                                                                <td><%# Eval("NombreSede") %></td>
+                                                                <td><%# Eval("NombreSede") %> - <%# Eval("NombreCiudadSede") %></td>
                                                                 <td><%# Eval("Profesion") %></td>
                                                                 <td><%# Eval("NombreEps") %></td>
                                                             </tr>

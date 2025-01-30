@@ -106,6 +106,7 @@ namespace fpWebApp
                 "FROM Afiliados a " +
                 "LEFT JOIN generos g ON g.idGenero = a.idGenero " +
                 "LEFT JOIN sedes s ON s.idSede = a.idSede " +
+                "LEFT JOIN ciudadessedes cs ON s.idCiudadSede = cs.idCiudadSede " +
                 "LEFT JOIN estadocivil ec ON ec.idEstadoCivil = a.idEstadoCivilAfiliado " +
                 "LEFT JOIN profesiones p ON p.idProfesion = a.idProfesion " +
                 "LEFT JOIN eps ON eps.idEps = a.idEps " +

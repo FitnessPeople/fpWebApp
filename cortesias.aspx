@@ -175,7 +175,6 @@
                                         </div>
                                         <div class="row m-xs" runat="server" id="divPlanes">
                                             <h4>Planes</h4>
-                                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                             <asp:Literal ID="ltNoPlanes" runat="server"></asp:Literal>
                                             <ul class="todo-list small-list">
                                                 <asp:Repeater ID="rpPlanesAfiliado" runat="server">
@@ -223,7 +222,7 @@
                                                     <div class="col-sm-12">
                                                         <label>Resumen:</label>
                                                         <div class="form-group">
-                                                            <div class="panel panel-danger" runat="server" id="divRegalo" visible="true">
+                                                            <div class="panel panel-info" runat="server" id="divRegalo" visible="true">
                                                                 <div class="panel-heading">
                                                                     <i class="fa fa-gift"></i>
                                                                     <asp:Literal ID="ltTituloRegalo" runat="server"></asp:Literal>
@@ -245,6 +244,7 @@
                                         </asp:UpdatePanel>
 
                                         <div>
+                                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                             <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"
                                                 onclick="window.location.href='afiliados'">
                                                 <strong>Cancelar</strong></button>
@@ -295,10 +295,6 @@
                     required: true,
                     minlength: 3
                 },
-                //txbObservaciones: {
-                //    required: true,
-                //    minlength: 20
-                //},
             }
         });
 
