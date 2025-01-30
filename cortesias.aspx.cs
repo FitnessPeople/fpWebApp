@@ -13,6 +13,7 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            CargarDiasCortesia();
             if (!IsPostBack)
             {
                 if (Session["idUsuario"] != null)
@@ -70,45 +71,86 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        protected void btn7dias_Click(object sender, EventArgs e)
+        private void CargarDiasCortesia()
         {
-            ltDescripcionRegalo.Text = "Se agregarán 7 días de cortesía al final del período de su plan activo.";
-            ViewState["DiasCortesia"] = 7;
-            btn7dias.CssClass += " active";
-            btn15dias.CssClass = btn15dias.CssClass.Replace("active", "");
-            btn30dias.CssClass = btn30dias.CssClass.Replace("active", "");
-            btn60dias.CssClass = btn60dias.CssClass.Replace("active", "");
+            string strQuery = "SELECT * " +
+                "FROM DiasCortesia " +
+                "WHERE Estado = 1";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            if (dt.Rows.Count > 0)
+            {
+                PlaceHolder ph = ((PlaceHolder)this.FindControl("phDiasCortesia"));
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Button btn = new Button();
+                    btn.Attributes.Add("style", "width: 70px; font-size: 30px; height: 70px;");
+                    btn.Text = dt.Rows[i]["DiasCortesia"].ToString();
+                    btn.CssClass = "btn btn-info dim btn-large-dim btn-outline";
+                    btn.ToolTip = dt.Rows[i]["DiasCortesia"].ToString();
+                    //btn.Style = "";
+                    btn.Command += new CommandEventHandler(btn_Click);
+                    btn.CommandArgument = dt.Rows[i]["idDiasCortesia"].ToString();
+                    btn.ID = dt.Rows[i]["idDiasCortesia"].ToString();
+                    ph.Controls.Add(btn);
+                }
+            }
+            dt.Dispose();
         }
 
-        protected void btn15dias_Click(object sender, EventArgs e)
+        private void btn_Click(object sender, CommandEventArgs e)
         {
-            ltDescripcionRegalo.Text = "Se agregarán 15 días de cortesía al final del período de su plan activo.";
-            ViewState["DiasCortesia"] = 15;
-            btn15dias.CssClass += " active";
-            btn7dias.CssClass = btn7dias.CssClass.Replace("active", "");
-            btn30dias.CssClass = btn30dias.CssClass.Replace("active", "");
-            btn60dias.CssClass = btn60dias.CssClass.Replace("active", "");
+            string strQuery = "SELECT * " +
+                "FROM DiasCortesia " +
+                "WHERE idDiasCortesia = " + e.CommandArgument;
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            ltDescripcionRegalo.Text = "Se agregarán " + dt.Rows[0]["DiasCortesia"].ToString() + " días de cortesía al final del período de su plan activo.";
+            ViewState["DiasCortesia"] = dt.Rows[0]["DiasCortesia"].ToString();
+
         }
 
-        protected void btn30dias_Click(object sender, EventArgs e)
-        {
-            ltDescripcionRegalo.Text = "Se agregarán 30 días de cortesía al final del período de su plan activo.";
-            ViewState["DiasCortesia"] = 30;
-            btn30dias.CssClass += " active";
-            btn7dias.CssClass = btn7dias.CssClass.Replace("active", "");
-            btn15dias.CssClass = btn15dias.CssClass.Replace("active", "");
-            btn60dias.CssClass = btn60dias.CssClass.Replace("active", "");
-        }
+        //protected void btn7dias_Click(object sender, EventArgs e)
+        //{
+        //    ltDescripcionRegalo.Text = "Se agregarán 7 días de cortesía al final del período de su plan activo.";
+        //    ViewState["DiasCortesia"] = 7;
+        //    btn7dias.CssClass += " active";
+        //    btn15dias.CssClass = btn15dias.CssClass.Replace("active", "");
+        //    btn30dias.CssClass = btn30dias.CssClass.Replace("active", "");
+        //    btn60dias.CssClass = btn60dias.CssClass.Replace("active", "");
+        //}
 
-        protected void btn60dias_Click(object sender, EventArgs e)
-        {
-            ltDescripcionRegalo.Text = "Se agregarán 60 días de cortesía al final del período de su plan activo.";
-            ViewState["DiasCortesia"] = 60;
-            btn60dias.CssClass += " active";
-            btn7dias.CssClass = btn7dias.CssClass.Replace("active", "");
-            btn15dias.CssClass = btn15dias.CssClass.Replace("active", "");
-            btn30dias.CssClass = btn30dias.CssClass.Replace("active", "");
-        }
+        //protected void btn15dias_Click(object sender, EventArgs e)
+        //{
+        //    ltDescripcionRegalo.Text = "Se agregarán 15 días de cortesía al final del período de su plan activo.";
+        //    ViewState["DiasCortesia"] = 15;
+        //    btn15dias.CssClass += " active";
+        //    btn7dias.CssClass = btn7dias.CssClass.Replace("active", "");
+        //    btn30dias.CssClass = btn30dias.CssClass.Replace("active", "");
+        //    btn60dias.CssClass = btn60dias.CssClass.Replace("active", "");
+        //}
+
+        //protected void btn30dias_Click(object sender, EventArgs e)
+        //{
+        //    ltDescripcionRegalo.Text = "Se agregarán 30 días de cortesía al final del período de su plan activo.";
+        //    ViewState["DiasCortesia"] = 30;
+        //    btn30dias.CssClass += " active";
+        //    btn7dias.CssClass = btn7dias.CssClass.Replace("active", "");
+        //    btn15dias.CssClass = btn15dias.CssClass.Replace("active", "");
+        //    btn60dias.CssClass = btn60dias.CssClass.Replace("active", "");
+        //}
+
+        //protected void btn60dias_Click(object sender, EventArgs e)
+        //{
+        //    ltDescripcionRegalo.Text = "Se agregarán 60 días de cortesía al final del período de su plan activo.";
+        //    ViewState["DiasCortesia"] = 60;
+        //    btn60dias.CssClass += " active";
+        //    btn7dias.CssClass = btn7dias.CssClass.Replace("active", "");
+        //    btn15dias.CssClass = btn15dias.CssClass.Replace("active", "");
+        //    btn30dias.CssClass = btn30dias.CssClass.Replace("active", "");
+        //}
 
         protected void btnAgregarCortesia_Click(object sender, EventArgs e)
         {
@@ -128,18 +170,17 @@ namespace fpWebApp
 
                 clasesglobales cg = new clasesglobales();
                 cg.InsertarLog(Session["idusuario"].ToString(), "Cortesias", "Nuevo registro", "El usuario agregó una cortesia al afiliado con documento " + ViewState["DocumentoAfiliado"].ToString() + ".", "", "");
+
+                Response.Redirect("afiliados");
             }
             catch (OdbcException ex)
             {
-                string mensaje = ex.Message;
-                // ltMensaje.Text = "<div class=\"ibox-content\">" +
-                // "<div class=\"alert alert-danger alert-dismissable\">" +
-                // "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
-                //"</div></div>";
+                ltMensaje.Text = "<div class=\"ibox-content\">" +
+                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
+                    "</div></div>";
                 myConnection.Close();
             }
-
-            Response.Redirect("afiliados");
         }
 
         protected void btnAfiliado_Click(object sender, EventArgs e)

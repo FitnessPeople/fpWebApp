@@ -150,6 +150,7 @@
                                                         <asp:ListItem Text="Contabilidad" Value="Contabilidad"></asp:ListItem>
                                                         <asp:ListItem Text="Sistema" Value="Sistema"></asp:ListItem>
                                                         <asp:ListItem Text="Configuración" Value="Configuración"></asp:ListItem>
+                                                        <asp:ListItem Text="Página Web" Value="Página Web"></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
                                                 <div class="form-group">

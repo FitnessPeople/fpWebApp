@@ -188,11 +188,6 @@ namespace fpWebApp
             txbEmail.Text = dt.Rows[0]["EmailEmpleado"].ToString();
             txbDireccion.Text = dt.Rows[0]["DireccionEmpleado"].ToString();
             ddlCiudadEmpleado.SelectedIndex = Convert.ToInt32(ddlCiudadEmpleado.Items.IndexOf(ddlCiudadEmpleado.Items.FindByValue(dt.Rows[0]["idCiudadEmpleado"].ToString())));
-            //if (dt.Rows[0]["FechaNacEmpleado"] != null)
-            //{
-            //    DateTime dtFechaNac = Convert.ToDateTime(dt.Rows[0]["FechaNacEmpleado"].ToString());
-            //    txbFechaNac.Text = dtFechaNac.ToString("yyyy-MM-dd");
-            //}
             DateTime dt14 = DateTime.Now.AddYears(-14);
             DateTime dt80 = DateTime.Now.AddYears(-80);
             txbFechaNac.Attributes.Add("min", dt80.Year.ToString() + "-" + String.Format("{0:MM}", dt80) + "-" + String.Format("{0:dd}", dt80));
@@ -222,6 +217,7 @@ namespace fpWebApp
             txbFechaInicio.Text = dtFechaIni.ToString("yyyy-MM-dd");
             DateTime dtFechaFin = Convert.ToDateTime(dt.Rows[0]["FechaFinal"].ToString());
             txbFechaFinal.Text = dtFechaFin.ToString("yyyy-MM-dd");
+            ddlSedes.SelectedIndex = Convert.ToInt32(ddlSedes.Items.IndexOf(ddlSedes.Items.FindByValue(dt.Rows[0]["idSede"].ToString())));
             txbSueldo.Text = dt.Rows[0]["Sueldo"].ToString();
             if (dt.Rows[0]["GrupoNomina"].ToString() != "")
             {
@@ -306,6 +302,7 @@ namespace fpWebApp
             }
 
             OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
+            string strInitData = TraerData();
             try
             {
                 string strQuery = "UPDATE empleados SET " +
@@ -316,18 +313,20 @@ namespace fpWebApp
                 "DireccionEmpleado = '" + txbDireccion.Text.ToString() + "', " +
                 "idCiudadEmpleado = " + ddlCiudadEmpleado.SelectedItem.Value.ToString() + ", " +
                 "CargoEmpleado = '" + txbCargo.Text.ToString() + "', " +
+                "FechaNacEmpleado= '" + txbFechaNac.Text.ToString() + "', " +
                 "FotoEmpleado = '" + strFilename + "', " +
                 "NroContrato = '" + txbContrato.Text.ToString() + "', " +
                 "TipoContrato = '" + ddlTipoContrato.SelectedItem.Value.ToString() + "', " +
+                "idSede = " + ddlSedes.SelectedItem.Value.ToString() + ", " +
                 "FechaInicio = '" + txbFechaInicio.Text.ToString() + "', " +
                 "FechaFinal = '" + txbFechaFinal.Text.ToString() + "', " +
                 "Sueldo = '" + txbSueldo.Text.ToString() + "', " +
                 "GrupoNomina = '" + ddlGrupo.SelectedItem.Value.ToString() + "', " +
                 "idEPS = " + ddlEps.SelectedItem.Value.ToString() + ", " +
-                "idFondoPension = '" + ddlFondoPension.SelectedItem.Value.ToString() + "', " +
-                "idARL = '" + ddlArl.SelectedItem.Value.ToString() + "', " +
-                "idCajaComp = '" + ddlCajaComp.SelectedItem.Value.ToString() + "', " +
-                "idCesantias = '" + ddlCesantias.SelectedItem.Value.ToString() + "', " +
+                "idFondoPension = " + ddlFondoPension.SelectedItem.Value.ToString() + ", " +
+                "idARL = " + ddlArl.SelectedItem.Value.ToString() + ", " +
+                "idCajaComp = " + ddlCajaComp.SelectedItem.Value.ToString() + ", " +
+                "idCesantias = " + ddlCesantias.SelectedItem.Value.ToString() + ", " +
                 "Estado = '" + rblEstado.Text.ToString() + "' " +
                 "WHERE DocumentoEmpleado = '" + txbDocumento.Text.ToString() + "' ";
                 OdbcCommand command = new OdbcCommand(strQuery, myConnection);
@@ -347,14 +346,51 @@ namespace fpWebApp
                     command1.Dispose();
                     myConnection.Close();
                 }
+
+                string strNewData = TraerData();
+
+                clasesglobales cg = new clasesglobales();
+                cg.InsertarLog(Session["idusuario"].ToString(), "Empleados", "Modifica", "El usuario modificó datos al empleado con documento " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
+
+                Response.Redirect("empleados");
             }
             catch (OdbcException ex)
             {
-                string mensaje = ex.Message;
+                ltMensaje.Text = "<div class=\"ibox-content\">" +
+                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
+                    "</div></div>";
                 myConnection.Close();
             }
+        }
 
-            Response.Redirect("empleados");
+        private string TraerData()
+        {
+            string strQuery = "SELECT e.DocumentoEmpleado, td.TipoDocumento, e.NombreEmpleado, e.TelefonoEmpleado, e.EmailEmpleado, " +
+                "e.DireccionEmpleado, c.NombreCiudad, e.CargoEmpleado, e.FechaNacEmpleado, e.FotoEmpleado, e.NroContrato, e.TipoContrato, " +
+                "s.NombreSede, e.FechaInicio, e.FechaFinal, e.Sueldo, e.GrupoNomina, eps.NombreEps, fp.NombreFondoPension, " +
+                "arl.NombreArl, cp.NombreCajaComp, ces.NombreCesantias, e.Estado " +
+                "FROM empleados e " +
+                "LEFT JOIN Ciudades c ON e.idCiudadEmpleado = c.idCiudad " +
+                "LEFT JOIN TiposDocumento td ON e.idTipoDocumento = td.idTipoDoc " +
+                "LEFT JOIN Sedes s ON e.idSede = s.idSede " +
+                "LEFT JOIN Eps ON e.idEps = eps.idEps " +
+                "LEFT JOIN FondosPension fp ON e.idFondoPension = fp.idFondoPension " +
+                "LEFT JOIN Arl ON e.idArl = arl.idArl " +
+                "LEFT JOIN CajasCompensacion cp ON e.idCajaComp = cp.idCajaComp " +
+                "LEFT JOIN Cesantias ces ON e.idCesantias = ces.idCesantias " +
+                "WHERE e.DocumentoEmpleado = '" + Request.QueryString["editid"].ToString() + "' ";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
         }
     }
 }

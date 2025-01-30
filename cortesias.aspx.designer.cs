@@ -213,40 +213,13 @@ namespace fpWebApp
         protected global::System.Web.UI.UpdatePanel upPlanes;
 
         /// <summary>
-        /// Control btn7dias.
+        /// Control phDiasCortesia.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn7dias;
-
-        /// <summary>
-        /// Control btn15dias.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn15dias;
-
-        /// <summary>
-        /// Control btn30dias.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn30dias;
-
-        /// <summary>
-        /// Control btn60dias.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn60dias;
+        protected global::System.Web.UI.WebControls.PlaceHolder phDiasCortesia;
 
         /// <summary>
         /// Control txbObservaciones.
