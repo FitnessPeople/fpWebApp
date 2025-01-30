@@ -158,32 +158,6 @@ namespace fpWebApp
             }
         }
 
-        //private void CargarPlanesAfiliado()
-        //{
-        //    if (Request.QueryString.Count > 0)
-        //    {
-        //        string strQuery = "SELECT *, IF(ap.EstadoPlan='Activo','primary',IF(ap.EstadoPlan='Archivado','warning','danger')) AS label, " +
-        //            "DATEDIFF(CURDATE(), ap.FechaInicioPlan) diasconsumidos, " +
-        //            "DATEDIFF(ap.FechaFinalPlan, CURDATE()) diasporterminar, " +
-        //            "DATEDIFF(ap.FechaFinalPlan, FechaInicioPlan) diastotales, " +
-        //            "(DATEDIFF(CURDATE(), ap.FechaInicioPlan)/DATEDIFF(ap.FechaFinalPlan, FechaInicioPlan)) * 100 AS porcentaje " +
-        //            "FROM afiliadosPlanes ap " +
-        //            "RIGHT JOIN Afiliados a ON ap.idAfiliado = a.idAfiliado " +
-        //            "RIGHT JOIN Planes p ON ap.idPlan = p.idPlan " +
-        //            "WHERE ap.idAfiliado = " + Request.QueryString["id"].ToString();
-        //        clasesglobales cg = new clasesglobales();
-        //        DataTable dt = cg.TraerDatos(strQuery);
-
-        //        if (dt.Rows.Count > 0)
-        //        {
-        //            rpPlanesAfiliado.DataSource = dt;
-        //            rpPlanesAfiliado.DataBind();
-
-        //        }
-        //        dt.Dispose();
-        //    }
-        //}
-
         private void CargarPlanesAfiliado()
         {
             if (Request.QueryString.Count > 0)
@@ -270,50 +244,6 @@ namespace fpWebApp
             MesesEnabled();
         }
 
-        //protected void btnDeluxe_Click(object sender, EventArgs e)
-        //{
-        //    ViewState["nombrePlan"] = "Deluxe";
-        //    ViewState["precioBase"] = 150000;
-        //    //ltPrecioBase.Text = String.Format("{0:C0}", Convert.ToInt32(ViewState["precioBase"]));
-        //    ltPrecioBase.Text = "$150,000";
-        //    ltPrecioFinal.Text = ltPrecioBase.Text;
-        //    ActivarBotones("1");
-        //    ActivarCortesia("0");
-
-        //    ltDescuento.Text = "0%";
-        //    ltAhorro.Text = "$0";
-        //    ltConDescuento.Text = "$0";
-
-        //    btnDeluxe.CssClass += " active";
-        //    btnPremium.CssClass = btnPremium.CssClass.Replace("active", "");
-
-        //    ltTituloRegalo.Text = "<b>Plan " + ViewState["nombrePlan"].ToString() + "</b>";
-
-        //    MesesEnabled();
-        //}
-
-        //protected void btnPremium_Click(object sender, EventArgs e)
-        //{
-        //    ViewState["nombrePlan"] = "Premium";
-        //    ViewState["precioBase"] = 125000;
-        //    //ltPrecioBase.Text = String.Format("{0:C0}", Convert.ToInt32(ViewState["precioBase"]));
-        //    ltPrecioBase.Text = "$125,000";
-        //    ltPrecioFinal.Text = ltPrecioBase.Text;
-        //    ActivarBotones("1");
-        //    ActivarCortesia("0");
-
-        //    ltDescuento.Text = "0%";
-        //    ltAhorro.Text = "$0";
-        //    ltConDescuento.Text = "$0";
-
-        //    btnPremium.CssClass += " active";
-        //    btnDeluxe.CssClass = btnDeluxe.CssClass.Replace("active", "");
-
-        //    ltTituloRegalo.Text = "<b>Plan " + ViewState["nombrePlan"].ToString() + "</b>";
-
-        //    MesesEnabled();
-        //}
-
         private void MesesEnabled()
         {
             btnMes1.Enabled = true;
@@ -330,7 +260,7 @@ namespace fpWebApp
             btnMes12.Enabled = true;
         }
 
-        protected void btnAgregarPlan_Click(object sender, EventArgs e)
+        protected void zbtnAgregarPlan_Click(object sender, EventArgs e)
         {
             if (ltEstado.Text.ToString() != "Activo")
             {

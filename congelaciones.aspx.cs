@@ -117,8 +117,7 @@ namespace fpWebApp
                         ltFoto.Text = "<img src=\"img/afiliados/avatar_female.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
                     }
                 }
-
-                //Comment
+    
                 divPlanes.Visible = true;
                 CargarCongelaciones();
                 CargarPlanesAfiliado();

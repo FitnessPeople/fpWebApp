@@ -269,32 +269,32 @@
                                                     </button>
                                                     <button runat="server" id="btnPlan" class="btn btn-outline btn-info pull-right m-r-xs"
                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
-                                                        title="Planes">
+                                                        title="Planes" visible="false">
                                                         <i class="fa fa-ticket"></i>
                                                     </button>
                                                     <button runat="server" id="btnTraspaso" class="btn btn-outline btn-warning pull-right m-r-xs"
                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
-                                                        title="Traspaso">
+                                                        title="Traspaso" visible="false">
                                                         <i class="fa fa-right-left"></i>
                                                     </button>
                                                     <button runat="server" id="btnCortesia" class="btn btn-outline btn-success pull-right m-r-xs"
                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
-                                                        title="Cortesía">
+                                                        title="Cortesía" visible="false">
                                                         <i class="fa fa-gift"></i>
                                                     </button>
                                                     <button runat="server" id="btnFreePass" class="btn btn-outline btn-success pull-right m-r-xs"
                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
-                                                        title="FreePass">
+                                                        title="FreePass" visible="false">
                                                         <i class="fa fa-person-walking"></i>
                                                     </button>
                                                     <button runat="server" id="btnIncapacidad" class="btn btn-outline btn-primary pull-right m-r-xs"
                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
-                                                        title="Incapacidad">
+                                                        title="Incapacidad" visible="false">
                                                         <i class="fa fa-head-side-mask"></i>
                                                     </button>
                                                     <button runat="server" id="btnCongelacion" class="btn btn-outline btn-success pull-right"
                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
-                                                        title="Congelación">
+                                                        title="Congelación" visible="false">
                                                         <i class="fa fa-snowflake"></i>
                                                     </button>
                                                 </td>

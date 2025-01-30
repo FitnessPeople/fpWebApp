@@ -201,15 +201,14 @@
                                     </div>
                                 </div>
                                 <div class="ibox-content">
-                                    <ul class="todo-list m-t small-list">
+                                    <ul class="todo-list small-list">
                                         <asp:Repeater ID="rpPlanesAfiliado" runat="server">
                                             <ItemTemplate>
                                                 <li>
                                                     <div class="i-checks">
                                                         <small class="label label-primary pull-right"><%# Eval("DiasQueFaltan") %> días disponibles</small>
                                                         <label>
-                                                            <input type="radio" value="<%# Eval("idPlan") %>" name="planes">
-                                                            <i></i><%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
+                                                            <%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
                                                         </label>
                                                         <br />
                                                         <div class="progress progress-striped active">
