@@ -57,20 +57,19 @@ namespace fpWebApp
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
-                            //string strQuery = "SELECT * FROM eps WHERE idEps = " + Request.QueryString["editid"].ToString();
-                            string strQuery = "SELECT idCiudad FROM ciudades WHERE idCiudad = " + Request.QueryString["editid"].ToString();
+                            string strQuery = "SELECT idCiudad, NombreCiudad FROM ciudades WHERE idCiudad = " + Request.QueryString["editid"].ToString();
                             clasesglobales cg = new clasesglobales();
                             DataTable dt = cg.TraerDatos(strQuery);
                             if (dt.Rows.Count > 0)
                             {
-                                txbCiudad.Text = dt.Rows[0]["NombreEps"].ToString();
+                                txbCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
                                 btnAgregar.Text = "Actualizar";
-                                ltTitulo.Text = "Actualizar EPS";
+                                ltTitulo.Text = "Actualizar Ciudad";
                             }
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
-                            string strQuery = "SELECT * FROM Empleados WHERE idEps = " + Request.QueryString["deleteid"].ToString();
+                            string strQuery = "SELECT * FROM ciudades WHERE idCiudad = " + Request.QueryString["deleteid"].ToString();
                             clasesglobales cg1 = new clasesglobales();
                             DataTable dt1 = cg1.TraerDatos(strQuery);
 
@@ -79,34 +78,34 @@ namespace fpWebApp
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +
                                     "<div class=\"alert alert-danger alert-dismissable\">" +
                                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Esta EPS no se puede borrar, hay empleados asociados a ella." +
+                                    "Esta Ciudad no se puede borrar, hay empleados asociados a ella." +
                                     "</div></div>";
 
 
-                                strQuery = "SELECT * FROM Eps WHERE idEps = " + Request.QueryString["deleteid"].ToString();
+                                strQuery = "SELECT * FROM ciudades WHERE idCiudad = " + Request.QueryString["deleteid"].ToString();
                                 clasesglobales cg = new clasesglobales();
                                 DataTable dt = cg.TraerDatos(strQuery);
                                 if (dt.Rows.Count > 0)
                                 {
-                                    txbCiudad.Text = dt.Rows[0]["NombreEps"].ToString();
+                                    txbCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
                                     txbCiudad.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     btnAgregar.Enabled = false;
-                                    ltTitulo.Text = "Borrar EPS";
+                                    ltTitulo.Text = "Borrar Ciudad";
                                 }
                             }
                             else
                             {
                                 //Borrar
-                                strQuery = "SELECT * FROM Eps WHERE idEps = " + Request.QueryString["deleteid"].ToString();
+                                strQuery = "SELECT * FROM ciudades WHERE idCiudad = " + Request.QueryString["deleteid"].ToString();
                                 clasesglobales cg = new clasesglobales();
                                 DataTable dt = cg.TraerDatos(strQuery);
                                 if (dt.Rows.Count > 0)
                                 {
-                                    txbCiudad.Text = dt.Rows[0]["NombreEps"].ToString();
+                                    txbCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
                                     txbCiudad.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                    ltTitulo.Text = "Borrar EPS";
+                                    ltTitulo.Text = "Borrar Ciudad";
                                 }
                             }
                         }
@@ -167,7 +166,7 @@ namespace fpWebApp
 
         private void listaCiudades()
         {
-            string strQuery = "SELECT CodigoCiudad, NombreCiudad as 'ciudad', CodigoEstado, NombreEstado as 'departamento'  FROM ciudades WHERE CodigoPais = 'Co' ORDER BY NombreCiudad, NombreEstado; ";
+            string strQuery = "SELECT idCiudad, CodigoCiudad, NombreCiudad as 'ciudad', CodigoEstado, NombreEstado as 'departamento'  FROM ciudades WHERE CodigoPais = 'Co' ORDER BY NombreCiudad, NombreEstado; ";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
@@ -206,13 +205,9 @@ namespace fpWebApp
                     myConnection.Open();
                     StringBuilder sql = new StringBuilder();
                     sql.Append("UPDATE fitnesspeople.ciudades SET ");
-                    sql.Append("idCiudad = idCiudad, NombreCiudad = '" + txbCiudad.Text.ToString().Trim() + "'  ");
-                    //sql.Append("CodigoCiudad = 'CodigoCiudad', NombreEstado = 'NombreEstado', ");
-                    //sql.Append("CodigoEstado = 'CodigoEstado', NombrePais = 'NombrePais', ");
-                    //sql.Append("CodigoPais = 'CodigoPais' ");
-                    sql.Append("WHERE idCiudad = 'idCiudad';");
-                    string strQuery = sql.ToString();
-        
+                    sql.Append("NombreCiudad = '" + txbCiudad.Text.ToString().Trim() + "' ");
+                    sql.Append("WHERE idCiudad = " + Request.QueryString["editid"].ToString());
+                    string strQuery = sql.ToString();        
                     OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
                     command1.ExecuteNonQuery();
                     command1.Dispose();
@@ -224,8 +219,8 @@ namespace fpWebApp
                 if (Request.QueryString["deleteid"] != null)
                 {
                     myConnection.Open();
-                    string strQuery = "DELETE Eps " +
-                        "WHERE idEps = " + Request.QueryString["¨deleteid"].ToString();
+                    string strQuery = "DELETE FROM ciudades " +
+                        "WHERE idCiudad = " + Request.QueryString["¨deleteid"].ToString();
                     OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
                     command1.ExecuteNonQuery();
                     command1.Dispose();
@@ -247,7 +242,7 @@ namespace fpWebApp
                         sql.Append("NombreCiudad, CodigoCiudad, NombreEstado, ");
                         sql.Append("CodigoEstado, NombrePais, CodigoPais)");
                         sql.Append(" VALUES (");
-                        sql.Append("'" + txbCiudad.Text.ToString().Trim() + "', '001', 'Departamento', ");
+                        sql.Append("'" + txbCiudad.Text.ToString().Trim() + "', '0013', 'Departamento', ");
                         sql.Append(" 'CodigoDepartamento', 'Colombia', 'Co');");
 
                         string strQuery = sql.ToString();
