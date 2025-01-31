@@ -133,6 +133,7 @@
     <Content Include="cambiaestadousuario.aspx" />
     <Content Include="cambiarpermiso.aspx" />
     <Content Include="cesantias.aspx" />
+    <Content Include="ciudades.aspx" />
     <Content Include="congelaciones.aspx" />
     <Content Include="congelacionesAfil.aspx" />
     <Content Include="controles\footer.ascx" />
@@ -869,6 +870,13 @@
     </Compile>
     <Compile Include="cesantias.aspx.designer.cs">
       <DependentUpon>cesantias.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ciudades.aspx.cs">
+      <DependentUpon>ciudades.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ciudades.aspx.designer.cs">
+      <DependentUpon>ciudades.aspx</DependentUpon>
     </Compile>
     <Compile Include="clasesglobales.cs" />
     <Compile Include="congelaciones.aspx.cs">

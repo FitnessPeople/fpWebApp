@@ -122,7 +122,7 @@
                     <li id="cajas" class="old"><a href="cajas"><i class="fa fa-piggy-bank"></i>Cajas de compensación</a></li>
                     <li id="arl" class="old"><a href="arl"><i class="fa fa-person-falling-burst"></i>ARL's</a></li>
                     <li id="cesantias" class="old"><a href="cesantias"><i class="fa fa-hand-holding-dollar"></i>Fondos de cesantías</a></li>
-                    <li id="ciudades" class="old"><a href="#">Ciudades</a></li>
+                    <li id="ciudades" class="old"><a href="ciudades"><i class="fa fa-city"></i>Ciudades</a></li>
                     <li id="ciudadessedes" class="old"><a href="#">Ciudades sedes</a></li>
                     <li id="tiposdocumento" class="old"><a href="#">Tipos de documento</a></li>
                     <li id="genero" class="old"><a href="#">Género</a></li>
