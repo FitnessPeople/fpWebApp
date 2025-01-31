@@ -285,10 +285,10 @@ namespace fpWebApp
                         if (dt.Rows.Count > 0)
                         {
                             ltMensaje.Text = "<div class=\"ibox-content\">" +
-                            "<div class=\"alert alert-danger alert-dismissable\">" +
-                            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                            "Este afiliado ya tiene un plan activo, hasta " + dt.Rows[0]["FechaFinalPlan"].ToString() +
-                            "</div></div>";
+                                "<div class=\"alert alert-danger alert-dismissable\">" +
+                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                "Este afiliado ya tiene un plan activo, hasta " + dt.Rows[0]["FechaFinalPlan"].ToString() +
+                                "</div></div>";
                         }
                         else
                         {
@@ -312,7 +312,10 @@ namespace fpWebApp
                             }
                             catch (Exception ex)
                             {
-                                ltMensaje.Text = ex.Message.ToString();
+                                ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                "<div class=\"alert alert-danger alert-dismissable\">" +
+                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message.ToString() +
+                                "</div></div>";
                                 throw;
                             }
                         }
