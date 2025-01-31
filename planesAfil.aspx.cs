@@ -260,7 +260,7 @@ namespace fpWebApp
             btnMes12.Enabled = true;
         }
 
-        protected void zbtnAgregarPlan_Click(object sender, EventArgs e)
+        protected void btnAgregarPlan_Click(object sender, EventArgs e)
         {
             if (ltEstado.Text.ToString() != "Activo")
             {

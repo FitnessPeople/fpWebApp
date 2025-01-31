@@ -211,7 +211,7 @@
                                                     <div class="col-sm-12">
                                                         <label>Resumen:</label>
                                                         <div class="form-group">
-                                                            <div class="panel panel-danger" runat="server" id="divRegalo" visible="true">
+                                                            <div class="panel panel-info" runat="server" id="divRegalo" visible="true">
                                                                 <div class="panel-heading">
                                                                     <i class="fa fa-gift"></i>
                                                                     <asp:Literal ID="ltTituloRegalo" runat="server"></asp:Literal>

@@ -41,14 +41,14 @@
     </script>
 </head>
 
-<body onload="changeClass()" class="fixed-sidebar no-skin-config full-height-layout">
+<body onload="changeClass()">
     <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                     <i class="fa fa-person-chalkboard modal-icon"></i>
-                    <h4 class="modal-title">Guía para modificar el blog de la pagina web</h4>
+                    <h4 class="modal-title">Guía para modificar el blog de la página web</h4>
                     <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
                 </div>
                 <div class="modal-body">
@@ -108,10 +108,8 @@
                 </div>
                 <%--Fin Breadcrumb!!!--%>
             </div>
-            <div class="fh-breadcrumb">
-                <div class="full-height">
-                    <div class="full-height-scroll border-left">
-                        <div class="element-detail-box">
+            <div class="wrapper wrapper-content animated fadeInRight">
+                <div class="row animated fadeInDown">
                             <%--Inicio Contenido!!!!--%>
 
                             <uc1:indicadores01 runat="server" ID="indicadores01" />
@@ -257,11 +255,7 @@
                             </div>
 
                             <%--Fin Contenido!!!!--%>
-                        </div>
-
-                    </div>
                 </div>
-
             </div>
 
             <uc1:footer runat="server" ID="footer" />
