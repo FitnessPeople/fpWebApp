@@ -108,6 +108,7 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
+            //ddlCiudadAfiliado.DataTextField = 
             ddlCiudadAfiliado.DataSource = dt;
             ddlCiudadAfiliado.DataBind();
 
