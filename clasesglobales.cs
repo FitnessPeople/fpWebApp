@@ -45,7 +45,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public DataTable cargarPlanesAfiliado(string idAfiliado, string estado)
+        public DataTable cargarPlanesAfiliado(string idAfiliado)
         {
             DataTable dt = new DataTable();
 
@@ -116,7 +116,7 @@ namespace fpWebApp
                 string strQuery = "INSERT INTO logs " +
                     "(idUsuario, FechaHora, Tabla, Accion, DatosAnteriores, DatosNuevos, DescripcionLog) " +
                     "VALUES (" + idUsuario + ", now(), '" + tabla + "', '" + accion + "', '" + datosAnteriores + "', '" + datosNuevos + "', '" + descripcion + "') ";
-                    //"VALUES (" + idUsuario + ", DATE_SUB(NOW(), INTERVAL 5 HOUR), '" + tabla + "', '" + accion + "', '" + datosAnteriores + "', '" + datosNuevos + "', '" + descripcion + "') ";
+                //"VALUES (" + idUsuario + ", DATE_SUB(NOW(), INTERVAL 5 HOUR), '" + tabla + "', '" + accion + "', '" + datosAnteriores + "', '" + datosNuevos + "', '" + descripcion + "') ";
                 OdbcCommand command = new OdbcCommand(strQuery, myConnection);
                 myConnection.Open();
                 command.ExecuteNonQuery();
