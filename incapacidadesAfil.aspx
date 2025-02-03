@@ -184,8 +184,7 @@
                                                                 <li>
                                                                     <small class="label label-primary pull-right"><%# Eval("DiasQueFaltan") %> días disponibles</small>
                                                                     <label>
-                                                                        <input type="radio" value="<%# Eval("idPlan") %>" name="planes">
-                                                                        <i></i><%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
+                                                                        <%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
                                                                     </label>
                                                                     <br />
                                                                     <div class="progress progress-striped active">
