@@ -928,7 +928,6 @@
     <Compile Include="congelacionesAfil.aspx.designer.cs">
       <DependentUpon>congelacionesAfil.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Conn\ConexionDB.cs" />
     <Compile Include="controles\footer.ascx.cs">
       <DependentUpon>footer.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -1,5 +1,4 @@
-﻿using fpWebApp.Conn;
-using System;
+﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,7 +15,7 @@ namespace fpWebApp
 {
     public partial class ciudades : System.Web.UI.Page
     {
-        ConexionDB conn = new ConexionDB();
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -59,8 +58,9 @@ namespace fpWebApp
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
+                            clasesglobales cg = new clasesglobales();
                             DataTable dt = new DataTable();
-                            dt = conn.ConsultarCiudadesPorId(int.Parse(Request.QueryString["editid"].ToString()));
+                            dt = cg.ConsultarCiudadesPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             //string strQuery = "SELECT idCiudad, NombreCiudad FROM ciudades WHERE idCiudad = " + Request.QueryString["editid"].ToString();
                             //clasesglobales cg = new clasesglobales();
                             //DataTable dt = cg.TraerDatos(strQuery);
@@ -74,7 +74,8 @@ namespace fpWebApp
                         if (Request.QueryString["deleteid"] != null)
                         {
                             DataTable dt1 = new DataTable();
-                            dt1 = conn.ConsultarCiudadesPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                            clasesglobales cg = new clasesglobales();
+                            dt1 = cg.ConsultarCiudadesPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
 
                             if (dt1.Rows.Count > 0)
                             {
@@ -86,7 +87,7 @@ namespace fpWebApp
 
 
                                 DataTable dt = new DataTable();
-                                dt = conn.ConsultarCiudadesPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt = cg.ConsultarCiudadesPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt.Rows.Count > 0)
                                 {
                                     txbCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
@@ -100,7 +101,7 @@ namespace fpWebApp
                             {
                                 //Borrar
                                 DataTable dt = new DataTable();
-                                dt = conn.ConsultarCiudadesPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt = cg.ConsultarCiudadesPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 //strQuery = "SELECT * FROM ciudades WHERE idCiudad = " + Request.QueryString["deleteid"].ToString();
                                 //clasesglobales cg = new clasesglobales();
                                 //DataTable dt = cg.TraerDatos(strQuery);
@@ -126,7 +127,8 @@ namespace fpWebApp
         {
             bool bExiste = false;
             DataTable dt = new DataTable();
-            dt = conn.ConsultarCiudadesPorNombre(strNombre);
+            clasesglobales cg = new clasesglobales();
+            dt = cg.ConsultarCiudadesPorNombre(strNombre);
             //string strQuery = "SELECT * FROM ciudades WHERE NombreCiudad = '" + strNombre.Trim() + "' ";
             //clasesglobales cg = new clasesglobales();
             //DataTable dt = cg.TraerDatos(strQuery);
@@ -173,7 +175,8 @@ namespace fpWebApp
         {
             
             DataTable dt = new DataTable();
-            dt =conn.consultarCiudades();
+            clasesglobales cg = new clasesglobales();
+            dt =cg.consultarCiudades();
             //string strQuery = "SELECT idCiudad, CodigoCiudad, NombreCiudad as 'ciudad', CodigoEstado, NombreEstado as 'departamento'  FROM ciudades WHERE CodigoPais = 'Co' ORDER BY NombreCiudad, NombreEstado; ";
             //clasesglobales cg = new clasesglobales();
             //DataTable dt = cg.TraerDatos(strQuery);
@@ -220,8 +223,8 @@ namespace fpWebApp
                     //command1.ExecuteNonQuery();
                     //command1.Dispose();
                     //myConnection.Close();
-
-                    string respuesta = conn.ActualizarCiudad(int.Parse(Request.QueryString["editid"].ToString()), txbCiudad.Text.ToString().Trim());
+                    clasesglobales cg = new clasesglobales();
+                    string respuesta = cg.ActualizarCiudad(int.Parse(Request.QueryString["editid"].ToString()), txbCiudad.Text.ToString().Trim());
 
                     Response.Redirect("ciudades");
                 }
