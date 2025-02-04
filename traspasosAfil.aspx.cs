@@ -131,19 +131,22 @@ namespace fpWebApp
 
         private void CargarPlanesAfiliado()
         {
-            string strQuery = "SELECT *, " +
-                "DATEDIFF(FechaFinalPlan, CURDATE()) AS diasquefaltan, " +
-                "DATEDIFF(CURDATE(), FechaInicioPlan) AS diasconsumidos, " +
-                "DATEDIFF(FechaFinalPlan, FechaInicioPlan) AS diastotales, " +
-                "ROUND(DATEDIFF(CURDATE(), FechaInicioPlan) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje1, " +
-                "ROUND(DATEDIFF(FechaFinalPlan, CURDATE()) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje2 " +
-                "FROM afiliadosPlanes ap, Afiliados a, Planes p " +
-                "WHERE a.idAfiliado = " + Request.QueryString["id"].ToString() + " " +
-                "AND ap.idAfiliado = a.idAfiliado " +
-                "AND ap.idPlan = p.idPlan " +
-                "AND ap.EstadoPlan = 'Activo'";
+            //string strQuery = "SELECT *, " +
+            //    "DATEDIFF(FechaFinalPlan, CURDATE()) AS diasquefaltan, " +
+            //    "DATEDIFF(CURDATE(), FechaInicioPlan) AS diasconsumidos, " +
+            //    "DATEDIFF(FechaFinalPlan, FechaInicioPlan) AS diastotales, " +
+            //    "ROUND(DATEDIFF(CURDATE(), FechaInicioPlan) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje1, " +
+            //    "ROUND(DATEDIFF(FechaFinalPlan, CURDATE()) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje2 " +
+            //    "FROM afiliadosPlanes ap, Afiliados a, Planes p " +
+            //    "WHERE a.idAfiliado = " + Request.QueryString["id"].ToString() + " " +
+            //    "AND ap.idAfiliado = a.idAfiliado " +
+            //    "AND ap.idPlan = p.idPlan " +
+            //    "AND ap.EstadoPlan = 'Activo'";
+            //clasesglobales cg = new clasesglobales();
+            //DataTable dt = cg.TraerDatos(strQuery);
+
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.cargarPlanesAfiliado(Request.QueryString["id"].ToString(), "Activo");
 
             if (dt.Rows.Count > 0)
             {

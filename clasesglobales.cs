@@ -173,6 +173,40 @@ namespace fpWebApp
             return dt;
         }
 
+        public DataTable validarPermisos(string strPagina, string idPerfil, string idUsuario)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                    using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                    {
+                        using (MySqlCommand cmd = new MySqlCommand("Pa_VALIDAR_PERMISOS", mysqlConexion))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@p_pagina", strPagina);
+                            cmd.Parameters.AddWithValue("@p_id_perfil", Convert.ToInt32(idPerfil));
+                            cmd.Parameters.AddWithValue("@p_id_usuario", Convert.ToInt32(idUsuario));
+
+                            using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                            {
+                                mysqlConexion.Open();
+                                dataAdapter.Fill(dt);
+                            }
+                        }
+                    }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
         public DataTable TraerDatos(string strQuery)
         {
             DataTable dt = new DataTable();

@@ -1,9 +1,11 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Odbc;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -30,10 +32,10 @@ namespace fpWebApp
                     {
                         //Si tiene acceso a esta página
                         btnAgregar.Visible = false;
-                        upPerfiles.Visible = false;
+                        //upPerfiles.Visible = false;
                         if (ViewState["Consulta"].ToString() == "1")
                         {
-                            upPerfiles.Visible = true;
+                            //upPerfiles.Visible = true;
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
@@ -468,21 +470,37 @@ namespace fpWebApp
                         break;
                 }
 
-                OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
-                try
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
-                    OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                    myConnection.Open();
-                    command.ExecuteNonQuery();
-                    command.Dispose();
-                    myConnection.Close();
+                    using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.Text;
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
                 }
-                catch (OdbcException ex)
-                {
-                    string mensaje = ex.Message;
-                    myConnection.Close();
-                    Response.Redirect("perfiles");
-                }
+
+                //OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
+                //try
+                //{
+                //    OdbcCommand command = new OdbcCommand(strQuery, myConnection);
+                //    myConnection.Open();
+                //    command.ExecuteNonQuery();
+                //    command.Dispose();
+                //    myConnection.Close();
+                //}
+                //catch (OdbcException ex)
+                //{
+                //    string mensaje = ex.Message;
+                //    myConnection.Close();
+                //    Response.Redirect("perfiles");
+                //}
             }
 
             dt.Dispose();

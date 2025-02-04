@@ -342,7 +342,7 @@
         var hfieldDias = document.getElementById("hfDias");
 
         $("#ionrange_2").ionRangeSlider({
-            min: 0,
+            min: 1,
             max: 10,
             type: 'single',
             step: 1,

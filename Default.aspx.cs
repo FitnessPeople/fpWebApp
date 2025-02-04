@@ -35,7 +35,7 @@ namespace fpWebApp
 
             if (dt.Rows.Count > 0)
             {
-                Session["idusuario"] = dt.Rows[0]["idUsuario"].ToString();
+                Session["idUsuario"] = dt.Rows[0]["idUsuario"].ToString();
                 Session["NombreUsuario"] = dt.Rows[0]["NombreUsuario"].ToString();
                 Session["idEmpresa"] = dt.Rows[0]["idEmpresa"].ToString();
                 Session["Cargo"] = dt.Rows[0]["CargoUsuario"].ToString();
