@@ -141,6 +141,68 @@ namespace fpWebApp
             return respuesta;
         }
 
+        public string EliminarCiudad(int idCiudad)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ELIMINAR_CIUDAD", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_ciudad", idCiudad);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string InsertarCiudad(string nombreCiudad, string codigoCiudad, string nombreEstado, string codigoEstado, string nombrePais, string CodigoPais)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_CIUDAD", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_nombre_ciudad", nombreCiudad);
+                        cmd.Parameters.AddWithValue("@p_codigo_ciudad", codigoCiudad);
+                        cmd.Parameters.AddWithValue("@p_nombre_estado", nombreEstado);
+                        cmd.Parameters.AddWithValue("@p_codigo_estado", codigoEstado);
+                        cmd.Parameters.AddWithValue("@p_nombre_pais", nombrePais);
+                        cmd.Parameters.AddWithValue("@p_codigo_pais", CodigoPais);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+
         public DataTable cargarPlanesAfiliado(string idAfiliado, string estado)
         {
             DataTable dt = new DataTable();

@@ -152,9 +152,6 @@
                                                 <div class="form-group">
                                                     <label>Nombre de la ARL:</label>
                                                     <asp:TextBox ID="txbArl" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="rfvArl" runat="server" 
-                                                        ErrorMessage="* Campo requerido" ControlToValidate="txbArl" 
-                                                        CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group">
                                                     <a href="arl" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
