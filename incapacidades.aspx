@@ -329,7 +329,7 @@
         console.log(hfieldDiasAfiliado.value);
 
         $("#ionrange_2").ionRangeSlider({
-            min: 0,
+            min: 1,
             max: hfieldDiasAfiliado.value,
             type: 'single',
             step: 1,

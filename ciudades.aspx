@@ -25,7 +25,8 @@
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
+    <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
+    <link href="css/plugins/footable/footable.standalone.min.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -195,11 +196,12 @@
                                             </div>
                                         </div>
 
-                                        <table class="footable table" data-page-size="10" data-filter="#filter" data-filter-minimum="3">
+                                        <table class="footable table" data-filter="#filter" data-paging-size="5" data-filtering="true" 
+                                            data-filter-minimum="3" data-paging-limit="9" data-paging="true" data-sorting="true" >
                                             <thead>
                                                 <tr>
                                                     <th width="80%" data-sort-initial="true">Ciudades</th>
-                                                    <th data-sort-ignore="true" data-toggle="false" class="text-right">Acciones</th>
+                                                    <th data-sortable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -221,13 +223,13 @@
                                                     </ItemTemplate>
                                                 </asp:Repeater>
                                             </tbody>
-                                            <tfoot>
+                                            <%--<tfoot>
                                                 <tr>
                                                     <td colspan="7">
                                                         <ul class="pagination"></ul>
                                                     </td>
                                                 </tr>
-                                            </tfoot>
+                                            </tfoot>--%>
                                         </table>
 
                                     </div>
@@ -252,7 +254,8 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
-    <script src="js/plugins/footable/footable.all.min.js"></script>
+    <%--<script src="js/plugins/footable/footable.all.min.js"></script>--%>
+    <script src="js/plugins/footable/footable.min.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
@@ -274,13 +277,35 @@
             });
         });
 
-        $('.footable').footable();
+        $('.footable').footable({
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando START a END de TOTAL Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de MAX total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar MENU Entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "Search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
 
         $('.data-page-size').on('click', function (e) {
             e.preventDefault();
             var newSize = $(this).data('pageSize');
-            $('.footable').data('page-size', newSize);
-            $('.footable').trigger('footable_initialized');
+            //$('.footable').data('page-size', newSize);
+            //$('.footable').trigger('footable_initialized');
+            $('.footable').get('#foot').pageSize(newSize);
         });
 
         $('.toggle').click(function (e) {
