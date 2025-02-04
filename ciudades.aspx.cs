@@ -61,9 +61,6 @@ namespace fpWebApp
                             clasesglobales cg = new clasesglobales();
                             DataTable dt = new DataTable();
                             dt = cg.ConsultarCiudadesPorId(int.Parse(Request.QueryString["editid"].ToString()));
-                            //string strQuery = "SELECT idCiudad, NombreCiudad FROM ciudades WHERE idCiudad = " + Request.QueryString["editid"].ToString();
-                            //clasesglobales cg = new clasesglobales();
-                            //DataTable dt = cg.TraerDatos(strQuery);
                             if (dt.Rows.Count > 0)
                             {
                                 txbCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
@@ -76,7 +73,6 @@ namespace fpWebApp
                             DataTable dt1 = new DataTable();
                             clasesglobales cg = new clasesglobales();
                             dt1 = cg.ConsultarCiudadesPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
-
                             if (dt1.Rows.Count > 0)
                             {
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +
@@ -102,9 +98,6 @@ namespace fpWebApp
                                 //Borrar
                                 DataTable dt = new DataTable();
                                 dt = cg.ConsultarCiudadesPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
-                                //strQuery = "SELECT * FROM ciudades WHERE idCiudad = " + Request.QueryString["deleteid"].ToString();
-                                //clasesglobales cg = new clasesglobales();
-                                //DataTable dt = cg.TraerDatos(strQuery);
                                 if (dt.Rows.Count > 0)
                                 {
                                     txbCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
@@ -129,10 +122,6 @@ namespace fpWebApp
             DataTable dt = new DataTable();
             clasesglobales cg = new clasesglobales();
             dt = cg.ConsultarCiudadesPorNombre(strNombre);
-            //string strQuery = "SELECT * FROM ciudades WHERE NombreCiudad = '" + strNombre.Trim() + "' ";
-            //clasesglobales cg = new clasesglobales();
-            //DataTable dt = cg.TraerDatos(strQuery);
-
             if (dt.Rows.Count > 0)
             {
                 bExiste = true;
@@ -177,13 +166,8 @@ namespace fpWebApp
             DataTable dt = new DataTable();
             clasesglobales cg = new clasesglobales();
             dt =cg.consultarCiudades();
-            //string strQuery = "SELECT idCiudad, CodigoCiudad, NombreCiudad as 'ciudad', CodigoEstado, NombreEstado as 'departamento'  FROM ciudades WHERE CodigoPais = 'Co' ORDER BY NombreCiudad, NombreEstado; ";
-            //clasesglobales cg = new clasesglobales();
-            //DataTable dt = cg.TraerDatos(strQuery);
-
             rpEps.DataSource = dt;
             rpEps.DataBind();
-
             dt.Dispose();
         }
 
@@ -209,36 +193,26 @@ namespace fpWebApp
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
+            clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    //myConnection.Open();
-                    //StringBuilder sql = new StringBuilder();
-                    //sql.Append("UPDATE fitnesspeople.ciudades SET ");
-                    //sql.Append("NombreCiudad = '" + txbCiudad.Text.ToString().Trim() + "' ");
-                    //sql.Append("WHERE idCiudad = " + Request.QueryString["editid"].ToString());
-                    //string strQuery = sql.ToString();        
-                    //OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                    //command1.ExecuteNonQuery();
-                    //command1.Dispose();
-                    //myConnection.Close();
-                    clasesglobales cg = new clasesglobales();
+                    
                     string respuesta = cg.ActualizarCiudad(int.Parse(Request.QueryString["editid"].ToString()), txbCiudad.Text.ToString().Trim());
-
                     Response.Redirect("ciudades");
                 }
 
                 if (Request.QueryString["deleteid"] != null)
                 {
-                    myConnection.Open();
-                    string strQuery = "DELETE FROM ciudades " +
-                        "WHERE idCiudad = " + Request.QueryString["¨deleteid"].ToString();
-                    OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                    command1.ExecuteNonQuery();
-                    command1.Dispose();
-                    myConnection.Close();
-
+                    string respuesta = cg.EliminarCiudad(int.Parse(Request.QueryString["¨deleteid"].ToString()));
+                    //myConnection.Open();
+                    //string strQuery = "DELETE FROM ciudades " +
+                    //    "WHERE idCiudad = " + Request.QueryString["¨deleteid"].ToString();
+                    //OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
+                    //command1.ExecuteNonQuery();
+                    //command1.Dispose();
+                    //myConnection.Close();
                     Response.Redirect("ciudades");
                 }
             }
@@ -248,22 +222,23 @@ namespace fpWebApp
                 {
                     try
                     {
+                        string respuesta = cg.InsertarCiudad(txbCiudad.Text.ToString().Trim(),"","","","","");
                         myConnection.Open();
 
-                        StringBuilder sql = new StringBuilder();
-                        sql.Append("INSERT INTO fitnesspeople.ciudades (");
-                        sql.Append("NombreCiudad, CodigoCiudad, NombreEstado, ");
-                        sql.Append("CodigoEstado, NombrePais, CodigoPais)");
-                        sql.Append(" VALUES (");
-                        sql.Append("'" + txbCiudad.Text.ToString().Trim() + "', '0013', 'Departamento', ");
-                        sql.Append(" 'CodigoDepartamento', 'Colombia', 'Co');");
+                        //StringBuilder sql = new StringBuilder();
+                        //sql.Append("INSERT INTO fitnesspeople.ciudades (");
+                        //sql.Append("NombreCiudad, CodigoCiudad, NombreEstado, ");
+                        //sql.Append("CodigoEstado, NombrePais, CodigoPais)");
+                        //sql.Append(" VALUES (");
+                        //sql.Append("'" + txbCiudad.Text.ToString().Trim() + "', '0013', 'Departamento', ");
+                        //sql.Append(" 'CodigoDepartamento', 'Colombia', 'Co');");
 
-                        string strQuery = sql.ToString();
+                        //string strQuery = sql.ToString();
 
-                        OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                        command1.ExecuteNonQuery();
-                        command1.Dispose();
-                        myConnection.Close();
+                        //OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
+                        //command1.ExecuteNonQuery();
+                        //command1.Dispose();
+                        //myConnection.Close();
 
                         Response.Redirect("ciudades");
 

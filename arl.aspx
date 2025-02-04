@@ -27,7 +27,8 @@
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
+    <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -132,7 +133,7 @@
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                    <form role="form" id="form" runat="server">
+                    <form id="form1" runat="server">
                         <div class="row" id="divContenido" runat="server">
                             <div class="col-lg-4">
                                 <div class="ibox float-e-margins">
@@ -151,10 +152,15 @@
                                                 <div class="form-group">
                                                     <label>Nombre de la ARL:</label>
                                                     <asp:TextBox ID="txbArl" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="rfvArl" runat="server" 
+                                                        ErrorMessage="* Campo requerido" ControlToValidate="txbArl" 
+                                                        CssClass="text-danger" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group">
                                                     <a href="arl" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar" CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" OnClick="btnAgregar_Click" Visible="false" />
+                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar" 
+                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" 
+                                                        OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
                                                 </div>
                                                 <br />
                                                 <br />
@@ -179,34 +185,42 @@
                                     <div class="ibox-content">
 
                                         <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
-                                            <div class="col-lg-5 form-horizontal">
-                                                <div class="form-group">
-                                                    <label class="col-lg-4 control-label" style="text-align: left;">Buscador:</label>
+                                            <div class="col-lg-6 form-horizontal">
+                                                <div class="form-group" id="filter-form-container" style="margin-left: 15px;">
+                                                    <%--<label class="col-lg-4 control-label" style="text-align: left;">Buscador:</label>
                                                     <div class="col-lg-8">
                                                         <input type="text" placeholder="Buscar..." class="form-control input-sm m-b-xs" id="filter">
-                                                    </div>
+                                                    </div>--%>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-5 form-horizontal" style="text-align: center;">
+                                            <%--<div class="col-lg-5 form-horizontal" style="text-align: center;">
                                                 <label class="control-label">Mostrar </label>
 
                                                 <a href="#" class="data-page-size" data-page-size="10">10</a> | 
                                                 <a href="#" class="data-page-size" data-page-size="20">20</a>
 
                                                 <label class="control-label">registros</label>
-                                            </div>
-                                            <div class="col-lg-2 form-horizontal">
-                                                <a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
+                                            </div>--%>
+                                            <div class="col-lg-6 form-horizontal">
+                                                <%--<a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
                                                     target="_blank" runat="server" id="btnImprimir" 
-                                                    href="imprimirarl" title="Imprimir"><i class="fa fa-print"></i> IMPRIMIR</a>
+                                                    href="imprimirarl" title="Imprimir"><i class="fa fa-print"></i> IMPRIMIR</a>--%>
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" 
+                                                    CausesValidation="false" 
+                                                    CssClass="excelexport btn btn-info pull-right dim m-l-md" style="font-size: 12px;">
+                                                    <i class="fa fa-file-excel"></i> EXCEL
+                                                </asp:LinkButton>
                                             </div>
                                         </div>
 
-                                        <table class="footable table" data-page-size="10" data-filter="#filter" data-filter-minimum="3">
+                                        <table class="footable table table-striped" data-paging-size="10" data-filter-min="3" data-filter-placeholder="Buscar" 
+                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10" 
+                                            data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300" 
+                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left">
                                             <thead>
                                                 <tr>
-                                                    <th width="80%" data-sort-initial="true">ARL</th>
-                                                    <th data-sort-ignore="true" data-toggle="false" class="text-right">Acciones</th>
+                                                    <th width="80%">ARL</th>
+                                                    <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -228,13 +242,13 @@
                                                     </ItemTemplate>
                                                 </asp:Repeater>
                                             </tbody>
-                                            <tfoot>
+                                            <%--<tfoot>
                                                 <tr>
                                                     <td colspan="7">
                                                         <ul class="pagination"></ul>
                                                     </td>
                                                 </tr>
-                                            </tfoot>
+                                            </tfoot>--%>
                                         </table>
                                     </div>
                                 </div>
@@ -256,26 +270,35 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
-    <script src="js/plugins/footable/footable.all.min.js"></script>
+    <%--<script src="js/plugins/footable/footable.all.min.js"></script>--%>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
-    <!-- Jquery Validate -->
-    <script src="js/plugins/validate/jquery.validate.min.js"></script>
-
     <!-- Page-Level Scripts -->
     <script>
-        $(document).ready(function () {
-            $("#form").validate({
-                rules: {
-                    txbArl: {
-                        required: true,
-                        minlength: 3
-                    },
-                }
+        $(".excelexport").on("click", function (e) {
+            var filename = "arls.csv";
+            var csv = FooTable.get('.footable').toCSV();
+            var blob = new Blob([csv], {
+                type: "application/csv;charset=utf-8;"
             });
+            if (window.navigator.msSaveBlob) {
+                // FOR IE BROWSER
+                navigator.msSaveBlob(blob, filename);
+            } else {
+                // FOR OTHER BROWSERS
+                var link = document.createElement("a");
+                var csvUrl = URL.createObjectURL(blob);
+                link.href = csvUrl;
+                link.style = "visibility:hidden";
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
         });
 
         $('.footable').footable();
