@@ -22,7 +22,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
 
     <!-- Morris -->
     <link href="css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
@@ -181,25 +181,27 @@
                                 </div>
                             </div>--%>
 
-                            <table class="footable table toggle-arrow-small list-group-item-text" data-page-size="10">
+                            <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
+                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" 
+                                data-paging-limit="10" data-empty="Sin resultados" 
+                                data-toggle-column="first" data-use-parent-width="true">
                                 <thead>
                                     <tr>
                                         <%--<th data-sort-ignore="true">ID</th>--%>
-                                        <th data-sort-ignore="true">Documento</th>
-                                        <th data-sort-ignore="true">Nombre</th>
-                                        <th data-hide="phone,tablet">Télefono</th>
-                                        <th data-hide="phone,tablet">Correo</th>
-                                        <th data-type="numeric" data-hide="phone,tablet">Fecha nacimiento</th>
-                                        <th class="text-nowrap">Estado</th>
-                                        <th data-hide="all"></th>
-                                        <th data-sort-ignore="true" data-toggle="false" class="text-right"
-                                            style="display: flex; flex-wrap: nowrap; width: 100%;">Acciones</th>
+                                        <th data-sortable="false">Documento</th>
+                                        <th data-sortable="false">Nombre</th>
+                                        <th data-breakpoints="xs sm md">Télefono</th>
+                                        <th data-breakpoints="xs sm md">Correo</th>
+                                        <th data-type="date" data-breakpoints="xs sm md">Fecha nacimiento</th>
+                                        <%--<th class="text-nowrap">Estado</th>--%>
+                                        <th data-breakpoints="all" data-title="Titulo"></th>
+                                        <th data-sortable="false" class="text-right" width="250px">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <asp:Repeater ID="rpAfiliados" runat="server" OnItemDataBound="rpAfiliados_ItemDataBound">
                                         <ItemTemplate>
-                                            <tr class="feed-element">
+                                            <tr>
                                                 <%--<td class="text-nowrap"><b>ID:</b> <%# Eval("idAfiliado") %></td>--%>
                                                 <td><a href="detalleafiliado?top-search=<%# Eval("DocumentoAfiliado") %>"><%# Eval("DocumentoAfiliado") %></a></td>
                                                 <%--<td><%# Eval("DocumentoAfiliado") %></td>--%>
@@ -208,7 +210,7 @@
                                                 <td><i class="fa fa-envelope m-r-xs font-bold"></i><%# Eval("EmailAfiliado") %></td>
                                                 <td><i class="fa fa-cake m-r-xs font-bold"></i><span class="text-<%# Eval("badge") %> font-bold"><%# Eval("FechaNacAfiliado", "{0:dd MMM yyyy}") %> <%# Eval("edad") %> <i class="fa fa-<%# Eval("age") %>"></i></span></td>
                                                 <td><span class="badge badge-<%# Eval("badge2") %>"><%# Eval("EstadoAfiliado") %></span></td>
-                                                <td class="table-bordered">
+                                                <%--<td class="table-bordered">
                                                     <table class="table table-bordered">
                                                         <thead>
                                                             <tr>
@@ -255,8 +257,8 @@
                                                             </tr>
                                                         </tbody>
                                                     </table>
-                                                </td>
-                                                <td style="display: flex; flex-wrap: nowrap; width: 100%;">
+                                                </td>--%>
+                                                <td>
                                                     <button runat="server" id="btnEditar" class="btn btn-outline btn-primary pull-left m-r-xs"
                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"
                                                         title="Editar afiliado">
@@ -332,7 +334,7 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
-    <script src="js/plugins/footable/footable.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
     <!-- Peity -->
     <script src="js/plugins/peity/jquery.peity.min.js"></script>
