@@ -55,9 +55,10 @@ namespace fpWebApp
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
-                            string strQuery = "SELECT * FROM Paginas WHERE idPagina = " + Request.QueryString["editid"].ToString();
+                            //string strQuery = "SELECT * FROM Paginas WHERE idPagina = " + Request.QueryString["editid"].ToString();
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.TraerDatos(strQuery);
+                            //DataTable dt = cg.TraerDatos(strQuery);
+                            DataTable dt = cg.ConsultarPaginaPorId(Convert.ToInt32(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
                                 txbPagina.Text = dt.Rows[0]["Pagina"].ToString();
@@ -88,15 +89,17 @@ namespace fpWebApp
             ViewState["CrearModificar"] = "0";
             ViewState["Borrar"] = "0";
 
-            string strQuery = "SELECT SinPermiso, Consulta, Exportar, CrearModificar, Borrar " +
-                "FROM permisos_perfiles pp, paginas p, usuarios u " +
-                "WHERE pp.idPagina = p.idPagina " +
-                "AND p.Pagina = '" + strPagina + "' " +
-                "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
-                "AND u.idPerfil = pp.idPerfil " +
-                "AND u.idUsuario = " + Session["idusuario"].ToString();
+            //string strQuery = "SELECT SinPermiso, Consulta, Exportar, CrearModificar, Borrar " +
+            //    "FROM permisos_perfiles pp, paginas p, usuarios u " +
+            //    "WHERE pp.idPagina = p.idPagina " +
+            //    "AND p.Pagina = '" + strPagina + "' " +
+            //    "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
+            //    "AND u.idPerfil = pp.idPerfil " +
+            //    "AND u.idUsuario = " + Session["idusuario"].ToString();
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            
+            //DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarPermisosPerfiles(strPagina,Convert.ToInt32(Session["idPerfil"].ToString()), Convert.ToInt32(Session["idusuario"].ToString()));
 
             if (dt.Rows.Count > 0)
             {
@@ -112,9 +115,10 @@ namespace fpWebApp
 
         private void listaPaginas()
         {
-            string strQuery = "SELECT * FROM Paginas WHERE idPagina <> 1";
+            //string strQuery = "SELECT * FROM Paginas WHERE idPagina <> 1";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+           // DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.consultarPaginas();
 
             rpPaginas.DataSource = dt;
             rpPaginas.DataBind();
@@ -124,11 +128,12 @@ namespace fpWebApp
 
         private bool ValidarPagina(string strNombre)
         {
-            bool bExiste = false;
-
-            string strQuery = "SELECT * FROM Paginas WHERE pagina = '" + strNombre.Trim() + "' ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            bool bExiste = false;
+            //string strQuery = "SELECT * FROM Paginas WHERE pagina = '" + strNombre.Trim() + "' ";
+            //clasesglobales cg = new clasesglobales();
+            ////DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarPaginaPorNombre(strNombre.Trim());
 
             if (dt.Rows.Count > 0)
             {
@@ -145,16 +150,19 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    string strPagina = txbPagina.Text.ToString().Replace("'", "");
-                    myConnection.Open();
-                    string strQuery = "UPDATE Paginas " +
-                        "SET Pagina = '" + strPagina + "', " +
-                        "Categoria = '" + ddlCategorias.SelectedItem.Value.ToString() + "' " +
-                        "WHERE idPagina = " + Request.QueryString["editid"].ToString();
-                    OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                    command1.ExecuteNonQuery();
-                    command1.Dispose();
-                    myConnection.Close();
+                    clasesglobales cg = new clasesglobales();
+                    string rta =  cg.ActualizarPagina(txbPagina.Text.ToString().Replace("'", ""),  ddlCategorias.SelectedItem.Value.ToString(),Convert.ToInt32( Request.QueryString["editid"].ToString()));
+
+                    //string strPagina = txbPagina.Text.ToString().Replace("'", "");
+                    //myConnection.Open();
+                    //string strQuery = "UPDATE Paginas " +
+                    //    "SET Pagina = '" + strPagina + "', " +
+                    //    "Categoria = '" + ddlCategorias.SelectedItem.Value.ToString() + "' " +
+                    //    "WHERE idPagina = " + Request.QueryString["editid"].ToString();
+                    //OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
+                    //command1.ExecuteNonQuery();
+                    //command1.Dispose();
+                    //myConnection.Close();
 
                     Response.Redirect("paginas");
                 }
@@ -163,39 +171,44 @@ namespace fpWebApp
             {
                 if (!ValidarPagina(txbPagina.Text.ToString()))
                 {
-                    string strPagina = txbPagina.Text.ToString().Replace("'", "");
-                    myConnection.Open();
-                    string strQuery = "INSERT INTO Paginas " +
-                        "(Pagina, Categoria) VALUES ('" + strPagina + "', '" + ddlCategorias.SelectedItem.Value.ToString() + "') ";
-                    OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                    command1.ExecuteNonQuery();
-                    command1.Dispose();
-                    myConnection.Close();
-
-                    strQuery = "SELECT * FROM Paginas ORDER BY idPagina DESC LIMIT 1";
                     clasesglobales cg = new clasesglobales();
-                    DataTable dt1 = cg.TraerDatos(strQuery);
+
+                    string rta = cg.InsertarPagina(txbPagina.Text.ToString().Replace("'", ""), ddlCategorias.SelectedItem.Value.ToString());
+
+                    string strPagina = txbPagina.Text.ToString().Replace("'", "");
+                    //myConnection.Open();
+                    //string strQuery = "INSERT INTO Paginas " +
+                    //    "(Pagina, Categoria) VALUES ('" + strPagina + "', '" + ddlCategorias.SelectedItem.Value.ToString() + "') ";
+                    //OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
+                    //command1.ExecuteNonQuery();
+                    //command1.Dispose();
+                    //myConnection.Close();
+                    //strQuery = "SELECT * FROM Paginas ORDER BY idPagina DESC LIMIT 1";
+                    //clasesglobales cg = new clasesglobales();
+                    //DataTable dt1 = cg.TraerDatos(strQuery);
+                    DataTable dt1 = cg.ConsultarUltimaPagina();
                     string strId = dt1.Rows[0]["idPagina"].ToString();
                     dt1.Dispose();
 
-                    strQuery = "SELECT * FROM Perfiles";
-                    DataTable dt2 = cg.TraerDatos(strQuery);
-
+                    //strQuery = "SELECT * FROM Perfiles";
+                    //DataTable dt2 = cg.TraerDatos(strQuery);
+                    DataTable dt2 = cg.consultarPerfiles();
                     for (int i = 0; i < dt2.Rows.Count; i++)
                     {
                         try
                         {
-                            strQuery = "INSERT INTO Permisos_Perfiles (idPerfil, idPagina, SinPermiso, Consulta, Exportar, CrearModificar, Borrar) " +
-                                "VALUES ('" + dt2.Rows[i]["idPerfil"].ToString() + "', '" + strId + "', 1, 0, 0, 0, 0) ";
-                            OdbcCommand command2 = new OdbcCommand(strQuery, myConnection);
-                            myConnection.Open();
-                            command2.ExecuteNonQuery();
-                            command2.Dispose();
-                            myConnection.Close();
+                            //strQuery = "INSERT INTO Permisos_Perfiles (idPerfil, idPagina, SinPermiso, Consulta, Exportar, CrearModificar, Borrar) " +
+                            //    "VALUES ('" + dt2.Rows[i]["idPerfil"].ToString() + "', '" + strId + "', 1, 0, 0, 0, 0) ";
+                            //OdbcCommand command2 = new OdbcCommand(strQuery, myConnection);
+                            //myConnection.Open();
+                            //command2.ExecuteNonQuery();
+                            //command2.Dispose();
+                            //myConnection.Close();
+                            string respuesta = cg.InsertarPermisosPerfiles(Convert.ToInt32(dt2.Rows[i]["idPerfil"].ToString()), Convert.ToInt32(strId), 1, 0, 0, 0, 0);
                         }
                         catch (OdbcException ex)
                         {
-                            string mensaje = ex.Message;
+                            string respuesta = ex.Message;
                             myConnection.Close();
                         }
                     }
