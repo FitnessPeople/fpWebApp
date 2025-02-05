@@ -238,7 +238,7 @@ namespace fpWebApp
             //DataTable dt = cg.TraerDatos(strQuery);
 
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.cargarPlanesAfiliado(idAfiliado, "Activo");
+            DataTable dt = cg.CargarPlanesAfiliado(idAfiliado, "Activo");
 
             if (dt.Rows.Count > 0)
             {

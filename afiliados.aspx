@@ -22,7 +22,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
+    <%--<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />--%>
+    <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
 
     <!-- Morris -->
     <link href="css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
@@ -102,7 +103,7 @@
 
                             <div class="row">
                                 <form runat="server" id="form1">
-                                    <div class="col-lg-3 form-horizontal">
+                                    <div class="col-lg-4 form-horizontal">
                                         <div class="input-group">
                                             <input type="text" placeholder="Nombre / Cédula / Email / Móvil" class="input form-control input-sm" name="txbBuscar" id="txbBuscar" runat="server">
                                             <span class="input-group-btn">
@@ -111,7 +112,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-3 form-horizontal">
+                                    <div class="col-lg-4 form-horizontal">
                                         <div class="form-group">
                                         <label class="col-lg-2 control-label">Sede:</label>
                                         <div class="col-lg-10">
@@ -125,7 +126,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-3 form-horizontal" style="text-align: center;">
+                                    <%--<div class="col-lg-3 form-horizontal" style="text-align: center;">
                                         <label class="control-label">Mostrar </label>
 
                                         <a href="#" class="data-page-size" data-page-size="10">10</a> | 
@@ -134,9 +135,9 @@
                                             <a href="#" class="data-page-size" data-page-size="100">100</a>
 
                                         <label class="control-label">registros</label>
-                                    </div>
+                                    </div>--%>
 
-                                    <div class="col-lg-3 form-horizontal">
+                                    <div class="col-lg-4 form-horizontal">
                                         <label class="control-label">&nbsp;</label>
                                         <a class="btn btn-success pull-right dim m-l-md" 
                                             style="font-size: 12px;" 
@@ -155,9 +156,9 @@
                                             href="imprimirafiliados" 
                                             visible="false" 
                                             title="Exportar">
-                                                <i class="fa fa-print"></i> IMPRIMIR
+                                                <i class="fa fa-file-excel"></i> EXCEL
                                         </a>
-                                        <a data-trigger="footable_expand_all" 
+                                        <%--<a data-trigger="footable_expand_all" 
                                             style="font-size: 12px;" 
                                             class="toggle btn btn-primary pull-right dim" 
                                             href="#collapse" 
@@ -170,7 +171,7 @@
                                             href="#collapse" 
                                             title="Contraer todo">
                                                 <i class="fa fa-square-caret-up"></i> CONTRAER
-                                        </a>
+                                        </a>--%>
                                     </div>
                                 </form>
                             </div>
@@ -181,21 +182,21 @@
                                 </div>
                             </div>--%>
 
+                            <%--<table class="footable table toggle-arrow-small list-group-item-text" data-page-size="10">--%>
                             <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
-                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" 
-                                data-paging-limit="10" data-empty="Sin resultados" 
-                                data-toggle-column="first" data-use-parent-width="true">
+                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10" 
+                                data-empty="Sin resultados" data-toggle-column="first">
                                 <thead>
                                     <tr>
                                         <%--<th data-sort-ignore="true">ID</th>--%>
-                                        <th data-sortable="false">Documento</th>
-                                        <th data-sortable="false">Nombre</th>
-                                        <th data-breakpoints="xs sm md">Télefono</th>
+                                        <th data-sortable="false" data-breakpoints="xs" style="width: 110px;">Documento</th>
+                                        <th data-sortable="false" data-breakpoints="xs">Nombre</th>
+                                        <th data-breakpoints="xs sm md" style="width: 110px;">Télefono</th>
                                         <th data-breakpoints="xs sm md">Correo</th>
                                         <th data-type="date" data-breakpoints="xs sm md">Fecha nacimiento</th>
-                                        <%--<th class="text-nowrap">Estado</th>--%>
-                                        <th data-breakpoints="all" data-title="Titulo"></th>
-                                        <th data-sortable="false" class="text-right" width="250px">Acciones</th>
+                                        <th class="text-nowrap" data-breakpoints="xs">Estado</th>
+                                        <th data-breakpoints="all" data-title="Info"></th>
+                                        <th data-sortable="false" class="text-right" style="width: 206px;">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -207,94 +208,82 @@
                                                 <%--<td><%# Eval("DocumentoAfiliado") %></td>--%>
                                                 <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
                                                 <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("CelularAfiliado") %>" target="_blank"><%# Eval("CelularAfiliado") %></a></td>
-                                                <td><i class="fa fa-envelope m-r-xs font-bold"></i><%# Eval("EmailAfiliado") %></td>
-                                                <td><i class="fa fa-cake m-r-xs font-bold"></i><span class="text-<%# Eval("badge") %> font-bold"><%# Eval("FechaNacAfiliado", "{0:dd MMM yyyy}") %> <%# Eval("edad") %> <i class="fa fa-<%# Eval("age") %>"></i></span></td>
+                                                <td style="white-space: nowrap;"><i class="fa fa-envelope m-r-xs font-bold"></i><%# Eval("EmailAfiliado") %></td>
+                                                <td style="white-space: nowrap;"><i class="fa fa-cake m-r-xs font-bold"></i><span class="text-<%# Eval("badge") %> font-bold"><%# Eval("FechaNacAfiliado", "{0:dd MMM yyyy}") %> <%# Eval("edad") %> <i class="fa fa-<%# Eval("age") %>"></i></span></td>
                                                 <td><span class="badge badge-<%# Eval("badge2") %>"><%# Eval("EstadoAfiliado") %></span></td>
-                                                <%--<td class="table-bordered">
-                                                    <table class="table table-bordered">
-                                                        <thead>
-                                                            <tr>
-                                                                <th width="34%" colspan="2"><i class="fa fa-map-location-dot m-r-xs"></i>Dirección</th>
-                                                                <th width="33%"><i class="fa fa-city m-r-xs"></i>Ciudad</th>
-                                                                <th width="33%" class="text-nowrap"><i class="fa fa-venus-mars m-r-xs"></i>Genero</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td colspan="2"><%# Eval("DireccionAfiliado") %></td>
-                                                                <td><%# Eval("NombreCiudad") %> - <%# Eval("NombreEstado") %></td>
-                                                                <td><%# Eval("Genero") %></td>
-                                                            </tr>
-                                                        </tbody>
-                                                        <thead>
-                                                            <tr>
-                                                                <th width="25%"><i class="fa fa-ring m-r-xs"></i>Estado Civil</th>
-                                                                <th width="25%"><i class="fa fa-school-flag m-r-xs"></i>Sede</th>
-                                                                <th width="25%"><i class="fa fa-user-tie m-r-xs"></i>Profesión</th>
-                                                                <th width="25%"><i class="fa fa-house-medical m-r-xs"></i>EPS</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td><%# Eval("EstadoCivil") %></td>
-                                                                <td><%# Eval("NombreSede") %> - <%# Eval("NombreCiudadSede") %></td>
-                                                                <td><%# Eval("Profesion") %></td>
-                                                                <td><%# Eval("NombreEps") %></td>
-                                                            </tr>
-                                                        </tbody>
-                                                        <thead>
-                                                            <tr>
-                                                                <th width="33%"><i class="fa fa-person m-r-xs"></i>Responsable</th>
-                                                                <th width="33%"><i class="fa fa-user-group m-r-xs"></i>Parentesco</th>
-                                                                <th width="34%" colspan="2"><i class="fa fa-mobile m-r-xs"></i>Contacto responsable</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td><%# Eval("ResponsableAfiliado") %></td>
-                                                                <td><%# Eval("Parentesco") %></td>
-                                                                <td><a href="https://wa.me/57<%# Eval("ContactoAfiliado") %>" target="_blank"><%# Eval("ContactoAfiliado") %></a></td>
-                                                            </tr>
-                                                        </tbody>
+                                                <td>
+                                                    <table class="table table-bordered table-striped">
+                                                        <tr>
+                                                            <th width="34%" colspan="2"><i class="fa fa-map-location-dot m-r-xs"></i>Dirección</th>
+                                                            <th width="33%"><i class="fa fa-city m-r-xs"></i>Ciudad</th>
+                                                            <th width="33%" class="text-nowrap"><i class="fa fa-venus-mars m-r-xs"></i>Genero</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2"><%# Eval("DireccionAfiliado") %></td>
+                                                            <td><%# Eval("NombreCiudad") %> - <%# Eval("NombreEstado") %></td>
+                                                            <td><%# Eval("Genero") %></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th width="25%"><i class="fa fa-ring m-r-xs"></i>Estado Civil</th>
+                                                            <th width="25%"><i class="fa fa-school-flag m-r-xs"></i>Sede</th>
+                                                            <th width="25%"><i class="fa fa-user-tie m-r-xs"></i>Profesión</th>
+                                                            <th width="25%"><i class="fa fa-house-medical m-r-xs"></i>EPS</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><%# Eval("EstadoCivil") %></td>
+                                                            <td><%# Eval("NombreSede") %> - <%# Eval("NombreCiudadSede") %></td>
+                                                            <td><%# Eval("Profesion") %></td>
+                                                            <td><%# Eval("NombreEps") %></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th width="33%"><i class="fa fa-person m-r-xs"></i>Responsable</th>
+                                                            <th width="33%"><i class="fa fa-user-group m-r-xs"></i>Parentesco</th>
+                                                            <th width="34%" colspan="2"><i class="fa fa-mobile m-r-xs"></i>Contacto responsable</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><%# Eval("ResponsableAfiliado") %></td>
+                                                            <td><%# Eval("Parentesco") %></td>
+                                                            <td><a href="https://wa.me/57<%# Eval("ContactoAfiliado") %>" target="_blank"><%# Eval("ContactoAfiliado") %></a></td>
+                                                        </tr>
                                                     </table>
-                                                </td>--%>
+                                                </td>
                                                 <td>
                                                     <button runat="server" id="btnEditar" class="btn btn-outline btn-primary pull-left m-r-xs"
                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"
                                                         title="Editar afiliado">
                                                         <i class="fa fa-edit"></i>
                                                     </button>
-                                                    <button runat="server" id="btnEliminar" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                    <button runat="server" id="btnEliminar" class="btn btn-outline btn-danger pull-left m-r-xs"
                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"
                                                         title="Eliminar afiliado">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
-                                                    <button runat="server" id="btnPlan" class="btn btn-outline btn-info pull-right m-r-xs"
+                                                    <button runat="server" id="btnPlan" class="btn btn-outline btn-info pull-left m-r-xs"
                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
                                                         title="Planes" visible="false">
                                                         <i class="fa fa-ticket"></i>
                                                     </button>
-                                                    <button runat="server" id="btnTraspaso" class="btn btn-outline btn-warning pull-right m-r-xs"
+                                                    <button runat="server" id="btnTraspaso" class="btn btn-outline btn-warning pull-left m-r-xs"
                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
                                                         title="Traspaso" visible="false">
                                                         <i class="fa fa-right-left"></i>
                                                     </button>
-                                                    <button runat="server" id="btnCortesia" class="btn btn-outline btn-success pull-right m-r-xs"
+                                                    <button runat="server" id="btnCortesia" class="btn btn-outline btn-success pull-left m-r-xs"
                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
                                                         title="Cortesía" visible="false">
                                                         <i class="fa fa-gift"></i>
                                                     </button>
-                                                    <button runat="server" id="btnFreePass" class="btn btn-outline btn-success pull-right m-r-xs"
+                                                    <button runat="server" id="btnFreePass" class="btn btn-outline btn-success pull-left m-r-xs"
                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
                                                         title="FreePass" visible="false">
                                                         <i class="fa fa-person-walking"></i>
                                                     </button>
-                                                    <button runat="server" id="btnIncapacidad" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                    <button runat="server" id="btnIncapacidad" class="btn btn-outline btn-primary pull-left m-r-xs"
                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
                                                         title="Incapacidad" visible="false">
                                                         <i class="fa fa-head-side-mask"></i>
                                                     </button>
-                                                    <button runat="server" id="btnCongelacion" class="btn btn-outline btn-success pull-right"
+                                                    <button runat="server" id="btnCongelacion" class="btn btn-outline btn-success pull-left"
                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
                                                         title="Congelación" visible="false">
                                                         <i class="fa fa-snowflake"></i>
@@ -304,13 +293,6 @@
                                         </ItemTemplate>
                                     </asp:Repeater>
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="7">
-                                            <ul class="pagination"></ul>
-                                        </td>
-                                    </tr>
-                                </tfoot>
                             </table>
 
                         </div>
@@ -361,7 +343,8 @@
         $('.toggle').click(function (e) {
             e.preventDefault();
             $('.toggle').toggle();
-            $('.footable').trigger($(this).data('trigger')).trigger('footable_redraw');
+            //$('.footable').trigger($(this).data('trigger')).trigger('footable_expand_all');
+            $('.footable').trigger('data-expand-all');
         });
 
         document.querySelector("input#txbBuscar").addEventListener("input", function () {

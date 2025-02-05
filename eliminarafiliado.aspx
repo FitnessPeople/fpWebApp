@@ -149,23 +149,21 @@
                                             <div class="col-md-12">
                                                 <div class="row m-xs">
                                                     <h4>Planes</h4>
-                                                    <ul class="todo-list m-t small-list">
+                                                    <asp:Literal ID="ltNoPlanes" runat="server"></asp:Literal>
+                                                    <ul class="todo-list small-list">
                                                         <asp:Repeater ID="rpPlanesAfiliado" runat="server">
                                                             <ItemTemplate>
                                                                 <li>
-                                                                    <div class="i-checks">
-                                                                        <small class="label label-primary pull-right"><%# Eval("DiasQueFaltan") %> días disponibles</small>
-                                                                        <label>
-                                                                            <input type="radio" value="<%# Eval("idPlan") %>" name="planes">
-                                                                            <i></i><%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
-                                                                        </label>
-                                                                        <br />
-                                                                        <div class="progress progress-striped active">
-                                                                            <div style='width: <%# Eval("Porcentaje1") %>%' class="progress-bar progress-bar-success"></div>
-                                                                            <div style='width: <%# Eval("Porcentaje2") %>%' class="progress-bar progress-bar-warning"></div>
-                                                                        </div>
-                                                                        <small class="text-muted"><%# Eval("FechaInicioPlan", "{0:dd MMM yyyy}") %> - <%# Eval("FechaFinalPlan", "{0:dd MMM yyyy}") %></small>
+                                                                    <small class="label label-primary pull-right"><%# Eval("DiasQueFaltan") %> días disponibles</small>
+                                                                    <label>
+                                                                        <%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
+                                                                    </label>
+                                                                    <br />
+                                                                    <div class="progress progress-striped active">
+                                                                        <div style='width: <%# Eval("Porcentaje1") %>%' class="progress-bar progress-bar-success"></div>
+                                                                        <div style='width: <%# Eval("Porcentaje2") %>%' class="progress-bar progress-bar-warning"></div>
                                                                     </div>
+                                                                    <small class="text-muted"><%# Eval("FechaInicioPlan", "{0:dd MMM yyyy}") %> - <%# Eval("FechaFinalPlan", "{0:dd MMM yyyy}") %></small>
                                                                 </li>
                                                             </ItemTemplate>
                                                         </asp:Repeater>

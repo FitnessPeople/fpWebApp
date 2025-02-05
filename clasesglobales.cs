@@ -203,7 +203,7 @@ namespace fpWebApp
         }
 
 
-        public DataTable cargarPlanesAfiliado(string idAfiliado, string estado)
+        public DataTable CargarPlanesAfiliado(string idAfiliado, string estado)
         {
             DataTable dt = new DataTable();
 
