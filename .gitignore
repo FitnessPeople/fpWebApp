@@ -362,6 +362,13 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+<<<<<<< HEAD
 /fpWebApp.csproj
 /arl.aspx.designer.cs
 /Web.config
+=======
+/arl.aspx.designer.cs
+/arl.aspx.cs
+/arl.aspx
+/fpWebApp.csproj
+>>>>>>> Mod en casa
