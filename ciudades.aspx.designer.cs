@@ -78,6 +78,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltTitulo;
 
         /// <summary>
+        /// Control ddlDepartamentos.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlDepartamentos;
+
+        /// <summary>
         /// Control txbCiudad.
         /// </summary>
         /// <remarks>
@@ -123,13 +132,13 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlAnchor btnImprimir;
 
         /// <summary>
-        /// Control rpEps.
+        /// Control rpCiudad.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpEps;
+        protected global::System.Web.UI.WebControls.Repeater rpCiudad;
 
         /// <summary>
         /// Control footer.

@@ -20,13 +20,18 @@
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
+<%-- <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
+    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
+    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />--%>
+
+    <link href="css/plugins/dataTables/datatables.min.css" rel="stylesheet" />
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
     <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
     <!-- FooTable -->
     <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
-    <link href="css/plugins/footable/footable.standalone.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -140,7 +145,15 @@
                                     <div class="ibox-content">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <div class="form-group">
+                                                    <div class="form-group">
+                                                    <label>Departamentos:</label>
+                                                    <asp:DropDownList ID="ddlDepartamentos" runat="server" AppendDataBoundItems="true" 
+                                                        DataTextField="NombreEstado" DataValueField="CodigoEstado" 
+                                                        CssClass="form-control input-sm" OnSelectedIndexChanged="ddlDepartamentos_SelectedIndexChanged" utoPostBack="true">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </div>
+                                                 <div class="form-group">
                                                     <label>Nombre de la Ciudad:</label>
                                                     <asp:TextBox ID="txbCiudad" runat="server" CssClass="form-control input-sm"></asp:TextBox>
                                                 </div>
@@ -153,6 +166,7 @@
                                                 <br />
                                                 <br />
                                                 <div class="form-group">
+
                                                     <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                                 </div>
                                             </div>
@@ -196,19 +210,25 @@
                                             </div>
                                         </div>
 
-                                        <table class="footable table" data-filter="#filter" data-paging-size="5" data-filtering="true" 
-                                            data-filter-minimum="3" data-paging-limit="9" data-paging="true" data-sorting="true" >
+                                        <table class="footable table table-striped" data-paging-size="10" data-filter-min="3" data-filter-placeholder="Buscar" 
+                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10" 
+                                            data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300" 
+                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left">
                                             <thead>
                                                 <tr>
-                                                    <th width="80%" data-sort-initial="true">Ciudades</th>
-                                                    <th data-sortable="false" class="text-right">Acciones</th>
+                                                    <th  data-sort-initial="true">Id</th>
+                                                    <th  data-sort-initial="true">Ciudades</th>
+                                                    <th  data-sort-initial="true">Departamentos</th>
+                                                    <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpEps" runat="server" OnItemDataBound="rpEps_ItemDataBound">
+                                                <asp:Repeater ID="rpCiudad" runat="server" OnItemDataBound="rpCiudad_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
+                                                            <td><%# Eval("idCiudad") %></td>
                                                             <td><%# Eval("ciudad") %></td>
+                                                            <td><%# Eval("departamento") %> </td>
                                                             <td>
                                                                 <button runat="server" id="btnEliminar" class="btn btn-outline btn-danger pull-right"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false">
@@ -255,7 +275,7 @@
 
     <!-- FooTable -->
     <%--<script src="js/plugins/footable/footable.all.min.js"></script>--%>
-    <script src="js/plugins/footable/footable.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
@@ -266,46 +286,35 @@
 
     <!-- Page-Level Scripts -->
     <script>
-        $(document).ready(function () {
-            $("#form").validate({
-                rules: {
-                    txbCiudad: {
-                        required: true,
-                        minlength: 3
-                    },
-                }
+        $(".excelexport").on("click", function (e) {
+            var filename = "arls.csv";
+            var csv = FooTable.get('.footable').toCSV();
+            var blob = new Blob([csv], {
+                type: "application/csv;charset=utf-8;"
             });
-        });
-
-        $('.footable').footable({
-            language: {
-                "decimal": "",
-                "emptyTable": "No hay información",
-                "info": "Mostrando START a END de TOTAL Entradas",
-                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-                "infoFiltered": "(Filtrado de MAX total entradas)",
-                "infoPostFix": "",
-                "thousands": ",",
-                "lengthMenu": "Mostrar MENU Entradas",
-                "loadingRecords": "Cargando...",
-                "processing": "Procesando...",
-                "Search": "Buscar:",
-                "zeroRecords": "Sin resultados encontrados",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Ultimo",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
-                }
+            if (window.navigator.msSaveBlob) {
+                // FOR IE BROWSER
+                navigator.msSaveBlob(blob, filename);
+            } else {
+                // FOR OTHER BROWSERS
+                var link = document.createElement("a");
+                var csvUrl = URL.createObjectURL(blob);
+                link.href = csvUrl;
+                link.style = "visibility:hidden";
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             }
         });
+
+        $('.footable').footable();
 
         $('.data-page-size').on('click', function (e) {
             e.preventDefault();
             var newSize = $(this).data('pageSize');
-            //$('.footable').data('page-size', newSize);
-            //$('.footable').trigger('footable_initialized');
-            $('.footable').get('#foot').pageSize(newSize);
+            $('.footable').data('page-size', newSize);
+            $('.footable').trigger('footable_initialized');
         });
 
         $('.toggle').click(function (e) {
