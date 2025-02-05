@@ -364,3 +364,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /fpWebApp.csproj
 /arl.aspx.designer.cs
+/Web.config
