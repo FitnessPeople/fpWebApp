@@ -61,8 +61,8 @@ namespace fpWebApp
                 "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
                 "AND u.idPerfil = pp.idPerfil " +
                 "AND u.idUsuario = " + Session["idusuario"].ToString();
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
 
             if (dt.Rows.Count > 0)
             {

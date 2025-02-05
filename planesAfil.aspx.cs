@@ -163,7 +163,7 @@ namespace fpWebApp
             if (Request.QueryString.Count > 0)
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.cargarPlanesAfiliado(Request.QueryString["id"].ToString(), "Activo");
+                DataTable dt = cg.CargarPlanesAfiliado(Request.QueryString["id"].ToString(), "Activo");
 
                 //string strQuery = "SELECT *, " +
                 //    "DATEDIFF(FechaFinalPlan, CURDATE()) AS diasquefaltan, " +

@@ -1,9 +1,11 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Odbc;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -56,15 +58,8 @@ namespace fpWebApp
             ViewState["CrearModificar"] = "0";
             ViewState["Borrar"] = "0";
 
-            string strQuery = "SELECT SinPermiso, Consulta, Exportar, CrearModificar, Borrar " +
-                "FROM permisos_perfiles pp, paginas p, usuarios u " +
-                "WHERE pp.idPagina = p.idPagina " +
-                "AND p.Pagina = '" + strPagina + "' " +
-                "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
-                "AND u.idPerfil = pp.idPerfil " +
-                "AND u.idUsuario = " + Session["idusuario"].ToString();
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.validarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -111,34 +106,35 @@ namespace fpWebApp
         {
             if (Request.QueryString.Count > 0)
             {
-                string strQuery = "SELECT *, " +
-                    "DATEDIFF(FechaFinalPlan, CURDATE()) AS diasquefaltan, " +
-                    "DATEDIFF(CURDATE(), FechaInicioPlan) AS diasconsumidos, " +
-                    "DATEDIFF(FechaFinalPlan, FechaInicioPlan) AS diastotales, " +
-                    "ROUND(DATEDIFF(CURDATE(), FechaInicioPlan) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje1, " +
-                    "ROUND(DATEDIFF(FechaFinalPlan, CURDATE()) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje2 " +
-                    "FROM afiliadosPlanes ap, Afiliados a, Planes p " +
-                    "WHERE a.idAfiliado = " + Request.QueryString["deleteid"].ToString() + " " +
-                    "AND ap.idAfiliado = a.idAfiliado " +
-                    "AND ap.idPlan = p.idPlan " +
-                    "AND ap.EstadoPlan = 'Activo'";
-                clasesglobales cg1 = new clasesglobales();
-                DataTable dt = cg1.TraerDatos(strQuery);
+                ViewState["planes"] = "";
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.CargarPlanesAfiliado(Request.QueryString["deleteid"].ToString(), "all");
 
                 if (dt.Rows.Count > 0)
                 {
                     rpPlanesAfiliado.DataSource = dt;
                     rpPlanesAfiliado.DataBind();
 
+                    ltMensaje.Text = "<div class=\"ibox-content\">" +
+                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                    "El afiliado tiene planes asociados, no se puede eliminar" +
+                    "</div></div>";
+                    btnEliminar.Enabled = false;
+                }
+                else
+                {
+                    ltNoPlanes.Text = "Afiliado sin planes.";
                 }
                 dt.Dispose();
+
             }
         }
 
         private void CargarPreguntaConfirmacion()
         {
             Random aleatorio = new Random();
-            int numero = aleatorio.Next(1, 3);
+            int numero = aleatorio.Next(1, 4);
             switch (numero)
             {
                 case 1:
@@ -150,6 +146,10 @@ namespace fpWebApp
                     ViewState["respuesta"] = "6";
                     break;
                 case 3:
+                    ltPregunta.Text = "4x2=";
+                    ViewState["respuesta"] = "8";
+                    break;
+                case 4:
                     ltPregunta.Text = "1+2=";
                     ViewState["respuesta"] = "3";
                     break;
@@ -164,14 +164,31 @@ namespace fpWebApp
             {
                 if (txbConfirmacion.Text.ToString() == ViewState["respuesta"].ToString())
                 {
-                    //Validar si el afiliado tiene un plan activo.
-                    OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
+                    string respuesta = string.Empty;
+                    try
+                    {
+                        string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
 
-                    ltMensaje.Text = "<div class=\"ibox-content\">" +
-                        "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Respuesta correcta. Afiliado eliminado." +
-                        "</div></div>";
+                        using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                        {
+                            mysqlConexion.Open();
+
+                            using (MySqlCommand cmd = new MySqlCommand("Pa_ELIMINAR_AFILIADO", mysqlConexion))
+                            {
+                                cmd.CommandType = CommandType.StoredProcedure;
+                                cmd.Parameters.AddWithValue("@p_id_afiliado", Request.QueryString["deleteid"].ToString());
+
+                                cmd.ExecuteNonQuery();
+                                respuesta = "OK";
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        respuesta = "ERROR: " + ex.Message;
+                    }
+
+                    Response.Redirect("afiliados");
                 }
                 else
                 {
