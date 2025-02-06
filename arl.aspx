@@ -183,25 +183,10 @@
 
                                         <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
                                             <div class="col-lg-6 form-horizontal">
-                                                <div class="form-group" id="filter-form-container" style="margin-left: 15px;">
-                                                    <%--<label class="col-lg-4 control-label" style="text-align: left;">Buscador:</label>
-                                                    <div class="col-lg-8">
-                                                        <input type="text" placeholder="Buscar..." class="form-control input-sm m-b-xs" id="filter">
-                                                    </div>--%>
-                                                </div>
+                                                <div class="form-group" id="filter-form-container" style="margin-left: 15px;"></div>
                                             </div>
-                                            <%--<div class="col-lg-5 form-horizontal" style="text-align: center;">
-                                                <label class="control-label">Mostrar </label>
-
-                                                <a href="#" class="data-page-size" data-page-size="10">10</a> | 
-                                                <a href="#" class="data-page-size" data-page-size="20">20</a>
-
-                                                <label class="control-label">registros</label>
-                                            </div>--%>
+ 
                                             <div class="col-lg-6 form-horizontal">
-                                                <%--<a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
-                                                    target="_blank" runat="server" id="btnImprimir" 
-                                                    href="imprimirarl" title="Imprimir"><i class="fa fa-print"></i> IMPRIMIR</a>--%>
                                                 <asp:LinkButton ID="lbExportarExcel" runat="server" 
                                                     CausesValidation="false" 
                                                     CssClass="excelexport btn btn-info pull-right dim m-l-md" style="font-size: 12px;">
@@ -229,26 +214,15 @@
                                                         <tr class="feed-element">
                                                             <td><%# Eval("NombreArl") %></td>
                                                             <td>
-                                                                <button runat="server" id="btnEliminar" class="btn btn-outline btn-danger pull-right"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false">
-                                                                    <i class="fa fa-trash"></i>
-                                                                </button>
-                                                                <button runat="server" id="btnEditar" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false">
-                                                                    <i class="fa fa-edit"></i>
-                                                                </button>
+                                                                <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                                <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
                                                             </td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
                                             </tbody>
-                                            <%--<tfoot>
-                                                <tr>
-                                                    <td colspan="7">
-                                                        <ul class="pagination"></ul>
-                                                    </td>
-                                                </tr>
-                                            </tfoot>--%>
                                         </table>
                                     </div>
                                 </div>
@@ -302,19 +276,6 @@
         });
 
         $('.footable').footable();
-
-        $('.data-page-size').on('click', function (e) {
-            e.preventDefault();
-            var newSize = $(this).data('pageSize');
-            $('.footable').data('page-size', newSize);
-            $('.footable').trigger('footable_initialized');
-        });
-
-        $('.toggle').click(function (e) {
-            e.preventDefault();
-            $('.toggle').toggle();
-            $('.footable').trigger($(this).data('trigger')).trigger('footable_redraw');
-        });
 
     </script>
 

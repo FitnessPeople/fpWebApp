@@ -1,10 +1,8 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Odbc;
-using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
@@ -14,15 +12,14 @@ using System.Web.UI.WebControls;
 namespace fpWebApp
 {
     public partial class ciudades : System.Web.UI.Page
-    {
-        
+    {        
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Eps");
+                    ValidarPermisos("Ciudades");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -50,11 +47,14 @@ namespace fpWebApp
                             btnAgregar.Visible = true;
                         }
                     }
+                    
                     listaCiudades();
+                    ListaDepartamentos();
                     ltTitulo.Text = "Agregar Ciudad";
+
                     if (Request.QueryString.Count > 0)
                     {
-                        rpEps.Visible = false;
+                        rpCiudad.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
@@ -64,6 +64,8 @@ namespace fpWebApp
                             if (dt.Rows.Count > 0)
                             {
                                 txbCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
+                                ddlDepartamentos.SelectedIndex = Convert.ToInt16(ddlDepartamentos.Items.IndexOf(ddlDepartamentos.Items.FindByValue(dt.Rows[0]["CodigoEstado"].ToString())));
+
                                 btnAgregar.Text = "Actualizar";
                                 ltTitulo.Text = "Actualizar Ciudad";
                             }
@@ -111,7 +113,7 @@ namespace fpWebApp
                 }
                 else
                 {
-                    Response.Redirect("logout.aspx");
+                    Response.Redirect("logout");
                 }
             }
         }
@@ -126,7 +128,6 @@ namespace fpWebApp
             {
                 bExiste = true;
             }
-
             return bExiste;
         }
 
@@ -138,15 +139,8 @@ namespace fpWebApp
             ViewState["CrearModificar"] = "0";
             ViewState["Borrar"] = "0";
 
-            string strQuery = "SELECT SinPermiso, Consulta, Exportar, CrearModificar, Borrar " +
-                "FROM permisos_perfiles pp, paginas p, usuarios u " +
-                "WHERE pp.idPagina = p.idPagina " +
-                "AND p.Pagina = '" + strPagina + "' " +
-                "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
-                "AND u.idPerfil = pp.idPerfil " +
-                "AND u.idUsuario = " + Session["idusuario"].ToString();
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
+            clasesglobales cg = new clasesglobales();            
+            DataTable dt = cg.validarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -156,36 +150,42 @@ namespace fpWebApp
                 ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
                 ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
             }
+            dt.Dispose();
+        }
 
+        private void ListaDepartamentos()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.consultarDepartamentos();           
+            ddlDepartamentos.DataSource = dt;
+            ddlDepartamentos.DataBind();
             dt.Dispose();
         }
 
         private void listaCiudades()
-        {
-            
-            DataTable dt = new DataTable();
+        {            
             clasesglobales cg = new clasesglobales();
-            dt =cg.consultarCiudades();
-            rpEps.DataSource = dt;
-            rpEps.DataBind();
+            DataTable dt = cg.consultarCiudades();
+            rpCiudad.DataSource = dt;
+            rpCiudad.DataBind();
             dt.Dispose();
         }
 
-        protected void rpEps_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        protected void rpCiudad_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
-                    HtmlButton btnEditar = (HtmlButton)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("onClick", "window.location.href='ciudades?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
-                    btnEditar.Visible = true;
+                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                    btnEliminar.Attributes.Add("href", "ciudades?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
-                    HtmlButton btnEliminar = (HtmlButton)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("onClick", "window.location.href='ciudades?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
-                    btnEliminar.Visible = true;
+                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("href", "ciudades?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Visible = true;
                 }
             }
         }
@@ -198,7 +198,6 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    
                     string respuesta = cg.ActualizarCiudad(int.Parse(Request.QueryString["editid"].ToString()), txbCiudad.Text.ToString().Trim());
                     Response.Redirect("ciudades");
                 }
@@ -222,7 +221,7 @@ namespace fpWebApp
                 {
                     try
                     {
-                        string respuesta = cg.InsertarCiudad(txbCiudad.Text.ToString().Trim(),"","","","","");
+                        string respuesta = cg.InsertarCiudad(txbCiudad.Text.ToString().Trim(),"","","","Colombia","Co");
                         myConnection.Open();
 
                         //StringBuilder sql = new StringBuilder();
@@ -267,7 +266,5 @@ namespace fpWebApp
                 }
             }
         }
-
-
     }
 }

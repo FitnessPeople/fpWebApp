@@ -1,9 +1,11 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Odbc;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -50,6 +52,7 @@ namespace fpWebApp
                     }
                     listaArl();
                     ltTitulo.Text = "Agregar ARL";
+
                     if (Request.QueryString.Count > 0)
                     {
                         rpArl.Visible = false;
@@ -97,15 +100,8 @@ namespace fpWebApp
             ViewState["CrearModificar"] = "0";
             ViewState["Borrar"] = "0";
 
-            string strQuery = "SELECT SinPermiso, Consulta, Exportar, CrearModificar, Borrar " +
-                "FROM permisos_perfiles pp, paginas p, usuarios u " +
-                "WHERE pp.idPagina = p.idPagina " +
-                "AND p.Pagina = '" + strPagina + "' " +
-                "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
-                "AND u.idPerfil = pp.idPerfil " +
-                "AND u.idUsuario = " + Session["idusuario"].ToString();
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.validarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -137,15 +133,15 @@ namespace fpWebApp
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
-                    HtmlButton btnEditar = (HtmlButton)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("onClick", "window.location.href='arl?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
-                    btnEditar.Visible = true;
+                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                    btnEliminar.Attributes.Add("href", "arl?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
-                    HtmlButton btnEliminar = (HtmlButton)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("onClick", "window.location.href='arl?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
-                    btnEliminar.Visible = true;
+                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("href", "arl?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Visible = true;
                 }
             }
         }
@@ -168,20 +164,32 @@ namespace fpWebApp
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
+            //clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    string strnombre = txbArl.Text.ToString().Replace("'", "");
-                    myConnection.Open();
-                    string strQuery = "UPDATE arl " +
-                        "SET NombreArl = '" + strnombre + "' " +
-                        "WHERE idArl = " + Request.QueryString["editid"].ToString();
-                    OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                    command1.ExecuteNonQuery();
-                    command1.Dispose();
-                    myConnection.Close();
+                    try
+                    {
+                        string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                        using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                        {
+                            mysqlConexion.Open();
+                            string strnombre = txbArl.Text.ToString().Replace("'", "");
+                            string strQuery = "UPDATE arl " +
+                                "SET NombreArl = '" + strnombre + "' " +
+                                "WHERE idArl = " + Request.QueryString["editid"].ToString();
+                            using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
+                            {
+                                cmd.ExecuteNonQuery();
+                            }
+                            mysqlConexion.Close();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        string strMensaje = ex.Message;
+                    }
 
                     Response.Redirect("arl");
                 }
@@ -190,14 +198,26 @@ namespace fpWebApp
             {
                 if (!ValidarArl(txbArl.Text.ToString()))
                 {
-                    string strnombre = txbArl.Text.ToString().Replace("'", "");
-                    myConnection.Open();
-                    string strQuery = "INSERT INTO arl " +
-                        "(NombreArl) VALUES ('" + strnombre + "') ";
-                    OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                    command1.ExecuteNonQuery();
-                    command1.Dispose();
-                    myConnection.Close();
+                    try
+                    {
+                        string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                        using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                        {
+                            mysqlConexion.Open();
+                            string strnombre = txbArl.Text.ToString().Replace("'", "");
+                            string strQuery = "INSERT INTO arl " +
+                                "(NombreArl) VALUES ('" + strnombre + "') ";
+                            using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
+                            {
+                                cmd.ExecuteNonQuery();
+                            }
+                            mysqlConexion.Close();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        string strMensaje = ex.Message;
+                    }
 
                     Response.Redirect("arl");
                 }
