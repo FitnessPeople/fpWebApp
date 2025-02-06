@@ -226,6 +226,7 @@
                                                 <asp:Repeater ID="rpCiudad" runat="server" OnItemDataBound="rpCiudad_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
+                                                            <td><%# Eval("idCiudad") %></td>
                                                             <td><%# Eval("ciudad") %></td>
                                                             <td><%# Eval("departamento") %> </td>
                                                             <td>
