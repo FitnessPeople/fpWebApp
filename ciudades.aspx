@@ -152,16 +152,18 @@
                                                         CssClass="form-control input-sm">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
+                                                        <asp:RequiredFieldValidator ID="rfvDepartamentos" runat="server" ErrorMessage="* Campo requerido" CssClass="text-danger font-bold" ControlToValidate="ddlDepartamentos" InitialValue="" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                                 </div>
                                                  <div class="form-group">
-                                                    <label>Nombre de la Ciudad:</label>
+                                                    <label>Nombre de la ciudad:</label>
                                                     <asp:TextBox ID="txbCiudad" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                     <asp:RequiredFieldValidator ID="rfvCiudad" runat="server" ErrorMessage="* Campo requerido" ControlToValidate="txbCiudad" CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group">
                                                     <a href="ciudades" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar" 
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" 
-                                                        OnClick="btnAgregar_Click" Visible="false" />
+                                                        OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
                                                 </div>
                                                 <br />
                                                 <br />
@@ -213,20 +215,19 @@
 
                                         <table class="footable table table-striped" data-paging-size="10" data-filter-min="3" data-filter-placeholder="Buscar" 
                                             data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10" 
-                                            data-filtering="false" data-filter-container="#filter-form-container" data-filter-delay="300" 
+                                            data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300" 
                                             data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados" >
                                             <thead>
                                                 <tr>
                                                     <th>Ciudades</th>
                                                     <th>Departamentos</th>
-                                                    <th data-sortable="false" data-filterable="false" class="text-right" data-type="html" >Acciones</th>
+                                                    <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <asp:Repeater ID="rpCiudad" runat="server" OnItemDataBound="rpCiudad_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
-                                                            <td><%# Eval("idCiudad") %></td>
                                                             <td><%# Eval("ciudad") %></td>
                                                             <td><%# Eval("departamento") %> </td>
                                                             <td>
@@ -239,13 +240,6 @@
                                                     </ItemTemplate>
                                                 </asp:Repeater>
                                             </tbody>
-                                            <%--<tfoot>
-                                                <tr>
-                                                    <td colspan="7">
-                                                        <ul class="pagination"></ul>
-                                                    </td>
-                                                </tr>
-                                            </tfoot>--%>
                                         </table>
 
                                     </div>
@@ -277,9 +271,6 @@
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
-    <!-- Jquery Validate -->
-    <script src="js/plugins/validate/jquery.validate.min.js"></script>
-
     <!-- Page-Level Scripts -->
     <script>
         $(".excelexport").on("click", function (e) {
@@ -305,19 +296,6 @@
         });
 
         $('.footable').footable();
-
-        $('.data-page-size').on('click', function (e) {
-            e.preventDefault();
-            var newSize = $(this).data('pageSize');
-            $('.footable').data('page-size', newSize);
-            $('.footable').trigger('footable_initialized');
-        });
-
-        $('.toggle').click(function (e) {
-            e.preventDefault();
-            $('.toggle').toggle();
-            $('.footable').trigger($(this).data('trigger')).trigger('footable_redraw');
-        });
 
     </script>
 

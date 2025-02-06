@@ -109,7 +109,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public string ActualizarCiudad(int idCiudad, string nombreCiudad)
+        public string ActualizarCiudad(int idCiudad, string nombreCiudad, string nombreEstado, string codigoEstado)
         {
             string respuesta = string.Empty;
             try
@@ -127,6 +127,8 @@ namespace fpWebApp
                         // Parámetros de entrada
                         cmd.Parameters.AddWithValue("@p_nombre_ciudad", nombreCiudad);
                         cmd.Parameters.AddWithValue("@p_id_ciudad", idCiudad);
+                        cmd.Parameters.AddWithValue("@p_nombre_estado", nombreEstado);
+                        cmd.Parameters.AddWithValue("@p_codigo_estado", codigoEstado);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -287,6 +289,38 @@ namespace fpWebApp
                             }
                         }
                     }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable validarCiudadTablas(string idCiudad)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_VALIDAR_CIUDAD_TABLAS", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_ciudad", Convert.ToInt32(idCiudad));
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {

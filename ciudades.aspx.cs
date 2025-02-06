@@ -74,13 +74,14 @@ namespace fpWebApp
                         {
                             DataTable dt1 = new DataTable();
                             clasesglobales cg = new clasesglobales();
-                            dt1 = cg.ConsultarCiudadesPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+
+                            dt1 = cg.validarCiudadTablas(Request.QueryString["deleteid"].ToString());
                             if (dt1.Rows.Count > 0)
                             {
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +
                                     "<div class=\"alert alert-danger alert-dismissable\">" +
                                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Esta Ciudad no se puede borrar, hay empleados asociados a ella." +
+                                    "Esta ciudad no se puede borrar, hay registros asociados a ella." +
                                     "</div></div>";
 
 
@@ -90,6 +91,8 @@ namespace fpWebApp
                                 {
                                     txbCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
                                     txbCiudad.Enabled = false;
+                                    ddlDepartamentos.SelectedIndex = Convert.ToInt16(ddlDepartamentos.Items.IndexOf(ddlDepartamentos.Items.FindByValue(dt.Rows[0]["CodigoEstado"].ToString())));
+                                    ddlDepartamentos.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     btnAgregar.Enabled = false;
                                     ltTitulo.Text = "Borrar Ciudad";
@@ -104,6 +107,8 @@ namespace fpWebApp
                                 {
                                     txbCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
                                     txbCiudad.Enabled = false;
+                                    ddlDepartamentos.SelectedIndex = Convert.ToInt16(ddlDepartamentos.Items.IndexOf(ddlDepartamentos.Items.FindByValue(dt.Rows[0]["CodigoEstado"].ToString())));
+                                    ddlDepartamentos.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     ltTitulo.Text = "Borrar Ciudad";
                                 }
@@ -198,13 +203,13 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarCiudad(int.Parse(Request.QueryString["editid"].ToString()), txbCiudad.Text.ToString().Trim());
+                    string respuesta = cg.ActualizarCiudad(int.Parse(Request.QueryString["editid"].ToString()), txbCiudad.Text.ToString().Trim(), ddlDepartamentos.SelectedItem.Text.ToString(), ddlDepartamentos.SelectedItem.Value.ToString());
                     Response.Redirect("ciudades");
                 }
 
                 if (Request.QueryString["deleteid"] != null)
                 {
-                    string respuesta = cg.EliminarCiudad(int.Parse(Request.QueryString["¨deleteid"].ToString()));
+                    string respuesta = cg.EliminarCiudad(int.Parse(Request.QueryString["deleteid"].ToString()));
                     //myConnection.Open();
                     //string strQuery = "DELETE FROM ciudades " +
                     //    "WHERE idCiudad = " + Request.QueryString["¨deleteid"].ToString();
@@ -221,7 +226,7 @@ namespace fpWebApp
                 {
                     try
                     {
-                        string respuesta = cg.InsertarCiudad(txbCiudad.Text.ToString().Trim(),"","","","Colombia","Co");
+                        string respuesta = cg.InsertarCiudad(txbCiudad.Text.ToString().Trim(),"",ddlDepartamentos.SelectedItem.Text.ToString(),ddlDepartamentos.SelectedItem.Value.ToString(),"Colombia","Co");
                         myConnection.Open();
 
                         //StringBuilder sql = new StringBuilder();
