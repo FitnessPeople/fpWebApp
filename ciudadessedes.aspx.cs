@@ -137,7 +137,7 @@ namespace fpWebApp
             ViewState["Borrar"] = "0";
 
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.validarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
+            DataTable dt = cg1.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -154,7 +154,7 @@ namespace fpWebApp
         {
             DataTable dt = new DataTable();
             clasesglobales cg = new clasesglobales();
-            dt = cg.consultarCiudadesSedes();
+            dt = cg.ConsultarCiudadesSedes();
             rpCiudadSede.DataSource = dt;
             rpCiudadSede.DataBind();
             dt.Dispose();

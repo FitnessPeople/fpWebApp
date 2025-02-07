@@ -59,7 +59,7 @@ namespace fpWebApp
             ViewState["Borrar"] = "0";
 
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.validarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {

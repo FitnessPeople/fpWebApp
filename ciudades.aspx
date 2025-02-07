@@ -20,11 +20,6 @@
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
-    <link href="css/plugins/dataTables/datatables.min.css" rel="stylesheet" />
-    <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
-    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
-    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
-
     <!-- FooTable -->
     <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
@@ -191,25 +186,16 @@
                                         <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
                                             <div class="col-lg-6 form-horizontal">
                                                 <div class="form-group">
-                                                    <div class="form-group" id="filter-form-container" style="margin-left: 20px;"></div>
-                                                    <%--<label class="col-lg-4 control-label" style="text-align: left;">Buscador:</label>--%>
-                                                    <%--<div class="col-lg-8">
-                                                        <input type="text" placeholder="Buscar..." class="form-control input-sm m-b-xs" id="filter">
-                                                    </div>--%>
+                                                    <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                                 </div>
                                             </div>
-                                            <%--<div class="col-lg-5 form-horizontal" style="text-align: center;">
-                                                <label class="control-label">Mostrar </label>
-
-                                                <a href="#" class="data-page-size" data-page-size="10">10</a> | 
-                                                <a href="#" class="data-page-size" data-page-size="20">20</a>
-
-                                                <label class="control-label">registros</label>
-                                            </div>--%>
                                             <div class="col-lg-6 form-horizontal">
-                                                <a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
-                                                    target="_blank" runat="server" id="btnImprimir" 
-                                                    href="imprimireps" title="Imprimir"><i class="fa fa-print"></i> IMPRIMIR</a>
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" 
+                                                    CausesValidation="false" 
+                                                    CssClass="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
+                                                    OnClick="lbExportarExcel_Click">
+                                                    <i class="fa fa-file-excel"></i> EXCEL
+                                                </asp:LinkButton>
                                             </div>
                                         </div>
 
@@ -273,30 +259,7 @@
 
     <!-- Page-Level Scripts -->
     <script>
-        $(".excelexport").on("click", function (e) {
-            var filename = "arls.csv";
-            var csv = FooTable.get('.footable').toCSV();
-            var blob = new Blob([csv], {
-                type: "application/csv;charset=utf-8;"
-            });
-            if (window.navigator.msSaveBlob) {
-                // FOR IE BROWSER
-                navigator.msSaveBlob(blob, filename);
-            } else {
-                // FOR OTHER BROWSERS
-                var link = document.createElement("a");
-                var csvUrl = URL.createObjectURL(blob);
-                link.href = csvUrl;
-                link.style = "visibility:hidden";
-                link.download = filename;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-        });
-
         $('.footable').footable();
-
     </script>
 
 </body>

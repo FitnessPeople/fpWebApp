@@ -118,7 +118,7 @@ namespace fpWebApp
             //string strQuery = "SELECT * FROM Paginas WHERE idPagina <> 1";
             clasesglobales cg = new clasesglobales();
            // DataTable dt = cg.TraerDatos(strQuery);
-            DataTable dt = cg.consultarPaginas();
+            DataTable dt = cg.ConsultarPaginas();
 
             rpPaginas.DataSource = dt;
             rpPaginas.DataBind();
@@ -192,7 +192,7 @@ namespace fpWebApp
 
                     //strQuery = "SELECT * FROM Perfiles";
                     //DataTable dt2 = cg.TraerDatos(strQuery);
-                    DataTable dt2 = cg.consultarPerfiles();
+                    DataTable dt2 = cg.ConsultarPerfiles();
                     for (int i = 0; i < dt2.Rows.Count; i++)
                     {
                         try

@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Odbc;
+using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using ClosedXML.Excel;
 
 namespace fpWebApp
 {
@@ -34,20 +37,76 @@ namespace fpWebApp
                         if (ViewState["Consulta"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            btnImprimir.Visible = false;
+                            lbExportarExcel.Visible = false;
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            btnImprimir.Visible = true;
+                            lbExportarExcel.Visible = true;
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             btnAgregar.Visible = true;
                         }
                     }
-                    listaCesantias();
+                    ListaCesantias();
                     ltTitulo.Text = "Agregar fondo de cesantías";
+
+                    if (Request.QueryString.Count > 0)
+                    {
+                        rpCesantias.Visible = false;
+                        if (Request.QueryString["editid"] != null)
+                        {
+                            //Editar
+                            clasesglobales cg = new clasesglobales();
+                            DataTable dt = cg.ConsultarArlPorId(int.Parse(Request.QueryString["editid"].ToString()));
+                            if (dt.Rows.Count > 0)
+                            {
+                                txbCesantias.Text = dt.Rows[0]["NombreArl"].ToString();
+                                btnAgregar.Text = "Actualizar";
+                                ltTitulo.Text = "Actualizar fondo de cesantías";
+                            }
+                        }
+                        if (Request.QueryString["deleteid"] != null)
+                        {
+                            clasesglobales cg = new clasesglobales();
+                            DataTable dt = cg.ValidarArlEmpleados(Request.QueryString["deleteid"].ToString());
+                            if (dt.Rows.Count > 0)
+                            {
+                                ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                    "Este Fondo de Cesantías no se puede borrar, hay empleados asociados a ella." +
+                                    "</div></div>";
+
+                                DataTable dt1 = new DataTable();
+                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                if (dt1.Rows.Count > 0)
+                                {
+                                    txbCesantias.Text = dt1.Rows[0]["NombreArl"].ToString();
+                                    txbCesantias.Enabled = false;
+                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                                    btnAgregar.Enabled = false;
+                                    ltTitulo.Text = "Borrar Fondo de Cesantías";
+                                }
+                                dt1.Dispose();
+                            }
+                            else
+                            {
+                                //Borrar
+                                DataTable dt1 = new DataTable();
+                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                if (dt1.Rows.Count > 0)
+                                {
+                                    txbCesantias.Text = dt1.Rows[0]["NombreArl"].ToString();
+                                    txbCesantias.Enabled = false;
+                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                                    ltTitulo.Text = "Borrar Fondo de Cesantías";
+                                }
+                                dt1.Dispose();
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -64,18 +123,8 @@ namespace fpWebApp
             ViewState["CrearModificar"] = "0";
             ViewState["Borrar"] = "0";
 
-            //string strQuery = "SELECT SinPermiso, Consulta, Exportar, CrearModificar, Borrar " +
-            //    "FROM permisos_perfiles pp, paginas p, usuarios u " +
-            //    "WHERE pp.idPagina = p.idPagina " +
-            //    "AND p.Pagina = '" + strPagina + "' " +
-            //    "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
-            //    "AND u.idPerfil = pp.idPerfil " +
-            //    "AND u.idUsuario = " + Session["idusuario"].ToString();
-            //clasesglobales cg = new clasesglobales();
-            //DataTable dt = cg.TraerDatos(strQuery);
-
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.validarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idUsuario"].ToString());
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -89,47 +138,25 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void listaCesantias()
+        private void ListaCesantias()
         {
-            string strQuery = "SELECT * FROM Cesantias";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
+            DataTable dt = cg.ConsultarArls();
             rpCesantias.DataSource = dt;
             rpCesantias.DataBind();
-
             dt.Dispose();
         }
 
         private bool ValidarCesantias(string strNombre)
         {
             bool bExiste = false;
-
-            string strQuery = "SELECT * FROM Cesantias WHERE NombreCesantias = '" + strNombre.Trim() + "' ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
+            DataTable dt = cg.ConsultarArlPorNombre(strNombre);
             if (dt.Rows.Count > 0)
             {
                 bExiste = true;
             }
-
-            return bExiste;
-        }
-
-        private bool ValidarIdCesantias(string idCesantias)
-        {
-            bool bExiste = false;
-
-            string strQuery = "SELECT * FROM Empleados WHERE idCesantias = " + idCesantias + " ";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
-            if (dt.Rows.Count > 0)
-            {
-                bExiste = true;
-            }
-
+            dt.Dispose();
             return bExiste;
         }
 
@@ -139,152 +166,98 @@ namespace fpWebApp
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
-                    LinkButton lbEditar = (LinkButton)e.Item.FindControl("lbEditar");
-                    lbEditar.CommandArgument = ((DataRowView)e.Item.DataItem).Row[0].ToString();
-                    lbEditar.Visible = true;
+                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                    btnEliminar.Attributes.Add("href", "cesantias?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
-                    LinkButton lbEliminar = (LinkButton)e.Item.FindControl("lbEliminar");
-                    lbEliminar.CommandArgument = ((DataRowView)e.Item.DataItem).Row[0].ToString();
-                    lbEliminar.Visible = true;
+                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("href", "cesantias?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Visible = true;
                 }
             }
         }
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
-            if (btnAgregar.Text == "Actualizar")
+            clasesglobales cg = new clasesglobales();
+            if (Request.QueryString.Count > 0)
             {
-                string strnombre = txbCesantias.Text.ToString().Replace("'", "");
-                if (strnombre.Length > 2)
+                if (Request.QueryString["editid"] != null)
                 {
-                    myConnection.Open();
-                    string strQuery = "UPDATE Cesantias " +
-                        "SET NombreCesantias = '" + strnombre + "' " +
-                        "WHERE idCesantias = " + ViewState["idCesantias"].ToString();
-                    OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                    command1.ExecuteNonQuery();
-                    command1.Dispose();
-                    myConnection.Close();
-
-                    //Response.Redirect("cesantias");
-                    listaCesantias();
-                    btnCancelar_Click(sender, e);
+                    string respuesta = cg.ActualizarArl(int.Parse(Request.QueryString["editid"].ToString()), txbCesantias.Text.ToString().Trim());
+                }
+                if (Request.QueryString["deleteid"] != null)
+                {
+                    string respuesta = cg.EliminarArl(int.Parse(Request.QueryString["deleteid"].ToString()));
+                }
+                Response.Redirect("arl");
+            }
+            else
+            {
+                if (!ValidarCesantias(txbCesantias.Text.ToString()))
+                {
+                    try
+                    {
+                        string respuesta = cg.InsertarArl(txbCesantias.Text.ToString().Trim());
+                    }
+                    catch (Exception ex)
+                    {
+                        string mensajeExcepcionInterna = string.Empty;
+                        Console.WriteLine(ex.Message);
+                        if (ex.InnerException != null)
+                        {
+                            mensajeExcepcionInterna = ex.InnerException.Message;
+                            Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
+                        }
+                        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        "Excepción interna." +
+                        "</div>";
+                    }
+                    Response.Redirect("arl");
                 }
                 else
                 {
                     ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
                         "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "El nombre del fondo de cesantías no puede ser vacío y debe tener al menos 3 caracteres." +
+                        "Ya existe una ARL con ese nombre." +
                         "</div>";
                 }
             }
-            else
+        }
+
+        protected void lbExportarExcel_Click(object sender, EventArgs e)
+        {
+            try
             {
-                if (btnAgregar.Text == "Confirmar borrado")
-                {
-                    //Buscar idCesantias en tabla Empleados, si existe, no se puede borrar.
-                    if (!ValidarIdCesantias(ViewState["idCesantias"].ToString()))
-                    {
-                        myConnection.Open();
-                        string strQuery = "DELETE FROM Cesantias " +
-                            "WHERE idCesantias = " + ViewState["idCesantias"].ToString();
-                        OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                        command1.ExecuteNonQuery();
-                        command1.Dispose();
-                        myConnection.Close();
+                DataTable dt = new DataTable();
+                clasesglobales cg = new clasesglobales();
+                dt = cg.ConsultarArls();
 
-                        //Response.Redirect("cesantias");
-                        listaCesantias();
-                        btnCancelar_Click(sender, e);
-                    }
-                    else
-                    {
-                        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                            "Este fondo de cesantías está asociado al menos a un empleado. No se puede eliminar." +
-                            "</div>";
-                    }
-                }
-                else
+                using (XLWorkbook libro = new XLWorkbook())
                 {
-                    if (btnAgregar.Text == "Agregar")
+                    var hoja = libro.Worksheets.Add(dt, "Arls");
+                    hoja.ColumnsUsed().AdjustToContents();
+                    Response.Clear();
+                    Response.Buffer = true;
+                    Response.Charset = "";
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    Response.AddHeader("content-disposition", "attachment;filename=arls.xlsx");
+                    using (MemoryStream myMemoryStream = new MemoryStream())
                     {
-                        string strnombre = txbCesantias.Text.ToString().Replace("'", "");
-                        if (strnombre.Length > 2)
-                        {
-                            if (!ValidarCesantias(strnombre))
-                            {
-                                myConnection.Open();
-                                string strQuery = "INSERT INTO Cesantias " +
-                                    "(NombreCesantias) VALUES ('" + strnombre + "') ";
-                                OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                                command1.ExecuteNonQuery();
-                                command1.Dispose();
-                                myConnection.Close();
-
-                                //Response.Redirect("cesantias");
-                                listaCesantias();
-                                btnCancelar_Click(sender, e);
-                            }
-                            else
-                            {
-                                ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Ya existe un fondo de cesantías con ese nombre." +
-                                    "</div>";
-                            }
-                        }
-                        else
-                        {
-                            ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                "El nombre del fondo de cesantías no puede ser vacío y debe tener al menos 3 caracteres." +
-                                "</div>";
-                        }
+                        libro.SaveAs(myMemoryStream);
+                        Response.BinaryWrite(myMemoryStream.ToArray());
+                        Response.Flush();
+                        Response.End();
                     }
                 }
             }
-        }
-
-        protected void lbEliminar_Click(object sender, EventArgs e)
-        {
-            ViewState["idCesantias"] = ((LinkButton)sender).CommandArgument;
-            string strQuery = "SELECT * FROM Cesantias WHERE idCesantias = " + ((LinkButton)sender).CommandArgument;
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-            if (dt.Rows.Count > 0)
+            catch (Exception)
             {
-                txbCesantias.Text = dt.Rows[0]["NombreCesantias"].ToString();
-                txbCesantias.Enabled = false;
-                btnAgregar.Text = "Confirmar borrado";
-                ltTitulo.Text = "Borrar fondo de cesantías";
+                throw;
             }
-        }
-
-        protected void lbEditar_Click(object sender, EventArgs e)
-        {
-            ViewState["idCesantias"] = ((LinkButton)sender).CommandArgument;
-            string strQuery = "SELECT * FROM Cesantias WHERE idCesantias = " + ((LinkButton)sender).CommandArgument;
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-            if (dt.Rows.Count > 0)
-            {
-                txbCesantias.Text = dt.Rows[0]["NombreCesantias"].ToString();
-                btnAgregar.Text = "Actualizar";
-                ltTitulo.Text = "Actualizar fondo de cesantías";
-            }
-        }
-
-        protected void btnCancelar_Click(object sender, EventArgs e)
-        {
-            txbCesantias.Text = "";
-            txbCesantias.Enabled = true;
-            listaCesantias();
-            ltMensaje.Text = "";
-            btnAgregar.Text = "Agregar";
         }
     }
 }

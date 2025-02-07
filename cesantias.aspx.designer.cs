@@ -60,24 +60,6 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlForm form;
 
         /// <summary>
-        /// Control ScriptManager1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.ScriptManager ScriptManager1;
-
-        /// <summary>
-        /// Control upPerfiles.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upPerfiles;
-
-        /// <summary>
         /// Control divContenido.
         /// </summary>
         /// <remarks>
@@ -105,13 +87,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbCesantias;
 
         /// <summary>
-        /// Control btnCancelar.
+        /// Control rfvCesantiasx.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCancelar;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCesantiasx;
 
         /// <summary>
         /// Control btnAgregar.
@@ -141,13 +123,13 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBotonesLista;
 
         /// <summary>
-        /// Control btnImprimir.
+        /// Control lbExportarExcel.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor btnImprimir;
+        protected global::System.Web.UI.WebControls.LinkButton lbExportarExcel;
 
         /// <summary>
         /// Control rpCesantias.

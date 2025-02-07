@@ -21,13 +21,17 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
+    <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
     <style type="text/css" media="print">
-        body { visibility: hidden; display: none }
+        body {
+            visibility: hidden;
+            display: none
+        }
     </style>
 
     <script>
@@ -148,18 +152,22 @@
                                                         <asp:ListItem Text="Jurídica" Value="Jurídica"></asp:ListItem>
                                                         <asp:ListItem Text="Otro" Value="Otro"></asp:ListItem>
                                                     </asp:DropDownList>
+                                                    <asp:RequiredFieldValidator ID="rfvAreas" runat="server" ErrorMessage="* Campo requerido" 
+                                                        ControlToValidate="ddlAreas" ValidationGroup="agregar" InitialValue="" 
+                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Nombre de la profesión:</label>
                                                     <asp:TextBox ID="txbProfesion" name="txbProfesion" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="rfvProfesion" runat="server" ErrorMessage="* Campo requerido" 
+                                                        ControlToValidate="txbProfesion" ValidationGroup="agregar" 
+                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group">
-                                                    <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" 
-                                                        CssClass="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md" 
-                                                        OnClick="btnCancelar_Click" formnovalidate />
+                                                    <a href="cesantias" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar" 
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" 
-                                                        OnClick="btnAgregar_Click" />
+                                                        OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
                                                 </div>
                                                 <br />
                                                 <br />
@@ -184,70 +192,52 @@
                                     <div class="ibox-content">
 
                                         <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
-                                            <div class="col-lg-5 form-horizontal">
+                                            <div class="col-lg-6 form-horizontal">
                                                 <div class="form-group">
-                                                    <label class="col-lg-4 control-label" style="text-align: left;">Buscador:</label>
-                                                    <div class="col-lg-8">
-                                                        <input type="text" placeholder="Buscar..." class="form-control input-sm m-b-xs" id="filter">
-                                                    </div>
+                                                    <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-5 form-horizontal" style="text-align: center;">
-                                                <label class="control-label">Mostrar </label>
-
-                                                <a href="#" class="data-page-size" data-page-size="10">10</a> | 
-                                                <a href="#" class="data-page-size" data-page-size="20">20</a> | 
-                                                <a href="#" class="data-page-size" data-page-size="50">50</a> | 
-                                                <a href="#" class="data-page-size" data-page-size="100">100</a>
-
-                                                <label class="control-label">registros</label>
-                                            </div>
-                                            <div class="col-lg-2 form-horizontal">
-                                                <a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
-                                                    target="_blank" runat="server" id="btnImprimir" 
-                                                    href="imprimirprofesiones" title="Imprimir"><i class="fa fa-print"></i> IMPRIMIR</a>
+                                            <div class="col-lg-6 form-horizontal">
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" 
+                                                    CausesValidation="false" 
+                                                    CssClass="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
+                                                    OnClick="lbExportarExcel_Click" >
+                                                    <i class="fa fa-file-excel"></i> EXCEL
+                                                </asp:LinkButton>
                                             </div>
                                         </div>
 
-
-                                        <table class="footable table" data-page-size="10" data-filter="#filter" data-filter-minimum="3">
+                                        <table class="footable table table-striped" data-paging-size="10" 
+                                            data-filter-min="3" data-filter-placeholder="Buscar" 
+                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" 
+                                            data-paging-limit="10" data-filtering="true" 
+                                            data-filter-container="#filter-form-container" data-filter-delay="300" 
+                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" 
+                                            data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th width="30%" data-sort-initial="true">Área</th>
                                                     <th width="50%">Profesión</th>
-                                                    <th data-sort-ignore="true" data-toggle="false" class="text-right"
-                                                        style="display: flex; flex-wrap: nowrap; width: 100%;">Acciones</th>
+                                                    <th width="30%">Área</th>
+                                                    <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <asp:Repeater ID="rpProfesiones" runat="server" OnItemDataBound="rpProfesiones_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
-                                                            <td><%# Eval("Area") %></td>
                                                             <td><%# Eval("Profesion") %></td>
-                                                            <td style="display: flex; flex-wrap: nowrap; width: 100%;">
-                                                                <button runat="server" id="btnEditar" class="btn btn-outline btn-primary pull-left m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false">
-                                                                    <i class="fa fa-edit"></i>
-                                                                </button>
-                                                                <button runat="server" id="btnEliminar" class="btn btn-outline btn-danger pull-right"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false">
-                                                                    <i class="fa fa-trash"></i>
-                                                                </button>
+                                                            <td><%# Eval("Area") %></td>
+                                                            <td>
+                                                                <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                                <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
                                                             </td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
                                             </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <td colspan="3">
-                                                        <ul class="pagination"></ul>
-                                                    </td>
-                                                </tr>
-                                            </tfoot>
                                         </table>
-
                                     </div>
                                 </div>
                             </div>
@@ -271,46 +261,16 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
-    <script src="js/plugins/footable/footable.all.min.js"></script>
+    <%--<script src="js/plugins/footable/footable.all.min.js"></script>--%>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
-    <!-- Jquery Validate -->
-    <script src="js/plugins/validate/jquery.validate.min.js"></script>
-
     <!-- Page-Level Scripts -->
     <script>
-        $(document).ready(function () {
-            $("#form").validate({
-                rules: {
-                    txbProfesion: {
-                        required: true,
-                        minlength: 3
-                    },
-                    ddlAreas: {
-                        required: true
-                    },
-                }
-            });
-        });
-
         $('.footable').footable();
-
-        $('.data-page-size').on('click', function (e) {
-            e.preventDefault();
-            var newSize = $(this).data('pageSize');
-            $('.footable').data('page-size', newSize);
-            $('.footable').trigger('footable_initialized');
-        });
-
-        $('.toggle').click(function (e) {
-            e.preventDefault();
-            $('.toggle').toggle();
-            $('.footable').trigger($(this).data('trigger')).trigger('footable_redraw');
-        });
-
     </script>
 
 </body>

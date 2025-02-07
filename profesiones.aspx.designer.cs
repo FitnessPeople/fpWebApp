@@ -87,6 +87,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlAreas;
 
         /// <summary>
+        /// Control rfvAreas.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvAreas;
+
+        /// <summary>
         /// Control txbProfesion.
         /// </summary>
         /// <remarks>
@@ -96,13 +105,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbProfesion;
 
         /// <summary>
-        /// Control btnCancelar.
+        /// Control rfvProfesion.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCancelar;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvProfesion;
 
         /// <summary>
         /// Control btnAgregar.
@@ -132,13 +141,13 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBotonesLista;
 
         /// <summary>
-        /// Control btnImprimir.
+        /// Control lbExportarExcel.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor btnImprimir;
+        protected global::System.Web.UI.WebControls.LinkButton lbExportarExcel;
 
         /// <summary>
         /// Control rpProfesiones.

@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
+using System.IO;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using ClosedXML.Excel;
 
 namespace fpWebApp
 {
@@ -34,12 +36,12 @@ namespace fpWebApp
                         if (ViewState["Consulta"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            btnImprimir.Visible = false;
+                            lbExportarExcel.Visible = false;
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            btnImprimir.Visible = true;
+                            lbExportarExcel.Visible = true;
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
@@ -47,7 +49,7 @@ namespace fpWebApp
                         }
                     }
                     
-                    listaPaginas();
+                    ListaProfesiones();
                     ltTitulo.Text = "Agregar profesión";
 
                     if (Request.QueryString.Count > 0)
@@ -56,21 +58,59 @@ namespace fpWebApp
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
-                            string strQuery = "SELECT * FROM Profesiones WHERE idProfesion = " + Request.QueryString["editid"].ToString();
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.TraerDatos(strQuery);
+                            DataTable dt = cg.ConsultarArlPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
                                 txbProfesion.Text = dt.Rows[0]["Profesion"].ToString();
-                                ddlAreas.SelectedIndex = Convert.ToInt16(ddlAreas.Items.IndexOf(ddlAreas.Items.FindByText(dt.Rows[0]["Area"].ToString())));
+                                ddlAreas.SelectedIndex = Convert.ToInt16(ddlAreas.Items.IndexOf(ddlAreas.Items.FindByValue(dt.Rows[0]["Area"].ToString())));
+
                                 btnAgregar.Text = "Actualizar";
-                                //btnCancelar.Visible = true;
-                                ltTitulo.Text = "Actualizar página";
+                                ltTitulo.Text = "Actualizar Profesión";
                             }
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
-                            //Borrar
+                            clasesglobales cg = new clasesglobales();
+                            DataTable dt = cg.ValidarArlEmpleados(Request.QueryString["deleteid"].ToString());
+                            if (dt.Rows.Count > 0)
+                            {
+                                ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                    "Esta Profesión no se puede borrar, hay registros asociados a ella." +
+                                    "</div></div>";
+
+                                DataTable dt1 = new DataTable();
+                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                if (dt1.Rows.Count > 0)
+                                {
+                                    txbProfesion.Text = dt1.Rows[0]["Profesion"].ToString();
+                                    txbProfesion.Enabled = false;
+                                    ddlAreas.SelectedIndex = Convert.ToInt16(ddlAreas.Items.IndexOf(ddlAreas.Items.FindByValue(dt1.Rows[0]["Area"].ToString())));
+                                    ddlAreas.Enabled = false;
+                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                                    btnAgregar.Enabled = false;
+                                    ltTitulo.Text = "Borrar Profesión";
+                                }
+                                dt1.Dispose();
+                            }
+                            else
+                            {
+                                //Borrar
+                                DataTable dt1 = new DataTable();
+                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                if (dt1.Rows.Count > 0)
+                                {
+                                    txbProfesion.Text = dt1.Rows[0]["NombreArl"].ToString();
+                                    txbProfesion.Enabled = false;
+                                    ddlAreas.SelectedIndex = Convert.ToInt16(ddlAreas.Items.IndexOf(ddlAreas.Items.FindByValue(dt1.Rows[0]["Area"].ToString())));
+                                    ddlAreas.Enabled = false;
+                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                                    ltTitulo.Text = "Borrar Profesión";
+                                }
+                                dt1.Dispose();
+                            }
                         }
                     }
                 }
@@ -89,15 +129,8 @@ namespace fpWebApp
             ViewState["CrearModificar"] = "0";
             ViewState["Borrar"] = "0";
 
-            string strQuery = "SELECT SinPermiso, Consulta, Exportar, CrearModificar, Borrar " +
-                "FROM permisos_perfiles pp, paginas p, usuarios u " +
-                "WHERE pp.idPagina = p.idPagina " +
-                "AND p.Pagina = '" + strPagina + "' " +
-                "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
-                "AND u.idPerfil = pp.idPerfil " +
-                "AND u.idUsuario = " + Session["idusuario"].ToString();
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -107,80 +140,77 @@ namespace fpWebApp
                 ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
                 ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
             }
-
             dt.Dispose();
         }
 
-        private void listaPaginas()
+        private void ListaProfesiones()
         {
-            string strQuery = "SELECT * FROM Profesiones";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
+            DataTable dt = cg.ConsultarArls();
             rpProfesiones.DataSource = dt;
             rpProfesiones.DataBind();
-
             dt.Dispose();
         }
 
         private bool ValidarProfesion(string strNombre)
         {
             bool bExiste = false;
-
-            string strQuery = "SELECT * FROM Profesiones WHERE Profesion = '" + strNombre.Trim() + "' ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
+            DataTable dt = cg.ConsultarCiudadesPorNombre(strNombre);
             if (dt.Rows.Count > 0)
             {
                 bExiste = true;
             }
-
+            dt.Dispose();
             return bExiste;
         }
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
+            clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    string strProfesion = txbProfesion.Text.ToString().Replace("'", "");
-                    myConnection.Open();
-                    string strQuery = "UPDATE Profesiones " +
-                        "SET Profesion = '" + strProfesion + "', " +
-                        "Area = '" + ddlAreas.SelectedItem.Value.ToString() + "' " +
-                        "WHERE idProfesion = " + Request.QueryString["editid"].ToString();
-                    OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                    command1.ExecuteNonQuery();
-                    command1.Dispose();
-                    myConnection.Close();
-
-                    Response.Redirect("profesiones");
+                    string respuesta = cg.ActualizarCiudad(int.Parse(Request.QueryString["editid"].ToString()), txbProfesion.Text.ToString().Trim(), ddlAreas.SelectedItem.Text.ToString(), ddlAreas.SelectedItem.Value.ToString());
                 }
+
+                if (Request.QueryString["deleteid"] != null)
+                {
+                    string respuesta = cg.EliminarCiudad(int.Parse(Request.QueryString["deleteid"].ToString()));
+                }
+                Response.Redirect("profesiones");
             }
             else
             {
                 if (!ValidarProfesion(txbProfesion.Text.ToString()))
                 {
-                    string strProfesion = txbProfesion.Text.ToString().Replace("'", "");
-                    myConnection.Open();
-                    string strQuery = "INSERT INTO Profesiones " +
-                        "(Profesion, Area) VALUES ('" + strProfesion + "', '" + ddlAreas.SelectedItem.Value.ToString() + "') ";
-                    OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                    command1.ExecuteNonQuery();
-                    command1.Dispose();
-                    myConnection.Close();
-
+                    try
+                    {
+                        string respuesta = cg.InsertarCiudad(txbProfesion.Text.ToString().Trim(), "", ddlAreas.SelectedItem.Text.ToString(), ddlAreas.SelectedItem.Value.ToString(), "Colombia", "Co");
+                    }
+                    catch (Exception ex)
+                    {
+                        string mensajeExcepcionInterna = string.Empty;
+                        Console.WriteLine(ex.Message);
+                        if (ex.InnerException != null)
+                        {
+                            mensajeExcepcionInterna = ex.InnerException.Message;
+                            Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
+                        }
+                        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        "Excepción interna." +
+                        "</div>";
+                    }
                     Response.Redirect("profesiones");
                 }
                 else
                 {
                     ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Ya existe una profesión con ese nombre." +
-                        "</div>";
+                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                    "Ya existe una Profesion con ese nombre." +
+                    "</div>";
                 }
             }
         }
@@ -191,22 +221,49 @@ namespace fpWebApp
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
-                    HtmlButton btnEditar = (HtmlButton)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("onClick", "window.location.href='profesiones?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
-                    btnEditar.Visible = true;
+                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                    btnEliminar.Attributes.Add("href", "profesiones?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
-                    HtmlButton btnEliminar = (HtmlButton)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("onClick", "window.location.href='profesiones?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
-                    btnEliminar.Visible = true;
+                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("href", "profesiones?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Visible = true;
                 }
             }
         }
 
-        protected void btnCancelar_Click(object sender, EventArgs e)
+        protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
-            Response.Redirect("profesiones");
+            try
+            {
+                DataTable dt = new DataTable();
+                clasesglobales cg = new clasesglobales();
+                dt = cg.ConsultarCiudades();
+
+                using (XLWorkbook libro = new XLWorkbook())
+                {
+                    var hoja = libro.Worksheets.Add(dt, "Ciudades");
+                    hoja.ColumnsUsed().AdjustToContents();
+                    Response.Clear();
+                    Response.Buffer = true;
+                    Response.Charset = "";
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    Response.AddHeader("content-disposition", "attachment;filename=ciudades.xlsx");
+                    using (MemoryStream myMemoryStream = new MemoryStream())
+                    {
+                        libro.SaveAs(myMemoryStream);
+                        Response.BinaryWrite(myMemoryStream.ToArray());
+                        Response.Flush();
+                        Response.End();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

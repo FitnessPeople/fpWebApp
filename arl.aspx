@@ -21,11 +21,6 @@
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
-<%--    <link href="css/plugins/dataTables/datatables.min.css" rel="stylesheet" />
-    <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
-    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
-    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />--%>
-
     <!-- FooTable -->
     <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
@@ -152,7 +147,9 @@
                                                 <div class="form-group">
                                                     <label>Nombre de la ARL:</label>
                                                     <asp:TextBox ID="txbArl" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="rfvArl" runat="server" ErrorMessage="* Campo requerido" ControlToValidate="txbArl" ValidationGroup="agregar" CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                    <asp:RequiredFieldValidator ID="rfvArl" runat="server" ErrorMessage="* Campo requerido" 
+                                                        ControlToValidate="txbArl" ValidationGroup="agregar" 
+                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group">
                                                     <a href="arl" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
@@ -184,13 +181,16 @@
 
                                         <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
                                             <div class="col-lg-6 form-horizontal">
-                                                <div class="form-group" id="filter-form-container" style="margin-left: 15px;"></div>
+                                                <div class="form-group">
+                                                    <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
+                                                </div>
                                             </div>
  
                                             <div class="col-lg-6 form-horizontal">
                                                 <asp:LinkButton ID="lbExportarExcel" runat="server" 
                                                     CausesValidation="false" 
-                                                    CssClass="excelexport btn btn-info pull-right dim m-l-md" style="font-size: 12px;">
+                                                    CssClass="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
+                                                    OnClick="lbExportarExcel_Click">
                                                     <i class="fa fa-file-excel"></i> EXCEL
                                                 </asp:LinkButton>
                                             </div>
@@ -254,30 +254,7 @@
 
     <!-- Page-Level Scripts -->
     <script>
-        $(".excelexport").on("click", function (e) {
-            var filename = "arls.csv";
-            var csv = FooTable.get('.footable').toCSV();
-            var blob = new Blob([csv], {
-                type: "application/csv;charset=utf-8;"
-            });
-            if (window.navigator.msSaveBlob) {
-                // FOR IE BROWSER
-                navigator.msSaveBlob(blob, filename);
-            } else {
-                // FOR OTHER BROWSERS
-                var link = document.createElement("a");
-                var csvUrl = URL.createObjectURL(blob);
-                link.href = csvUrl;
-                link.style = "visibility:hidden";
-                link.download = filename;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-        });
-
         $('.footable').footable();
-
     </script>
 
 </body>

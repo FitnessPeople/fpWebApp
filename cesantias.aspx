@@ -15,19 +15,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Fondos de Cesantías</title>
+    <title>Fitness People | Cesantias</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
-    <link href="css/plugins/dataTables/datatables.min.css" rel="stylesheet" />
-    <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
-    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
-    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
-
     <!-- FooTable -->
-    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
+    <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -133,132 +129,105 @@
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
                     <form role="form" id="form" runat="server">
-                        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-                        <asp:UpdatePanel ID="upPerfiles" runat="server" UpdateMode="Always" ChildrenAsTriggers="true">
-                            <ContentTemplate>
-                                <div class="row" id="divContenido" runat="server">
-                                    <div class="col-lg-4">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title">
-                                                <h5>
-                                                    <asp:Literal ID="ltTitulo" runat="server"></asp:Literal></h5>
-                                                <div class="ibox-tools">
-                                                    <a class="collapse-link">
-                                                        <i class="fa fa-chevron-up"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <div class="form-group">
-                                                            <label>Nombre del Fondo de Cesantías:</label>
-                                                            <asp:TextBox ID="txbCesantias" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <asp:Button ID="btnCancelar" CssClass="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md" 
-                                                                runat="server" Text="Cancelar" OnClick="btnCancelar_Click" />
-                                                            <asp:Button ID="btnAgregar" runat="server" Text="Agregar" 
-                                                                CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" 
-                                                                OnClick="btnAgregar_Click" Visible="false" />
-                                                        </div>
-                                                        <br />
-                                                        <br />
-                                                        <div class="form-group">
-                                                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                        <div class="row" id="divContenido" runat="server">
+                            <div class="col-lg-4">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>
+                                            <asp:Literal ID="ltTitulo" runat="server"></asp:Literal></h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
                                         </div>
                                     </div>
-                                    <div class="col-lg-8">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title">
-                                                <h5>Lista de Fondos de Cesantías</h5>
-                                                <div class="ibox-tools">
-                                                    <a class="collapse-link">
-                                                        <i class="fa fa-chevron-up"></i>
-                                                    </a>
+                                    <div class="ibox-content">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>Nombre del Fondo de Cesantías:</label>
+                                                    <asp:TextBox ID="txbCesantias" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="rfvCesantiasx" runat="server" ErrorMessage="* Campo requerido" 
+                                                        ControlToValidate="txbCesantias" ValidationGroup="agregar" 
+                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                 </div>
-                                            </div>
-                                            <div class="ibox-content">
-
-                                                <div class="row" runat="server" id="divBotonesLista">
-                                                    <div class="col-lg-5 form-horizontal">
-                                                        <div class="form-group">
-                                                            <label class="col-lg-4 control-label" style="text-align: left;">Buscador:</label>
-                                                            <div class="col-lg-8">
-                                                                <input type="text" placeholder="Buscar..." class="form-control input-sm m-b-xs" id="filter">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-5 form-horizontal" style="text-align: center;">
-                                                        <label class="control-label">Mostrar </label>
-
-                                                        <a href="#" class="data-page-size" data-page-size="10">10</a> | 
-                                                        <a href="#" class="data-page-size" data-page-size="20">20</a>
-
-                                                        <label class="control-label">registros</label>
-                                                    </div>
-                                                    <div class="col-lg-2 form-horizontal">
-                                                        <a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
-                                                            target="_blank" runat="server" id="btnImprimir" 
-                                                            href="imprimircesantias" title="Imprimir"><i class="fa fa-print"></i> IMPRIMIR</a>
-                                                    </div>
+                                                <div class="form-group">
+                                                    <a href="cesantias" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar" 
+                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" 
+                                                        OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
                                                 </div>
-
-                                                <table class="footable table" data-page-size="10" data-filter="#filter" data-filter-minimum="3">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="80%" data-sort-initial="true">Fondo de Cesantías</th>
-                                                            <th data-sort-ignore="true" data-toggle="false" class="text-right">Acciones</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <asp:Repeater ID="rpCesantias" runat="server" OnItemDataBound="rpCesantias_ItemDataBound">
-                                                            <ItemTemplate>
-                                                                <tr class="feed-element">
-                                                                    <td><%# Eval("NombreCesantias") %></td>
-                                                                    <td>
-                                                                        <asp:LinkButton ID="lbEliminar" runat="server" OnClick="lbEliminar_Click" 
-                                                                            ClientIDMode="AutoID" CssClass="btn btn-outline btn-danger pull-right" 
-                                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false">
-                                                                            <i class="fa fa-trash"></i></asp:LinkButton>
-                                                                        <asp:LinkButton ID="lbEditar" runat="server" OnClick="lbEditar_Click" 
-                                                                            ClientIDMode="AutoID" CssClass="btn btn-outline btn-primary pull-right m-r-xs" 
-                                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false">
-                                                                            <i class="fa fa-edit"></i></asp:LinkButton>
-                                                                        <%--<button runat="server" id="btnEliminar" class="btn btn-outline btn-danger pull-right"
-                                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false">
-                                                                            <i class="fa fa-trash"></i>
-                                                                        </button>
-                                                                        <button runat="server" id="btnEditar" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false">
-                                                                            <i class="fa fa-edit"></i>
-                                                                        </button>--%>
-                                                                    </td>
-                                                                </tr>
-                                                            </ItemTemplate>
-                                                        </asp:Repeater>
-                                                    </tbody>
-                                                    <tfoot>
-                                                        <tr>
-                                                            <td colspan="7">
-                                                                <ul class="pagination"></ul>
-                                                            </td>
-                                                        </tr>
-                                                    </tfoot>
-                                                </table>
+                                                <br />
+                                                <br />
+                                                <div class="form-group">
+                                                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </ContentTemplate>
-                            <Triggers>
-                                
-                            </Triggers>
-                        </asp:UpdatePanel>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Lista de Fondos de Cesantías</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+
+                                        <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
+                                            <div class="col-lg-6 form-horizontal">
+                                                <div class="form-group">
+                                                    <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 form-horizontal">
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" 
+                                                    CausesValidation="false" 
+                                                    CssClass="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
+                                                    OnClick="lbExportarExcel_Click" >
+                                                    <i class="fa fa-file-excel"></i> EXCEL
+                                                </asp:LinkButton>
+                                            </div>
+                                        </div>
+
+                                        <table class="footable table table-striped" data-paging-size="10" 
+                                            data-filter-min="3" data-filter-placeholder="Buscar" 
+                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" 
+                                            data-paging-limit="10" data-filtering="true" 
+                                            data-filter-container="#filter-form-container" data-filter-delay="300" 
+                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" 
+                                            data-empty="Sin resultados">
+                                            <thead>
+                                                <tr>
+                                                    <th width="80%">Fondo de Cesantías</th>
+                                                    <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:Repeater ID="rpCesantias" runat="server" OnItemDataBound="rpCesantias_ItemDataBound">
+                                                    <ItemTemplate>
+                                                        <tr class="feed-element">
+                                                            <td><%# Eval("NombreCesantias") %></td>
+                                                            <td>
+                                                                <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                                <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                     <%--Fin Contenido!!!!--%>
                 </div>
@@ -275,43 +244,16 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
-    <script src="js/plugins/footable/footable.all.min.js"></script>
+    <%--<script src="js/plugins/footable/footable.all.min.js"></script>--%>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
-    <!-- Jquery Validate -->
-    <script src="js/plugins/validate/jquery.validate.min.js"></script>
-
     <!-- Page-Level Scripts -->
     <script>
-        $(document).ready(function () {
-            $("#form").validate({
-                rules: {
-                    txbCesantias: {
-                        required: true,
-                        minlength: 3
-                    },
-                }
-            });
-        });
-
         $('.footable').footable();
-
-        $('.data-page-size').on('click', function (e) {
-            e.preventDefault();
-            var newSize = $(this).data('pageSize');
-            $('.footable').data('page-size', newSize);
-            $('.footable').trigger('footable_initialized');
-        });
-
-        $('.toggle').click(function (e) {
-            e.preventDefault();
-            $('.toggle').toggle();
-            $('.footable').trigger($(this).data('trigger')).trigger('footable_redraw');
-        });
-
     </script>
 
 </body>

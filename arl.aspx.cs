@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Odbc;
+using System.IO;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using ClosedXML.Excel;
 
 namespace fpWebApp
 {
@@ -36,13 +38,11 @@ namespace fpWebApp
                         if (ViewState["Consulta"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            //btnImprimir.Visible = false;
                             lbExportarExcel.Visible = false;
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            //btnImprimir.Visible = true;
                             lbExportarExcel.Visible = true;
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
@@ -50,7 +50,7 @@ namespace fpWebApp
                             btnAgregar.Visible = true;
                         }
                     }
-                    listaArl();
+                    ListaArl();
                     ltTitulo.Text = "Agregar ARL";
 
                     if (Request.QueryString.Count > 0)
@@ -59,9 +59,8 @@ namespace fpWebApp
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
-                            string strQuery = "SELECT * FROM arl WHERE idArl = " + Request.QueryString["editid"].ToString();
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.TraerDatos(strQuery);
+                            DataTable dt = cg.ConsultarArlPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
                                 txbArl.Text = dt.Rows[0]["NombreArl"].ToString();
@@ -71,16 +70,41 @@ namespace fpWebApp
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
-                            //Borrar
-                            string strQuery = "SELECT * FROM arl WHERE idArl = " + Request.QueryString["deleteid"].ToString();
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.TraerDatos(strQuery);
+                            DataTable dt = cg.ValidarArlEmpleados(Request.QueryString["deleteid"].ToString());
                             if (dt.Rows.Count > 0)
                             {
-                                txbArl.Text = dt.Rows[0]["NombreArl"].ToString();
-                                txbArl.Enabled = false;
-                                btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                ltTitulo.Text = "Borrar ARL";
+                                ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                    "Esta ARL no se puede borrar, hay empleados asociados a ella." +
+                                    "</div></div>";
+
+                                DataTable dt1 = new DataTable();
+                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                if (dt1.Rows.Count > 0)
+                                {
+                                    txbArl.Text = dt1.Rows[0]["NombreArl"].ToString();
+                                    txbArl.Enabled = false;
+                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                                    btnAgregar.Enabled = false;
+                                    ltTitulo.Text = "Borrar ARL";
+                                }
+                                dt1.Dispose();
+                            }
+                            else
+                            {
+                                //Borrar
+                                DataTable dt1 = new DataTable();
+                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                if (dt1.Rows.Count > 0)
+                                {
+                                    txbArl.Text = dt1.Rows[0]["NombreArl"].ToString();
+                                    txbArl.Enabled = false;
+                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                                    ltTitulo.Text = "Borrar ARL";
+                                }
+                                dt1.Dispose();
                             }
                         }
                     }
@@ -101,7 +125,7 @@ namespace fpWebApp
             ViewState["Borrar"] = "0";
 
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.validarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -115,15 +139,12 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void listaArl()
+        private void ListaArl()
         {
-            string strQuery = "SELECT * FROM arl ORDER BY NombreArl";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
+            DataTable dt = cg.ConsultarArls();
             rpArl.DataSource = dt;
             rpArl.DataBind();
-
             dt.Dispose();
         }
 
@@ -149,50 +170,30 @@ namespace fpWebApp
         private bool ValidarArl(string strNombre)
         {
             bool bExiste = false;
-
-            string strQuery = "SELECT * FROM arl WHERE NombreArl = '" + strNombre.Trim() + "' ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
+            DataTable dt = cg.ConsultarArlPorNombre(strNombre);
             if (dt.Rows.Count > 0)
             {
                 bExiste = true;
             }
-
+            dt.Dispose();
             return bExiste;
         }
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            //clasesglobales cg = new clasesglobales();
+            clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    try
-                    {
-                        string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-                        using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
-                        {
-                            mysqlConexion.Open();
-                            string strnombre = txbArl.Text.ToString().Replace("'", "");
-                            string strQuery = "UPDATE arl " +
-                                "SET NombreArl = '" + strnombre + "' " +
-                                "WHERE idArl = " + Request.QueryString["editid"].ToString();
-                            using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
-                            {
-                                cmd.ExecuteNonQuery();
-                            }
-                            mysqlConexion.Close();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        string strMensaje = ex.Message;
-                    }
-
-                    Response.Redirect("arl");
+                    string respuesta = cg.ActualizarArl(int.Parse(Request.QueryString["editid"].ToString()), txbArl.Text.ToString().Trim());
                 }
+                if (Request.QueryString["deleteid"] != null)
+                {
+                    string respuesta = cg.EliminarArl(int.Parse(Request.QueryString["deleteid"].ToString()));
+                }
+                Response.Redirect("arl");
             }
             else
             {
@@ -200,25 +201,22 @@ namespace fpWebApp
                 {
                     try
                     {
-                        string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-                        using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
-                        {
-                            mysqlConexion.Open();
-                            string strnombre = txbArl.Text.ToString().Replace("'", "");
-                            string strQuery = "INSERT INTO arl " +
-                                "(NombreArl) VALUES ('" + strnombre + "') ";
-                            using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
-                            {
-                                cmd.ExecuteNonQuery();
-                            }
-                            mysqlConexion.Close();
-                        }
+                        string respuesta = cg.InsertarArl(txbArl.Text.ToString().Trim());
                     }
                     catch (Exception ex)
                     {
-                        string strMensaje = ex.Message;
+                        string mensajeExcepcionInterna = string.Empty;
+                        Console.WriteLine(ex.Message);
+                        if (ex.InnerException != null)
+                        {
+                            mensajeExcepcionInterna = ex.InnerException.Message;
+                            Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
+                        }
+                        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        "Excepción interna." +
+                        "</div>";
                     }
-
                     Response.Redirect("arl");
                 }
                 else
@@ -228,6 +226,38 @@ namespace fpWebApp
                         "Ya existe una ARL con ese nombre." +
                         "</div>";
                 }
+            }
+        }
+
+        protected void lbExportarExcel_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                clasesglobales cg = new clasesglobales();
+                dt = cg.ConsultarArls();
+
+                using (XLWorkbook libro = new XLWorkbook())
+                {
+                    var hoja = libro.Worksheets.Add(dt, "Arls");
+                    hoja.ColumnsUsed().AdjustToContents();
+                    Response.Clear();
+                    Response.Buffer = true;
+                    Response.Charset = "";
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    Response.AddHeader("content-disposition", "attachment;filename=arls.xlsx");
+                    using (MemoryStream myMemoryStream = new MemoryStream())
+                    {
+                        libro.SaveAs(myMemoryStream);
+                        Response.BinaryWrite(myMemoryStream.ToArray());
+                        Response.Flush();
+                        Response.End();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
     }
