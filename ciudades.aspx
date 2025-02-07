@@ -147,12 +147,17 @@
                                                         CssClass="form-control input-sm">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
-                                                        <asp:RequiredFieldValidator ID="rfvDepartamentos" runat="server" ErrorMessage="* Campo requerido" CssClass="text-danger font-bold" ControlToValidate="ddlDepartamentos" InitialValue="" ValidationGroup="agregar"></asp:RequiredFieldValidator>
+                                                        <asp:RequiredFieldValidator ID="rfvDepartamentos" runat="server" 
+                                                            ErrorMessage="* Campo requerido" CssClass="text-danger font-bold" 
+                                                            ControlToValidate="ddlDepartamentos" InitialValue="" 
+                                                            ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                                 </div>
                                                  <div class="form-group">
                                                     <label>Nombre de la ciudad:</label>
                                                     <asp:TextBox ID="txbCiudad" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                     <asp:RequiredFieldValidator ID="rfvCiudad" runat="server" ErrorMessage="* Campo requerido" ControlToValidate="txbCiudad" CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
+                                                     <asp:RequiredFieldValidator ID="rfvCiudad" runat="server" 
+                                                         ErrorMessage="* Campo requerido" ControlToValidate="txbCiudad" 
+                                                         CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group">
                                                     <a href="ciudades" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>

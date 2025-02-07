@@ -145,10 +145,13 @@
                                         <div class="form-group">
                                             <label>Nombre del perfil:</label>
                                             <asp:TextBox ID="txbPerfil" runat="server" CssClass="form-control input-sm" placeholder="Perfil"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="rfvPerfil" runat="server" 
+                                                ErrorMessage="* Campo requerido" ControlToValidate="txbPerfil" 
+                                                CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                         </div>
                                         <div class="form-group">
                                             <a href="perfiles" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                            <asp:Button ID="btnAgregar" runat="server" Text="Agregar" CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" OnClick="btnAgregar_Click" Visible="false" />
+                                            <asp:Button ID="btnAgregar" runat="server" Text="Agregar" CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
                                         </div>
                                         <br />
                                         <br />
@@ -283,21 +286,8 @@
     <!-- Chosen -->
     <script src="js/plugins/chosen/chosen.jquery.js"></script>
 
-    <!-- Jquery Validate -->
-    <script src="js/plugins/validate/jquery.validate.min.js"></script>
-
     <!-- Page-Level Scripts -->
     <script>
-        $(document).ready(function () {
-            $("#form").validate({
-                rules: {
-                    txbPerfil: {
-                        required: true,
-                        minlength: 3
-                    },
-                }
-            });
-        });
 
         $('.footable').footable();
 

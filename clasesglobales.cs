@@ -791,7 +791,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public string ActualizarPagina(string nomnbrePagina, string categoria, int idPagina)
+        public string ActualizarPagina(int idPagina, string nombrePagina, string categoria)
         {
             string respuesta = string.Empty;
             try
@@ -807,7 +807,7 @@ namespace fpWebApp
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         // Parámetros de entrada
-                        cmd.Parameters.AddWithValue("@p_nombre_pagina", nomnbrePagina);
+                        cmd.Parameters.AddWithValue("@p_nombre_pagina", nombrePagina);
                         cmd.Parameters.AddWithValue("@p_categoria", categoria);
                         cmd.Parameters.AddWithValue("@p_id_pagina", idPagina);
 

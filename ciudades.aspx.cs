@@ -8,7 +8,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using ClosedXML.Excel;
 
 namespace fpWebApp
 {
@@ -36,12 +35,12 @@ namespace fpWebApp
                         if (ViewState["Consulta"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            //btnImprimir.Visible = false;
+                            lbExportarExcel.Visible = false;
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            //btnImprimir.Visible = true;
+                            lbExportarExcel.Visible = true;
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
@@ -248,34 +247,7 @@ namespace fpWebApp
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
-            try
-            {
-                DataTable dt = new DataTable();
-                clasesglobales cg = new clasesglobales();
-                dt = cg.ConsultarCiudades();
-
-                using (XLWorkbook libro = new XLWorkbook())
-                {
-                    var hoja = libro.Worksheets.Add(dt, "Ciudades");
-                    hoja.ColumnsUsed().AdjustToContents();
-                    Response.Clear();
-                    Response.Buffer = true;
-                    Response.Charset = "";
-                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                    Response.AddHeader("content-disposition", "attachment;filename=ciudades.xlsx");
-                    using (MemoryStream myMemoryStream = new MemoryStream())
-                    {
-                        libro.SaveAs(myMemoryStream);
-                        Response.BinaryWrite(myMemoryStream.ToArray());
-                        Response.Flush();
-                        Response.End();
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            
         }
     }
 }

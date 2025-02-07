@@ -187,8 +187,7 @@
                                             </div>
  
                                             <div class="col-lg-6 form-horizontal">
-                                                <asp:LinkButton ID="lbExportarExcel" runat="server" 
-                                                    CausesValidation="false" 
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false" 
                                                     CssClass="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
                                                     OnClick="lbExportarExcel_Click">
                                                     <i class="fa fa-file-excel"></i> EXCEL
