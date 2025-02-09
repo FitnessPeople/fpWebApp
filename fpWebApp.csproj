@@ -826,6 +826,7 @@
     <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebForms.js" />
     <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebServices.js" />
     <Content Include="sedes.aspx" />
+    <Content Include="tiposdocumento.aspx" />
     <Content Include="traspasos.aspx" />
     <Content Include="traspasosAfil.aspx" />
     <Content Include="usuarios.aspx" />
@@ -1349,6 +1350,13 @@
     </Compile>
     <Compile Include="sedes.aspx.designer.cs">
       <DependentUpon>sedes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="tiposdocumento.aspx.cs">
+      <DependentUpon>tiposdocumento.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="tiposdocumento.aspx.designer.cs">
+      <DependentUpon>tiposdocumento.aspx</DependentUpon>
     </Compile>
     <Compile Include="traspasos.aspx.cs">
       <DependentUpon>traspasos.aspx</DependentUpon>

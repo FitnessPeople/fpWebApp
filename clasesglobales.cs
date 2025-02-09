@@ -1123,5 +1123,220 @@ namespace fpWebApp
             return dt;
         }
 
+        public DataTable ConsultartiposDocumento()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_TIPOS_DOCUMENTO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultartiposDocumentoPorId(int idTipoDocumento)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_TIPO_DOC_POR_ID", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_tipo_doc", idTipoDocumento);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarTiposDocumentoPorNombre(string nombreTipoDocumento)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_TIPO_DOC_POR_NOMBRE", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_tipo_documento", nombreTipoDocumento);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+        public string InsertarTipoDocumento(string tipoDocumento, string siglaDocumento)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_TIPO_DOCUMENTO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_tipo_documento", tipoDocumento);
+                        cmd.Parameters.AddWithValue("@p_sigla_documento", siglaDocumento);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarTipoDocumento(int idTipoDocumento, string tipoDocumento, string sigladocumento)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open(); // Abrir conexión antes de usarla
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_TIPO_DOCUMENTO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Parámetros de entrada
+                        cmd.Parameters.AddWithValue("@p_id_tipo_documento", idTipoDocumento);
+                        cmd.Parameters.AddWithValue("@p_tipo_documento", tipoDocumento);
+                        cmd.Parameters.AddWithValue("@p_sigla_documento", sigladocumento);                        
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string EliminarTipoDocumento(int idTipoDocumento)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ELIMINAR_TIPO_DOCUMENTO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_tipo_documento", idTipoDocumento);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public DataTable ValidarTiposDocumentoTablas (int idTipoDocumento)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_VALIDAR_TIPO_DOCUMENTO_TABLAS", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_tipo_documento", idTipoDocumento);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
     }
 }
