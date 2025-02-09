@@ -327,6 +327,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="freepassAfil.aspx" />
+    <Content Include="genero.aspx" />
     <Content Include="Global.asax" />
     <Content Include="historiasclinicas.aspx" />
     <Content Include="img\a1.jpg" />
@@ -1129,6 +1130,13 @@
     </Compile>
     <Compile Include="freepassAfil.aspx.designer.cs">
       <DependentUpon>freepassAfil.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="genero.aspx.cs">
+      <DependentUpon>genero.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="genero.aspx.designer.cs">
+      <DependentUpon>genero.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
