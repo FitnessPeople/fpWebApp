@@ -1,19 +1,18 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.Odbc;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using ClosedXML.Excel;
-using System.IO;
+using System.Web.UI.WebControls.WebParts;
 
 namespace fpWebApp
 {
-    public partial class ciudadessedes : System.Web.UI.Page
+    public partial class tipodocumento : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -21,7 +20,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Ciudadessedes");
+                    ValidarPermisos("Tipos de documento");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -49,47 +48,47 @@ namespace fpWebApp
                             btnAgregar.Visible = true;
                         }
                     }
+                    ListaTiposDocumento();
+                    ltTitulo.Text = "Agregar Tipo de documento";
 
-                    listaCiudadesSedes();
-
-                    ltTitulo.Text = "Agregar Ciudad sede";
                     if (Request.QueryString.Count > 0)
                     {
-                        rpCiudadSede.Visible = false;
+                        rpTiposDoc.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = new DataTable();
-                            dt = cg.ConsultarCiudadSedePorId(int.Parse(Request.QueryString["editid"].ToString()));
+                            DataTable dt = cg.ConsultartiposDocumentoPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                txbCiudadSede.Text = dt.Rows[0]["NombreCiudadSede"].ToString();
+                                txbTipoDoc.Text = dt.Rows[0]["TipoDocumento"].ToString();
+                                txtSiglaDoc.Text = dt.Rows[0]["SiglaDocumento"].ToString();
                                 btnAgregar.Text = "Actualizar";
-                                ltTitulo.Text = "Actualizar Ciudad";
+                                ltTitulo.Text = "Actualizar Tipo documento";
                             }
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ValidarCiudadSedesTablas(Request.QueryString["deleteid"].ToString());
+                            DataTable dt = cg.ValidarTiposDocumentoTablas(Convert.ToInt32(Request.QueryString["deleteid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +
                                     "<div class=\"alert alert-danger alert-dismissable\">" +
                                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Esta Ciudad Sede no se puede borrar, hay empleados asociados a ella." +
+                                    "Este Tipo de documento no se puede borrar, hay registros asociados a ella." +
                                     "</div></div>";
 
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarCiudadSedePorId(int.Parse(Request.QueryString["deleteid"].ToString()));
-                                if (dt.Rows.Count > 0)
+                                dt1 = cg.ConsultartiposDocumentoPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                if (dt1.Rows.Count > 0)
                                 {
-                                    txbCiudadSede.Text = dt1.Rows[0]["NombreCiudadSede"].ToString();
-                                    txbCiudadSede.Enabled = false;
+                                    txbTipoDoc.Text = dt1.Rows[0]["TipoDocumento"].ToString();
+                                    txbTipoDoc.Enabled = false;
+                                    txtSiglaDoc.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     btnAgregar.Enabled = false;
-                                    ltTitulo.Text = "Borrar Ciudad Sede";
+                                    ltTitulo.Text = "Borrar Tipo documento";
                                 }
                                 dt1.Dispose();
                             }
@@ -97,38 +96,26 @@ namespace fpWebApp
                             {
                                 //Borrar
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarCiudadSedePorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt1 = cg.ConsultartiposDocumentoPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
-                                    txbCiudadSede.Text = dt1.Rows[0]["NombreCiudadSede"].ToString();
-                                    txbCiudadSede.Enabled = false;
+                                    txbTipoDoc.Text = dt1.Rows[0]["TipoDocumento"].ToString();
+                                    txbTipoDoc.Enabled = false;
+                                    txtSiglaDoc.Visible = false;
+                                    lblSiglaDocumento.Visible = false;  
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                    ltTitulo.Text = "Borrar Ciudad Sede";
+                                    ltTitulo.Text = "Borrar Tipo de documento";
                                 }
                                 dt1.Dispose();
                             }
-                            dt.Dispose();
                         }
                     }
                 }
                 else
                 {
-                    Response.Redirect("logout");
+                    Response.Redirect("logout.aspx");
                 }
             }
-        }
-
-        private bool ValidarCiudad(string strNombre)
-        {
-            bool bExiste = false;
-            DataTable dt = new DataTable();
-            clasesglobales cg = new clasesglobales();
-            dt = cg.ConsultarCiudadSedePorNombre(strNombre);
-            if (dt.Rows.Count > 0)
-            {
-                bExiste = true;
-            }
-            return bExiste;
         }
 
         private void ValidarPermisos(string strPagina)
@@ -139,8 +126,8 @@ namespace fpWebApp
             ViewState["CrearModificar"] = "0";
             ViewState["Borrar"] = "0";
 
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -150,36 +137,51 @@ namespace fpWebApp
                 ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
                 ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
             }
+
             dt.Dispose();
         }
 
-        private void listaCiudadesSedes()
+        private void ListaTiposDocumento()
         {
-            DataTable dt = new DataTable();
             clasesglobales cg = new clasesglobales();
-            dt = cg.ConsultarCiudadesSedes();
-            rpCiudadSede.DataSource = dt;
-            rpCiudadSede.DataBind();
+            DataTable dt = cg.ConsultartiposDocumento();
+            rpTiposDoc.DataSource = dt;
+            rpTiposDoc.DataBind();
             dt.Dispose();
         }
 
-        protected void rpCiudadSede_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    
+
+        protected void rpTiposDoc_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
                     HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "ciudadessedes?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminar.Attributes.Add("href", "tiposdocumento?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEliminar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
                     HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "ciudadessedes?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Attributes.Add("href", "tiposdocumento?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEditar.Visible = true;
                 }
             }
+        }
+
+        private bool ValidarTipodocumento(string strNombre)
+        {
+            bool bExiste = false;
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarTiposDocumentoPorNombre(strNombre);
+            if (dt.Rows.Count > 0)
+            {
+                bExiste = true;
+            }
+            dt.Dispose();
+            return bExiste;
         }
 
         protected void btnAgregar_Click(object sender, EventArgs e)
@@ -189,22 +191,21 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarCiudadSede(int.Parse(Request.QueryString["editid"].ToString()), txbCiudadSede.Text.ToString().Trim());
+                    string respuesta = cg.ActualizarTipoDocumento(int.Parse(Request.QueryString["editid"].ToString()), txbTipoDoc.Text.ToString().Trim(),txtSiglaDoc.Text.ToString().Trim());
                 }
-
                 if (Request.QueryString["deleteid"] != null)
                 {
-                    string respuesta = cg.EliminarCiudadSede(int.Parse(Request.QueryString["deleteid"].ToString()));                    
+                    string respuesta = cg.EliminarTipoDocumento(int.Parse(Request.QueryString["deleteid"].ToString()));
                 }
-                Response.Redirect("ciudadessedes");
+                Response.Redirect("tiposdocumento");
             }
             else
             {
-                if (!ValidarCiudad(txbCiudadSede.Text.ToString()))
+                if (!ValidarTipodocumento(txbTipoDoc.Text.ToString()))
                 {
                     try
                     {
-                        string respuesta = cg.InsertarCiudadSede(txbCiudadSede.Text.ToString().Trim());
+                        string respuesta = cg.InsertarTipoDocumento(txbTipoDoc.Text.ToString().Trim(), txtSiglaDoc.Text.ToString().Trim());
                     }
                     catch (Exception ex)
                     {
@@ -220,21 +221,22 @@ namespace fpWebApp
                         "Excepción interna." +
                         "</div>";
                     }
-                    Response.Redirect("ciudadessedes");
+                    Response.Redirect("tiposdocumento");
                 }
                 else
                 {
                     ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    "Ya existe una Ciudad Sede con ese nombre." +
-                    "</div>";
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        "Ya existe un Tipo de documento con ese nombre." +
+                        "</div>";
                 }
             }
         }
+
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
-
         }
+
 
     }
 }

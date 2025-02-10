@@ -1,19 +1,17 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.Odbc;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using ClosedXML.Excel;
-using System.IO;
 
 namespace fpWebApp
 {
-    public partial class ciudadessedes : System.Web.UI.Page
+    public partial class estadocivil : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -21,7 +19,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Ciudadessedes");
+                    ValidarPermisos("Estado civil");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -49,47 +47,45 @@ namespace fpWebApp
                             btnAgregar.Visible = true;
                         }
                     }
+                    ListaEstadoCivil();
+                    ltTitulo.Text = "Agregar Estado Civil";
 
-                    listaCiudadesSedes();
-
-                    ltTitulo.Text = "Agregar Ciudad sede";
                     if (Request.QueryString.Count > 0)
                     {
-                        rpCiudadSede.Visible = false;
+                        rpEstadoCivil.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = new DataTable();
-                            dt = cg.ConsultarCiudadSedePorId(int.Parse(Request.QueryString["editid"].ToString()));
+                            DataTable dt = cg.ConsultarEstadoCivilPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                txbCiudadSede.Text = dt.Rows[0]["NombreCiudadSede"].ToString();
+                                txbEstadoCivil.Text = dt.Rows[0]["EstadoCivil"].ToString();
                                 btnAgregar.Text = "Actualizar";
-                                ltTitulo.Text = "Actualizar Ciudad";
+                                ltTitulo.Text = "Actualizar Estado civil";
                             }
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ValidarCiudadSedesTablas(Request.QueryString["deleteid"].ToString());
+                            DataTable dt = cg.ValidarEstadoCivilTablas(Request.QueryString["deleteid"].ToString());
                             if (dt.Rows.Count > 0)
                             {
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +
                                     "<div class=\"alert alert-danger alert-dismissable\">" +
                                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Esta Ciudad Sede no se puede borrar, hay empleados asociados a ella." +
+                                    "Este Estado civil no se puede borrar, hay registros asociados a él." +
                                     "</div></div>";
 
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarCiudadSedePorId(int.Parse(Request.QueryString["deleteid"].ToString()));
-                                if (dt.Rows.Count > 0)
+                                dt1 = cg.ConsultarEstadoCivilPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                if (dt1.Rows.Count > 0)
                                 {
-                                    txbCiudadSede.Text = dt1.Rows[0]["NombreCiudadSede"].ToString();
-                                    txbCiudadSede.Enabled = false;
+                                    txbEstadoCivil.Text = dt1.Rows[0]["EstadoCivil"].ToString();
+                                    txbEstadoCivil.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     btnAgregar.Enabled = false;
-                                    ltTitulo.Text = "Borrar Ciudad Sede";
+                                    ltTitulo.Text = "Borrar Estado civil";
                                 }
                                 dt1.Dispose();
                             }
@@ -97,38 +93,24 @@ namespace fpWebApp
                             {
                                 //Borrar
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarCiudadSedePorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt1 = cg.ConsultarEstadoCivilPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
-                                    txbCiudadSede.Text = dt1.Rows[0]["NombreCiudadSede"].ToString();
-                                    txbCiudadSede.Enabled = false;
+                                    txbEstadoCivil.Text = dt1.Rows[0]["EstadoCivil"].ToString();
+                                    txbEstadoCivil.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                    ltTitulo.Text = "Borrar Ciudad Sede";
+                                    ltTitulo.Text = "Borrar Estado civil";
                                 }
                                 dt1.Dispose();
                             }
-                            dt.Dispose();
                         }
                     }
                 }
                 else
                 {
-                    Response.Redirect("logout");
+                    Response.Redirect("logout.aspx");
                 }
             }
-        }
-
-        private bool ValidarCiudad(string strNombre)
-        {
-            bool bExiste = false;
-            DataTable dt = new DataTable();
-            clasesglobales cg = new clasesglobales();
-            dt = cg.ConsultarCiudadSedePorNombre(strNombre);
-            if (dt.Rows.Count > 0)
-            {
-                bExiste = true;
-            }
-            return bExiste;
         }
 
         private void ValidarPermisos(string strPagina)
@@ -139,8 +121,8 @@ namespace fpWebApp
             ViewState["CrearModificar"] = "0";
             ViewState["Borrar"] = "0";
 
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -150,36 +132,49 @@ namespace fpWebApp
                 ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
                 ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
             }
+
             dt.Dispose();
         }
 
-        private void listaCiudadesSedes()
+        private void ListaEstadoCivil()
         {
-            DataTable dt = new DataTable();
             clasesglobales cg = new clasesglobales();
-            dt = cg.ConsultarCiudadesSedes();
-            rpCiudadSede.DataSource = dt;
-            rpCiudadSede.DataBind();
+            DataTable dt = cg.ConsultarEstadosCiviles();
+            rpEstadoCivil.DataSource = dt;
+            rpEstadoCivil.DataBind();
             dt.Dispose();
         }
 
-        protected void rpCiudadSede_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        protected void rpEstadoCivil_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
                     HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "ciudadessedes?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminar.Attributes.Add("href", "estadocivil?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEliminar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
                     HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "ciudadessedes?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Attributes.Add("href", "estadocivil?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEditar.Visible = true;
                 }
             }
+        }
+
+        private bool ValidarEstadoCivil(string strNombre)
+        {
+            bool bExiste = false;
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEstadoCivilPorNombre(strNombre);
+            if (dt.Rows.Count > 0)
+            {
+                bExiste = true;
+            }
+            dt.Dispose();
+            return bExiste;
         }
 
         protected void btnAgregar_Click(object sender, EventArgs e)
@@ -189,22 +184,21 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarCiudadSede(int.Parse(Request.QueryString["editid"].ToString()), txbCiudadSede.Text.ToString().Trim());
+                    string respuesta = cg.ActualizarEstadoCivil(int.Parse(Request.QueryString["editid"].ToString()), txbEstadoCivil.Text.ToString().Trim());
                 }
-
                 if (Request.QueryString["deleteid"] != null)
                 {
-                    string respuesta = cg.EliminarCiudadSede(int.Parse(Request.QueryString["deleteid"].ToString()));                    
+                    string respuesta = cg.EliminarEstadoCivil(int.Parse(Request.QueryString["deleteid"].ToString()));
                 }
-                Response.Redirect("ciudadessedes");
+                Response.Redirect("estadocivil");
             }
             else
             {
-                if (!ValidarCiudad(txbCiudadSede.Text.ToString()))
+                if (!ValidarEstadoCivil(txbEstadoCivil.Text.ToString()))
                 {
                     try
                     {
-                        string respuesta = cg.InsertarCiudadSede(txbCiudadSede.Text.ToString().Trim());
+                        string respuesta = cg.InsertarEstadoCivil(txbEstadoCivil.Text.ToString().Trim());
                     }
                     catch (Exception ex)
                     {
@@ -220,21 +214,22 @@ namespace fpWebApp
                         "Excepción interna." +
                         "</div>";
                     }
-                    Response.Redirect("ciudadessedes");
+                    Response.Redirect("estadocivil");
                 }
                 else
                 {
                     ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    "Ya existe una Ciudad Sede con ese nombre." +
-                    "</div>";
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        "Ya existe un Estado civil con ese nombre." +
+                        "</div>";
                 }
             }
         }
+
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
-
         }
+
 
     }
 }

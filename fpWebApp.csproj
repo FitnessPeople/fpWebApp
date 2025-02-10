@@ -339,9 +339,11 @@
     <Content Include="empresasafiliadas.aspx" />
     <Content Include="eps.aspx" />
     <Content Include="especialistas.aspx" />
+    <Content Include="estadocivil.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="freepassAfil.aspx" />
+    <Content Include="genero.aspx" />
     <Content Include="Global.asax" />
     <Content Include="historiasclinicas.aspx" />
     <Content Include="img\a1.jpg" />
@@ -817,10 +819,12 @@
     <Content Include="nuevoempleado.aspx" />
     <Content Include="nuevoespecialista.aspx" />
     <Content Include="nuevousuario.aspx" />
+    <Content Include="objetivosafiliado.aspx" />
     <Content Include="obteneraccesstokensiigo.aspx" />
     <Content Include="obtenerafiliados.aspx" />
     <Content Include="obtenerciudades.aspx" />
     <Content Include="paginas.aspx" />
+    <Content Include="parq.aspx" />
     <Content Include="pension.aspx" />
     <Content Include="perfiles.aspx" />
     <Content Include="planes.aspx" />
@@ -841,6 +845,7 @@
     <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebForms.js" />
     <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebServices.js" />
     <Content Include="sedes.aspx" />
+    <Content Include="tiposdocumento.aspx" />
     <Content Include="traspasos.aspx" />
     <Content Include="traspasosAfil.aspx" />
     <Content Include="usuarios.aspx" />
@@ -1137,12 +1142,26 @@
     <Compile Include="especialistas.aspx.designer.cs">
       <DependentUpon>especialistas.aspx</DependentUpon>
     </Compile>
+    <Compile Include="estadocivil.aspx.cs">
+      <DependentUpon>estadocivil.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="estadocivil.aspx.designer.cs">
+      <DependentUpon>estadocivil.aspx</DependentUpon>
+    </Compile>
     <Compile Include="freepassAfil.aspx.cs">
       <DependentUpon>freepassAfil.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="freepassAfil.aspx.designer.cs">
       <DependentUpon>freepassAfil.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="genero.aspx.cs">
+      <DependentUpon>genero.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="genero.aspx.designer.cs">
+      <DependentUpon>genero.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1273,6 +1292,13 @@
     <Compile Include="nuevousuario.aspx.designer.cs">
       <DependentUpon>nuevousuario.aspx</DependentUpon>
     </Compile>
+    <Compile Include="objetivosafiliado.aspx.cs">
+      <DependentUpon>objetivosafiliado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="objetivosafiliado.aspx.designer.cs">
+      <DependentUpon>objetivosafiliado.aspx</DependentUpon>
+    </Compile>
     <Compile Include="obteneraccesstokensiigo.aspx.cs">
       <DependentUpon>obteneraccesstokensiigo.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1300,6 +1326,13 @@
     </Compile>
     <Compile Include="paginas.aspx.designer.cs">
       <DependentUpon>paginas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="parq.aspx.cs">
+      <DependentUpon>parq.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="parq.aspx.designer.cs">
+      <DependentUpon>parq.aspx</DependentUpon>
     </Compile>
     <Compile Include="pension.aspx.cs">
       <DependentUpon>pension.aspx</DependentUpon>
@@ -1364,6 +1397,13 @@
     </Compile>
     <Compile Include="sedes.aspx.designer.cs">
       <DependentUpon>sedes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="tiposdocumento.aspx.cs">
+      <DependentUpon>tiposdocumento.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="tiposdocumento.aspx.designer.cs">
+      <DependentUpon>tiposdocumento.aspx</DependentUpon>
     </Compile>
     <Compile Include="traspasos.aspx.cs">
       <DependentUpon>traspasos.aspx</DependentUpon>
