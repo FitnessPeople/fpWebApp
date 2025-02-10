@@ -8,7 +8,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using ClosedXML.Excel;
 
 namespace fpWebApp
 {
@@ -59,7 +58,7 @@ namespace fpWebApp
                         {
                             //Editar
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ConsultarArlPorId(int.Parse(Request.QueryString["editid"].ToString()));
+                            DataTable dt = cg.ConsultarProfesionPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
                                 txbProfesion.Text = dt.Rows[0]["Profesion"].ToString();
@@ -72,7 +71,7 @@ namespace fpWebApp
                         if (Request.QueryString["deleteid"] != null)
                         {
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ValidarArlEmpleados(Request.QueryString["deleteid"].ToString());
+                            DataTable dt = cg.ValidarProfesionTablas(int.Parse(Request.QueryString["deleteid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +
@@ -82,7 +81,7 @@ namespace fpWebApp
                                     "</div></div>";
 
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt1 = cg.ConsultarProfesionPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
                                     txbProfesion.Text = dt1.Rows[0]["Profesion"].ToString();
@@ -99,10 +98,10 @@ namespace fpWebApp
                             {
                                 //Borrar
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt1 = cg.ConsultarProfesionPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
-                                    txbProfesion.Text = dt1.Rows[0]["NombreArl"].ToString();
+                                    txbProfesion.Text = dt1.Rows[0]["Profesion"].ToString();
                                     txbProfesion.Enabled = false;
                                     ddlAreas.SelectedIndex = Convert.ToInt16(ddlAreas.Items.IndexOf(ddlAreas.Items.FindByValue(dt1.Rows[0]["Area"].ToString())));
                                     ddlAreas.Enabled = false;
@@ -146,7 +145,7 @@ namespace fpWebApp
         private void ListaProfesiones()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarArls();
+            DataTable dt = cg.ConsultarProfesiones();
             rpProfesiones.DataSource = dt;
             rpProfesiones.DataBind();
             dt.Dispose();
@@ -156,7 +155,7 @@ namespace fpWebApp
         {
             bool bExiste = false;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarCiudadesPorNombre(strNombre);
+            DataTable dt = cg.ConsultarProfesionPorNombre(strNombre);
             if (dt.Rows.Count > 0)
             {
                 bExiste = true;
@@ -172,12 +171,12 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarCiudad(int.Parse(Request.QueryString["editid"].ToString()), txbProfesion.Text.ToString().Trim(), ddlAreas.SelectedItem.Text.ToString(), ddlAreas.SelectedItem.Value.ToString());
+                    string respuesta = cg.ActualizarProfesion(int.Parse(Request.QueryString["editid"].ToString()), txbProfesion.Text.ToString().Trim(), ddlAreas.SelectedItem.Value.ToString());
                 }
 
                 if (Request.QueryString["deleteid"] != null)
                 {
-                    string respuesta = cg.EliminarCiudad(int.Parse(Request.QueryString["deleteid"].ToString()));
+                    string respuesta = cg.EliminarProfesion(int.Parse(Request.QueryString["deleteid"].ToString()));
                 }
                 Response.Redirect("profesiones");
             }
@@ -187,7 +186,7 @@ namespace fpWebApp
                 {
                     try
                     {
-                        string respuesta = cg.InsertarCiudad(txbProfesion.Text.ToString().Trim(), "", ddlAreas.SelectedItem.Text.ToString(), ddlAreas.SelectedItem.Value.ToString(), "Colombia", "Co");
+                        string respuesta = cg.InsertarProfesion(txbProfesion.Text.ToString().Trim(), ddlAreas.SelectedItem.Text.ToString());
                     }
                     catch (Exception ex)
                     {
@@ -236,34 +235,7 @@ namespace fpWebApp
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
-            try
-            {
-                DataTable dt = new DataTable();
-                clasesglobales cg = new clasesglobales();
-                dt = cg.ConsultarCiudades();
-
-                using (XLWorkbook libro = new XLWorkbook())
-                {
-                    var hoja = libro.Worksheets.Add(dt, "Ciudades");
-                    hoja.ColumnsUsed().AdjustToContents();
-                    Response.Clear();
-                    Response.Buffer = true;
-                    Response.Charset = "";
-                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                    Response.AddHeader("content-disposition", "attachment;filename=ciudades.xlsx");
-                    using (MemoryStream myMemoryStream = new MemoryStream())
-                    {
-                        libro.SaveAs(myMemoryStream);
-                        Response.BinaryWrite(myMemoryStream.ToArray());
-                        Response.Flush();
-                        Response.End();
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            
         }
     }
 }

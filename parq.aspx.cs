@@ -67,7 +67,7 @@ namespace fpWebApp
                         if (Request.QueryString["deleteid"] != null)
                         {
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ValidarArlEmpleados(Request.QueryString["deleteid"].ToString());
+                            DataTable dt = cg.ValidarArlEmpleados(int.Parse(Request.QueryString["deleteid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +

@@ -21,10 +21,6 @@
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
-    <!-- FooTable -->
-    <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
-
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
@@ -187,8 +183,7 @@
                                             </div>
  
                                             <div class="col-lg-6 form-horizontal">
-                                                <asp:LinkButton ID="lbExportarExcel" runat="server" 
-                                                    CausesValidation="false" 
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false" 
                                                     CssClass="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
                                                     OnClick="lbExportarExcel_Click">
                                                     <i class="fa fa-file-excel"></i> EXCEL

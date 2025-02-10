@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
+using System.IO;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -34,19 +35,20 @@ namespace fpWebApp
                         if (ViewState["Consulta"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            btnImprimir.Visible = false;
+                            lbExportarExcel.Visible = false;
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            btnImprimir.Visible = true;
+                            lbExportarExcel.Visible = true;
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             btnAgregar.Visible = true;
                         }
                     }
-                    listaPaginas();
+
+                    ListaPaginas();
                     ltTitulo.Text = "Agregar página";
 
                     if (Request.QueryString.Count > 0)
@@ -55,22 +57,40 @@ namespace fpWebApp
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
-                            //string strQuery = "SELECT * FROM Paginas WHERE idPagina = " + Request.QueryString["editid"].ToString();
                             clasesglobales cg = new clasesglobales();
-                            //DataTable dt = cg.TraerDatos(strQuery);
-                            DataTable dt = cg.ConsultarPaginaPorId(Convert.ToInt32(Request.QueryString["editid"].ToString()));
+                            DataTable dt = cg.ConsultarPaginaPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
                                 txbPagina.Text = dt.Rows[0]["Pagina"].ToString();
-                                ddlCategorias.SelectedIndex = Convert.ToInt16(ddlCategorias.Items.IndexOf(ddlCategorias.Items.FindByText(dt.Rows[0]["Categoria"].ToString())));
+                                ddlCategorias.SelectedIndex = Convert.ToInt16(ddlCategorias.Items.IndexOf(ddlCategorias.Items.FindByValue(dt.Rows[0]["Categoria"].ToString())));
+
                                 btnAgregar.Text = "Actualizar";
-                                //btnCancelar.Visible = true;
-                                ltTitulo.Text = "Actualizar página";
+                                ltTitulo.Text = "Actualizar Página";
                             }
+                            dt.Dispose();
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
-                            //Borrar
+                            //Las paginas no se pueden borrar
+                            ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                "<div class=\"alert alert-danger alert-dismissable\">" +
+                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                "Esta página no se puede borrar." +
+                                "</div></div>";
+
+                            clasesglobales cg = new clasesglobales();
+                            DataTable dt = cg.ConsultarPaginaPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                            if (dt.Rows.Count > 0)
+                            {
+                                txbPagina.Text = dt.Rows[0]["Pagina"].ToString();
+                                txbPagina.Enabled = false;
+                                ddlCategorias.SelectedIndex = Convert.ToInt16(ddlCategorias.Items.IndexOf(ddlCategorias.Items.FindByValue(dt.Rows[0]["Categoria"].ToString())));
+                                ddlCategorias.Enabled = false;
+                                btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                                btnAgregar.Enabled = false;
+                                ltTitulo.Text = "Borrar Página";
+                            }
+                            dt.Dispose();
                         }
                     }
                 }
@@ -89,17 +109,8 @@ namespace fpWebApp
             ViewState["CrearModificar"] = "0";
             ViewState["Borrar"] = "0";
 
-            //string strQuery = "SELECT SinPermiso, Consulta, Exportar, CrearModificar, Borrar " +
-            //    "FROM permisos_perfiles pp, paginas p, usuarios u " +
-            //    "WHERE pp.idPagina = p.idPagina " +
-            //    "AND p.Pagina = '" + strPagina + "' " +
-            //    "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
-            //    "AND u.idPerfil = pp.idPerfil " +
-            //    "AND u.idUsuario = " + Session["idusuario"].ToString();
             clasesglobales cg = new clasesglobales();
-            
-            //DataTable dt = cg.TraerDatos(strQuery);
-            DataTable dt = cg.ConsultarPermisosPerfiles(strPagina,Convert.ToInt32(Session["idPerfil"].ToString()), Convert.ToInt32(Session["idusuario"].ToString()));
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -109,121 +120,16 @@ namespace fpWebApp
                 ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
                 ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
             }
-
             dt.Dispose();
         }
 
-        private void listaPaginas()
+        private void ListaPaginas()
         {
-            //string strQuery = "SELECT * FROM Paginas WHERE idPagina <> 1";
             clasesglobales cg = new clasesglobales();
-           // DataTable dt = cg.TraerDatos(strQuery);
             DataTable dt = cg.ConsultarPaginas();
-
             rpPaginas.DataSource = dt;
             rpPaginas.DataBind();
-
             dt.Dispose();
-        }
-
-        private bool ValidarPagina(string strNombre)
-        {
-            clasesglobales cg = new clasesglobales();
-            bool bExiste = false;
-            //string strQuery = "SELECT * FROM Paginas WHERE pagina = '" + strNombre.Trim() + "' ";
-            //clasesglobales cg = new clasesglobales();
-            ////DataTable dt = cg.TraerDatos(strQuery);
-            DataTable dt = cg.ConsultarPaginaPorNombre(strNombre.Trim());
-
-            if (dt.Rows.Count > 0)
-            {
-                bExiste = true;
-            }
-
-            return bExiste;
-        }
-
-        protected void btnAgregar_Click(object sender, EventArgs e)
-        {
-            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
-            if (Request.QueryString.Count > 0)
-            {
-                if (Request.QueryString["editid"] != null)
-                {
-                    clasesglobales cg = new clasesglobales();
-                    string rta =  cg.ActualizarPagina(txbPagina.Text.ToString().Replace("'", ""),  ddlCategorias.SelectedItem.Value.ToString(),Convert.ToInt32( Request.QueryString["editid"].ToString()));
-
-                    //string strPagina = txbPagina.Text.ToString().Replace("'", "");
-                    //myConnection.Open();
-                    //string strQuery = "UPDATE Paginas " +
-                    //    "SET Pagina = '" + strPagina + "', " +
-                    //    "Categoria = '" + ddlCategorias.SelectedItem.Value.ToString() + "' " +
-                    //    "WHERE idPagina = " + Request.QueryString["editid"].ToString();
-                    //OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                    //command1.ExecuteNonQuery();
-                    //command1.Dispose();
-                    //myConnection.Close();
-
-                    Response.Redirect("paginas");
-                }
-            }
-            else
-            {
-                if (!ValidarPagina(txbPagina.Text.ToString()))
-                {
-                    clasesglobales cg = new clasesglobales();
-
-                    string rta = cg.InsertarPagina(txbPagina.Text.ToString().Replace("'", ""), ddlCategorias.SelectedItem.Value.ToString());
-
-                    string strPagina = txbPagina.Text.ToString().Replace("'", "");
-                    //myConnection.Open();
-                    //string strQuery = "INSERT INTO Paginas " +
-                    //    "(Pagina, Categoria) VALUES ('" + strPagina + "', '" + ddlCategorias.SelectedItem.Value.ToString() + "') ";
-                    //OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                    //command1.ExecuteNonQuery();
-                    //command1.Dispose();
-                    //myConnection.Close();
-                    //strQuery = "SELECT * FROM Paginas ORDER BY idPagina DESC LIMIT 1";
-                    //clasesglobales cg = new clasesglobales();
-                    //DataTable dt1 = cg.TraerDatos(strQuery);
-                    DataTable dt1 = cg.ConsultarUltimaPagina();
-                    string strId = dt1.Rows[0]["idPagina"].ToString();
-                    dt1.Dispose();
-
-                    //strQuery = "SELECT * FROM Perfiles";
-                    //DataTable dt2 = cg.TraerDatos(strQuery);
-                    DataTable dt2 = cg.ConsultarPerfiles();
-                    for (int i = 0; i < dt2.Rows.Count; i++)
-                    {
-                        try
-                        {
-                            //strQuery = "INSERT INTO Permisos_Perfiles (idPerfil, idPagina, SinPermiso, Consulta, Exportar, CrearModificar, Borrar) " +
-                            //    "VALUES ('" + dt2.Rows[i]["idPerfil"].ToString() + "', '" + strId + "', 1, 0, 0, 0, 0) ";
-                            //OdbcCommand command2 = new OdbcCommand(strQuery, myConnection);
-                            //myConnection.Open();
-                            //command2.ExecuteNonQuery();
-                            //command2.Dispose();
-                            //myConnection.Close();
-                            string respuesta = cg.InsertarPermisosPerfiles(Convert.ToInt32(dt2.Rows[i]["idPerfil"].ToString()), Convert.ToInt32(strId), 1, 0, 0, 0, 0);
-                        }
-                        catch (OdbcException ex)
-                        {
-                            string respuesta = ex.Message;
-                            myConnection.Close();
-                        }
-                    }
-                    dt2.Dispose();
-
-                    Response.Redirect("paginas");
-                }
-                else
-                {
-                    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Ya existe una página con ese nombre." +
-                        "</div>";
-                }
-            }
         }
 
         protected void rpPaginas_ItemDataBound(object sender, RepeaterItemEventArgs e)
@@ -232,22 +138,85 @@ namespace fpWebApp
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
-                    HtmlButton btnEditar = (HtmlButton)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("onClick", "window.location.href='paginas?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
-                    btnEditar.Visible = true;
+                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                    btnEliminar.Attributes.Add("href", "paginas?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
-                    HtmlButton btnEliminar = (HtmlButton)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("onClick", "window.location.href='paginas?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
-                    btnEliminar.Visible = true;
+                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("href", "paginas?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Visible = true;
                 }
             }
         }
 
-        protected void btnCancelar_Click(object sender, EventArgs e)
+        private bool ValidarPagina(string strNombre)
         {
-            Response.Redirect("paginas");
+            bool bExiste = false;
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPaginaPorNombre(strNombre);
+            if (dt.Rows.Count > 0)
+            {
+                bExiste = true;
+            }
+            dt.Dispose();
+            return bExiste;
+        }
+
+        protected void btnAgregar_Click(object sender, EventArgs e)
+        {
+            clasesglobales cg = new clasesglobales();
+            if (Request.QueryString.Count > 0)
+            {
+                if (Request.QueryString["editid"] != null)
+                {
+                    string respuesta = cg.ActualizarPagina(int.Parse(Request.QueryString["editid"].ToString()), txbPagina.Text.ToString().Trim(), ddlCategorias.SelectedItem.Text.ToString());
+                }
+
+                if (Request.QueryString["deleteid"] != null)
+                {
+                    string respuesta = cg.EliminarCiudad(int.Parse(Request.QueryString["deleteid"].ToString()));
+                }
+                Response.Redirect("paginas");
+            }
+            else
+            {
+                if (!ValidarPagina(txbPagina.Text.ToString()))
+                {
+                    try
+                    {
+                        string respuesta = cg.InsertarPagina(txbPagina.Text.ToString().Trim(), ddlCategorias.SelectedItem.Text.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        string mensajeExcepcionInterna = string.Empty;
+                        Console.WriteLine(ex.Message);
+                        if (ex.InnerException != null)
+                        {
+                            mensajeExcepcionInterna = ex.InnerException.Message;
+                            Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
+                        }
+                        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        "Excepción interna." +
+                        "</div>";
+                    }
+                    Response.Redirect("paginas");
+                }
+                else
+                {
+                    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                    "Ya existe una Página con ese nombre." +
+                    "</div>";
+                }
+            }
+        }
+
+        protected void lbExportarExcel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

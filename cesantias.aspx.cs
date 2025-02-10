@@ -9,7 +9,6 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
-using ClosedXML.Excel;
 
 namespace fpWebApp
 {
@@ -59,10 +58,10 @@ namespace fpWebApp
                         {
                             //Editar
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ConsultarArlPorId(int.Parse(Request.QueryString["editid"].ToString()));
+                            DataTable dt = cg.ConsultarCesantiaPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                txbCesantias.Text = dt.Rows[0]["NombreArl"].ToString();
+                                txbCesantias.Text = dt.Rows[0]["NombreCesantia"].ToString();
                                 btnAgregar.Text = "Actualizar";
                                 ltTitulo.Text = "Actualizar fondo de cesantías";
                             }
@@ -70,7 +69,7 @@ namespace fpWebApp
                         if (Request.QueryString["deleteid"] != null)
                         {
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ValidarArlEmpleados(Request.QueryString["deleteid"].ToString());
+                            DataTable dt = cg.ValidarCesantiaEmpleados(int.Parse(Request.QueryString["deleteid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +
@@ -80,10 +79,10 @@ namespace fpWebApp
                                     "</div></div>";
 
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt1 = cg.ConsultarCesantiaPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
-                                    txbCesantias.Text = dt1.Rows[0]["NombreArl"].ToString();
+                                    txbCesantias.Text = dt1.Rows[0]["NombreCesantia"].ToString();
                                     txbCesantias.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     btnAgregar.Enabled = false;
@@ -95,10 +94,10 @@ namespace fpWebApp
                             {
                                 //Borrar
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt1 = cg.ConsultarCesantiaPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
-                                    txbCesantias.Text = dt1.Rows[0]["NombreArl"].ToString();
+                                    txbCesantias.Text = dt1.Rows[0]["NombreCesantia"].ToString();
                                     txbCesantias.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     ltTitulo.Text = "Borrar Fondo de Cesantías";
@@ -141,7 +140,7 @@ namespace fpWebApp
         private void ListaCesantias()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarArls();
+            DataTable dt = cg.ConsultarCesantias();
             rpCesantias.DataSource = dt;
             rpCesantias.DataBind();
             dt.Dispose();
@@ -151,7 +150,7 @@ namespace fpWebApp
         {
             bool bExiste = false;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarArlPorNombre(strNombre);
+            DataTable dt = cg.ConsultarCesantiaPorNombre(strNombre);
             if (dt.Rows.Count > 0)
             {
                 bExiste = true;
@@ -186,13 +185,13 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarArl(int.Parse(Request.QueryString["editid"].ToString()), txbCesantias.Text.ToString().Trim());
+                    string respuesta = cg.ActualizarCesantia(int.Parse(Request.QueryString["editid"].ToString()), txbCesantias.Text.ToString().Trim());
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
-                    string respuesta = cg.EliminarArl(int.Parse(Request.QueryString["deleteid"].ToString()));
+                    string respuesta = cg.EliminarCesantia(int.Parse(Request.QueryString["deleteid"].ToString()));
                 }
-                Response.Redirect("arl");
+                Response.Redirect("cesantia");
             }
             else
             {
@@ -200,7 +199,7 @@ namespace fpWebApp
                 {
                     try
                     {
-                        string respuesta = cg.InsertarArl(txbCesantias.Text.ToString().Trim());
+                        string respuesta = cg.InsertarCesantia(txbCesantias.Text.ToString().Trim());
                     }
                     catch (Exception ex)
                     {
@@ -216,13 +215,13 @@ namespace fpWebApp
                         "Excepción interna." +
                         "</div>";
                     }
-                    Response.Redirect("arl");
+                    Response.Redirect("cesantia");
                 }
                 else
                 {
                     ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
                         "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Ya existe una ARL con ese nombre." +
+                        "Ya existe un Fondo de Cesantías con ese nombre." +
                         "</div>";
                 }
             }
@@ -230,34 +229,7 @@ namespace fpWebApp
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
-            try
-            {
-                DataTable dt = new DataTable();
-                clasesglobales cg = new clasesglobales();
-                dt = cg.ConsultarArls();
-
-                using (XLWorkbook libro = new XLWorkbook())
-                {
-                    var hoja = libro.Worksheets.Add(dt, "Arls");
-                    hoja.ColumnsUsed().AdjustToContents();
-                    Response.Clear();
-                    Response.Buffer = true;
-                    Response.Charset = "";
-                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                    Response.AddHeader("content-disposition", "attachment;filename=arls.xlsx");
-                    using (MemoryStream myMemoryStream = new MemoryStream())
-                    {
-                        libro.SaveAs(myMemoryStream);
-                        Response.BinaryWrite(myMemoryStream.ToArray());
-                        Response.Flush();
-                        Response.End();
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            
         }
     }
 }
