@@ -1,5 +1,4 @@
-﻿using ClosedXML.Excel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -228,34 +227,7 @@ namespace fpWebApp
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
-            try
-            {
-                DataTable dt = new DataTable();
-                clasesglobales cg = new clasesglobales();
-                dt = cg.ConsultarArls();
 
-                using (XLWorkbook libro = new XLWorkbook())
-                {
-                    var hoja = libro.Worksheets.Add(dt, "Arls");
-                    hoja.ColumnsUsed().AdjustToContents();
-                    Response.Clear();
-                    Response.Buffer = true;
-                    Response.Charset = "";
-                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                    Response.AddHeader("content-disposition", "attachment;filename=arls.xlsx");
-                    using (MemoryStream myMemoryStream = new MemoryStream())
-                    {
-                        libro.SaveAs(myMemoryStream);
-                        Response.BinaryWrite(myMemoryStream.ToArray());
-                        Response.Flush();
-                        Response.End();
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
         }
     }
 }
