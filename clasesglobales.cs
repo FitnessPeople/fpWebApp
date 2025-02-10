@@ -949,6 +949,8 @@ namespace fpWebApp
             return dt;
         }
 
+        #region Ciudades sedes
+
         public DataTable ConsultarCiudadesSedes()
         {
             DataTable dt = new DataTable();
@@ -1122,6 +1124,10 @@ namespace fpWebApp
             }
             return dt;
         }
+
+        #endregion
+
+        #region Tipos de documento
 
         public DataTable ConsultartiposDocumento()
         {
@@ -1338,6 +1344,10 @@ namespace fpWebApp
             return dt;
         }
 
+        #endregion
+
+        #region Genero
+
         public DataTable ConsultarGeneros()
         {
             DataTable dt = new DataTable();
@@ -1551,6 +1561,10 @@ namespace fpWebApp
 
             return respuesta;
         }
+
+        #endregion
+
+        #region Estado civil
 
         public DataTable ConsultarEstadosCiviles()
         {
@@ -1766,6 +1780,9 @@ namespace fpWebApp
             return dt;
         }
 
+        #endregion
+
+        #region Objetivos del afiliado
 
         public DataTable ConsultarObjetivosAfiliados()
         {
@@ -1980,6 +1997,8 @@ namespace fpWebApp
 
             return dt;
         }
+
+        #endregion
 
 
     }

@@ -809,6 +809,7 @@
     <Content Include="obtenerafiliados.aspx" />
     <Content Include="obtenerciudades.aspx" />
     <Content Include="paginas.aspx" />
+    <Content Include="parq.aspx" />
     <Content Include="pension.aspx" />
     <Content Include="perfiles.aspx" />
     <Content Include="planes.aspx" />
@@ -1310,6 +1311,13 @@
     </Compile>
     <Compile Include="paginas.aspx.designer.cs">
       <DependentUpon>paginas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="parq.aspx.cs">
+      <DependentUpon>parq.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="parq.aspx.designer.cs">
+      <DependentUpon>parq.aspx</DependentUpon>
     </Compile>
     <Compile Include="pension.aspx.cs">
       <DependentUpon>pension.aspx</DependentUpon>
