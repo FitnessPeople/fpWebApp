@@ -324,6 +324,7 @@
     <Content Include="empresasafiliadas.aspx" />
     <Content Include="eps.aspx" />
     <Content Include="especialistas.aspx" />
+    <Content Include="estadocivil.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="freepassAfil.aspx" />
@@ -803,6 +804,7 @@
     <Content Include="nuevoempleado.aspx" />
     <Content Include="nuevoespecialista.aspx" />
     <Content Include="nuevousuario.aspx" />
+    <Content Include="objetivosafiliado.aspx" />
     <Content Include="obteneraccesstokensiigo.aspx" />
     <Content Include="obtenerafiliados.aspx" />
     <Content Include="obtenerciudades.aspx" />
@@ -1124,6 +1126,13 @@
     <Compile Include="especialistas.aspx.designer.cs">
       <DependentUpon>especialistas.aspx</DependentUpon>
     </Compile>
+    <Compile Include="estadocivil.aspx.cs">
+      <DependentUpon>estadocivil.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="estadocivil.aspx.designer.cs">
+      <DependentUpon>estadocivil.aspx</DependentUpon>
+    </Compile>
     <Compile Include="freepassAfil.aspx.cs">
       <DependentUpon>freepassAfil.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1266,6 +1275,13 @@
     </Compile>
     <Compile Include="nuevousuario.aspx.designer.cs">
       <DependentUpon>nuevousuario.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="objetivosafiliado.aspx.cs">
+      <DependentUpon>objetivosafiliado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="objetivosafiliado.aspx.designer.cs">
+      <DependentUpon>objetivosafiliado.aspx</DependentUpon>
     </Compile>
     <Compile Include="obteneraccesstokensiigo.aspx.cs">
       <DependentUpon>obteneraccesstokensiigo.aspx</DependentUpon>

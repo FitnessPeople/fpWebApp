@@ -126,8 +126,8 @@
                     <li id="ciudadessedes" class="old"><a href="ciudadessedes"><i class="fa fa-building-user"></i>Ciudades sedes</a></li>
                     <li id="tiposdocumento" class="old"><a href="tiposdocumento"><i class="fa fa-id-card"></i>Tipos de documento</a></li>
                     <li id="genero" class="old"><a href="genero"><i class="fa fa-children"></i>Género</a></li>
-                    <li id="estadocivil" class="old"><a href="#">Estado civil</a></li>
-                    <li id="objetivosafiliado" class="old"><a href="#">Objetivos afiliado</a></li>
+                    <li id="estadocivil" class="old"><a href="estadocivil"><i class="fa fa-people-pulling"></i>Estado civil</a></li>
+                    <li id="objetivosafiliado" class="old"><a href="objetivosafiliado"><i class="fa fa-bullseye"></i>Objetivos afiliado</a></li>
                     <li id="parQ" class="old"><a href="#">ParQ</a></li>
                     <li id="tiposincapacidads" class="old"><a href="#">Tipos de incapacidad</a></li>
                 </ul>
