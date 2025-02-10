@@ -58,10 +58,10 @@ namespace fpWebApp
                         {
                             //Editar
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ConsultarArlPorId(int.Parse(Request.QueryString["editid"].ToString()));
+                            DataTable dt = cg.ConsultarPensionPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                txbFondoPension.Text = dt.Rows[0]["NombreArl"].ToString();
+                                txbFondoPension.Text = dt.Rows[0]["NombrePension"].ToString();
                                 btnAgregar.Text = "Actualizar";
                                 ltTitulo.Text = "Actualizar Fondo de Pensión";
                             }
@@ -69,7 +69,7 @@ namespace fpWebApp
                         if (Request.QueryString["deleteid"] != null)
                         {
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ValidarArlEmpleados(Request.QueryString["deleteid"].ToString());
+                            DataTable dt = cg.ValidarPensionEmpleados(int.Parse(Request.QueryString["deleteid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +
@@ -79,10 +79,10 @@ namespace fpWebApp
                                     "</div></div>";
 
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt1 = cg.ConsultarPensionPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
-                                    txbFondoPension.Text = dt1.Rows[0]["NombreArl"].ToString();
+                                    txbFondoPension.Text = dt1.Rows[0]["NombrePension"].ToString();
                                     txbFondoPension.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     btnAgregar.Enabled = false;
@@ -94,10 +94,10 @@ namespace fpWebApp
                             {
                                 //Borrar
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt1 = cg.ConsultarPensionPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
-                                    txbFondoPension.Text = dt1.Rows[0]["NombreArl"].ToString();
+                                    txbFondoPension.Text = dt1.Rows[0]["NombrePension"].ToString();
                                     txbFondoPension.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     ltTitulo.Text = "Borrar Fondo de Pensión";
@@ -140,7 +140,7 @@ namespace fpWebApp
         private void ListaFondosPension()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarArls();
+            DataTable dt = cg.ConsultarPensiones();
             rpFondosPension.DataSource = dt;
             rpFondosPension.DataBind();
             dt.Dispose();
@@ -169,7 +169,7 @@ namespace fpWebApp
         {
             bool bExiste = false;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarArlPorNombre(strNombre);
+            DataTable dt = cg.ConsultarPensionPorNombre(strNombre);
             if (dt.Rows.Count > 0)
             {
                 bExiste = true;
@@ -185,13 +185,13 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarArl(int.Parse(Request.QueryString["editid"].ToString()), txbFondoPension.Text.ToString().Trim());
+                    string respuesta = cg.ActualizarPension(int.Parse(Request.QueryString["editid"].ToString()), txbFondoPension.Text.ToString().Trim());
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
-                    string respuesta = cg.EliminarArl(int.Parse(Request.QueryString["deleteid"].ToString()));
+                    string respuesta = cg.EliminarPension(int.Parse(Request.QueryString["deleteid"].ToString()));
                 }
-                Response.Redirect("arl");
+                Response.Redirect("pension");
             }
             else
             {
@@ -199,7 +199,7 @@ namespace fpWebApp
                 {
                     try
                     {
-                        string respuesta = cg.InsertarArl(txbFondoPension.Text.ToString().Trim());
+                        string respuesta = cg.InsertarPension(txbFondoPension.Text.ToString().Trim());
                     }
                     catch (Exception ex)
                     {
@@ -215,7 +215,7 @@ namespace fpWebApp
                         "Excepción interna." +
                         "</div>";
                     }
-                    Response.Redirect("arl");
+                    Response.Redirect("pension");
                 }
                 else
                 {
