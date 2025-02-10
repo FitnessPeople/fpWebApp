@@ -22,7 +22,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
+    <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -159,11 +160,12 @@
                                             <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                         </div>
 
-                                        <table class="footable table" data-page-size="200">
+                                        <table class="footable table table-striped" data-paging-size="100" 
+                                            data-paging="false" data-sorting="true" >
                                             <thead>
                                                 <tr>
                                                     <th>Perfil</th>
-                                                    <th data-sort-ignore="true" data-toggle="false" class="text-right">Acciones</th>
+                                                    <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -172,14 +174,10 @@
                                                         <tr class="feed-element">
                                                             <td><%# Eval("Perfil") %></td>
                                                             <td>
-                                                                <button runat="server" id="btnEliminar" class="btn btn-outline btn-danger pull-right"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false">
-                                                                    <i class="fa fa-trash"></i>
-                                                                </button>
-                                                                <button runat="server" id="btnEditar" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false">
-                                                                    <i class="fa fa-edit"></i>
-                                                                </button>
+                                                                <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                                <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
                                                             </td>
                                                         </tr>
                                                     </ItemTemplate>
@@ -215,15 +213,16 @@
                                                             </asp:DropDownList>
                                                         </div>
 
-                                                        <table class="footable table" data-page-size="200">
+                                                        <table class="footable table table-striped" data-paging-size="100" 
+                                                            data-paging="false" data-sorting="true" >
                                                             <thead>
                                                                 <tr>
                                                                     <th>Página</th>
-                                                                    <th data-sort-ignore="true">Tiene acceso?</th>
-                                                                    <th data-sort-ignore="true">Puede consultar?</th>
-                                                                    <th data-sort-ignore="true">Puede exportar?</th>
-                                                                    <th data-sort-ignore="true">Puede crear y modificar?</th>
-                                                                    <th data-sort-ignore="true">Puede borrar?</th>
+                                                                    <th data-sortable="false">Tiene acceso?</th>
+                                                                    <th data-sortable="false">Puede consultar?</th>
+                                                                    <th data-sortable="false">Puede exportar?</th>
+                                                                    <th data-sortable="false">Puede crear y modificar?</th>
+                                                                    <th data-sortable="false">Puede borrar?</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -246,7 +245,6 @@
                                                                 </asp:Repeater>
                                                             </tbody>
                                                         </table>
-
                                                     </div>
                                                 </div>
                                             </ContentTemplate>
@@ -277,7 +275,8 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
-    <script src="js/plugins/footable/footable.all.min.js"></script>
+    <%--<script src="js/plugins/footable/footable.all.min.js"></script>--%>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
@@ -288,24 +287,7 @@
 
     <!-- Page-Level Scripts -->
     <script>
-
-        $('.footable').footable();
-
-        //$('.data-page-size').on('click', function (e) {
-        //    e.preventDefault();
-        //    var newSize = $(this).data('pageSize');
-        //    $('.footable').data('page-size', newSize);
-        //    $('.footable').trigger('footable_initialized');
-        //});
-
-        $('.toggle').click(function (e) {
-            e.preventDefault();
-            $('.toggle').toggle();
-            $('.footable').trigger($(this).data('trigger')).trigger('footable_redraw');
-        });
-
         $('.chosen-select').chosen({ width: "100%" });
-
     </script>
 
 </body>
