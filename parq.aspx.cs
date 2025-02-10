@@ -18,7 +18,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Arl");
+                    ValidarPermisos("Preguntas PARQ");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -51,7 +51,7 @@ namespace fpWebApp
 
                     if (Request.QueryString.Count > 0)
                     {
-                        rpArl.Visible = false;
+                        rpParQ.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
@@ -59,7 +59,7 @@ namespace fpWebApp
                             DataTable dt = cg.ConsultarArlPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                txbArl.Text = dt.Rows[0]["NombreArl"].ToString();
+                                txbParQ.Text = dt.Rows[0]["NombreArl"].ToString();
                                 btnAgregar.Text = "Actualizar";
                                 ltTitulo.Text = "Actualizar ARL";
                             }
@@ -80,8 +80,8 @@ namespace fpWebApp
                                 dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
-                                    txbArl.Text = dt1.Rows[0]["NombreArl"].ToString();
-                                    txbArl.Enabled = false;
+                                    txbParQ.Text = dt1.Rows[0]["NombreArl"].ToString();
+                                    txbParQ.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     btnAgregar.Enabled = false;
                                     ltTitulo.Text = "Borrar ARL";
@@ -95,8 +95,8 @@ namespace fpWebApp
                                 dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
-                                    txbArl.Text = dt1.Rows[0]["NombreArl"].ToString();
-                                    txbArl.Enabled = false;
+                                    txbParQ.Text = dt1.Rows[0]["NombreArl"].ToString();
+                                    txbParQ.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     ltTitulo.Text = "Borrar ARL";
                                 }
@@ -139,12 +139,12 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarArls();
-            rpArl.DataSource = dt;
-            rpArl.DataBind();
+            rpParQ.DataSource = dt;
+            rpParQ.DataBind();
             dt.Dispose();
         }
 
-        protected void rpArl_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        protected void rpParQ_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
@@ -183,7 +183,7 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarArl(int.Parse(Request.QueryString["editid"].ToString()), txbArl.Text.ToString().Trim());
+                    string respuesta = cg.ActualizarArl(int.Parse(Request.QueryString["editid"].ToString()), txbParQ.Text.ToString().Trim());
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -193,11 +193,11 @@ namespace fpWebApp
             }
             else
             {
-                if (!ValidarArl(txbArl.Text.ToString()))
+                if (!ValidarArl(txbParQ.Text.ToString()))
                 {
                     try
                     {
-                        string respuesta = cg.InsertarArl(txbArl.Text.ToString().Trim());
+                        string respuesta = cg.InsertarArl(txbParQ.Text.ToString().Trim());
                     }
                     catch (Exception ex)
                     {
@@ -229,5 +229,7 @@ namespace fpWebApp
         {
 
         }
+
+
     }
 }

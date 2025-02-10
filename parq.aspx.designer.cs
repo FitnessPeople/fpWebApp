@@ -78,22 +78,22 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltTitulo;
 
         /// <summary>
-        /// Control txbArl.
+        /// Control txbParQ.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbArl;
+        protected global::System.Web.UI.WebControls.TextBox txbParQ;
 
         /// <summary>
-        /// Control rfvArl.
+        /// Control rfvParq.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvArl;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvParq;
 
         /// <summary>
         /// Control btnAgregar.
@@ -132,13 +132,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.LinkButton lbExportarExcel;
 
         /// <summary>
-        /// Control rpArl.
+        /// Control rpParQ.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpArl;
+        protected global::System.Web.UI.WebControls.Repeater rpParQ;
 
         /// <summary>
         /// Control footer.
