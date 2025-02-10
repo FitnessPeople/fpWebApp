@@ -11,7 +11,7 @@ namespace fpWebApp
 {
 
 
-    public partial class ciudadessedes
+    public partial class genero
     {
 
         /// <summary>
@@ -51,13 +51,13 @@ namespace fpWebApp
         protected global::fpWebApp.controles.paginasperfil paginasperfil;
 
         /// <summary>
-        /// Control form.
+        /// Control form1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
         /// Control divContenido.
@@ -78,22 +78,22 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltTitulo;
 
         /// <summary>
-        /// Control txbCiudadSede.
+        /// Control txbGenero.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbCiudadSede;
+        protected global::System.Web.UI.WebControls.TextBox txbGenero;
 
         /// <summary>
-        /// Control rfvCiudadSede.
+        /// Control rfvGenero.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCiudadSede;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvGenero;
 
         /// <summary>
         /// Control btnAgregar.
@@ -132,13 +132,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.LinkButton lbExportarExcel;
 
         /// <summary>
-        /// Control rpCiudadSede.
+        /// Control rpGenero.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpCiudadSede;
+        protected global::System.Web.UI.WebControls.Repeater rpGenero;
 
         /// <summary>
         /// Control footer.

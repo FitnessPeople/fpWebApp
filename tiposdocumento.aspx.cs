@@ -1,10 +1,10 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Web;
-using System.Web.Configuration;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -12,7 +12,7 @@ using System.Web.UI.WebControls.WebParts;
 
 namespace fpWebApp
 {
-    public partial class pension : System.Web.UI.Page
+    public partial class tipodocumento : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -20,7 +20,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Fondos de pension");
+                    ValidarPermisos("Tipos de documento");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -48,45 +48,47 @@ namespace fpWebApp
                             btnAgregar.Visible = true;
                         }
                     }
-                    ListaFondosPension();
-                    ltTitulo.Text = "Agregar Fondo de Pensión";
+                    ListaTiposDocumento();
+                    ltTitulo.Text = "Agregar Tipo de documento";
 
                     if (Request.QueryString.Count > 0)
                     {
-                        rpFondosPension.Visible = false;
+                        rpTiposDoc.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ConsultarPensionPorId(int.Parse(Request.QueryString["editid"].ToString()));
+                            DataTable dt = cg.ConsultartiposDocumentoPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                txbFondoPension.Text = dt.Rows[0]["NombrePension"].ToString();
+                                txbTipoDoc.Text = dt.Rows[0]["TipoDocumento"].ToString();
+                                txtSiglaDoc.Text = dt.Rows[0]["SiglaDocumento"].ToString();
                                 btnAgregar.Text = "Actualizar";
-                                ltTitulo.Text = "Actualizar Fondo de Pensión";
+                                ltTitulo.Text = "Actualizar Tipo documento";
                             }
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ValidarPensionEmpleados(int.Parse(Request.QueryString["deleteid"].ToString()));
+                            DataTable dt = cg.ValidarTiposDocumentoTablas(Convert.ToInt32(Request.QueryString["deleteid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +
                                     "<div class=\"alert alert-danger alert-dismissable\">" +
                                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Este Fondo de Pensión no se puede borrar, hay empleados asociados a ella." +
+                                    "Este Tipo de documento no se puede borrar, hay registros asociados a ella." +
                                     "</div></div>";
 
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarPensionPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt1 = cg.ConsultartiposDocumentoPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
-                                    txbFondoPension.Text = dt1.Rows[0]["NombrePension"].ToString();
-                                    txbFondoPension.Enabled = false;
+                                    txbTipoDoc.Text = dt1.Rows[0]["TipoDocumento"].ToString();
+                                    txbTipoDoc.Enabled = false;
+                                    txtSiglaDoc.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     btnAgregar.Enabled = false;
-                                    ltTitulo.Text = "Borrar Fondo de Pensión";
+                                    ltTitulo.Text = "Borrar Tipo documento";
                                 }
                                 dt1.Dispose();
                             }
@@ -94,13 +96,15 @@ namespace fpWebApp
                             {
                                 //Borrar
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarPensionPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt1 = cg.ConsultartiposDocumentoPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
-                                    txbFondoPension.Text = dt1.Rows[0]["NombrePension"].ToString();
-                                    txbFondoPension.Enabled = false;
+                                    txbTipoDoc.Text = dt1.Rows[0]["TipoDocumento"].ToString();
+                                    txbTipoDoc.Enabled = false;
+                                    txtSiglaDoc.Visible = false;
+                                    lblSiglaDocumento.Visible = false;  
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                    ltTitulo.Text = "Borrar Fondo de Pensión";
+                                    ltTitulo.Text = "Borrar Tipo de documento";
                                 }
                                 dt1.Dispose();
                             }
@@ -137,39 +141,41 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void ListaFondosPension()
+        private void ListaTiposDocumento()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPensiones();
-            rpFondosPension.DataSource = dt;
-            rpFondosPension.DataBind();
+            DataTable dt = cg.ConsultartiposDocumento();
+            rpTiposDoc.DataSource = dt;
+            rpTiposDoc.DataBind();
             dt.Dispose();
         }
 
-        protected void rpFondosPension_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    
+
+        protected void rpTiposDoc_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
                     HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "pension?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminar.Attributes.Add("href", "tiposdocumento?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEliminar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
                     HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "pension?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Attributes.Add("href", "tiposdocumento?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEditar.Visible = true;
                 }
             }
         }
 
-        private bool ValidarFondoPension(string strNombre)
+        private bool ValidarTipodocumento(string strNombre)
         {
             bool bExiste = false;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPensionPorNombre(strNombre);
+            DataTable dt = cg.ConsultarTiposDocumentoPorNombre(strNombre);
             if (dt.Rows.Count > 0)
             {
                 bExiste = true;
@@ -185,21 +191,21 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarPension(int.Parse(Request.QueryString["editid"].ToString()), txbFondoPension.Text.ToString().Trim());
+                    string respuesta = cg.ActualizarTipoDocumento(int.Parse(Request.QueryString["editid"].ToString()), txbTipoDoc.Text.ToString().Trim(),txtSiglaDoc.Text.ToString().Trim());
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
-                    string respuesta = cg.EliminarPension(int.Parse(Request.QueryString["deleteid"].ToString()));
+                    string respuesta = cg.EliminarTipoDocumento(int.Parse(Request.QueryString["deleteid"].ToString()));
                 }
-                Response.Redirect("pension");
+                Response.Redirect("tiposdocumento");
             }
             else
             {
-                if (!ValidarFondoPension(txbFondoPension.Text.ToString()))
+                if (!ValidarTipodocumento(txbTipoDoc.Text.ToString()))
                 {
                     try
                     {
-                        string respuesta = cg.InsertarPension(txbFondoPension.Text.ToString().Trim());
+                        string respuesta = cg.InsertarTipoDocumento(txbTipoDoc.Text.ToString().Trim(), txtSiglaDoc.Text.ToString().Trim());
                     }
                     catch (Exception ex)
                     {
@@ -215,13 +221,13 @@ namespace fpWebApp
                         "Excepción interna." +
                         "</div>";
                     }
-                    Response.Redirect("pension");
+                    Response.Redirect("tiposdocumento");
                 }
                 else
                 {
                     ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
                         "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Ya existe un Fondo de Pensión con ese nombre." +
+                        "Ya existe un Tipo de documento con ese nombre." +
                         "</div>";
                 }
             }
@@ -229,7 +235,8 @@ namespace fpWebApp
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
-
         }
+
+
     }
 }

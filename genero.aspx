@@ -1,9 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ciudadessedes.aspx.cs" Inherits="fpWebApp.ciudadessedes" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="genero.aspx.cs" Inherits="fpWebApp.genero" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
+<%@ Register Src="~/controles/indicadores01.ascx" TagPrefix="uc1" TagName="indicadores01" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
 
 <!DOCTYPE html>
@@ -14,20 +15,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Ciudades Sedes</title>
+    <title>Fitness People | Género</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
-
-    <%-- <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
-    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
-    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />--%>
-
-    <link href="css/plugins/dataTables/datatables.min.css" rel="stylesheet" />
-    <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
-    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
-    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
     <!-- FooTable -->
     <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
@@ -45,7 +37,7 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#ciudadessedes");
+            var element1 = document.querySelector("#genero");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#configuracion");
             element2.classList.remove("collapse");
@@ -60,7 +52,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                     <i class="fa fa-person-chalkboard modal-icon"></i>
-                    <h4 class="modal-title">Guía para editar un especialista</h4>
+                    <h4 class="modal-title">Guía para administrar Genero</h4>
                     <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
                 </div>
                 <div class="modal-body">
@@ -109,11 +101,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-city text-success m-r-sm"></i>Ciudades sedes</h2>
+                    <h2><i class="fa fa-person-falling-burst text-success m-r-sm"></i>Género</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Configuración</li>
-                        <li class="active"><strong>Ciudades sedes</strong></li>
+                        <li class="active"><strong>Género</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -136,7 +128,7 @@
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                    <form role="form" id="form" runat="server">
+                    <form id="form1" runat="server">
                         <div class="row" id="divContenido" runat="server">
                             <div class="col-lg-4">
                                 <div class="ibox float-e-margins">
@@ -153,22 +145,21 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="form-group">
-                                                    <label>Nombre de la Ciudad sede:</label>
-                                                    <asp:TextBox ID="txbCiudadSede" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="rfvCiudadSede" runat="server" ErrorMessage="* Campo requerido"
-                                                        ControlToValidate="txbCiudadSede" ValidationGroup="agregar" CssClass="font-bold text-danger">
-                                                    </asp:RequiredFieldValidator>
+                                                    <label>Nombre del Género:</label>
+                                                    <asp:TextBox ID="txbGenero" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="rfvGenero" runat="server" ErrorMessage="* Campo requerido" 
+                                                        ControlToValidate="txbGenero" ValidationGroup="agregar" 
+                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group">
-                                                    <a href="ciudadessedes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
-                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
+                                                    <a href="genero" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar" 
+                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" 
                                                         OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
                                                 </div>
                                                 <br />
                                                 <br />
                                                 <div class="form-group">
-
                                                     <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                                 </div>
                                             </div>
@@ -179,7 +170,7 @@
                             <div class="col-lg-8">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Lista de Ciudades sedes</h5>
+                                        <h5>Lista de Géneros</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -194,48 +185,46 @@
                                                     <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                                 </div>
                                             </div>
-
+ 
                                             <div class="col-lg-6 form-horizontal">
-                                                <asp:LinkButton ID="lbExportarExcel" runat="server"
-                                                    CausesValidation="false"
-                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" 
+                                                    CausesValidation="false" 
+                                                    CssClass="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
                                                     OnClick="lbExportarExcel_Click">
                                                     <i class="fa fa-file-excel"></i> EXCEL
                                                 </asp:LinkButton>
                                             </div>
                                         </div>
 
-                                        <table class="footable table table-striped" data-paging-size="10"
-                                            data-filter-min="3" data-filter-placeholder="Buscar"
-                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
-                                            data-paging-limit="10" data-filtering="true"
-                                            data-filter-container="#filter-form-container" data-filter-delay="300"
-                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left"
+                                        <table class="footable table table-striped" data-paging-size="10" 
+                                            data-filter-min="3" data-filter-placeholder="Buscar" 
+                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" 
+                                            data-paging-limit="10" data-filtering="true" 
+                                            data-filter-container="#filter-form-container" data-filter-delay="300" 
+                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" 
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th>Id</th>
-                                                    <th>Ciudad Sede</th>
+                                                    <th width="80%">Género</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpCiudadSede" runat="server" OnItemDataBound="rpCiudadSede_ItemDataBound">
+                                                <asp:Repeater ID="rpGenero" runat="server" OnItemDataBound="rpGenero_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
-                                                            <td><%# Eval("idCiudadSede") %></td>
-                                                            <td><%# Eval("NombreCiudadSede") %></td>
+                                                            <td><%# Eval("Genero") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
                                                                 <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a></td>
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
+                                                            </td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
                                             </tbody>
                                         </table>
-
                                     </div>
                                 </div>
                             </div>
@@ -244,9 +233,7 @@
                     <%--Fin Contenido!!!!--%>
                 </div>
             </div>
-
             <uc1:footer runat="server" ID="footer" />
-
         </div>
         <uc1:rightsidebar runat="server" ID="rightsidebar" />
     </div>
@@ -264,7 +251,6 @@
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
-
 
     <!-- Page-Level Scripts -->
     <script>

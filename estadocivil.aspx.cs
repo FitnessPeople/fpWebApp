@@ -1,18 +1,17 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Web;
-using System.Web.Configuration;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
 
 namespace fpWebApp
 {
-    public partial class pension : System.Web.UI.Page
+    public partial class estadocivil : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -20,7 +19,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Fondos de pension");
+                    ValidarPermisos("Estado civil");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -48,45 +47,45 @@ namespace fpWebApp
                             btnAgregar.Visible = true;
                         }
                     }
-                    ListaFondosPension();
-                    ltTitulo.Text = "Agregar Fondo de Pensión";
+                    ListaEstadoCivil();
+                    ltTitulo.Text = "Agregar Estado Civil";
 
                     if (Request.QueryString.Count > 0)
                     {
-                        rpFondosPension.Visible = false;
+                        rpEstadoCivil.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ConsultarPensionPorId(int.Parse(Request.QueryString["editid"].ToString()));
+                            DataTable dt = cg.ConsultarEstadoCivilPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                txbFondoPension.Text = dt.Rows[0]["NombrePension"].ToString();
+                                txbEstadoCivil.Text = dt.Rows[0]["EstadoCivil"].ToString();
                                 btnAgregar.Text = "Actualizar";
-                                ltTitulo.Text = "Actualizar Fondo de Pensión";
+                                ltTitulo.Text = "Actualizar Estado civil";
                             }
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ValidarPensionEmpleados(int.Parse(Request.QueryString["deleteid"].ToString()));
+                            DataTable dt = cg.ValidarEstadoCivilTablas(Request.QueryString["deleteid"].ToString());
                             if (dt.Rows.Count > 0)
                             {
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +
                                     "<div class=\"alert alert-danger alert-dismissable\">" +
                                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Este Fondo de Pensión no se puede borrar, hay empleados asociados a ella." +
+                                    "Este Estado civil no se puede borrar, hay registros asociados a él." +
                                     "</div></div>";
 
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarPensionPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt1 = cg.ConsultarEstadoCivilPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
-                                    txbFondoPension.Text = dt1.Rows[0]["NombrePension"].ToString();
-                                    txbFondoPension.Enabled = false;
+                                    txbEstadoCivil.Text = dt1.Rows[0]["EstadoCivil"].ToString();
+                                    txbEstadoCivil.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     btnAgregar.Enabled = false;
-                                    ltTitulo.Text = "Borrar Fondo de Pensión";
+                                    ltTitulo.Text = "Borrar Estado civil";
                                 }
                                 dt1.Dispose();
                             }
@@ -94,13 +93,13 @@ namespace fpWebApp
                             {
                                 //Borrar
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarPensionPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt1 = cg.ConsultarEstadoCivilPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
-                                    txbFondoPension.Text = dt1.Rows[0]["NombrePension"].ToString();
-                                    txbFondoPension.Enabled = false;
+                                    txbEstadoCivil.Text = dt1.Rows[0]["EstadoCivil"].ToString();
+                                    txbEstadoCivil.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                    ltTitulo.Text = "Borrar Fondo de Pensión";
+                                    ltTitulo.Text = "Borrar Estado civil";
                                 }
                                 dt1.Dispose();
                             }
@@ -137,39 +136,39 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void ListaFondosPension()
+        private void ListaEstadoCivil()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPensiones();
-            rpFondosPension.DataSource = dt;
-            rpFondosPension.DataBind();
+            DataTable dt = cg.ConsultarEstadosCiviles();
+            rpEstadoCivil.DataSource = dt;
+            rpEstadoCivil.DataBind();
             dt.Dispose();
         }
 
-        protected void rpFondosPension_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        protected void rpEstadoCivil_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
                     HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "pension?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminar.Attributes.Add("href", "estadocivil?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEliminar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
                     HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "pension?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Attributes.Add("href", "estadocivil?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEditar.Visible = true;
                 }
             }
         }
 
-        private bool ValidarFondoPension(string strNombre)
+        private bool ValidarEstadoCivil(string strNombre)
         {
             bool bExiste = false;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPensionPorNombre(strNombre);
+            DataTable dt = cg.ConsultarEstadoCivilPorNombre(strNombre);
             if (dt.Rows.Count > 0)
             {
                 bExiste = true;
@@ -185,21 +184,21 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarPension(int.Parse(Request.QueryString["editid"].ToString()), txbFondoPension.Text.ToString().Trim());
+                    string respuesta = cg.ActualizarEstadoCivil(int.Parse(Request.QueryString["editid"].ToString()), txbEstadoCivil.Text.ToString().Trim());
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
-                    string respuesta = cg.EliminarPension(int.Parse(Request.QueryString["deleteid"].ToString()));
+                    string respuesta = cg.EliminarEstadoCivil(int.Parse(Request.QueryString["deleteid"].ToString()));
                 }
-                Response.Redirect("pension");
+                Response.Redirect("estadocivil");
             }
             else
             {
-                if (!ValidarFondoPension(txbFondoPension.Text.ToString()))
+                if (!ValidarEstadoCivil(txbEstadoCivil.Text.ToString()))
                 {
                     try
                     {
-                        string respuesta = cg.InsertarPension(txbFondoPension.Text.ToString().Trim());
+                        string respuesta = cg.InsertarEstadoCivil(txbEstadoCivil.Text.ToString().Trim());
                     }
                     catch (Exception ex)
                     {
@@ -215,13 +214,13 @@ namespace fpWebApp
                         "Excepción interna." +
                         "</div>";
                     }
-                    Response.Redirect("pension");
+                    Response.Redirect("estadocivil");
                 }
                 else
                 {
                     ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
                         "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Ya existe un Fondo de Pensión con ese nombre." +
+                        "Ya existe un Estado civil con ese nombre." +
                         "</div>";
                 }
             }
@@ -229,7 +228,8 @@ namespace fpWebApp
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
-
         }
+
+
     }
 }

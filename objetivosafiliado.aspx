@@ -1,9 +1,12 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ciudadessedes.aspx.cs" Inherits="fpWebApp.ciudadessedes" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="objetivosafiliado.aspx.cs" Inherits="fpWebApp.objetivosafiliado" %>
+
+<!DOCTYPE html>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
+<%@ Register Src="~/controles/indicadores01.ascx" TagPrefix="uc1" TagName="indicadores01" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
 
 <!DOCTYPE html>
@@ -14,20 +17,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Ciudades Sedes</title>
+    <title>Fitness People | Objetivos del afiliado</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
-
-    <%-- <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
-    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
-    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />--%>
-
-    <link href="css/plugins/dataTables/datatables.min.css" rel="stylesheet" />
-    <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
-    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
-    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
     <!-- FooTable -->
     <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
@@ -45,7 +39,7 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#ciudadessedes");
+            var element1 = document.querySelector("#objetivosafiliado");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#configuracion");
             element2.classList.remove("collapse");
@@ -60,7 +54,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                     <i class="fa fa-person-chalkboard modal-icon"></i>
-                    <h4 class="modal-title">Guía para editar un especialista</h4>
+                    <h4 class="modal-title">Guía para administrar Objetivos del afiliado</h4>
                     <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
                 </div>
                 <div class="modal-body">
@@ -109,11 +103,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-city text-success m-r-sm"></i>Ciudades sedes</h2>
+                    <h2><i class="fa fa-person-falling-burst text-success m-r-sm"></i>Objetivos del afiliado</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Configuración</li>
-                        <li class="active"><strong>Ciudades sedes</strong></li>
+                        <li class="active"><strong>Objetivos del afiliado</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -136,7 +130,7 @@
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                    <form role="form" id="form" runat="server">
+                    <form id="form1" runat="server">
                         <div class="row" id="divContenido" runat="server">
                             <div class="col-lg-4">
                                 <div class="ibox float-e-margins">
@@ -153,14 +147,14 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="form-group">
-                                                    <label>Nombre de la Ciudad sede:</label>
-                                                    <asp:TextBox ID="txbCiudadSede" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="rfvCiudadSede" runat="server" ErrorMessage="* Campo requerido"
-                                                        ControlToValidate="txbCiudadSede" ValidationGroup="agregar" CssClass="font-bold text-danger">
-                                                    </asp:RequiredFieldValidator>
+                                                    <label>Nombre del objetivo:</label>
+                                                    <asp:TextBox ID="txbObjetivo" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="rfvObjetivo" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="txbObjetivo" ValidationGroup="agregar"
+                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group">
-                                                    <a href="ciudadessedes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <a href="objetivosafiliado" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
                                                         OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
@@ -168,7 +162,6 @@
                                                 <br />
                                                 <br />
                                                 <div class="form-group">
-
                                                     <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                                 </div>
                                             </div>
@@ -179,7 +172,7 @@
                             <div class="col-lg-8">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Lista de Ciudades sedes</h5>
+                                        <h5>Lista de Objetivos</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -214,28 +207,27 @@
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th>Id</th>
-                                                    <th>Ciudad Sede</th>
+                                                    <th width="80%">Objetivos del afiliado</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpCiudadSede" runat="server" OnItemDataBound="rpCiudadSede_ItemDataBound">
+                                                <asp:Repeater ID="rpObjetivo" runat="server" OnItemDataBound="rpObjetivo_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
-                                                            <td><%# Eval("idCiudadSede") %></td>
-                                                            <td><%# Eval("NombreCiudadSede") %></td>
+                                                            <td><%# Eval("Objetivo") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
                                                                 <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a></td>
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
+                                                            </td>
                                                         </tr>
                                                     </ItemTemplate>
+
                                                 </asp:Repeater>
                                             </tbody>
                                         </table>
-
                                     </div>
                                 </div>
                             </div>
@@ -244,9 +236,7 @@
                     <%--Fin Contenido!!!!--%>
                 </div>
             </div>
-
             <uc1:footer runat="server" ID="footer" />
-
         </div>
         <uc1:rightsidebar runat="server" ID="rightsidebar" />
     </div>
@@ -264,7 +254,6 @@
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
-
 
     <!-- Page-Level Scripts -->
     <script>

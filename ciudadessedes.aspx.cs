@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using ClosedXML.Excel;
+using System.IO;
 
 namespace fpWebApp
 {
@@ -35,12 +37,12 @@ namespace fpWebApp
                         if (ViewState["Consulta"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            btnImprimir.Visible = false;
+                            lbExportarExcel.Visible = false;
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            btnImprimir.Visible = true;
+                            lbExportarExcel.Visible = true;
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
@@ -69,48 +71,49 @@ namespace fpWebApp
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
-                            DataTable dt1 = new DataTable();
                             clasesglobales cg = new clasesglobales();
-                            dt1 = cg.ConsultarCiudadSedePorId(int.Parse(Request.QueryString["deleteid"].ToString()));
-                            if (dt1.Rows.Count > 0)
+                            DataTable dt = cg.ValidarCiudadSedesTablas(Request.QueryString["deleteid"].ToString());
+                            if (dt.Rows.Count > 0)
                             {
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +
                                     "<div class=\"alert alert-danger alert-dismissable\">" +
                                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Esta Ciudad no se puede borrar, hay empleados asociados a ella." +
+                                    "Esta Ciudad Sede no se puede borrar, hay empleados asociados a ella." +
                                     "</div></div>";
 
-
-                                DataTable dt = new DataTable();
-                                dt = cg.ConsultarCiudadSedePorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                DataTable dt1 = new DataTable();
+                                dt1 = cg.ConsultarCiudadSedePorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt.Rows.Count > 0)
                                 {
-                                    txbCiudadSede.Text = dt.Rows[0]["NombreCiudad"].ToString();
+                                    txbCiudadSede.Text = dt1.Rows[0]["NombreCiudadSede"].ToString();
                                     txbCiudadSede.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     btnAgregar.Enabled = false;
-                                    ltTitulo.Text = "Borrar Ciudad";
+                                    ltTitulo.Text = "Borrar Ciudad Sede";
                                 }
+                                dt1.Dispose();
                             }
                             else
                             {
                                 //Borrar
-                                DataTable dt = new DataTable();
-                                dt = cg.ConsultarCiudadSedePorId(int.Parse(Request.QueryString["deleteid"].ToString()));
-                                if (dt.Rows.Count > 0)
+                                DataTable dt1 = new DataTable();
+                                dt1 = cg.ConsultarCiudadSedePorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                if (dt1.Rows.Count > 0)
                                 {
-                                    txbCiudadSede.Text = dt.Rows[0]["NombreCiudadSede"].ToString();
+                                    txbCiudadSede.Text = dt1.Rows[0]["NombreCiudadSede"].ToString();
                                     txbCiudadSede.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                    ltTitulo.Text = "Borrar Ciudad";
+                                    ltTitulo.Text = "Borrar Ciudad Sede";
                                 }
+                                dt1.Dispose();
                             }
+                            dt.Dispose();
                         }
                     }
                 }
                 else
                 {
-                    Response.Redirect("logout.aspx");
+                    Response.Redirect("logout");
                 }
             }
         }
@@ -177,26 +180,23 @@ namespace fpWebApp
                     btnEditar.Visible = true;
                 }
             }
-
         }
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
                 if (Request.QueryString["editid"] != null)
                 {
                     string respuesta = cg.ActualizarCiudadSede(int.Parse(Request.QueryString["editid"].ToString()), txbCiudadSede.Text.ToString().Trim());
-                    Response.Redirect("ciudadessedes");
                 }
 
                 if (Request.QueryString["deleteid"] != null)
                 {
-                    string respuesta = cg.EliminarCiudadSede(int.Parse(Request.QueryString["¨deleteid"].ToString()));
-                    Response.Redirect("ciudadessedes");
+                    string respuesta = cg.EliminarCiudadSede(int.Parse(Request.QueryString["deleteid"].ToString()));                    
                 }
+                Response.Redirect("ciudadessedes");
             }
             else
             {
@@ -205,8 +205,6 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.InsertarCiudadSede(txbCiudadSede.Text.ToString().Trim());
-                        myConnection.Open();
-                        Response.Redirect("ciudades");
                     }
                     catch (Exception ex)
                     {
@@ -222,17 +220,21 @@ namespace fpWebApp
                         "Excepción interna." +
                         "</div>";
                     }
+                    Response.Redirect("ciudadessedes");
                 }
                 else
                 {
                     ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    "Ya existe una Ciudad con ese nombre." +
+                    "Ya existe una Ciudad Sede con ese nombre." +
                     "</div>";
                 }
             }
         }
+        protected void lbExportarExcel_Click(object sender, EventArgs e)
+        {
 
+        }
 
     }
 }

@@ -58,7 +58,7 @@ namespace fpWebApp
                         {
                             //Editar
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ConsultarArlPorId(int.Parse(Request.QueryString["editid"].ToString()));
+                            DataTable dt = cg.ConsultarEpsPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
                                 txbEps.Text = dt.Rows[0]["NombreEps"].ToString();
@@ -69,7 +69,7 @@ namespace fpWebApp
                         if (Request.QueryString["deleteid"] != null)
                         {
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ValidarArlEmpleados(Request.QueryString["deleteid"].ToString());
+                            DataTable dt = cg.ValidarEpsTablas(int.Parse(Request.QueryString["deleteid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +
@@ -79,7 +79,7 @@ namespace fpWebApp
                                     "</div></div>";
 
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt1 = cg.ConsultarEpsPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
                                     txbEps.Text = dt1.Rows[0]["NombreEps"].ToString();
@@ -94,7 +94,7 @@ namespace fpWebApp
                             {
                                 //Borrar
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt1 = cg.ConsultarEpsPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
                                     txbEps.Text = dt1.Rows[0]["NombreEps"].ToString();
@@ -140,7 +140,7 @@ namespace fpWebApp
         private void ListaEps()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarArls();
+            DataTable dt = cg.ConsultarEpss();
             rpEps.DataSource = dt;
             rpEps.DataBind();
             dt.Dispose();
@@ -169,7 +169,7 @@ namespace fpWebApp
         {
             bool bExiste = false;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarArlPorNombre(strNombre);
+            DataTable dt = cg.ConsultarEpsPorNombre(strNombre);
             if (dt.Rows.Count > 0)
             {
                 bExiste = true;
@@ -185,11 +185,11 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarArl(int.Parse(Request.QueryString["editid"].ToString()), txbEps.Text.ToString().Trim());
+                    string respuesta = cg.ActualizarEps(int.Parse(Request.QueryString["editid"].ToString()), txbEps.Text.ToString().Trim());
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
-                    string respuesta = cg.EliminarArl(int.Parse(Request.QueryString["deleteid"].ToString()));
+                    string respuesta = cg.EliminarEps(int.Parse(Request.QueryString["deleteid"].ToString()));
                 }
                 Response.Redirect("eps");
             }
@@ -199,7 +199,7 @@ namespace fpWebApp
                 {
                     try
                     {
-                        string respuesta = cg.InsertarArl(txbEps.Text.ToString().Trim());
+                        string respuesta = cg.InsertarEps(txbEps.Text.ToString().Trim());
                     }
                     catch (Exception ex)
                     {
