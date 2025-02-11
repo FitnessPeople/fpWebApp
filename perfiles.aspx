@@ -161,7 +161,7 @@
                                         </div>
 
                                         <table class="footable1 table table-striped" data-paging-size="100" 
-                                            data-paging="false" data-sorting="true" >
+                                            data-paging="false" data-sorting="true" data-empty="-">
                                             <thead>
                                                 <tr>
                                                     <th>Perfil</th>
