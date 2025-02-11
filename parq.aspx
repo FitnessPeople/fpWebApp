@@ -213,7 +213,7 @@
                                                 <asp:Repeater ID="rpParQ" runat="server" OnItemDataBound="rpParQ_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
-                                                            <td><%# Eval("NombreArl") %></td>
+                                                            <td><%# Eval("PreguntaParq") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>

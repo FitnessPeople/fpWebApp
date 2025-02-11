@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
-using System.IO;
-using System.Text;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -11,7 +9,7 @@ using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
-    public partial class paginas : System.Web.UI.Page
+    public partial class tiposincapacidads : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -19,7 +17,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Páginas");
+                    ValidarPermisos("Arl");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -47,56 +45,68 @@ namespace fpWebApp
                             btnAgregar.Visible = true;
                         }
                     }
-
-                    ListaPaginas();
-                    ltTitulo.Text = "Agregar página";
+                    ListaTiposIncapacidades();
+                    ltTitulo.Text = "Agregar Tipo de incapacidad";
 
                     if (Request.QueryString.Count > 0)
                     {
-                        rpPaginas.Visible = false;
+                        rpTipoIncapacidad.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ConsultarPaginaPorId(int.Parse(Request.QueryString["editid"].ToString()));
+                            DataTable dt = cg.ConsultarTipoIncapacidadPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                txbPagina.Text = dt.Rows[0]["Pagina"].ToString();
-                                ddlCategorias.SelectedIndex = Convert.ToInt16(ddlCategorias.Items.IndexOf(ddlCategorias.Items.FindByValue(dt.Rows[0]["Categoria"].ToString())));
-
+                                txbTipoIncapacidad.Text = dt.Rows[0]["TipoIncapacidad"].ToString();
                                 btnAgregar.Text = "Actualizar";
-                                ltTitulo.Text = "Actualizar Página";
+                                ltTitulo.Text = "Actualizar Tipo de incapacidad";
                             }
-                            dt.Dispose();
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
-                            //Las paginas no se pueden borrar
-                            ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                "<div class=\"alert alert-danger alert-dismissable\">" +
-                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                "Esta página no se puede borrar." +
-                                "</div></div>";
-
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ConsultarPaginaPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                            DataTable dt = cg.ValidarTipoIncapacidadTablas(int.Parse(Request.QueryString["deleteid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                txbPagina.Text = dt.Rows[0]["Pagina"].ToString();
-                                txbPagina.Enabled = false;
-                                ddlCategorias.SelectedIndex = Convert.ToInt16(ddlCategorias.Items.IndexOf(ddlCategorias.Items.FindByValue(dt.Rows[0]["Categoria"].ToString())));
-                                ddlCategorias.Enabled = false;
-                                btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                btnAgregar.Enabled = false;
-                                ltTitulo.Text = "Borrar Página";
+                                ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                    "Est Tipo de incapaidad no se puede borrar, hay registros asociados a él." +
+                                    "</div></div>";
+
+                                DataTable dt1 = new DataTable();
+                                dt1 = cg.ConsultarTipoIncapacidadPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                if (dt1.Rows.Count > 0)
+                                {
+                                    txbTipoIncapacidad.Text = dt1.Rows[0]["TipoIncapacidad"].ToString();
+                                    txbTipoIncapacidad.Enabled = false;
+                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                                    btnAgregar.Enabled = false;
+                                    ltTitulo.Text = "Borrar Tipo Incapacidad";
+                                }
+                                dt1.Dispose();
                             }
-                            dt.Dispose();
+                            else
+                            {
+                                //Borrar
+                                DataTable dt1 = new DataTable();
+                                dt1 = cg.ConsultarTipoIncapacidadPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                if (dt1.Rows.Count > 0)
+                                {
+                                    txbTipoIncapacidad.Text = dt1.Rows[0]["TipoIncapacidad"].ToString();
+                                    txbTipoIncapacidad.Enabled = false;
+                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                                    ltTitulo.Text = "Borrar Tipo de incapacidad";
+                                }
+                                dt1.Dispose();
+                            }
                         }
                     }
                 }
                 else
                 {
-                    Response.Redirect("logout");
+                    Response.Redirect("logout.aspx");
                 }
             }
         }
@@ -120,42 +130,43 @@ namespace fpWebApp
                 ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
                 ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
             }
+
             dt.Dispose();
         }
 
-        private void ListaPaginas()
+        private void ListaTiposIncapacidades()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPaginas();
-            rpPaginas.DataSource = dt;
-            rpPaginas.DataBind();
+            DataTable dt = cg.ConsultarTiposIncapacidades();
+            rpTipoIncapacidad.DataSource = dt;
+            rpTipoIncapacidad.DataBind();
             dt.Dispose();
         }
 
-        protected void rpPaginas_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        protected void rpTipoIncapacidad_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
                     HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "paginas?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminar.Attributes.Add("href", "tiposincapacidades?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEliminar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
                     HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "paginas?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Attributes.Add("href", "tiposincapacidades?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEditar.Visible = true;
                 }
             }
         }
 
-        private bool ValidarPagina(string strNombre)
+        private bool ValidarTipoIncapacidad(string strNombre)
         {
             bool bExiste = false;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPaginaPorNombre(strNombre);
+            DataTable dt = cg.ConsultarTipoIncapacidadPorNombre(strNombre);
             if (dt.Rows.Count > 0)
             {
                 bExiste = true;
@@ -171,22 +182,21 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarPagina(int.Parse(Request.QueryString["editid"].ToString()), txbPagina.Text.ToString().Trim(), ddlCategorias.SelectedItem.Text.ToString());
+                    string respuesta = cg.ActualizarTipoIncapacidad(int.Parse(Request.QueryString["editid"].ToString()), txbTipoIncapacidad.Text.ToString().Trim());
                 }
-
                 if (Request.QueryString["deleteid"] != null)
                 {
-                    string respuesta = cg.EliminarPagina(int.Parse(Request.QueryString["deleteid"].ToString()));
+                    string respuesta = cg.EliminarTipoIncapacidad(int.Parse(Request.QueryString["deleteid"].ToString()));
                 }
-                Response.Redirect("paginas");
+                Response.Redirect("tiposincapacidades");
             }
             else
             {
-                if (!ValidarPagina(txbPagina.Text.ToString()))
+                if (!ValidarTipoIncapacidad(txbTipoIncapacidad.Text.ToString()))
                 {
                     try
                     {
-                        string respuesta = cg.InsertarPagina(txbPagina.Text.ToString().Trim(), ddlCategorias.SelectedItem.Text.ToString());
+                        string respuesta = cg.InsertarTipoIncapacidad(txbTipoIncapacidad.Text.ToString().Trim());
                     }
                     catch (Exception ex)
                     {
@@ -202,14 +212,14 @@ namespace fpWebApp
                         "Excepción interna." +
                         "</div>";
                     }
-                    Response.Redirect("paginas");
+                    Response.Redirect("tiposincapacidades");
                 }
                 else
                 {
                     ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    "Ya existe una Página con ese nombre." +
-                    "</div>";
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        "Ya existe un tipo de incapacidad con ese nombre." +
+                        "</div>";
                 }
             }
         }
@@ -218,5 +228,7 @@ namespace fpWebApp
         {
 
         }
+
+
     }
 }

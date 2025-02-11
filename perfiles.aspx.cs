@@ -9,6 +9,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
+using MySql.Data.MySqlClient;
 
 namespace fpWebApp
 {
@@ -20,88 +21,6 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    //ValidarPermisos("Perfiles");
-                    //if (ViewState["SinPermiso"].ToString() == "1")
-                    //{
-                    //    //No tiene acceso a esta página
-                    //    divMensaje.Visible = true;
-                    //    paginasperfil.Visible = true;
-                    //    divContenido.Visible = false;
-                    //}
-                    //else
-                    //{
-                    //    //Si tiene acceso a esta página
-                    //    btnAgregar.Visible = false;
-                    //    //upPerfiles.Visible = false;
-                    //    if (ViewState["Consulta"].ToString() == "1")
-                    //    {
-                    //        //upPerfiles.Visible = true;
-                    //    }
-                    //    if (ViewState["CrearModificar"].ToString() == "1")
-                    //    {
-                    //        btnAgregar.Visible = true;
-                    //    }
-                    //}
-                    //if (ViewState["Consulta"].ToString() == "1")
-                    //{
-
-                    //    listaPerfiles();
-                    //    ListaPermisosPerfiles();
-                    //    ltTitulo.Text = "Agregar perfil";
-
-                    //    if (ViewState["CrearModificar"].ToString() == "1")
-                    //    {
-                    //        btnAgregar.Visible = true;
-
-                    //        if (Request.QueryString.Count > 0)
-                    //        {
-                    //            if (Request.QueryString["editid"] != null)
-                    //            {
-                    //                //Editar
-                    //                string strQuery = "SELECT * FROM perfiles WHERE idPerfil = " + Request.QueryString["editid"].ToString();
-                    //                clasesglobales cg = new clasesglobales();
-                    //                DataTable dt = cg.TraerDatos(strQuery);
-                    //                if (dt.Rows.Count > 0)
-                    //                {
-                    //                    txbPerfil.Text = dt.Rows[0]["Perfil"].ToString();
-                    //                    btnAgregar.Text = "Actualizar";
-                    //                    ltTitulo.Text = "Actualizar perfil";
-                    //                }
-                    //            }
-                    //            if (Request.QueryString["deleteid"] != null)
-                    //            {
-                    //                //Borrar
-                    //                string strQuery = "SELECT * FROM perfiles WHERE idPerfil = " + Request.QueryString["deleteid"].ToString();
-                    //                clasesglobales cg = new clasesglobales();
-                    //                DataTable dt = cg.TraerDatos(strQuery);
-                    //                if (dt.Rows.Count > 0)
-                    //                {
-                    //                    txbPerfil.Text = dt.Rows[0]["Perfil"].ToString();
-                    //                    txbPerfil.Enabled = false;
-                    //                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                    //                    ltTitulo.Text = "Eliminar perfil";
-                    //                }
-
-                    //                strQuery = "SELECT * FROM Usuarios WHERE idPerfil = " + Request.QueryString["deleteid"].ToString();
-                    //                clasesglobales cg1 = new clasesglobales();
-                    //                DataTable dt1 = cg1.TraerDatos(strQuery);
-
-                    //                if (dt1.Rows.Count > 0)
-                    //                {
-                    //                    //No se puede borrar
-                    //                    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                    //                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    //                    "Este perfil está asociado a un usuario. No se puede borrar." +
-                    //                    "</div>";
-                    //                }
-                    //                dt1.Dispose();
-                    //            }
-                    //            rpPerfiles.Visible = false;
-                    //        }
-                    //    }
-                    //}
-                    //indicadores01.Visible = false;
-
                     ValidarPermisos("Perfiles");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
@@ -130,52 +49,17 @@ namespace fpWebApp
                         {
                             //Editar
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ConsultarArlPorId(int.Parse(Request.QueryString["editid"].ToString()));
+                            DataTable dt = cg.ConsultarPerfilPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                txbPerfil.Text = dt.Rows[0]["NombreArl"].ToString();
+                                txbPerfil.Text = dt.Rows[0]["Perfil"].ToString();
                                 btnAgregar.Text = "Actualizar";
-                                ltTitulo.Text = "Actualizar ARL";
+                                ltTitulo.Text = "Actualizar Perfil";
                             }
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
-                            clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ValidarArlEmpleados(int.Parse(Request.QueryString["deleteid"].ToString()));
-                            if (dt.Rows.Count > 0)
-                            {
-                                ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                    "<div class=\"alert alert-danger alert-dismissable\">" +
-                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Esta ARL no se puede borrar, hay empleados asociados a ella." +
-                                    "</div></div>";
-
-                                DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
-                                if (dt1.Rows.Count > 0)
-                                {
-                                    txbPerfil.Text = dt1.Rows[0]["NombreArl"].ToString();
-                                    txbPerfil.Enabled = false;
-                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                    btnAgregar.Enabled = false;
-                                    ltTitulo.Text = "Borrar ARL";
-                                }
-                                dt1.Dispose();
-                            }
-                            else
-                            {
-                                //Borrar
-                                DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
-                                if (dt1.Rows.Count > 0)
-                                {
-                                    txbPerfil.Text = dt1.Rows[0]["NombreArl"].ToString();
-                                    txbPerfil.Enabled = false;
-                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                    ltTitulo.Text = "Borrar ARL";
-                                }
-                                dt1.Dispose();
-                            }
+                            //Borrar
                         }
                     }
                 }
@@ -227,23 +111,11 @@ namespace fpWebApp
         private void ListaPermisosPerfiles()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPermisosPerfiles();
+            DataTable dt = cg.ConsultarPermisosPerfilesPorPerfil(int.Parse(ddlPerfiles.SelectedItem.Value.ToString()));
 
             rpPaginasPermisos.DataSource = dt;
             rpPaginasPermisos.DataBind();
             dt.Dispose();
-
-            //string strQuery = "SELECT pp.idPagina, pp.idPerfil, p.pagina, p.categoria, SinPermiso, Consulta, Exportar, CrearModificar, Borrar, " +
-            //    "IF(SinPermiso=0,'<i class=\"fa fa-thumbs-up text-info fa-lg\"></i>','<i class=\"fa fa-thumbs-down text-danger fa-lg\"></i>') first, " +
-            //    "IF(Consulta=1,'<i class=\"fa fa-thumbs-up text-info fa-lg\"></i>','<i class=\"fa fa-thumbs-down text-danger fa-lg\"></i>') second, " +
-            //    "IF(Exportar=1,'<i class=\"fa fa-thumbs-up text-info fa-lg\"></i>','<i class=\"fa fa-thumbs-down text-danger fa-lg\"></i>') third, " +
-            //    "IF(CrearModificar=1,'<i class=\"fa fa-thumbs-up text-info fa-lg\"></i>','<i class=\"fa fa-thumbs-down text-danger fa-lg\"></i>') fourth, " +
-            //    "IF(Borrar=1,'<i class=\"fa fa-thumbs-up text-info fa-lg\"></i>','<i class=\"fa fa-thumbs-down text-danger fa-lg\"></i>') fifth " +
-            //    "FROM permisos_perfiles pp, paginas p " +
-            //    "WHERE pp.idPagina = p.idPagina " +
-            //    "AND p.idPagina <> 1 " +
-            //    "AND pp.idPerfil = " + ddlPerfiles.SelectedItem.Value.ToString();
-            
         }
 
         protected void ddlPerfiles_SelectedIndexChanged(object sender, EventArgs e)
@@ -367,11 +239,11 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarArl(int.Parse(Request.QueryString["editid"].ToString()), txbPerfil.Text.ToString().Trim());
+                    string respuesta = cg.ActualizarPerfil(int.Parse(Request.QueryString["editid"].ToString()), txbPerfil.Text.ToString().Trim());
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
-                    string respuesta = cg.EliminarArl(int.Parse(Request.QueryString["deleteid"].ToString()));
+                    // Eliminar
                 }
                 Response.Redirect("arl");
             }
@@ -381,7 +253,7 @@ namespace fpWebApp
                 {
                     try
                     {
-                        string respuesta = cg.InsertarArl(txbPerfil.Text.ToString().Trim());
+                        string respuesta = cg.InsertarPerfil(txbPerfil.Text.ToString().Trim());
                     }
                     catch (Exception ex)
                     {
@@ -403,7 +275,7 @@ namespace fpWebApp
                 {
                     ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
                         "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Ya existe una ARL con ese nombre." +
+                        "Ya existe un Perfil con ese nombre." +
                         "</div>";
                 }
             }
@@ -413,7 +285,7 @@ namespace fpWebApp
         {
             bool bExiste = false;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarArlPorNombre(strNombre);
+            DataTable dt = cg.ConsultarPerfilPorNombre(strNombre);
             if (dt.Rows.Count > 0)
             {
                 bExiste = true;
@@ -601,22 +473,6 @@ namespace fpWebApp
                         }
                     }
                 }
-
-                //OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
-                //try
-                //{
-                //    OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                //    myConnection.Open();
-                //    command.ExecuteNonQuery();
-                //    command.Dispose();
-                //    myConnection.Close();
-                //}
-                //catch (OdbcException ex)
-                //{
-                //    string mensaje = ex.Message;
-                //    myConnection.Close();
-                //    Response.Redirect("perfiles");
-                //}
             }
 
             dt.Dispose();
