@@ -846,6 +846,7 @@
     <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebServices.js" />
     <Content Include="sedes.aspx" />
     <Content Include="tiposdocumento.aspx" />
+    <Content Include="tiposincapacidades.aspx" />
     <Content Include="traspasos.aspx" />
     <Content Include="traspasosAfil.aspx" />
     <Content Include="usuarios.aspx" />
@@ -1342,8 +1343,8 @@
       <DependentUpon>pension.aspx</DependentUpon>
     </Compile>
     <Compile Include="perfiles.aspx.cs">
-      <DependentUpon>perfiles.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>perfiles.aspx</DependentUpon>
     </Compile>
     <Compile Include="perfiles.aspx.designer.cs">
       <DependentUpon>perfiles.aspx</DependentUpon>
@@ -1404,6 +1405,13 @@
     </Compile>
     <Compile Include="tiposdocumento.aspx.designer.cs">
       <DependentUpon>tiposdocumento.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="tiposincapacidades.aspx.cs">
+      <DependentUpon>tiposincapacidades.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="tiposincapacidades.aspx.designer.cs">
+      <DependentUpon>tiposincapacidades.aspx</DependentUpon>
     </Compile>
     <Compile Include="traspasos.aspx.cs">
       <DependentUpon>traspasos.aspx</DependentUpon>

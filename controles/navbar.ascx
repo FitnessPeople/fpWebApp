@@ -129,7 +129,7 @@
                     <li id="estadocivil" class="old"><a href="estadocivil"><i class="fa fa-people-pulling"></i>Estado civil</a></li>
                     <li id="objetivosafiliado" class="old"><a href="objetivosafiliado"><i class="fa fa-bullseye"></i>Objetivos afiliado</a></li>
                     <li id="parQ" class="old"><a href="parq"><i class="fa fa-person-circle-question"></i>ParQ</a></li>
-                    <li id="tiposincapacidads" class="old"><a href="#">Tipos de incapacidad</a></li>
+                    <li id="tiposincapacidades" class="old"><a href="tiposincapacidades"><i class="fa fa-hospital-user"></i>Tipos de incapacidad</a></li>
                 </ul>
             </li>
             <li>

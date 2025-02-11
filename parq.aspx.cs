@@ -18,7 +18,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Arl");
+                    ValidarPermisos("ARL");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -46,45 +46,45 @@ namespace fpWebApp
                             btnAgregar.Visible = true;
                         }
                     }
-                    ListaArl();
-                    ltTitulo.Text = "Agregar ARL";
+                    ListaPreguntaParQ();
+                    ltTitulo.Text = "Agregar Pregunta ParQ";
 
                     if (Request.QueryString.Count > 0)
                     {
-                        rpArl.Visible = false;
+                        rpParQ.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ConsultarArlPorId(int.Parse(Request.QueryString["editid"].ToString()));
+                            DataTable dt = cg.ConsultarPreguntaParQPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                txbArl.Text = dt.Rows[0]["NombreArl"].ToString();
+                                txbParQ.Text = dt.Rows[0]["PreguntaParq"].ToString();
                                 btnAgregar.Text = "Actualizar";
-                                ltTitulo.Text = "Actualizar ARL";
+                                ltTitulo.Text = "Actualizar Pregunta ParQ";
                             }
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ValidarArlEmpleados(int.Parse(Request.QueryString["deleteid"].ToString()));
+                            DataTable dt = cg.ValidarPreguntaParQTablas(int.Parse(Request.QueryString["deleteid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +
                                     "<div class=\"alert alert-danger alert-dismissable\">" +
                                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Esta ARL no se puede borrar, hay empleados asociados a ella." +
+                                    "Esta Pregunta ParQ no se puede borrar, hay registros asociados a ella." +
                                     "</div></div>";
 
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt1 = cg.ConsultarPreguntaParQPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
-                                    txbArl.Text = dt1.Rows[0]["NombreArl"].ToString();
-                                    txbArl.Enabled = false;
+                                    txbParQ.Text = dt1.Rows[0]["PreguntaParq"].ToString();
+                                    txbParQ.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     btnAgregar.Enabled = false;
-                                    ltTitulo.Text = "Borrar ARL";
+                                    ltTitulo.Text = "Borrar Pregunta ParQ";
                                 }
                                 dt1.Dispose();
                             }
@@ -92,13 +92,13 @@ namespace fpWebApp
                             {
                                 //Borrar
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt1 = cg.ConsultarPreguntaParQPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
-                                    txbArl.Text = dt1.Rows[0]["NombreArl"].ToString();
-                                    txbArl.Enabled = false;
+                                    txbParQ.Text = dt1.Rows[0]["PreguntaParq"].ToString();
+                                    txbParQ.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                    ltTitulo.Text = "Borrar ARL";
+                                    ltTitulo.Text = "Borrar Pregunta ParQ";
                                 }
                                 dt1.Dispose();
                             }
@@ -135,39 +135,39 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void ListaArl()
+        private void ListaPreguntaParQ()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarArls();
-            rpArl.DataSource = dt;
-            rpArl.DataBind();
+            DataTable dt = cg.ConsultarPreguntasParq();
+            rpParQ.DataSource = dt;
+            rpParQ.DataBind();
             dt.Dispose();
         }
 
-        protected void rpArl_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        protected void rpParQ_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
                     HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "arl?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminar.Attributes.Add("href", "parq?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEliminar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
                     HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "arl?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Attributes.Add("href", "parq?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEditar.Visible = true;
                 }
             }
         }
 
-        private bool ValidarArl(string strNombre)
+        private bool ValidarParQ(string strNombre)
         {
             bool bExiste = false;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarArlPorNombre(strNombre);
+            DataTable dt = cg.ConsultarPreguntaParQPorNombre(strNombre);
             if (dt.Rows.Count > 0)
             {
                 bExiste = true;
@@ -183,21 +183,21 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarArl(int.Parse(Request.QueryString["editid"].ToString()), txbArl.Text.ToString().Trim());
+                    string respuesta = cg.ActualizarPreguntaParQ(int.Parse(Request.QueryString["editid"].ToString()), txbParQ.Text.ToString().Trim(),"");
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
-                    string respuesta = cg.EliminarArl(int.Parse(Request.QueryString["deleteid"].ToString()));
+                    string respuesta = cg.EliminarPreguntaParQ(int.Parse(Request.QueryString["deleteid"].ToString()));
                 }
-                Response.Redirect("arl");
+                Response.Redirect("parq");
             }
             else
             {
-                if (!ValidarArl(txbArl.Text.ToString()))
+                if (!ValidarParQ(txbParQ.Text.ToString()))
                 {
                     try
                     {
-                        string respuesta = cg.InsertarArl(txbArl.Text.ToString().Trim());
+                        string respuesta = cg.InsertarPreguntaParQ(txbParQ.Text.ToString().Trim());
                     }
                     catch (Exception ex)
                     {
@@ -213,13 +213,13 @@ namespace fpWebApp
                         "Excepción interna." +
                         "</div>";
                     }
-                    Response.Redirect("arl");
+                    Response.Redirect("parq");
                 }
                 else
                 {
                     ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
                         "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Ya existe una ARL con ese nombre." +
+                        "Ya existe una Pregunta ParQ con esa descripción." +
                         "</div>";
                 }
             }
@@ -229,5 +229,7 @@ namespace fpWebApp
         {
 
         }
+
+
     }
 }

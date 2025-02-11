@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="parq.aspx.cs" Inherits="fpWebApp.parq" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="tiposincapacidades.aspx.cs" Inherits="fpWebApp.tiposincapacidads" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
@@ -15,15 +15,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Preguntas PARQ</title>
+    <title>Fitness People | Tipos de incapacidad</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
-
-    <!-- FooTable -->
-    <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -37,7 +33,7 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#parq");
+            var element1 = document.querySelector("#tiposincapacidades");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#configuracion");
             element2.classList.remove("collapse");
@@ -52,7 +48,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                     <i class="fa fa-person-chalkboard modal-icon"></i>
-                    <h4 class="modal-title">Guía para administrar PARQ</h4>
+                    <h4 class="modal-title">Guía para administrar Tipos de incapacidades</h4>
                     <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
                 </div>
                 <div class="modal-body">
@@ -101,11 +97,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-person-falling-burst text-success m-r-sm"></i>Preguntas PARQ</h2>
+                    <h2><i class="fa fa-person-falling-burst text-success m-r-sm"></i>Tipos de incapacidad</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Configuración</li>
-                        <li class="active"><strong>Preguntas PARQ</strong></li>
+                        <li class="active"><strong>Tipos de incapacidad</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -145,14 +141,14 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="form-group">
-                                                    <label>Nombre de la Pregunta PARQ:</label>
-                                                    <asp:TextBox ID="txbParQ" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="rfvParq" runat="server" ErrorMessage="* Campo requerido"
-                                                        ControlToValidate="txbParQ" ValidationGroup="agregar"
+                                                    <label>Nombre del Tipo de incapacidad:</label>
+                                                    <asp:TextBox ID="txbTipoIncapacidad" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="rfvTipoIncapacidad" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="txbTipoIncapacidad" ValidationGroup="agregar"
                                                         CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group">
-                                                    <a href="parq" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <a href="tiposincapacidades" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
                                                         OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
@@ -170,7 +166,7 @@
                             <div class="col-lg-8">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Lista de Preguntas PARQ</h5>
+                                        <h5>Lista de Tipos de incapacidad</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -187,8 +183,7 @@
                                             </div>
 
                                             <div class="col-lg-6 form-horizontal">
-                                                <asp:LinkButton ID="lbExportarExcel" runat="server"
-                                                    CausesValidation="false"
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
                                                     CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
                                                     OnClick="lbExportarExcel_Click">
                                                     <i class="fa fa-file-excel"></i> EXCEL
@@ -205,15 +200,15 @@
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th width="80%">Preguntas PARQ</th>
+                                                    <th width="80%">Tipos de incapacidad</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpParQ" runat="server" OnItemDataBound="rpParQ_ItemDataBound">
+                                                <asp:Repeater ID="rpTipoIncapacidad" runat="server" OnItemDataBound="rpTipoIncapacidad_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
-                                                            <td><%# Eval("PreguntaParq") %></td>
+                                                            <td><%# Eval("TipoIncapacidad") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
@@ -222,7 +217,6 @@
                                                             </td>
                                                         </tr>
                                                     </ItemTemplate>
-
 
                                                 </asp:Repeater>
                                             </tbody>
@@ -262,3 +256,4 @@
 </body>
 
 </html>
+

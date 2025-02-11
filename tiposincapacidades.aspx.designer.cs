@@ -11,7 +11,7 @@ namespace fpWebApp
 {
 
 
-    public partial class parq
+    public partial class tiposincapacidads
     {
 
         /// <summary>
@@ -78,22 +78,22 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltTitulo;
 
         /// <summary>
-        /// Control txbParQ.
+        /// Control txbTipoIncapacidad.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbParQ;
+        protected global::System.Web.UI.WebControls.TextBox txbTipoIncapacidad;
 
         /// <summary>
-        /// Control rfvParq.
+        /// Control rfvTipoIncapacidad.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvParq;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTipoIncapacidad;
 
         /// <summary>
         /// Control btnAgregar.
@@ -132,13 +132,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.LinkButton lbExportarExcel;
 
         /// <summary>
-        /// Control rpParQ.
+        /// Control rpTipoIncapacidad.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpParQ;
+        protected global::System.Web.UI.WebControls.Repeater rpTipoIncapacidad;
 
         /// <summary>
         /// Control footer.
