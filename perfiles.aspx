@@ -160,7 +160,7 @@
                                             <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                         </div>
 
-                                        <table class="footable table table-striped" data-paging-size="100" 
+                                        <table class="footable1 table table-striped" data-paging-size="100" 
                                             data-paging="false" data-sorting="true" >
                                             <thead>
                                                 <tr>
@@ -213,7 +213,7 @@
                                                             </asp:DropDownList>
                                                         </div>
 
-                                                        <table class="footable table table-striped" data-paging-size="100" 
+                                                        <table class="footable2 table table-striped" data-paging-size="100" 
                                                             data-paging="false" data-sorting="true" >
                                                             <thead>
                                                                 <tr>
@@ -231,15 +231,15 @@
                                                                         <tr class="feed-element">
                                                                             <td style="vertical-align: middle;"><%# Eval("Categoria") %> / <%# Eval("Pagina") %></td>
                                                                             <td class="text-center">
-                                                                                <asp:LinkButton ID="lb1" runat="server" OnClick="lb1_Click" ClientIDMode="AutoID"><%# Eval("first") %></asp:LinkButton></td>
+                                                                                <asp:LinkButton ID="lb1" runat="server" OnClick="lb1_Click" ClientIDMode="AutoID"><%# Eval("SinPermiso") %></asp:LinkButton></td>
                                                                             <td class="text-center">
-                                                                                <asp:LinkButton ID="lb2" runat="server" OnClick="lb2_Click" ClientIDMode="AutoID"><%# Eval("second") %></asp:LinkButton></td>
+                                                                                <asp:LinkButton ID="lb2" runat="server" OnClick="lb2_Click" ClientIDMode="AutoID"><%# Eval("Consulta") %></asp:LinkButton></td>
                                                                             <td class="text-center">
-                                                                                <asp:LinkButton ID="lb3" runat="server" OnClick="lb3_Click" ClientIDMode="AutoID"><%# Eval("third") %></asp:LinkButton></td>
+                                                                                <asp:LinkButton ID="lb3" runat="server" OnClick="lb3_Click" ClientIDMode="AutoID"><%# Eval("Exportar") %></asp:LinkButton></td>
                                                                             <td class="text-center">
-                                                                                <asp:LinkButton ID="lb4" runat="server" OnClick="lb4_Click" ClientIDMode="AutoID"><%# Eval("fourth") %></asp:LinkButton></td>
+                                                                                <asp:LinkButton ID="lb4" runat="server" OnClick="lb4_Click" ClientIDMode="AutoID"><%# Eval("CrearModificar") %></asp:LinkButton></td>
                                                                             <td class="text-center">
-                                                                                <asp:LinkButton ID="lb5" runat="server" OnClick="lb5_Click" ClientIDMode="AutoID"><%# Eval("fifth") %></asp:LinkButton></td>
+                                                                                <asp:LinkButton ID="lb5" runat="server" OnClick="lb5_Click" ClientIDMode="AutoID"><%# Eval("Borrar") %></asp:LinkButton></td>
                                                                         </tr>
                                                                     </ItemTemplate>
                                                                 </asp:Repeater>
@@ -287,7 +287,8 @@
 
     <!-- Page-Level Scripts -->
     <script>
-        $('.chosen-select').chosen({ width: "100%" });
+        $('.footable1').footable();
+        $('.footable2').footable();
     </script>
 
 </body>

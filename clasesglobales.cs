@@ -1731,6 +1731,290 @@ namespace fpWebApp
         }
         #endregion
 
+        #region Perfiles
+        public DataTable ConsultarPerfiles()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PERFILES", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarPerfilPorNombre(string nombrePerfil)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PERFIL_POR_NOMBRE", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_nombre_perfil", nombrePerfil);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarPerfilPorId(int idPerfil)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PERFIL", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_perfil", idPerfil);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public string ActualizarPerfil(int idPerfil, string nombrePerfil)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open(); // Abrir conexión antes de usarla
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_PERFIL", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Parámetros de entrada
+                        cmd.Parameters.AddWithValue("@p_nombre_perfil", nombrePerfil);
+                        cmd.Parameters.AddWithValue("@p_id_perfil", idPerfil);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string EliminarPerfil(int idPerfil)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ELIMINAR_PERFIL", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_perfil", idPerfil);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string InsertarPerfil(string nombrePerfil)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_PERFIL", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_nombre_perfil", nombrePerfil);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public DataTable ValidarPerfil(int idPerfil)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_VALIDAR_PERFIL", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_perfil", Convert.ToInt32(idPerfil));
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        #endregion
+
+        #region Permisos perfiles
+
+        public DataTable ConsultarPermisosPerfiles(int idPerfil)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PERMISOS_PERFILES", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_perfil", Convert.ToInt32(idPerfil));
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarPermisosPerfilesPorPerfil(int idPerfil)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PERMISOS_PERFILES_POR_PERFIL", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_perfil", Convert.ToInt32(idPerfil));
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        #endregion
+
         #region Ciudades sedes
 
         public DataTable ConsultarCiudadesSedes()
