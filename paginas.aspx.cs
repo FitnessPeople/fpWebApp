@@ -176,7 +176,7 @@ namespace fpWebApp
 
                 if (Request.QueryString["deleteid"] != null)
                 {
-                    string respuesta = cg.EliminarPagina(int.Parse(Request.QueryString["deleteid"].ToString()));
+                    // Borrar
                 }
                 Response.Redirect("paginas");
             }
@@ -186,7 +186,26 @@ namespace fpWebApp
                 {
                     try
                     {
-                        string respuesta = cg.InsertarPagina(txbPagina.Text.ToString().Trim(), ddlCategorias.SelectedItem.Text.ToString());
+                        string respuesta = cg.InsertarPagina(txbPagina.Text.ToString().Trim(), ddlCategorias.SelectedItem.Value.ToString());
+
+                        DataTable dt = cg.ConsultarUltimaPagina();
+                        int IdPagina = int.Parse(dt.Rows[0]["idPagina"].ToString());
+                        dt.Dispose();
+
+                        DataTable dt1 = cg.ConsultarPerfiles();
+
+                        for (int i = 0; i < dt1.Rows.Count; i++)
+                        {
+                            try
+                            {
+                                string respuesta2 = cg.InsertarPermisoPerfil(int.Parse(dt1.Rows[i]["idPerfil"].ToString()), IdPagina, 1, 0, 0, 0, 0);
+                            }
+                            catch (Exception ex)
+                            {
+                                string mensaje = ex.Message;
+                            }
+                        }
+                        dt1.Dispose();
                     }
                     catch (Exception ex)
                     {
