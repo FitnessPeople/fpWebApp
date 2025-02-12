@@ -101,7 +101,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-person-falling-burst text-success m-r-sm"></i>Tipos de documento</h2>
+                    <h2><i class="fa fa-id-card text-success m-r-sm"></i>Tipos de documento</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Configuración</li>

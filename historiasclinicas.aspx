@@ -21,12 +21,12 @@
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
-    <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
-    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
-    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
-
     <!-- FooTable -->
-    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
+    <%--<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />--%>
+    <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
+
+    <!-- Morris -->
+    <link href="css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -137,45 +137,43 @@
                                 <div class="ibox-content">
 
                                     <div class="row">
-                                        <div class="col-lg-4 form-horizontal">
-                                            <div class="form-group">
-                                                <label class="col-lg-4 control-label" style="text-align: left;">Buscador:</label>
-                                                <div class="col-lg-8">
-                                                    <input type="text" placeholder="Buscar..." class="form-control input-sm m-b-xs" id="filter">
+                                        <form id="form1" runat="server">
+                                            <div class="col-lg-6 form-horizontal">
+                                                <div class="form-group">
+                                                    <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-4 form-horizontal" style="text-align: center;">
-                                            <label class="control-label">Mostrar </label>
-
-                                            <a href="#" class="data-page-size" data-page-size="10">10</a> | 
-                                            <a href="#" class="data-page-size" data-page-size="20">20</a> | 
-                                            <a href="#" class="data-page-size" data-page-size="50">50</a> | 
-                                            <a href="#" class="data-page-size" data-page-size="100">100</a>
-
-                                            <label class="control-label">registros</label>
-                                        </div>
-
-                                        <div class="col-lg-4 form-horizontal">
-                                            <label class="control-label">&nbsp;</label>
-                                            <a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;" href="nuevahistoriaclinica" title="Agregar historia clínica" runat="server" id="btnAgregar" visible="false"><i class="fa fa-square-plus"></i> NUEVO</a>
-                                            <a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" target="_blank" runat="server" id="btnExportar" href="imprimirhistorias" visible="false" title="Exportar"><i class="fa fa-print"></i> IMPRIMIR</a>
-                                            <a data-trigger="footable_expand_all" style="font-size: 12px;" class="toggle btn btn-primary pull-right dim" href="#collapse" title="Expandir todo"><i class="fa fa-square-caret-down"></i> EXPANDIR</a>
-                                            <a data-trigger="footable_collapse_all" class="toggle btn btn-primary pull-right dim" style="display: none; font-size: 12px;" href="#collapse" title="Contraer todo"><i class="fa fa-square-caret-up"></i> CONTRAER</a>
-                                        </div>
+ 
+                                            <div class="col-lg-6 form-horizontal">
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false" 
+                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;" 
+                                                    OnClick="lbExportarExcel_Click">
+                                                    <i class="fa fa-file-excel"></i> EXCEL
+                                                </asp:LinkButton>
+                                                <a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;" 
+                                                    href="nuevahistoriaclinica" title="Agregar historia clínica" runat="server" 
+                                                    id="btnAgregar" visible="false"><i class="fa fa-square-plus"></i> NUEVO</a>
+                                            </div>
+                                        </form>
                                     </div>
 
-                                    <table class="footable table toggle-arrow-small list-group-item-text" data-page-size="10" data-filter="#filter" data-filter-minimum="3">
+                                    <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                        data-filter-min="3" data-filter-placeholder="Buscar"
+                                        data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
+                                        data-paging-limit="10" data-filtering="true"
+                                        data-filter-container="#filter-form-container" data-filter-delay="300"
+                                        data-filter-dropdown-title="Buscar en:" data-filter-position="left"
+                                        data-empty="Sin resultados">
                                         <thead>
                                             <tr>
-                                                <th data-sort-ignore="true">ID</th>
-                                                <th>Fecha de creación</th>
-                                                <th data-sort-ignore="true">Documento</th>
-                                                <th>Afiliado</th>
-                                                <th>Género</th>
-                                                <th>Fecha último control</th>
-                                                <th data-hide="all"></th>
-                                                <th data-sort-ignore="true" data-toggle="false" class="text-right">Acciones</th>
+                                                <th data-sortable="false" data-breakpoints="xs" style="width: 110px;">ID</th>
+                                                <th data-type="date" data-breakpoints="xs sm md">Fecha de creación</th>
+                                                <th data-breakpoints="xs">Documento</th>
+                                                <th data-breakpoints="xs">Afiliado</th>
+                                                <th data-breakpoints="xs">Género</th>
+                                                <th data-type="date" data-breakpoints="xs sm md">Fecha último control</th>
+                                                <th data-breakpoints="all" data-title="Info"></th>
+                                                <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -190,8 +188,7 @@
                                                         <td><%# Eval("FechaHora", "{0:dd MMM yyyy HH:mm}") %></td>
                                                         <td>
                                                             <h3>Antecedentes</h3>
-                                                            <table class="table table-bordered">
-                                                                <thead>
+                                                            <table class="table table-bordered table-striped">
                                                                 <tr>
                                                                     <th width="20%"><i class="fa fa-people-roof m-r-sm"></i>Familiares</th>
                                                                     <th width="20%"><i class="fa fa-virus m-r-sm"></i>Patológicos</th>
@@ -199,8 +196,6 @@
                                                                     <th width="20%"><i class="fa fa-biohazard m-r-sm"></i>Toxicológico</th>
                                                                     <th width="20%"><i class="fa fa-hospital m-r-sm"></i>Hospitalario</th>
                                                                 </tr>
-                                                                </thead>
-                                                                <tbody>
                                                                 <tr>
                                                                     <td><%# Eval("AnteFamiliar") %></td>
                                                                     <td><%# Eval("AntePatologico") %></td>
@@ -208,8 +203,6 @@
                                                                     <td><%# Eval("AnteToxicologico") %></td>
                                                                     <td><%# Eval("AnteHospitalario") %></td>
                                                                 </tr>
-                                                                </tbody>
-                                                                <thead>
                                                                 <tr>
                                                                     <th width="20%"><i class="fa fa-crutch m-r-sm"></i>Traumatológico</th>
                                                                     <th width="20%"><i class="fa fa-capsules m-r-sm"></i>Farmacológico</th>
@@ -217,8 +210,6 @@
                                                                     <th width="20%"><i class="fa fa-person-running m-r-sm"></i>Actividad Física</th>
                                                                     <th width="20%"><i class="fa fa-person-pregnant m-r-sm"></i>Gineco-Obstetricia</th>
                                                                 </tr>
-                                                                </thead>
-                                                                <tbody>
                                                                 <tr>
                                                                     <td><%# Eval("AnteTraumatologico") %></td>
                                                                     <td><%# Eval("AnteFarmacologico") %></td>
@@ -226,10 +217,8 @@
                                                                     <td><%# Eval("AnteActividadFisica") %></td>
                                                                     <td><%# Eval("AnteGineco") %></td>
                                                                 </tr>
-                                                                </tbody>
                                                             </table>
-                                                            <table class="table table-bordered">
-                                                                <thead>
+                                                            <table class="table table-bordered table-striped">
                                                                 <tr>
                                                                     <th width="10%"><i class="fa fa-smoking m-r-sm"></i>Tabaco</th>
                                                                     <th width="13%"><i class="fa fa-smoking m-r-sm"></i>Cigarrillos/día</th>
@@ -241,8 +230,6 @@
                                                                     <th width="12%"><i class="fa fa-heart-circle-bolt m-r-sm"></i>Triglicéridos</th>
                                                                     <th width="10%"><i class="fa fa-stethoscope m-r-sm"></i>H.T.A.</th>
                                                                 </tr>
-                                                                </thead>
-                                                                <tbody>
                                                                 <tr>
                                                                     <td><%# Eval("fuma") %></td>
                                                                     <td><%# Eval("Cigarrillos") %></td>
@@ -254,7 +241,6 @@
                                                                     <td><%# Eval("triglicerado") %></td>
                                                                     <td><%# Eval("hipertenso") %></td>
                                                                 </tr>
-                                                                </tbody>
                                                             </table>
                                                         </td>
                                                         <td>
@@ -303,34 +289,22 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
-    <script src="js/plugins/footable/footable.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
+
+    <!-- Peity -->
+    <script src="js/plugins/peity/jquery.peity.min.js"></script>
+    <script src="js/demo/peity-demo.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
-    <!-- Chosen -->
-    <script src="js/plugins/chosen/chosen.jquery.js"></script>
+    <!-- jQuery UI -->
+    <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
 
     <!-- Page-Level Scripts -->
     <script>
         $('.footable').footable();
-
-        $('.data-page-size').on('click', function (e) {
-            e.preventDefault();
-            var newSize = $(this).data('pageSize');
-            $('.footable').data('page-size', newSize);
-            $('.footable').trigger('footable_initialized');
-        });
-
-        $('.toggle').click(function (e) {
-            e.preventDefault();
-            $('.toggle').toggle();
-            $('.footable').trigger($(this).data('trigger')).trigger('footable_redraw');
-        });
-
-        $('.chosen-select').chosen({ width: "100%" });
-
     </script>
 
 </body>

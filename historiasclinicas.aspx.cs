@@ -19,28 +19,33 @@ namespace fpWebApp
                 if (Session["idUsuario"] != null)
                 {
                     ValidarPermisos("Historias clinicas");
+
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
+                        //No tiene acceso a esta página
                         divMensaje.Visible = true;
                         paginasperfil.Visible = true;
                         divContenido.Visible = false;
                     }
-                    if (ViewState["Consulta"].ToString() == "1")
+                    else
                     {
-                        ListaHistorias();
+                        //Si tiene acceso a esta página
+                        btnAgregar.Visible = false;
+                        if (ViewState["Consulta"].ToString() == "1")
+                        {
+                            lbExportarExcel.Visible = false;
+                        }
+                        if (ViewState["Exportar"].ToString() == "1")
+                        {
+                            lbExportarExcel.Visible = true;
+                        }
+                        if (ViewState["CrearModificar"].ToString() == "1")
+                        {
+                            btnAgregar.Visible = true;
+                        }
                     }
-                    if (ViewState["CrearModificar"].ToString() == "1")
-                    {
-                        btnAgregar.Visible = true;
-                        //divCrear.Visible = true;
-                        //CargarSedes();
-                        //CargarEspecialistas();
-                    }
-                    if (ViewState["Borrar"].ToString() == "1")
-                    {
-                        //btnEliminar.Visible = true;
-                    }
-                    //indicadores01.Visible = false;
+                    ListaHistorias();
+                    
                 }
                 else
                 {
@@ -57,15 +62,8 @@ namespace fpWebApp
             ViewState["CrearModificar"] = "0";
             ViewState["Borrar"] = "0";
 
-            string strQuery = "SELECT SinPermiso, Consulta, Exportar, CrearModificar, Borrar " +
-                "FROM permisos_perfiles pp, paginas p, usuarios u " +
-                "WHERE pp.idPagina = p.idPagina " +
-                "AND p.Pagina = '" + strPagina + "' " +
-                "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
-                "AND u.idPerfil = pp.idPerfil " +
-                "AND u.idUsuario = " + Session["idusuario"].ToString();
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -122,6 +120,11 @@ namespace fpWebApp
                     btnEliminar.Visible = true;
                 }
             }
+        }
+
+        protected void lbExportarExcel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

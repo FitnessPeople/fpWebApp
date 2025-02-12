@@ -126,17 +126,6 @@
                                         </div>
                                     </div>
 
-                                    <%--<div class="col-lg-3 form-horizontal" style="text-align: center;">
-                                        <label class="control-label">Mostrar </label>
-
-                                        <a href="#" class="data-page-size" data-page-size="10">10</a> | 
-                                            <a href="#" class="data-page-size" data-page-size="20">20</a> | 
-                                            <a href="#" class="data-page-size" data-page-size="50">50</a> | 
-                                            <a href="#" class="data-page-size" data-page-size="100">100</a>
-
-                                        <label class="control-label">registros</label>
-                                    </div>--%>
-
                                     <div class="col-lg-4 form-horizontal">
                                         <label class="control-label">&nbsp;</label>
                                         <a class="btn btn-success pull-right dim m-l-md" 
@@ -158,29 +147,9 @@
                                             title="Exportar">
                                                 <i class="fa fa-file-excel"></i> EXCEL
                                         </a>
-                                        <%--<a data-trigger="footable_expand_all" 
-                                            style="font-size: 12px;" 
-                                            class="toggle btn btn-primary pull-right dim" 
-                                            href="#collapse" 
-                                            title="Expandir todo">
-                                                <i class="fa fa-square-caret-down"></i> EXPANDIR
-                                        </a>
-                                        <a data-trigger="footable_collapse_all" 
-                                            class="toggle btn btn-primary pull-right dim" 
-                                            style="display: none; font-size: 12px;" 
-                                            href="#collapse" 
-                                            title="Contraer todo">
-                                                <i class="fa fa-square-caret-up"></i> CONTRAER
-                                        </a>--%>
                                     </div>
                                 </form>
                             </div>
-
-                            <%--<div class="row">
-                                <div class="col-lg-4 form-horizontal">
-                                    <label class="control-label">Filtrar por:</label>
-                                </div>
-                            </div>--%>
 
                             <%--<table class="footable table toggle-arrow-small list-group-item-text" data-page-size="10">--%>
                             <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
@@ -298,8 +267,6 @@
                         </div>
                     </div>
                     <%--Fin Contenido!!!!--%>
-                    <%--</div>
-        </div>--%>
                 </div>
             </div>
 
@@ -332,20 +299,6 @@
     <!-- Page-Level Scripts -->
     <script>
         $('.footable').footable();
-
-        $('.data-page-size').on('click', function (e) {
-            e.preventDefault();
-            var newSize = $(this).data('pageSize');
-            $('.footable').data('page-size', newSize);
-            $('.footable').trigger('footable_initialized');
-        });
-
-        $('.toggle').click(function (e) {
-            e.preventDefault();
-            $('.toggle').toggle();
-            //$('.footable').trigger($(this).data('trigger')).trigger('footable_expand_all');
-            $('.footable').trigger('data-expand-all');
-        });
 
         document.querySelector("input#txbBuscar").addEventListener("input", function () {
             const allowedCharacters = "0123456789azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBNzáéíóúñÁÉÍÓÚÑ@. "; // You can add any other character in the same way

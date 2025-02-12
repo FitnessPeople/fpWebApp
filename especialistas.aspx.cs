@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
 
 namespace fpWebApp
 {
@@ -22,24 +23,30 @@ namespace fpWebApp
                     ValidarPermisos("Especialistas");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
+                        //No tiene acceso a esta página
                         divMensaje.Visible = true;
                         paginasperfil.Visible = true;
                         divContenido.Visible = false;
                     }
-                    if (ViewState["Consulta"].ToString() == "1")
+                    else
                     {
-                        string strParam = "";
-                        listaEspecialistas(strParam);
-
+                        //Si tiene acceso a esta página
+                        btnAgregar.Visible = false;
+                        if (ViewState["Consulta"].ToString() == "1")
+                        {
+                            lbExportarExcel.Visible = false;
+                        }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
-                            btnExportar.Visible = true;
+                            lbExportarExcel.Visible = true;
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             btnAgregar.Visible = true;
                         }
                     }
+                    string strParam = "";
+                    listaEspecialistas(strParam);
                 }
                 else
                 {
@@ -82,15 +89,8 @@ namespace fpWebApp
             ViewState["CrearModificar"] = "0";
             ViewState["Borrar"] = "0";
 
-            string strQuery = "SELECT SinPermiso, Consulta, Exportar, CrearModificar, Borrar " +
-                "FROM permisos_perfiles pp, paginas p, usuarios u " +
-                "WHERE pp.idPagina = p.idPagina " +
-                "AND p.Pagina = '" + strPagina + "' " +
-                "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
-                "AND u.idPerfil = pp.idPerfil " +
-                "AND u.idUsuario = " + Session["idusuario"].ToString();
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -110,17 +110,22 @@ namespace fpWebApp
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
-                    HtmlButton btnEditar = (HtmlButton)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("onClick", "window.location.href='editarespecialista?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
-                    btnEditar.Visible = true;
+                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                    btnEliminar.Attributes.Add("href", "eliminarespecialista?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
-                    HtmlButton btnEliminar = (HtmlButton)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("onClick", "window.location.href='eliminarespecialista?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
-                    btnEliminar.Visible = true;
+                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("href", "editarespecialista?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Visible = true;
                 }
             }
+        }
+
+        protected void lbExportarExcel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
