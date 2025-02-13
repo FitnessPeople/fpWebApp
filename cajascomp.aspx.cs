@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -10,10 +8,10 @@ using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
-    public partial class cajas : System.Web.UI.Page
-    {
-        protected void Page_Load(object sender, EventArgs e)
-        {
+	public partial class cajascomp : System.Web.UI.Page
+	{
+		protected void Page_Load(object sender, EventArgs e)
+		{
             if (!IsPostBack)
             {
                 if (Session["idUsuario"] != null)
@@ -34,29 +32,29 @@ namespace fpWebApp
                         if (ViewState["Consulta"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            btnImprimir.Visible = false;
+                            lbExportarExcel.Visible = false;
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            btnImprimir.Visible = true;
+                            lbExportarExcel.Visible = true;
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             btnAgregar.Visible = true;
                         }
                     }
-                    listaCajas();
+                    ListaCajas();
                     ltTitulo.Text = "Agregar caja de compensación";
+
                     if (Request.QueryString.Count > 0)
                     {
                         rpCajasComp.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
-                            string strQuery = "SELECT * FROM cajascompensacion WHERE idCajaComp = " + Request.QueryString["editid"].ToString();
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.TraerDatos(strQuery);
+                            DataTable dt = cg.ConsultarCajaCompPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
                                 txbCajaComp.Text = dt.Rows[0]["NombreCajaComp"].ToString();
@@ -66,16 +64,41 @@ namespace fpWebApp
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
-                            //Borrar
-                            string strQuery = "SELECT * FROM cajascompensacion WHERE idCajaComp = " + Request.QueryString["deleteid"].ToString();
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.TraerDatos(strQuery);
+                            DataTable dt = cg.ValidarCajaCompEmpleados(int.Parse(Request.QueryString["deleteid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                txbCajaComp.Text = dt.Rows[0]["NombreCajaComp"].ToString();
-                                txbCajaComp.Enabled = false;
-                                btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                ltTitulo.Text = "Borrar caja de compensación";
+                                ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                    "Esta Caja de Compensación no se puede borrar, hay empleados asociados a ella." +
+                                    "</div></div>";
+
+                                DataTable dt1 = new DataTable();
+                                dt1 = cg.ConsultarCajaCompPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                if (dt1.Rows.Count > 0)
+                                {
+                                    txbCajaComp.Text = dt1.Rows[0]["NombreCajaComp"].ToString();
+                                    txbCajaComp.Enabled = false;
+                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                                    btnAgregar.Enabled = false;
+                                    ltTitulo.Text = "Borrar Caja de Compensación";
+                                }
+                                dt1.Dispose();
+                            }
+                            else
+                            {
+                                //Borrar
+                                DataTable dt1 = new DataTable();
+                                dt1 = cg.ConsultarCajaCompPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                if (dt1.Rows.Count > 0)
+                                {
+                                    txbCajaComp.Text = dt1.Rows[0]["NombreCajaComp"].ToString();
+                                    txbCajaComp.Enabled = false;
+                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                                    ltTitulo.Text = "Borrar Caja de Compensación";
+                                }
+                                dt1.Dispose();
                             }
                         }
                     }
@@ -95,15 +118,8 @@ namespace fpWebApp
             ViewState["CrearModificar"] = "0";
             ViewState["Borrar"] = "0";
 
-            string strQuery = "SELECT SinPermiso, Consulta, Exportar, CrearModificar, Borrar " +
-                "FROM permisos_perfiles pp, paginas p, usuarios u " +
-                "WHERE pp.idPagina = p.idPagina " +
-                "AND p.Pagina = '" + strPagina + "' " +
-                "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
-                "AND u.idPerfil = pp.idPerfil " +
-                "AND u.idUsuario = " + Session["idusuario"].ToString();
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -117,15 +133,12 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void listaCajas()
+        private void ListaCajas()
         {
-            string strQuery = "SELECT * FROM cajascompensacion";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
+            DataTable dt = cg.ConsultarCajasComp();
             rpCajasComp.DataSource = dt;
             rpCajasComp.DataBind();
-
             dt.Dispose();
         }
 
@@ -135,14 +148,14 @@ namespace fpWebApp
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
-                    HtmlButton btnEditar = (HtmlButton)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("onClick", "window.location.href='cajas?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("href", "cajascomp?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEditar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
-                    HtmlButton btnEliminar = (HtmlButton)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("onClick", "window.location.href='cajas?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                    btnEliminar.Attributes.Add("href", "cajascomp?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEliminar.Visible = true;
                 }
             }
@@ -151,62 +164,68 @@ namespace fpWebApp
         private bool ValidarCaja(string strNombre)
         {
             bool bExiste = false;
-
-            string strQuery = "SELECT * FROM cajascompensacion WHERE NombreCajaComp = '" + strNombre.Trim() + "' ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
+            DataTable dt = cg.ConsultarCajaCompPorNombre(strNombre);
             if (dt.Rows.Count > 0)
             {
                 bExiste = true;
             }
-
+            dt.Dispose();
             return bExiste;
         }
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
+            clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    string strnombre = txbCajaComp.Text.ToString().Replace("'", "");
-                    myConnection.Open();
-                    string strQuery = "UPDATE cajascompensacion " +
-                        "SET NombreCajaComp = '" + strnombre + "' " +
-                        "WHERE idCajaComp = " + Request.QueryString["editid"].ToString();
-                    OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                    command1.ExecuteNonQuery();
-                    command1.Dispose();
-                    myConnection.Close();
-
-                    Response.Redirect("cajas");
+                    string respuesta = cg.ActualizarCajaComp(int.Parse(Request.QueryString["editid"].ToString()), txbCajaComp.Text.ToString().Trim());
                 }
+                if (Request.QueryString["deleteid"] != null)
+                {
+                    string respuesta = cg.EliminarCajaComp(int.Parse(Request.QueryString["deleteid"].ToString()));
+                }
+                Response.Redirect("cajascomp");
             }
             else
             {
                 if (!ValidarCaja(txbCajaComp.Text.ToString()))
                 {
-                    string strnombre = txbCajaComp.Text.ToString().Replace("'", "");
-                    myConnection.Open();
-                    string strQuery = "INSERT INTO cajascompensacion " +
-                        "(NombreCajaComp) VALUES ('" + strnombre + "') ";
-                    OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                    command1.ExecuteNonQuery();
-                    command1.Dispose();
-                    myConnection.Close();
-
-                    Response.Redirect("cajas");
+                    try
+                    {
+                        string respuesta = cg.InsertarCajaComp(txbCajaComp.Text.ToString().Trim());
+                    }
+                    catch (Exception ex)
+                    {
+                        string mensajeExcepcionInterna = string.Empty;
+                        Console.WriteLine(ex.Message);
+                        if (ex.InnerException != null)
+                        {
+                            mensajeExcepcionInterna = ex.InnerException.Message;
+                            Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
+                        }
+                        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        "Excepción interna." +
+                        "</div>";
+                    }
+                    Response.Redirect("cajascomp");
                 }
                 else
                 {
                     ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
                         "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Ya existe una caja de compensación con ese nombre." +
+                        "Ya existe una Caja de Compensación con ese nombre." +
                         "</div>";
                 }
             }
+        }
+
+        protected void lbExportarExcel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

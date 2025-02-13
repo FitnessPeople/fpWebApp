@@ -119,7 +119,7 @@
                     <li id="profesiones" class="old"><a href="profesiones"><i class="fa fa-briefcase"></i>Profesiones</a></li>
                     <li id="eps" class="old"><a href="eps"><i class="fa fa-house-medical"></i>EPS's</a></li>
                     <li id="pension" class="old"><a href="pension"><i class="fa fa-sack-dollar"></i>Fondos de pensión</a></li>
-                    <li id="cajas" class="old"><a href="cajas"><i class="fa fa-piggy-bank"></i>Cajas de compensación</a></li>
+                    <li id="cajas" class="old"><a href="cajascomp"><i class="fa fa-piggy-bank"></i>Cajas de compensación</a></li>
                     <li id="arl" class="old"><a href="arl"><i class="fa fa-person-falling-burst"></i>ARL's</a></li>
                     <li id="cesantias" class="old"><a href="cesantias"><i class="fa fa-hand-holding-dollar"></i>Fondos de cesantías</a></li>
                     <li id="ciudades" class="old"><a href="ciudades"><i class="fa fa-city"></i>Ciudades</a></li>

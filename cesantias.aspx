@@ -147,7 +147,7 @@
                                                 <div class="form-group">
                                                     <label>Nombre del Fondo de Cesantías:</label>
                                                     <asp:TextBox ID="txbCesantias" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="rfvCesantiasx" runat="server" ErrorMessage="* Campo requerido" 
+                                                    <asp:RequiredFieldValidator ID="rfvCesantias" runat="server" ErrorMessage="* Campo requerido" 
                                                         ControlToValidate="txbCesantias" ValidationGroup="agregar" 
                                                         CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                 </div>
