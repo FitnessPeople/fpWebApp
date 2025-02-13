@@ -112,27 +112,59 @@ namespace fpWebApp
             return dt;
         }
 
-        public void InsertarLog(string idUsuario, string tabla, string accion, string descripcion, string datosAnteriores, string datosNuevos)
+        //public void InsertarLog(string idUsuario, string tabla, string accion, string descripcion, string datosAnteriores, string datosNuevos)
+        //{
+        //    // Tarea de Javier
+        //    OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
+        //    try
+        //    {
+        //        string strQuery = "INSERT INTO logs " +
+        //            "(idUsuario, FechaHora, Tabla, Accion, DatosAnteriores, DatosNuevos, DescripcionLog) " +
+        //            "VALUES (" + idUsuario + ", now(), '" + tabla + "', '" + accion + "', '" + datosAnteriores + "', '" + datosNuevos + "', '" + descripcion + "') ";
+        //        //"VALUES (" + idUsuario + ", DATE_SUB(NOW(), INTERVAL 5 HOUR), '" + tabla + "', '" + accion + "', '" + datosAnteriores + "', '" + datosNuevos + "', '" + descripcion + "') ";
+        //        OdbcCommand command = new OdbcCommand(strQuery, myConnection);
+        //        myConnection.Open();
+        //        command.ExecuteNonQuery();
+        //        command.Dispose();
+        //        myConnection.Close();
+        //    }
+        //    catch (OdbcException ex)
+        //    {
+        //        string mensaje = ex.Message;
+        //        myConnection.Close();
+        //    }
+        //}
+
+        public string InsertarLog(string idUsuario, string tabla, string accion, string descripcion, string datosAnteriores, string datosNuevos)
         {
-            // Tarea de Javier
-            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
+            string respuesta = string.Empty;
             try
             {
-                string strQuery = "INSERT INTO logs " +
-                    "(idUsuario, FechaHora, Tabla, Accion, DatosAnteriores, DatosNuevos, DescripcionLog) " +
-                    "VALUES (" + idUsuario + ", now(), '" + tabla + "', '" + accion + "', '" + datosAnteriores + "', '" + datosNuevos + "', '" + descripcion + "') ";
-                //"VALUES (" + idUsuario + ", DATE_SUB(NOW(), INTERVAL 5 HOUR), '" + tabla + "', '" + accion + "', '" + datosAnteriores + "', '" + datosNuevos + "', '" + descripcion + "') ";
-                OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                myConnection.Open();
-                command.ExecuteNonQuery();
-                command.Dispose();
-                myConnection.Close();
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_LOG", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_usuario", Convert.ToInt32(idUsuario));
+                        cmd.Parameters.AddWithValue("@p_tabla", tabla);
+                        cmd.Parameters.AddWithValue("@p_accion", accion);
+                        cmd.Parameters.AddWithValue("@p_datos_anteriores", descripcion);
+                        cmd.Parameters.AddWithValue("@p_datos_nuevos", datosAnteriores);
+                        cmd.Parameters.AddWithValue("@p_descripcion_log", datosNuevos);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
             }
-            catch (OdbcException ex)
+            catch (Exception ex)
             {
-                string mensaje = ex.Message;
-                myConnection.Close();
+                respuesta = "ERROR: " + ex.Message;
             }
+
+            return respuesta;
         }
 
         public string CreatePassword(int length)
