@@ -145,13 +145,22 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="form-group">
-                                                    <label>Nombre de la Pregunta PARQ:</label>
-                                                    <asp:TextBox ID="txbParQ" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                    <label>Descripción de la Pregunta PARQ:</label>
+                                                    <asp:TextBox ID="txbParQ" runat="server" TextMode="MultiLine" CssClass="form-control input-sm"></asp:TextBox>
                                                     <asp:RequiredFieldValidator ID="rfvParq" runat="server" ErrorMessage="* Campo requerido"
                                                         ControlToValidate="txbParQ" ValidationGroup="agregar"
-                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                        CssClass="font-bold text-danger">
+                                                    </asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group">
+                                                    <div class="form-group">
+                                                        <b>
+                                                            <asp:Label ID="lblEstado" runat="server" Text="Estado"></asp:Label></b>
+                                                        <asp:DropDownList ID="ddlEstadoParQ" runat="server" CssClass="form-control input-sm">
+                                                            <asp:ListItem Text="Activo" Value="Activo"></asp:ListItem>
+                                                            <asp:ListItem Text="Inactivo" Value="Inactivo"></asp:ListItem>
+                                                        </asp:DropDownList>
+                                                    </div>
                                                     <a href="parq" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
@@ -205,7 +214,8 @@
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th width="80%">Preguntas PARQ</th>
+                                                    <th>Preguntas PARQ</th>
+                                                    <th>Estado</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
@@ -214,6 +224,7 @@
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
                                                             <td><%# Eval("PreguntaParq") %></td>
+                                                            <td><%# Eval("EstadoParq") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>

@@ -48,18 +48,22 @@ namespace fpWebApp
                     }
                     ListaPreguntaParQ();
                     ltTitulo.Text = "Agregar Pregunta ParQ";
-
+                    ddlEstadoParQ.Visible = false;
+                    lblEstado.Visible = false;
                     if (Request.QueryString.Count > 0)
                     {
                         rpParQ.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
+                            ddlEstadoParQ.Visible = true;
+                            lblEstado.Visible = true;
                             //Editar
                             clasesglobales cg = new clasesglobales();
                             DataTable dt = cg.ConsultarPreguntaParQPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
                                 txbParQ.Text = dt.Rows[0]["PreguntaParq"].ToString();
+                                ddlEstadoParQ.SelectedValue= dt.Rows[0]["EstadoParq"].ToString();
                                 btnAgregar.Text = "Actualizar";
                                 ltTitulo.Text = "Actualizar Pregunta ParQ";
                             }
@@ -183,12 +187,13 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarPreguntaParQ(int.Parse(Request.QueryString["editid"].ToString()), txbParQ.Text.ToString().Trim(),"");
+                    string respuesta = cg.ActualizarPreguntaParQ(int.Parse(Request.QueryString["editid"].ToString()), txbParQ.Text.ToString().Trim(),ddlEstadoParQ.SelectedValue.ToString());
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
                     string respuesta = cg.EliminarPreguntaParQ(int.Parse(Request.QueryString["deleteid"].ToString()));
                 }
+                ddlEstadoParQ.Visible = true;
                 Response.Redirect("parq");
             }
             else
