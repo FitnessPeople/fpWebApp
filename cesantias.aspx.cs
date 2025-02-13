@@ -191,7 +191,7 @@ namespace fpWebApp
                 {
                     string respuesta = cg.EliminarCesantia(int.Parse(Request.QueryString["deleteid"].ToString()));
                 }
-                Response.Redirect("cesantia");
+                Response.Redirect("cesantias");
             }
             else
             {
@@ -215,7 +215,7 @@ namespace fpWebApp
                         "Excepción interna." +
                         "</div>";
                     }
-                    Response.Redirect("cesantia");
+                    Response.Redirect("cesantias");
                 }
                 else
                 {

@@ -172,7 +172,7 @@
     <Content Include="arl.aspx" />
     <Content Include="autorizaciones.aspx" />
     <Content Include="blogs.aspx" />
-    <Content Include="cajas.aspx" />
+    <Content Include="cajascomp.aspx" />
     <Content Include="calendar.html" />
     <Content Include="calendariofpadmin.aspx" />
     <Content Include="cambiaestadousuario.aspx" />
@@ -889,12 +889,12 @@
     <Compile Include="blogs.aspx.designer.cs">
       <DependentUpon>blogs.aspx</DependentUpon>
     </Compile>
-    <Compile Include="cajas.aspx.cs">
-      <DependentUpon>cajas.aspx</DependentUpon>
+    <Compile Include="cajascomp.aspx.cs">
+      <DependentUpon>cajascomp.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="cajas.aspx.designer.cs">
-      <DependentUpon>cajas.aspx</DependentUpon>
+    <Compile Include="cajascomp.aspx.designer.cs">
+      <DependentUpon>cajascomp.aspx</DependentUpon>
     </Compile>
     <Compile Include="calendariofpadmin.aspx.cs">
       <DependentUpon>calendariofpadmin.aspx</DependentUpon>
