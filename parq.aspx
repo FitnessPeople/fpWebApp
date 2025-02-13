@@ -22,8 +22,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
+    <%--<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />--%>
+    <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -146,7 +146,8 @@
                                             <div class="col-lg-12">
                                                 <div class="form-group">
                                                     <label>Descripción de la Pregunta PARQ:</label>
-                                                    <asp:TextBox ID="txbParQ" runat="server" TextMode="MultiLine" CssClass="form-control input-sm"></asp:TextBox>
+                                                    <asp:TextBox ID="txbParQ" runat="server" TextMode="MultiLine" 
+                                                        CssClass="form-control input-sm" Rows="5"></asp:TextBox>
                                                     <asp:RequiredFieldValidator ID="rfvParq" runat="server" ErrorMessage="* Campo requerido"
                                                         ControlToValidate="txbParQ" ValidationGroup="agregar"
                                                         CssClass="font-bold text-danger">

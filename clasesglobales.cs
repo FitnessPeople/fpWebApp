@@ -112,29 +112,6 @@ namespace fpWebApp
             return dt;
         }
 
-        //public void InsertarLog(string idUsuario, string tabla, string accion, string descripcion, string datosAnteriores, string datosNuevos)
-        //{
-        //    // Tarea de Javier
-        //    OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
-        //    try
-        //    {
-        //        string strQuery = "INSERT INTO logs " +
-        //            "(idUsuario, FechaHora, Tabla, Accion, DatosAnteriores, DatosNuevos, DescripcionLog) " +
-        //            "VALUES (" + idUsuario + ", now(), '" + tabla + "', '" + accion + "', '" + datosAnteriores + "', '" + datosNuevos + "', '" + descripcion + "') ";
-        //        //"VALUES (" + idUsuario + ", DATE_SUB(NOW(), INTERVAL 5 HOUR), '" + tabla + "', '" + accion + "', '" + datosAnteriores + "', '" + datosNuevos + "', '" + descripcion + "') ";
-        //        OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-        //        myConnection.Open();
-        //        command.ExecuteNonQuery();
-        //        command.Dispose();
-        //        myConnection.Close();
-        //    }
-        //    catch (OdbcException ex)
-        //    {
-        //        string mensaje = ex.Message;
-        //        myConnection.Close();
-        //    }
-        //}
-
         public string InsertarLog(string idUsuario, string tabla, string accion, string descripcion, string datosAnteriores, string datosNuevos)
         {
             string respuesta = string.Empty;
@@ -150,9 +127,9 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_id_usuario", Convert.ToInt32(idUsuario));
                         cmd.Parameters.AddWithValue("@p_tabla", tabla);
                         cmd.Parameters.AddWithValue("@p_accion", accion);
-                        cmd.Parameters.AddWithValue("@p_datos_anteriores", descripcion);
-                        cmd.Parameters.AddWithValue("@p_datos_nuevos", datosAnteriores);
-                        cmd.Parameters.AddWithValue("@p_descripcion_log", datosNuevos);
+                        cmd.Parameters.AddWithValue("@p_datos_anteriores", datosAnteriores);
+                        cmd.Parameters.AddWithValue("@p_datos_nuevos", datosNuevos);
+                        cmd.Parameters.AddWithValue("@p_descripcion_log", descripcion);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -3194,36 +3171,7 @@ namespace fpWebApp
 
         #region Perfiles quitar
 
-        public DataTable consultarPerfiles()
-        {
-            DataTable dt = new DataTable();
-
-            try
-            {
-                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
-                {
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PERFILES", mysqlConexion))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
-                        {
-                            mysqlConexion.Open();
-                            dataAdapter.Fill(dt);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                dt = new DataTable();
-                dt.Columns.Add("Error", typeof(string));
-                dt.Rows.Add(ex.Message);
-            }
-            return dt;
-        }
-
-
+        
         public DataTable ConsultarPermisosPerfiles(string nombre_pagina, int id_perfil, int id_usuario)
         {
             DataTable dt = new DataTable();
@@ -3697,16 +3645,6 @@ namespace fpWebApp
 
 
         #endregion
-
-        // Modifiacion en Master por Christian Morales
-
-        //modificacion en desarrollo por Javier Galvan
-
-        //tercer commit en desarrollo por Javier Galvan
-
-        //Tercer prueba de merge commit en master por Christian Morales
-
-        //subir commit de desarrollo
 
     }
 }
