@@ -3510,7 +3510,7 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarPreguntaParQ(int idParQ, string preguntaParQ, string estadoParQ)
+        public string ActualizarPreguntaParQ(int idParQ, string preguntaParQ, string estadoParQ, int orden)
         {
             string respuesta = string.Empty;
             try
@@ -3529,6 +3529,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_id_parq", idParQ);
                         cmd.Parameters.AddWithValue("@p_pregunta_parq", preguntaParQ);
                         cmd.Parameters.AddWithValue("@p_estado_parq", estadoParQ);
+                        cmd.Parameters.AddWithValue("@p_orden", orden);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";

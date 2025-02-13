@@ -105,13 +105,40 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Label lblEstado;
 
         /// <summary>
-        /// Control ddlEstadoParQ.
+        /// Control rblParQ.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEstadoParQ;
+        protected global::System.Web.UI.WebControls.RadioButtonList rblParQ;
+
+        /// <summary>
+        /// Control lblOrdenParQ.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblOrdenParQ;
+
+        /// <summary>
+        /// Control txbOrdenParQ.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbOrdenParQ;
+
+        /// <summary>
+        /// Control rfvParQ2.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvParQ2;
 
         /// <summary>
         /// Control btnAgregar.

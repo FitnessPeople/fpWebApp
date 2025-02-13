@@ -48,22 +48,27 @@ namespace fpWebApp
                     }
                     ListaPreguntaParQ();
                     ltTitulo.Text = "Agregar Pregunta ParQ";
-                    ddlEstadoParQ.Visible = false;
+                    rblParQ.Visible = false;
                     lblEstado.Visible = false;
+                    txbOrdenParQ.Visible = false;
+                    lblOrdenParQ.Visible=false;
                     if (Request.QueryString.Count > 0)
                     {
                         rpParQ.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
-                            ddlEstadoParQ.Visible = true;
+                            rblParQ.Visible = true;
                             lblEstado.Visible = true;
+                            txbOrdenParQ.Visible = true;
+                            lblOrdenParQ.Visible = true;
                             //Editar
                             clasesglobales cg = new clasesglobales();
                             DataTable dt = cg.ConsultarPreguntaParQPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
                                 txbParQ.Text = dt.Rows[0]["PreguntaParq"].ToString();
-                                ddlEstadoParQ.SelectedValue= dt.Rows[0]["EstadoParq"].ToString();
+                                rblParQ.SelectedValue= dt.Rows[0]["EstadoParq"].ToString();
+                                txbOrdenParQ.Text= dt.Rows[0]["orden"].ToString();
                                 btnAgregar.Text = "Actualizar";
                                 ltTitulo.Text = "Actualizar Pregunta ParQ";
                             }
@@ -187,13 +192,13 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarPreguntaParQ(int.Parse(Request.QueryString["editid"].ToString()), txbParQ.Text.ToString().Trim(),ddlEstadoParQ.SelectedValue.ToString());
+                    string respuesta = cg.ActualizarPreguntaParQ(int.Parse(Request.QueryString["editid"].ToString()), txbParQ.Text.ToString().Trim(),rblParQ.SelectedValue.ToString(), int.Parse(txbOrdenParQ.Text.ToString()));
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
                     string respuesta = cg.EliminarPreguntaParQ(int.Parse(Request.QueryString["deleteid"].ToString()));
                 }
-                ddlEstadoParQ.Visible = true;
+                rblParQ.Visible = true;
                 Response.Redirect("parq");
             }
             else
