@@ -78,6 +78,7 @@
                     <li><a href="#">Auditoria ingreso sedes</a></li>
                     <li><a href="#">Demografico afiliados</a></li>
                     <li><a href="#">Free Pass</a></li>
+                    <li id="reportepagoswompi" class="old"><a href="reportepagoswompi" ><i class="fas fa-hand-holding-usd"></i>Pagos Wompi</a></li>
                 </ul>
             </li>
             <li>
