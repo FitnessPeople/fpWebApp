@@ -14,7 +14,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Reporte Pagos Wompi</title>
+    <title>Fitness People | Pagos Wompi</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
@@ -100,11 +100,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fas fa-hand-holding-usd text-success m-r-sm"></i>Reporte Pagos Wompi</h2>
+                    <h2><i class="fas fa-hand-holding-usd text-success m-r-sm"></i>Pagos Wompi</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Configuración</li>
-                        <li class="active"><strong>Reporte Pagos Wompi</strong></li>
+                        <li class="active"><strong>Pagos Wompi</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -203,7 +203,10 @@
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th width="80%">ARL</th>
+                                                    <th>Id AfiliadoPlan</th>
+                                                    <th>Valor</th>
+                                                    <th>Referencia Wompi</th>
+                                                    <th>Fecha Hora Pago</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
@@ -211,7 +214,10 @@
                                                 <asp:Repeater ID="rpArl" runat="server" OnItemDataBound="rpArl_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
-                                                            <td><%# Eval("NombreArl") %></td>
+                                                            <td><%# Eval("idAfiliadoPlan") %></td>
+                                                            <td><%# Eval("Valor") %></td>
+                                                            <td><%# Eval("IdReferenciaWompi") %></td>
+                                                            <td><%# Eval("FechaHoraPago") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>

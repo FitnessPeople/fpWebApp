@@ -17,7 +17,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("reportepagoswompi");
+                    ValidarPermisos("Pagos Wompi");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -137,11 +137,13 @@ namespace fpWebApp
         private void listaTransacciones()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarArls();
+            DataTable dt = cg.ConsultarPagosPlanAfiliados();
             rpArl.DataSource = dt;
             rpArl.DataBind();
             dt.Dispose();
         }
+
+
 
         protected void rpArl_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
