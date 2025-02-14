@@ -160,28 +160,35 @@
                                                         CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="row m-b-n-xs">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Precio base del mes</label>
-                                                            <asp:TextBox ID="txbPrecio" CssClass="form-control input-sm" runat="server" 
-                                                                Text="0"></asp:TextBox>
-                                                            <asp:RequiredFieldValidator ID="rfvPrecio" runat="server" ErrorMessage="* Campo requerido" 
-                                                                ControlToValidate="txbPrecio" ValidationGroup="agregar" 
-                                                                CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
-                                                        </div>
+                                                    <div class="col-sm-5">
+                                                        <label>Precio base del mes</label>
+                                                        <asp:TextBox ID="txbPrecio" CssClass="form-control input-sm" runat="server" 
+                                                            Text="0"></asp:TextBox>
+                                                        <asp:RequiredFieldValidator ID="rfvPrecio" runat="server" ErrorMessage="* Campo requerido" 
+                                                            ControlToValidate="txbPrecio" ValidationGroup="agregar" 
+                                                            CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                     </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Días de congelamiento x mes</label>
-                                                            <asp:TextBox ID="txbDiasCongelamiento" CssClass="form-control input-sm" runat="server" 
-                                                                Text="1"></asp:TextBox>
-                                                            <asp:RequiredFieldValidator ID="rfvDiasCongelamiento" runat="server" ErrorMessage="* Campo requerido" 
-                                                                ControlToValidate="txbDiasCongelamiento" ValidationGroup="agregar" 
-                                                                CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
-                                                        </div>
+                                                    <div class="col-sm-7">
+                                                        <label>Días de congelamiento x mes</label>
+                                                        <asp:TextBox ID="txbDiasCongelamiento" CssClass="form-control input-sm" runat="server" 
+                                                            Text="1"></asp:TextBox>
+                                                        <asp:RequiredFieldValidator ID="rfvDiasCongelamiento" runat="server" ErrorMessage="* Campo requerido" 
+                                                            ControlToValidate="txbDiasCongelamiento" ValidationGroup="agregar" 
+                                                            CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                     </div>
                                                 </div>
-                                                <div class="row">
+                                                <div class="form-group m-b-md">
+                                                    <label>Color del botón:</label>
+                                                    <asp:RadioButtonList ID="rblColor" runat="server" RepeatLayout="Flow" 
+                                                        CssClass="form-control input-sm" RepeatDirection="Horizontal" >
+                                                        <asp:ListItem Value="primary" style="margin-right: 5px; font-size: 10px; color: blue;">Azul</asp:ListItem>
+                                                        <asp:ListItem Value="success" style="margin-right: 5px; font-size: 10px; color: green;">Verde</asp:ListItem>
+                                                        <asp:ListItem Value="info" style="margin-right: 5px; font-size: 10px; color: cyan;">Celeste</asp:ListItem>
+                                                        <asp:ListItem Value="warning" style="margin-right: 5px; font-size: 10px; color: darkgoldenrod;">Amarillo</asp:ListItem>
+                                                        <asp:ListItem Value="danger" style="margin-right: 5px; font-size: 10px; color: red;">Rojo</asp:ListItem>
+                                                    </asp:RadioButtonList>
+                                                </div>
+                                                <div class="row m-b-n-xs">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Fecha de inicio</label>
@@ -259,7 +266,7 @@
                                                 <asp:Repeater ID="rpPlanes" runat="server" OnItemDataBound="rpPlanes_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
-                                                            <td><span class="badge badge-<%# Eval("ColorPlan") %>"><%# Eval("NombrePlan") %></span></td>
+                                                            <td><span class="btn btn-<%# Eval("ColorPlan") %> btn-outline" style="font-size: 12px;"><%# Eval("NombrePlan") %></span></td>
                                                             <td><i class="fa fa-note-sticky m-r-xs font-bold"></i><%# Eval("DescripcionPlan") %></td>
                                                             <td style="text-align: right;">$<%# Eval("PrecioBase") %></td>
                                                             <td style="white-space: nowrap;"><i class="fa fa-circle-user m-r-xs font-bold"></i><%# Eval("NombreUsuario") %></td>

@@ -13,7 +13,6 @@ namespace fpWebApp
 {
     public partial class planes : System.Web.UI.Page
     {
-        OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -198,46 +197,81 @@ namespace fpWebApp
             }
         }
 
+        private bool ValidarPlan(string strNombre)
+        {
+            bool bExiste = false;
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPlanPorNombre(strNombre);
+            if (dt.Rows.Count > 0)
+            {
+                bExiste = true;
+            }
+            dt.Dispose();
+            return bExiste;
+        }
+
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
+            clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    myConnection.Open();
-                    string strQuery = "UPDATE Planes " +
-                        "SET NombrePlan = '" + txbPlan.Text.ToString().Replace("'", "") + "', " +
-                        "DescripcionPlan = '" + txbDescripcion.Text.ToString().Replace("'", "") + "', " +
-                        "PrecioBase = " + txbPrecio.Text.ToString() + ", " +
-                        "DiasCongelamientoMes = " + txbDiasCongelamiento.Text.ToString() + ", " +
-                        "WHERE idPlan = " + Request.QueryString["editid"].ToString();
-                    OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                    command1.ExecuteNonQuery();
-                    command1.Dispose();
-                    myConnection.Close();
-
-                    Response.Redirect("planes");
+                    string respuesta = cg.ActualizarPlan(int.Parse(Request.QueryString["editid"].ToString()), 
+                        txbPlan.Text.ToString().Trim(), 
+                        txbDescripcion.Text.ToString(), 
+                        int.Parse(txbPrecio.Text.ToString()), 
+                        rblColor.SelectedItem.Value.ToString(), 
+                        int.Parse(Session["idusuario"].ToString()), 
+                        txbDiasCongelamiento.Text.ToString(), 
+                        txbFechaInicio.Text.ToString(), 
+                        txbFechaFinal.Text.ToString());
                 }
+                if (Request.QueryString["deleteid"] != null)
+                {
+                    string respuesta = cg.EliminarPlan(int.Parse(Request.QueryString["deleteid"].ToString()));
+                }
+                Response.Redirect("planes");
             }
             else
             {
-                myConnection.Open();
-                string strQuery = "INSERT INTO Planes " +
-                    "(NombrePlan, DescripcionPlan, Preciobase, EstadoPlan, idUsuario) " +
-                    "VALUES ('" + txbPlan.Text.ToString().Replace("'", "") + "', '" + txbDescripcion.Text.ToString().Replace("'", "") + "', " +
-                    "" + txbPrecio.Text.ToString() + ", 1, " + Session["idUsuario"].ToString() + ") ";
-                OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                command1.ExecuteNonQuery();
-                command1.Dispose();
-                myConnection.Close();
-
-                Response.Redirect("planes");   
+                if (!ValidarPlan(txbPlan.Text.ToString()))
+                {
+                    try
+                    {
+                        string respuesta = cg.InsertarPlan(txbPlan.Text.ToString().Trim(),
+                        txbDescripcion.Text.ToString(),
+                        int.Parse(txbPrecio.Text.ToString()),
+                        rblColor.SelectedItem.Value.ToString(),
+                        int.Parse(Session["idusuario"].ToString()),
+                        txbDiasCongelamiento.Text.ToString(),
+                        txbFechaInicio.Text.ToString(),
+                        txbFechaFinal.Text.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        string mensajeExcepcionInterna = string.Empty;
+                        Console.WriteLine(ex.Message);
+                        if (ex.InnerException != null)
+                        {
+                            mensajeExcepcionInterna = ex.InnerException.Message;
+                            Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
+                        }
+                        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        "Excepción interna." +
+                        "</div>";
+                    }
+                    Response.Redirect("planes");
+                }
+                else
+                {
+                    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        "Ya existe un Plan con ese nombre." +
+                        "</div>";
+                }
             }
-        }
-
-        protected void btnCancelar_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("planes");
         }
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)

@@ -150,6 +150,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDiasCongelamiento;
 
         /// <summary>
+        /// Control rblColor.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList rblColor;
+
+        /// <summary>
         /// Control txbFechaInicio.
         /// </summary>
         /// <remarks>
