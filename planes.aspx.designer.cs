@@ -87,6 +87,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbPlan;
 
         /// <summary>
+        /// Control rfvPlan.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPlan;
+
+        /// <summary>
         /// Control txbDescripcion.
         /// </summary>
         /// <remarks>
@@ -94,6 +103,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbDescripcion;
+
+        /// <summary>
+        /// Control rfvDescripcion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDescripcion;
 
         /// <summary>
         /// Control txbPrecio.
@@ -105,6 +123,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbPrecio;
 
         /// <summary>
+        /// Control rfvPrecio.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPrecio;
+
+        /// <summary>
         /// Control txbDiasCongelamiento.
         /// </summary>
         /// <remarks>
@@ -114,13 +141,31 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbDiasCongelamiento;
 
         /// <summary>
-        /// Control btnCancelar.
+        /// Control rfvDiasCongelamiento.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCancelar;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDiasCongelamiento;
+
+        /// <summary>
+        /// Control txbFechaInicio.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbFechaInicio;
+
+        /// <summary>
+        /// Control txbFechaFinal.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbFechaFinal;
 
         /// <summary>
         /// Control btnAgregar.
@@ -150,13 +195,13 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBotonesLista;
 
         /// <summary>
-        /// Control btnExportar.
+        /// Control lbExportarExcel.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor btnExportar;
+        protected global::System.Web.UI.WebControls.LinkButton lbExportarExcel;
 
         /// <summary>
         /// Control rpPlanes.

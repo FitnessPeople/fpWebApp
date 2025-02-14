@@ -21,13 +21,17 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
+    <%--<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />--%>
+    <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
     <style type="text/css" media="print">
-        body { visibility: hidden; display: none }
+        body {
+            visibility: hidden;
+            display: none
+        }
     </style>
 
     <script>
@@ -41,7 +45,49 @@
 </head>
 
 <body onload="changeClass()">
-
+    <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                    <i class="fa fa-person-chalkboard modal-icon"></i>
+                    <h4 class="modal-title">Guía para administrar Planes</h4>
+                    <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <b>1. Lee las Instrucciones</b><br />
+                        Antes de comenzar, es importante que leas todas las instrucciones del formulario. Esto te ayudará a entender qué información se requiere y cómo debe ser presentada.
+                        <br />
+                        <br />
+                        <b>2. Reúne la Información Necesaria</b><br />
+                        Asegúrate de tener a mano todos los documentos e información que necesitas, como:
+                        Datos personales (nombre, dirección, número de teléfono, etc.)
+                        Información específica relacionada con el propósito del formulario (por ejemplo, detalles de empleo, historial médico, etc.)
+                        <br />
+                        <br />
+                        <b>3. Completa los Campos Requeridos</b><br />
+                        Campos Obligatorios: Identifica cuáles son los campos obligatorios (generalmente marcados con un asterisco *) y asegúrate de completarlos.
+                        Campos Opcionales: Si hay campos opcionales, completa solo los que consideres relevantes.
+                        <br />
+                        <br />
+                        <b>4. Confirma la Información</b><br />
+                        Asegúrate de que todos los datos ingresados son correctos y actualizados. Una revisión final puede evitar errores que podrían complicar el proceso.
+                        <br />
+                        <br />
+                        <b>5. Envía el Formulario</b><br />
+                        Asegúrate de seguir el proceso de envío indicado (hacer clic en "Agregar").
+                        <br />
+                        <br />
+                        ¡Siguiendo estos pasos, estarás listo para diligenciar tu formulario sin problemas! Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="wrapper">
 
         <uc1:navbar runat="server" ID="navbar1" />
@@ -68,162 +114,174 @@
             </div>
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row animated fadeInDown">
-                            <%--Inicio Contenido!!!!--%>
+                    <%--Inicio Contenido!!!!--%>
 
-                            <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
-                                <div class="p-xs">
-                                    <div class="pull-left m-r-md">
-                                        <i class="fa fa-triangle-exclamation text-danger mid-icon"></i>
+                    <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
+                        <div class="p-xs">
+                            <div class="pull-left m-r-md">
+                                <i class="fa fa-triangle-exclamation text-danger mid-icon"></i>
+                            </div>
+                            <h2>Acceso Denegado</h2>
+                            <span>Lamentablemente, no tienes permiso para acceder a esta página. Por favor, verifica que estás usando una cuenta con los permisos adecuados o contacta a nuestro soporte técnico para más información. Si crees que esto es un error, no dudes en ponerte en contacto con nosotros para resolver cualquier problema. Gracias por tu comprensión.</span>
+                        </div>
+                    </div>
+
+                    <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
+
+                    <form role="form" id="form" runat="server">
+                        <div class="row" id="divContenido" runat="server">
+                            <div class="col-lg-4">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5><asp:Literal ID="ltTitulo" runat="server"></asp:Literal></h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <h2>Acceso Denegado</h2>
-                                    <span>Lamentablemente, no tienes permiso para acceder a esta página. Por favor, verifica que estás usando una cuenta con los permisos adecuados o contacta a nuestro soporte técnico para más información. Si crees que esto es un error, no dudes en ponerte en contacto con nosotros para resolver cualquier problema. Gracias por tu comprensión.</span>
+                                    <div class="ibox-content">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group m-b-n-xs">
+                                                    <label>Nombre del plan:</label>
+                                                    <asp:TextBox ID="txbPlan" runat="server" CssClass="form-control input-sm" 
+                                                        placeholder="Nombre del plan"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="rfvPlan" runat="server" ErrorMessage="* Campo requerido" 
+                                                        ControlToValidate="txbPlan" ValidationGroup="agregar" 
+                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                </div>
+                                                <div class="form-group m-b-n-xs">
+                                                    <label>Descripción del plan:</label>
+                                                    <asp:TextBox ID="txbDescripcion" runat="server" CssClass="form-control input-sm" TextMode="MultiLine" 
+                                                        placeholder="Descripción"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="rfvDescripcion" runat="server" ErrorMessage="* Campo requerido" 
+                                                        ControlToValidate="txbDescripcion" ValidationGroup="agregar" 
+                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                </div>
+                                                <div class="row m-b-n-xs">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Precio base del mes</label>
+                                                            <asp:TextBox ID="txbPrecio" CssClass="form-control input-sm" runat="server" 
+                                                                Text="0"></asp:TextBox>
+                                                            <asp:RequiredFieldValidator ID="rfvPrecio" runat="server" ErrorMessage="* Campo requerido" 
+                                                                ControlToValidate="txbPrecio" ValidationGroup="agregar" 
+                                                                CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Días de congelamiento x mes</label>
+                                                            <asp:TextBox ID="txbDiasCongelamiento" CssClass="form-control input-sm" runat="server" 
+                                                                Text="1"></asp:TextBox>
+                                                            <asp:RequiredFieldValidator ID="rfvDiasCongelamiento" runat="server" ErrorMessage="* Campo requerido" 
+                                                                ControlToValidate="txbDiasCongelamiento" ValidationGroup="agregar" 
+                                                                CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Fecha de inicio</label>
+                                                            <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Fecha final</label>
+                                                            <asp:TextBox ID="txbFechaFinal" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <a href="planes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar" 
+                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" 
+                                                        OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
-                            <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
-
-                            <form role="form" id="form" runat="server">
-                                <div class="row" id="divContenido" runat="server">
-                                    <div class="col-lg-4">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title">
-                                                <h5><asp:Literal ID="ltTitulo" runat="server"></asp:Literal></h5>
-                                                <div class="ibox-tools">
-                                                    <a class="collapse-link">
-                                                        <i class="fa fa-chevron-up"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <div class="form-group">
-                                                            <label>Nombre del plan:</label>
-                                                            <asp:TextBox ID="txbPlan" runat="server" CssClass="form-control input-sm" placeholder="Nombre del plan"></asp:TextBox>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Descripción del plan:</label>
-                                                            <asp:TextBox ID="txbDescripcion" runat="server" CssClass="form-control input-sm" TextMode="MultiLine" 
-                                                                placeholder="Descripción"></asp:TextBox>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <label>Precio base del mes</label>
-                                                                    <asp:TextBox ID="txbPrecio" CssClass="form-control input-sm" runat="server" placeholder="Precio" Text="0"></asp:TextBox>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <label>Días de congelamiento por mes</label>
-                                                                    <asp:TextBox ID="txbDiasCongelamiento" CssClass="form-control input-sm" runat="server" placeholder="Días" Text="1"></asp:TextBox>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" CssClass="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md" OnClick="btnCancelar_Click" formnovalidate />
-                                                            <asp:Button ID="btnAgregar" runat="server" Text="Agregar" CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" OnClick="btnAgregar_Click" />
-                                                        </div>
-                                                        <br />
-                                                        <br />
-                                                        <div class="form-group">
-                                                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                            <div class="col-lg-8">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Lista de planes</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
                                         </div>
                                     </div>
-                                    <div class="col-lg-8">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title">
-                                                <h5>Lista de planes</h5>
-                                                <div class="ibox-tools">
-                                                    <a class="collapse-link">
-                                                        <i class="fa fa-chevron-up"></i>
-                                                    </a>
+                                    <div class="ibox-content">
+
+                                        <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
+                                            <div class="col-lg-6 form-horizontal">
+                                                <div class="form-group">
+                                                    <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                                 </div>
                                             </div>
-                                            <div class="ibox-content">
+ 
+                                            <div class="col-lg-6 form-horizontal">
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false" 
+                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;" 
+                                                    OnClick="lbExportarExcel_Click" >
+                                                    <i class="fa fa-file-excel"></i> EXCEL
+                                                </asp:LinkButton>
+                                            </div>
+                                        </div>
 
-                                                <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
-                                                    <div class="col-lg-6 form-horizontal">
-                                                        <div class="form-group">
-                                                            <label class="col-lg-4 control-label" style="text-align: left;">Buscador:</label>
-                                                            <div class="col-lg-8">
-                                                                <input type="text" placeholder="Buscar..." class="form-control input-sm m-b-xs" id="filter">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <%--<div class="col-lg-6 form-horizontal" style="text-align: center;">
-                                                        <label class="control-label">Mostrar </label>
-
-                                                        <a href="#" class="data-page-size" data-page-size="10">10</a> | 
-                                                        <a href="#" class="data-page-size" data-page-size="20">20</a> | 
-                                                        <a href="#" class="data-page-size" data-page-size="50">50</a> | 
-                                                        <a href="#" class="data-page-size" data-page-size="100">100</a>
-
-                                                        <label class="control-label">registros</label>
-                                                    </div>--%>
-                                                    <div class="col-lg-6 form-horizontal">
-                                                        <label class="control-label">&nbsp;</label>
-                                                        <a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" target="_blank" runat="server" id="btnExportar" href="imprimirplanes" title="Exportar"><i class="fa fa-print"></i> IMPRIMIR</a>
-                                                        <a data-trigger="footable_expand_all" style="font-size: 12px;" class="toggle btn btn-primary pull-right dim" href="#collapse" title="Expandir todo"><i class="fa fa-square-caret-down"></i> EXPANDIR</a>
-                                                        <a data-trigger="footable_collapse_all" class="toggle btn btn-primary pull-right dim" style="display: none; font-size: 12px;" href="#collapse" title="Contraer todo"><i class="fa fa-square-caret-up"></i> CONTRAER</a>
-                                                    </div>
-                                                </div>
-
-
-                                                <table class="footable table toggle-arrow-small" data-page-size="10" data-filter="#filter" data-filter-minimum="3">
-                                                    <thead>
-                                                        <tr>
-                                                            <th data-sort-initial="true">ID</th>
-                                                            <th>Nombre</th>
-                                                            <th data-sort-ignore="true" data-hide="all">Descripción</th>
-                                                            <th class="text-right">Precio</th>
-                                                            <th data-hide="phone,tablet">Creado por</th>
-                                                            <th data-toggle="false" data-sort-ignore="true">Estado</th>
-                                                            <th data-sort-ignore="true" data-toggle="false" class="text-right" 
-                                                                style="display: flex; flex-wrap: nowrap; width: 100%;">Acciones</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <asp:Repeater ID="rpPlanes" runat="server" OnItemDataBound="rpPlanes_ItemDataBound">
-                                                            <ItemTemplate>
-                                                                <tr class="feed-element">
-                                                                    <td><%# Eval("idPlan") %></td>
-                                                                    <td><%# Eval("NombrePlan") %></td>
-                                                                    <td><i class="fa fa-note-sticky m-r-xs font-bold"></i><%# Eval("DescripcionPlan") %></td>
-                                                                    <td style="text-align: right;">$<%# Eval("PrecioBase") %></td>
-                                                                    <td><i class="fa fa-circle-user m-r-xs font-bold"></i><%# Eval("NombreUsuario") %></td>
-                                                                    <td><span class="badge badge-<%# Eval("label") %>"><%# Eval("EstadoPlan") %></span></td>
-                                                                    <td style="display: flex; flex-wrap: nowrap; width: 100%;">
-                                                                        <button runat="server" id="btnEditar" class="btn btn-outline btn-primary pull-left m-r-xs" 
-                                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></button>
-                                                                        <button runat="server" id="btnEliminar" class="btn btn-outline btn-danger pull-right" 
-                                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></button>
-                                                                    </td>
-                                                                </tr>
-                                                            </ItemTemplate>
-                                                        </asp:Repeater>
-                                                    </tbody>
-                                                    <tfoot>
-                                                        <tr>
-                                                            <td colspan="8">
-                                                                <ul class="pagination"></ul>
+                                        <table class="footable table table-striped" data-paging-size="10"
+                                            data-filter-min="3" data-filter-placeholder="Buscar"
+                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
+                                            data-paging-limit="10" data-filtering="true"
+                                            data-filter-container="#filter-form-container" data-filter-delay="300"
+                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left"
+                                            data-empty="Sin resultados">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nombre</th>
+                                                    <th data-breakpoints="xs">Descripción</th>
+                                                    <th data-breakpoints="xs" class="text-right">Precio</th>
+                                                    <th data-breakpoints="xs sm md">Creado por</th>
+                                                    <th data-breakpoints="xs sm md" data-sortable="false">Estado</th>
+                                                    <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:Repeater ID="rpPlanes" runat="server" OnItemDataBound="rpPlanes_ItemDataBound">
+                                                    <ItemTemplate>
+                                                        <tr class="feed-element">
+                                                            <td><span class="badge badge-<%# Eval("ColorPlan") %>"><%# Eval("NombrePlan") %></span></td>
+                                                            <td><i class="fa fa-note-sticky m-r-xs font-bold"></i><%# Eval("DescripcionPlan") %></td>
+                                                            <td style="text-align: right;">$<%# Eval("PrecioBase") %></td>
+                                                            <td style="white-space: nowrap;"><i class="fa fa-circle-user m-r-xs font-bold"></i><%# Eval("NombreUsuario") %></td>
+                                                            <td><span class="badge badge-<%# Eval("label") %>"><%# Eval("EstadoPlan") %></span></td>
+                                                            <td>
+                                                                <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                                <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
                                                             </td>
                                                         </tr>
-                                                    </tfoot>
-                                                </table>
-
-                                            </div>
-                                        </div>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
+                        </div>
+                    </form>
 
-                            <%--Fin Contenido!!!!--%>
+                    <%--Fin Contenido!!!!--%>
                 </div>
             </div>
 
@@ -240,62 +298,16 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
-    <script src="js/plugins/footable/footable.all.min.js"></script>
+    <%--<script src="js/plugins/footable/footable.all.min.js"></script>--%>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
-    <!-- Chosen -->
-    <script src="js/plugins/chosen/chosen.jquery.js"></script>
-
-    <!-- Jquery Validate -->
-    <script src="js/plugins/validate/jquery.validate.min.js"></script>
-
     <!-- Page-Level Scripts -->
     <script>
-        $(document).ready(function () {
-            $("#form").validate({
-                rules: {
-                    txbPlan: {
-                        required: true,
-                        minlength: 5
-                    },
-                    txbDescripcion: {
-                        required: true,
-                        minlength: 10
-                    },
-                    txbPrecio: {
-                        required: true,
-                        minlength: 1
-                    },
-                    txbTiempo: {
-                        required: true,
-                    },
-                    ddlTipoPlan: {
-                        required: true,
-                    },
-                }
-            });
-        });
-
         $('.footable').footable();
-
-        $('.data-page-size').on('click', function (e) {
-            e.preventDefault();
-            var newSize = $(this).data('pageSize');
-            $('.footable').data('page-size', newSize);
-            $('.footable').trigger('footable_initialized');
-        });
-
-        $('.toggle').click(function (e) {
-            e.preventDefault();
-            $('.toggle').toggle();
-            $('.footable').trigger($(this).data('trigger')).trigger('footable_redraw');
-        });
-
-        $('.chosen-select').chosen({ width: "100%" });
-
     </script>
 
 </body>

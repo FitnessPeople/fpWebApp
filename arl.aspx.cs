@@ -108,7 +108,7 @@ namespace fpWebApp
                 }
                 else
                 {
-                    Response.Redirect("logout.aspx");
+                    Response.Redirect("logout");
                 }
             }
         }
