@@ -832,6 +832,7 @@
     <Content Include="plantilla.aspx" />
     <Content Include="profesiones.aspx" />
     <Content Include="pruebapagowompi.aspx" />
+    <Content Include="reportepagoswompi.aspx" />
     <Content Include="respuestaautorizacion.aspx" />
     <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjax.js" />
     <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxApplicationServices.js" />
@@ -1384,6 +1385,13 @@
     </Compile>
     <Compile Include="pruebapagowompi.aspx.designer.cs">
       <DependentUpon>pruebapagowompi.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="reportepagoswompi.aspx.cs">
+      <DependentUpon>reportepagoswompi.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="reportepagoswompi.aspx.designer.cs">
+      <DependentUpon>reportepagoswompi.aspx</DependentUpon>
     </Compile>
     <Compile Include="respuestaautorizacion.aspx.cs">
       <DependentUpon>respuestaautorizacion.aspx</DependentUpon>

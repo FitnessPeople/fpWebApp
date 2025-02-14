@@ -68,6 +68,7 @@
             <li>
                 <a href="#"><i class="fa fa-file-lines"></i><span class="nav-label">Reportes</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
+                    <li id="reportepagoswompi" class="old"><a href="reportepagoswompi" ><i class="fas fa-hand-holding-usd"></i>Pagos Wompi</a></li>
                     <li><a href="#">Dashboard</a></li>
                     <li><a href="#">Informe de ventas</a></li>
                     <li><a href="#">Ventas por producto</a></li>
@@ -77,7 +78,7 @@
                     <li><a href="#">Consulta de facturas</a></li>
                     <li><a href="#">Auditoria ingreso sedes</a></li>
                     <li><a href="#">Demografico afiliados</a></li>
-                    <li><a href="#">Free Pass</a></li>
+                    <li><a href="#">Free Pass</a></li>                    
                 </ul>
             </li>
             <li>
