@@ -19,7 +19,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
-    
+
     <!-- FooTable -->
     <%--<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />--%>
     <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
@@ -129,43 +129,6 @@
 
                     <form id="form1" runat="server">
                         <div class="row" id="divContenido" runat="server">
-<%--                              <div class="col-lg-4">
-                                <div class="ibox float-e-margins">
-                                  <div class="ibox-title">
-                                        <h5>
-                                            <asp:Literal ID="ltTitulo" runat="server"></asp:Literal></h5>
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-up"></i>
-                                            </a>
-                                        </div>
-                                    </div>--%>
-<%--                                    <div class="ibox-content">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="form-group">
-                                                    <label>Nombre de la ARL:</label>
-                                                    <asp:TextBox ID="txbArl" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="rfvArl" runat="server" ErrorMessage="* Campo requerido" 
-                                                        ControlToValidate="txbArl" ValidationGroup="agregar" 
-                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
-                                                </div>
-                                                <div class="form-group">
-                                                    <a href="arl" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar" 
-                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" 
-                                                        OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
-                                                </div>
-                                                <br />
-                                                <br />
-                                                <div class="form-group">
-                                                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>--%>
                             <div class="col-lg-8">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
@@ -184,10 +147,10 @@
                                                     <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                                 </div>
                                             </div>
- 
+
                                             <div class="col-lg-6 form-horizontal">
-                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false" 
-                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;" 
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
+                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
                                                     OnClick="lbExportarExcel_Click">
                                                     <i class="fa fa-file-excel"></i> EXCEL
                                                 </asp:LinkButton>
@@ -200,7 +163,7 @@
                                             data-paging-limit="10" data-filtering="true"
                                             data-filter-container="#filter-form-container" data-filter-delay="300"
                                             data-filter-dropdown-title="Buscar en:" data-filter-position="left"
-                                            data-empty="Sin resultados">
+                                            data-empty="Detalle de la transacción">
                                             <thead>
                                                 <tr>
                                                     <th>Id AfiliadoPlan</th>
@@ -211,7 +174,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpArl" runat="server" OnItemDataBound="rpArl_ItemDataBound">
+                                                <asp:Repeater ID="rpPagosWompi" runat="server" OnItemDataBound="rpPagosWompi_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
                                                             <td><%# Eval("idAfiliadoPlan") %></td>
@@ -219,9 +182,7 @@
                                                             <td><%# Eval("IdReferenciaWompi") %></td>
                                                             <td><%# Eval("FechaHoraPago") %></td>
                                                             <td>
-                                                                <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
-                                                                <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                <a runat="server" id="btnVer" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
                                                             </td>
                                                         </tr>
@@ -229,6 +190,11 @@
                                                 </asp:Repeater>
                                             </tbody>
                                         </table>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Detalle de la transacción:</label>
+                                        <asp:TextBox ID="txbPago" runat="server" TextMode="MultiLine"
+                                            CssClass="form-control input-sm" Rows="10"></asp:TextBox>
                                     </div>
                                 </div>
                             </div>
