@@ -103,18 +103,19 @@ namespace fpWebApp
                             // RpDetalle.DataSource = listaPagos;
                             // RpDetalle.DataBind();
 
-                            foreach (var pago in listaPagos)
-                            {
-                                Console.WriteLine($"ID: {pago.Id}");
-                                Console.WriteLine($"Fecha Creación: {pago.FechaCreacion}");
-                                Console.WriteLine($"Fecha Finalización: {pago.FechaFinalizacion}");
-                                Console.WriteLine($"Valor: {pago.Valor}");
-                                Console.WriteLine($"Método Pago: {pago.MetodoPago}");
-                                Console.WriteLine($"Estado: {pago.Estado}");
-                                Console.WriteLine($"Referencia: {pago.Referencia}");
-                                Console.WriteLine($"Tarjeta: {pago.NombreTarjeta} (**** {pago.UltimosDigitos})");
-                                Console.WriteLine("------------------------------------------------");
-                            }
+                            //foreach (var pago in listaPagos)
+                            //{
+                            //    Console.WriteLine($"ID: {pago.Id}");
+                            //    Console.WriteLine($"Fecha Creación: {pago.FechaCreacion}");
+                            //    Console.WriteLine($"Fecha Finalización: {pago.FechaFinalizacion}");
+                            //    Console.WriteLine($"Valor: {pago.Valor}");
+                            //    Console.WriteLine($"Método Pago: {pago.MetodoPago}");
+                            //    Console.WriteLine($"Estado: {pago.Estado}");
+                            //    Console.WriteLine($"Referencia: {pago.Referencia}");
+                            //    Console.WriteLine($"Tarjeta: {pago.NombreTarjeta} (**** {pago.UltimosDigitos})");
+                            //    Console.WriteLine($"Tarjeta: {pago.NombreTarjeta} (**** {pago.UltimosDigitos})");
+                            //    Console.WriteLine("------------------------------------------------");
+                            //}
 
                         }
                 }
