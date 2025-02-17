@@ -1,8 +1,14 @@
-﻿using System;
+﻿using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
+using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -46,63 +52,72 @@ namespace fpWebApp
                         }
                     }
                     listaTransacciones();
-                    //ltTitulo.Text = "Agregar ARL";
-
+                    string parametro = string.Empty;
                     if (Request.QueryString.Count > 0)
-                    {
-                        rpArl.Visible = false;
-                        if (Request.QueryString["editid"] != null)
+                        if (Request.QueryString["verid"] != null)
                         {
-                            //Editar
+                            //Boton ver detalles
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ConsultarArlPorId(int.Parse(Request.QueryString["editid"].ToString()));
-                            if (dt.Rows.Count > 0)
-                            {
-                                //txbArl.Text = dt.Rows[0]["NombreArl"].ToString();
-                                //btnAgregar.Text = "Actualizar";
-                                //ltTitulo.Text = "Actualizar ARL";
-                            }
-                        }
-                        if (Request.QueryString["deleteid"] != null)
-                        {
-                            clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ValidarArlEmpleados(int.Parse(Request.QueryString["deleteid"].ToString()));
-                            if (dt.Rows.Count > 0)
-                            {
-                                //ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                //    "<div class=\"alert alert-danger alert-dismissable\">" +
-                                //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                //    "Esta ARL no se puede borrar, hay empleados asociados a ella." +
-                               //     "</div></div>";
+                            DataTable dt = cg.ConsultarPagosWompiPorId(int.Parse(Request.QueryString["verid"].ToString()));
 
-                                DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
-                                if (dt1.Rows.Count > 0)
-                                {
-                                    //txbArl.Text = dt1.Rows[0]["NombreArl"].ToString();
-                                    //txbArl.Enabled = false;
-                                    //btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                   //btnAgregar.Enabled = false;
-                                    //ltTitulo.Text = "Borrar ARL";
-                                }
-                                dt1.Dispose();
-                            }
-                            else
+                            if (dt.Rows.Count > 0)
                             {
-                                //Borrar
-                                DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
-                                if (dt1.Rows.Count > 0)
-                                {
-                                    //txbArl.Text = dt1.Rows[0]["NombreArl"].ToString();
-                                    //txbArl.Enabled = false;
-                                    //btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                    //ltTitulo.Text = "Borrar ARL";
-                                }
-                                dt1.Dispose();
+                                parametro = dt.Rows[0]["IdReferenciaWompi"].ToString();
                             }
+
+                            string url = "https://sandbox.wompi.co/v1//transactions/" + parametro;
+                            string rta = EnviarPeticion(url);
+                            JToken token = JToken.Parse(rta);
+                            string prettyJson = token.ToString(Formatting.Indented);
+                            txbPago.Text = prettyJson;
+                            Console.WriteLine(prettyJson);
+
+                            JObject jsonData = JObject.Parse(prettyJson); 
+
+                            List<pagoswompidet> listaPagos = new List<pagoswompidet>
+                            {
+                                new pagoswompidet
+                                {
+                                    Id = jsonData["data"]["id"]?.ToString(),
+                                    FechaCreacion = jsonData["data"]["created_at"]?.ToString(),
+                                    FechaFinalizacion = jsonData["data"]["finalized_at"]?.ToString(),
+                                    Valor = ((jsonData["data"]["amount_in_cents"]?.Value<int>() ?? 0) / 100).ToString("N0") + " " + jsonData["data"]["currency"]?.ToString(),
+                                    Moneda = jsonData["data"]["currency"]?.ToString(),
+                                    MetodoPago = jsonData["data"]["payment_method_type"]?.ToString(),
+                                    Estado = jsonData["data"]["status"]?.ToString(),
+                                    Referencia = jsonData["data"]["reference"]?.ToString(),
+                                    NombreTarjeta = jsonData["data"]["payment_method"]["extra"]["name"]?.ToString(),
+                                    UltimosDigitos = jsonData["data"]["payment_method"]["extra"]["last_four"]?.ToString(),
+                                    MarcaTarjeta = jsonData["data"]["payment_method"]["extra"]["brand"]?.ToString(),
+                                    TipoTarjeta = jsonData["data"]["payment_method"]["extra"]["card_type"]?.ToString(),
+                                    NombreComercio = jsonData["data"]["merchant"]["name"]?.ToString(),
+                                    ContactoComercio = jsonData["data"]["merchant"]["contact_name"]?.ToString(),
+                                    TelefonoComercio = jsonData["data"]["merchant"]["phone_number"]?.ToString(),
+                                    URLRedireccion = jsonData["data"]["redirect_url"]?.ToString(),
+                                    PaymentLinkId = jsonData["data"]["payment_link_id"]?.ToString(),
+                                    PublicKeyComercio = jsonData["data"]["merchant"]["public_key"]?.ToString(),
+                                    EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString(),
+                                    Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
+                            };
+
+                            // RpDetalle.DataSource = listaPagos;
+                            // RpDetalle.DataBind();
+
+                            //foreach (var pago in listaPagos)
+                            //{
+                            //    Console.WriteLine($"ID: {pago.Id}");
+                            //    Console.WriteLine($"Fecha Creación: {pago.FechaCreacion}");
+                            //    Console.WriteLine($"Fecha Finalización: {pago.FechaFinalizacion}");
+                            //    Console.WriteLine($"Valor: {pago.Valor}");
+                            //    Console.WriteLine($"Método Pago: {pago.MetodoPago}");
+                            //    Console.WriteLine($"Estado: {pago.Estado}");
+                            //    Console.WriteLine($"Referencia: {pago.Referencia}");
+                            //    Console.WriteLine($"Tarjeta: {pago.NombreTarjeta} (**** {pago.UltimosDigitos})");
+                            //    Console.WriteLine($"Tarjeta: {pago.NombreTarjeta} (**** {pago.UltimosDigitos})");
+                            //    Console.WriteLine("------------------------------------------------");
+                            //}
+
                         }
-                    }
                 }
                 else
                 {
@@ -138,97 +153,60 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarPagosPlanAfiliados();
-            rpArl.DataSource = dt;
-            rpArl.DataBind();
+            rpPagosWompi.DataSource = dt;
+            rpPagosWompi.DataBind();
             dt.Dispose();
         }
 
 
-
-        protected void rpArl_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        protected void rpPagosWompi_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
-                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "arl?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    btnEditar.Visible = true;
-                }
-                if (ViewState["Borrar"].ToString() == "1")
-                {
-                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "arl?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    btnEliminar.Visible = true;
+                    HtmlAnchor btnVer = (HtmlAnchor)e.Item.FindControl("btnVer");
+                    btnVer.Attributes.Add("href", "reportepagoswompi?verid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnVer.Visible = true;
                 }
             }
         }
 
-        private bool ValidarArl(string strNombre)
+        private static string EnviarPeticion(string url)
         {
-            bool bExiste = false;
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarArlPorNombre(strNombre);
-            if (dt.Rows.Count > 0)
-            {
-                bExiste = true;
-            }
-            dt.Dispose();
-            return bExiste;
-        }
+            string resultado = "";
 
+            try
+            {
+                WebRequest oRequest = WebRequest.Create(url);
+                oRequest.Method = "GET";
+                oRequest.ContentType = "application/json;charset=UTF-8";
+
+                WebResponse oResponse = oRequest.GetResponse();
+                using (var oSr = new StreamReader(oResponse.GetResponseStream()))
+                {
+                    resultado = oSr.ReadToEnd().Trim();
+                }
+
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                return "Error al enviar la petición: " + ex.Message;
+            }
+        }
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            clasesglobales cg = new clasesglobales();
-            //if (Request.QueryString.Count > 0)
-            //{
-            //    if (Request.QueryString["editid"] != null)
-            //    {
-            //        string respuesta = cg.ActualizarArl(int.Parse(Request.QueryString["editid"].ToString()),"");
-            //    }
-            //    if (Request.QueryString["deleteid"] != null)
-            //    {
-            //        string respuesta = cg.EliminarArl(int.Parse(Request.QueryString["deleteid"].ToString()));
-            //    }
-            //    Response.Redirect("arl");
-            //}
-            //else
-            //{
-            //    if (!ValidarArl(txbArl.Text.ToString()))
-            //    {
-            //        try
-            //        {
-            //            string respuesta = cg.InsertarArl(txbArl.Text.ToString().Trim());
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            string mensajeExcepcionInterna = string.Empty;
-            //            Console.WriteLine(ex.Message);
-            //            if (ex.InnerException != null)
-            //            {
-            //                mensajeExcepcionInterna = ex.InnerException.Message;
-            //                Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
-            //            }
-            //            ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-            //            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-            //            "Excepción interna." +
-            //            "</div>";
-            //        }
-            //        Response.Redirect("arl");
-            //    }
-            //    else
-            //    {
-            //        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-            //            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-            //            "Ya existe una ARL con ese nombre." +
-            //            "</div>";
-            //    }
-            //}
+
         }
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
 
         }
+
+
+
+
     }
 }
