@@ -3969,7 +3969,7 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PLAN_POR_NOMBRE", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@p_tipo_incapacidad", NombrePlan);
+                        cmd.Parameters.AddWithValue("@p_nombre_plan", NombrePlan);
 
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
                         {
@@ -4001,7 +4001,14 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_PLAN", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@p_tipo_incapacidad", nombrePlan);
+                        cmd.Parameters.AddWithValue("@p_nombre_plan", nombrePlan);
+                        cmd.Parameters.AddWithValue("@p_descripcion_plan", descripcionPlan);
+                        cmd.Parameters.AddWithValue("@p_precio_base", precio);
+                        cmd.Parameters.AddWithValue("@p_color_plan", color);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_dias_congelamiento", Dias);
+                        cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicio);
+                        cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -4016,7 +4023,7 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarPlan(int idPlan, string nombrePlan, string descripcionPlan, int precio, string color, int idUsuario, string Dias, string fechaInicio, string fechaFinal)
+        public string ActualizarPlan(int idPlan, string nombrePlan, string descripcionPlan, int precio, string color, string Dias, string fechaInicio, string fechaFinal)
         {
             string respuesta = string.Empty;
             try
@@ -4032,8 +4039,14 @@ namespace fpWebApp
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         // Parámetros de entrada
-                        cmd.Parameters.AddWithValue("@p_id_tipo_incapacidad", idPlan);
-                        cmd.Parameters.AddWithValue("@p_tipo_incapacidad", nombrePlan);
+                        cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
+                        cmd.Parameters.AddWithValue("@p_nombre_plan", nombrePlan);
+                        cmd.Parameters.AddWithValue("@p_descripcion_plan", descripcionPlan);
+                        cmd.Parameters.AddWithValue("@p_precio_base", precio);
+                        cmd.Parameters.AddWithValue("@p_color_plan", color);
+                        cmd.Parameters.AddWithValue("@p_dias_congelamiento", Dias);
+                        cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicio);
+                        cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -4062,7 +4075,7 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_ELIMINAR_PLAN", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@p_id_tipo_incapacidad", idPlan);
+                        cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";

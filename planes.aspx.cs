@@ -222,7 +222,6 @@ namespace fpWebApp
                         txbDescripcion.Text.ToString(), 
                         int.Parse(txbPrecio.Text.ToString()), 
                         rblColor.SelectedItem.Value.ToString(), 
-                        int.Parse(Session["idusuario"].ToString()), 
                         txbDiasCongelamiento.Text.ToString(), 
                         txbFechaInicio.Text.ToString(), 
                         txbFechaFinal.Text.ToString());
