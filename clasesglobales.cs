@@ -2678,7 +2678,7 @@ namespace fpWebApp
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
                     mysqlConexion.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_CIUDAD_SEDE", mysqlConexion))
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_SEDE", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_nombre_sede", nombreSede);
@@ -2717,7 +2717,7 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_SEDE", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@idSede", idCiudadSede);
+                        cmd.Parameters.AddWithValue("@p_id_sede", idSede);
                         cmd.Parameters.AddWithValue("@p_nombre_sede", nombreSede);
                         cmd.Parameters.AddWithValue("@p_direccion_sede", direccionSede);
                         cmd.Parameters.AddWithValue("@p_id_ciudad_sede", idCiudadSede);

@@ -28,7 +28,10 @@
     <link href="css/style.css" rel="stylesheet" />
 
     <style type="text/css" media="print">
-        body { visibility: hidden; display: none }
+        body {
+            visibility: hidden;
+            display: none
+        }
     </style>
 
     <script>
@@ -138,52 +141,75 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="form-group">
-                                                    <label>Nombre de la sede:</label>
-                                                    <asp:TextBox ID="txbSede" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Dirección:</label>
-                                                    <asp:TextBox ID="txbDireccion" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                </div>
-
+                                        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+                                        <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
+                                            <ContentTemplate>
                                                 <div class="row">
-                                                    <div class="col-sm-6">
+                                                    <div class="col-lg-12">
                                                         <div class="form-group">
-                                                            <label>Ciudad:</label>
-                                                            <asp:DropDownList ID="ddlCiudadSede" runat="server" CssClass="form-control input-sm" 
-                                                                DataTextField="NombreCiudadSede" DataValueField="idCiudadSede" AppendDataBoundItems="true">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                            </asp:DropDownList>
+                                                            <label>Nombre de la sede:</label>
+                                                            <asp:TextBox ID="txbSede" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Dirección:</label>
+                                                            <asp:TextBox ID="txbDireccion" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Ciudad:</label>
+                                                                    <asp:DropDownList ID="ddlCiudadSede" runat="server" CssClass="form-control input-sm"
+                                                                        DataTextField="NombreCiudadSede" DataValueField="idCiudadSede" AppendDataBoundItems="true">
+                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Teléfono:</label>
+                                                                    <asp:TextBox ID="txbTelefono" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Horario:</label>
+                                                            <textarea id="summernote" name="editordata" class="form-control input-sm" runat="server"></textarea>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <b>
+                                                                <asp:Label ID="lblClaseSede" runat="server" Text="Clase Sede" Font-Bold="true"></asp:Label></b>
+                                                            <asp:RadioButtonList ID="rblClaseSede" runat="server" CssClass="form-control input-sm" RepeatDirection="Horizontal"
+                                                                OnSelectedIndexChanged="rblClaseSede_SelectedIndexChanged" AutoPostBack="true">
+                                                                <asp:ListItem Text="&nbsp;Gimnasio&nbsp;&nbsp;&nbsp;&nbsp;" Value="Gimnasio"></asp:ListItem>
+                                                                <asp:ListItem Text="&nbsp;Oficina&nbsp;&nbsp;&nbsp;&nbsp;" Value="Oficina"></asp:ListItem>
+                                                            </asp:RadioButtonList>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <b>
+                                                                <asp:Label ID="lblTipoSede" runat="server" Text="Tipo Sede" Font-Bold="true"></asp:Label></b>
+                                                            <asp:RadioButtonList ID="rblTipoSede" runat="server" CssClass="form-control input-sm" RepeatDirection="Horizontal">
+                                                                <asp:ListItem Text="&nbsp;Deluxe&nbsp;&nbsp;&nbsp;&nbsp;" Value="Deluxe"></asp:ListItem>
+                                                                <asp:ListItem Text="&nbsp;Premium&nbsp;&nbsp;&nbsp;&nbsp;" Value="Premium"></asp:ListItem>
+                                                            </asp:RadioButtonList>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <a href="sedes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                            <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
+                                                                CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
+                                                                OnClick="btnAgregar_Click" />
+                                                        </div>
+                                                        <br />
+                                                        <br />
+                                                        <div class="form-group">
+                                                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Teléfono:</label>
-                                                            <asp:TextBox ID="txbTelefono" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                        </div>
-                                                    </div>
                                                 </div>
-
-                                                <div class="form-group">
-                                                    <label>Horario:</label>
-                                                    <textarea id="summernote" name="editordata" class="form-control input-sm" runat="server"></textarea>
-                                                </div>
-                                                <div class="form-group">
-                                               <a href="sedes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar" 
-                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" 
-                                                        OnClick="btnAgregar_Click" />
-                                                </div>
-                                                <br />
-                                                <br />
-                                                <div class="form-group">
-                                                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            </ContentTemplate>
+                                             <Triggers>
+                                                <asp:AsyncPostBackTrigger ControlID="rblClaseSede" EventName="SelectedIndexChanged" />
+                                            </Triggers>
+                                        </asp:UpdatePanel>
                                     </div>
                                 </div>
                             </div>
@@ -202,7 +228,8 @@
                                         <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
                                             <div class="col-lg-4 form-horizontal">
                                                 <div class="form-group">
-                                                    <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>                                                </div>
+                                                    <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
+                                                </div>
                                             </div>
                                             <div class="col-lg-4 form-horizontal" style="text-align: center;">
                                                 <label class="control-label">Mostrar </label>
@@ -213,34 +240,32 @@
                                                 <label class="control-label">registros</label>
                                             </div>
                                             <div class="col-lg-4 form-horizontal">
-                                                <a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px; padding: 6px 8px;" 
-                                                    target="_blank" runat="server" id="btnImprimir" href="imprimirprofesiones" 
-                                                    title="Imprimir"><i class="fa fa-print"></i> IMPRIMIR</a>
-                                                <a data-trigger="footable_expand_all" style="font-size: 12px; padding: 6px 8px;" 
-                                                    class="toggle btn btn-primary pull-right dim" href="#collapse" 
-                                                    title="Expandir todo"><i class="fa fa-square-caret-down"></i> EXPANDIR</a>
-                                                <a data-trigger="footable_collapse_all" class="toggle btn btn-primary pull-right dim" 
-                                                    style="display: none; font-size: 12px; padding: 6px 8px;" href="#collapse" 
-                                                    title="Contraer todo"><i class="fa fa-square-caret-up"></i> CONTRAER</a>
+                                                <a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px; padding: 6px 8px;"
+                                                    target="_blank" runat="server" id="btnImprimir" href="imprimirprofesiones"
+                                                    title="Imprimir"><i class="fa fa-print"></i>IMPRIMIR</a>
+                                                <a data-trigger="footable_expand_all" style="font-size: 12px; padding: 6px 8px;"
+                                                    class="toggle btn btn-primary pull-right dim" href="#collapse"
+                                                    title="Expandir todo"><i class="fa fa-square-caret-down"></i>EXPANDIR</a>
+                                                <a data-trigger="footable_collapse_all" class="toggle btn btn-primary pull-right dim"
+                                                    style="display: none; font-size: 12px; padding: 6px 8px;" href="#collapse"
+                                                    title="Contraer todo"><i class="fa fa-square-caret-up"></i>CONTRAER</a>
                                             </div>
                                         </div>
 
-                                        <table class="footable table table-striped" data-paging-size="10"
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
                                             data-filter-min="3" data-filter-placeholder="Buscar"
                                             data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
                                             data-paging-limit="10" data-filtering="true"
                                             data-filter-container="#filter-form-container" data-filter-delay="300"
                                             data-filter-dropdown-title="Buscar en:" data-filter-position="left"
-                                            data-empty="Sin resultados">                                            
+                                            data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th data-sort-initial="true">Sede</th>
-                                                    <th data-sort-ignore="true">Dirección</th>
-                                                    <%--<th data-hide="phone,tablet">Ciudad</th>
-                                                    <th data-sort-ignore="true" data-hide="phone,tablet">Teléfono</th>
-                                                    <th data-hide="phone,tablet">Horario</th>--%>
-                                                    <th data-hide="all"></th>
+                                                    <th data-sortable="false" data-breakpoints="xs" style="width: 200px;">Sede</th>
+                                                    <th data-breakpoints="xs">Dirección</th>
+                                                    <th data-breakpoints="all" data-title="Info"></th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -249,32 +274,25 @@
                                                         <tr class="feed-element">
                                                             <td><%# Eval("NombreSede") %></td>
                                                             <td><%# Eval("DireccionSede") %></td>
-                                                            <%--<td><%# Eval("CiudadSede") %></td>
-                                                            <td><%# Eval("TelefonoSede") %></td>
-                                                            <td><%# Eval("HorarioSede") %></td>--%>
-                                                            <td class="table-bordered">
-                                                                <table class="table table-bordered">
-                                                                    <thead>
-                                                                    <tr> 
+                                                            <td>
+                                                                <table class="table table-bordered table-striped">
+                                                                    <tr>
                                                                         <th width="25%"><i class="fa fa-city m-r-xs"></i>Ciudad</th>
                                                                         <th width="25%"><i class="fa fa-mobile m-r-xs"></i>Teléfono</th>
                                                                         <th width="50%" class="text-nowrap"><i class="fa fa-clock m-r-xs"></i>Horario</th>
                                                                     </tr>
-                                                                    </thead>
-                                                                    <tbody>
                                                                     <tr>
                                                                         <td><%# Eval("NombreCiudadSede") %></td>
                                                                         <td><%# Eval("TelefonoSede") %></td>
                                                                         <td><%# Eval("HorarioSede") %></td>
                                                                     </tr>
-                                                                    </tbody>
                                                                 </table>
                                                             </td>
-                                                            <td style="display: flex; flex-wrap: nowrap; width: 100%;">
-                                                                <button runat="server" id="btnEditar" class="btn btn-outline btn-primary pull-left m-r-xs" 
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></button>
-                                                                <button runat="server" id="btnEliminar" class="btn btn-outline btn-danger pull-right" 
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></button>
+                                                            <td style="display: flex; flex-wrap: nowrap;">
+                                                                <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                                <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
                                                             </td>
                                                         </tr>
                                                     </ItemTemplate>
@@ -287,7 +305,6 @@
                             </div>
                         </div>
                     </form>
-
                     <%--Fin Contenido!!!!--%>
                 </div>
             </div>
@@ -303,7 +320,7 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
