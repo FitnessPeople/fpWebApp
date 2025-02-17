@@ -200,60 +200,6 @@
                             <div class="row">
                                 <form role="form" id="form" runat="server">
                                     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-                                    <%--<div class="col-sm-3 b-r">--%>
-
-                                        <%--<div class="contact-box navy-bg">
-                                            <div class="col-sm-4">
-                                                <div class="text-center">
-                                                    <asp:Literal ID="ltFoto" runat="server"></asp:Literal>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-8">
-                                                <h3><strong>
-                                                    <asp:Literal ID="ltNombre" runat="server"></asp:Literal>
-                                                    <asp:Literal ID="ltApellido" runat="server"></asp:Literal></strong></h3>
-                                                <p><i class="fa fa-envelope"></i>
-                                                    <asp:Literal ID="ltEmail" runat="server"></asp:Literal></p>
-                                                <address>
-                                                    <i class="fa fa-mobile"></i>
-                                                    <asp:Literal ID="ltCelular" runat="server"></asp:Literal><br />
-                                                    <i class="fa fa-building"></i>Sede: 
-                                                    <asp:Literal ID="ltSede" runat="server"></asp:Literal><br />
-                                                    <i class="fa fa-cake"></i>
-                                                    <asp:Literal ID="ltCumple" runat="server"></asp:Literal><br />
-                                                    <i class="fa fa-shield"></i>Estado:
-                                                    <asp:Literal ID="ltEstado" runat="server"></asp:Literal>
-                                                </address>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>--%>
-
-                                        <%--<div class="row m-xs">--%>
-                                            <%--<h4>Planes</h4>
-                                            <ul class="todo-list m-t small-list">
-                                                <asp:Repeater ID="rpPlanesAfiliado" runat="server">
-                                                    <ItemTemplate>
-                                                        <li>
-                                                            <div class="i-checks">
-                                                                <small class="label label-primary pull-right"><%# Eval("DiasQueFaltan") %> días disponibles</small>
-                                                                <label>
-                                                                    <input type="radio" value="<%# Eval("idPlan") %>" name="planes">
-                                                                    <i></i><%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
-                                                                </label>
-                                                                <br />
-                                                                <div class="progress progress-striped active">
-                                                                    <div style='width: <%# Eval("Porcentaje1") %>%' class="progress-bar progress-bar-success"></div>
-                                                                    <div style='width: <%# Eval("Porcentaje2") %>%' class="progress-bar progress-bar-warning"></div>
-                                                                </div>
-                                                                <small class="text-muted"><%# Eval("FechaInicioPlan", "{0:dd MMM yyyy}") %> - <%# Eval("FechaFinalPlan", "{0:dd MMM yyyy}") %></small>
-                                                            </div>
-                                                        </li>
-                                                    </ItemTemplate>
-                                                </asp:Repeater>
-                                            </ul>--%>
-                                        <%--</div>
-
-                                    </div>--%>
                                     <div class="col-sm-12 m-t-xs">
                                         <asp:UpdatePanel ID="upPlanes" runat="server" UpdateMode="Always" ChildrenAsTriggers="true">
                                             <ContentTemplate>
