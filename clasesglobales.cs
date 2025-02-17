@@ -4297,7 +4297,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_precio_base", precio);
                         cmd.Parameters.AddWithValue("@p_color_plan", color);
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
-                        cmd.Parameters.AddWithValue("@p_dias_congelamiento", Dias);
+                        cmd.Parameters.AddWithValue("@p_dias_congelamiento", Convert.ToDouble(Dias));
                         cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicio);
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
 

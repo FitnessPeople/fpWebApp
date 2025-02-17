@@ -193,7 +193,9 @@ namespace fpWebApp
         {
             string strQuery = "SELECT * " +
                 "FROM Planes " +
-                "WHERE EstadoPlan = 'Activo' ";
+                "WHERE EstadoPlan = 'Activo' " +
+                "AND (FechaInicial IS NULL OR FechaInicial <= CURDATE()) " +
+                "AND (FechaFinal IS NULL OR FechaFinal >= CURDATE())";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
@@ -228,6 +230,8 @@ namespace fpWebApp
             ViewState["idPlan"] = dt.Rows[0]["idPlan"].ToString();
             ViewState["nombrePlan"] = dt.Rows[0]["NombrePlan"].ToString();
             ViewState["precioBase"] = Convert.ToInt32(dt.Rows[0]["PrecioBase"].ToString());
+            ViewState["descuentoMensual"] = Convert.ToDouble(dt.Rows[0]["DescuentoMensual"].ToString());
+            ViewState["mesesMaximo"] = Convert.ToDouble(dt.Rows[0]["MesesMaximo"].ToString());
 
             divPanelResumen.Attributes.Remove("class");
             divPanelResumen.Attributes.Add("class", "panel panel-" + dt.Rows[0]["ColorPlan"].ToString());
@@ -249,18 +253,56 @@ namespace fpWebApp
 
         private void MesesEnabled()
         {
-            btnMes1.Enabled = true;
-            btnMes2.Enabled = true;
-            btnMes3.Enabled = true;
-            btnMes4.Enabled = true;
-            btnMes5.Enabled = true;
-            btnMes6.Enabled = true;
-            btnMes7.Enabled = true;
-            btnMes8.Enabled = true;
-            btnMes9.Enabled = true;
-            btnMes10.Enabled = true;
-            btnMes11.Enabled = true;
-            btnMes12.Enabled = true;
+            MesesDisabled();
+            if (Convert.ToInt32(btnMes1.Text.ToString()) <= Convert.ToInt32(ViewState["mesesMaximo"].ToString()))
+            {
+                btnMes1.Enabled = true;
+            }
+            if (Convert.ToInt32(btnMes2.Text.ToString()) <= Convert.ToInt32(ViewState["mesesMaximo"].ToString()))
+            {
+                btnMes2.Enabled = true;
+            }
+            if (Convert.ToInt32(btnMes3.Text.ToString()) <= Convert.ToInt32(ViewState["mesesMaximo"].ToString()))
+            {
+                btnMes3.Enabled = true;
+            }
+            if (Convert.ToInt32(btnMes4.Text.ToString()) <= Convert.ToInt32(ViewState["mesesMaximo"].ToString()))
+            {
+                btnMes4.Enabled = true;
+            }
+            if (Convert.ToInt32(btnMes5.Text.ToString()) <= Convert.ToInt32(ViewState["mesesMaximo"].ToString()))
+            {
+                btnMes5.Enabled = true;
+            }
+            if (Convert.ToInt32(btnMes6.Text.ToString()) <= Convert.ToInt32(ViewState["mesesMaximo"].ToString()))
+            {
+                btnMes6.Enabled = true;
+            }
+            if (Convert.ToInt32(btnMes7.Text.ToString()) <= Convert.ToInt32(ViewState["mesesMaximo"].ToString()))
+            {
+                btnMes7.Enabled = true;
+            }
+            if (Convert.ToInt32(btnMes8.Text.ToString()) <= Convert.ToInt32(ViewState["mesesMaximo"].ToString()))
+            {
+                btnMes8.Enabled = true;
+            }
+            if (Convert.ToInt32(btnMes9.Text.ToString()) <= Convert.ToInt32(ViewState["mesesMaximo"].ToString()))
+            {
+                btnMes9.Enabled = true;
+            }
+            if (Convert.ToInt32(btnMes10.Text.ToString()) <= Convert.ToInt32(ViewState["mesesMaximo"].ToString()))
+            {
+                btnMes10.Enabled = true;
+            }
+            if (Convert.ToInt32(btnMes11.Text.ToString()) <= Convert.ToInt32(ViewState["mesesMaximo"].ToString()))
+            {
+                btnMes11.Enabled = true;
+            }
+            if (Convert.ToInt32(btnMes12.Text.ToString()) <= Convert.ToInt32(ViewState["mesesMaximo"].ToString()))
+            {
+                btnMes12.Enabled = true;
+            }
+
         }
 
         protected void btnAgregarPlan_Click(object sender, EventArgs e)
@@ -467,28 +509,28 @@ namespace fpWebApp
         private void CalculoPrecios(string strMes)
         {
             int intPrecioBase = Convert.ToInt32(ViewState["precioBase"]);
-            int intDescuento = (Convert.ToInt32(strMes) - 1) * 5;
+            double dobDescuento = (Convert.ToInt32(strMes) - 1) * Convert.ToDouble(ViewState["descuentoMensual"]);
             int intMeses = Convert.ToInt32(strMes);
             ViewState["meses"] = intMeses;
-            int intTotal = (intPrecioBase - ((intPrecioBase * intDescuento) / 100)) * intMeses;
-            int intAhorro = ((intPrecioBase * intDescuento) / 100) * intMeses;
-            int intConDescuento = (intPrecioBase - ((intPrecioBase * intDescuento) / 100));
+            double dobTotal = (intPrecioBase - ((intPrecioBase * dobDescuento) / 100)) * intMeses;
+            double dobAhorro = ((intPrecioBase * dobDescuento) / 100) * intMeses;
+            double dobConDescuento = (intPrecioBase - ((intPrecioBase * dobDescuento) / 100));
 
             ltPrecioBase.Text = "$" + String.Format("{0:N0}", intPrecioBase);
-            ltDescuento.Text = intDescuento.ToString() + "%";
+            ltDescuento.Text = dobDescuento.ToString() + "%";
             //ltPrecioFinal.Text = String.Format("{0:C0}", intTotal);
-            ltPrecioFinal.Text = "$" + String.Format("{0:N0}", intTotal);
+            ltPrecioFinal.Text = "$" + String.Format("{0:N0}", dobTotal);
             //ltAhorro.Text = String.Format("{0:C0}", intAhorro);
-            ltAhorro.Text = "$" + String.Format("{0:N0}", intAhorro);
+            ltAhorro.Text = "$" + String.Format("{0:N0}", dobAhorro);
             //ltConDescuento.Text = String.Format("{0:C0}", intConDescuento);
-            ltConDescuento.Text = "$" + String.Format("{0:N0}", intConDescuento);
+            ltConDescuento.Text = "$" + String.Format("{0:N0}", dobConDescuento);
 
             ltObservaciones.Text = "Valor sin descuento: $" + string.Format("{0:N0}", intPrecioBase) + "<br /><br />";
             ltObservaciones.Text += "<b>Meses</b>: " + intMeses.ToString() + ".<br />";
-            ltObservaciones.Text += "<b>Descuento</b>: " + intDescuento.ToString() + "%.<br />";
-            ltObservaciones.Text += "<b>Valor del mes con descuento</b>: $" + string.Format("{0:N0}", intConDescuento) + ".<br />";
-            ltObservaciones.Text += "<b>Ahorro</b>: $" + string.Format("{0:N0}", intAhorro) + ".<br />";
-            ltObservaciones.Text += "<b>Valor Total</b>: $" + string.Format("{0:N0}", intTotal) + ".<br />";
+            ltObservaciones.Text += "<b>Descuento</b>: " + dobDescuento.ToString() + "%.<br />";
+            ltObservaciones.Text += "<b>Valor del mes con descuento</b>: $" + string.Format("{0:N0}", dobConDescuento) + ".<br />";
+            ltObservaciones.Text += "<b>Ahorro</b>: $" + string.Format("{0:N0}", dobAhorro) + ".<br />";
+            ltObservaciones.Text += "<b>Valor Total</b>: $" + string.Format("{0:N0}", dobTotal) + ".<br />";
         }
 
         private void ActivarCortesia(string strCortesia)
