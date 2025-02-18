@@ -317,8 +317,8 @@ namespace fpWebApp
                     _strData += "{\r\n";
                     _strData += "label: \"" + dt.Rows[i]["NombrePlan"].ToString() + "\",\r\n";
                     _strData += "backgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",0)',\r\n";
-                    _strData += "borderColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",0.7)',\r\n";
-                    _strData += "pointBackgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1)',\r\n";
+                    _strData += "borderColor: '" + dt.Rows[i]["ColorPlan"].ToString() + "',\r\n";
+                    _strData += "pointBackgroundColor: '" + dt.Rows[i]["ColorPlan"].ToString() + "',\r\n";
                     _strData += "pointBorderColor: \"#fff\",\r\n";
                     _strData += "data: [";
 
@@ -345,7 +345,7 @@ namespace fpWebApp
                 _strData += "data: [";
 
                 intPrecioBase = Convert.ToInt32(txbPrecio.Text.ToString());
-                dobDescuentoMensual = Convert.ToInt32(txbDescuentoMensual.Text.ToString());
+                dobDescuentoMensual = Convert.ToDouble(txbDescuentoMensual.Text.ToString());
                 for (int j = 0; j < 12; j++)
                 {
                     double dobDescuento = j * dobDescuentoMensual;

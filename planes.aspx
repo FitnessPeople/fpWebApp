@@ -287,7 +287,7 @@
                                                 <asp:Repeater ID="rpPlanes" runat="server" OnItemDataBound="rpPlanes_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
-                                                            <td><span class="btn btn-<%# Eval("ColorPlan") %> btn-outline" style="font-size: 12px;"><%# Eval("NombrePlan") %></span></td>
+                                                            <td><span class="btn btn-<%# Eval("NombreColorPlan") %> btn-outline" style="font-size: 12px;"><%# Eval("NombrePlan") %></span></td>
                                                             <td><i class="fa fa-note-sticky m-r-xs font-bold"></i><%# Eval("DescripcionPlan") %></td>
                                                             <td style="text-align: right;">$<%# Eval("PrecioBase") %></td>
                                                             <td style="white-space: nowrap;"><i class="fa fa-circle-user m-r-xs font-bold"></i><%# Eval("NombreUsuario") %></td>

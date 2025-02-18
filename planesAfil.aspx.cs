@@ -206,7 +206,7 @@ namespace fpWebApp
                 {
                     Button btn = new Button();
                     btn.Text = dt.Rows[i]["NombrePlan"].ToString();
-                    btn.CssClass = "btn btn-" + dt.Rows[i]["ColorPlan"].ToString() + " btn-outline btn-block btn-lg font-bold";
+                    btn.CssClass = "btn btn-" + dt.Rows[i]["NombreColorPlan"].ToString() + " btn-outline btn-block btn-lg font-bold";
                     btn.ToolTip = dt.Rows[i]["NombrePlan"].ToString();
                     btn.Command += new CommandEventHandler(btn_Click);
                     //btn.CommandName = dt.Rows[i]["NombrePlan"].ToString();
@@ -234,7 +234,7 @@ namespace fpWebApp
             ViewState["mesesMaximo"] = Convert.ToDouble(dt.Rows[0]["MesesMaximo"].ToString());
 
             divPanelResumen.Attributes.Remove("class");
-            divPanelResumen.Attributes.Add("class", "panel panel-" + dt.Rows[0]["ColorPlan"].ToString());
+            divPanelResumen.Attributes.Add("class", "panel panel-" + dt.Rows[0]["NombreColorPlan"].ToString());
 
             ltPrecioBase.Text = "$" + String.Format("{0:N0}", ViewState["precioBase"]);
             ltPrecioFinal.Text = ltPrecioBase.Text;
