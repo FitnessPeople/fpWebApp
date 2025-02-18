@@ -110,7 +110,6 @@
                 <div class="col-sm-2">
                 </div>
                 <%--Fin Breadcrumb!!!--%>
-
             </div>
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row animated fadeInDown">
@@ -133,7 +132,8 @@
                             <div class="col-lg-4">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5><asp:Literal ID="ltTitulo" runat="server"></asp:Literal></h5>
+                                        <h5>
+                                            <asp:Literal ID="ltTitulo" runat="server"></asp:Literal></h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -145,42 +145,60 @@
                                             <div class="col-lg-12">
                                                 <div class="form-group m-b-n-xs">
                                                     <label>Nombre del plan:</label>
-                                                    <asp:TextBox ID="txbPlan" runat="server" CssClass="form-control input-sm" 
+                                                    <asp:TextBox ID="txbPlan" runat="server" CssClass="form-control input-sm"
                                                         placeholder="Nombre del plan"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="rfvPlan" runat="server" ErrorMessage="* Campo requerido" 
-                                                        ControlToValidate="txbPlan" ValidationGroup="agregar" 
+                                                    <asp:RequiredFieldValidator ID="rfvPlan" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="txbPlan" ValidationGroup="agregar"
                                                         CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group m-b-n-xs">
                                                     <label>Descripción del plan:</label>
-                                                    <asp:TextBox ID="txbDescripcion" runat="server" CssClass="form-control input-sm" TextMode="MultiLine" 
+                                                    <asp:TextBox ID="txbDescripcion" runat="server" CssClass="form-control input-sm" TextMode="MultiLine"
                                                         placeholder="Descripción"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="rfvDescripcion" runat="server" ErrorMessage="* Campo requerido" 
-                                                        ControlToValidate="txbDescripcion" ValidationGroup="agregar" 
+                                                    <asp:RequiredFieldValidator ID="rfvDescripcion" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="txbDescripcion" ValidationGroup="agregar"
                                                         CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="row m-b-n-xs">
                                                     <div class="col-sm-5">
                                                         <label>Precio base del mes</label>
-                                                        <asp:TextBox ID="txbPrecio" CssClass="form-control input-sm" runat="server" 
+                                                        <asp:TextBox ID="txbPrecio" CssClass="form-control input-sm" runat="server"
                                                             Text="0"></asp:TextBox>
-                                                        <asp:RequiredFieldValidator ID="rfvPrecio" runat="server" ErrorMessage="* Campo requerido" 
-                                                            ControlToValidate="txbPrecio" ValidationGroup="agregar" 
+                                                        <asp:RequiredFieldValidator ID="rfvPrecio" runat="server" ErrorMessage="* Campo requerido"
+                                                            ControlToValidate="txbPrecio" ValidationGroup="agregar"
                                                             CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                     </div>
                                                     <div class="col-sm-7">
                                                         <label>Días de congelamiento x mes</label>
-                                                        <asp:TextBox ID="txbDiasCongelamiento" CssClass="form-control input-sm" runat="server" 
+                                                        <asp:TextBox ID="txbDiasCongelamiento" CssClass="form-control input-sm" runat="server"
                                                             Text="1"></asp:TextBox>
-                                                        <asp:RequiredFieldValidator ID="rfvDiasCongelamiento" runat="server" ErrorMessage="* Campo requerido" 
-                                                            ControlToValidate="txbDiasCongelamiento" ValidationGroup="agregar" 
+                                                        <asp:RequiredFieldValidator ID="rfvDiasCongelamiento" runat="server" ErrorMessage="* Campo requerido"
+                                                            ControlToValidate="txbDiasCongelamiento" ValidationGroup="agregar"
+                                                            CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                    </div>
+                                                </div>
+                                                <div class="row m-b-n-xs">
+                                                    <div class="col-sm-5">
+                                                        <label>% Descuento x mes</label>
+                                                        <asp:TextBox ID="txbDescuentoMensual" CssClass="form-control input-sm" runat="server"
+                                                            Text="0"></asp:TextBox>
+                                                        <asp:RequiredFieldValidator ID="rfvDescuentoMensual" runat="server" ErrorMessage="* Campo requerido"
+                                                            ControlToValidate="txbDescuentoMensual" ValidationGroup="agregar"
+                                                            CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                    </div>
+                                                    <div class="col-sm-7">
+                                                        <label>Nro. de meses máximo del plan</label>
+                                                        <asp:TextBox ID="txbMesesMaximo" CssClass="form-control input-sm" runat="server"
+                                                            Text="1"></asp:TextBox>
+                                                        <asp:RequiredFieldValidator ID="rfvMesesMaximo" runat="server" ErrorMessage="* Campo requerido"
+                                                            ControlToValidate="txbMesesMaximo" ValidationGroup="agregar"
                                                             CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                     </div>
                                                 </div>
                                                 <div class="form-group m-b-md">
                                                     <label>Color del botón:</label>
-                                                    <asp:RadioButtonList ID="rblColor" runat="server" RepeatLayout="Flow" 
-                                                        CssClass="form-control input-sm" RepeatDirection="Horizontal" >
+                                                    <asp:RadioButtonList ID="rblColor" runat="server" RepeatLayout="Flow"
+                                                        CssClass="form-control input-sm" RepeatDirection="Horizontal">
                                                         <asp:ListItem Value="primary" style="margin-right: 5px; font-size: 10px; color: blue;">Azul</asp:ListItem>
                                                         <asp:ListItem Value="success" style="margin-right: 5px; font-size: 10px; color: green;">Verde</asp:ListItem>
                                                         <asp:ListItem Value="info" style="margin-right: 5px; font-size: 10px; color: cyan;">Celeste</asp:ListItem>
@@ -205,8 +223,11 @@
 
                                                 <div class="form-group">
                                                     <a href="planes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar" 
-                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" 
+                                                    <asp:Button ID="btnSimular" runat="server" Text="Simular"
+                                                        CssClass="btn btn-sm btn-success pull-right m-t-n-xs m-l-md" OnClick="btnSimular_Click"
+                                                        Visible="true" ValidationGroup="agregar" />
+                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
+                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
                                                         OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
                                                 </div>
                                                 <div class="form-group">
@@ -235,11 +256,11 @@
                                                     <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                                 </div>
                                             </div>
- 
+
                                             <div class="col-lg-6 form-horizontal">
-                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false" 
-                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;" 
-                                                    OnClick="lbExportarExcel_Click" >
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
+                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
+                                                    OnClick="lbExportarExcel_Click">
                                                     <i class="fa fa-file-excel"></i> EXCEL
                                                 </asp:LinkButton>
                                             </div>
@@ -284,6 +305,25 @@
                                         </table>
                                     </div>
                                 </div>
+
+                                <%-- Gráfico --%>
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Comparativa de planes</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+
+                                        <div>
+                                            <canvas id="lineChart" height="140"></canvas>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -312,8 +352,44 @@
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
+    <!-- ChartJS-->
+    <script src="js/plugins/chartJs/Chart.min.js"></script>
+
     <!-- Page-Level Scripts -->
     <script>
+
+        var lineData = {
+            labels: ["Mes 1", "Mes 2", "Mes 3", "Mes 4", "Mes 5", "Mes 6", "Mes 7", "Mes 8", "Mes 9", "Mes 10", "Mes 11", "Mes 12"],
+            datasets: [
+                <%=strData%>
+                //{
+                //    label: "Plan Premium",
+                //    backgroundColor: 'rgba(26,179,148,0.5)',
+                //    borderColor: "rgba(26,179,148,0.7)",
+                //    pointBackgroundColor: "rgba(26,179,148,1)",
+                //    pointBorderColor: "#fff",
+                //    data: [28, 48, 40, 19, 86, 27, 90]
+                //}, {
+                //    label: "Plan Deluxe",
+                //    backgroundColor: 'rgba(220, 220, 220, 0.5)',
+                //    pointBorderColor: "#fff",
+                //    data: [65, 59, 80, 81, 56, 55, 40]
+                //}, {
+                //    label: "Plan San Valentin",
+                //    backgroundColor: 'rgba(120, 20, 250, 0.5)',
+                //    pointBorderColor: "#fff",
+                //    data: [35, 60, 70, 32, 27, 80, 48]
+                //}
+            ]
+        };
+
+        var lineOptions = {
+            responsive: true
+        };
+
+        var ctx = document.getElementById("lineChart").getContext("2d");
+        new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
+
         $('.footable').footable();
     </script>
 

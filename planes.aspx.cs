@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Odbc;
 using System.Web;
+using System.Web.Optimization;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -13,6 +14,8 @@ namespace fpWebApp
 {
     public partial class planes : System.Web.UI.Page
     {
+        private string _strData;
+        protected string strData { get { return this._strData; } }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -54,6 +57,12 @@ namespace fpWebApp
                         txbPrecio.Attributes.Add("type", "number");
                         txbDiasCongelamiento.Attributes.Add("type", "number");
                         txbDiasCongelamiento.Attributes.Add("step", "0.1");
+                        txbDiasCongelamiento.Attributes.Add("max", "10");
+                        txbDescuentoMensual.Attributes.Add("type", "number");
+                        txbDescuentoMensual.Attributes.Add("step", "0.1");
+                        txbMesesMaximo.Attributes.Add("type", "number");
+                        txbMesesMaximo.Attributes.Add("min", "1");
+                        txbMesesMaximo.Attributes.Add("max", "12");
                         txbFechaInicio.Attributes.Add("type", "date");
                         txbFechaFinal.Attributes.Add("type", "date");
 
@@ -71,6 +80,8 @@ namespace fpWebApp
                                     txbDescripcion.Text = dt.Rows[0]["DescripcionPlan"].ToString();
                                     txbPrecio.Text = dt.Rows[0]["PrecioBase"].ToString();
                                     txbDiasCongelamiento.Text = dt.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',','.');
+                                    txbDescuentoMensual.Text = dt.Rows[0]["DescuentoMensual"].ToString();
+                                    txbMesesMaximo.Text = dt.Rows[0]["MesesMaximo"].ToString();
                                     txbFechaInicio.Text = dt.Rows[0]["FechaInicial"].ToString();
                                     txbFechaFinal.Text = dt.Rows[0]["FechaFinal"].ToString();
                                     btnAgregar.Text = "Actualizar";
@@ -96,12 +107,16 @@ namespace fpWebApp
                                         txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
                                         txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
                                         txbPrecio.Text = dt1.Rows[0]["PrecioBase"].ToString();
+                                        txbDescuentoMensual.Text = dt.Rows[0]["DescuentoMensual"].ToString();
+                                        txbMesesMaximo.Text = dt.Rows[0]["MesesMaximo"].ToString();
                                         txbDiasCongelamiento.Text = dt1.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
                                         txbFechaInicio.Text = dt1.Rows[0]["FechaInicial"].ToString();
                                         txbFechaFinal.Text = dt1.Rows[0]["FechaFinal"].ToString();
                                         txbPlan.Enabled = false;
                                         txbDescripcion.Enabled = false;
                                         txbPrecio.Enabled = false;
+                                        txbDescuentoMensual.Enabled = false;
+                                        txbMesesMaximo.Enabled = false;
                                         txbDiasCongelamiento.Enabled = false;
                                         txbFechaInicio.Enabled = false;
                                         txbFechaFinal.Enabled = false;
@@ -121,12 +136,16 @@ namespace fpWebApp
                                         txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
                                         txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
                                         txbPrecio.Text = dt1.Rows[0]["PrecioBase"].ToString();
+                                        txbDescuentoMensual.Text = dt.Rows[0]["DescuentoMensual"].ToString();
+                                        txbMesesMaximo.Text = dt.Rows[0]["MesesMaximo"].ToString();
                                         txbDiasCongelamiento.Text = dt1.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
                                         txbFechaInicio.Text = dt1.Rows[0]["FechaInicial"].ToString();
                                         txbFechaFinal.Text = dt1.Rows[0]["FechaFinal"].ToString();
                                         txbPlan.Enabled = false;
                                         txbDescripcion.Enabled = false;
                                         txbPrecio.Enabled = false;
+                                        txbDescuentoMensual.Enabled = false;
+                                        txbMesesMaximo.Enabled = false;
                                         txbDiasCongelamiento.Enabled = false;
                                         txbFechaInicio.Enabled = false;
                                         txbFechaFinal.Enabled = false;
@@ -220,9 +239,11 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarPlan(int.Parse(Request.QueryString["editid"].ToString()), 
                         txbPlan.Text.ToString().Trim(), 
                         txbDescripcion.Text.ToString(), 
-                        int.Parse(txbPrecio.Text.ToString()), 
-                        rblColor.SelectedItem.Value.ToString(), 
-                        txbDiasCongelamiento.Text.ToString(), 
+                        int.Parse(txbPrecio.Text.ToString()),
+                        double.Parse(txbDescuentoMensual.Text.ToString()),
+                        int.Parse(txbMesesMaximo.Text.ToString()),
+                        rblColor.SelectedItem.Value.ToString(),
+                        double.Parse(txbDiasCongelamiento.Text.ToString()), 
                         txbFechaInicio.Text.ToString(), 
                         txbFechaFinal.Text.ToString());
                 }
@@ -241,9 +262,11 @@ namespace fpWebApp
                         string respuesta = cg.InsertarPlan(txbPlan.Text.ToString().Trim(),
                         txbDescripcion.Text.ToString(),
                         int.Parse(txbPrecio.Text.ToString()),
+                        double.Parse(txbDescuentoMensual.Text.ToString()),
+                        int.Parse(txbMesesMaximo.Text.ToString()),
                         rblColor.SelectedItem.Value.ToString(),
                         int.Parse(Session["idusuario"].ToString()),
-                        txbDiasCongelamiento.Text.ToString(),
+                        double.Parse(txbDiasCongelamiento.Text.ToString()),
                         txbFechaInicio.Text.ToString(),
                         txbFechaFinal.Text.ToString());
                     }
@@ -276,6 +299,66 @@ namespace fpWebApp
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
 
+        }
+
+        protected void btnSimular_Click(object sender, EventArgs e)
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPlanes();
+
+            Random rnd = new Random();
+
+            if (dt.Rows.Count > 0)
+            {
+                int intPrecioBase;
+                double dobDescuentoMensual;
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    _strData += "{\r\n";
+                    _strData += "label: \"" + dt.Rows[i]["NombrePlan"].ToString() + "\",\r\n";
+                    _strData += "backgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",0)',\r\n";
+                    _strData += "borderColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",0.7)',\r\n";
+                    _strData += "pointBackgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1)',\r\n";
+                    _strData += "pointBorderColor: \"#fff\",\r\n";
+                    _strData += "data: [";
+
+                    intPrecioBase = Convert.ToInt32(dt.Rows[i]["PrecioBase"].ToString());
+                    dobDescuentoMensual = Convert.ToInt32(dt.Rows[i]["DescuentoMensual"].ToString());
+                    for (int j = 0; j < 12; j++)
+                    {
+                        double dobDescuento = j * dobDescuentoMensual;
+                        double dobTotal = (intPrecioBase - ((intPrecioBase * dobDescuento) / 100)) * (j + 1);
+                        
+                        _strData += dobTotal + ",";
+                    }
+                    _strData = _strData.Substring(0, _strData.Length - 1);
+                    _strData += "]\r\n";
+                    _strData += "},\r\n";
+                }
+
+                _strData += "{\r\n";
+                _strData += "label: \"" + txbPlan.Text.ToString() + "\",\r\n";
+                _strData += "backgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",0)',\r\n";
+                _strData += "borderColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",0.7)',\r\n";
+                _strData += "pointBackgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1)',\r\n";
+                _strData += "pointBorderColor: \"#fff\",\r\n";
+                _strData += "data: [";
+
+                intPrecioBase = Convert.ToInt32(txbPrecio.Text.ToString());
+                dobDescuentoMensual = Convert.ToInt32(txbDescuentoMensual.Text.ToString());
+                for (int j = 0; j < 12; j++)
+                {
+                    double dobDescuento = j * dobDescuentoMensual;
+                    double dobTotal = (intPrecioBase - ((intPrecioBase * dobDescuento) / 100)) * (j + 1);
+
+                    _strData += dobTotal + ",";
+                }
+                _strData = _strData.Substring(0, _strData.Length - 1);
+                _strData += "]\r\n";
+                _strData += "}\r\n";
+            }
+            //_strData = _strData.Substring(0, _strData.Length - 1);
+            dt.Dispose();
         }
     }
 }
