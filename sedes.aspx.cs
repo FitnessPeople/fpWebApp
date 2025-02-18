@@ -57,16 +57,9 @@ namespace fpWebApp
                     if (Request.QueryString.Count > 0)
                     {
                         rpSedes.Visible = false;
-                        //lblTipoSede.Visible = true;
-                        //rblTipoSede.Visible = true;
-                        //lblClaseSede.Visible = true;
-                        //rblClaseSede.Visible = true;
-
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
-                            lblTipoSede.Visible = true;
-                            rblTipoSede.Visible = true;
                             clasesglobales cg = new clasesglobales();
                             DataTable dt = cg.ConsultarSedePorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows[0]["ClaseSede"].ToString() == "Gimnasio")
