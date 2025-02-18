@@ -59,13 +59,14 @@ namespace fpWebApp
                             //Boton ver detalles
                             clasesglobales cg = new clasesglobales();
                             DataTable dt = cg.ConsultarPagosWompiPorId(int.Parse(Request.QueryString["verid"].ToString()));
+                            DataTable dti = cg.ConsultarUrl(1);
 
                             if (dt.Rows.Count > 0)
                             {
                                 parametro = dt.Rows[0]["IdReferenciaWompi"].ToString();
                             }
 
-                            string url = "https://sandbox.wompi.co/v1//transactions/" + parametro;
+                            string url = dti.Rows[0]["urlTest"].ToString() + parametro;
                             string rta = EnviarPeticion(url);
                             JToken token = JToken.Parse(rta);
                             string prettyJson = token.ToString(Formatting.Indented);
@@ -99,6 +100,7 @@ namespace fpWebApp
                                     EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString(),
                                     Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
                             };
+
 
                             // RpDetalle.DataSource = listaPagos;
                             // RpDetalle.DataBind();
