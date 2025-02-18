@@ -20,6 +20,9 @@
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
+
     <!-- FooTable -->
     <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
     <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
@@ -142,7 +145,7 @@
                                     </div>
                                     <div class="ibox-content">
                                         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-                                        <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
+                                        <asp:UpdatePanel ID="upSedes" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
                                             <ContentTemplate>
                                                 <div class="row">
                                                     <div class="col-lg-12">
@@ -173,7 +176,7 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Horario:</label>
-                                                            <textarea id="summernote" name="editordata" class="form-control input-sm" runat="server"></textarea>
+                                                            <textarea id="summernote" name="editordata" class="form-control input-sm" runat="server" rows="5"></textarea>
                                                         </div>
                                                         <div class="form-group">
                                                             <b>
@@ -263,6 +266,7 @@
                                                 <tr>
                                                     <th data-sortable="false" data-breakpoints="xs" style="width: 200px;">Sede</th>
                                                     <th data-breakpoints="xs">Dirección</th>
+                                                     <th data-breakpoints="xs">Tipo Sede</th>
                                                     <th data-breakpoints="all" data-title="Info"></th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
 
@@ -274,6 +278,7 @@
                                                         <tr class="feed-element">
                                                             <td><%# Eval("NombreSede") %></td>
                                                             <td><%# Eval("DireccionSede") %></td>
+                                                            <td><%# string.IsNullOrEmpty(Eval("TipoSede") as string) ? "Oficina" : Eval("TipoSede") %></td>
                                                             <td>
                                                                 <table class="table table-bordered table-striped">
                                                                     <tr>

@@ -57,18 +57,16 @@ namespace fpWebApp
                     if (Request.QueryString.Count > 0)
                     {
                         rpSedes.Visible = false;
-                        //lblTipoSede.Visible = true;
-                        //rblTipoSede.Visible = true;
-                        //lblClaseSede.Visible = true;
-                        //rblClaseSede.Visible = true;
-
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
-                            lblTipoSede.Visible = true;
-                            rblTipoSede.Visible = true;
                             clasesglobales cg = new clasesglobales();
                             DataTable dt = cg.ConsultarSedePorId(int.Parse(Request.QueryString["editid"].ToString()));
+                            if (dt.Rows[0]["ClaseSede"].ToString() == "Gimnasio")
+                            {
+                                lblTipoSede.Visible = true;
+                                rblTipoSede.Visible = true;
+                            }
                             if (dt.Rows.Count > 0)
                             {
                                 txbSede.Text = dt.Rows[0]["NombreSede"].ToString();
@@ -159,8 +157,6 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    //OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
-
                     string strInitData = TraerData();
 
                     try
@@ -173,7 +169,6 @@ namespace fpWebApp
                     catch (Exception ex)
                     {
                         string mensaje = ex.Message;
-                        //myConnection.Close();
                     }
 
                     Response.Redirect("sedes");
@@ -183,30 +178,14 @@ namespace fpWebApp
             {
                 if (!ValidarSede(txbSede.Text.ToString()))
                 {
-                    //OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
-
                     try
                     {
-                        //string strQuery = "INSERT INTO Sedes " +
-                        //"(NombreSede, DireccionSede, idCiudadSede, TelefonoSede, HorarioSede) " +
-                        //"VALUES ('" + txbSede.Text.ToString().Trim() + "', '" + txbDireccion.Text.ToString().Trim() + "', " +
-                        //"" + ddlCiudadSede.SelectedItem.Value.ToString() + ", '" + txbTelefono.Text.ToString().Trim() + "', " +
-                        //"'" + summernote.Value.ToString().Trim() + "') ";
-                        //OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                        //myConnection.Open();
-                        //command1.ExecuteNonQuery();
-                        //command1.Dispose();
-                        //myConnection.Close();
-
-                        
                         string respuesta = cg.InsertarSede(txbSede.Text.ToString().Trim(), txbDireccion.Text.ToString().Trim(), int.Parse(ddlCiudadSede.SelectedItem.Value.ToString()), txbTelefono.Text.ToString().Trim(), summernote.Value.ToString().Trim(),"", rblTipoSede.SelectedValue.ToString(), rblClaseSede.SelectedValue.ToString());
-
                         cg.InsertarLog(Session["idusuario"].ToString(), "sedes", "Agrega", "El usuario agregó una nueva sede: " + txbSede.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
                         string mensaje = ex.Message;
-                        //myConnection.Close();
                     }
 
                     Response.Redirect("sedes");
@@ -223,12 +202,8 @@ namespace fpWebApp
 
         private string TraerData()
         {
-            //string strQuery = "SELECT IdSede, NombreSede, DireccionSede, idCiudadSede, TelefonoSede, HorarioSede " +
-            //            "FROM Sedes WHERE idSede = " + Request.QueryString["editid"].ToString();
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarSedePorId(int.Parse(Request.QueryString["editid"].ToString()));
-
-            //DataTable dt = cg.TraerDatos(strQuery);
 
             string strData = "";
             foreach (DataColumn column in dt.Columns)
@@ -236,7 +211,6 @@ namespace fpWebApp
                 strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
             }
             dt.Dispose();
-
             return strData;
         }
 
