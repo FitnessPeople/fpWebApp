@@ -4280,7 +4280,8 @@ namespace fpWebApp
             return dt;
         }
 
-        public string InsertarPlan(string nombrePlan, string descripcionPlan, int precio, string color, int idUsuario, string Dias, string fechaInicio, string fechaFinal)
+        public string InsertarPlan(string nombrePlan, string descripcionPlan, int precio, double descuentoMensual, int mesesMaximo, 
+            string color, int idUsuario, double Dias, string fechaInicio, string fechaFinal)
         {
             string respuesta = string.Empty;
             try
@@ -4295,9 +4296,11 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_nombre_plan", nombrePlan);
                         cmd.Parameters.AddWithValue("@p_descripcion_plan", descripcionPlan);
                         cmd.Parameters.AddWithValue("@p_precio_base", precio);
+                        cmd.Parameters.AddWithValue("@p_descuento_mensual", descuentoMensual);
+                        cmd.Parameters.AddWithValue("@p_meses_maximo", mesesMaximo);
                         cmd.Parameters.AddWithValue("@p_color_plan", color);
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
-                        cmd.Parameters.AddWithValue("@p_dias_congelamiento", Convert.ToDouble(Dias));
+                        cmd.Parameters.AddWithValue("@p_dias_congelamiento", Dias);
                         cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicio);
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
 
@@ -4314,7 +4317,8 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarPlan(int idPlan, string nombrePlan, string descripcionPlan, int precio, string color, string Dias, string fechaInicio, string fechaFinal)
+        public string ActualizarPlan(int idPlan, string nombrePlan, string descripcionPlan, int precio, double descuentoMensual, int mesesMaximo, 
+            string color, double Dias, string fechaInicio, string fechaFinal)
         {
             string respuesta = string.Empty;
             try
@@ -4334,6 +4338,8 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_nombre_plan", nombrePlan);
                         cmd.Parameters.AddWithValue("@p_descripcion_plan", descripcionPlan);
                         cmd.Parameters.AddWithValue("@p_precio_base", precio);
+                        cmd.Parameters.AddWithValue("@p_descuento_mensual", descuentoMensual);
+                        cmd.Parameters.AddWithValue("@p_meses_maximo", mesesMaximo);
                         cmd.Parameters.AddWithValue("@p_color_plan", color);
                         cmd.Parameters.AddWithValue("@p_dias_congelamiento", Dias);
                         cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicio);
