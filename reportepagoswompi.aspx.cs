@@ -8,6 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.UI;
@@ -53,118 +54,6 @@ namespace fpWebApp
                         }
                     }
                     listaTransacciones();
-                    string parametro = string.Empty;
-                    if (Request.QueryString.Count > 0)
-                        if (Request.QueryString["verid"] != null)
-                        {
-                            //Boton ver detalles
-                            clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ConsultarPagosWompiPorId(int.Parse(Request.QueryString["verid"].ToString()));
-                            DataTable dti = cg.ConsultarUrl(1);
-
-                            if (dt.Rows.Count > 0)
-                            {
-                                parametro = dt.Rows[0]["IdReferenciaWompi"].ToString();
-                            }
-
-                            string url = dti.Rows[0]["urlTest"].ToString() + parametro;
-                            string rta = EnviarPeticion(url);
-                            JToken token = JToken.Parse(rta);
-                            string prettyJson = token.ToString(Formatting.Indented);
-                            //txbPago.Text = prettyJson;
-                            Console.WriteLine(prettyJson);
-
-                            JObject jsonData = JObject.Parse(prettyJson); 
-
-                            List<pagoswompidet> listaPagos = new List<pagoswompidet>
-                            {
-                                new pagoswompidet
-                                {
-                                    Id = jsonData["data"]["id"]?.ToString(),
-                                    FechaCreacion = jsonData["data"]["created_at"]?.ToString(),
-                                    FechaFinalizacion = jsonData["data"]["finalized_at"]?.ToString(),
-                                    Valor = ((jsonData["data"]["amount_in_cents"]?.Value<int>() ?? 0) / 100).ToString("N0") + " " + jsonData["data"]["currency"]?.ToString(),
-                                    Moneda = jsonData["data"]["currency"]?.ToString(),
-                                    MetodoPago = jsonData["data"]["payment_method_type"]?.ToString(),
-                                    Estado = jsonData["data"]["status"]?.ToString(),
-                                    Referencia = jsonData["data"]["reference"]?.ToString(),
-                                    NombreTarjeta = jsonData["data"]["payment_method"]["extra"]["name"]?.ToString(),
-                                    UltimosDigitos = jsonData["data"]["payment_method"]["extra"]["last_four"]?.ToString(),
-                                    MarcaTarjeta = jsonData["data"]["payment_method"]["extra"]["brand"]?.ToString(),
-                                    TipoTarjeta = jsonData["data"]["payment_method"]["extra"]["card_type"]?.ToString(),
-                                    NombreComercio = jsonData["data"]["merchant"]["name"]?.ToString(),
-                                    ContactoComercio = jsonData["data"]["merchant"]["contact_name"]?.ToString(),
-                                    TelefonoComercio = jsonData["data"]["merchant"]["phone_number"]?.ToString(),
-                                    URLRedireccion = jsonData["data"]["redirect_url"]?.ToString(),
-                                    PaymentLinkId = jsonData["data"]["payment_link_id"]?.ToString(),
-                                    PublicKeyComercio = jsonData["data"]["merchant"]["public_key"]?.ToString(),
-                                    EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString(),
-                                    Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
-                            };
-
-                            var consultaUnificada = from pago in listaPagos
-                                                    join row in dt.AsEnumerable()
-                                                    on pago.Id equals row["IdReferenciaWompi"]?.ToString() into detalles
-                                                    from detalle in detalles.DefaultIfEmpty()
-                                                    select new
-                                                    {
-                                                        IdTransaccion = pago.Id,
-                                                        FechaCreacion = pago.FechaCreacion,
-                                                        FechaFinalizacion = pago.FechaFinalizacion,
-                                                        ValorPago = pago.Valor,
-                                                        Moneda = pago.Moneda,
-                                                        MetodoPago = pago.MetodoPago,
-                                                        EstadoPago = pago.Estado,
-                                                        ReferenciaPago = pago.Referencia,
-                                                        NombreTarjeta = pago.NombreTarjeta,
-                                                        UltimosDigitos = pago.UltimosDigitos,
-                                                        MarcaTarjeta = pago.MarcaTarjeta,
-                                                        TipoTarjeta = pago.TipoTarjeta,
-                                                        NombreComercio = pago.NombreComercio,
-                                                        ContactoComercio = pago.ContactoComercio,
-                                                        TelefonoComercio = pago.TelefonoComercio,
-                                                        URLRedireccion = pago.URLRedireccion,
-                                                        PaymentLinkId = pago.PaymentLinkId,
-                                                        PublicKeyComercio = pago.PublicKeyComercio,
-                                                        EmailComercio = pago.EmailComercio,
-                                                        Estado3DS = pago.Estado3DS,
-
-                                                        //// Verificar valores antes de convertir
-                                                        //IdAfiliadoPlan = detalle != null && detalle.Table.Columns.Contains("idAfiliadoPlan") && detalle["idAfiliadoPlan"] != DBNull.Value
-                                                        //                 ? detalle["idAfiliadoPlan"].ToString()
-                                                        //                 : "No disponible",
-
-                                                        //NombreAfiliado = detalle != null && detalle.Table.Columns.Contains("NombreAfiliado") && detalle["NombreAfiliado"] != DBNull.Value
-                                                        //                 ? detalle["NombreAfiliado"].ToString()
-                                                        //                 : "No disponible",
-
-                                                        //Valor = detalle != null && detalle.Table.Columns.Contains("Valor") && detalle["Valor"] != DBNull.Value
-                                                        //        ? Convert.ToDecimal(detalle["Valor"], CultureInfo.InvariantCulture).ToString("N2")
-                                                        //        : "0.00",
-
-                                                        //IdReferenciaWompi = detalle != null && detalle.Table.Columns.Contains("IdReferenciaWompi") && detalle["IdReferenciaWompi"] != DBNull.Value
-                                                        //                    ? detalle["IdReferenciaWompi"].ToString()
-                                                        //                    : "No disponible",
-
-                                                        //EntornoPago = detalle != null && detalle.Table.Columns.Contains("pa.env") && detalle["pa.env"] != DBNull.Value
-                                                        //              ? detalle["pa.env"].ToString()
-                                                        //              : "No disponible",
-
-                                                        //FechaHoraPago = detalle != null && detalle.Table.Columns.Contains("pa.FechaHoraPago") && detalle["pa.FechaHoraPago"] != DBNull.Value
-                                                        //               ? Convert.ToDateTime(detalle["pa.FechaHoraPago"]).ToString("yyyy-MM-dd HH:mm:ss")
-                                                        //               : "No disponible",
-
-                                                        //IdSede = detalle != null && detalle.Table.Columns.Contains("a.idSede") && detalle["a.idSede"] != DBNull.Value
-                                                        //        ? detalle["a.idSede"].ToString()
-                                                        //        : "No disponible"
-                                                    };
-
-                            GridView1.DataSource = consultaUnificada.ToList();
-                            GridView1.DataBind();
-
-
-
-                        }
                 }
                 else
                 {
@@ -205,6 +94,82 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        private string listarDetalle(int id)
+        {
+            string parametro = string.Empty;
+
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPagosWompiPorId(id);
+            DataTable dti = cg.ConsultarUrl(1);
+
+            if (dt.Rows.Count > 0)
+            {
+                parametro = dt.Rows[0]["IdReferenciaWompi"].ToString();
+            }
+
+            string url = dti.Rows[0]["urlTest"].ToString() + parametro;
+            string rta = EnviarPeticion(url);
+            JToken token = JToken.Parse(rta);
+            string prettyJson = token.ToString(Formatting.Indented);
+            //txbPago.Text = prettyJson;
+            Console.WriteLine(prettyJson);
+
+            JObject jsonData = JObject.Parse(prettyJson);
+
+            List<pagoswompidet> listaPagos = new List<pagoswompidet>
+                            {
+                                new pagoswompidet
+                                {
+                                    Id = jsonData["data"]["id"]?.ToString(),
+                                    FechaCreacion = jsonData["data"]["created_at"]?.ToString(),
+                                    FechaFinalizacion = jsonData["data"]["finalized_at"]?.ToString(),
+                                    Valor = ((jsonData["data"]["amount_in_cents"]?.Value<int>() ?? 0) / 100).ToString("N0") + " " + jsonData["data"]["currency"]?.ToString(),
+                                    Moneda = jsonData["data"]["currency"]?.ToString(),
+                                    MetodoPago = jsonData["data"]["payment_method_type"]?.ToString(),
+                                    Estado = jsonData["data"]["status"]?.ToString(),
+                                    Referencia = jsonData["data"]["reference"]?.ToString(),
+                                    NombreTarjeta = jsonData["data"]["payment_method"]["extra"]["name"]?.ToString(),
+                                    UltimosDigitos = jsonData["data"]["payment_method"]["extra"]["last_four"]?.ToString(),
+                                    MarcaTarjeta = jsonData["data"]["payment_method"]["extra"]["brand"]?.ToString(),
+                                    TipoTarjeta = jsonData["data"]["payment_method"]["extra"]["card_type"]?.ToString(),
+                                    NombreComercio = jsonData["data"]["merchant"]["name"]?.ToString(),
+                                    ContactoComercio = jsonData["data"]["merchant"]["contact_name"]?.ToString(),
+                                    TelefonoComercio = jsonData["data"]["merchant"]["phone_number"]?.ToString(),
+                                    URLRedireccion = jsonData["data"]["redirect_url"]?.ToString(),
+                                    PaymentLinkId = jsonData["data"]["payment_link_id"]?.ToString(),
+                                    PublicKeyComercio = jsonData["data"]["merchant"]["public_key"]?.ToString(),
+                                    EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString(),
+                                    Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
+                            };
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("<table class=\"table table-bordered table-striped\">");
+            sb.Append("<thead><tr>");
+            sb.Append("<th>ID</th><th>Fecha Creación</th><th>Fecha Finalización</th><th>Valor</th><th>Moneda</th>");
+            sb.Append("<th>Método de Pago</th><th>Estado</th><th>Referencia</th><th>Tarjeta</th><th>Comercio</th>");
+            sb.Append("</tr></thead><tbody>");
+
+            foreach (var pago in listaPagos)
+            {
+                sb.Append("<tr>");
+                sb.Append($"<td>{pago.Id}</td>");
+                sb.Append($"<td>{pago.FechaCreacion}</td>");
+                sb.Append($"<td>{pago.FechaFinalizacion}</td>");
+                sb.Append($"<td>{pago.Valor}</td>");
+                sb.Append($"<td>{pago.Moneda}</td>");
+                sb.Append($"<td>{pago.MetodoPago}</td>");
+                sb.Append($"<td>{pago.Estado}</td>");
+                sb.Append($"<td>{pago.Referencia}</td>");
+                sb.Append($"<td>{pago.NombreTarjeta} ({pago.UltimosDigitos}) - {pago.MarcaTarjeta}</td>");
+                sb.Append($"<td>{pago.NombreComercio} - {pago.TelefonoComercio}</td>");
+                sb.Append("</tr>");
+            }
+
+            sb.Append("</tbody></table>");
+
+            return sb.ToString();
+        }
 
         protected void rpPagosWompi_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
@@ -215,6 +180,9 @@ namespace fpWebApp
                     HtmlAnchor btnVer = (HtmlAnchor)e.Item.FindControl("btnVer");
                     btnVer.Attributes.Add("href", "reportepagoswompi?verid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnVer.Visible = true;
+
+                    Literal ltDetalle = (Literal)e.Item.FindControl("ltDetalle");
+                    ltDetalle.Text = listarDetalle(int.Parse(((DataRowView)e.Item.DataItem).Row[0].ToString())).ToString();
                 }
             }
         }
@@ -252,8 +220,9 @@ namespace fpWebApp
 
         }
 
+        protected void rpDetalle_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
 
-
-
+        }
     }
 }
