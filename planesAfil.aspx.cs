@@ -125,6 +125,7 @@ namespace fpWebApp
                     ltNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
                     ltApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
                     ltEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
+                    ViewState["EmailAfiliado"] = dt.Rows[0]["EmailAfiliado"].ToString();
                     ltCelular.Text = dt.Rows[0]["CelularAfiliado"].ToString();
                     ltSede.Text = dt.Rows[0]["NombreSede"].ToString();
                     ltEstado.Text = dt.Rows[0]["EstadoAfiliado"].ToString();
@@ -352,6 +353,13 @@ namespace fpWebApp
                                 command.ExecuteNonQuery();
                                 command.Dispose();
                                 myConnection.Close();
+
+                                string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
+                                strMensaje += "Descripción del plan.\r\n\r\n";
+                                strMensaje += "Por favor, agradecemos realice el pago a través del siguiente enlace: \r\n";
+                                strMensaje += "https://fitnesspeoplecolombia.com/wompiplan?docAfil=&monto=";
+
+                                cg.EnviarCorreo("contabilidad@fitnesspeoplecmd.com", ViewState["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
 
                                 // Enviar correo electrónico al afiliado para que pague.
                             }
