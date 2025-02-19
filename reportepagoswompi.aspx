@@ -166,7 +166,8 @@
                                             data-empty="Detalle de la transacción">
                                             <thead>
                                                 <tr>
-                                                    <th>Id AfiliadoPlan</th>
+                                                    <th>Id</th>
+                                                    <th>Afiliado</th>
                                                     <th>Valor</th>
                                                     <th>Referencia Wompi</th>
                                                     <th>Fecha Hora Pago</th>
@@ -178,6 +179,7 @@
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
                                                             <td><%# Eval("idAfiliadoPlan") %></td>
+                                                            <td><%# Eval("NombreAfiliado") %></td>
                                                             <td><%# Eval("Valor") %></td>
                                                             <td><%# Eval("IdReferenciaWompi") %></td>
                                                             <td><%# Eval("FechaHoraPago") %></td>
@@ -191,11 +193,41 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="form-group">
+<%--                                    <div class="form-group">
                                         <label>Detalle de la transacción:</label>
                                         <asp:TextBox ID="txbPago" runat="server" TextMode="MultiLine"
                                             CssClass="form-control input-sm" Rows="10"></asp:TextBox>
-                                    </div>
+                                    </div>--%>
+                                    <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered">
+    <Columns>
+        <asp:BoundField DataField="IdTransaccion" HeaderText="ID Transacción" />
+        <asp:BoundField DataField="FechaCreacion" HeaderText="Fecha Creación" />
+        <asp:BoundField DataField="FechaFinalizacion" HeaderText="Fecha Finalización" />
+        <asp:BoundField DataField="ValorPago" HeaderText="Valor Pago" />
+        <asp:BoundField DataField="Moneda" HeaderText="Moneda" />
+        <asp:BoundField DataField="MetodoPago" HeaderText="Método de Pago" />
+        <asp:BoundField DataField="EstadoPago" HeaderText="Estado del Pago" />
+        <asp:BoundField DataField="ReferenciaPago" HeaderText="Referencia" />
+        <asp:BoundField DataField="NombreTarjeta" HeaderText="Titular de Tarjeta" />
+        <asp:BoundField DataField="UltimosDigitos" HeaderText="Últimos 4 Dígitos" />
+        <asp:BoundField DataField="MarcaTarjeta" HeaderText="Marca Tarjeta" />
+        <asp:BoundField DataField="TipoTarjeta" HeaderText="Tipo de Tarjeta" />
+        <asp:BoundField DataField="NombreComercio" HeaderText="Nombre del Comercio" />
+        <asp:BoundField DataField="ContactoComercio" HeaderText="Contacto del Comercio" />
+        <asp:BoundField DataField="TelefonoComercio" HeaderText="Teléfono del Comercio" />
+        <asp:BoundField DataField="URLRedireccion" HeaderText="URL de Redirección" />
+        <asp:BoundField DataField="PaymentLinkId" HeaderText="Payment Link ID" />
+        <asp:BoundField DataField="PublicKeyComercio" HeaderText="Public Key del Comercio" />
+        <asp:BoundField DataField="EmailComercio" HeaderText="Correo del Comercio" />
+        <asp:BoundField DataField="Estado3DS" HeaderText="Estado 3DS" />
+<%--        <asp:BoundField DataField="IdAfiliadoPlan" HeaderText="ID Afiliado Plan" />
+        <asp:BoundField DataField="NombreAfiliado" HeaderText="Nombre Afiliado" />
+        <asp:BoundField DataField="Valor" HeaderText="Valor Afiliado" />
+        <asp:BoundField DataField="IdReferenciaWompi" HeaderText="ID Referencia Wompi" />
+        <asp:BoundField DataField="EntornoPago" HeaderText="Entorno Pago" />
+        <asp:BoundField DataField="FechaHoraPago" HeaderText="Fecha y Hora Pago" />--%>
+    </Columns>
+</asp:GridView>
                                 </div>
                             </div>
                         </div>

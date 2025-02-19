@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -70,7 +71,7 @@ namespace fpWebApp
                             string rta = EnviarPeticion(url);
                             JToken token = JToken.Parse(rta);
                             string prettyJson = token.ToString(Formatting.Indented);
-                            txbPago.Text = prettyJson;
+                            //txbPago.Text = prettyJson;
                             Console.WriteLine(prettyJson);
 
                             JObject jsonData = JObject.Parse(prettyJson); 
@@ -101,23 +102,67 @@ namespace fpWebApp
                                     Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
                             };
 
+                            var consultaUnificada = from pago in listaPagos
+                                                    join row in dt.AsEnumerable()
+                                                    on pago.Id equals row["IdReferenciaWompi"]?.ToString() into detalles
+                                                    from detalle in detalles.DefaultIfEmpty()
+                                                    select new
+                                                    {
+                                                        IdTransaccion = pago.Id,
+                                                        FechaCreacion = pago.FechaCreacion,
+                                                        FechaFinalizacion = pago.FechaFinalizacion,
+                                                        ValorPago = pago.Valor,
+                                                        Moneda = pago.Moneda,
+                                                        MetodoPago = pago.MetodoPago,
+                                                        EstadoPago = pago.Estado,
+                                                        ReferenciaPago = pago.Referencia,
+                                                        NombreTarjeta = pago.NombreTarjeta,
+                                                        UltimosDigitos = pago.UltimosDigitos,
+                                                        MarcaTarjeta = pago.MarcaTarjeta,
+                                                        TipoTarjeta = pago.TipoTarjeta,
+                                                        NombreComercio = pago.NombreComercio,
+                                                        ContactoComercio = pago.ContactoComercio,
+                                                        TelefonoComercio = pago.TelefonoComercio,
+                                                        URLRedireccion = pago.URLRedireccion,
+                                                        PaymentLinkId = pago.PaymentLinkId,
+                                                        PublicKeyComercio = pago.PublicKeyComercio,
+                                                        EmailComercio = pago.EmailComercio,
+                                                        Estado3DS = pago.Estado3DS,
 
-                            // RpDetalle.DataSource = listaPagos;
-                            // RpDetalle.DataBind();
+                                                        //// Verificar valores antes de convertir
+                                                        //IdAfiliadoPlan = detalle != null && detalle.Table.Columns.Contains("idAfiliadoPlan") && detalle["idAfiliadoPlan"] != DBNull.Value
+                                                        //                 ? detalle["idAfiliadoPlan"].ToString()
+                                                        //                 : "No disponible",
 
-                            //foreach (var pago in listaPagos)
-                            //{
-                            //    Console.WriteLine($"ID: {pago.Id}");
-                            //    Console.WriteLine($"Fecha Creación: {pago.FechaCreacion}");
-                            //    Console.WriteLine($"Fecha Finalización: {pago.FechaFinalizacion}");
-                            //    Console.WriteLine($"Valor: {pago.Valor}");
-                            //    Console.WriteLine($"Método Pago: {pago.MetodoPago}");
-                            //    Console.WriteLine($"Estado: {pago.Estado}");
-                            //    Console.WriteLine($"Referencia: {pago.Referencia}");
-                            //    Console.WriteLine($"Tarjeta: {pago.NombreTarjeta} (**** {pago.UltimosDigitos})");
-                            //    Console.WriteLine($"Tarjeta: {pago.NombreTarjeta} (**** {pago.UltimosDigitos})");
-                            //    Console.WriteLine("------------------------------------------------");
-                            //}
+                                                        //NombreAfiliado = detalle != null && detalle.Table.Columns.Contains("NombreAfiliado") && detalle["NombreAfiliado"] != DBNull.Value
+                                                        //                 ? detalle["NombreAfiliado"].ToString()
+                                                        //                 : "No disponible",
+
+                                                        //Valor = detalle != null && detalle.Table.Columns.Contains("Valor") && detalle["Valor"] != DBNull.Value
+                                                        //        ? Convert.ToDecimal(detalle["Valor"], CultureInfo.InvariantCulture).ToString("N2")
+                                                        //        : "0.00",
+
+                                                        //IdReferenciaWompi = detalle != null && detalle.Table.Columns.Contains("IdReferenciaWompi") && detalle["IdReferenciaWompi"] != DBNull.Value
+                                                        //                    ? detalle["IdReferenciaWompi"].ToString()
+                                                        //                    : "No disponible",
+
+                                                        //EntornoPago = detalle != null && detalle.Table.Columns.Contains("pa.env") && detalle["pa.env"] != DBNull.Value
+                                                        //              ? detalle["pa.env"].ToString()
+                                                        //              : "No disponible",
+
+                                                        //FechaHoraPago = detalle != null && detalle.Table.Columns.Contains("pa.FechaHoraPago") && detalle["pa.FechaHoraPago"] != DBNull.Value
+                                                        //               ? Convert.ToDateTime(detalle["pa.FechaHoraPago"]).ToString("yyyy-MM-dd HH:mm:ss")
+                                                        //               : "No disponible",
+
+                                                        //IdSede = detalle != null && detalle.Table.Columns.Contains("a.idSede") && detalle["a.idSede"] != DBNull.Value
+                                                        //        ? detalle["a.idSede"].ToString()
+                                                        //        : "No disponible"
+                                                    };
+
+                            GridView1.DataSource = consultaUnificada.ToList();
+                            GridView1.DataBind();
+
+
 
                         }
                 }
