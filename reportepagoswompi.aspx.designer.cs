@@ -96,13 +96,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Repeater rpPagosWompi;
 
         /// <summary>
-        /// Control txbPago.
+        /// Control GridView1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbPago;
+        protected global::System.Web.UI.WebControls.GridView GridView1;
 
         /// <summary>
         /// Control rightsidebar.
