@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.Odbc;
+using System.Text;
 using System.Web;
 using System.Web.Optimization;
 using System.Web.UI;
@@ -122,6 +123,7 @@ namespace fpWebApp
 
                 if (dt.Rows.Count > 0)
                 {
+                    ViewState["DocumentoAfiliado"] = dt.Rows[0]["DocumentoAfiliado"].ToString();
                     ltNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
                     ltApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
                     ltEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
@@ -354,10 +356,12 @@ namespace fpWebApp
                                 command.Dispose();
                                 myConnection.Close();
 
+                                string strString = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + ViewState["precio"].ToString()));
+
                                 string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
                                 strMensaje += "Descripción del plan.\r\n\r\n";
                                 strMensaje += "Por favor, agradecemos realice el pago a través del siguiente enlace: \r\n";
-                                strMensaje += "https://fitnesspeoplecolombia.com/wompiplan?docAfil=&monto=";
+                                strMensaje += "https://fitnesspeoplecolombia.com/wompiplan?code=" + strString;
 
                                 cg.EnviarCorreo("contabilidad@fitnesspeoplecmd.com", ViewState["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
 
@@ -521,6 +525,7 @@ namespace fpWebApp
             int intMeses = Convert.ToInt32(strMes);
             ViewState["meses"] = intMeses;
             double dobTotal = (intPrecioBase - ((intPrecioBase * dobDescuento) / 100)) * intMeses;
+            ViewState["precio"] = Convert.ToString(Convert.ToInt32(dobTotal));
             double dobAhorro = ((intPrecioBase * dobDescuento) / 100) * intMeses;
             double dobConDescuento = (intPrecioBase - ((intPrecioBase * dobDescuento) / 100));
 
