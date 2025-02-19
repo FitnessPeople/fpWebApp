@@ -266,10 +266,9 @@
                                                 <tr>
                                                     <th data-sortable="false" data-breakpoints="xs" style="width: 200px;">Sede</th>
                                                     <th data-breakpoints="xs">Dirección</th>
-                                                     <th data-breakpoints="xs">Tipo Sede</th>
+                                                    <th data-breakpoints="xs">Tipo Sede</th>
                                                     <th data-breakpoints="all" data-title="Info"></th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
-
                                                 </tr>
                                             </thead>
                                             <tbody>
