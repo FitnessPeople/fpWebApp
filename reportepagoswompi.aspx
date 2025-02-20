@@ -2,6 +2,7 @@
 
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
+<%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
 <%@ Register Src="~/controles/indicadores01.ascx" TagPrefix="uc1" TagName="indicadores01" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
@@ -17,11 +18,10 @@
     <title>Fitness People | Pagos Wompi</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet" />
-    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <%--<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />--%>
+    <%--<link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />--%>
     <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
@@ -103,7 +103,7 @@
                     <h2><i class="fas fa-hand-holding-usd text-success m-r-sm"></i>Pagos Wompi</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>Configuración</li>
+                        <li>Reportes</li>
                         <li class="active"><strong>Pagos Wompi</strong></li>
                     </ol>
                 </div>
@@ -148,7 +148,8 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 form-horizontal">
-                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server"
+                                                    CausesValidation="false"
                                                     CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
                                                     OnClick="lbExportarExcel_Click">
                                                     <i class="fa fa-file-excel"></i> EXCEL
@@ -156,22 +157,20 @@
                                             </div>
                                         </div>
 
-                                        <table class="footable table table-striped" data-paging-size="10"
-                                            data-filter-min="3" data-filter-placeholder="Buscar"
-                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
-                                            data-paging-limit="10" data-filtering="true"
-                                            data-filter-container="#filter-form-container" data-filter-delay="300"
-                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left"
-                                            data-empty="Detalle de la transacción">
+                                        <table class="footable table table-striped" data-paging-size="10" data-filter-min="3" data-filter-placeholder="Buscar"
+                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
+                                            data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300"
+                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th data-sortable="false" data-breakpoints="xs" style="width: 200px;">Id</th>
+                                                    <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">Id Pago</th>
+                                                    <th data-breakpoints="xs">Doc. Afiliado</th>
                                                     <th data-breakpoints="xs">Afiliado</th>
                                                     <th data-breakpoints="xs">Valor</th>
                                                     <th data-breakpoints="xs">Referencia Wompi</th>
                                                     <th data-breakpoints="xs">Fecha Hora Pago</th>
                                                     <th data-breakpoints="all" data-title="Info"></th>
-                                                    <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
+                                                     <th data-sortable="false" data-filterable="false" class="text-right"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -179,56 +178,24 @@
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
                                                             <td><%# Eval("idAfiliadoPlan") %></td>
+                                                            <td><%# Eval("DocumentoAfiliado") %></td>
                                                             <td><%# Eval("NombreAfiliado") %></td>
                                                             <td><%# Eval("Valor") %></td>
                                                             <td><%# Eval("IdReferenciaWompi") %></td>
                                                             <td><%# Eval("FechaHoraPago") %></td>
                                                             <td>
-                                                                <asp:Literal ID="ltDetalle" runat="server"></asp:Literal>  
-<%--                                                                <table class="table table-bordered table-striped">
-                                                                    <tr>
-                                                                        <th width="25%"><i class="fa fa-city m-r-xs"></i>Ciudad</th>
-                                                                        <th width="25%"><i class="fa fa-mobile m-r-xs"></i>Teléfono</th>
-                                                                        <th width="50%" class="text-nowrap"><i class="fa fa-clock m-r-xs"></i>Horario</th>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><%# Eval("idAfiliadoPlan") %></td>
-                                                                        <td><%# Eval("NombreAfiliado") %></td>
-                                                                        <td>
-                                                                             <asp:Literal ID="ltDetalle" runat="server"></asp:Literal>                                                                        
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>--%>
+                                                                <asp:Literal ID="ltDetalle" runat="server"></asp:Literal>
                                                             </td>
-                                                            <td>
+                                                            <td style="display: flex; flex-wrap: nowrap;">
                                                                 <a runat="server" id="btnVer" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
                                                             </td>
-
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
                                             </tbody>
                                         </table>
                                     </div>
-                                    <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered">
-                                        <Columns>
-                                            <asp:BoundField DataField="IdTransaccion" HeaderText="ID Transacción" />
-                                            <asp:BoundField DataField="FechaCreacion" HeaderText="Fecha Creación" />
-                                            <asp:BoundField DataField="FechaFinalizacion" HeaderText="Fecha Finalización" />
-                                            <asp:BoundField DataField="ValorPago" HeaderText="Valor Pago" />
-                                            <asp:BoundField DataField="Moneda" HeaderText="Moneda" />
-                                            <asp:BoundField DataField="MetodoPago" HeaderText="Método de Pago" />
-                                            <asp:BoundField DataField="EstadoPago" HeaderText="Estado del Pago" />
-                                            <asp:BoundField DataField="ReferenciaPago" HeaderText="Referencia" />
-                                            <asp:BoundField DataField="MarcaTarjeta" HeaderText="Marca Tarjeta" />
-                                            <asp:BoundField DataField="TipoTarjeta" HeaderText="Tipo de Tarjeta" />
-                                            <asp:BoundField DataField="Estado3DS" HeaderText="Estado 3DS" />
-                                        </Columns>
-                                    </asp:GridView>
-
-
-
                                 </div>
                             </div>
                         </div>
@@ -236,6 +203,7 @@
                     <%--Fin Contenido!!!!--%>
                 </div>
             </div>
+            <uc1:footer runat="server" ID="footer" />
         </div>
         <uc1:rightsidebar runat="server" ID="rightsidebar" />
     </div>
@@ -247,7 +215,6 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
-    <%--<script src="js/plugins/footable/footable.all.min.js"></script>--%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
     <!-- Custom and plugin javascript -->
