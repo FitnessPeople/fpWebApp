@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -23,7 +22,7 @@ namespace fpWebApp.controles
                 }
                 else
                 {
-                    ltFoto.Text = "<img alt=\"image\" class=\"img-circle img-md\" src=\"img/avatar.png\" />";
+                    ltFoto.Text = "<img alt=\"image\" class=\"img-circle img-md\" src=\"img/empleados/nofoto.png\" />";
                 }
 
                 totalAfiliados();
