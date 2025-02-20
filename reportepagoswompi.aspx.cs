@@ -41,12 +41,12 @@ namespace fpWebApp
                         if (ViewState["Consulta"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            lbExportarExcel.Visible = false;
+                            //lbExportarExcel.Visible = false;
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            lbExportarExcel.Visible = true;
+                            //lbExportarExcel.Visible = true;
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
@@ -145,10 +145,10 @@ namespace fpWebApp
             StringBuilder sb = new StringBuilder();
 
             sb.Append("<table class=\"table table-bordered table-striped\">");
-            sb.Append("<thead><tr>");
-            sb.Append("<th>ID</th><th>Fecha Creación</th><th>Fecha Finalización</th><th>Valor</th><th>Moneda</th>");
-            sb.Append("<th>Método de Pago</th><th>Estado</th><th>Referencia</th><th>Tarjeta</th><th>Comercio</th>");
-            sb.Append("</tr></thead><tbody>");
+            sb.Append("<tr>");
+            sb.Append("<th>ID</th><th>Fecha Cre.</th><th>Fecha Fin.</th><th>Valor</th>");
+            sb.Append("<th>Método Pago</th><th>Estado</th><th>Referencia</th><th>Tarjeta</th><th>Estado3DS</th>");
+            sb.Append("</tr>");
 
             foreach (var pago in listaPagos)
             {
@@ -156,17 +156,16 @@ namespace fpWebApp
                 sb.Append($"<td>{pago.Id}</td>");
                 sb.Append($"<td>{pago.FechaCreacion}</td>");
                 sb.Append($"<td>{pago.FechaFinalizacion}</td>");
-                sb.Append($"<td>{pago.Valor}</td>");
-                sb.Append($"<td>{pago.Moneda}</td>");
+                sb.Append($"<td>{pago.Valor}</td>");                
                 sb.Append($"<td>{pago.MetodoPago}</td>");
                 sb.Append($"<td>{pago.Estado}</td>");
                 sb.Append($"<td>{pago.Referencia}</td>");
-                sb.Append($"<td>{pago.NombreTarjeta} ({pago.UltimosDigitos}) - {pago.MarcaTarjeta}</td>");
-                sb.Append($"<td>{pago.NombreComercio} - {pago.TelefonoComercio}</td>");
+                sb.Append($"<td>{pago.NombreTarjeta}</td>");
+                sb.Append($"<td>{pago.Estado3DS}</td>");
                 sb.Append("</tr>");
             }
 
-            sb.Append("</tbody></table>");
+            sb.Append("</table>");
 
             return sb.ToString();
         }
@@ -179,7 +178,7 @@ namespace fpWebApp
                 {
                     HtmlAnchor btnVer = (HtmlAnchor)e.Item.FindControl("btnVer");
                     btnVer.Attributes.Add("href", "reportepagoswompi?verid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    btnVer.Visible = true;
+                    btnVer.Visible = false;
 
                     Literal ltDetalle = (Literal)e.Item.FindControl("ltDetalle");
                     ltDetalle.Text = listarDetalle(int.Parse(((DataRowView)e.Item.DataItem).Row[0].ToString())).ToString();
