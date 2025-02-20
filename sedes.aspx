@@ -20,8 +20,6 @@
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
 
     <!-- FooTable -->
     <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
@@ -45,6 +43,11 @@
             element2.classList.remove("collapse");
         }
     </script>
+
+
+
+
+
 </head>
 
 <body onload="changeClass()">
@@ -176,7 +179,7 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Horario:</label>
-                                                            <textarea id="summernote" name="editordata" class="form-control input-sm" runat="server" rows="5"></textarea>
+                                                            <textarea id="summernote" name="editordata" class="form-control input-sm" runat="server" asp-for="Blog Content"></textarea>
                                                         </div>
                                                         <div class="form-group">
                                                             <b>

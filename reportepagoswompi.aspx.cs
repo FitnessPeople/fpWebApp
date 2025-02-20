@@ -8,6 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection.Emit;
 using System.Text;
 using System.Web;
 using System.Web.Script.Serialization;
@@ -150,13 +151,14 @@ namespace fpWebApp
             sb.Append("<th>Método Pago</th><th>Estado</th><th>Referencia</th><th>Tarjeta</th><th>Estado3DS</th>");
             sb.Append("</tr>");
 
+
             foreach (var pago in listaPagos)
             {
                 sb.Append("<tr>");
                 sb.Append($"<td>{pago.Id}</td>");
-                sb.Append($"<td>{pago.FechaCreacion}</td>");
-                sb.Append($"<td>{pago.FechaFinalizacion}</td>");
-                sb.Append($"<td>{pago.Valor}</td>");                
+                sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.FechaCreacion)) + "</td>");
+                sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.FechaFinalizacion)) + "</td>");
+                sb.Append($"<td>{pago.Valor}</td>");
                 sb.Append($"<td>{pago.MetodoPago}</td>");
                 sb.Append($"<td>{pago.Estado}</td>");
                 sb.Append($"<td>{pago.Referencia}</td>");
@@ -164,6 +166,7 @@ namespace fpWebApp
                 sb.Append($"<td>{pago.Estado3DS}</td>");
                 sb.Append("</tr>");
             }
+
 
             sb.Append("</table>");
 
