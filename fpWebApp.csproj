@@ -1449,6 +1449,7 @@
     <Folder Include="docs\contratos\" />
     <Folder Include="docs\incapacidades\" />
     <Folder Include="docs\traspasos\" />
+    <Folder Include="img\contratos\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\bootstrap.css.map" />
@@ -1473,7 +1474,6 @@
     <Content Include="js\plugins\diff_match_patch\COPYING" />
     <Content Include="js\plugins\justified-gallery\README.md" />
     <Content Include="js\plugins\topojson\LICENSE" />
-    <Content Include="img\contratos\contrato_test.pdf" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
