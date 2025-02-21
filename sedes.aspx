@@ -174,7 +174,7 @@
                                     </div>
                                     <div class="ibox-content">
                                         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-                                        <asp:UpdatePanel ID="upSedes" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
+<%--                                        <asp:UpdatePanel ID="upSedes" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">--%>
                                             <ContentTemplate>
                                                 <div class="row">
                                                     <div class="col-lg-12">
@@ -241,9 +241,9 @@
                                                 </div>
                                             </ContentTemplate>
                                              <Triggers>
-                                                <asp:AsyncPostBackTrigger ControlID="rblClaseSede" EventName="SelectedIndexChanged" />
+<%--                                                <asp:AsyncPostBackTrigger ControlID="rblClaseSede" EventName="SelectedIndexChanged" />--%>
                                             </Triggers>
-                                        </asp:UpdatePanel>
+<%--                                        </asp:UpdatePanel>--%>
                                     </div>
                                 </div>
                             </div>
