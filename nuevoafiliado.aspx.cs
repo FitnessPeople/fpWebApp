@@ -324,9 +324,9 @@ namespace fpWebApp
                         strMensaje += "Se ha registrado como afiliado en Fitness People. Por favor, agradecemos confirme sus datos a través de este enlace: \r\n";
                         strMensaje += "https://fitnesspeoplecolombia.com/verificacion?id=" + dt.Rows[0]["idAfiliado"].ToString();
 
-                        cg.EnviarCorreo("contabilidad@fitnesspeoplecmd.com", txbEmail.Text.ToString(), "Nuevo registro en Fitness People", strMensaje);
+                        cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", txbEmail.Text.ToString(), "Nuevo registro en Fitness People", strMensaje);
 
-                        Response.Redirect("afiliados");
+                        //Response.Redirect("afiliados");
                     }
                 }
             }

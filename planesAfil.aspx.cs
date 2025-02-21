@@ -339,10 +339,11 @@ namespace fpWebApp
                                 DateTime fechainicio = Convert.ToDateTime(txbFechaInicio.Text.ToString());
                                 DateTime fechafinal = fechainicio.AddMonths(Convert.ToInt16(ViewState["meses"].ToString()));
                                 strQuery = "INSERT INTO AfiliadosPlanes " +
-                                    "(idAfiliado, idPlan, FechaInicioPlan, FechaFinalPlan, EstadoPlan, Meses, ObservacionesPlan) " +
+                                    "(idAfiliado, idPlan, FechaInicioPlan, FechaFinalPlan, EstadoPlan, Meses, Valor, ObservacionesPlan) " +
                                     "VALUES (" + Request.QueryString["id"].ToString() + ", " + ViewState["idPlan"].ToString() + ", " +
                                     "'" + txbFechaInicio.Text.ToString() + "', '" + String.Format("{0:yyyy-MM-dd}", fechafinal) + "', 'Inactivo', " +
-                                    "" + ViewState["meses"].ToString() + ", 'Algo') ";
+                                    "" + ViewState["meses"].ToString() + ", " + ViewState["precio"].ToString() + ",  " +
+                                    "'" + ViewState["observaciones"].ToString() + "') ";
 
                                 try
                                 {
@@ -371,7 +372,7 @@ namespace fpWebApp
                                 strMensaje += "Por favor, agradecemos realice el pago a través del siguiente enlace: \r\n";
                                 strMensaje += "https://fitnesspeoplecolombia.com/wompiplan?code=" + strString;
 
-                                cg.EnviarCorreo("contabilidad@fitnesspeoplecmd.com", ViewState["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
+                                cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", ViewState["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
 
                                 // Enviar correo electrónico al afiliado para que pague.
                             }
@@ -552,6 +553,8 @@ namespace fpWebApp
             ltObservaciones.Text += "<b>Valor del mes con descuento</b>: $" + string.Format("{0:N0}", dobConDescuento) + ".<br />";
             ltObservaciones.Text += "<b>Ahorro</b>: $" + string.Format("{0:N0}", dobAhorro) + ".<br />";
             ltObservaciones.Text += "<b>Valor Total</b>: $" + string.Format("{0:N0}", dobTotal) + ".<br />";
+
+            ViewState["observaciones"] = ltObservaciones.Text.ToString().Replace("<b>","").Replace("</b>", "").Replace("<br />", "\r\n");
         }
 
         private void ActivarCortesia(string strCortesia)
