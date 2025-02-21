@@ -9,15 +9,10 @@ namespace fpWebApp
 {
     public partial class ejemplosummernote : System.Web.UI.Page
     {
-        protected void btnGuardar_Click(object sender, EventArgs e)
+        protected void btnMostrar_Click(object sender, EventArgs e)
         {
-            // Recupera el contenido de los editores Summernote
-            string contenido1 = Request.Form["descripcion1"];
-            string contenido2 = Request.Form["descripcion2"];
-
-            // Muestra el contenido en la página (puedes guardarlo en una BD)
-            litContenido.Text = "<b>Artículo 1:</b><br>" + contenido1 + "<br><br>";
-            litContenido.Text += "<b>Artículo 2:</b><br>" + contenido2;
+            string contenidoEditor = hiddenEditor.Value;
+            litPreviewEditor.Text = $"<div style='border:1px solid #ddd; padding:10px;'>{contenidoEditor}</div>";
         }
     }
 }

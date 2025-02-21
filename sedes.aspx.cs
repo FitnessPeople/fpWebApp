@@ -69,11 +69,14 @@ namespace fpWebApp
                             }
                             if (dt.Rows.Count > 0)
                             {
+                                string contenidoEditor = hiddenEditor.Value;
+                                litPreviewEditor.Text = $"<div style='border:1px solid #ddd; padding:10px;'>{contenidoEditor}</div>";
+
                                 txbSede.Text = dt.Rows[0]["NombreSede"].ToString();
                                 txbDireccion.Text = dt.Rows[0]["DireccionSede"].ToString();
                                 ddlCiudadSede.SelectedIndex = Convert.ToInt16(ddlCiudadSede.Items.IndexOf(ddlCiudadSede.Items.FindByValue(dt.Rows[0]["idCiudadSede"].ToString())));
                                 txbTelefono.Text = dt.Rows[0]["TelefonoSede"].ToString();
-                                summernote.Value = dt.Rows[0]["HorarioSede"].ToString();
+                                litPreviewEditor.Text = dt.Rows[0]["HorarioSede"].ToString();
                                 rblTipoSede.SelectedValue = dt.Rows[0]["TipoSede"].ToString();
                                 rblClaseSede.SelectedValue  = dt.Rows[0]["ClaseSede"].ToString();
                                 btnAgregar.Text = "Actualizar";
@@ -91,6 +94,9 @@ namespace fpWebApp
                     Response.Redirect("logout");
                 }
             }
+            //string content = txtEditor.Value;
+            //litContent.Text = "<h3>Contenido enviado:</h3><div style='border:1px solid #ddd; padding:10px;'>" + content + "</div>";
+
         }
 
         private void listaSedes()
@@ -161,7 +167,8 @@ namespace fpWebApp
 
                     try
                     {
-                        string respuesta = cg.ActualizarSede(int.Parse(Request.QueryString["editid"].ToString()), txbSede.Text.ToString().Trim(), txbDireccion.Text.ToString().Trim(), int.Parse(ddlCiudadSede.SelectedItem.Value.ToString()), txbTelefono.Text.ToString().Trim(), summernote.Value.ToString().Trim(), rblTipoSede.SelectedValue.ToString(), rblClaseSede.SelectedValue.ToString());
+                        HtmlString contenidoHtml = new HtmlString(litPreviewEditor.Text);
+                        string respuesta = cg.ActualizarSede(int.Parse(Request.QueryString["editid"].ToString()), txbSede.Text.ToString().Trim(), txbDireccion.Text.ToString().Trim(), int.Parse(ddlCiudadSede.SelectedItem.Value.ToString()), txbTelefono.Text.ToString().Trim(), contenidoHtml, rblTipoSede.SelectedValue.ToString(), rblClaseSede.SelectedValue.ToString());
                         string strNewData = TraerData();
 
                         cg.InsertarLog(Session["idusuario"].ToString(), "sedes", "Modifica", "El usuario modificó datos a la sede " + txbSede.Text.ToString() + ".", strInitData, strNewData);
@@ -180,7 +187,7 @@ namespace fpWebApp
                 {
                     try
                     {
-                        string respuesta = cg.InsertarSede(txbSede.Text.ToString().Trim(), txbDireccion.Text.ToString().Trim(), int.Parse(ddlCiudadSede.SelectedItem.Value.ToString()), txbTelefono.Text.ToString().Trim(), summernote.Value.ToString().Trim(),"", rblTipoSede.SelectedValue.ToString(), rblClaseSede.SelectedValue.ToString());
+                        string respuesta = cg.InsertarSede(txbSede.Text.ToString().Trim(), txbDireccion.Text.ToString().Trim(), int.Parse(ddlCiudadSede.SelectedItem.Value.ToString()), txbTelefono.Text.ToString().Trim(), litPreviewEditor.Text.ToString().Trim(),"", rblTipoSede.SelectedValue.ToString(), rblClaseSede.SelectedValue.ToString());
                         cg.InsertarLog(Session["idusuario"].ToString(), "sedes", "Agrega", "El usuario agregó una nueva sede: " + txbSede.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
