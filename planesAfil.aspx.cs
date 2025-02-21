@@ -1,11 +1,12 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
-using System.Data.Odbc;
 using System.Text;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Optimization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -88,15 +89,8 @@ namespace fpWebApp
             ViewState["CrearModificar"] = "0";
             ViewState["Borrar"] = "0";
 
-            string strQuery = "SELECT SinPermiso, Consulta, Exportar, CrearModificar, Borrar " +
-                "FROM permisos_perfiles pp, paginas p, usuarios u " +
-                "WHERE pp.idPagina = p.idPagina " +
-                "AND p.Pagina = '" + strPagina + "' " +
-                "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
-                "AND u.idPerfil = pp.idPerfil " +
-                "AND u.idUsuario = " + Session["idusuario"].ToString();
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -340,7 +334,6 @@ namespace fpWebApp
                         }
                         else
                         {
-                            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
                             try
                             {
                                 DateTime fechainicio = Convert.ToDateTime(txbFechaInicio.Text.ToString());
@@ -350,11 +343,26 @@ namespace fpWebApp
                                     "VALUES (" + Request.QueryString["id"].ToString() + ", " + ViewState["idPlan"].ToString() + ", " +
                                     "'" + txbFechaInicio.Text.ToString() + "', '" + String.Format("{0:yyyy-MM-dd}", fechafinal) + "', 'Inactivo', " +
                                     "" + ViewState["meses"].ToString() + ", 'Algo') ";
-                                OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                                myConnection.Open();
-                                command.ExecuteNonQuery();
-                                command.Dispose();
-                                myConnection.Close();
+
+                                try
+                                {
+                                    string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                                    using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                                    {
+                                        mysqlConexion.Open();
+                                        using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
+                                        {
+                                            cmd.CommandType = CommandType.Text;
+                                            cmd.ExecuteNonQuery();
+                                        }
+                                        mysqlConexion.Close();
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    string respuesta = "ERROR: " + ex.Message;
+                                }
 
                                 string strString = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + ViewState["precio"].ToString()));
 

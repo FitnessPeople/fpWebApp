@@ -324,37 +324,9 @@ namespace fpWebApp
                         strMensaje += "Se ha registrado como afiliado en Fitness People. Por favor, agradecemos confirme sus datos a través de este enlace: \r\n";
                         strMensaje += "https://fitnesspeoplecolombia.com/verificacion?id=" + dt.Rows[0]["idAfiliado"].ToString();
 
-                        //cg.EnviarCorreo("contabilidad@fitnesspeoplecmd.com", txbEmail.Text.ToString(), "Nuevo registro en Fitness People", strMensaje);
+                        cg.EnviarCorreo("contabilidad@fitnesspeoplecmd.com", txbEmail.Text.ToString(), "Nuevo registro en Fitness People", strMensaje);
 
-                        MailMessage objeto_mail = new MailMessage();
-                        objeto_mail.From = new MailAddress("contabilidad@fitnesspeoplecmd.com");
-                        MailAddress maTo = new MailAddress(txbEmail.Text.ToString());
-                        objeto_mail.To.Add(maTo);
-                        objeto_mail.Subject = "Nuevo registro en Fitness People";
-                        objeto_mail.Body = strMensaje;
-
-                        SmtpClient client = new SmtpClient();
-                        client.Host = "localhost";
-                        client.Port = 25;
-                        client.UseDefaultCredentials = false;
-                        client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                        client.Credentials = new System.Net.NetworkCredential("contabilidad@fitnesspeoplecolombia.com", "K)961558128719os");
-
-                        try
-                        {
-                            client.Send(objeto_mail);
-                            objeto_mail.Dispose();
-                        }
-                        catch (Exception ex)
-                        {
-                            string strError = ex.Message;
-                            ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                strError +
-                                "</div>";
-                        }
-
-                        //Response.Redirect("afiliados");
+                        Response.Redirect("afiliados");
                     }
                 }
             }
