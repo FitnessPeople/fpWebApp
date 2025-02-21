@@ -20,7 +20,33 @@
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
+        <!-- CSS de Quill -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <!-- JS de Quill -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script>
+        var quill;
+        document.addEventListener("DOMContentLoaded", function () {
+            quill = new Quill('#editor', {
+                theme: 'snow'
+            });
+        });
+        function getContent() {
+            document.getElementById('<%= hiddenEditor.ClientID %>').value = quill.root.innerHTML;
+        }
+    </script>
 
+<%-- <!-- TinyMCE CDN -->
+    <script src="https://cdn.tiny.cloud/1/0k6hrvcuomgzvsubdx9vbd8fdqx340t4ztxf1511ds3l8wm1/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <script>
+        tinymce.init({
+            selector: '#txtEditor',
+            menubar: false,
+           /* plugins: 'lists link image',*/
+            toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image'
+        });
+    </script>--%>
     <!-- FooTable -->
     <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
     <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
@@ -178,8 +204,10 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label>Horario:</label>
-                                                            <textarea id="summernote" name="editordata" class="form-control input-sm" runat="server" asp-for="Blog Content"></textarea>
+                                                            <div id="editor" style="height: 200px;"></div>
+                                                            <asp:HiddenField ID="hiddenEditor" runat="server" />
+<%--                                                            <label>Horario:</label>
+                                                            <textarea id="txtEditor" name="editordata" class="form-control input-sm" runat="server" Rows="5"></textarea>--%>
                                                         </div>
                                                         <div class="form-group">
                                                             <b>
@@ -311,6 +339,24 @@
                                 </div>
                             </div>
                         </div>
+                               <div class="container mt-4">
+           <h2>Ejemplo de Quill en ASPX</h2>
+
+           <h3>Editor Quill:</h3>
+           <div id="editor1" style="height: 200px;"></div>
+
+           <!-- Campo oculto para guardar el contenido -->
+           <asp:HiddenField ID="hiddenEditor1" runat="server" />
+
+           <br />
+           <%--<asp:Button ID="btnMostrar" runat="server" CssClass="btn btn-primary" Text="Mostrar Contenido"
+               OnClick="btnMostrar_Click" OnClientClick="getContent()" />--%>
+
+           <h3 class="mt-4">Vista previa del contenido:</h3>
+           <asp:Literal ID="litPreviewEditor" runat="server"></asp:Literal>
+       </div>
+
+
                     </form>
                     <%--Fin Contenido!!!!--%>
                 </div>

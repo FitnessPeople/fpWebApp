@@ -2704,7 +2704,7 @@ namespace fpWebApp
 
 
 
-        public string ActualizarSede(int idSede, string nombreSede, string direccionSede, int idCiudadSede, string telefonoSede, string horarioSede, string tipoSede, string claseSede)
+        public string ActualizarSede(int idSede, string nombreSede, string direccionSede, int idCiudadSede, string telefonoSede, HtmlString horarioSede, string tipoSede, string claseSede)
         {
             string respuesta = string.Empty;
             try
