@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Google.Protobuf.Reflection;
 
 namespace fpWebApp
 {
@@ -187,7 +188,7 @@ namespace fpWebApp
                 {
                     try
                     {
-                        string respuesta = cg.InsertarSede(txbSede.Text.ToString().Trim(), txbDireccion.Text.ToString().Trim(), int.Parse(ddlCiudadSede.SelectedItem.Value.ToString()), txbTelefono.Text.ToString().Trim(), litPreviewEditor.Text.ToString().Trim(),"", rblTipoSede.SelectedValue.ToString(), rblClaseSede.SelectedValue.ToString());
+                        string respuesta = cg.InsertarSede(txbSede.Text.ToString().Trim(), txbDireccion.Text.ToString().Trim(), int.Parse(ddlCiudadSede.SelectedItem.Value.ToString()), txbTelefono.Text.ToString().Trim(), hiddenEditor.Value.ToString().Trim(),"", rblTipoSede.SelectedValue.ToString(), rblClaseSede.SelectedValue.ToString());
                         cg.InsertarLog(Session["idusuario"].ToString(), "sedes", "Agrega", "El usuario agregó una nueva sede: " + txbSede.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)

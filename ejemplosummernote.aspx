@@ -10,15 +10,22 @@
     <!-- JS de Quill -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <script>
-        var quill;
         document.addEventListener("DOMContentLoaded", function () {
-            quill = new Quill('#editor', {
-                theme: 'snow'
-            });
+        quill = new Quill('#editor', {
+            theme: 'snow'
         });
-        function getContent() {
-            document.getElementById('<%= hiddenEditor.ClientID %>').value = quill.root.innerHTML;
+
+    // Recuperar el contenido guardado en el campo oculto y cargarlo en Quill
+    var hiddenContent = document.getElementById('<%= hiddenEditor.ClientID %>').value;
+    if (hiddenContent) {
+        quill.root.innerHTML = hiddenContent;
         }
+    });
+
+    function getContent() {
+        // Guardar el contenido del editor en el campo oculto antes de enviar el formulario
+        document.getElementById('<%= hiddenEditor.ClientID %>').value = quill.root.innerHTML;
+    }
     </script>
 </head>
 <body>
@@ -33,7 +40,7 @@
             <asp:HiddenField ID="hiddenEditor" runat="server" />
 
             <br />
-            <asp:Button ID="btnMostrar" runat="server" CssClass="btn btn-primary" Text="Mostrar Contenido"
+           <asp:Button ID="btnMostrar" runat="server" CssClass="btn btn-primary" Text="Guardar Contenido"
                 OnClick="btnMostrar_Click" OnClientClick="getContent()" />
 
             <h3 class="mt-4">Vista previa del contenido:</h3>
