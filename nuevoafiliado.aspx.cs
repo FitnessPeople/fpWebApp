@@ -4,9 +4,12 @@ using System.Configuration;
 using System.Data;
 using System.Data.Odbc;
 using System.IO;
+using System.Net.Mail;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using MySql.Data.MySqlClient;
 
 namespace fpWebApp
 {
@@ -66,15 +69,8 @@ namespace fpWebApp
             ViewState["CrearModificar"] = "0";
             ViewState["Borrar"] = "0";
 
-            string strQuery = "SELECT SinPermiso, Consulta, Exportar, CrearModificar, Borrar " +
-                "FROM permisos_perfiles pp, paginas p, usuarios u " +
-                "WHERE pp.idPagina = p.idPagina " +
-                "AND p.Pagina = '" + strPagina + "' " +
-                "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
-                "AND u.idPerfil = pp.idPerfil " +
-                "AND u.idUsuario = " + Session["idusuario"].ToString();
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -283,48 +279,82 @@ namespace fpWebApp
 
                         clasesglobales cg = new clasesglobales();
                         string strClave = cg.CreatePassword(8);
+                        
+                        string strQuery = "INSERT INTO afiliados " +
+                        "(DocumentoAfiliado, idTipoDocumento, NombreAfiliado, ApellidoAfiliado, CelularAfiliado, EmailAfiliado, ClaveAfiliado, " +
+                        "DireccionAfiliado, idCiudadAfiliado, FechaNacAfiliado, FotoAfiliado, idGenero, idEstadoCivilAfiliado, idEmpresaAfil, idProfesion, " +
+                        "idEps, idSede, ResponsableAfiliado, Parentesco, ContactoAfiliado, EstadoAfiliado, FechaAfiliacion, idUsuario) " +
+                        "VALUES ('" + txbDocumento.Text.ToString() + "', " + ddlTipoDocumento.SelectedItem.Value.ToString() + ", " +
+                        "'" + txbNombre.Text.ToString() + "', '" + txbApellido.Text.ToString() + "', " +
+                        "'" + txbTelefono.Text.ToString() + "', '" + txbEmail.Text.ToString() + "', '" + strClave + "', " +
+                        "'" + txbDireccion.Text.ToString() + "', " + ddlCiudadAfiliado.SelectedItem.Value.ToString() + ", " +
+                        "'" + txbFechaNac.Text.ToString() + "', '" + strFilename + "', " +
+                        "" + ddlGenero.SelectedItem.Value.ToString() + ", " + ddlEstadoCivil.SelectedItem.Value.ToString() + ", " +
+                        "" + ddlEmpresaConvenio.SelectedItem.Value.ToString() + ", " +
+                        "" + ddlProfesiones.SelectedItem.Value.ToString() + ", " + ddlEps.SelectedItem.Value.ToString() + ", " +
+                        "" + ddlSedes.SelectedItem.Value.ToString() + ", '" + txbResponsable.Text.ToString() + "', " +
+                        "'" + ddlParentesco.SelectedItem.Value.ToString() + "', '" + txbTelefonoContacto.Text.ToString() + "', " +
+                        "'Pendiente', CURDATE(), "  + Session["idusuario"].ToString() + ") ";
 
-                        OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
                         try
                         {
-                            string strQuery = "INSERT INTO afiliados " +
-                            "(DocumentoAfiliado, idTipoDocumento, NombreAfiliado, ApellidoAfiliado, CelularAfiliado, EmailAfiliado, ClaveAfiliado, " +
-                            "DireccionAfiliado, idCiudadAfiliado, FechaNacAfiliado, FotoAfiliado, idGenero, idEstadoCivilAfiliado, idEmpresaAfil, idProfesion, " +
-                            "idEps, idSede, ResponsableAfiliado, Parentesco, ContactoAfiliado, EstadoAfiliado, FechaAfiliacion, idUsuario) " +
-                            "VALUES ('" + txbDocumento.Text.ToString() + "', " + ddlTipoDocumento.SelectedItem.Value.ToString() + ", " +
-                            "'" + txbNombre.Text.ToString() + "', '" + txbApellido.Text.ToString() + "', " +
-                            "'" + txbTelefono.Text.ToString() + "', '" + txbEmail.Text.ToString() + "', '" + strClave + "', " +
-                            "'" + txbDireccion.Text.ToString() + "', " + ddlCiudadAfiliado.SelectedItem.Value.ToString() + ", " +
-                            "'" + txbFechaNac.Text.ToString() + "', '" + strFilename + "', " +
-                            "" + ddlGenero.SelectedItem.Value.ToString() + ", " + ddlEstadoCivil.SelectedItem.Value.ToString() + ", " +
-                            "" + ddlEmpresaConvenio.SelectedItem.Value.ToString() + ", " +
-                            "" + ddlProfesiones.SelectedItem.Value.ToString() + ", " + ddlEps.SelectedItem.Value.ToString() + ", " +
-                            "" + ddlSedes.SelectedItem.Value.ToString() + ", '" + txbResponsable.Text.ToString() + "', " +
-                            "'" + ddlParentesco.SelectedItem.Value.ToString() + "', '" + txbTelefonoContacto.Text.ToString() + "', " +
-                            "'Pendiente', CURDATE(), "  + Session["idusuario"].ToString() + ") ";
-                            OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                            myConnection.Open();
-                            command.ExecuteNonQuery();
-                            command.Dispose();
-                            myConnection.Close();
+                            string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
 
-                            cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Nuevo", "El usuario creó un nuevo afiliado con documento " + txbDocumento.Text.ToString() + ".", "", "");
-
-                            DataTable dt = cg.TraerDatos("SELECT idAfiliado FROM Afiliados WHERE DocumentoAfiliado = '" + txbDocumento.Text.ToString() + "' ");
-
-                            string strMensaje = "Bienvenido a Fitness People \r\n\r\n";
-                            strMensaje += "Se ha registrado como afiliado en Fitness People. Por favor, agradecemos confirme sus datos a través de este enlace: \r\n";
-                            strMensaje += "https://fitnesspeoplecolombia.com/verificacion?id=" + dt.Rows[0]["idAfiliado"].ToString();
-
-                            cg.EnviarCorreo("contabilidad@fitnesspeoplecmd.com", txbEmail.Text.ToString(), "Nuevo registro en Fitness People", strMensaje);
+                            using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                            {
+                                mysqlConexion.Open();
+                                using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
+                                {
+                                    cmd.CommandType = CommandType.Text;
+                                    cmd.ExecuteNonQuery();
+                                }
+                                mysqlConexion.Close();
+                            }
                         }
-                        catch (OdbcException ex)
+                        catch (Exception ex)
                         {
-                            string mensaje = ex.Message;
-                            myConnection.Close();
+                            string respuesta = "ERROR: " + ex.Message;
                         }
 
-                        Response.Redirect("afiliados");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Nuevo", "El usuario creó un nuevo afiliado con documento " + txbDocumento.Text.ToString() + ".", "", "");
+
+                        DataTable dt = cg.TraerDatos("SELECT idAfiliado FROM Afiliados WHERE DocumentoAfiliado = '" + txbDocumento.Text.ToString() + "' ");
+
+                        string strMensaje = "Bienvenido a Fitness People \r\n\r\n";
+                        strMensaje += "Se ha registrado como afiliado en Fitness People. Por favor, agradecemos confirme sus datos a través de este enlace: \r\n";
+                        strMensaje += "https://fitnesspeoplecolombia.com/verificacion?id=" + dt.Rows[0]["idAfiliado"].ToString();
+
+                        //cg.EnviarCorreo("contabilidad@fitnesspeoplecmd.com", txbEmail.Text.ToString(), "Nuevo registro en Fitness People", strMensaje);
+
+                        MailMessage objeto_mail = new MailMessage();
+                        objeto_mail.From = new MailAddress("contabilidad@fitnesspeoplecmd.com");
+                        MailAddress maTo = new MailAddress(txbEmail.Text.ToString());
+                        objeto_mail.To.Add(maTo);
+                        objeto_mail.Subject = "Nuevo registro en Fitness People";
+                        objeto_mail.Body = strMensaje;
+
+                        SmtpClient client = new SmtpClient();
+                        client.Host = "localhost";
+                        client.Port = 25;
+                        client.UseDefaultCredentials = false;
+                        client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        client.Credentials = new System.Net.NetworkCredential("contabilidad@fitnesspeoplecolombia.com", "K)961558128719os");
+
+                        try
+                        {
+                            client.Send(objeto_mail);
+                            objeto_mail.Dispose();
+                        }
+                        catch (Exception ex)
+                        {
+                            string strError = ex.Message;
+                            ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                strError +
+                                "</div>";
+                        }
+
+                        //Response.Redirect("afiliados");
                     }
                 }
             }
