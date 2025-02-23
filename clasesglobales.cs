@@ -170,7 +170,7 @@ namespace fpWebApp
             client.Port = 25;
             client.UseDefaultCredentials = false;
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.Credentials = new System.Net.NetworkCredential("contabilidad@fitnesspeoplecolombia.com", "K)961558128719os");
+            client.Credentials = new System.Net.NetworkCredential("afiliaciones@fitnesspeoplecolombia.com", "i18Jo%5b3");
 
             try
             {

@@ -1,11 +1,12 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
-using System.Data.Odbc;
 using System.Text;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Optimization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -88,15 +89,8 @@ namespace fpWebApp
             ViewState["CrearModificar"] = "0";
             ViewState["Borrar"] = "0";
 
-            string strQuery = "SELECT SinPermiso, Consulta, Exportar, CrearModificar, Borrar " +
-                "FROM permisos_perfiles pp, paginas p, usuarios u " +
-                "WHERE pp.idPagina = p.idPagina " +
-                "AND p.Pagina = '" + strPagina + "' " +
-                "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
-                "AND u.idPerfil = pp.idPerfil " +
-                "AND u.idUsuario = " + Session["idusuario"].ToString();
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -340,21 +334,36 @@ namespace fpWebApp
                         }
                         else
                         {
-                            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
                             try
                             {
                                 DateTime fechainicio = Convert.ToDateTime(txbFechaInicio.Text.ToString());
                                 DateTime fechafinal = fechainicio.AddMonths(Convert.ToInt16(ViewState["meses"].ToString()));
                                 strQuery = "INSERT INTO AfiliadosPlanes " +
-                                    "(idAfiliado, idPlan, FechaInicioPlan, FechaFinalPlan, EstadoPlan, Meses, ObservacionesPlan) " +
+                                    "(idAfiliado, idPlan, FechaInicioPlan, FechaFinalPlan, EstadoPlan, Meses, Valor, ObservacionesPlan) " +
                                     "VALUES (" + Request.QueryString["id"].ToString() + ", " + ViewState["idPlan"].ToString() + ", " +
                                     "'" + txbFechaInicio.Text.ToString() + "', '" + String.Format("{0:yyyy-MM-dd}", fechafinal) + "', 'Inactivo', " +
-                                    "" + ViewState["meses"].ToString() + ", 'Algo') ";
-                                OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                                myConnection.Open();
-                                command.ExecuteNonQuery();
-                                command.Dispose();
-                                myConnection.Close();
+                                    "" + ViewState["meses"].ToString() + ", " + ViewState["precio"].ToString() + ",  " +
+                                    "'" + ViewState["observaciones"].ToString() + "') ";
+
+                                try
+                                {
+                                    string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                                    using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                                    {
+                                        mysqlConexion.Open();
+                                        using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
+                                        {
+                                            cmd.CommandType = CommandType.Text;
+                                            cmd.ExecuteNonQuery();
+                                        }
+                                        mysqlConexion.Close();
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    string respuesta = "ERROR: " + ex.Message;
+                                }
 
                                 string strString = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + ViewState["precio"].ToString()));
 
@@ -363,7 +372,7 @@ namespace fpWebApp
                                 strMensaje += "Por favor, agradecemos realice el pago a través del siguiente enlace: \r\n";
                                 strMensaje += "https://fitnesspeoplecolombia.com/wompiplan?code=" + strString;
 
-                                cg.EnviarCorreo("contabilidad@fitnesspeoplecmd.com", ViewState["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
+                                cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", ViewState["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
 
                                 // Enviar correo electrónico al afiliado para que pague.
                             }
@@ -544,6 +553,8 @@ namespace fpWebApp
             ltObservaciones.Text += "<b>Valor del mes con descuento</b>: $" + string.Format("{0:N0}", dobConDescuento) + ".<br />";
             ltObservaciones.Text += "<b>Ahorro</b>: $" + string.Format("{0:N0}", dobAhorro) + ".<br />";
             ltObservaciones.Text += "<b>Valor Total</b>: $" + string.Format("{0:N0}", dobTotal) + ".<br />";
+
+            ViewState["observaciones"] = ltObservaciones.Text.ToString().Replace("<b>","").Replace("</b>", "").Replace("<br />", "\r\n");
         }
 
         private void ActivarCortesia(string strCortesia)
