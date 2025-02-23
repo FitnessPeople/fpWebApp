@@ -39,18 +39,18 @@
                     ]
                 }
             });
-       function ajustarAlturaEditor() {
-           var editorContenido = document.querySelector(".ql-editor");
-           editorContenido.style.height = "auto";
-           editorContenido.style.height = editorContenido.scrollHeight + "px";
-       }
-       quill.on("text-change", ajustarAlturaEditor); 
+            function ajustarAlturaEditor() {
+                var editorContenido = document.querySelector(".ql-editor");
+                editorContenido.style.height = "auto";
+                editorContenido.style.height = editorContenido.scrollHeight + "px";
+            }
+            quill.on("text-change", ajustarAlturaEditor);
 
-        var contenidoGuardado = document.getElementById('<%= hiddenEditor.ClientID %>').value;
-        if (contenidoGuardado.trim() !== "") {
-            quill.root.innerHTML = contenidoGuardado;
-        }
-    });
+            var contenidoGuardado = document.getElementById('<%= hiddenEditor.ClientID %>').value;
+            if (contenidoGuardado.trim() !== "") {
+                quill.root.innerHTML = contenidoGuardado;
+            }
+        });
         function guardarContenidoEditor() {
             var contenido = quill.root.innerHTML;
             document.getElementById('<%= hiddenEditor.ClientID %>').value = contenido;
@@ -207,7 +207,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Horario:</label>
-                                                        <div id="editor" CssClass="form-control input-sm" ></div>
+                                                        <div id="editor" cssclass="form-control input-sm"></div>
                                                         <asp:HiddenField ID="hiddenEditor" runat="server" />
                                                     </div>
                                                     <div class="form-group">
