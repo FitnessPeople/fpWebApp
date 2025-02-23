@@ -70,7 +70,7 @@ namespace fpWebApp
                                 txbTelefono.Text = dt.Rows[0]["TelefonoSede"].ToString();
                                 hiddenEditor.Value = dt.Rows[0]["HorarioSede"].ToString();
                                 rblTipoSede.SelectedValue = dt.Rows[0]["TipoSede"].ToString();
-                                rblClaseSede.SelectedValue  = dt.Rows[0]["ClaseSede"].ToString();
+                                rblClaseSede.SelectedValue = dt.Rows[0]["ClaseSede"].ToString();
                                 btnAgregar.Text = "Actualizar";
                                 ltTitulo.Text = "Actualizar sede";
                             }
@@ -147,7 +147,7 @@ namespace fpWebApp
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
-            string contenidoEditor = hiddenEditor.Value;          
+            string contenidoEditor = hiddenEditor.Value;
 
             if (Request.QueryString.Count > 0)
             {
@@ -174,7 +174,7 @@ namespace fpWebApp
                 if (!ValidarSede(txbSede.Text.ToString()))
                 {
                     try
-                    {                        
+                    {
                         string respuesta = cg.InsertarSede(txbSede.Text.ToString().Trim(), txbDireccion.Text.ToString().Trim(), int.Parse(ddlCiudadSede.SelectedItem.Value.ToString()), txbTelefono.Text.ToString().Trim(), contenidoEditor, "", rblTipoSede.SelectedValue.ToString(), rblClaseSede.SelectedValue.ToString());
                         cg.InsertarLog(Session["idusuario"].ToString(), "sedes", "Agrega", "El usuario agregó una nueva sede: " + txbSede.Text.ToString() + ".", "", "");
                     }
