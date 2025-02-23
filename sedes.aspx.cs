@@ -50,8 +50,6 @@ namespace fpWebApp
                     }
 
                     listaSedes();
-                    //lblTipoSede.Visible = false;
-                    //rblTipoSede.Visible = false;
                     listaCiudades();
                     ltTitulo.Text = "Agregar sede";
 
@@ -63,11 +61,6 @@ namespace fpWebApp
                             //Editar
                             clasesglobales cg = new clasesglobales();
                             DataTable dt = cg.ConsultarSedePorId(int.Parse(Request.QueryString["editid"].ToString()));
-                            //if (dt.Rows[0]["ClaseSede"].ToString() == "Gimnasio")
-                            //{
-                            //    lblTipoSede.Visible = true;
-                            //    rblTipoSede.Visible = true;
-                            //}
                             if (dt.Rows.Count > 0)
                             {
                                 string contenidoEditor = hiddenEditor.Value;
@@ -242,16 +235,7 @@ namespace fpWebApp
 
         protected void rblClaseSede_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //if(rblClaseSede.SelectedItem.Value == "Gimnasio")
-            //{
-            //    lblTipoSede.Visible = true;
-            //    rblTipoSede.Visible = true;
-            //}
-            //else
-            //{
-            //    lblTipoSede.Visible = false;
-            //    rblTipoSede.Visible = false;
-            //}
+
         }
     }
 }
