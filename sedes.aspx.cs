@@ -50,8 +50,8 @@ namespace fpWebApp
                     }
 
                     listaSedes();
-                    lblTipoSede.Visible = false;
-                    rblTipoSede.Visible = false;
+                    //lblTipoSede.Visible = false;
+                    //rblTipoSede.Visible = false;
                     listaCiudades();
                     ltTitulo.Text = "Agregar sede";
 
@@ -63,21 +63,19 @@ namespace fpWebApp
                             //Editar
                             clasesglobales cg = new clasesglobales();
                             DataTable dt = cg.ConsultarSedePorId(int.Parse(Request.QueryString["editid"].ToString()));
-                            if (dt.Rows[0]["ClaseSede"].ToString() == "Gimnasio")
-                            {
-                                lblTipoSede.Visible = true;
-                                rblTipoSede.Visible = true;
-                            }
+                            //if (dt.Rows[0]["ClaseSede"].ToString() == "Gimnasio")
+                            //{
+                            //    lblTipoSede.Visible = true;
+                            //    rblTipoSede.Visible = true;
+                            //}
                             if (dt.Rows.Count > 0)
                             {
                                 string contenidoEditor = hiddenEditor.Value;
-                                litPreviewEditor.Text = $"<div style='border:1px solid #ddd; padding:10px;'>{contenidoEditor}</div>";
-
                                 txbSede.Text = dt.Rows[0]["NombreSede"].ToString();
                                 txbDireccion.Text = dt.Rows[0]["DireccionSede"].ToString();
                                 ddlCiudadSede.SelectedIndex = Convert.ToInt16(ddlCiudadSede.Items.IndexOf(ddlCiudadSede.Items.FindByValue(dt.Rows[0]["idCiudadSede"].ToString())));
                                 txbTelefono.Text = dt.Rows[0]["TelefonoSede"].ToString();
-                                litPreviewEditor.Text = dt.Rows[0]["HorarioSede"].ToString();
+                                hiddenEditor.Value = dt.Rows[0]["HorarioSede"].ToString();
                                 rblTipoSede.SelectedValue = dt.Rows[0]["TipoSede"].ToString();
                                 rblClaseSede.SelectedValue  = dt.Rows[0]["ClaseSede"].ToString();
                                 btnAgregar.Text = "Actualizar";
@@ -95,9 +93,6 @@ namespace fpWebApp
                     Response.Redirect("logout");
                 }
             }
-            //string content = txtEditor.Value;
-            //litContent.Text = "<h3>Contenido enviado:</h3><div style='border:1px solid #ddd; padding:10px;'>" + content + "</div>";
-
         }
 
         private void listaSedes()
@@ -159,17 +154,16 @@ namespace fpWebApp
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
+            string contenidoEditor = hiddenEditor.Value;          
 
             if (Request.QueryString.Count > 0)
             {
                 if (Request.QueryString["editid"] != null)
                 {
                     string strInitData = TraerData();
-
                     try
                     {
-                        HtmlString contenidoHtml = new HtmlString(litPreviewEditor.Text);
-                        string respuesta = cg.ActualizarSede(int.Parse(Request.QueryString["editid"].ToString()), txbSede.Text.ToString().Trim(), txbDireccion.Text.ToString().Trim(), int.Parse(ddlCiudadSede.SelectedItem.Value.ToString()), txbTelefono.Text.ToString().Trim(), contenidoHtml, rblTipoSede.SelectedValue.ToString(), rblClaseSede.SelectedValue.ToString());
+                        string respuesta = cg.ActualizarSede(int.Parse(Request.QueryString["editid"].ToString()), txbSede.Text.ToString().Trim(), txbDireccion.Text.ToString().Trim(), int.Parse(ddlCiudadSede.SelectedItem.Value.ToString()), txbTelefono.Text.ToString().Trim(), contenidoEditor, rblTipoSede.SelectedValue.ToString(), rblClaseSede.SelectedValue.ToString());
                         string strNewData = TraerData();
 
                         cg.InsertarLog(Session["idusuario"].ToString(), "sedes", "Modifica", "El usuario modificó datos a la sede " + txbSede.Text.ToString() + ".", strInitData, strNewData);
@@ -187,8 +181,8 @@ namespace fpWebApp
                 if (!ValidarSede(txbSede.Text.ToString()))
                 {
                     try
-                    {
-                        string respuesta = cg.InsertarSede(txbSede.Text.ToString().Trim(), txbDireccion.Text.ToString().Trim(), int.Parse(ddlCiudadSede.SelectedItem.Value.ToString()), txbTelefono.Text.ToString().Trim(), hiddenEditor.Value.ToString().Trim(),"", rblTipoSede.SelectedValue.ToString(), rblClaseSede.SelectedValue.ToString());
+                    {                        
+                        string respuesta = cg.InsertarSede(txbSede.Text.ToString().Trim(), txbDireccion.Text.ToString().Trim(), int.Parse(ddlCiudadSede.SelectedItem.Value.ToString()), txbTelefono.Text.ToString().Trim(), contenidoEditor, "", rblTipoSede.SelectedValue.ToString(), rblClaseSede.SelectedValue.ToString());
                         cg.InsertarLog(Session["idusuario"].ToString(), "sedes", "Agrega", "El usuario agregó una nueva sede: " + txbSede.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
@@ -248,16 +242,16 @@ namespace fpWebApp
 
         protected void rblClaseSede_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(rblClaseSede.SelectedItem.Value == "Gimnasio")
-            {
-                lblTipoSede.Visible = true;
-                rblTipoSede.Visible = true;
-            }
-            else
-            {
-                lblTipoSede.Visible = false;
-                rblTipoSede.Visible = false;
-            }
+            //if(rblClaseSede.SelectedItem.Value == "Gimnasio")
+            //{
+            //    lblTipoSede.Visible = true;
+            //    rblTipoSede.Visible = true;
+            //}
+            //else
+            //{
+            //    lblTipoSede.Visible = false;
+            //    rblTipoSede.Visible = false;
+            //}
         }
     }
 }
