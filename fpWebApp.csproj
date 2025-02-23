@@ -332,7 +332,6 @@
     <Content Include="editarempresaafiliada.aspx" />
     <Content Include="editarespecialista.aspx" />
     <Content Include="editarusuario.aspx" />
-    <Content Include="ejemplosummernote.aspx" />
     <Content Include="eliminarafiliado.aspx" />
     <Content Include="eliminardisponibilidad.aspx" />
     <Content Include="eliminarempleado.aspx" />
@@ -1088,13 +1087,6 @@
     </Compile>
     <Compile Include="editarusuario.aspx.designer.cs">
       <DependentUpon>editarusuario.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ejemplosummernote.aspx.cs">
-      <DependentUpon>ejemplosummernote.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ejemplosummernote.aspx.designer.cs">
-      <DependentUpon>ejemplosummernote.aspx</DependentUpon>
     </Compile>
     <Compile Include="eliminarafiliado.aspx.cs">
       <DependentUpon>eliminarafiliado.aspx</DependentUpon>
