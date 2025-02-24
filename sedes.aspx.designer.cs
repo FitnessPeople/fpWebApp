@@ -78,15 +78,6 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltTitulo;
 
         /// <summary>
-        /// Control ScriptManager1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.ScriptManager ScriptManager1;
-
-        /// <summary>
         /// Control txbSede.
         /// </summary>
         /// <remarks>
@@ -94,6 +85,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbSede;
+
+        /// <summary>
+        /// Control rfvSede.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvSede;
 
         /// <summary>
         /// Control txbDireccion.
@@ -105,6 +105,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbDireccion;
 
         /// <summary>
+        /// Control rfvDirSede.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDirSede;
+
+        /// <summary>
         /// Control ddlCiudadSede.
         /// </summary>
         /// <remarks>
@@ -114,6 +123,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlCiudadSede;
 
         /// <summary>
+        /// Control rfvCiudadSede.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCiudadSede;
+
+        /// <summary>
         /// Control txbTelefono.
         /// </summary>
         /// <remarks>
@@ -121,6 +139,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbTelefono;
+
+        /// <summary>
+        /// Control rfvTelSede.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTelSede;
 
         /// <summary>
         /// Control hiddenEditor.
@@ -150,6 +177,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.RadioButtonList rblClaseSede;
 
         /// <summary>
+        /// Control rfvClase.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvClase;
+
+        /// <summary>
         /// Control lblTipoSede.
         /// </summary>
         /// <remarks>
@@ -166,6 +202,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList rblTipoSede;
+
+        /// <summary>
+        /// Control rfvTipoSede.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTipoSede;
 
         /// <summary>
         /// Control btnAgregar.
