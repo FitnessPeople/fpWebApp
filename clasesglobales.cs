@@ -2607,7 +2607,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public DataTable ConsultarSedesPorClase(string claseSede)
+        public DataTable ConsultaCargarSedes(string p_clase_sede)
         {
             DataTable dt = new DataTable();
 
@@ -2616,10 +2616,10 @@ namespace fpWebApp
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_SEDES_POR_CLASE", mysqlConexion))
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CARGAR_SEDES", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@p_clase_sede", claseSede);
+                        cmd.Parameters.AddWithValue("@p_clase_sede", p_clase_sede);// Gimnasio / Oficina / Todos 
 
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
                         {
