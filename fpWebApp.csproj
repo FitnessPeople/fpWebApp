@@ -1386,6 +1386,13 @@
     <Compile Include="reportepagoswompi.aspx.designer.cs">
       <DependentUpon>reportepagoswompi.aspx</DependentUpon>
     </Compile>
+    <Compile Include="reportepagoswompi.aspx.cs">
+      <DependentUpon>reportepagoswompi.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="reportepagoswompi.aspx.designer.cs">
+      <DependentUpon>reportepagoswompi.aspx</DependentUpon>
+    </Compile>
     <Compile Include="respuestaautorizacion.aspx.cs">
       <DependentUpon>respuestaautorizacion.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
