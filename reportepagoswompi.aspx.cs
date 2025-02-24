@@ -4,12 +4,9 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Reflection.Emit;
-using System.Text;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.UI;
@@ -55,6 +52,57 @@ namespace fpWebApp
                         }
                     }
                     listaTransacciones();
+                    string parametro = string.Empty;
+                    if (Request.QueryString.Count > 0)
+                        if (Request.QueryString["verid"] != null)
+                        {
+                            //Boton ver detalles
+                            clasesglobales cg = new clasesglobales();
+                            DataTable dt = cg.ConsultarPagosWompiPorId(int.Parse(Request.QueryString["verid"].ToString()));
+
+                            if (dt.Rows.Count > 0)
+                            {
+                                parametro = dt.Rows[0]["IdReferenciaWompi"].ToString();
+                            }
+
+                            string url = "https://sandbox.wompi.co/v1//transactions/" + parametro;
+                            string rta = EnviarPeticion(url);
+                            JToken token = JToken.Parse(rta);
+                            string prettyJson = token.ToString(Formatting.Indented);
+                            txbPago.Text = prettyJson;
+                            Console.WriteLine(prettyJson);
+
+                            JObject jsonData = JObject.Parse(prettyJson); 
+
+                            List<pagoswompidet> listaPagos = new List<pagoswompidet>
+                            {
+                                new pagoswompidet
+                                {
+                                    Id = jsonData["data"]["id"]?.ToString(),
+                                    FechaCreacion = jsonData["data"]["created_at"]?.ToString(),
+                                    FechaFinalizacion = jsonData["data"]["finalized_at"]?.ToString(),
+                                    Valor = ((jsonData["data"]["amount_in_cents"]?.Value<int>() ?? 0) / 100).ToString("N0") + " " + jsonData["data"]["currency"]?.ToString(),
+                                    Moneda = jsonData["data"]["currency"]?.ToString(),
+                                    MetodoPago = jsonData["data"]["payment_method_type"]?.ToString(),
+                                    Estado = jsonData["data"]["status"]?.ToString(),
+                                    Referencia = jsonData["data"]["reference"]?.ToString(),
+                                    NombreTarjeta = jsonData["data"]["payment_method"]["extra"]["name"]?.ToString(),
+                                    UltimosDigitos = jsonData["data"]["payment_method"]["extra"]["last_four"]?.ToString(),
+                                    MarcaTarjeta = jsonData["data"]["payment_method"]["extra"]["brand"]?.ToString(),
+                                    TipoTarjeta = jsonData["data"]["payment_method"]["extra"]["card_type"]?.ToString(),
+                                    NombreComercio = jsonData["data"]["merchant"]["name"]?.ToString(),
+                                    ContactoComercio = jsonData["data"]["merchant"]["contact_name"]?.ToString(),
+                                    TelefonoComercio = jsonData["data"]["merchant"]["phone_number"]?.ToString(),
+                                    URLRedireccion = jsonData["data"]["redirect_url"]?.ToString(),
+                                    PaymentLinkId = jsonData["data"]["payment_link_id"]?.ToString(),
+                                    PublicKeyComercio = jsonData["data"]["merchant"]["public_key"]?.ToString(),
+                                    EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString(),
+                                    Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
+                            };
+
+                           // RpDetalle.DataSource = listaPagos;
+                           // RpDetalle.DataBind();
+                        }
                 }
                 else
                 {
@@ -168,11 +216,6 @@ namespace fpWebApp
             }
 
 
-            sb.Append("</table>");
-
-            return sb.ToString();
-        }
-
         protected void rpPagosWompi_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
@@ -181,10 +224,7 @@ namespace fpWebApp
                 {
                     HtmlAnchor btnVer = (HtmlAnchor)e.Item.FindControl("btnVer");
                     btnVer.Attributes.Add("href", "reportepagoswompi?verid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    btnVer.Visible = false;
-
-                    Literal ltDetalle = (Literal)e.Item.FindControl("ltDetalle");
-                    ltDetalle.Text = listarDetalle(int.Parse(((DataRowView)e.Item.DataItem).Row[0].ToString())).ToString();
+                    btnVer.Visible = true;
                 }
             }
         }
@@ -222,9 +262,8 @@ namespace fpWebApp
 
         }
 
-        protected void rpDetalle_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
 
-        }
+
+
     }
 }
