@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="reportepagoswompi.aspx.cs" Inherits="fpWebApp.reportespagoswompi" %>
+﻿﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="reportepagoswompi.aspx.cs" Inherits="fpWebApp.reportespagoswompi" %>
 
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
@@ -129,51 +129,7 @@
 
                     <form id="form1" runat="server">
                         <div class="row" id="divContenido" runat="server">
-                            <div class="col-lg-8">
                             <div class="col-lg-12">
-                                <div class="ibox float-e-margins">
-                                  <div class="ibox-title">
-                                        <h5>
-                                            <asp:Literal ID="ltTitulo" runat="server"></asp:Literal></h5>
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-up"></i>
-                                            </a>
-                                        </div>
-                                    </div>--%>
-<%--                                    <div class="ibox-content">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="form-group">
-                                                    <label>Nombre de la ARL:</label>
-                                                    <asp:TextBox ID="txbArl" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="rfvArl" runat="server" ErrorMessage="* Campo requerido" 
-                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
-                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
-                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
-                                                <asp:LinkButton ID="lbExportarExcel" runat="server"
-                                                    CausesValidation="false"
-                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
-                                                    <a href="arl" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar" 
-                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" 
-                                                        OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
-                                                </div>
-                                                <br />
-                                        <table class="footable table table-striped" data-paging-size="10"
-                                            data-filter-min="3" data-filter-placeholder="Buscar"
-                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
-                                            data-paging-limit="10" data-filtering="true"
-                                            data-filter-container="#filter-form-container" data-filter-delay="300"
-                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left"
-                                            data-empty="Detalle de la transacción">
-                                        <table class="footable table table-striped" data-paging-size="10" data-filter-min="3" data-filter-placeholder="Buscar"
-                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
-                                            data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300"
-                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
-                                </div>
-                            </div>--%>
-                            <div class="col-lg-8">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5>Transacciones: Recibir pagos</h5>
@@ -191,25 +147,20 @@
                                                     <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                                 </div>
                                             </div>
- 
                                             <div class="col-lg-6 form-horizontal">
-                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false" 
-                                                                <a runat="server" id="btnVer" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                <asp:Literal ID="ltDetalle" runat="server"></asp:Literal>
-                                                            </td>
-                                                            <td style="display: flex; flex-wrap: nowrap;">
-                                                                <a runat="server" id="btnVer" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server"
+                                                    CausesValidation="false"
+                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
+                                                    OnClick="lbExportarExcel_Click">
+                                                    <i class="fa fa-file-excel"></i> EXCEL
                                                 </asp:LinkButton>
                                             </div>
                                         </div>
 
-                                        <table class="footable table table-striped" data-paging-size="10"
-                                            data-filter-min="3" data-filter-placeholder="Buscar"
-                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
-                                            data-paging-limit="10" data-filtering="true"
-                                            data-filter-container="#filter-form-container" data-filter-delay="300"
-                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left"
-                                            data-empty="Sin resultados">
+                                        <table class="footable table table-striped" data-paging-size="10" data-filter-min="3" data-filter-placeholder="Buscar"
+                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
+                                            data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300"
+                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
                                                     <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">Id Pago</th>
@@ -233,9 +184,10 @@
                                                             <td><%# Eval("IdReferenciaWompi") %></td>
                                                             <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy}") %></td>
                                                             <td>
-                                                                <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
-                                                                <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                <asp:Literal ID="ltDetalle" runat="server"></asp:Literal>
+                                                            </td>
+                                                            <td style="display: flex; flex-wrap: nowrap;">
+                                                                <a runat="server" id="btnVer" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
                                                             </td>
                                                         </tr>
@@ -243,11 +195,6 @@
                                                 </asp:Repeater>
                                             </tbody>
                                         </table>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Detalle de la transacción:</label>
-                                        <asp:TextBox ID="txbPago" runat="server" TextMode="MultiLine"
-                                            CssClass="form-control input-sm" Rows="10"></asp:TextBox>
                                     </div>
                                 </div>
                             </div>
@@ -282,4 +229,3 @@
 </body>
 
 </html>
-
