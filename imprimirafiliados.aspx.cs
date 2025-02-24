@@ -22,12 +22,8 @@ namespace fpWebApp
 
         private void CargarSedes()
         {
-            string strQuery = "SELECT s.idSede, CONCAT(s.NombreSede, \" - \", cs.NombreCiudadSede) AS NombreSede " +
-                "FROM sedes s " +
-                "LEFT JOIN CiudadesSedes cs ON s.idCiudadSede = cs.idCiudadSede " +
-                "ORDER BY s.idCiudadSede, NombreSede";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultaCargarSedes("Gimnasio");
 
             ddlSedes.DataSource = dt;
             ddlSedes.DataBind();
