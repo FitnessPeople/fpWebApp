@@ -11,7 +11,7 @@ namespace fpWebApp
 {
     public partial class agenda : System.Web.UI.Page
     {
-        OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
+        ////OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
         private string _strEventos;
         protected string strEventos { get { return this._strEventos; } }
         protected void Page_Load(object sender, EventArgs e)
@@ -75,14 +75,8 @@ namespace fpWebApp
 
         private void CargarAgenda()
         {
-            ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
-            string strQuery = "SELECT *, DATE_FORMAT(FechaHoraInicio, \"%m/%d/%Y %r\") FechaHoraIni, " +
-                "DATE_FORMAT(FechaHoraFinal, \"%m/%d/%Y %r\") FechaHoraFin " +
-                "FROM DisponibilidadEspecialistas de, Especialistas e " +
-                "WHERE de.idSede = " + ddlSedes.SelectedItem.Value.ToString() + " " +
-                "AND de.idEspecialista = e.idEspecialista ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultaCargarAgenda(int.Parse(ddlSedes.SelectedItem.Value.ToString()));
 
             _strEventos = "events: [\r\n";
 
@@ -285,10 +279,8 @@ namespace fpWebApp
 
         private void CargarEspecialistas()
         {
-            string strQuery = "SELECT idEspecialista, CONCAT(NombreEspecialista, ' ', ApellidoEspecialista) AS NombreCompleto FROM Especialistas " +
-                "WHERE EstadoEspecialista = 'Activo'";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultaCargarEspecialistas();
 
             ddlEspecialistas.DataSource = dt;
             ddlEspecialistas.DataBind();
@@ -380,11 +372,8 @@ namespace fpWebApp
                                                             "VALUES (" + ddlEspecialistas.SelectedItem.Value.ToString() + ", " + ddlSedesCita.SelectedItem.Value.ToString() + ", " +
                                                             "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
                                                             "" + Session["idusuario"].ToString() + ") ";
-                                                        OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                                                        myConnection.Open();
-                                                        command.ExecuteNonQuery();
-                                                        command.Dispose();
-                                                        myConnection.Close();
+                                                        
+                                                        string restpuesta = cg.TraerDatosStr(strQuery);
                                                     }
                                                 }
                                             }
@@ -396,11 +385,8 @@ namespace fpWebApp
                                                 "VALUES (" + ddlEspecialistas.SelectedItem.Value.ToString() + ", " + ddlSedesCita.SelectedItem.Value.ToString() + ", " +
                                                 "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
                                                 "" + Session["idusuario"].ToString() + ") ";
-                                            OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                                            myConnection.Open();
-                                            command.ExecuteNonQuery();
-                                            command.Dispose();
-                                            myConnection.Close();
+
+                                            string restpuesta = cg.TraerDatosStr(strQuery);
                                         }
                                         dtFechaIniCita = dtFechaFinCita;
                                     }
@@ -423,7 +409,7 @@ namespace fpWebApp
                     catch (OdbcException ex)
                     {
                         string mensaje = ex.Message;
-                        myConnection.Close();
+                        //myConnection.Close();
                     }
                 }
                 else

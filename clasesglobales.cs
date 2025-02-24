@@ -112,6 +112,34 @@ namespace fpWebApp
             return dt;
         }
 
+        public string TraerDatosStr(string strQuery)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
+                    {
+                        mysqlConexion.Open();
+                        cmd.CommandType = CommandType.Text;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            cmd.ExecuteNonQuery();
+                            respuesta = "OK";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+            return respuesta;
+        }
+
         public string InsertarLog(string idUsuario, string tabla, string accion, string descripcion, string datosAnteriores, string datosNuevos)
         {
             string respuesta = string.Empty;
@@ -2702,8 +2730,6 @@ namespace fpWebApp
             return respuesta;
         }
 
-
-
         public string ActualizarSede(int idSede, string nombreSede, string direccionSede, int idCiudadSede, string telefonoSede, string horarioSede, string tipoSede, string claseSede)
         {
             string respuesta = string.Empty;
@@ -2766,10 +2792,6 @@ namespace fpWebApp
 
             return respuesta;
         }
-
-
-
-
 
 
         #endregion
@@ -4417,6 +4439,71 @@ namespace fpWebApp
             }
 
             return respuesta;
+        }
+
+        #endregion
+
+        #region Agenda
+
+        public DataTable ConsultaCargarAgenda(int idSede)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CARGAR_AGENDA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_sede", idSede);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultaCargarEspecialistas()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CIUDADES", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
         }
 
         #endregion
