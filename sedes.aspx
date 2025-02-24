@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="sedes.aspx.cs" Inherits="fpWebApp.sedes" ValidateRequest="false" %>
+
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
@@ -75,6 +76,7 @@
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#sistema");
             element2.classList.remove("collapse");
+            console.log(element2);
         }
     </script>
 
@@ -176,71 +178,92 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-                                        <contenttemplate>
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    <div class="form-group">
-                                                        <label>Nombre de la sede:</label>
-                                                        <asp:TextBox ID="txbSede" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Dirección:</label>
-                                                        <asp:TextBox ID="txbDireccion" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-6">
-                                                            <div class="form-group">
-                                                                <label>Ciudad:</label>
-                                                                <asp:DropDownList ID="ddlCiudadSede" runat="server" CssClass="form-control input-sm"
-                                                                    DataTextField="NombreCiudadSede" DataValueField="idCiudadSede" AppendDataBoundItems="true">
-                                                                    <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                </asp:DropDownList>
-                                                            </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>Nombre de la sede:</label>
+                                                    <asp:TextBox ID="txbSede" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="rfvSede" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="txbSede" ValidationGroup="agregar"
+                                                        CssClass="font-bold text-danger">
+                                                    </asp:RequiredFieldValidator>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Dirección:</label>
+                                                    <asp:TextBox ID="txbDireccion" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="rfvDirSede" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="txbDireccion" ValidationGroup="agregar"
+                                                        CssClass="font-bold text-danger" InitialValue="">
+                                                    </asp:RequiredFieldValidator>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Ciudad:</label>
+                                                            <asp:DropDownList ID="ddlCiudadSede" runat="server" CssClass="form-control input-sm"
+                                                                DataTextField="NombreCiudadSede" DataValueField="idCiudadSede" AppendDataBoundItems="true">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                            <asp:RequiredFieldValidator ID="rfvCiudadSede" runat="server" ErrorMessage="* Campo requerido"
+                                                                ControlToValidate="ddlCiudadSede" ValidationGroup="agregar"
+                                                                CssClass="font-bold text-danger" InitialValue="">
+                                                            </asp:RequiredFieldValidator>
                                                         </div>
-                                                        <div class="col-sm-6">
-                                                            <div class="form-group">
-                                                                <label>Teléfono:</label>
-                                                                <asp:TextBox ID="txbTelefono" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                            </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Teléfono:</label>
+                                                            <asp:TextBox ID="txbTelefono" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                            <asp:RequiredFieldValidator ID="rfvTelSede" runat="server" ErrorMessage="* Campo requerido"
+                                                                ControlToValidate="txbTelefono" ValidationGroup="agregar"
+                                                                CssClass="font-bold text-danger">
+                                                            </asp:RequiredFieldValidator>
                                                         </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Horario:</label>
-                                                        <div id="editor" cssclass="form-control input-sm"></div>
-                                                        <asp:HiddenField ID="hiddenEditor" runat="server" />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <b>
-                                                            <asp:Label ID="lblClaseSede" runat="server" Text="Clase Sede" Font-Bold="true"></asp:Label></b>
-                                                        <asp:RadioButtonList ID="rblClaseSede" runat="server" CssClass="form-control input-sm" RepeatDirection="Horizontal">
-                                                            <asp:ListItem Text="&nbsp;Gimnasio&nbsp;&nbsp;&nbsp;&nbsp;" Value="Gimnasio"></asp:ListItem>
-                                                            <asp:ListItem Text="&nbsp;Oficina&nbsp;&nbsp;&nbsp;&nbsp;" Value="Oficina"></asp:ListItem>
-                                                        </asp:RadioButtonList>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <b>
-                                                            <asp:Label ID="lblTipoSede" runat="server" Text="Tipo Sede Gimnasio" Font-Bold="true"></asp:Label></b>
-                                                        <asp:RadioButtonList ID="rblTipoSede" runat="server" CssClass="form-control input-sm" RepeatDirection="Horizontal">
-                                                            <asp:ListItem Text="&nbsp;Deluxe&nbsp;&nbsp;&nbsp;&nbsp;" Value="Deluxe"></asp:ListItem>
-                                                            <asp:ListItem Text="&nbsp;Premium&nbsp;&nbsp;&nbsp;&nbsp;" Value="Premium"></asp:ListItem>
-                                                            <asp:ListItem Text="&nbsp;N/A&nbsp;&nbsp;&nbsp;&nbsp;" Value=""></asp:ListItem>
-                                                        </asp:RadioButtonList>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <a href="sedes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                        <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
-                                                            CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
-                                                            OnClick="btnAgregar_Click" OnClientClick="guardarContenidoEditor()" />
-                                                    </div>
-                                                    <br />
-                                                    <br />
-                                                    <div class="form-group">
-                                                        <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                                     </div>
                                                 </div>
+                                                <div class="form-group">
+                                                    <label>Horario:</label>
+                                                    <div id="editor" cssclass="form-control input-sm"></div>
+                                                    <asp:HiddenField ID="hiddenEditor" runat="server" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <b>
+                                                        <asp:Label ID="lblClaseSede" runat="server" Text="Clase Sede" Font-Bold="true"></asp:Label></b>
+                                                    <asp:RadioButtonList ID="rblClaseSede" runat="server" CssClass="form-control input-sm" RepeatDirection="Horizontal">
+                                                        <asp:ListItem Text="&nbsp;Gimnasio&nbsp;&nbsp;&nbsp;&nbsp;" Value="Gimnasio"></asp:ListItem>
+                                                        <asp:ListItem Text="&nbsp;Oficina&nbsp;&nbsp;&nbsp;&nbsp;" Value="Oficina"></asp:ListItem>
+                                                    </asp:RadioButtonList>
+                                                    <asp:RequiredFieldValidator ID="rfvClase" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="rblClaseSede" ValidationGroup="agregar"
+                                                        CssClass="font-bold text-danger">
+                                                    </asp:RequiredFieldValidator>
+                                                </div>
+                                                <div class="form-group">
+                                                    <b>
+                                                        <asp:Label ID="lblTipoSede" runat="server" Text="Tipo Sede Gimnasio" Font-Bold="true"></asp:Label></b>
+                                                    <asp:RadioButtonList ID="rblTipoSede" runat="server" CssClass="form-control input-sm" RepeatDirection="Horizontal">
+                                                        <asp:ListItem Text="&nbsp;Deluxe&nbsp;&nbsp;&nbsp;&nbsp;" Value="Deluxe"></asp:ListItem>
+                                                        <asp:ListItem Text="&nbsp;Premium&nbsp;&nbsp;&nbsp;&nbsp;" Value="Premium"></asp:ListItem>
+                                                        <asp:ListItem Text="&nbsp;N/A&nbsp;&nbsp;&nbsp;&nbsp;" Value=""></asp:ListItem>
+                                                    </asp:RadioButtonList>
+                                                    <asp:RequiredFieldValidator ID="rfvTipoSede" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="rblTipoSede" ValidationGroup="agregar"
+                                                        CssClass="font-bold text-danger">
+                                                    </asp:RequiredFieldValidator>
+                                                </div>
+                                                <div class="form-group">
+                                                    <a href="sedes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
+                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar"
+                                                        OnClick="btnAgregar_Click" OnClientClick="guardarContenidoEditor()" />
+                                                </div>
+                                                <br />
+                                                <br />
+                                                <div class="form-group">
+                                                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                </div>
                                             </div>
-                                        </contenttemplate>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -295,7 +318,6 @@
                                                     <th data-breakpoints="xs">Tipo Sede</th>
                                                     <th data-breakpoints="all" data-title="Info"></th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
-
                                                 </tr>
                                             </thead>
                                             <tbody>
