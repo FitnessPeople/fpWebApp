@@ -247,7 +247,7 @@
                                             </ItemTemplate>
                                         </asp:Repeater>
                                     </ul>
-
+                                    <asp:Literal runat="server" ID="ltMensaje"></asp:Literal>
                                 </div>
                             </div>
 

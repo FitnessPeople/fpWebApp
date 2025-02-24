@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
+using System.Net;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -54,15 +56,8 @@ namespace fpWebApp
             ViewState["CrearModificar"] = "0";
             ViewState["Borrar"] = "0";
 
-            string strQuery = "SELECT SinPermiso, Consulta, Exportar, CrearModificar, Borrar " +
-                "FROM permisos_perfiles pp, paginas p, usuarios u " +
-                "WHERE pp.idPagina = p.idPagina " +
-                "AND p.Pagina = '" + strPagina + "' " +
-                "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
-                "AND u.idPerfil = pp.idPerfil " +
-                "AND u.idUsuario = " + Session["idusuario"].ToString();
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -102,7 +97,8 @@ namespace fpWebApp
                 "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) IS NOT NULL, CONCAT('(',TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()),')'),'<i class=\"fa fa-circle-question m-r-lg m-l-lg\"></i>') AS edad, " +
                 "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 14,'danger',IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 14,'success',IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 60,'info','warning'))) badge, " +
                 "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 14,'baby',IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) >= 60,'person-walking-with-cane','')) age, " +
-                "IF(EstadoAfiliado='Activo','success',IF(EstadoAfiliado='Inactivo','danger','warning')) badge2 " +
+                "IF(EstadoAfiliado='Activo','success',IF(EstadoAfiliado='Inactivo','danger','warning')) badge2, " +
+                "IF(EstadoPlan='Activo','success',IF(EstadoPlan='Inactivo','danger','warning')) badge3 " +
                 "FROM Afiliados a " +
                 "LEFT JOIN generos g ON g.idGenero = a.idGenero " +
                 "LEFT JOIN sedes s ON s.idSede = a.idSede " +
@@ -111,11 +107,12 @@ namespace fpWebApp
                 "LEFT JOIN profesiones p ON p.idProfesion = a.idProfesion " +
                 "LEFT JOIN eps ON eps.idEps = a.idEps " +
                 "LEFT JOIN ciudades ON ciudades.idCiudad = a.idCiudadAfiliado " +
+                "LEFT JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado " +
                 "WHERE (DocumentoAfiliado like '%" + strParam + "%' " +
                 "OR NombreAfiliado like '%" + strParam + "%' " +
                 "OR EmailAfiliado like '%" + strParam + "%' " +
                 "OR CelularAfiliado like '%" + strParam + "%') " + strQueryAdd + " " +
-                "ORDER BY idAfiliado DESC " +
+                "ORDER BY a.idAfiliado DESC " +
                 "LIMIT 100";
             clasesglobales cg1 = new clasesglobales();
             DataTable dt = cg1.TraerDatos(strQuery);
