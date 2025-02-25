@@ -74,9 +74,8 @@ namespace fpWebApp
 
         private void CargarTipoDocumento()
         {
-            string strQuery = "SELECT * FROM tiposDocumento";
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultartiposDocumento();
 
             ddlTipoDocumento.DataSource = dt;
             ddlTipoDocumento.DataBind();
