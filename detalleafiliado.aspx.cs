@@ -107,7 +107,16 @@ namespace fpWebApp
 
             string url = "https://aone.armaturacolombia.co/api/person/get/" + strDocumento + "?access_token=D2BCF6E6BD09DECAA1266D9F684FFE3F5310AD447D107A29974F71E1989AABDB";
             string respuesta = EnviarPeticionGet(url);
-            ltMensaje.Text = respuesta;
+
+            ltImagen.Text = "<img src=\"img/facial-recognition.png\" width=\"100px\" />";
+            if (respuesta == "success")
+            {
+                ltMensaje.Text = "<span class=\"product-price bg-info\">Con acceso biométrico</span>";
+            }
+            else
+            {
+                ltMensaje.Text = "<span class=\"product-price bg-danger\">Sin acceso biométrico</span>";
+            }
         }
 
         private static string EnviarPeticionGet(string url)
@@ -139,7 +148,8 @@ namespace fpWebApp
         private void CargarPlanesAfiliado(string strIdAfiliado)
         {
             string strQuery = "SELECT *, " +
-                "DATEDIFF(FechaFinalPlan, CURDATE()) AS diasquefaltan, " +
+                "IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,'danger','info') AS label1, " +
+                "IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,CONCAT(DATEDIFF(FechaFinalPlan, CURDATE())*(-1),' días vencidos'),CONCAT(DATEDIFF(FechaFinalPlan, CURDATE()),' días disponibles')) AS diasquefaltan, " +
                 "DATEDIFF(CURDATE(), FechaInicioPlan) AS diasconsumidos, " +
                 "DATEDIFF(FechaFinalPlan, FechaInicioPlan) AS diastotales, " +
                 "ROUND(DATEDIFF(CURDATE(), FechaInicioPlan) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje1, " +
@@ -147,8 +157,8 @@ namespace fpWebApp
                 "FROM afiliadosPlanes ap, Afiliados a, Planes p " +
                 "WHERE a.idAfiliado = " + strIdAfiliado + " " +
                 "AND ap.idAfiliado = a.idAfiliado " +
-                "AND ap.idPlan = p.idPlan " +
-                "AND ap.EstadoPlan = 'Activo'";
+                "AND ap.idPlan = p.idPlan ";
+                //"AND ap.EstadoPlan = 'Activo'";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 

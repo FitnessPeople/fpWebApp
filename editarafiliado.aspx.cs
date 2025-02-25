@@ -4,9 +4,12 @@ using System.Configuration;
 using System.Data;
 using System.Data.Odbc;
 using System.IO;
+using System.Net;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace fpWebApp
@@ -315,7 +318,21 @@ namespace fpWebApp
                 clasesglobales cg = new clasesglobales();
 
                 string mensaje = cg.TraerDatosStr(strQuery);
-                cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Modifica", "El usuario modificó datos al afiliado con documento " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
+
+                if (mensaje == "OK")
+                {
+                    cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Modifica", "El usuario modificó datos al afiliado con documento " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
+
+                    //Consulta si existe el afiliado en Armatura y lo actualiza
+                    string url = "https://aone.armaturacolombia.co/api/person/get/" + txbDocumento.Text.ToString() + "?access_token=D2BCF6E6BD09DECAA1266D9F684FFE3F5310AD447D107A29974F71E1989AABDB";
+                    string respuesta = ConsultarPersona(url);
+
+                    if (respuesta == "success")
+                    {
+                        //Actualiza
+                        PostArmatura(txbDocumento.Text.ToString());
+                    }
+                }
             }
             catch (OdbcException ex)
             {
@@ -323,6 +340,155 @@ namespace fpWebApp
             }
 
             Response.Redirect("afiliados");
+        }
+
+        private static string ConsultarPersona(string url)
+        {
+            string resultado = "";
+            string resultadoj = "";
+            try
+            {
+                WebRequest oRequest = WebRequest.Create(url);
+                oRequest.Method = "GET";
+                oRequest.ContentType = "application/json;charset=UTF-8";
+
+                WebResponse oResponse = oRequest.GetResponse();
+                using (var oSr = new StreamReader(oResponse.GetResponseStream()))
+                {
+                    resultado = oSr.ReadToEnd().Trim();
+                    JObject jsonObj = JObject.Parse(resultado);
+                    resultadoj = jsonObj["message"].ToString();
+                }
+
+                return resultadoj;
+            }
+            catch (Exception ex)
+            {
+                return "Error al enviar la petición: " + ex.Message;
+            }
+        }
+
+        private void PostArmatura(string strDocumento)
+        {
+            clasesglobales cg = new clasesglobales();
+            string strQuery = "SELECT * " +
+                "FROM Afiliados a " +
+                "LEFT JOIN AfiliadosPlanes ap ON a.idAfiliado = ap.idAfiliado " +
+                "WHERE DocumentoAfiliado = '" + strDocumento + "'";
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    string strGenero = "";
+                    string strFechaInicio = "";
+                    string strFechaFinal = "";
+                    if (dt.Rows[i]["idGenero"].ToString() == "1")
+                    {
+                        strGenero = "M";
+                    }
+                    if (dt.Rows[i]["idGenero"].ToString() == "2")
+                    {
+                        strGenero = "F";
+                    }
+
+                    if (dt.Rows[i]["EstadoPlan"].ToString() != "Archivado")
+                    {
+                        strFechaInicio = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[i]["FechaInicioPlan"].ToString())) + " 15:00:00";
+                        strFechaFinal = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[i]["FechaFinalPlan"].ToString())) + " 23:00:00";
+                    }
+
+                    Persona oPersona = new Persona()
+                    {
+                        pin = "" + dt.Rows[i]["DocumentoAfiliado"].ToString() + "",
+                        name = "" + dt.Rows[i]["NombreAfiliado"].ToString() + "",
+                        lastName = "" + dt.Rows[i]["ApellidoAfiliado"].ToString() + "",
+                        gender = strGenero,
+                        personPhoto = "",
+                        certType = "",
+                        certNumber = "",
+                        mobilePhone = "" + dt.Rows[i]["CelularAfiliado"].ToString() + "",
+                        personPwd = "",
+                        birthday = "" + String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[i]["FechaNacAfiliado"].ToString())) + "",
+                        isSendMail = "false",
+                        email = "" + dt.Rows[i]["EmailAfiliado"].ToString() + "",
+                        deptCode = "01",
+                        ssn = "",
+                        cardNo = "",
+                        supplyCards = "",
+                        carPlate = "",
+                        accStartTime = strFechaInicio,
+                        accEndTime = strFechaFinal,
+                        accLevelIds = "402883f08df57ba4018df57cddf70490",
+                        hireDate = ""
+                    };
+
+                    string contenido = JsonConvert.SerializeObject(oPersona, Formatting.Indented);
+
+                    string url = "https://aone.armaturacolombia.co/api/person/add/?access_token=D2BCF6E6BD09DECAA1266D9F684FFE3F5310AD447D107A29974F71E1989AABDB";
+                    EnviarPeticion(url, contenido);
+                }
+            }
+        }
+
+        public static string EnviarPeticion(string url, string contenido)
+        {
+            string result = "";
+            string resultadoj = "";
+            try
+            {
+                WebRequest oRequest = WebRequest.Create(url);
+                oRequest.Method = "post";
+                oRequest.ContentType = "application/json;charset-UTF-8";
+
+                using (var oSw = new StreamWriter(oRequest.GetRequestStream()))
+                {
+                    oSw.Write(contenido);
+                    oSw.Flush();
+                    oSw.Close();
+                }
+
+                WebResponse oResponse = oRequest.GetResponse();
+                using (var oSr = new StreamReader(oResponse.GetResponseStream(), System.Text.Encoding.UTF8))
+                {
+                    result = oSr.ReadToEnd().Trim();
+                    JObject jsonObj = JObject.Parse(result);
+                    resultadoj = jsonObj["message"].ToString();
+                }
+                return resultadoj;
+            }
+            catch (Exception ex)
+            {
+                string error = "Error al enviar la petición: " + ex.Message;
+                return error;
+            }
+        }
+
+        public class Persona
+        {
+            public string pin { get; set; }
+            public string name { get; set; }
+            public string lastName { get; set; }
+            public string gender { get; set; }
+            public string personPhoto { get; set; }
+            public string certType { get; set; }
+            public string certNumber { get; set; }
+            public string mobilePhone { get; set; }
+            public string personPwd { get; set; }
+            public string birthday { get; set; }
+            public string isSendMail { get; set; }
+            public string email { get; set; }
+            public string deptCode { get; set; }
+            public string ssn { get; set; }
+            public string cardNo { get; set; }
+            public string supplyCards { get; set; }
+            public string carPlate { get; set; }
+            public string accStartTime { get; set; }
+            public string accEndTime { get; set; }
+            public string accLevelIds { get; set; }
+            public string hireDate { get; set; }
+
         }
 
         private string TraerData()
