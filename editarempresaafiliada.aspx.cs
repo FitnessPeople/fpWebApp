@@ -173,7 +173,6 @@ namespace fpWebApp
                 strFilename = postedFile.FileName;
             }
 
-            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
             string strInitData = TraerData();
             try
             {
@@ -195,21 +194,18 @@ namespace fpWebApp
                     "DiasCredito = '" + ddlDiasCredito.SelectedItem.Value.ToString() + "', " +
                     "EstadoEmpresa = '" + rblEstado.Text.ToString() + "' " +
                     "WHERE idEmpresaAfiliada = " + Request.QueryString["editid"].ToString();
-                OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                myConnection.Open();
-                command.ExecuteNonQuery();
-                command.Dispose();
-                myConnection.Close();
-
-                string strNewData = TraerData();
 
                 clasesglobales cg = new clasesglobales();
+                string mensaje = cg.TraerDatosStr(strQuery);
+                
+                string strNewData = TraerData();
+
+                
                 cg.InsertarLog(Session["idusuario"].ToString(), "EmpresasAfiliadas", "Modifica", "El usuario modificó datos a la empresa afiliada con documento " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
             }
             catch (OdbcException ex)
             {
-                string mensaje = ex.Message;
-                myConnection.Close();
+                string mensaje = ex.Message;               
             }
 
             Response.Redirect("empresasafiliadas");

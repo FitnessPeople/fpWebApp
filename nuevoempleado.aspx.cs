@@ -274,7 +274,6 @@ namespace fpWebApp
                             strFilename = postedFile.FileName;
                         }
 
-                        OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
                         try
                         {
                             string strQuery = "INSERT INTO empleados " +
@@ -295,13 +294,9 @@ namespace fpWebApp
                             "" + ddlFondoPension.SelectedItem.Value.ToString() + ", " + ddlArl.SelectedItem.Value.ToString() + ", " +
                             "" + ddlCajaComp.SelectedItem.Value.ToString() + ", " + ddlCesantias.SelectedItem.Value.ToString() + ", " +
                             "'Activo') ";
-                            OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                            myConnection.Open();
-                            command.ExecuteNonQuery();
-                            command.Dispose();
-                            myConnection.Close();
 
                             clasesglobales cg = new clasesglobales();
+                            string mensaje = cg.TraerDatosStr(strQuery);
                             cg.InsertarLog(Session["idusuario"].ToString(), "Empleados", "Nuevo registro", "El usuario agregó un nuevo empleado con documento " + txbDocumento.Text.ToString() + ".", "", "");
 
                             Response.Redirect("empleados");
@@ -312,7 +307,6 @@ namespace fpWebApp
                                 "<div class=\"alert alert-danger alert-dismissable\">" +
                                 "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
                                 "</div></div>";
-                            myConnection.Close();
                         }
                     }
                 }

@@ -290,10 +290,10 @@ namespace fpWebApp
                 strFilename = postedFile.FileName;
             }
 
-            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
             string strInitData = TraerData();
             try
             {
+                clasesglobales cg = new clasesglobales();
                 string strQuery = "UPDATE empleados SET " +
                 "idTipoDocumento = " + ddlTipoDocumento.SelectedItem.Value.ToString() + ", " +
                 "NombreEmpleado = '" + txbNombre.Text.ToString().Replace("'","").Trim() + "', " +
@@ -318,27 +318,19 @@ namespace fpWebApp
                 "idCesantias = " + ddlCesantias.SelectedItem.Value.ToString() + ", " +
                 "Estado = '" + rblEstado.Text.ToString() + "' " +
                 "WHERE DocumentoEmpleado = '" + txbDocumento.Text.ToString() + "' ";
-                OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                myConnection.Open();
-                command.ExecuteNonQuery();
-                command.Dispose();
-                myConnection.Close();
-
-                if(rblEstado.Text.ToString() == "Inactivo")
+                
+                string mensaje = cg.TraerDatosStr(strQuery);
+                
+                if (rblEstado.Text.ToString() == "Inactivo")
                 {
                     strQuery = "UPDATE Usuarios SET " +
                             "EstadoUsuario = 'Inactivo' " +
                             "WHERE idEmpleado = '" + txbDocumento.Text.ToString() + "' ";
-                    OdbcCommand command1 = new OdbcCommand(strQuery, myConnection);
-                    myConnection.Open();
-                    command1.ExecuteNonQuery();
-                    command1.Dispose();
-                    myConnection.Close();
+                    string restpuestaEstado = cg.TraerDatosStr(strQuery);
                 }
 
                 string strNewData = TraerData();
-
-                clasesglobales cg = new clasesglobales();
+                
                 cg.InsertarLog(Session["idusuario"].ToString(), "Empleados", "Modifica", "El usuario modificó datos al empleado con documento " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
 
                 Response.Redirect("empleados");
@@ -349,7 +341,6 @@ namespace fpWebApp
                     "<div class=\"alert alert-danger alert-dismissable\">" +
                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
                     "</div></div>";
-                myConnection.Close();
             }
         }
 

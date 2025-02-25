@@ -249,7 +249,6 @@ namespace fpWebApp
                 strFilename = postedFile.FileName;
             }
 
-            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
             try
             {
                 string strQuery = "UPDATE Especialistas SET " +
@@ -262,16 +261,13 @@ namespace fpWebApp
                 "idEps = " + ddlEps.SelectedItem.Value.ToString() + ", idSede = " + ddlSedes.SelectedItem.Value.ToString() + ", " +
                 "EstadoEspecialista = '" + rblEstado.Text.ToString() + "' " +
                 "WHERE idEspecialista = " + Request.QueryString["editid"].ToString();
-                OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                myConnection.Open();
-                command.ExecuteNonQuery();
-                command.Dispose();
-                myConnection.Close();
+
+                clasesglobales cg = new clasesglobales();
+                string mensaje = cg.TraerDatosStr(strQuery);
             }
             catch (OdbcException ex)
             {
-                string mensaje = ex.Message;
-                myConnection.Close();
+                string mensaje = ex.Message;               
             }
 
             Response.Redirect("especialistas");

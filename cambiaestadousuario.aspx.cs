@@ -12,7 +12,6 @@ namespace fpWebApp
 {
     public partial class cambiaestadousuario : System.Web.UI.Page
     {
-        OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
         protected void Page_Load(object sender, EventArgs e)
         {
             string strQuery = "SELECT EstadoUsuario FROM Usuarios WHERE idUsuario = " + Request.QueryString["id"].ToString();
@@ -28,28 +27,19 @@ namespace fpWebApp
                         strQuery = "UPDATE Usuarios SET " +
                             "EstadoUsuario = 'Inactivo' " +
                             "WHERE idUsuario = " + Request.QueryString["id"].ToString();
-                        OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                        myConnection.Open();
-                        command.ExecuteNonQuery();
-                        command.Dispose();
-                        myConnection.Close();
+                        string mensaje = cg.TraerDatosStr(strQuery); 
                     }
                     if (dt.Rows[0]["EstadoUsuario"].ToString() == "Inactivo")
                     {
                         strQuery = "UPDATE Usuarios SET " +
                             "EstadoUsuario = 'Activo' " +
                             "WHERE idUsuario = " + Request.QueryString["id"].ToString();
-                        OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                        myConnection.Open();
-                        command.ExecuteNonQuery();
-                        command.Dispose();
-                        myConnection.Close();
+                        string mensaje = cg.TraerDatosStr(strQuery);
                     }
                 }
                 catch (OdbcException ex)
                 {
-                    string mensaje = ex.Message;
-                    myConnection.Close();
+                    string mensaje = ex.Message;                  
                 }
             }
 

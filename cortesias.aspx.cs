@@ -127,7 +127,6 @@ namespace fpWebApp
                 }
                 else
                 {
-                    OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
                     try
                     {
                         string strQuery = "INSERT INTO Cortesias " +
@@ -135,13 +134,9 @@ namespace fpWebApp
                         "VALUES (" + Session["idUsuario"].ToString() + ", " +
                         "" + ViewState["idAfiliadoPlan"].ToString() + ", " + ViewState["DiasCortesia"].ToString() + ", NOW(), " +
                         "'" + txbObservaciones.Text.ToString() + "', 'Pendiente') ";
-                        OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                        myConnection.Open();
-                        command.ExecuteNonQuery();
-                        command.Dispose();
-                        myConnection.Close();
 
                         clasesglobales cg = new clasesglobales();
+                        string mensaje = cg.TraerDatosStr(strQuery);
                         cg.InsertarLog(Session["idusuario"].ToString(), "Cortesias", "Nuevo registro", "El usuario agregó una cortesia al afiliado con documento " + ViewState["DocumentoAfiliado"].ToString() + ".", "", "");
 
                         Response.Redirect("afiliados");
@@ -152,7 +147,6 @@ namespace fpWebApp
                             "<div class=\"alert alert-danger alert-dismissable\">" +
                             "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
                             "</div></div>";
-                        myConnection.Close();
                     }
                 }
             }

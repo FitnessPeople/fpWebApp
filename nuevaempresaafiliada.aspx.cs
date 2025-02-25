@@ -111,7 +111,6 @@ namespace fpWebApp
 
             clasesglobales cg = new clasesglobales();
 
-            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
             try
             {
                 string strQuery = "INSERT INTO EmpresasAfiliadas " +
@@ -126,18 +125,12 @@ namespace fpWebApp
                 "" + ddlCiudadEmpresa.SelectedItem.Value.ToString() + ", " + txbNroEmpleados.Text.ToString() + ", " +
                 "'" + ddlTipoNegociacion.SelectedItem.Value.ToString() + "', '" + ddlDiasCredito.SelectedItem.Value.ToString() + "', " +
                 "'" + strFilename + "', 'Activo') ";
-                OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                myConnection.Open();
-                command.ExecuteNonQuery();
-                command.Dispose();
-                myConnection.Close();
-
+                string mensaje = cg.TraerDatosStr(strQuery);
                 cg.InsertarLog(Session["idusuario"].ToString(), "EmpresasAfiliadas", "Nuevo", "El usuario creó una nueva empresa convenio con documento " + txbDocumento.Text.ToString() + ".", "", "");
             }
             catch (OdbcException ex)
             {
                 string mensaje = ex.Message;
-                myConnection.Close();
             }
 
             Response.Redirect("empresasafiliadas");

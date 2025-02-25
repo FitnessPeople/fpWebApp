@@ -149,7 +149,6 @@ namespace fpWebApp
                 }
                 else
                 {
-                    OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
                     try
                     {
                         string strQuery = "INSERT INTO usuarios " +
@@ -158,16 +157,12 @@ namespace fpWebApp
                         "'" + txbNombre.Text.ToString() + "', '" + txbCargo.Text.ToString() + "', " +
                         "'" + ddlPerfiles.SelectedItem.Value.ToString() + "', '" + ddlEmpleados.SelectedItem.Value.ToString() + "', " +
                         "1, 'Activo') ";
-                        OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                        myConnection.Open();
-                        command.ExecuteNonQuery();
-                        command.Dispose();
-                        myConnection.Close();
+                        clasesglobales cg = new clasesglobales();
+                        string mensaje = cg.TraerDatosStr(strQuery);
                     }
                     catch (OdbcException ex)
                     {
                         string mensaje = ex.Message;
-                        myConnection.Close();
                     }
 
                     Response.Redirect("usuarios");

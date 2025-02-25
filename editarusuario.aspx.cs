@@ -114,7 +114,6 @@ namespace fpWebApp
 
         protected void btnActualizar_Click(object sender, EventArgs e)
         {
-            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
             try
             {
                 string strQuery = "UPDATE usuarios SET " +
@@ -123,16 +122,12 @@ namespace fpWebApp
                 "idPerfil = " + ddlPerfiles.SelectedItem.Value.ToString() + ", idEmpleado = '" + ddlEmpleados.SelectedItem.Value.ToString() + "', " +
                 "EstadoUsuario = '" + rblEstado.SelectedItem.Value.ToString() + "' " +
                 "WHERE idUsuario = " + Request.QueryString["editid"].ToString();
-                OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                myConnection.Open();
-                command.ExecuteNonQuery();
-                command.Dispose();
-                myConnection.Close();
+                clasesglobales cg = new clasesglobales();
+                string mensaje = cg.TraerDatosStr(strQuery);
             }
             catch (OdbcException ex)
             {
                 string mensaje = ex.Message;
-                myConnection.Close();
             }
 
             Response.Redirect("usuarios");

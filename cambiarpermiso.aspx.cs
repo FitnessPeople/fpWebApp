@@ -11,7 +11,6 @@ namespace fpWebApp
 {
     public partial class cambiarpermiso : System.Web.UI.Page
     {
-        OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
         protected void Page_Load(object sender, EventArgs e)
         {
             string strQuery = "SELECT * FROM permisos_perfiles " +
@@ -110,17 +109,11 @@ namespace fpWebApp
                 
                 try
                 {
-                    OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                    myConnection.Open();
-                    command.ExecuteNonQuery();
-                    command.Dispose();
-                    myConnection.Close();
+                    string mensaje = cg.TraerDatosStr(strQuery);
                 }
                 catch (OdbcException ex)
                 {
                     string mensaje = ex.Message;
-                    myConnection.Close();
-                    Response.Redirect("perfiles");
                 }
             }
 

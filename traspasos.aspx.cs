@@ -115,7 +115,6 @@ namespace fpWebApp
                             }
                             else
                             {
-                                OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
                                 try
                                 {
                                     string strFilename = "";
@@ -135,13 +134,8 @@ namespace fpWebApp
                                     "VALUES (" + ViewState["idAfiliadoOrigen"].ToString() + ", " + ViewState["idAfiliadoDestino"].ToString() + ", " +
                                     "" + ViewState["idAfiliadoPlan"].ToString() + ", NOW(), '" + txbFechaInicio.Text.ToString() + "', '" + strFilename + "', " +
                                     "'" + txbObservaciones.Text.ToString() + "', " + Session["idUsuario"].ToString() + ", 'En proceso') ";
-                                    OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                                    myConnection.Open();
-                                    command.ExecuteNonQuery();
-                                    command.Dispose();
-                                    myConnection.Close();
-
                                     clasesglobales cg = new clasesglobales();
+                                    string mensaje = cg.TraerDatosStr(strQuery);
                                     cg.InsertarLog(Session["idusuario"].ToString(), "TraspasoPlanes", "Nuevo registro", "El usuario agregó un traspaso del afiliado con documento " + ViewState["DocumentoAfiliadoOrigen"].ToString() + " al afiliado con documento " + ViewState["DocumentoAfiliadoDestino"].ToString() + ".", "", "");
 
                                     Response.Redirect("afiliados");
@@ -152,7 +146,6 @@ namespace fpWebApp
                                     ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
                                         "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
                                         "</div>";
-                                    myConnection.Close();
                                 }
                             }
                         }

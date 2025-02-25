@@ -80,7 +80,7 @@ namespace fpWebApp
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
+            //OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
             try
             {
                 string strQuery = "INSERT INTO HistoriasClinicas " +
@@ -99,16 +99,12 @@ namespace fpWebApp
                 "" + rblSedentarismo.SelectedItem.Value.ToString() + ", " + rblDiabetes.SelectedItem.Value.ToString() + ", " +
                 "" + rblColesterol.SelectedItem.Value.ToString() + ", " + rblTrigliceridos.SelectedItem.Value.ToString() + ", " +
                 "" + rblHTA.SelectedItem.Value.ToString() + ") ";
-                OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                myConnection.Open();
-                command.ExecuteNonQuery();
-                command.Dispose();
-                myConnection.Close();
+                clasesglobales cg = new clasesglobales();
+                string mensaje = cg.TraerDatosStr(strQuery);
             }
             catch (OdbcException ex)
             {
                 string mensaje = ex.Message;
-                myConnection.Close();
             }
 
             Response.Redirect("historiasclinicas");

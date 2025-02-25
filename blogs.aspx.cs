@@ -11,7 +11,6 @@ namespace fpWebApp
 {
     public partial class blogs : System.Web.UI.Page
     {
-        OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)

@@ -13,11 +13,12 @@ namespace fpWebApp
 {
     public partial class pruebapagowompi : System.Web.UI.Page
     {
-        OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Request.Form.Count != 0)
             {
+                clasesglobales cg = new clasesglobales();
+
                 string strDocumento = Request.Form["txbDocumento"].ToString();
                 //Buscamos el documento en la tabla afiliados. Si no existe, creamos el afiliado. Si existe, actualizamos Correo, Celular, Ciudad, Sede y Plan
                 if (ExisteAfiliado(strDocumento))
@@ -27,11 +28,8 @@ namespace fpWebApp
                         "EmailAfiliado = '" + Request.Form["txbCorreo"].ToString() + "', DireccionAfiliado = '" + Request.Form["txbDireccion"].ToString() + "', " +
                         "CiudadAfiliado = '" + Request.Form["txbCiudad"].ToString() + "' " +
                         "WHERE DocumentoAfiliado = '" + strDocumento + "' ";
-                    OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                    myConnection.Open();
-                    command.ExecuteNonQuery();
-                    command.Dispose();
-                    myConnection.Close();
+                    
+                    string mensaje = cg.TraerDatosStr(strQuery);
                 }
                 else
                 {
@@ -43,12 +41,8 @@ namespace fpWebApp
                         "'" + Request.Form["txbNombre"].ToString() + "', '" + Request.Form["txbApellido"].ToString() + "', " +
                         "'" + Request.Form["txbCelular"].ToString() + "', '" + Request.Form["txbCorreo"].ToString() + "', " +
                         "'" + Request.Form["txbDireccion"].ToString() + "', '" + Request.Form["txbCiudad"].ToString() + "', 'Pendiente') ";
-                    OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                    myConnection.Open();
-                    command.ExecuteNonQuery();
-                    command.Dispose();
-                    myConnection.Close();
-
+                    
+                    string mensaje = cg.TraerDatosStr(strQuery);
                     //EnviarCorreoBienvenida();
                 }
 
