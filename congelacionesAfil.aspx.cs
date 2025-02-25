@@ -252,7 +252,6 @@ namespace fpWebApp
                         {
                             string strDias = hfDias.Value.ToString();
 
-                            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
                             try
                             {
                                 string strFilename = "";
@@ -271,13 +270,10 @@ namespace fpWebApp
                                 "VALUES (" + ViewState["idAfiliadoPlan"].ToString() + ", " + ddlTipoCongelacion.SelectedItem.Value.ToString() + ", " +
                                 "" + Session["idUsuario"].ToString() + ", '" + txbFechaInicio.Text.ToString() + "', " + strDias + ", " +
                                 "'" + strFilename + "', '" + txbObservaciones.Text.ToString() + "', 'En proceso', Now()) ";
-                                OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                                myConnection.Open();
-                                command.ExecuteNonQuery();
-                                command.Dispose();
-                                myConnection.Close();
 
                                 clasesglobales cg = new clasesglobales();
+                                string mensaje = cg.TraerDatosStr(strQuery);
+
                                 cg.InsertarLog(Session["idusuario"].ToString(), "Congelaciones", "Nuevo registro", "El usuario agregó una congelación al afiliado con documento " + ViewState["DocumentoAfiliado"].ToString() + ".", "", "");
 
                                 Response.Redirect("afiliados");
@@ -289,7 +285,6 @@ namespace fpWebApp
                                     "<div class=\"alert alert-danger alert-dismissable\">" +
                                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
                                     "</div></div>";
-                                myConnection.Close();
                             }
                         }
                     }

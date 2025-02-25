@@ -11,7 +11,6 @@ namespace fpWebApp
 {
     public partial class agenda : System.Web.UI.Page
     {
-        ////OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
         private string _strEventos;
         protected string strEventos { get { return this._strEventos; } }
         protected void Page_Load(object sender, EventArgs e)
@@ -373,7 +372,7 @@ namespace fpWebApp
                                                             "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
                                                             "" + Session["idusuario"].ToString() + ") ";
                                                         
-                                                        string restpuesta = cg.TraerDatosStr(strQuery);
+                                                        string mensaje = cg.TraerDatosStr(strQuery);
                                                     }
                                                 }
                                             }
@@ -386,7 +385,7 @@ namespace fpWebApp
                                                 "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
                                                 "" + Session["idusuario"].ToString() + ") ";
 
-                                            string restpuesta = cg.TraerDatosStr(strQuery);
+                                            string mensaje = cg.TraerDatosStr(strQuery);
                                         }
                                         dtFechaIniCita = dtFechaFinCita;
                                     }
@@ -409,7 +408,6 @@ namespace fpWebApp
                     catch (OdbcException ex)
                     {
                         string mensaje = ex.Message;
-                        //myConnection.Close();
                     }
                 }
                 else

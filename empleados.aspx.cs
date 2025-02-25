@@ -12,7 +12,6 @@ namespace fpWebApp
 {
     public partial class empleados : System.Web.UI.Page
     {
-        OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -56,16 +55,12 @@ namespace fpWebApp
                 "Estado = 'En pausa' " +
                 "WHERE Estado = 'Activo' " +
                 "AND FechaFinal < CURDATE()";
-                OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                myConnection.Open();
-                command.ExecuteNonQuery();
-                command.Dispose();
-                myConnection.Close();
+                clasesglobales cg = new clasesglobales();
+                string mensaje = cg.TraerDatosStr(strQuery);
             }
             catch (OdbcException ex)
             {
                 string mensaje = ex.Message;
-                myConnection.Close();
             }
 
         }

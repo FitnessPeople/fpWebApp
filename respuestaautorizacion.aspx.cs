@@ -230,7 +230,6 @@ namespace fpWebApp
 
         protected void btnResponderCortesia_Click(object sender, EventArgs e)
         {
-            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
             string strInitData = TraerDataCortesia();
             try
             {
@@ -240,15 +239,9 @@ namespace fpWebApp
                     "idusuarioAutoriza = " + Session["idUsuario"].ToString() + ", " +
                     "FechaRespuesta = Now() " +
                     "WHERE idCortesia = " + Request.QueryString["idCortesia"].ToString();
-                OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                myConnection.Open();
-                command.ExecuteNonQuery();
-                command.Dispose();
-                myConnection.Close();
-
-                string strNewData = TraerDataCortesia();
-
                 clasesglobales cg = new clasesglobales();
+                string mensaje = cg.TraerDatosStr(strQuery);
+                string strNewData = TraerDataCortesia();
                 cg.InsertarLog(Session["idusuario"].ToString(), "Cortesias", "Modifica", "El usuario dio respuesta a la autorización de la cortesía.", strInitData, strNewData);
 
                 // Actualizar plan con la cortesía. Agregar los días al final del plan.
@@ -304,7 +297,6 @@ namespace fpWebApp
 
         protected void btnResponderTraspaso_Click(object sender, EventArgs e)
         {
-            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
             string strInitData = TraerDataTraspaso();
             try
             {
@@ -314,15 +306,10 @@ namespace fpWebApp
                     "idusuarioAutoriza = " + Session["idUsuario"].ToString() + ", " +
                     "FechaRespuesta = Now() " +
                     "WHERE idCortesia = " + Request.QueryString["idCortesia"].ToString();
-                OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                myConnection.Open();
-                command.ExecuteNonQuery();
-                command.Dispose();
-                myConnection.Close();
-
+                clasesglobales cg = new clasesglobales();
+                string mensaje = cg.TraerDatosStr(strQuery);
                 string strNewData = TraerDataTraspaso();
 
-                clasesglobales cg = new clasesglobales();
                 cg.InsertarLog(Session["idusuario"].ToString(), "Cortesias", "Modifica", "El usuario dio respuesta a la autorización de la cortesía.", strInitData, strNewData);
 
                 // Actualizar plan con la cortesía. Agregar los días al final del plan.

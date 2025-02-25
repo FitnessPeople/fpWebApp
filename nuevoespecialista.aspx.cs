@@ -246,7 +246,6 @@ namespace fpWebApp
                             strFilename = postedFile.FileName;
                         }
 
-                        OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
                         try
                         {
                             string strQuery = "INSERT INTO Especialistas " +
@@ -261,16 +260,12 @@ namespace fpWebApp
                             "" + ddlGenero.SelectedItem.Value.ToString() + ", " + ddlEstadoCivil.SelectedItem.Value.ToString() + ", " +
                             "" + ddlProfesiones.SelectedItem.Value.ToString() + ", " + ddlEps.SelectedItem.Value.ToString() + ", " +
                             "" + ddlSedes.SelectedItem.Value.ToString() + ", 'Activo') ";
-                            OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                            myConnection.Open();
-                            command.ExecuteNonQuery();
-                            command.Dispose();
-                            myConnection.Close();
+                            clasesglobales cg = new clasesglobales();
+                            string mensaje = cg.TraerDatosStr(strQuery);
                         }
                         catch (OdbcException ex)
                         {
                             string mensaje = ex.Message;
-                            myConnection.Close();
                         }
 
                         Response.Redirect("especialistas");

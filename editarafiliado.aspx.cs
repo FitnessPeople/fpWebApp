@@ -296,7 +296,6 @@ namespace fpWebApp
                 strFilename = postedFile.FileName;
             }
 
-            OdbcConnection myConnection = new OdbcConnection(ConfigurationManager.AppSettings["sConn"].ToString());
             string strInitData = TraerData();
             try
             {
@@ -312,21 +311,16 @@ namespace fpWebApp
                 "ResponsableAfiliado = '" + txbResponsable.Text.ToString() + "', Parentesco = '" + ddlParentesco.SelectedItem.Value.ToString() + "', " +
                 "ContactoAfiliado = '" + txbTelefonoContacto.Text.ToString() + "' " +
                 "WHERE idAfiliado = " + Request.QueryString["editid"].ToString();
-                OdbcCommand command = new OdbcCommand(strQuery, myConnection);
-                myConnection.Open();
-                command.ExecuteNonQuery();
-                command.Dispose();
-                myConnection.Close();
 
                 string strNewData = TraerData();
-
                 clasesglobales cg = new clasesglobales();
+
+                string mensaje = cg.TraerDatosStr(strQuery);
                 cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Modifica", "El usuario modificó datos al afiliado con documento " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
             }
             catch (OdbcException ex)
             {
                 string mensaje = ex.Message;
-                myConnection.Close();
             }
 
             Response.Redirect("afiliados");
