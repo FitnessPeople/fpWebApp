@@ -36,12 +36,12 @@ namespace fpWebApp
                         if (ViewState["Consulta"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            btnImprimir.Visible = false;
+                            lbExportarExcel.Visible = false;
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            btnImprimir.Visible = true;
+                            lbExportarExcel.Visible = true;
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
@@ -228,12 +228,12 @@ namespace fpWebApp
             }
         }
 
-        protected void btnCancelar_Click(object sender, EventArgs e)
+        protected void rblClaseSede_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Response.Redirect("sedes");
+
         }
 
-        protected void rblClaseSede_SelectedIndexChanged(object sender, EventArgs e)
+        protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
 
         }

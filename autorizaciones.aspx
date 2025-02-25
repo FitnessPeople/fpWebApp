@@ -25,7 +25,8 @@
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
+    <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
 
     <!-- Morris -->
     <link href="css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
@@ -144,15 +145,17 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="footable table toggle-arrow-small list-group-item-text" data-page-size="10">
+                                        <table class="footable table table-striped" data-paging-size="10" 
+                                            data-paging="true" data-paging-count-format="{CP} de {TP}" 
+                                            data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th data-sort-ignore="true">Afiliado</th>
-                                                    <th data-sort-ignore="true">Días de Cortesía</th>
-                                                    <th data-sort-ignore="true">Observaciones</th>
-                                                    <th data-sort-ignore="true">Usuario</th>
-                                                    <th data-sort-ignore="true">Fecha</th>
-                                                    <th data-sort-ignore="true">Acciones</th>
+                                                    <th data-sortable="false">Afiliado</th>
+                                                    <th data-sortable="false">Días de Cortesía</th>
+                                                    <th data-sortable="false">Observaciones</th>
+                                                    <th data-sortable="false">Usuario</th>
+                                                    <th data-sortable="false">Fecha</th>
+                                                    <th data-sortable="false">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -180,13 +183,6 @@
                                                     <td class="text-navy"><i class="fa fa-level-up"></i>23% </td>
                                                 </tr>--%>
                                             </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <td colspan="8">
-                                                        <ul class="pagination"></ul>
-                                                    </td>
-                                                </tr>
-                                            </tfoot>
                                         </table>
                                     </div>
                                 </div>
@@ -207,15 +203,17 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="footable table toggle-arrow-small list-group-item-text" data-page-size="10">
+                                        <table class="footable table table-striped" data-paging-size="10" 
+                                            data-paging="true" data-paging-count-format="{CP} de {TP}" 
+                                            data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th data-sort-ignore="true">Afiliado Origen</th>
-                                                    <th data-sort-ignore="true">Afiliado Destino</th>
-                                                    <th data-sort-ignore="true">Observaciones</th>
-                                                    <th data-sort-ignore="true">Usuario</th>
-                                                    <th data-sort-ignore="true">Fecha</th>
-                                                    <th data-sort-ignore="true">Acciones</th>
+                                                    <th data-sortable="false">Afiliado Origen</th>
+                                                    <th data-sortable="false">Afiliado Destino</th>
+                                                    <th data-sortable="false">Observaciones</th>
+                                                    <th data-sortable="false">Usuario</th>
+                                                    <th data-sortable="false">Fecha</th>
+                                                    <th data-sortable="false">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -243,13 +241,6 @@
                                                     <td class="text-navy"><i class="fa fa-level-up"></i>23% </td>
                                                 </tr>--%>
                                             </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <td colspan="8">
-                                                        <ul class="pagination"></ul>
-                                                    </td>
-                                                </tr>
-                                            </tfoot>
                                         </table>
                                     </div>
                                 </div>
@@ -273,15 +264,17 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="footable table toggle-arrow-small list-group-item-text" data-page-size="10">
+                                        <table class="footable table table-striped" data-paging-size="10" 
+                                            data-paging="true" data-paging-count-format="{CP} de {TP}" 
+                                            data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th data-sort-ignore="true">Afiliado</th>
-                                                    <th data-sort-ignore="true">Días de congelación</th>
-                                                    <th data-sort-ignore="true">Observaciones</th>
-                                                    <th data-sort-ignore="true">Usuario</th>
-                                                    <th data-sort-ignore="true">Fecha</th>
-                                                    <th data-sort-ignore="true">Acciones</th>
+                                                    <th data-sortable="false">Afiliado</th>
+                                                    <th data-sortable="false">Días de congelación</th>
+                                                    <th data-sortable="false">Observaciones</th>
+                                                    <th data-sortable="false">Usuario</th>
+                                                    <th data-sortable="false">Fecha</th>
+                                                    <th data-sortable="false">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -307,13 +300,6 @@
                                                     <td class="text-navy"><i class="fa fa-level-up"></i>23% </td>
                                                 </tr>--%>
                                             </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <td colspan="8">
-                                                        <ul class="pagination"></ul>
-                                                    </td>
-                                                </tr>
-                                            </tfoot>
                                         </table>
                                     </div>
                                 </div>
@@ -334,15 +320,17 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="footable table toggle-arrow-small list-group-item-text" data-page-size="10">
+                                        <table class="footable table table-striped" data-paging-size="10" 
+                                            data-paging="true" data-paging-count-format="{CP} de {TP}" 
+                                            data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th data-sort-ignore="true">Afiliado</th>
-                                                    <th data-sort-ignore="true">Días de incapacidad</th>
-                                                    <th data-sort-ignore="true">Observaciones</th>
-                                                    <th data-sort-ignore="true">Usuario</th>
-                                                    <th data-sort-ignore="true">Fecha</th>
-                                                    <th data-sort-ignore="true">Acciones</th>
+                                                    <th data-sortable="false">Afiliado</th>
+                                                    <th data-sortable="false">Días de incapacidad</th>
+                                                    <th data-sortable="false">Observaciones</th>
+                                                    <th data-sortable="false">Usuario</th>
+                                                    <th data-sortable="false">Fecha</th>
+                                                    <th data-sortable="false">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -368,13 +356,6 @@
                                                     <td class="text-navy"><i class="fa fa-level-up"></i>23% </td>
                                                 </tr>--%>
                                             </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <td colspan="8">
-                                                        <ul class="pagination"></ul>
-                                                    </td>
-                                                </tr>
-                                            </tfoot>
                                         </table>
                                     </div>
                                 </div>
@@ -401,7 +382,8 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
-    <script src="js/plugins/footable/footable.all.min.js"></script>
+    <%--<script src="js/plugins/footable/footable.all.min.js"></script>--%>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
     <!-- Peity -->
     <script src="js/plugins/peity/jquery.peity.min.js"></script>
@@ -416,19 +398,6 @@
     <!-- Page-Level Scripts -->
     <script>
         $('.footable').footable();
-
-        $('.data-page-size').on('click', function (e) {
-            e.preventDefault();
-            var newSize = $(this).data('pageSize');
-            $('.footable').data('page-size', newSize);
-            $('.footable').trigger('footable_initialized');
-        });
-
-        $('.toggle').click(function (e) {
-            e.preventDefault();
-            $('.toggle').toggle();
-            $('.footable').trigger($(this).data('trigger')).trigger('footable_redraw');
-        });
 
         $(function () {
             $("span.pie1").peity("pie", {

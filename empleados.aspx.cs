@@ -21,23 +21,32 @@ namespace fpWebApp
                     ValidarPermisos("Empleados");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
+                        //No tiene acceso a esta página
                         divMensaje.Visible = true;
                         paginasperfil.Visible = true;
                         divContenido.Visible = false;
                     }
-                    if (ViewState["Consulta"].ToString() == "1")
+                    else
                     {
-                        listaEmpleados();
-                        ActualizarEstadoxFechaFinal();
+                        //Si tiene acceso a esta página
+                        divBotonesLista.Visible = false;
+                        if (ViewState["Consulta"].ToString() == "1")
+                        {
+                            divBotonesLista.Visible = true;
+                            lbExportarExcel.Visible = false;
+                        }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
-                            btnExportar.Visible = true;
+                            divBotonesLista.Visible = true;
+                            lbExportarExcel.Visible = true;
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             btnAgregar.Visible = true;
                         }
                     }
+                    listaEmpleados();
+                    ActualizarEstadoxFechaFinal();
                     //indicadores01.Visible = false;
                 }
                 else
@@ -112,17 +121,22 @@ namespace fpWebApp
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
-                    HtmlButton btnEditar = (HtmlButton)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("onClick", "window.location.href='editarempleado?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("href", "editarempleado?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEditar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
-                    HtmlButton btnEliminar = (HtmlButton)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("onClick", "window.location.href='eliminarempleado?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                    btnEliminar.Attributes.Add("href", "eliminarempleado?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEliminar.Visible = true;
                 }
             }
+        }
+
+        protected void lbExportarExcel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -329,7 +329,7 @@ namespace fpWebApp
 
                     if (respuesta == "success")
                     {
-                        //Actualiza
+                        //Actualiza usuario en Armatura
                         PostArmatura(txbDocumento.Text.ToString());
                     }
                 }

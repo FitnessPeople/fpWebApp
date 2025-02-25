@@ -278,32 +278,23 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
+                                        
                                         <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
-                                            <div class="col-lg-4 form-horizontal">
+                                            <div class="col-lg-6 form-horizontal">
                                                 <div class="form-group">
                                                     <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-4 form-horizontal" style="text-align: center;">
-                                                <label class="control-label">Mostrar </label>
-
-                                                <a href="#" class="data-page-size" data-page-size="10">10</a> | 
-                                                <a href="#" class="data-page-size" data-page-size="20">20</a>
-
-                                                <label class="control-label">registros</label>
-                                            </div>
-                                            <div class="col-lg-4 form-horizontal">
-                                                <a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px; padding: 6px 8px;"
-                                                    target="_blank" runat="server" id="btnImprimir" href="imprimirprofesiones"
-                                                    title="Imprimir"><i class="fa fa-print"></i>IMPRIMIR</a>
-                                                <a data-trigger="footable_expand_all" style="font-size: 12px; padding: 6px 8px;"
-                                                    class="toggle btn btn-primary pull-right dim" href="#collapse"
-                                                    title="Expandir todo"><i class="fa fa-square-caret-down"></i>EXPANDIR</a>
-                                                <a data-trigger="footable_collapse_all" class="toggle btn btn-primary pull-right dim"
-                                                    style="display: none; font-size: 12px; padding: 6px 8px;" href="#collapse"
-                                                    title="Contraer todo"><i class="fa fa-square-caret-up"></i>CONTRAER</a>
+ 
+                                            <div class="col-lg-6 form-horizontal">
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false" 
+                                                    CssClass="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
+                                                    OnClick="lbExportarExcel_Click">
+                                                    <i class="fa fa-file-excel"></i> EXCEL
+                                                </asp:LinkButton>
                                             </div>
                                         </div>
+                                        
                                         <table class="footable table table-striped list-group-item-text" data-paging-size="10"
                                             data-filter-min="3" data-filter-placeholder="Buscar"
                                             data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"

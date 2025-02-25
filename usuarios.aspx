@@ -24,10 +24,10 @@
     <link href="css/plugins/dataTables/datatables.min.css" rel="stylesheet" />
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
     <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
-    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
+    <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -144,53 +144,51 @@
                                     </div>
                                 </div>
                                 <div class="ibox-content">
-                                    <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
-                                        <div class="col-lg-4 form-horizontal">
-                                            <div class="form-group">
-                                                <label class="col-lg-4 control-label" style="text-align: left;">Buscador:</label>
-                                                <div class="col-lg-8">
-                                                    <input type="text" placeholder="Buscar..." class="form-control input-sm m-b-xs" id="filter">
+                                    <form runat="server" id="form1">
+                                        <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
+                                            <div class="col-lg-6 form-horizontal">
+                                                <div class="form-group">
+                                                    <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                                 </div>
                                             </div>
+ 
+                                            <div class="col-lg-6 form-horizontal">
+                                                <a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;" 
+                                                    href="nuevousuario" title="Agregar empleado" 
+                                                    runat="server" id="btnAgregar" visible="false"><i class="fa fa-square-plus"></i> NUEVO
+                                                </a>
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false" 
+                                                    CssClass="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
+                                                    OnClick="lbExportarExcel_Click" >
+                                                    <i class="fa fa-file-excel"></i> EXCEL
+                                                </asp:LinkButton>
+                                            </div>
                                         </div>
-                                        <div class="col-lg-4 form-horizontal" style="text-align: center;">
-                                            <label class="control-label">Mostrar </label>
+                                    </form>
 
-                                            <a href="#" class="data-page-size" data-page-size="10">10</a> | 
-                                                    <a href="#" class="data-page-size" data-page-size="20">20</a> | 
-                                                    <a href="#" class="data-page-size" data-page-size="50">50</a> | 
-                                                    <a href="#" class="data-page-size" data-page-size="100">100</a>
-
-                                            <label class="control-label">registros</label>
-                                        </div>
-
-                                        <div class="col-lg-4 form-horizontal">
-                                            <a class="btn btn-success btn-sm m-l-lg pull-right dim" href="nuevousuario.aspx" 
-                                                title="Agregar usuario" runat="server" id="btnAgregar" style="font-size: 12px; padding: 6px 8px;" 
-                                                visible="false"><i class="fa fa-square-plus"></i> NUEVO</a>
-                                            <a class="btn btn-info btn-sm pull-right dim" target="_blank" style="font-size: 12px; padding: 6px 8px;" 
-                                                runat="server" id="btnImprimir" href="imprimirusuarios" visible="false"><i class="fa fa-print"></i> IMPRIMIR</a>
-                                        </div>
-                                    </div>
-
-                                    <table class="footable table toggle-arrow-small list-group-item-text" data-page-size="10" data-filter="#filter" data-filter-minimum="3">
+                                    <table class="footable table table-striped" data-paging-size="10" 
+                                        data-filter-min="3" data-filter-placeholder="Buscar" 
+                                        data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" 
+                                        data-paging-limit="10" data-filtering="true" 
+                                        data-filter-container="#filter-form-container" data-filter-delay="300" 
+                                        data-filter-dropdown-title="Buscar en:" data-filter-position="left" 
+                                        data-empty="Sin resultados">
                                         <thead>
                                             <tr>
-                                                <th data-sort-initial="true">Nombre</th>
-                                                <th data-sort-ignore="true" data-hide="phone,tablet">Empleado</th>
-                                                <th data-hide="phone,tablet">Correo</th>
-                                                <th data-sort-ignore="true" data-hide="phone,tablet">Clave</th>
+                                                <th data-sortable="false" data-breakpoints="xs">Nombre</th>
+                                                <th data-sortable="false" data-breakpoints="xs sm md">Empleado</th>
+                                                <th data-breakpoints="xs sm md">Correo</th>
+                                                <th data-sortable="false" data-breakpoints="xs sm md">Clave</th>
                                                 <%--<th data-sort-ignore="true">Cargo</th>--%>
-                                                <th data-hide="phone,tablet">Perfil</th>
-                                                <th class="text-nowrap">Estado</th>
-                                                <th data-sort-ignore="true" data-toggle="false" class="text-right"
-                                                    style="display: flex; flex-wrap: nowrap; width: 100%;">Acciones</th>
+                                                <th data-breakpoints="xs sm md">Perfil</th>
+                                                <th class="text-nowrap" data-breakpoints="xs">Estado</th>
+                                                <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <asp:Repeater ID="rpUsuarios" runat="server" OnItemDataBound="rpUsuarios_ItemDataBound">
                                                 <ItemTemplate>
-                                                    <tr class="feed-element">
+                                                    <tr>
                                                         <td><%# Eval("NombreUsuario") %></td>
                                                         <td><span class='badge badge-<%# Eval("label") %>'><%# Eval("Empleado") %></span></td>
                                                         <td><i class="fa fa-circle-user m-r-xs font-bold"></i><%# Eval("EmailUsuario") %></td>
@@ -198,29 +196,17 @@
                                                         <%--<td><%# Eval("CargoUsuario") %></td>--%>
                                                         <td><i class="fa fa-user-shield m-r-xs font-bold"></i><%# Eval("Perfil") %></td>
                                                         <td><a runat="server" id="cambiaestado" visible="false"><span class='badge badge-<%# Eval("estatus") %>'><%# Eval("EstadoUsuario") %></span></a></td>
-                                                        <td style="display: flex; flex-wrap: nowrap; width: 100%;">
-                                                            <button runat="server" id="btnEditar" class="btn btn-outline btn-primary pull-left m-r-xs"
-                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false">
-                                                                <i class="fa fa-edit"></i>
-                                                            </button>
-                                                            <button runat="server" id="btnEliminar" class="btn btn-outline btn-danger pull-right"
-                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false">
-                                                                <i class="fa fa-trash"></i>
-                                                            </button>
+                                                        <td>
+                                                            <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                            <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
                                                         </td>
                                                     </tr>
                                                 </ItemTemplate>
                                             </asp:Repeater>
                                         </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <td colspan="7">
-                                                    <ul class="pagination"></ul>
-                                                </td>
-                                            </tr>
-                                        </tfoot>
                                     </table>
-
                                 </div>
                             </div>
                         </div>
@@ -241,34 +227,16 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
-    <script src="js/plugins/footable/footable.all.min.js"></script>
+    <%--<script src="js/plugins/footable/footable.all.min.js"></script>--%>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
-    <!-- Chosen -->
-    <script src="js/plugins/chosen/chosen.jquery.js"></script>
-
     <!-- Page-Level Scripts -->
     <script>
         $('.footable').footable();
-
-        $('.data-page-size').on('click', function (e) {
-            e.preventDefault();
-            var newSize = $(this).data('pageSize');
-            $('.footable').data('page-size', newSize);
-            $('.footable').trigger('footable_initialized');
-        });
-
-        $('.toggle').click(function (e) {
-            e.preventDefault();
-            $('.toggle').toggle();
-            $('.footable').trigger($(this).data('trigger')).trigger('footable_redraw');
-        });
-
-        $('.chosen-select').chosen({ width: "100%" });
-
     </script>
 
 </body>

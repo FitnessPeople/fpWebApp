@@ -22,10 +22,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
-
-    <!-- Morris -->
-    <link href="css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
+    <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -170,54 +168,50 @@
                             </div>
                         </div>
                         <div class="ibox-content">
-                            <div class="row">
-                                <div class="col-lg-4 form-horizontal">
-                                    <div class="form-group">
-                                        <label class="col-lg-4 control-label" style="text-align: left;">Buscador:</label>
-                                        <div class="col-lg-8">
-                                            <input type="text" placeholder="Buscar..." class="form-control input-sm m-b-xs" id="filter">
+                            <form runat="server" id="form1">
+                                <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
+                                    <div class="col-lg-6 form-horizontal">
+                                        <div class="form-group">
+                                            <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                         </div>
                                     </div>
+ 
+                                    <div class="col-lg-6 form-horizontal">
+                                        <a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;" 
+                                            href="nuevaempresaafiliada" title="Agregar empresa afiliada" 
+                                            runat="server" id="btnAgregar" visible="false"><i class="fa fa-square-plus"></i> NUEVO
+                                        </a>
+                                        <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false" 
+                                            CssClass="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
+                                            OnClick="lbExportarExcel_Click">
+                                            <i class="fa fa-file-excel"></i> EXCEL
+                                        </asp:LinkButton>
+                                    </div>
                                 </div>
-                                <div class="col-lg-4 form-horizontal" style="text-align: center;">
-                                    <label class="control-label">Mostrar </label>
-
-                                    <a href="#" class="data-page-size" data-page-size="10">10</a> | 
-                                            <a href="#" class="data-page-size" data-page-size="20">20</a> | 
-                                            <a href="#" class="data-page-size" data-page-size="50">50</a> | 
-                                            <a href="#" class="data-page-size" data-page-size="100">100</a>
-
-                                    <label class="control-label">registros</label>
-                                </div>
-
-                                <div class="col-lg-4 form-horizontal">
-                                    <label class="control-label">&nbsp;</label>
-                                    <a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;" href="nuevaempresaafiliada" title="Agregar empresa" runat="server" id="btnAgregar" visible="false"><i class="fa fa-square-plus"></i> NUEVO</a>
-                                    <a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" target="_blank" runat="server" id="btnExportar" href="imprimirempresasafiliadas" visible="false" title="Exportar"><i class="fa fa-print"></i> IMPRIMIR</a>
-                                    <a data-trigger="footable_expand_all" style="font-size: 12px;" class="toggle btn btn-primary pull-right dim" href="#collapse" title="Expandir todo"><i class="fa fa-square-caret-down"></i> EXPANDIR</a>
-                                    <a data-trigger="footable_collapse_all" class="toggle btn btn-primary pull-right dim" style="display: none; font-size: 12px;" href="#collapse" title="Contraer todo"><i class="fa fa-square-caret-up"></i> CONTRAER</a>
-                                </div>
-                            </div>
-
-
-                            <table class="footable table toggle-arrow-small list-group-item-text" data-page-size="10" data-filter="#filter" data-filter-minimum="3">
+                            </form>
+                            <table class="footable table table-striped" data-paging-size="10" 
+                                data-filter-min="3" data-filter-placeholder="Buscar" 
+                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" 
+                                data-paging-limit="10" data-filtering="true" 
+                                data-filter-container="#filter-form-container" data-filter-delay="300" 
+                                data-filter-dropdown-title="Buscar en:" data-filter-position="left" 
+                                data-empty="Sin resultados">
                                 <thead>
                                     <tr>
-                                        <th data-sort-ignore="true">Documento</th>
-                                        <th data-sort-initial="true">Nombre Comercial</th>
-                                        <th data-sort-ignore="true" data-hide="phone,tablet">Celular</th>
-                                        <th data-sort-ignore="true" data-hide="phone,tablet">Correo</th>
-                                        <th data-sort-ignore="true" data-hide="phone,tablet">Fecha Convenio</th>
-                                        <th data-toggle="false">Estado</th>
-                                        <th data-hide="all"></th>
-                                        <th data-sort-ignore="true" data-toggle="false" class="text-right"
-                                            style="display: flex; flex-wrap: nowrap; width: 100%;">Acciones</th>
+                                        <th data-sortable="false" data-breakpoints="xs">Documento</th>
+                                        <th data-sortable="false" data-breakpoints="xs">Nombre Comercial</th>
+                                        <th data-breakpoints="xs sm md">Celular</th>
+                                        <th data-breakpoints="xs sm md">Correo</th>
+                                        <th data-type="date" data-breakpoints="xs sm md">Fecha Convenio</th>
+                                        <th class="text-nowrap" data-breakpoints="xs">Estado</th>
+                                        <th data-breakpoints="all" data-title="Info"></th>
+                                        <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <asp:Repeater ID="rpEmpresasAfiliadas" runat="server" OnItemDataBound="rpEmpresasAfiliadas_ItemDataBound">
                                         <ItemTemplate>
-                                            <tr class="feed-element">
+                                            <tr>
                                                 <td><%# Eval("DocumentoEmpresa") %></td>
                                                 <td><%# Eval("NombreComercial") %></td>
                                                 <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("CelularEmpresa") %>" target="_blank"><%# Eval("CelularEmpresa") %></a></td>
@@ -226,64 +220,45 @@
                                                 <td><span class="badge badge-<%# Eval("badge") %>"><%# Eval("EstadoEmpresa") %></span></td>
                                                 <td class="table-bordered">
                                                     <table class="table table-bordered">
-                                                        <thead>
                                                         <tr>
                                                             <th width="50%" colspan="2"><i class="fa fa-map-location-dot m-r-xs"></i>Dirección</th>
                                                             <th width="50%" colspan="2"><i class="fa fa-city m-r-xs"></i>Ciudad</th>
                                                         </tr>
-                                                        </thead>
-                                                        <tbody>
                                                         <tr>
                                                             <td colspan="2"><%# Eval("DireccionEmpresa") %></td>
                                                             <td><%# Eval("NombreCiudad") %></td>
                                                         </tr>
-                                                        </tbody>
-                                                        <thead>
-                                                            <tr>
-                                                                <th width="25%"><i class="fa fa-users m-r-xs"></i>Nro de Empleados</th>
-                                                                <th width="25%"><i class="fa fa-briefcase m-r-xs"></i>Tipo de Negociación</th>
-                                                                <th width="25%"><i class="fa fa-comment-dollar m-r-xs"></i>Días de crédito</th>
-                                                                <th width="25%"><i class="fa fa-file m-r-xs"></i>Contrato</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td><%# Eval("NroEmpleados") %></td>
-                                                                <td><%# Eval("TipoNegociacion") %></td>
-                                                                <td><%# Eval("DiasCredito") %></td>
-                                                                <td>
-                                                                    <%--<a href='pdfviewer?url=./docs/contratos/&file=<%# Eval("Contrato") %>'><%# Eval("Contrato") %></a>--%>
-                                                                    <a class="dropdown-toggle" data-toggle="modal" 
-                                                                        href="#" data-target="#myModal2" 
-                                                                        data-file="<%# Eval("Contrato") %>">
-                                                                        <%# Eval("Contrato") %>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
+                                                        <tr>
+                                                            <th width="25%"><i class="fa fa-users m-r-xs"></i>Nro de Empleados</th>
+                                                            <th width="25%"><i class="fa fa-briefcase m-r-xs"></i>Tipo de Negociación</th>
+                                                            <th width="25%"><i class="fa fa-comment-dollar m-r-xs"></i>Días de crédito</th>
+                                                            <th width="25%"><i class="fa fa-file m-r-xs"></i>Contrato</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><%# Eval("NroEmpleados") %></td>
+                                                            <td><%# Eval("TipoNegociacion") %></td>
+                                                            <td><%# Eval("DiasCredito") %></td>
+                                                            <td>
+                                                                <%--<a href='pdfviewer?url=./docs/contratos/&file=<%# Eval("Contrato") %>'><%# Eval("Contrato") %></a>--%>
+                                                                <a class="dropdown-toggle" data-toggle="modal" 
+                                                                    href="#" data-target="#myModal2" 
+                                                                    data-file="<%# Eval("Contrato") %>">
+                                                                    <%# Eval("Contrato") %>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
                                                     </table>
                                                 </td>
-                                                <td style="display: flex; flex-wrap: nowrap; width: 100%;">
-                                                    <button runat="server" id="btnEditar" class="btn btn-outline btn-primary pull-left m-r-xs"
-                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false">
-                                                        <i class="fa fa-edit"></i>
-                                                    </button>
-                                                    <button runat="server" id="btnEliminar" class="btn btn-outline btn-danger pull-right"
-                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
+                                                <td>
+                                                    <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                    <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
                                                 </td>
                                             </tr>
                                         </ItemTemplate>
                                     </asp:Repeater>
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="8">
-                                            <ul class="pagination"></ul>
-                                        </td>
-                                    </tr>
-                                </tfoot>
                             </table>
 
                         </div>
@@ -306,39 +281,20 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
-    <script src="js/plugins/footable/footable.all.min.js"></script>
-
-    <!-- Peity -->
-    <script src="js/plugins/peity/jquery.peity.min.js"></script>
-    <script src="js/demo/peity-demo.js"></script>
+    <%--<script src="js/plugins/footable/footable.all.min.js"></script>--%>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
-    <script src="js/plugins/pdfjs/pdf.js"></script>
-
-    <!-- jQuery UI -->
-    <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
-
     <!-- Page-Level Scripts -->
     <script>
         $('.footable').footable();
-
-        $('.data-page-size').on('click', function (e) {
-            e.preventDefault();
-            var newSize = $(this).data('pageSize');
-            $('.footable').data('page-size', newSize);
-            $('.footable').trigger('footable_initialized');
-        });
-
-        $('.toggle').click(function (e) {
-            e.preventDefault();
-            $('.toggle').toggle();
-            $('.footable').trigger($(this).data('trigger')).trigger('footable_redraw');
-        });
-
     </script>
+
+    <!-- pdfJS -->
+    <script src="js/plugins/pdfjs/pdf.js"></script>
 
     <script id="script">
         //

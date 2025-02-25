@@ -713,12 +713,12 @@
                                     <div class="ibox-content">
                                         <h3>Documentos</h3>
                                         <ul class="list-unstyled file-list">
-                                            <li><a href=""><i class="fa fa-file"></i>Project_document.docx</a></li>
-                                            <li><a href=""><i class="fa fa-file-image"></i>Logo_zender_company.jpg</a></li>
-                                            <li><a href=""><i class="fab fa-stack-exchange"></i>Email_from_Alex.mln</a></li>
-                                            <li><a href=""><i class="fa fa-file"></i>Contract_20_11_2014.docx</a></li>
-                                            <li><a href=""><i class="fa fa-file-powerpoint"></i>Presentation.pptx</a></li>
-                                            <li><a href=""><i class="fa fa-file"></i>10_08_2015.docx</a></li>
+                                            <li><a href=""><i class="fa fa-file"></i> Project_document.docx</a></li>
+                                            <li><a href=""><i class="fa fa-file-image"></i> Logo_zender_company.jpg</a></li>
+                                            <li><a href=""><i class="fab fa-stack-exchange"></i> Email_from_Alex.mln</a></li>
+                                            <li><a href=""><i class="fa fa-file"></i> Contract_20_11_2014.docx</a></li>
+                                            <li><a href=""><i class="fa fa-file-powerpoint"></i> Presentation.pptx</a></li>
+                                            <li><a href=""><i class="fa fa-file"></i> 10_08_2015.docx</a></li>
                                         </ul>
                                     </div>
                                 </div>

@@ -128,23 +128,14 @@
 
                                     <div class="col-lg-4 form-horizontal">
                                         <label class="control-label">&nbsp;</label>
-                                        <a class="btn btn-success pull-right dim m-l-md" 
-                                            style="font-size: 12px;" 
-                                            href="nuevoafiliado" 
-                                            title="Agregar afiliado" 
-                                            runat="server" 
-                                            id="btnAgregar" 
-                                            visible="false">
+                                        <a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;" 
+                                            href="nuevoafiliado" title="Agregar afiliado" 
+                                            runat="server" id="btnAgregar" visible="false">
                                                 <i class="fa fa-square-plus"></i> NUEVO
                                         </a>
-                                        <a class="btn btn-info pull-right dim m-l-md" 
-                                            style="font-size: 12px;" 
-                                            target="_blank" 
-                                            runat="server" 
-                                            id="btnExportar" 
-                                            href="imprimirafiliados" 
-                                            visible="false" 
-                                            title="Exportar">
+                                        <a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
+                                            target="_blank" runat="server" id="btnExportar" 
+                                            href="imprimirafiliados" visible="false" title="Exportar">
                                                 <i class="fa fa-file-excel"></i> EXCEL
                                         </a>
                                     </div>

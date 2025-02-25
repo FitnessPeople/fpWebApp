@@ -38,7 +38,7 @@
         function changeClass() {
             var element1 = document.querySelector("#reportepagoswompi");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#configuracion");
+            var element2 = document.querySelector("#reportes");
             element2.classList.remove("collapse");
         }
     </script>
