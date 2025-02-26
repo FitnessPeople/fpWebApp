@@ -30,7 +30,8 @@
     <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet">
 
     <!-- FooTable -->
-    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
+    <%--<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />--%>
+    <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -177,17 +178,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <table class="table small m-b-xs">
                                     <tbody>
                                         <tr>
                                             <td><strong><i class="fab fa-whatsapp"></i></strong>
                                                 <asp:Literal ID="ltCelular" runat="server"></asp:Literal></td>
-                                            <td><strong><i class="fa fa-shield"></i></strong>Estado: <span class="label label-warning">
-                                                <asp:Literal ID="ltEstado" runat="server"></asp:Literal></span></td>
+                                            <td><strong><i class="fa fa-shield"></i></strong> Estado: 
+                                                <asp:Literal ID="ltEstado" runat="server"></asp:Literal></td>
                                         </tr>
                                         <tr>
-                                            <td><strong><i class="fa fa-building"></i></strong>Sede:
+                                            <td><strong><i class="fa fa-building"></i></strong> Sede:
                                                 <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
                                             <td><strong>54</strong> Días asistidos</td>
                                         </tr>
@@ -199,17 +200,17 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-md-3">
+                            <%--<div class="col-md-3">
                                 <table class="table small m-b-xs">
                                     <tbody>
                                         <tr>
                                             <td><strong><i class="fab fa-whatsapp"></i></strong>
                                                 <asp:Literal ID="Literal1" runat="server"></asp:Literal></td>
-                                            <td><strong><i class="fa fa-shield"></i></strong>Estado:
+                                            <td><strong><i class="fa fa-shield"></i></strong> Estado:
                                                 <asp:Literal ID="Literal2" runat="server"></asp:Literal></td>
                                         </tr>
                                         <tr>
-                                            <td><strong><i class="fa fa-building"></i></strong>Sede:
+                                            <td><strong><i class="fa fa-building"></i></strong> Sede:
                                                 <asp:Literal ID="Literal3" runat="server"></asp:Literal></td>
                                             <td><strong>54</strong> Días asistidos</td>
                                         </tr>
@@ -220,7 +221,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
+                            </div>--%>
 
                         </div>
                         <div class="row">
@@ -262,14 +263,26 @@
                                         </ul>
                                     </div>
 
-                                    <div class="ibox-content">
-                                        <div>
-                                            <asp:Literal runat="server" ID="ltImagen"></asp:Literal>
+                                    <%-- Acceso a Armatura --%>
+                                    <form runat="server" id="form1">
+                                        <div class="ibox-content media-body">
+                                            <div class="row">
+                                                <div class="col-lg-3">
+                                                    <asp:Literal runat="server" ID="ltImagen"></asp:Literal>
+                                                </div>
+                                                <div class="col-lg-9">
+                                                    <div class="well">
+                                                        <asp:Literal runat="server" ID="ltMensaje"></asp:Literal>
+                                                    </div>
+                                                    <div class="pull-right" runat="server" visible="false" id="divAcceso">
+                                                        <asp:LinkButton ID="lbDarAcceso" CssClass="btn btn-xs btn-primary" 
+                                                            runat="server" OnClick="lbDarAcceso_Click"><i class="fa fa-building-lock"></i> Dar acceso
+                                                        </asp:LinkButton>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="product-desc">
-                                            <asp:Literal runat="server" ID="ltMensaje"></asp:Literal>
-                                        </div>
-                                    </div>
+                                    </form>
                                 </div>
 
                                 <div class="ibox">
@@ -285,7 +298,8 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="table table-hover no-margins">
+                                        <asp:Literal ID="ltDetalle" runat="server"></asp:Literal>
+                                        <%--<table class="table table-hover no-margins">
                                             <thead>
                                                 <tr>
                                                     <th>Status</th>
@@ -338,7 +352,7 @@
                                                     <td class="text-navy"><i class="fa fa-level-up"></i>23% </td>
                                                 </tr>
                                             </tbody>
-                                        </table>
+                                        </table>--%>
                                     </div>
                                 </div>
 
@@ -755,8 +769,13 @@
     <!-- Jasny -->
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
-    <!-- Page-Level Scripts -->
+    <!-- FooTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
+    <!-- Page-Level Scripts -->
+    <script>
+        $('.footable').footable();
+    </script>
 </body>
 
 </html>

@@ -212,17 +212,8 @@ namespace fpWebApp
                 return "Error al enviar la petición: " + ex.Message;
             }
         }
-        protected void btnAgregar_Click(object sender, EventArgs e)
-        {
-
-        }
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void rpDetalle_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
 
         }

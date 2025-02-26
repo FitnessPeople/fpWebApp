@@ -1,13 +1,16 @@
 ﻿using MySqlX.XDevAPI.Common;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using static fpWebApp.editarafiliado;
 
 namespace fpWebApp
 {
@@ -29,11 +32,11 @@ namespace fpWebApp
                     if (ViewState["Consulta"].ToString() == "1")
                     {
                         divContenido.Visible = true;
-                        string[] strDocumento = Request.QueryString["top-search"].ToString().Split('-');
-                        MostrarDatosAfiliado(strDocumento[0].Trim());
+                        string strDocumento = Request.QueryString["search"].ToString();
+                        MostrarDatosAfiliado(strDocumento);
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-
+                            divAcceso.Visible = true;
                         }
                     }
                 }
@@ -69,7 +72,9 @@ namespace fpWebApp
 
         private void MostrarDatosAfiliado(string strDocumento)
         {
-            string strQuery = "SELECT * FROM Afiliados a " +
+            string strQuery = "SELECT *, " +
+                "IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS label " +
+                "FROM Afiliados a " +
                 "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +
                 "LEFT JOIN ciudades ON ciudades.idCiudad = a.idCiudadAfiliado " +
                 "WHERE DocumentoAfiliado = '" + strDocumento + "' ";
@@ -78,6 +83,7 @@ namespace fpWebApp
 
             CargarPlanesAfiliado(dt.Rows[0]["idAfiliado"].ToString());
 
+            ViewState["DocumentoAfiliado"] = dt.Rows[0]["DocumentoAfiliado"].ToString();
             ltNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
             ltApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
             ltEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
@@ -86,7 +92,7 @@ namespace fpWebApp
             ltDireccion.Text = dt.Rows[0]["DireccionAfiliado"].ToString();
             ltCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
             ltCumple.Text = String.Format("{0:dd MMM}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]));
-            ltEstado.Text = dt.Rows[0]["EstadoAfiliado"].ToString();
+            ltEstado.Text = "<span class=\"label label-" + dt.Rows[0]["label"].ToString() + "\">" + dt.Rows[0]["EstadoAfiliado"].ToString() + "</span>";
             //ltFoto.Text = "<img src=\"img/afiliados/nofoto.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
 
             if (dt.Rows[0]["FotoAfiliado"].ToString() != "")
@@ -105,22 +111,49 @@ namespace fpWebApp
                 }
             }
 
+            strQuery = "SELECT * " +
+                "FROM AfiliadosPlanes ap, PagosPlanAfiliado ppa " +
+                "WHERE ap.idAfiliado = " + dt.Rows[0]["idAfiliado"].ToString() + " " +
+                "AND ap.idAfiliadoPlan = ppa.idAfiliadoPlan ";
+
+            DataTable dt2 = cg.TraerDatos(strQuery);
+
+
+            ltDetalle.Text = "<table class=\"footable table table-striped list-group-item-text\" data-paging-size=\"10\" data-paging=\"true\" data-sorting=\"true\" data-paging-count-format=\"{CP} de {TP}\" data-paging-limit=\"10\" data-empty=\"Sin resultados\" data-toggle-column=\"first\">";
+            ltDetalle.Text += "<tr>";
+            ltDetalle.Text += "<th>Referencia</th><th>Fecha</th><th>Valor</th>";
+            ltDetalle.Text += "<th>Método</th><th>Estado</th>";
+            ltDetalle.Text += "</tr>";
+            
+            
+            if (dt2.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt2.Rows.Count; i++)
+                {
+                    string strFila = listarDetalle(int.Parse(dt2.Rows[i]["idAfiliadoPlan"].ToString()));
+                    ltDetalle.Text += strFila;
+                }
+            }
+            ltDetalle.Text += "</table>";
+
             string url = "https://aone.armaturacolombia.co/api/person/get/" + strDocumento + "?access_token=D2BCF6E6BD09DECAA1266D9F684FFE3F5310AD447D107A29974F71E1989AABDB";
-            string respuesta = EnviarPeticionGet(url);
+            string[] respuesta = EnviarPeticionGet(url);
 
             ltImagen.Text = "<img src=\"img/facial-recognition.png\" width=\"100px\" />";
-            if (respuesta == "success")
+            if (respuesta[1] == "success")
             {
-                ltMensaje.Text = "<span class=\"product-price bg-info\">Con acceso biométrico</span>";
+                ltMensaje.Text = "Con acceso biométrico";
+                divAcceso.Visible = false;
             }
             else
             {
-                ltMensaje.Text = "<span class=\"product-price bg-danger\">Sin acceso biométrico</span>";
+                ltMensaje.Text = "Sin acceso biométrico";
             }
         }
 
-        private static string EnviarPeticionGet(string url)
+        private static string[] EnviarPeticionGet(string url)
         {
+            string[] strConjuntoResultados = new string[2];
             string resultado = "";
             string resultadoj = "";
             try
@@ -133,15 +166,25 @@ namespace fpWebApp
                 using (var oSr = new StreamReader(oResponse.GetResponseStream()))
                 {
                     resultado = oSr.ReadToEnd().Trim();
+                    strConjuntoResultados[0] = resultado;
                     JObject jsonObj = JObject.Parse(resultado);
-                    resultadoj = jsonObj["message"].ToString();
+                    if (jsonObj["message"] != null)
+                    {
+                        resultadoj = jsonObj["message"].ToString();
+                    }
+                    else
+                    {
+                        resultadoj = "";
+                    }
+                    strConjuntoResultados[1] = resultadoj;
                 }
 
-                return resultadoj;
+                return strConjuntoResultados;
             }
             catch (Exception ex)
             {
-                return "Error al enviar la petición: " + ex.Message;
+                strConjuntoResultados[0] = "Error al enviar la petición: " + ex.Message;
+                return strConjuntoResultados;
             }
         }
 
@@ -168,6 +211,137 @@ namespace fpWebApp
                 rpPlanesAfiliado.DataBind();
             }
             dt.Dispose();
+        }
+
+        private string listarDetalle(int id)
+        {
+            string parametro = string.Empty;
+
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPagosWompiPorId(id);
+            DataTable dti = cg.ConsultarUrl(1);
+
+            if (dt.Rows.Count > 0)
+            {
+                parametro = dt.Rows[0]["IdReferenciaWompi"].ToString();
+            }
+
+            string url = dti.Rows[0]["urlTest"].ToString() + parametro;
+            string[] rta = EnviarPeticionGet(url);
+            JToken token = JToken.Parse(rta[0]);
+            string prettyJson = token.ToString(Formatting.Indented);
+            //txbPago.Text = prettyJson;
+            Console.WriteLine(prettyJson);
+
+            JObject jsonData = JObject.Parse(prettyJson);
+
+            List<pagoswompidet> listaPagos = new List<pagoswompidet>
+                            {
+                                new pagoswompidet
+                                {
+                                    Id = jsonData["data"]["id"]?.ToString(),
+                                    FechaCreacion = jsonData["data"]["created_at"]?.ToString(),
+                                    FechaFinalizacion = jsonData["data"]["finalized_at"]?.ToString(),
+                                    Valor = ((jsonData["data"]["amount_in_cents"]?.Value<int>() ?? 0) / 100).ToString("N0"),
+                                    Moneda = jsonData["data"]["currency"]?.ToString(),
+                                    MetodoPago = jsonData["data"]["payment_method_type"]?.ToString(),
+                                    Estado = jsonData["data"]["status"]?.ToString(),
+                                    Referencia = jsonData["data"]["reference"]?.ToString(),
+                                    NombreTarjeta = jsonData["data"]["payment_method"]["extra"]["name"]?.ToString(),
+                                    UltimosDigitos = jsonData["data"]["payment_method"]["extra"]["last_four"]?.ToString(),
+                                    MarcaTarjeta = jsonData["data"]["payment_method"]["extra"]["brand"]?.ToString(),
+                                    TipoTarjeta = jsonData["data"]["payment_method"]["extra"]["card_type"]?.ToString(),
+                                    NombreComercio = jsonData["data"]["merchant"]["name"]?.ToString(),
+                                    ContactoComercio = jsonData["data"]["merchant"]["contact_name"]?.ToString(),
+                                    TelefonoComercio = jsonData["data"]["merchant"]["phone_number"]?.ToString(),
+                                    URLRedireccion = jsonData["data"]["redirect_url"]?.ToString(),
+                                    PaymentLinkId = jsonData["data"]["payment_link_id"]?.ToString(),
+                                    PublicKeyComercio = jsonData["data"]["merchant"]["public_key"]?.ToString(),
+                                    EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString(),
+                                    Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
+                            };
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var pago in listaPagos)
+            {
+                sb.Append("<tr>");
+                sb.Append($"<td>{pago.Referencia}</td>");
+                sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.FechaCreacion)) + "</td>");
+                sb.Append($"<td>{pago.Valor}</td>");
+                sb.Append("<td>" + pago.MetodoPago.Substring(0, 1) +  pago.MetodoPago.Substring(1, pago.MetodoPago.Length - 1).ToLower() + "</td>");
+                if (pago.Estado.ToString() == "APPROVED")
+                {
+                    sb.Append($"<td><span class=\"label label-info\" " + pago.Estado.Substring(0, 1) + pago.Estado.Substring(1, pago.Estado.Length - 1).ToLower() + "<span></td>");
+                }
+                else
+                {
+                    sb.Append($"<td><span class=\"label label-info\" " + pago.Estado.Substring(0, 1) + pago.Estado.Substring(1, pago.Estado.Length - 1).ToLower() + "</td>");
+                }
+                sb.Append("</tr>");
+            }
+
+            return sb.ToString();
+        }
+
+        protected void lbDarAcceso_Click(object sender, EventArgs e)
+        {
+            PostArmatura(ViewState["DocumentoAfiliado"].ToString());
+            Response.Redirect("detalleafiliado?search=" + Request.QueryString["search"].ToString());
+        }
+
+        private void PostArmatura(string strDocumento)
+        {
+            clasesglobales cg = new clasesglobales();
+            string strQuery = "SELECT * " +
+                "FROM Afiliados a, AfiliadosPlanes ap " +
+                "WHERE a.DocumentoAfiliado = '" + strDocumento + "' " +
+                "AND a.idAfiliado = ap.idAfiliado " +
+                "AND ap.EstadoPlan = 'Activo'";
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            string strGenero = "";
+            if (dt.Rows[0]["idGenero"].ToString() == "1")
+            {
+                strGenero = "M";
+            }
+            if (dt.Rows[0]["idGenero"].ToString() == "2")
+            {
+                strGenero = "F";
+            }
+
+            Persona oPersona = new Persona()
+            {
+                pin = "" + dt.Rows[0]["DocumentoAfiliado"].ToString() + "",
+                name = "" + dt.Rows[0]["NombreAfiliado"].ToString() + "",
+                lastName = "" + dt.Rows[0]["ApellidoAfiliado"].ToString() + "",
+                gender = strGenero,
+                personPhoto = "",
+                certType = "",
+                certNumber = "",
+                mobilePhone = "" + dt.Rows[0]["CelularAfiliado"].ToString() + "",
+                personPwd = "",
+                birthday = "" + String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"].ToString())) + "",
+                isSendMail = "false",
+                email = "" + dt.Rows[0]["EmailAfiliado"].ToString() + "",
+                deptCode = "01",
+                ssn = "",
+                cardNo = "",
+                supplyCards = "",
+                carPlate = "",
+                accStartTime = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaInicioPlan"].ToString())) + " 05:00:00",
+                accEndTime = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaFinalPlan"].ToString())) + " 23:00:00",
+                accLevelIds = "402883f08df57ba4018df57cddf70490",
+                hireDate = ""
+            };
+
+            string contenido = JsonConvert.SerializeObject(oPersona, Formatting.Indented);
+
+            string url = "https://aone.armaturacolombia.co/api/person/add/?access_token=D2BCF6E6BD09DECAA1266D9F684FFE3F5310AD447D107A29974F71E1989AABDB";
+            string rta = EnviarPeticion(url, contenido);
+
+            //ltMensaje.Text = rta;
+
         }
     }
 }
