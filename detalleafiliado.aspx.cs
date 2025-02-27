@@ -33,11 +33,11 @@ namespace fpWebApp
                     {
                         divContenido.Visible = true;
                         string strDocumento = Request.QueryString["search"].ToString();
-                        MostrarDatosAfiliado(strDocumento);
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             divAcceso.Visible = true;
                         }
+                        MostrarDatosAfiliado(strDocumento);
                     }
                 }
                 else
@@ -82,6 +82,10 @@ namespace fpWebApp
             DataTable dt = cg.TraerDatos(strQuery);
 
             CargarPlanesAfiliado(dt.Rows[0]["idAfiliado"].ToString());
+            CargarCongelaciones(dt.Rows[0]["idAfiliado"].ToString());
+            CargarIncapacidades(dt.Rows[0]["idAfiliado"].ToString());
+            CargarCortesias(dt.Rows[0]["idAfiliado"].ToString());
+            CargarParq(dt.Rows[0]["idAfiliado"].ToString());
 
             ViewState["DocumentoAfiliado"] = dt.Rows[0]["DocumentoAfiliado"].ToString();
             ltNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
@@ -149,6 +153,93 @@ namespace fpWebApp
             {
                 ltMensaje.Text = "Sin acceso biométrico";
             }
+        }
+
+        private void CargarCongelaciones(string idAfiliado)
+        {
+            string strQuery = "SELECT * " +
+                "FROM Congelaciones c, Afiliados a, AfiliadosPlanes ap " +
+                "WHERE c.idAfiliadoPlan = ap.idAfiliadoPlan " +
+                "AND ap.idAfiliado = a.idAfiliado " +
+                "AND a.idAfiliado = " + idAfiliado + " " +
+                "ORDER BY Fecha DESC";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            if (dt.Rows.Count > 0)
+            {
+                rpCongelaciones.DataSource = dt;
+                rpCongelaciones.DataBind();
+            }
+
+            dt.Dispose();
+        }
+
+        private void CargarIncapacidades(string idAfiliado)
+        {
+            string strQuery = "SELECT * " +
+                "FROM Incapacidades i, Afiliados a, AfiliadosPlanes ap " +
+                "WHERE i.idAfiliadoPlan = ap.idAfiliadoPlan " +
+                "AND ap.idAfiliado = a.idAfiliado " +
+                "AND a.idAfiliado = " + idAfiliado + " " +
+                "ORDER BY Fecha DESC";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            if (dt.Rows.Count > 0)
+            {
+                rpIncapacidades.DataSource = dt;
+                rpIncapacidades.DataBind();
+            }
+
+            dt.Dispose();
+        }
+
+        private void CargarCortesias(string idAfiliado)
+        {
+            string strQuery = "SELECT * " +
+                "FROM Cortesias c, Afiliados a, AfiliadosPlanes ap " +
+                "WHERE c.idAfiliadoPlan = ap.idAfiliadoPlan " +
+                "AND ap.idAfiliado = a.idAfiliado " +
+                "AND a.idAfiliado = " + idAfiliado + " " +
+                "ORDER BY c.FechaHoraCortesia DESC";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            if (dt.Rows.Count > 0)
+            {
+                rpCortesias.DataSource = dt;
+                rpCortesias.DataBind();
+            }
+
+            dt.Dispose();
+        }
+
+        private void CargarParq(string idAfiliado)
+        {
+            string strQuery = "SELECT *, " +
+                "IF(Respuesta1ParQ=0,'No','Si') AS respuesta1, " +
+                "IF(Respuesta1ParQ=0,'info','danger') AS label " +
+                "FROM ParQ p, ParqAfiliados pa " +
+                "WHERE p.idParq IN (SELECT idParQ FROM ParqAfiliados WHERE idAfiliado = " + idAfiliado + " GROUP BY idParQ) " +
+                "AND p.idParq = pa.idParq " +
+                "AND pa.FechaRespParQ = (SELECT FechaRespParQ " +
+                "FROM ParqAfiliados " +
+                "WHERE idAfiliado = " + idAfiliado + " " +
+                "GROUP BY FechaRespParQ " +
+                "ORDER BY FechaRespParQ DESC " +
+                "LIMIT 1) " +
+                "ORDER BY Orden ";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            if (dt.Rows.Count > 0)
+            {
+                rpParq.DataSource = dt;
+                rpParq.DataBind();
+            }
+
+            dt.Dispose();
         }
 
         private static string[] EnviarPeticionGet(string url)
