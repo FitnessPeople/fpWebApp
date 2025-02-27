@@ -184,7 +184,7 @@ namespace fpWebApp
                     btnVer.Visible = false;
 
                     Literal ltDetalle = (Literal)e.Item.FindControl("ltDetalle");
-                    ltDetalle.Text = listarDetalle(int.Parse(((DataRowView)e.Item.DataItem).Row[0].ToString())).ToString();
+                    //ltDetalle.Text = listarDetalle(int.Parse(((DataRowView)e.Item.DataItem).Row[0].ToString())).ToString();
                 }
             }
         }
