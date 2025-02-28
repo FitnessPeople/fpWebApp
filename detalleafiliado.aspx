@@ -30,7 +30,8 @@
     <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet">
 
     <!-- FooTable -->
-    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
+    <%--<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />--%>
+    <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -90,31 +91,6 @@
         </div>
     </div>
 
-    <div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" >
-        <div class="modal-dialog">
-            <div class="modal-content animated bounceInRight">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <h4 class="modal-title"><span id="titulo"></span></h4>
-                </div>
-                <div class="modal-body">
-            
-                    <div class="text-center m-t-md">
-                        <object data="" type="application/pdf" width="450px" height="600px" id="objFile">
-                            <embed src="" id="objEmbed">
-                                <p>Puede descargar el archivo aquí: <a href="" id="objHref">Descargar PDF</a>.</p>
-                            </embed>
-                        </object> 
-                    </div>
-                
-            
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <div id="wrapper">
 
         <uc1:navbar runat="server" ID="navbar" />
@@ -155,554 +131,447 @@
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
                     <div runat="server" id="divContenido">
-                    <div class="row m-b-lg m-t-lg">
-                        <div class="col-md-6">
+                        <div class="row m-b-lg m-t-lg">
+                            <div class="col-md-6">
 
-                            <div class="profile-image">
-                                <asp:Literal ID="ltFoto" runat="server"></asp:Literal>
-                            </div>
-                            <div class="profile-info">
-                                <div class="">
-                                    <div>
-                                        <h2 class="no-margins"><asp:Literal ID="ltNombre" runat="server"></asp:Literal> <asp:Literal ID="ltApellido" runat="server"></asp:Literal>
-                                </h2>
-                                        <h4><asp:Literal ID="ltEmail" runat="server"></asp:Literal></h4>
-                                        <small><asp:Literal ID="ltDireccion" runat="server"></asp:Literal>, <asp:Literal ID="ltCiudad" runat="server"></asp:Literal></small>
+                                <div class="profile-image">
+                                    <asp:Literal ID="ltFoto" runat="server"></asp:Literal>
+                                </div>
+                                <div class="profile-info">
+                                    <div class="">
+                                        <div>
+                                            <h2 class="no-margins">
+                                                <asp:Literal ID="ltNombre" runat="server"></asp:Literal>
+                                                <asp:Literal ID="ltApellido" runat="server"></asp:Literal>
+                                            </h2>
+                                            <h4>
+                                                <asp:Literal ID="ltEmail" runat="server"></asp:Literal></h4>
+                                            <small>
+                                                <asp:Literal ID="ltDireccion" runat="server"></asp:Literal>,
+                                                <asp:Literal ID="ltCiudad" runat="server"></asp:Literal></small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <table class="table small m-b-xs">
+                                    <tbody>
+                                        <tr>
+                                            <td><strong><i class="fab fa-whatsapp"></i></strong>
+                                                <asp:Literal ID="ltCelular" runat="server"></asp:Literal></td>
+                                            <td><strong><i class="fa fa-shield"></i></strong> Estado: 
+                                                <asp:Literal ID="ltEstado" runat="server"></asp:Literal></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong><i class="fa fa-building"></i></strong> Sede:
+                                                <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
+                                            <td><strong>54</strong> Días asistidos</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong><i class="fa fa-cake"></i></strong>
+                                                <asp:Literal ID="ltCumple" runat="server"></asp:Literal></td>
+                                            <td><strong>2</strong> Congelaciones</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <%--<div class="col-md-3">
+                                <table class="table small m-b-xs">
+                                    <tbody>
+                                        <tr>
+                                            <td><strong><i class="fab fa-whatsapp"></i></strong>
+                                                <asp:Literal ID="Literal1" runat="server"></asp:Literal></td>
+                                            <td><strong><i class="fa fa-shield"></i></strong> Estado:
+                                                <asp:Literal ID="Literal2" runat="server"></asp:Literal></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong><i class="fa fa-building"></i></strong> Sede:
+                                                <asp:Literal ID="Literal3" runat="server"></asp:Literal></td>
+                                            <td><strong>54</strong> Días asistidos</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong><i class="fa fa-cake"></i></strong>
+                                                <asp:Literal ID="Literal4" runat="server"></asp:Literal></td>
+                                            <td><strong>2</strong> Congelaciones</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>--%>
                         </div>
-                        <div class="col-md-3">
-                            <table class="table small m-b-xs">
-                                <tbody>
-                                    <tr>
-                                        <td><strong><i class="fab fa-whatsapp"></i></strong> <asp:Literal ID="ltCelular" runat="server"></asp:Literal></td>
-                                        <td><strong><i class="fa fa-shield"></i></strong> Estado: <span class="label label-warning"><asp:Literal ID="ltEstado" runat="server"></asp:Literal></span></td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong><i class="fa fa-building"></i></strong> Sede: <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
-                                        <td><strong>54</strong> Días asistidos</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong><i class="fa fa-cake"></i></strong> <asp:Literal ID="ltCumple" runat="server"></asp:Literal></td>
-                                        <td><strong>2</strong> Congelaciones</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-3">
-                            <table class="table small m-b-xs">
-                                <tbody>
-                                    <tr>
-                                        <td><strong><i class="fab fa-whatsapp"></i></strong> <asp:Literal ID="Literal1" runat="server"></asp:Literal></td>
-                                        <td><strong><i class="fa fa-shield"></i></strong> Estado: <asp:Literal ID="Literal2" runat="server"></asp:Literal></td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong><i class="fa fa-building"></i></strong> Sede: <asp:Literal ID="Literal3" runat="server"></asp:Literal></td>
-                                        <td><strong>54</strong> Días asistidos</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong><i class="fa fa-cake"></i></strong> <asp:Literal ID="Literal4" runat="server"></asp:Literal></td>
-                                        <td><strong>2</strong> Congelaciones</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <div class="row">
 
-                    </div>
-                    <div class="row">
+                            <div class="col-lg-5">
 
-                        <div class="col-lg-4">
-
-                            <div class="ibox">
-                                <div class="ibox-title">
-                                    <h5>Planes</h5>
-                                    <div class="ibox-tools">
-                                        <a class="collapse-link">
-                                            <i class="fa fa-chevron-up"></i>
-                                        </a>
-                                        <a class="fullscreen-link">
-                                            <i class="fa fa-expand"></i>
-                                        </a>
+                                <div class="ibox">
+                                    <div class="ibox-title bg-primary">
+                                        <h5><i class="fa fa-ticket"></i> Planes</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                            <a class="fullscreen-link">
+                                                <i class="fa fa-expand"></i>
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="ibox-content">
-                                    <ul class="todo-list small-list">
-                                        <asp:Repeater ID="rpPlanesAfiliado" runat="server">
-                                            <ItemTemplate>
-                                                <li>
-                                                    <div class="i-checks">
-                                                        <small class="label label-primary pull-right"><%# Eval("DiasQueFaltan") %> días disponibles</small>
-                                                        <label>
-                                                            <%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
-                                                        </label>
-                                                        <br />
-                                                        <div class="progress progress-striped active">
-                                                            <div style='width: <%# Eval("Porcentaje1") %>%' class="progress-bar progress-bar-success"></div>
-                                                            <div style='width: <%# Eval("Porcentaje2") %>%' class="progress-bar progress-bar-warning"></div>
+                                    <div class="ibox-content">
+                                        <ul class="todo-list small-list">
+                                            <asp:Repeater ID="rpPlanesAfiliado" runat="server">
+                                                <ItemTemplate>
+                                                    <li>
+                                                        <div class="i-checks">
+                                                            <small class="label label-<%# Eval("label1") %> pull-right"><%# Eval("DiasQueFaltan") %></small>
+                                                            <label>
+                                                                <%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
+                                                            </label>
+                                                            <br />
+                                                            <div class="progress progress-striped active">
+                                                                <div style='width: <%# Eval("Porcentaje1") %>%' class="progress-bar progress-bar-success"></div>
+                                                                <div style='width: <%# Eval("Porcentaje2") %>%' class="progress-bar progress-bar-warning"></div>
+                                                            </div>
+                                                            <small class="text-muted"><%# Eval("FechaInicioPlan", "{0:dd MMM yyyy}") %> - <%# Eval("FechaFinalPlan", "{0:dd MMM yyyy}") %></small>
                                                         </div>
-                                                        <small class="text-muted"><%# Eval("FechaInicioPlan", "{0:dd MMM yyyy}") %> - <%# Eval("FechaFinalPlan", "{0:dd MMM yyyy}") %></small>
+                                                    </li>
+                                                </ItemTemplate>
+                                            </asp:Repeater>
+                                        </ul>
+                                    </div>
+
+                                    <%-- Acceso a Armatura --%>
+                                    <form runat="server" id="form1">
+                                        <div class="ibox-content media-body">
+                                            <div class="row">
+                                                <div class="col-lg-3">
+                                                    <asp:Literal runat="server" ID="ltImagen"></asp:Literal>
+                                                </div>
+                                                <div class="col-lg-9">
+                                                    <div class="well">
+                                                        <asp:Literal runat="server" ID="ltMensaje"></asp:Literal>
                                                     </div>
-                                                </li>
-                                            </ItemTemplate>
-                                        </asp:Repeater>
-                                    </ul>
-                                    <asp:Literal runat="server" ID="ltMensaje"></asp:Literal>
-                                </div>
-                            </div>
-
-                            <div class="ibox">
-                                <div class="ibox-title">
-                                    <h5>Pagos Online</h5>
-                                    <div class="ibox-tools">
-                                        <a class="collapse-link">
-                                            <i class="fa fa-chevron-up"></i>
-                                        </a>
-                                        <a class="fullscreen-link">
-                                            <i class="fa fa-expand"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="ibox-content">
-                                    <table class="table table-hover no-margins">
-                                        <thead>
-                                            <tr>
-                                                <th>Status</th>
-                                                <th>Date</th>
-                                                <th>User</th>
-                                                <th>Value</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><small>Pending...</small></td>
-                                                <td><i class="fa fa-clock-o"></i>11:20pm</td>
-                                                <td>Samantha</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>24% </td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="label label-warning">Canceled</span> </td>
-                                                <td><i class="fa fa-clock-o"></i>10:40am</td>
-                                                <td>Monica</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>66% </td>
-                                            </tr>
-                                            <tr>
-                                                <td><small>Pending...</small> </td>
-                                                <td><i class="fa fa-clock-o"></i>01:30pm</td>
-                                                <td>John</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>54% </td>
-                                            </tr>
-                                            <tr>
-                                                <td><small>Pending...</small> </td>
-                                                <td><i class="fa fa-clock-o"></i>02:20pm</td>
-                                                <td>Agnes</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>12% </td>
-                                            </tr>
-                                            <tr>
-                                                <td><small>Pending...</small> </td>
-                                                <td><i class="fa fa-clock-o"></i>09:40pm</td>
-                                                <td>Janet</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>22% </td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="label label-primary">Completed</span> </td>
-                                                <td><i class="fa fa-clock-o"></i>04:10am</td>
-                                                <td>Amelia</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>66% </td>
-                                            </tr>
-                                            <tr>
-                                                <td><small>Pending...</small> </td>
-                                                <td><i class="fa fa-clock-o"></i>12:08am</td>
-                                                <td>Damian</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>23% </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            
-                            <div class="ibox">
-                                <div class="ibox-title">
-                                    <h5>Cortesías</h5>
-                                    <div class="ibox-tools">
-                                        <a class="collapse-link">
-                                            <i class="fa fa-chevron-up"></i>
-                                        </a>
-                                        <a class="fullscreen-link">
-                                            <i class="fa fa-expand"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="ibox-content">
-                                    <table class="table table-hover no-margins">
-                                        <thead>
-                                            <tr>
-                                                <th>Status</th>
-                                                <th>Date</th>
-                                                <th>User</th>
-                                                <th>Value</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><small>Pending...</small></td>
-                                                <td><i class="fa fa-clock-o"></i>11:20pm</td>
-                                                <td>Samantha</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>24% </td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="label label-warning">Canceled</span> </td>
-                                                <td><i class="fa fa-clock-o"></i>10:40am</td>
-                                                <td>Monica</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>66% </td>
-                                            </tr>
-                                            <tr>
-                                                <td><small>Pending...</small> </td>
-                                                <td><i class="fa fa-clock-o"></i>01:30pm</td>
-                                                <td>John</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>54% </td>
-                                            </tr>
-                                            <tr>
-                                                <td><small>Pending...</small> </td>
-                                                <td><i class="fa fa-clock-o"></i>02:20pm</td>
-                                                <td>Agnes</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>12% </td>
-                                            </tr>
-                                            <tr>
-                                                <td><small>Pending...</small> </td>
-                                                <td><i class="fa fa-clock-o"></i>09:40pm</td>
-                                                <td>Janet</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>22% </td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="label label-primary">Completed</span> </td>
-                                                <td><i class="fa fa-clock-o"></i>04:10am</td>
-                                                <td>Amelia</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>66% </td>
-                                            </tr>
-                                            <tr>
-                                                <td><small>Pending...</small> </td>
-                                                <td><i class="fa fa-clock-o"></i>12:08am</td>
-                                                <td>Damian</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>23% </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div class="ibox">
-                                <div class="ibox-title">
-                                    <h5>Congelaciones / Incapacidades</h5>
-                                    <div class="ibox-tools">
-                                        <a class="collapse-link">
-                                            <i class="fa fa-chevron-up"></i>
-                                        </a>
-                                        <a class="fullscreen-link">
-                                            <i class="fa fa-expand"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="ibox-content">
-                                    <table class="table table-hover no-margins">
-                                        <thead>
-                                            <tr>
-                                                <th>Status</th>
-                                                <th>Date</th>
-                                                <th>User</th>
-                                                <th>Value</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><small>Pending...</small></td>
-                                                <td><i class="fa fa-clock-o"></i>11:20pm</td>
-                                                <td>Samantha</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>24% </td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="label label-warning">Canceled</span> </td>
-                                                <td><i class="fa fa-clock-o"></i>10:40am</td>
-                                                <td>Monica</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>66% </td>
-                                            </tr>
-                                            <tr>
-                                                <td><small>Pending...</small> </td>
-                                                <td><i class="fa fa-clock-o"></i>01:30pm</td>
-                                                <td>John</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>54% </td>
-                                            </tr>
-                                            <tr>
-                                                <td><small>Pending...</small> </td>
-                                                <td><i class="fa fa-clock-o"></i>02:20pm</td>
-                                                <td>Agnes</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>12% </td>
-                                            </tr>
-                                            <tr>
-                                                <td><small>Pending...</small> </td>
-                                                <td><i class="fa fa-clock-o"></i>09:40pm</td>
-                                                <td>Janet</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>22% </td>
-                                            </tr>
-                                            <tr>
-                                                <td><span class="label label-primary">Completed</span> </td>
-                                                <td><i class="fa fa-clock-o"></i>04:10am</td>
-                                                <td>Amelia</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>66% </td>
-                                            </tr>
-                                            <tr>
-                                                <td><small>Pending...</small> </td>
-                                                <td><i class="fa fa-clock-o"></i>12:08am</td>
-                                                <td>Damian</td>
-                                                <td class="text-navy"><i class="fa fa-level-up"></i>23% </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="col-lg-4">
-
-                            <div class="ibox">
-                                <div class="ibox-title">
-                                    <h5>ParQ</h5>
-                                    <div class="ibox-tools">
-                                        <a class="collapse-link">
-                                            <i class="fa fa-chevron-up"></i>
-                                        </a>
-                                        <a class="fullscreen-link">
-                                            <i class="fa fa-expand"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="ibox-content">
-                                    <div class="feed-activity-list">
-
-                                    <div class="feed-element">
-                                        <div>
-                                            <small class="pull-right text-navy">25 Ene 2024</small>
-                                            <strong>1</strong>
-                                            <div>¿Le han diagnosticado o sufre usted una afección cardiaca o cualquier diagnóstico en su estado físico o corporal y le ha recomendado realizar actividades físicas solamente con supervisión médica? Otros similares</div>
-                                            <small class="text-muted"><span class="label label-primary">No</span></small>
-                                        </div>
-                                    </div>
-
-                                    <div class="feed-element">
-                                        <div>
-                                            <small class="pull-right text-navy">25 Ene 2024</small>
-                                            <strong>2</strong>
-                                            <div>¿Padece Hipertensión arterial, patología cardiaca, (enfermedad del corazón), cirugía de corazón, enfermedad arterial? ¿Su médico le ha prescrito medicamentos para la presión arterial o algún problema cardiaco? Otros similares</div>
-                                            <small class="text-muted"><span class="label label-danger">Si</span></small>
-                                        </div>
-                                    </div>
-
-                                    <div class="feed-element">
-                                        <div>
-                                            <small class="pull-right text-navy">25 Ene 2024</small>
-                                            <strong>3</strong>
-                                            <div>¿Sientes dolor en el pecho mientras descansas, durante tus actividades diarias o cuando haces actividad física? ¿Ha perdido la conciencia o el equilibrio después de notar sensación de mareo? Otros similares</div>
-                                            <small class="text-muted"><span class="label label-primary">No</span></small>
-                                        </div>
-                                    </div>
-
-                                    <div class="feed-element">
-                                        <div>
-                                            <small class="pull-right text-navy">25 Ene 2024</small>
-                                            <strong>4</strong>
-                                            <div>¿Le han diagnosticado diabetes, toma algún medicamento?</div>
-                                            <small class="text-muted"><span class="label label-primary">No</span></small>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="feed-element">
-                                        <div>
-                                            <small class="pull-right text-navy">25 Ene 2024</small>
-                                            <strong>5</strong>
-                                            <div>¿Sufre de Hiperglicemia, Hipoglicemia, Colesterol alto, Problemas de peso, Otros similares?</div>
-                                            <small class="text-muted"><span class="label label-primary">No</span></small>
-                                        </div>
-                                    </div>
-                                    <div class="feed-element">
-                                        <div>
-                                            <small class="pull-right text-navy">25 Ene 2024</small>
-                                            <strong>6</strong>
-                                            <div>¿Sufre de alguna enfermedad neurológica, como convulsiones, epilepsia, depresión, ansiedad, Otros similares?</div>
-                                            <small class="text-muted"><span class="label label-primary">No</span></small>
-                                        </div>
-                                    </div>
-                                    <div class="feed-element">
-                                        <div>
-                                            <small class="pull-right text-navy">25 Ene 2024</small>
-                                            <strong>7</strong>
-                                            <div>¿Padece o le han diagnosticado alguna enfermedad en los huesos, articulaciones o músculos que pudieran afectar o agravarse por un cambio de su actividad física? ¿Tiene alguna lesión ortopédica, esta discapacitado? ¿Otros similares?</div>
-                                            <small class="text-muted"><span class="label label-primary">No</span></small>
-                                        </div>
-                                    </div>
-                                    <div class="feed-element">
-                                        <div>
-                                            <small class="pull-right text-navy">25 Ene 2024</small>
-                                            <strong>8</strong>
-                                            <div>¿Actualmente está embarazada?</div>
-                                            <small class="text-muted"><span class="label label-primary">No</span></small>
-                                        </div>
-                                    </div>
-                                    <div class="feed-element">
-                                        <div>
-                                            <small class="pull-right text-navy">25 Ene 2024</small>
-                                            <strong>9</strong>
-                                            <div>Es mayor de 59 años, tiene algún diagnóstico médico, cuál?</div>
-                                            <small class="text-muted"><span class="label label-primary">No</span></small>
-                                        </div>
-                                    </div>
-                                    <div class="feed-element">
-                                        <div>
-                                            <small class="pull-right text-navy">25 Ene 2024</small>
-                                            <strong>10</strong>
-                                            <div>¿En los últimos 6 meses, se ha realizado cirugías o tratamientos estéticos, implantes, otros y mantiene prescripciones médicas posteriores de estos tratamientos? ¿Otros similares?</div>
-                                            <small class="text-muted"><span class="label label-primary">No</span></small>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                </div>
-                            </div>
-
-
-                        </div>
-                        <div class="col-lg-4">
-                            
-                            <div class="ibox float-e-margins">
-                                <div class="ibox-title">
-                                    <h5>Información adicional</h5>
-                                    <div class="ibox-tools">
-                                        <a class="collapse-link">
-                                            <i class="fa fa-chevron-up"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="ibox-content inspinia-timeline">
-
-                                    <div class="timeline-item">
-                                        <div class="row">
-                                            <div class="col-xs-3 date">
-                                                <i class="fa fa-briefcase"></i>
-                                                6:00 am
-                                                <br/>
-                                                <small class="text-navy">2 hour ago</small>
-                                            </div>
-                                            <div class="col-xs-7 content no-top-border">
-                                                <p class="m-b-xs"><strong>Citas</strong></p>
-
-                                                <p>Conference on the sales results for the previous year. Monica please examine sales trends in marketing and products. Below please find the current status of the
-                                                    sale.</p>
-
+                                                    <div class="pull-right" runat="server" visible="false" id="divAcceso">
+                                                        <asp:LinkButton ID="lbDarAcceso" CssClass="btn btn-xs btn-primary"
+                                                            runat="server" OnClick="lbDarAcceso_Click"><i class="fa fa-building-lock"></i> Dar acceso
+                                                        </asp:LinkButton>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="timeline-item">
-                                        <div class="row">
-                                            <div class="col-xs-3 date">
-                                                <i class="fa fa-file-text"></i>
-                                                7:00 am
-                                                <br/>
-                                                <small class="text-navy">3 hour ago</small>
-                                            </div>
-                                            <div class="col-xs-7 content">
-                                                <p class="m-b-xs"><strong>Rutinas</strong></p>
-                                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since.</p>
-                                            </div>
+                                    </form>
+                                </div>
+
+                                <div class="ibox">
+                                    <div class="ibox-title bg-info">
+                                        <h5><i class="fa fa-credit-card"></i> Pagos Online</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up text-white"></i>
+                                            </a>
+                                            <a class="fullscreen-link">
+                                                <i class="fa fa-expand text-white"></i>
+                                            </a>
                                         </div>
                                     </div>
-                                    <div class="timeline-item">
-                                        <div class="row">
-                                            <div class="col-xs-3 date">
-                                                <i class="fa fa-coffee"></i>
-                                                8:00 am
-                                                <br/>
+                                    <div class="ibox-content">
+                                        <asp:Literal ID="ltDetalle" runat="server"></asp:Literal>
+                                    </div>
+                                </div>
+
+                                <div class="ibox">
+                                    <div class="ibox-title bg-success">
+                                        <h5><i class="fa fa-gift"></i> Cortesías</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up text-white"></i>
+                                            </a>
+                                            <a class="fullscreen-link">
+                                                <i class="fa fa-expand text-white"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <table class="footable table table-striped" data-paging-size="10" 
+                                            data-paging="true" data-paging-count-format="{CP} de {TP}" 
+                                            data-empty="Sin registros">
+                                            <thead>
+                                                <tr>
+                                                    <th data-sortable="false">Días de Cortesía</th>
+                                                    <th data-sortable="false">Observaciones</th>
+                                                    <th data-sortable="false">Fecha</th>
+                                                    <th data-sortable="false">Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:Repeater ID="rpCortesias" runat="server">
+                                                    <ItemTemplate>
+                                                        <tr>
+                                                            <td><%# Eval("DiasCortesia") %> días</td>
+                                                            <td><%# Eval("ObservacionesCortesia") %></td>
+                                                            <td style="vertical-align:central;">
+                                                                <%# Eval("FechaHoraCortesia", "{0:dd MMM yyyy}") %>
+                                                            </td>
+                                                            <td><%# Eval("Estado") %></td>
+                                                        </tr>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="ibox">
+                                    <div class="ibox-title bg-warning">
+                                        <h5><i class="fa fa-snowflake"></i> Congelaciones</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up text-white"></i>
+                                            </a>
+                                            <a class="fullscreen-link">
+                                                <i class="fa fa-expand text-white"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <table class="footable table table-striped" data-paging-size="10" 
+                                            data-paging="true" data-paging-count-format="{CP} de {TP}" 
+                                            data-empty="Sin registros">
+                                            <thead>
+                                                <tr>
+                                                    <th data-sortable="false">Días de congelación</th>
+                                                    <th data-sortable="false">Observaciones</th>
+                                                    <th data-sortable="true">Fecha</th>
+                                                    <th data-sortable="true">Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:Repeater ID="rpCongelaciones" runat="server">
+                                                    <ItemTemplate>
+                                                        <tr>
+                                                            <td><%# Eval("Dias") %></td>
+                                                            <td><%# Eval("Observaciones") %></td>
+                                                            <td style="vertical-align:central;">
+                                                                <%# Eval("Fecha", "{0:dd MMM yyyy}") %>
+                                                            </td>
+                                                            <td><%# Eval("Estado") %></td>
+                                                        </tr>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="ibox">
+                                    <div class="ibox-title bg-info">
+                                        <h5><i class="fa fa-head-side-mask"></i> Incapacidades</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up text-white"></i>
+                                            </a>
+                                            <a class="fullscreen-link">
+                                                <i class="fa fa-expand text-white"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <table class="footable table table-striped" data-paging-size="10" 
+                                            data-paging="true" data-paging-count-format="{CP} de {TP}" 
+                                            data-empty="Sin registros">
+                                            <thead>
+                                                <tr>
+                                                    <th data-sortable="false">Días de incapacidad</th>
+                                                    <th data-sortable="false">Observaciones</th>
+                                                    <th data-sortable="false">Fecha</th>
+                                                    <th data-sortable="false">Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:Repeater ID="rpIncapacidades" runat="server">
+                                                    <ItemTemplate>
+                                                        <tr>
+                                                            <td><%# Eval("Dias") %></td>
+                                                            <td><%# Eval("Observaciones") %></td>
+                                                            <td style="vertical-align:central;">
+                                                                <%# Eval("Fecha", "{0:dd MMM yyyy}") %>
+                                                            </td>
+                                                            <td><%# Eval("Estado") %></td>
+                                                        </tr>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-4">
+
+                                <div class="ibox">
+                                    <div class="ibox-title bg-warning">
+                                        <h5><i class="fa fa-person-circle-question"></i> ParQ</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up text-white"></i>
+                                            </a>
+                                            <a class="fullscreen-link">
+                                                <i class="fa fa-expand text-white"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="feed-activity-list">
+
+                                            <asp:Repeater ID="rpParq" runat="server">
+                                                <ItemTemplate>
+                                                    <div class="feed-element">
+                                                        <div>
+                                                            <small class="pull-right text-navy"><%# Eval("FechaRespParQ", "{0:dd MMM yyyy}") %></small>
+                                                            <strong><%# Eval("Orden") %></strong>
+                                                            <div><%# Eval("PreguntaParQ") %></div>
+                                                            <small class="text-muted"><span class="label label-<%# Eval("label") %>"><%# Eval("respuesta1") %></span> <%# Eval("Respuesta2ParQ") %></small>
+                                                        </div>
+                                                    </div>
+                                                </ItemTemplate>
+                                            </asp:Repeater>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-3">
+
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title bg-info">
+                                        <h5><i class="fa fa-circle-info"></i> Información adicional</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content inspinia-timeline">
+
+                                        <div class="timeline-item">
+                                            <div class="row">
+                                                <div class="col-xs-3 date">
+                                                    <i class="fa fa-briefcase"></i>
+                                                    6:00 am
+                                                <br />
+                                                    <small class="text-navy">2 hour ago</small>
+                                                </div>
+                                                <div class="col-xs-7 content no-top-border">
+                                                    <p class="m-b-xs"><strong>Citas</strong></p>
+
+                                                    <p>
+                                                        Conference on the sales results for the previous year. Monica please examine sales trends in marketing and products. Below please find the current status of the
+                                                    sale.
+                                                    </p>
+
+                                                </div>
                                             </div>
-                                            <div class="col-xs-7 content">
-                                                <p class="m-b-xs"><strong>Clases</strong></p>
-                                                <p>
-                                                    Go to shop and find some products.
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="row">
+                                                <div class="col-xs-3 date">
+                                                    <i class="fa fa-file-text"></i>
+                                                    7:00 am
+                                                <br />
+                                                    <small class="text-navy">3 hour ago</small>
+                                                </div>
+                                                <div class="col-xs-7 content">
+                                                    <p class="m-b-xs"><strong>Rutinas</strong></p>
+                                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="row">
+                                                <div class="col-xs-3 date">
+                                                    <i class="fa fa-coffee"></i>
+                                                    8:00 am
+                                                <br />
+                                                </div>
+                                                <div class="col-xs-7 content">
+                                                    <p class="m-b-xs"><strong>Clases</strong></p>
+                                                    <p>
+                                                        Go to shop and find some products.
                                                     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.
-                                                </p>
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="timeline-item">
-                                        <div class="row">
-                                            <div class="col-xs-3 date">
-                                                <i class="fa fa-phone"></i>
-                                                11:00 am
-                                                <br/>
-                                                <small class="text-navy">21 hour ago</small>
-                                            </div>
-                                            <div class="col-xs-7 content">
-                                                <p class="m-b-xs"><strong>Productos</strong></p>
-                                                <p>
-                                                    Lorem Ipsum has been the industry's standard dummy text ever since.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="timeline-item">
-                                        <div class="row">
-                                            <div class="col-xs-3 date">
-                                                <i class="fa fa-user-md"></i>
-                                                09:00 pm
-                                                <br/>
-                                                <small>21 hour ago</small>
-                                            </div>
-                                            <div class="col-xs-7 content">
-                                                <p class="m-b-xs"><strong>Go to the doctor dr Smith</strong></p>
-                                                <p>
-                                                    Find some issue and go to doctor.
-                                                </p>
+                                        <div class="timeline-item">
+                                            <div class="row">
+                                                <div class="col-xs-3 date">
+                                                    <i class="fa fa-phone"></i>
+                                                    11:00 am
+                                                <br />
+                                                    <small class="text-navy">21 hour ago</small>
+                                                </div>
+                                                <div class="col-xs-7 content">
+                                                    <p class="m-b-xs"><strong>Productos</strong></p>
+                                                    <p>
+                                                        Lorem Ipsum has been the industry's standard dummy text ever since.
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="timeline-item">
-                                        <div class="row">
-                                            <div class="col-xs-3 date">
-                                                <i class="fa fa-comments"></i>
-                                                12:50 pm
-                                                <br/>
-                                                <small class="text-navy">48 hour ago</small>
-                                            </div>
-                                            <div class="col-xs-7 content">
-                                                <p class="m-b-xs"><strong>Chat with Monica and Sandra</strong></p>
-                                                <p>
-                                                    Web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-                                                </p>
+                                        <div class="timeline-item">
+                                            <div class="row">
+                                                <div class="col-xs-3 date">
+                                                    <i class="fa fa-user-md"></i>
+                                                    09:00 pm
+                                                <br />
+                                                    <small>21 hour ago</small>
+                                                </div>
+                                                <div class="col-xs-7 content">
+                                                    <p class="m-b-xs"><strong>Go to the doctor dr Smith</strong></p>
+                                                    <p>
+                                                        Find some issue and go to doctor.
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                        <div class="timeline-item">
+                                            <div class="row">
+                                                <div class="col-xs-3 date">
+                                                    <i class="fa fa-comments"></i>
+                                                    12:50 pm
+                                                <br />
+                                                    <small class="text-navy">48 hour ago</small>
+                                                </div>
+                                                <div class="col-xs-7 content">
+                                                    <p class="m-b-xs"><strong>Chat with Monica and Sandra</strong></p>
+                                                    <p>
+                                                        Web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
 
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="ibox">
-                                <div class="ibox-content">
-                                    <h3>Documentos</h3>
-                                    <ul class="list-unstyled file-list">
-                                        <li><a href=""><i class="fa fa-file"></i> Project_document.docx</a></li>
-                                        <li><a href=""><i class="fa fa-file-image"></i> Logo_zender_company.jpg</a></li>
-                                        <li><a href=""><i class="fab fa-stack-exchange"></i> Email_from_Alex.mln</a></li>
-                                        <li><a href=""><i class="fa fa-file"></i> Contract_20_11_2014.docx</a></li>
-                                        <li><a href=""><i class="fa fa-file-powerpoint"></i> Presentation.pptx</a></li>
-                                        <li><a href=""><i class="fa fa-file"></i> 10_08_2015.docx</a></li>
-                                    </ul>
+                                <div class="ibox">
+                                    <div class="ibox-content">
+                                        <h3><i class="fa fa-folder-open"></i> Documentos</h3>
+                                        <ul class="list-unstyled file-list">
+                                            <li><a href=""><i class="fa fa-file"></i> Project_document.docx</a></li>
+                                            <li><a href=""><i class="fa fa-file-image"></i> Logo_zender_company.jpg</a></li>
+                                            <li><a href=""><i class="fab fa-stack-exchange"></i> Email_from_Alex.mln</a></li>
+                                            <li><a href=""><i class="fa fa-file"></i> Contract_20_11_2014.docx</a></li>
+                                            <li><a href=""><i class="fa fa-file-powerpoint"></i> Presentation.pptx</a></li>
+                                            <li><a href=""><i class="fa fa-file"></i> 10_08_2015.docx</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
+
                             </div>
 
                         </div>
-
-                    </div>
                     </div>
 
                     <%--Fin Contenido!!!!--%>
@@ -732,8 +601,13 @@
     <!-- Jasny -->
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
-    <!-- Page-Level Scripts -->
+    <!-- FooTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
+    <!-- Page-Level Scripts -->
+    <script>
+        $('.footable').footable();
+    </script>
 </body>
 
 </html>

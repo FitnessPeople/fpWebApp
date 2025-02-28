@@ -128,23 +128,14 @@
 
                                     <div class="col-lg-4 form-horizontal">
                                         <label class="control-label">&nbsp;</label>
-                                        <a class="btn btn-success pull-right dim m-l-md" 
-                                            style="font-size: 12px;" 
-                                            href="nuevoafiliado" 
-                                            title="Agregar afiliado" 
-                                            runat="server" 
-                                            id="btnAgregar" 
-                                            visible="false">
+                                        <a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;" 
+                                            href="nuevoafiliado" title="Agregar afiliado" 
+                                            runat="server" id="btnAgregar" visible="false">
                                                 <i class="fa fa-square-plus"></i> NUEVO
                                         </a>
-                                        <a class="btn btn-info pull-right dim m-l-md" 
-                                            style="font-size: 12px;" 
-                                            target="_blank" 
-                                            runat="server" 
-                                            id="btnExportar" 
-                                            href="imprimirafiliados" 
-                                            visible="false" 
-                                            title="Exportar">
+                                        <a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
+                                            target="_blank" runat="server" id="btnExportar" 
+                                            href="imprimirafiliados" visible="false" title="Exportar">
                                                 <i class="fa fa-file-excel"></i> EXCEL
                                         </a>
                                     </div>
@@ -164,7 +155,6 @@
                                         <th data-breakpoints="xs sm md">Correo</th>
                                         <th data-type="date" data-breakpoints="xs sm md">Fecha nacimiento</th>
                                         <th class="text-nowrap" data-breakpoints="xs">Estado</th>
-                                        <th class="text-nowrap" data-breakpoints="xs">Estado Plan</th>
                                         <th data-breakpoints="all" data-title="Info"></th>
                                         <th data-sortable="false" class="text-right" style="width: 206px;">Acciones</th>
                                     </tr>
@@ -174,14 +164,13 @@
                                         <ItemTemplate>
                                             <tr>
                                                 <%--<td class="text-nowrap"><b>ID:</b> <%# Eval("idAfiliado") %></td>--%>
-                                                <td><a href="detalleafiliado?top-search=<%# Eval("DocumentoAfiliado") %>"><%# Eval("DocumentoAfiliado") %></a></td>
+                                                <td><a href="detalleafiliado?search=<%# Eval("DocumentoAfiliado") %>"><%# Eval("DocumentoAfiliado") %></a></td>
                                                 <%--<td><%# Eval("DocumentoAfiliado") %></td>--%>
                                                 <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
                                                 <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("CelularAfiliado") %>" target="_blank"><%# Eval("CelularAfiliado") %></a></td>
                                                 <td style="white-space: nowrap;"><i class="fa fa-envelope m-r-xs font-bold"></i><%# Eval("EmailAfiliado") %></td>
                                                 <td style="white-space: nowrap;"><i class="fa fa-cake m-r-xs font-bold"></i><span class="text-<%# Eval("badge") %> font-bold"><%# Eval("FechaNacAfiliado", "{0:dd MMM yyyy}") %> <%# Eval("edad") %> <i class="fa fa-<%# Eval("age") %>"></i></span></td>
                                                 <td><span class="badge badge-<%# Eval("badge2") %>"><%# Eval("EstadoAfiliado") %></span></td>
-                                                <td><span class="badge badge-<%# Eval("badge3") %>"><%# Eval("EstadoPlan") %></span></td>
                                                 <td>
                                                     <table class="table table-bordered table-striped">
                                                         <tr>

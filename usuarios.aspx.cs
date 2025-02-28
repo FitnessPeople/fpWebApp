@@ -34,12 +34,12 @@ namespace fpWebApp
                         if (ViewState["Consulta"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            btnImprimir.Visible = false;
+                            lbExportarExcel.Visible = false;
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            btnImprimir.Visible = true;
+                            lbExportarExcel.Visible = true;
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
@@ -105,17 +105,22 @@ namespace fpWebApp
                     HtmlAnchor cambiaestado = (HtmlAnchor)e.Item.FindControl("cambiaestado");
                     cambiaestado.Attributes.Add("href", "cambiaestadousuario?id=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     cambiaestado.Visible = true;
-                    HtmlButton btnEditar = (HtmlButton)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("onClick", "window.location.href='editarusuario?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("href", "editarusuario?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEditar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
-                    HtmlButton btnEliminar = (HtmlButton)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("onClick", "window.location.href='eliminarusuario?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                    btnEliminar.Attributes.Add("href", "eliminarusuario?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEliminar.Visible = true;
                 }
             }
+        }
+
+        protected void lbExportarExcel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
