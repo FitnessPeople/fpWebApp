@@ -141,12 +141,20 @@ namespace fpWebApp
             }
             ltDetalle.Text += "</table>";
 
-            bool mensaje = false;
-            string url = "https://aone.armaturacolombia.co/api/person/get/" + strDocumento + "?access_token=D2BCF6E6BD09DECAA1266D9F684FFE3F5310AD447D107A29974F71E1989AABDB";
-            string[] respuesta = EnviarPeticionGet(url, out mensaje);
+
+            string parametro = string.Empty;
+            DataTable dti = cg.ConsultarUrl(2);//2 Armatura tabla integraciones
+            string urlServicio = dti.Rows[0]["urlTest"].ToString() + parametro;
+            if (dt.Rows.Count > 0)
+            {
+                parametro = dti.Rows[0]["urlServicioAd1"].ToString();
+            }
+            string mensaje = "falso";
+            string url = urlServicio + strDocumento + parametro;
+            string[] respuesta = cg.EnviarPeticionGet(url, out mensaje);
 
             ltImagen.Text = "<img src=\"img/facial-recognition.png\" width=\"100px\" />";
-            if (mensaje)
+            if (mensaje=="Ok")
             {
                 if (respuesta[1] == "success")
                 {
@@ -250,47 +258,47 @@ namespace fpWebApp
 
             dt.Dispose();
         }
+        //Se trasladó a clases Globales
+        //private static string[] EnviarPeticionGet(string url, out bool mensaje)
+        //{
+        //    string[] strConjuntoResultados = new string[2];
+        //    string resultado = "";
+        //    string resultadoj = "";
 
-        private static string[] EnviarPeticionGet(string url, out bool mensaje)
-        {
-            string[] strConjuntoResultados = new string[2];
-            string resultado = "";
-            string resultadoj = "";
+        //    try
+        //    {
+        //        WebRequest oRequest = WebRequest.Create(url);
+        //        oRequest.Method = "GET";
+        //        oRequest.ContentType = "application/json;charset=UTF-8";
 
-            try
-            {
-                WebRequest oRequest = WebRequest.Create(url);
-                oRequest.Method = "GET";
-                oRequest.ContentType = "application/json;charset=UTF-8";
+        //        WebResponse oResponse = oRequest.GetResponse();
+        //        using (var oSr = new StreamReader(oResponse.GetResponseStream()))
+        //        {
+        //            resultado = oSr.ReadToEnd().Trim();
+        //            strConjuntoResultados[0] = resultado;
+        //            JObject jsonObj = JObject.Parse(resultado);
+        //            if (jsonObj["message"] != null)
+        //            {
+        //                resultadoj = jsonObj["message"].ToString();
+        //            }
+        //            else
+        //            {
+        //                resultadoj = "";
+        //            }
+        //            strConjuntoResultados[1] = resultadoj;
+        //            mensaje = true;
+        //        }
 
-                WebResponse oResponse = oRequest.GetResponse();
-                using (var oSr = new StreamReader(oResponse.GetResponseStream()))
-                {
-                    resultado = oSr.ReadToEnd().Trim();
-                    strConjuntoResultados[0] = resultado;
-                    JObject jsonObj = JObject.Parse(resultado);
-                    if (jsonObj["message"] != null)
-                    {
-                        resultadoj = jsonObj["message"].ToString();
-                    }
-                    else
-                    {
-                        resultadoj = "";
-                    }
-                    strConjuntoResultados[1] = resultadoj;
-                    mensaje = true;
-                }
-
-                return strConjuntoResultados;
-            }
-            catch (Exception ex)
-            {
-                string jsonError = JsonConvert.SerializeObject(new { error = "Error al enviar la petición: " + ex.Message });
-                mensaje = false;
-                strConjuntoResultados[0] = jsonError;
-                return strConjuntoResultados;
-            }
-        }
+        //        return strConjuntoResultados;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        string jsonError = JsonConvert.SerializeObject(new { error = "Error al enviar la petición: " + ex.Message });
+        //        mensaje = false;
+        //        strConjuntoResultados[0] = jsonError;
+        //        return strConjuntoResultados;
+        //    }
+        //}
 
         private void CargarPlanesAfiliado(string strIdAfiliado)
         {
@@ -320,7 +328,7 @@ namespace fpWebApp
         private string listarDetalle(int id)
         {
             string parametro = string.Empty;
-            bool mensaje = false;
+            string mensaje = string.Empty;
 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarPagosWompiPorId(id);
@@ -332,11 +340,11 @@ namespace fpWebApp
             }
 
             string url = dti.Rows[0]["urlTest"].ToString() + parametro;
-            string[] rta = EnviarPeticionGet(url, out mensaje);
+            string[] rta = cg.EnviarPeticionGet(url, out mensaje);
             JToken token = JToken.Parse(rta[0]);
             string prettyJson = token.ToString(Formatting.Indented);
 
-            if (mensaje) //Verifica respuesta ok
+            if (mensaje == "Ok") //Verifica respuesta ok
             {
                 JObject jsonData = JObject.Parse(prettyJson);
 
