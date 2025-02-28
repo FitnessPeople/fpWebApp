@@ -8,6 +8,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Web;
+using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using static fpWebApp.editarafiliado;
@@ -130,6 +131,8 @@ namespace fpWebApp
             ltDetalle.Text += "</tr>";
 
             string strFila = "";
+
+
             if (dt2.Rows.Count > 0)
             {
                 for (int i = 0; i < dt2.Rows.Count; i++)
@@ -140,19 +143,34 @@ namespace fpWebApp
             }
             ltDetalle.Text += "</table>";
 
-            string url = "https://aone.armaturacolombia.co/api/person/get/" + strDocumento + "?access_token=D2BCF6E6BD09DECAA1266D9F684FFE3F5310AD447D107A29974F71E1989AABDB";
-            string[] respuesta = new string[2];
-            //respuesta = EnviarPeticionGet(url);
+
+            string parametro = string.Empty;
+            DataTable dti = cg.ConsultarUrl(2);//2 Armatura tabla integraciones
+            string urlServicio = dti.Rows[0]["urlTest"].ToString() + parametro;
+            if (dt.Rows.Count > 0)
+            {
+                parametro = dti.Rows[0]["urlServicioAd1"].ToString();
+            }
+            string mensaje = "falso";
+            string url = urlServicio + strDocumento + parametro;
+            string[] respuesta = cg.EnviarPeticionGet(url, out mensaje);
 
             ltImagen.Text = "<img src=\"img/facial-recognition.png\" width=\"100px\" />";
-            if (respuesta[1] == "success")
+            if (mensaje=="Ok")
             {
-                ltMensaje.Text = "Con acceso biométrico";
-                divAcceso.Visible = false;
+                if (respuesta[1] == "success")
+                {
+                    ltMensaje.Text = "Con acceso biométrico";
+                    divAcceso.Visible = false;
+                }
+                else
+                {
+                    ltMensaje.Text = "Sin acceso biométrico";
+                }
             }
             else
             {
-                ltMensaje.Text = "Sin acceso biométrico";
+                ltMensaje.Text = respuesta[0];
             }
         }
 
@@ -242,43 +260,47 @@ namespace fpWebApp
 
             dt.Dispose();
         }
+        //Se trasladó a clases Globales
+        //private static string[] EnviarPeticionGet(string url, out bool mensaje)
+        //{
+        //    string[] strConjuntoResultados = new string[2];
+        //    string resultado = "";
+        //    string resultadoj = "";
 
-        private static string[] EnviarPeticionGet(string url)
-        {
-            string[] strConjuntoResultados = new string[2];
-            string resultado = "";
-            string resultadoj = "";
-            try
-            {
-                WebRequest oRequest = WebRequest.Create(url);
-                oRequest.Method = "GET";
-                oRequest.ContentType = "application/json;charset=UTF-8";
+        //    try
+        //    {
+        //        WebRequest oRequest = WebRequest.Create(url);
+        //        oRequest.Method = "GET";
+        //        oRequest.ContentType = "application/json;charset=UTF-8";
 
-                WebResponse oResponse = oRequest.GetResponse();
-                using (var oSr = new StreamReader(oResponse.GetResponseStream()))
-                {
-                    resultado = oSr.ReadToEnd().Trim();
-                    strConjuntoResultados[0] = resultado;
-                    JObject jsonObj = JObject.Parse(resultado);
-                    if (jsonObj["message"] != null)
-                    {
-                        resultadoj = jsonObj["message"].ToString();
-                    }
-                    else
-                    {
-                        resultadoj = "";
-                    }
-                    strConjuntoResultados[1] = resultadoj;
-                }
+        //        WebResponse oResponse = oRequest.GetResponse();
+        //        using (var oSr = new StreamReader(oResponse.GetResponseStream()))
+        //        {
+        //            resultado = oSr.ReadToEnd().Trim();
+        //            strConjuntoResultados[0] = resultado;
+        //            JObject jsonObj = JObject.Parse(resultado);
+        //            if (jsonObj["message"] != null)
+        //            {
+        //                resultadoj = jsonObj["message"].ToString();
+        //            }
+        //            else
+        //            {
+        //                resultadoj = "";
+        //            }
+        //            strConjuntoResultados[1] = resultadoj;
+        //            mensaje = true;
+        //        }
 
-                return strConjuntoResultados;
-            }
-            catch (Exception ex)
-            {
-                strConjuntoResultados[0] = "Error al enviar la petición: " + ex.Message;
-                return strConjuntoResultados;
-            }
-        }
+        //        return strConjuntoResultados;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        string jsonError = JsonConvert.SerializeObject(new { error = "Error al enviar la petición: " + ex.Message });
+        //        mensaje = false;
+        //        strConjuntoResultados[0] = jsonError;
+        //        return strConjuntoResultados;
+        //    }
+        //}
 
         private void CargarPlanesAfiliado(string strIdAfiliado)
         {
@@ -293,7 +315,7 @@ namespace fpWebApp
                 "WHERE a.idAfiliado = " + strIdAfiliado + " " +
                 "AND ap.idAfiliado = a.idAfiliado " +
                 "AND ap.idPlan = p.idPlan ";
-                //"AND ap.EstadoPlan = 'Activo'";
+            //"AND ap.EstadoPlan = 'Activo'";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
@@ -308,6 +330,7 @@ namespace fpWebApp
         private string listarDetalle(int id)
         {
             string parametro = string.Empty;
+            string mensaje = string.Empty;
 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarPagosWompiPorId(id);
@@ -319,15 +342,15 @@ namespace fpWebApp
             }
 
             string url = dti.Rows[0]["urlTest"].ToString() + parametro;
-            string[] rta = EnviarPeticionGet(url);
+            string[] rta = cg.EnviarPeticionGet(url, out mensaje);
             JToken token = JToken.Parse(rta[0]);
             string prettyJson = token.ToString(Formatting.Indented);
-            //txbPago.Text = prettyJson;
-            Console.WriteLine(prettyJson);
 
-            JObject jsonData = JObject.Parse(prettyJson);
+            if (mensaje == "Ok") //Verifica respuesta ok
+            {
+                JObject jsonData = JObject.Parse(prettyJson);
 
-            List<pagoswompidet> listaPagos = new List<pagoswompidet>
+                List<pagoswompidet> listaPagos = new List<pagoswompidet>
                             {
                                 new pagoswompidet
                                 {
@@ -353,27 +376,32 @@ namespace fpWebApp
                                     Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
                             };
 
-            StringBuilder sb = new StringBuilder();
+                StringBuilder sb = new StringBuilder();
 
-            foreach (var pago in listaPagos)
-            {
-                sb.Append("<tr>");
-                sb.Append($"<td>{pago.Referencia}</td>");
-                sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.FechaCreacion)) + "</td>");
-                sb.Append($"<td>{pago.Valor}</td>");
-                sb.Append("<td>" + pago.MetodoPago.Substring(0, 1) +  pago.MetodoPago.Substring(1, pago.MetodoPago.Length - 1).ToLower() + "</td>");
-                if (pago.Estado.ToString() == "APPROVED")
+                foreach (var pago in listaPagos)
                 {
-                    sb.Append($"<td><span class=\"label label-info\" " + pago.Estado.Substring(0, 1) + pago.Estado.Substring(1, pago.Estado.Length - 1).ToLower() + "<span></td>");
+                    sb.Append("<tr>");
+                    sb.Append($"<td>{pago.Referencia}</td>");
+                    sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.FechaCreacion)) + "</td>");
+                    sb.Append($"<td>{pago.Valor}</td>");
+                    sb.Append("<td>" + pago.MetodoPago.Substring(0, 1) + pago.MetodoPago.Substring(1, pago.MetodoPago.Length - 1).ToLower() + "</td>");
+                    if (pago.Estado.ToString() == "APPROVED")
+                    {
+                        sb.Append($"<td><span class=\"label label-info\" " + pago.Estado.Substring(0, 1) + pago.Estado.Substring(1, pago.Estado.Length - 1).ToLower() + "<span></td>");
+                    }
+                    else
+                    {
+                        sb.Append($"<td><span class=\"label label-info\" " + pago.Estado.Substring(0, 1) + pago.Estado.Substring(1, pago.Estado.Length - 1).ToLower() + "</td>");
+                    }
+                    sb.Append("</tr>");
                 }
-                else
-                {
-                    sb.Append($"<td><span class=\"label label-info\" " + pago.Estado.Substring(0, 1) + pago.Estado.Substring(1, pago.Estado.Length - 1).ToLower() + "</td>");
-                }
-                sb.Append("</tr>");
+
+                return sb.ToString();
             }
-
-            return sb.ToString();
+            else
+            {
+                return prettyJson;
+            }
         }
 
         protected void lbDarAcceso_Click(object sender, EventArgs e)

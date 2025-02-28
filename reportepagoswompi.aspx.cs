@@ -98,6 +98,7 @@ namespace fpWebApp
         private string listarDetalle(int id)
         {
             string parametro = string.Empty;
+            string mensaje = string.Empty;
 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarPagosWompiPorId(id);
@@ -109,15 +110,15 @@ namespace fpWebApp
             }
 
             string url = dti.Rows[0]["urlTest"].ToString() + parametro;
-            string rta = EnviarPeticion(url);
-            JToken token = JToken.Parse(rta);
+            string[] respuesta = cg.EnviarPeticionGet(url, out mensaje);
+            JToken token = JToken.Parse(respuesta[0]);
             string prettyJson = token.ToString(Formatting.Indented);
-            //txbPago.Text = prettyJson;
-            Console.WriteLine(prettyJson);
 
-            JObject jsonData = JObject.Parse(prettyJson);
+            if (mensaje == "Ok") //Verifica respuesta ok
+            {
+                JObject jsonData = JObject.Parse(prettyJson);
 
-            List<pagoswompidet> listaPagos = new List<pagoswompidet>
+                List<pagoswompidet> listaPagos = new List<pagoswompidet>
                             {
                                 new pagoswompidet
                                 {
@@ -143,34 +144,38 @@ namespace fpWebApp
                                     Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
                             };
 
-            StringBuilder sb = new StringBuilder();
+                StringBuilder sb = new StringBuilder();
 
-            sb.Append("<table class=\"table table-bordered table-striped\">");
-            sb.Append("<tr>");
-            sb.Append("<th>ID</th><th>Fecha Cre.</th><th>Fecha Fin.</th><th>Valor</th>");
-            sb.Append("<th>Método Pago</th><th>Estado</th><th>Referencia</th><th>Tarjeta</th><th>Estado3DS</th>");
-            sb.Append("</tr>");
-
-
-            foreach (var pago in listaPagos)
-            {
+                sb.Append("<table class=\"table table-bordered table-striped\">");
                 sb.Append("<tr>");
-                sb.Append($"<td>{pago.Id}</td>");
-                sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.FechaCreacion)) + "</td>");
-                sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.FechaFinalizacion)) + "</td>");
-                sb.Append($"<td>{pago.Valor}</td>");
-                sb.Append($"<td>{pago.MetodoPago}</td>");
-                sb.Append($"<td>{pago.Estado}</td>");
-                sb.Append($"<td>{pago.Referencia}</td>");
-                sb.Append($"<td>{pago.NombreTarjeta}</td>");
-                sb.Append($"<td>{pago.Estado3DS}</td>");
+                sb.Append("<th>ID</th><th>Fecha Cre.</th><th>Fecha Fin.</th><th>Valor</th>");
+                sb.Append("<th>Método Pago</th><th>Estado</th><th>Referencia</th><th>Tarjeta</th><th>Estado3DS</th>");
                 sb.Append("</tr>");
+
+
+                foreach (var pago in listaPagos)
+                {
+                    sb.Append("<tr>");
+                    sb.Append($"<td>{pago.Id}</td>");
+                    sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.FechaCreacion)) + "</td>");
+                    sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.FechaFinalizacion)) + "</td>");
+                    sb.Append($"<td>{pago.Valor}</td>");
+                    sb.Append($"<td>{pago.MetodoPago}</td>");
+                    sb.Append($"<td>{pago.Estado}</td>");
+                    sb.Append($"<td>{pago.Referencia}</td>");
+                    sb.Append($"<td>{pago.NombreTarjeta}</td>");
+                    sb.Append($"<td>{pago.Estado3DS}</td>");
+                    sb.Append("</tr>");
+                }
+
+                sb.Append("</table>"); 
+
+                return sb.ToString();
             }
-
-
-            sb.Append("</table>");
-
-            return sb.ToString();
+            else
+            {
+                return prettyJson;
+            }
         }
 
         protected void rpPagosWompi_ItemDataBound(object sender, RepeaterItemEventArgs e)
@@ -184,12 +189,12 @@ namespace fpWebApp
                     btnVer.Visible = false;
 
                     Literal ltDetalle = (Literal)e.Item.FindControl("ltDetalle");
-                    ltDetalle.Text = listarDetalle(int.Parse(((DataRowView)e.Item.DataItem).Row[0].ToString())).ToString();
+                    //ltDetalle.Text = listarDetalle(int.Parse(((DataRowView)e.Item.DataItem).Row[0].ToString())).ToString();
                 }
             }
         }
 
-        private static string EnviarPeticion(string url)
+        private static string EnviarPeticion(string url, out bool mensaje)
         {
             string resultado = "";
 
@@ -203,15 +208,20 @@ namespace fpWebApp
                 using (var oSr = new StreamReader(oResponse.GetResponseStream()))
                 {
                     resultado = oSr.ReadToEnd().Trim();
+                    mensaje = true;
                 }
 
                 return resultado;
             }
             catch (Exception ex)
             {
-                return "Error al enviar la petición: " + ex.Message;
+                string jsonError = JsonConvert.SerializeObject(new { error = "Error al enviar la petición: " + ex.Message });
+                mensaje = false;
+                resultado = jsonError;
+                return resultado;
             }
         }
+
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {

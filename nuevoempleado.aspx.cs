@@ -98,11 +98,8 @@ namespace fpWebApp
 
         private void CargarCiudad()
         {
-            string strQuery = "SELECT idCiudad, CONCAT(NombreCiudad, ' - ', NombreEstado) AS NombreCiudad FROM Ciudades " +
-                "WHERE CodigoPais = 'Co' " +
-                "ORDER BY NombreCiudad";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarCiudadesCol();
 
             ddlCiudadEmpleado.DataSource = dt;
             ddlCiudadEmpleado.DataBind();
@@ -159,9 +156,8 @@ namespace fpWebApp
 
         private void CargarCajaComp()
         {
-            string strQuery = "SELECT * FROM cajascompensacion";
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCajasComp();
 
             ddlCajaComp.DataSource = dt;
             ddlCajaComp.DataBind();

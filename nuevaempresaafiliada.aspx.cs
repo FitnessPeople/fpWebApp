@@ -83,11 +83,8 @@ namespace fpWebApp
 
         private void CargarCiudad()
         {
-            string strQuery = "SELECT idCiudad, CONCAT(NombreCiudad, ' - ', NombreEstado) AS NombreCiudad FROM Ciudades " +
-                "WHERE CodigoPais = 'Co' " +
-                "ORDER BY NombreCiudad";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarCiudadesCol();
 
             ddlCiudadEmpresa.DataSource = dt;
             ddlCiudadEmpresa.DataBind();

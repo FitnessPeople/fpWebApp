@@ -9,6 +9,10 @@ using System.Text;
 using System.Net.Mail;
 using MySql.Data.MySqlClient;
 using System.Web.Configuration;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.IO;
+using System.Net;
 
 namespace fpWebApp
 {
@@ -211,6 +215,48 @@ namespace fpWebApp
             }
 
         }
+
+        public string[] EnviarPeticionGet(string url, out string mensaje)
+        {
+            string[] strConjuntoResultados = new string[2];
+            string resultado = "";
+            string resultadoj = "";
+
+            try
+            {
+                WebRequest oRequest = WebRequest.Create(url);
+                oRequest.Method = "GET";
+                oRequest.ContentType = "application/json;charset=UTF-8";
+
+                WebResponse oResponse = oRequest.GetResponse();
+                using (var oSr = new StreamReader(oResponse.GetResponseStream()))
+                {
+                    resultado = oSr.ReadToEnd().Trim();
+                    strConjuntoResultados[0] = resultado;
+                    JObject jsonObj = JObject.Parse(resultado);
+                    if (jsonObj["message"] != null)
+                    {
+                        resultadoj = jsonObj["message"].ToString();
+                    }
+                    else
+                    {
+                        resultadoj = "";
+                    }
+                    strConjuntoResultados[1] = resultadoj;
+                    mensaje = "Ok";
+                }
+
+                return strConjuntoResultados;
+            }
+            catch (Exception ex)
+            {
+                string jsonError = JsonConvert.SerializeObject(new { error = "Error al enviar la petición: " + ex.Message });
+                mensaje = "error";
+                strConjuntoResultados[0] = jsonError;
+                return strConjuntoResultados;
+            }
+        }
+
 
         #endregion
 
@@ -482,6 +528,36 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_DEPARTAMENTOS", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;                     
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarCiudadesCol()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CIUDADES_COL", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
                         {
                             mysqlConexion.Open();
