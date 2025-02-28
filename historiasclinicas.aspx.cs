@@ -80,6 +80,7 @@ namespace fpWebApp
         private void ListaHistorias()
         {
             string strQuery = "SELECT *, " +
+                "IF(g.idGenero=1,'<i class=\"fa fa-mars\"></i>',IF(g.idGenero=2,'<i class=\"fa fa-venus\"></i>','<i class=\"fa fa-venus-mars\"></i>')) AS iconGenero, " +
                 "IF(Tabaquismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS fuma, " +
                 "IF(Alcoholismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS toma, " +
                 "IF(Sedentarismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS sedentario, " +

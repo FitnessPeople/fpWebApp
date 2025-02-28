@@ -139,8 +139,8 @@
                                         <form role="form" id="form" runat="server">
                                             <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
                                             <div class="col-sm-12">
-                                                <asp:UpdatePanel ID="upBusqueda" runat="server" UpdateMode="Always" ChildrenAsTriggers="true">
-                                                    <ContentTemplate>
+                                                <%--<asp:UpdatePanel ID="upBusqueda" runat="server" UpdateMode="Always" ChildrenAsTriggers="true">
+                                                    <ContentTemplate>--%>
                                                 <div class="row">
                                                     <div class="col-sm-3">
                                                         <div class="form-group">
@@ -172,11 +172,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                    </ContentTemplate>
+                                                    <%--</ContentTemplate>
                                                     <Triggers>
-                                                      <%--<asp:AsyncPostBackTrigger ControlID="txbBuscar" EventName="TextChanged" />--%>
+                                                      <asp:AsyncPostBackTrigger ControlID="txbBuscar" EventName="TextChanged" />
                                                    </Triggers>
-                                                </asp:UpdatePanel>
+                                                </asp:UpdatePanel>--%>
                                                 <div class="row">
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
@@ -223,6 +223,10 @@
                                                             <label>Familiares</label>
                                                             <asp:TextBox ID="txbAnteFamiliares" CssClass="form-control" runat="server" 
                                                                 TextMode="MultiLine"></asp:TextBox>
+                                                            <asp:RequiredFieldValidator ID="rfvAnteFamiliares" 
+                                                                ControlToValidate="txbAnteFamiliares" runat="server" 
+                                                                ErrorMessage="* Campo requerido" ValidationGroup="agregar">
+                                                            </asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
@@ -416,8 +420,10 @@
                                                 <div>
                                                     <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" 
                                                         onclick="window.location.href='historiasclinicas'"><strong>Cancelar</strong></button>
-                                                    <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" 
-                                                        Text="Agregar" Visible="false" OnClick="btnAgregar_Click" />
+                                                    <asp:Button ID="btnAgregar" runat="server" 
+                                                        CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" 
+                                                        Text="Agregar" Visible="false" OnClick="btnAgregar_Click" 
+                                                        ValidationGroup="agregar" />
                                                 </div>
                                             </div>
                                         </form>
@@ -454,173 +460,14 @@
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
     <script>
-        var element = document.querySelector("#hfGenero");
-        if (element.value == '2') {
-            $("#form").validate({
-                rules: {
-                    txbBuscar: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbMedicinaPrepagada: {
-                        required: true,
-                        minlength: 3
-                    },
-                    ddlObjetivo: {
-                        required: true,
-                    },
-                    txbDescripcionObjetivo: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbAnteFamiliares: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbAntePatologico: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbAnteQuirurgico: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbAnteTraumatologico: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbAnteFarmacologico: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbAnteActividadFisica: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbAnteToxicologico: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbAnteHospitalario: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbAnteGinecoObstetricio: {
-                        required: true,
-                        minlength: 3
-                    },
-                    rblFuma: "*",
-                    rblToma: {
-                        required: true,
-                    },
-                    rblSedentarismo: {
-                        required: true,
-                    },
-                    rblDiabetes: {
-                        required: true,
-                    },
-                    rblColesterol: {
-                        required: true,
-                    },
-                    rblTrigliceridos: {
-                        required: true,
-                    },
-                    rblHTA: {
-                        required: true,
-                    },
-                    txbFum: {
-                        required: true,
-                    },
-                }
-            });
-        } else {
-            $("#form").validate({
-                rules: {
-                    txbBuscar: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbMedicinaPrepagada: {
-                        required: true,
-                        minlength: 3
-                    },
-                    ddlObjetivo: {
-                        required: true,
-                    },
-                    txbDescripcionObjetivo: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbAnteFamiliares: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbAntePatologico: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbAnteQuirurgico: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbAnteTraumatologico: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbAnteFarmacologico: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbAnteActividadFisica: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbAnteToxicologico: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbAnteHospitalario: {
-                        required: true,
-                        minlength: 3
-                    },
-                    txbAnteGinecoObstetricio: {
-                        required: true,
-                        minlength: 3
-                    },
-                    rblFuma: {
-                        required: true,
-                    },
-                    rblToma: {
-                        required: true,
-                    },
-                    rblSedentarismo: {
-                        required: true,
-                    },
-                    rblDiabetes: {
-                        required: true,
-                    },
-                    rblColesterol: {
-                        required: true,
-                    },
-                    rblTrigliceridos: {
-                        required: true,
-                    },
-                    rblHTA: {
-                        required: true,
-                    },
+        $("#form").validate({
+            rules: {
+                txbAfiliado: {
+                    required: true,
+                    minlength: 3
                 },
-                messages: {
-                    rblFuma: "*",
-                    rblToma: "*",
-                    rblSedentarismo: "*",
-                    rblDiabetes: "*",
-                    rblColesterol: "*",
-                    rblTrigliceridos: "*",
-                    rblHTA: "*",
-                }
-            });
-        }
-
+            }
+        });
     </script>
 
     <script type="text/javascript">  

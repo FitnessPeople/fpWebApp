@@ -166,12 +166,11 @@
                                         data-empty="Sin resultados">
                                         <thead>
                                             <tr>
-                                                <th data-sortable="false" data-breakpoints="xs" style="width: 110px;">ID</th>
+                                                <%--<th data-sortable="false" data-breakpoints="xs" style="width: 110px;">ID</th>--%>
                                                 <th data-type="date" data-breakpoints="xs sm md">Fecha de creación</th>
                                                 <th data-breakpoints="xs">Documento</th>
                                                 <th data-breakpoints="xs">Afiliado</th>
                                                 <th data-breakpoints="xs">Género</th>
-                                                <th data-type="date" data-breakpoints="xs sm md">Fecha último control</th>
                                                 <th data-breakpoints="all" data-title="Info"></th>
                                                 <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                             </tr>
@@ -180,14 +179,13 @@
                                             <asp:Repeater ID="rpHistoriasClinicas" runat="server" OnItemDataBound="rpHistoriasClinicas_ItemDataBound">
                                                 <ItemTemplate>
                                                     <tr class="feed-element">
-                                                        <td><%# Eval("idHistoria") %></td>
-                                                        <td><%# Eval("FechaHora", "{0:dd MMM yyyy HH:mm}") %></td>
+                                                        <%--<td><%# Eval("idHistoria") %></td>--%>
+                                                        <td><i class="fa fa-calendar-day"></i> <%# Eval("FechaHora", "{0:dd MMM yyyy}") %> <i class="fa fa-clock"></i> <%# Eval("FechaHora", "{0:HH:mm}") %></td>
                                                         <td><%# Eval("DocumentoAfiliado") %></td>
                                                         <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
-                                                        <td><%# Eval("Genero") %></td>
-                                                        <td><%# Eval("FechaHora", "{0:dd MMM yyyy HH:mm}") %></td>
+                                                        <td><%# Eval("iconGenero") %> <%# Eval("Genero") %></td>
                                                         <td>
-                                                            <h3>Antecedentes</h3>
+                                                            <h3 class="text-info">Antecedentes</h3>
                                                             <table class="table table-bordered table-striped">
                                                                 <tr>
                                                                     <th width="20%"><i class="fa fa-people-roof m-r-sm"></i>Familiares</th>
@@ -218,6 +216,7 @@
                                                                     <td><%# Eval("AnteGineco") %></td>
                                                                 </tr>
                                                             </table>
+                                                            <h3 class="text-info">Factores de Riesgo Cardiovascular</h3>
                                                             <table class="table table-bordered table-striped">
                                                                 <tr>
                                                                     <th width="10%"><i class="fa fa-smoking m-r-sm"></i>Tabaco</th>

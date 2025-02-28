@@ -25,9 +25,6 @@
     <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
-    <!-- FooTable -->
-    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
-
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
@@ -274,9 +271,6 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    <!-- FooTable -->
-    <script src="js/plugins/footable/footable.all.min.js"></script>
-
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
@@ -288,7 +282,6 @@
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
     <script>
-
         $("#form").validate({
             rules: {
                 txbAfiliado: {
@@ -296,21 +289,6 @@
                     minlength: 3
                 },
             }
-        });
-
-        $('.footable').footable();
-
-        $('.data-page-size').on('click', function (e) {
-            e.preventDefault();
-            var newSize = $(this).data('pageSize');
-            $('.footable').data('page-size', newSize);
-            $('.footable').trigger('footable_initialized');
-        });
-
-        $('.toggle').click(function (e) {
-            e.preventDefault();
-            $('.toggle').toggle();
-            $('.footable').trigger($(this).data('trigger')).trigger('footable_redraw');
         });
     </script>
 

@@ -112,12 +112,12 @@ namespace fpWebApp
 
         protected void btnAfiliado_Click(object sender, EventArgs e)
         {
-            string strDocumento = txbAfiliado.Text.ToString();
+            string[] strDocumento = txbAfiliado.Text.ToString().Split('-');
             string strQuery = "SELECT * FROM Afiliados a " +
                 "LEFT JOIN Profesiones p ON a.idProfesion = p.idProfesion " +
                 "LEFT JOIN Eps ON a.idEps = Eps.idEps " +
                 "LEFT JOIN HistoriasClinicas hc ON a.idAfiliado = hc.IdAfiliado " +
-                "WHERE DocumentoAfiliado = '" + strDocumento + "' ";
+                "WHERE DocumentoAfiliado = '" + strDocumento[0].Trim() + "' ";
             clasesglobales cg1 = new clasesglobales();
             DataTable dt = cg1.TraerDatos(strQuery);
 

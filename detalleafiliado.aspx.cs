@@ -128,20 +128,21 @@ namespace fpWebApp
             ltDetalle.Text += "<th>Referencia</th><th>Fecha</th><th>Valor</th>";
             ltDetalle.Text += "<th>Método</th><th>Estado</th>";
             ltDetalle.Text += "</tr>";
-            
-            
+
+            string strFila = "";
             if (dt2.Rows.Count > 0)
             {
                 for (int i = 0; i < dt2.Rows.Count; i++)
                 {
-                    string strFila = listarDetalle(int.Parse(dt2.Rows[i]["idAfiliadoPlan"].ToString()));
+                    strFila = listarDetalle(int.Parse(dt2.Rows[i]["idAfiliadoPlan"].ToString()));
                     ltDetalle.Text += strFila;
                 }
             }
             ltDetalle.Text += "</table>";
 
             string url = "https://aone.armaturacolombia.co/api/person/get/" + strDocumento + "?access_token=D2BCF6E6BD09DECAA1266D9F684FFE3F5310AD447D107A29974F71E1989AABDB";
-            string[] respuesta = EnviarPeticionGet(url);
+            string[] respuesta = new string[2];
+            //respuesta = EnviarPeticionGet(url);
 
             ltImagen.Text = "<img src=\"img/facial-recognition.png\" width=\"100px\" />";
             if (respuesta[1] == "success")

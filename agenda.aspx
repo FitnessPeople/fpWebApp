@@ -218,7 +218,7 @@
                                                             <div class="form-group" id="data_1">
                                                                 <label>Fecha Inicial:</label>
                                                                 <div class="input-group date">
-                                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                                    <span class="input-group-addon"><i class="fa fa-calendar-day"></i></span>
                                                                     <input type="text" class="form-control input-sm" id="txbFechaIni" name="txbFechaIni" runat="server">
                                                                 </div>
                                                             </div>
@@ -227,7 +227,7 @@
                                                             <div class="form-group" id="data_2">
                                                                 <label>Fecha Final:</label>
                                                                 <div class="input-group date">
-                                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                                    <span class="input-group-addon"><i class="fa fa-calendar-day"></i></span>
                                                                     <input type="text" class="form-control input-sm" id="txbFechaFin" name="txbFechaFin" runat="server">
                                                                 </div>
                                                             </div>
@@ -499,7 +499,7 @@
                     jQuery('.event-id').html(event.id);
                     jQuery('.event-icon').html("<i class='fa fa-" + event.icon + "'></i>");
                     jQuery('.event-title').html(event.title);
-                    jQuery('.event-body').html(" <i class='fa fa-calendar'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />");
+                    jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />");
                     jQuery('.event-description').html(event.description);
                     //jQuery('.event-iconPago').html("<i class='fa fa-" + event.iconPago + "'></i>");
                     //jQuery('.event-pago').html(event.pago);
