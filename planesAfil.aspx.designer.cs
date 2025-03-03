@@ -555,33 +555,6 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.LinkButton lbAgregarPlan;
 
         /// <summary>
-        /// Control lkAgregarPagoEfectivo.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lkAgregarPagoEfectivo;
-
-        /// <summary>
-        /// Control lkAgregarPagoTransferencia.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lkAgregarPagoTransferencia;
-
-        /// <summary>
-        /// Control lkAgregarPagoDatafono.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lkAgregarPagoDatafono;
-
-        /// <summary>
         /// Control footer.
         /// </summary>
         /// <remarks>

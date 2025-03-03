@@ -43,21 +43,25 @@ namespace fpWebApp
                         txbWompi.Attributes.Add("min", "0");
                         txbWompi.Attributes.Add("max", "10000000");
                         txbWompi.Attributes.Add("step", "100");
+                        txbWompi.Text = "0";
 
                         txbDatafono.Attributes.Add("type", "number");
                         txbDatafono.Attributes.Add("min", "0");
                         txbDatafono.Attributes.Add("max", "10000000");
                         txbDatafono.Attributes.Add("step", "100");
+                        txbDatafono.Text = "0";
 
                         txbEfectivo.Attributes.Add("type", "number");
                         txbEfectivo.Attributes.Add("min", "0");
                         txbEfectivo.Attributes.Add("max", "10000000");
                         txbEfectivo.Attributes.Add("step", "100");
+                        txbEfectivo.Text = "0";
 
                         txbTransferencia.Attributes.Add("type", "number");
                         txbTransferencia.Attributes.Add("min", "0");
                         txbTransferencia.Attributes.Add("max", "10000000");
                         txbTransferencia.Attributes.Add("step", "100");
+                        txbTransferencia.Text = "0";
 
                         ViewState.Add("precioBase", 0);
                         ltPrecioBase.Text = "$0";
@@ -895,22 +899,34 @@ namespace fpWebApp
 
         protected void txbWompi_TextChanged(object sender, EventArgs e)
         {
-            txbTotal.Text = Convert.ToString(Convert.ToInt32(txbWompi.Text) + Convert.ToInt32(txbDatafono.Text));
+            if (txbWompi.Text != "" && txbDatafono.Text != "" && txbEfectivo.Text != "" && txbTransferencia.Text != "")
+            {
+                txbTotal.Text = Convert.ToString(Convert.ToInt32(txbWompi.Text) + Convert.ToInt32(txbDatafono.Text) + Convert.ToInt32(txbEfectivo.Text) + Convert.ToInt32(txbTransferencia.Text));
+            }
         }
 
         protected void txbDatafono_TextChanged(object sender, EventArgs e)
         {
-            txbTotal.Text = Convert.ToString(Convert.ToInt32(txbWompi.Text) + Convert.ToInt32(txbDatafono.Text));
+            if (txbWompi.Text != "" && txbDatafono.Text != "" && txbEfectivo.Text != "" && txbTransferencia.Text != "")
+            {
+                txbTotal.Text = Convert.ToString(Convert.ToInt32(txbWompi.Text) + Convert.ToInt32(txbDatafono.Text) + Convert.ToInt32(txbEfectivo.Text) + Convert.ToInt32(txbTransferencia.Text));
+            }
         }
 
         protected void txbEfectivo_TextChanged(object sender, EventArgs e)
         {
-            txbTotal.Text = Convert.ToString(Convert.ToInt32(txbWompi.Text) + Convert.ToInt32(txbDatafono.Text));
+            if (txbWompi.Text != "" && txbDatafono.Text != "" && txbEfectivo.Text != "" && txbTransferencia.Text != "")
+            {
+                txbTotal.Text = Convert.ToString(Convert.ToInt32(txbWompi.Text) + Convert.ToInt32(txbDatafono.Text) + Convert.ToInt32(txbEfectivo.Text) + Convert.ToInt32(txbTransferencia.Text));
+            }
         }
 
         protected void txbTransferencia_TextChanged(object sender, EventArgs e)
         {
-            txbTotal.Text = Convert.ToString(Convert.ToInt32(txbWompi.Text) + Convert.ToInt32(txbDatafono.Text));
+            if (txbWompi.Text != "" && txbDatafono.Text != "" && txbEfectivo.Text != "" && txbTransferencia.Text != "")
+            {
+                txbTotal.Text = Convert.ToString(Convert.ToInt32(txbWompi.Text) + Convert.ToInt32(txbDatafono.Text) + Convert.ToInt32(txbEfectivo.Text) + Convert.ToInt32(txbTransferencia.Text));
+            }
         }
     }
 }

@@ -16,7 +16,7 @@
 
     <title>Fitness People | Plan afiliado</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/bootstrap.css" rel="stylesheet" />
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
@@ -404,11 +404,10 @@
                                                     </div>
 
                                                     <div class="col-sm-4">
-                                                        <label>Resumen:</label>
                                                         <div class="form-group">
                                                             <div class="panel panel-default" runat="server" id="divPanelResumen">
                                                                 <div class="panel-heading">
-                                                                    <i class="fa fa-gift"></i>
+                                                                    <i class="fa fa-ticket"></i>
                                                                     <asp:Literal ID="ltNombrePlan" runat="server"></asp:Literal>
                                                                 </div>
                                                                 <div class="panel-body">
@@ -425,11 +424,10 @@
                                                     </div>
 
                                                     <div class="col-sm-4">
-                                                        <label>Pago:</label>
                                                         <div class="form-group">
                                                             <div class="panel panel-default" runat="server" id="div1">
                                                                 <div class="panel-heading">
-                                                                    <i class="fa fa-gift"></i>
+                                                                    <i class="fa fa-money-bill"></i> Pago
                                                                     <asp:Literal ID="Literal1" runat="server"></asp:Literal>
                                                                 </div>
                                                                 <div class="panel-body form-horizontal">
@@ -499,19 +497,7 @@
                                             <asp:LinkButton ID="lbAgregarPlan" runat="server"
                                                 CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" 
                                                 OnClick="lbAgregarPlan_Click">
-                                                <i class="fa fa-credit-card"></i> Pago por Wompi</asp:LinkButton>
-                                            <asp:LinkButton ID="lkAgregarPagoEfectivo" runat="server"
-                                                CssClass="btn btn-sm btn-success m-t-n-xs m-r-md pull-right" 
-                                                OnClick="lbAgregarPlan_Click">
-                                                <i class="fa fa-cash-register"></i> Pago en Efectivo</asp:LinkButton>
-                                            <asp:LinkButton ID="lkAgregarPagoTransferencia" runat="server"
-                                                CssClass="btn btn-sm btn-info m-t-n-xs m-r-md pull-right" 
-                                                OnClick="lbAgregarPlan_Click">
-                                                <i class="fa fa-receipt"></i> Pago por Transferencia</asp:LinkButton>
-                                            <asp:LinkButton ID="lkAgregarPagoDatafono" runat="server"
-                                                CssClass="btn btn-sm btn-warning m-t-n-xs m-r-md pull-right" 
-                                                OnClick="lbAgregarPlan_Click">
-                                                <i class="fa fa-file-invoice-dollar"></i> Pago por Transferencia</asp:LinkButton>
+                                                <i class="fa fa-ticket"></i> Agregar plan</asp:LinkButton>
                                             <%--<asp:Button ID="btnAgregarPlan" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
                                                 Text="Agregar Plan" OnClick="btnAgregarPlan_Click" />--%>
                                         </div>
