@@ -87,6 +87,24 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltEmail;
 
         /// <summary>
+        /// Control ltDireccion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltDireccion;
+
+        /// <summary>
+        /// Control ltCiudad.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltCiudad;
+
+        /// <summary>
         /// Control ltCelular.
         /// </summary>
         /// <remarks>
@@ -402,13 +420,13 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divPanelResumen;
 
         /// <summary>
-        /// Control ltTituloRegalo.
+        /// Control ltNombrePlan.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltTituloRegalo;
+        protected global::System.Web.UI.WebControls.Literal ltNombrePlan;
 
         /// <summary>
         /// Control ltDescripcion.
@@ -447,6 +465,24 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltRegalos;
 
         /// <summary>
+        /// Control div1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div1;
+
+        /// <summary>
+        /// Control Literal1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal Literal1;
+
+        /// <summary>
         /// Control txbFechaInicio.
         /// </summary>
         /// <remarks>
@@ -454,6 +490,51 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbFechaInicio;
+
+        /// <summary>
+        /// Control txbWompi.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbWompi;
+
+        /// <summary>
+        /// Control txbDatafono.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbDatafono;
+
+        /// <summary>
+        /// Control txbEfectivo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbEfectivo;
+
+        /// <summary>
+        /// Control txbTransferencia.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbTransferencia;
+
+        /// <summary>
+        /// Control txbTotal.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbTotal;
 
         /// <summary>
         /// Control ltMensaje.
@@ -465,13 +546,40 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltMensaje;
 
         /// <summary>
-        /// Control btnAgregarPlan.
+        /// Control lbAgregarPlan.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAgregarPlan;
+        protected global::System.Web.UI.WebControls.LinkButton lbAgregarPlan;
+
+        /// <summary>
+        /// Control lkAgregarPagoEfectivo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lkAgregarPagoEfectivo;
+
+        /// <summary>
+        /// Control lkAgregarPagoTransferencia.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lkAgregarPagoTransferencia;
+
+        /// <summary>
+        /// Control lkAgregarPagoDatafono.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lkAgregarPagoDatafono;
 
         /// <summary>
         /// Control footer.
