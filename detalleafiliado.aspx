@@ -261,7 +261,7 @@
 
                                 <div class="ibox">
                                     <div class="ibox-title bg-info">
-                                        <h5><i class="fa fa-credit-card"></i> Pagos Online</h5>
+                                        <h5><i class="fa fa-credit-card"></i> Pagos</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up text-white"></i>

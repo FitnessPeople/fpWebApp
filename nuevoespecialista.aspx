@@ -248,7 +248,7 @@
                                                             <label>Ciudad</label>
                                                             <asp:DropDownList ID="ddlCiudadEspecialista" runat="server" 
                                                                 AppendDataBoundItems="true" DataTextField="NombreCiudad" 
-                                                                DataValueField="idCiudad" CssClass="chosen-select input-sm">
+                                                                DataValueField="idCiudad" CssClass="chosen-select form-control input-sm">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
@@ -420,7 +420,7 @@
             }
         });
 
-        $('.chosen-select').chosen({ width: "100%" });
+        $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
     </script>
 
 </body>

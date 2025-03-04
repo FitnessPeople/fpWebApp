@@ -157,6 +157,7 @@ namespace fpWebApp
                     ltCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
                     ltCumple.Text = String.Format("{0:dd MMM}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]));
                     ltEstado.Text = "<span class=\"label label-" + dt.Rows[0]["label"].ToString() + "\">" + dt.Rows[0]["EstadoAfiliado"].ToString() + "</span>";
+                    ViewState["EstadoAfiliado"] = dt.Rows[0]["EstadoAfiliado"].ToString();
 
                     if (dt.Rows[0]["FechaNacAfiliado"].ToString() != "1900-01-00")
                     {
@@ -586,6 +587,7 @@ namespace fpWebApp
             ltObservaciones.Text += "<b>Valor Total</b>: $" + string.Format("{0:N0}", dobTotal) + ".<br />";
 
             ViewState["observaciones"] = ltObservaciones.Text.ToString().Replace("<b>","").Replace("</b>", "").Replace("<br />", "\r\n");
+            ltValorTotal.Text = "($" + string.Format("{0:N0}", dobTotal) + ")";
         }
 
         private void ActivarCortesia(string strCortesia)
@@ -795,7 +797,7 @@ namespace fpWebApp
 
         protected void lbAgregarPlan_Click(object sender, EventArgs e)
         {
-            if (ltEstado.Text.ToString() != "Activo")
+            if (ViewState["EstadoAfiliado"].ToString() != "Activo")
             {
                 ltMensaje.Text = "<div class=\"ibox-content\">" +
                     "<div class=\"alert alert-danger alert-dismissable\">" +
@@ -825,55 +827,68 @@ namespace fpWebApp
                         }
                         else
                         {
-                            try
-                            {
-                                DateTime fechainicio = Convert.ToDateTime(txbFechaInicio.Text.ToString());
-                                DateTime fechafinal = fechainicio.AddMonths(Convert.ToInt16(ViewState["meses"].ToString()));
-                                strQuery = "INSERT INTO AfiliadosPlanes " +
-                                    "(idAfiliado, idPlan, FechaInicioPlan, FechaFinalPlan, EstadoPlan, Meses, Valor, ObservacionesPlan) " +
-                                    "VALUES (" + Request.QueryString["id"].ToString() + ", " + ViewState["idPlan"].ToString() + ", " +
-                                    "'" + txbFechaInicio.Text.ToString() + "', '" + String.Format("{0:yyyy-MM-dd}", fechafinal) + "', 'Inactivo', " +
-                                    "" + ViewState["meses"].ToString() + ", " + ViewState["precio"].ToString() + ",  " +
-                                    "'" + ViewState["observaciones"].ToString() + "') ";
-
-                                try
-                                {
-                                    string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-
-                                    using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
-                                    {
-                                        mysqlConexion.Open();
-                                        using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
-                                        {
-                                            cmd.CommandType = CommandType.Text;
-                                            cmd.ExecuteNonQuery();
-                                        }
-                                        mysqlConexion.Close();
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    string respuesta = "ERROR: " + ex.Message;
-                                }
-
-                                string strString = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + ViewState["precio"].ToString()));
-
-                                string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
-                                strMensaje += "Descripción del plan.\r\n\r\n";
-                                strMensaje += "Por favor, agradecemos realice el pago a través del siguiente enlace: \r\n";
-                                strMensaje += "https://fitnesspeoplecolombia.com/wompiplan?code=" + strString;
-
-                                cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", ViewState["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
-
-                                // Enviar correo electrónico al afiliado para que pague.
-                            }
-                            catch (Exception ex)
+                            if (ViewState["precio"].ToString() != txbTotal.Text.ToString())
                             {
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +
                                 "<div class=\"alert alert-danger alert-dismissable\">" +
-                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message.ToString() +
+                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                "El precio del plan es diferente al precio a pagar." +
                                 "</div></div>";
-                                throw;
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    DateTime fechainicio = Convert.ToDateTime(txbFechaInicio.Text.ToString());
+                                    DateTime fechafinal = fechainicio.AddMonths(Convert.ToInt16(ViewState["meses"].ToString()));
+                                    strQuery = "INSERT INTO AfiliadosPlanes " +
+                                        "(idAfiliado, idPlan, FechaInicioPlan, FechaFinalPlan, EstadoPlan, Meses, Valor, ObservacionesPlan) " +
+                                        "VALUES (" + Request.QueryString["id"].ToString() + ", " + ViewState["idPlan"].ToString() + ", " +
+                                        "'" + txbFechaInicio.Text.ToString() + "', '" + String.Format("{0:yyyy-MM-dd}", fechafinal) + "', 'Inactivo', " +
+                                        "" + ViewState["meses"].ToString() + ", " + ViewState["precio"].ToString() + ",  " +
+                                        "'" + ViewState["observaciones"].ToString() + "') ";
+
+                                    try
+                                    {
+                                        string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                                        using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                                        {
+                                            mysqlConexion.Open();
+                                            using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
+                                            {
+                                                cmd.CommandType = CommandType.Text;
+                                                cmd.ExecuteNonQuery();
+                                            }
+                                            mysqlConexion.Close();
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        string respuesta = "ERROR: " + ex.Message;
+                                    }
+
+                                    if (txbWompi.Text.ToString() != "0")
+                                    {
+                                        string strString = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + ViewState["precio"].ToString()));
+
+                                        string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
+                                        strMensaje += "Descripción del plan.\r\n\r\n";
+                                        strMensaje += "Por favor, agradecemos realice el pago a través del siguiente enlace: \r\n";
+                                        strMensaje += "https://fitnesspeoplecolombia.com/wompiplan?code=" + strString;
+
+                                        cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", ViewState["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
+                                    }
+
+                                }
+                                catch (Exception ex)
+                                {
+                                    ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message.ToString() +
+                                    "</div></div>";
+                                    throw;
+                                }
                             }
                         }
                     }

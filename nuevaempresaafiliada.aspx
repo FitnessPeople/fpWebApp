@@ -219,7 +219,7 @@
                                                     <label>Ciudad</label>
                                                     <asp:DropDownList ID="ddlCiudadEmpresa" runat="server" 
                                                         AppendDataBoundItems="true" DataTextField="NombreCiudad" 
-                                                        DataValueField="idCiudad" CssClass="chosen-select input-sm">
+                                                        DataValueField="idCiudad" CssClass="chosen-select form-control input-sm">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
