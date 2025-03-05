@@ -1,24 +1,20 @@
-﻿using Microsoft.Ajax.Utilities;
+﻿using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Reflection.Emit;
 using System.Text;
 using System.Web;
-using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
-    public partial class reportespagoswompi : System.Web.UI.Page
+    public partial class reportepagos : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -26,7 +22,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Pagos Wompi");
+                    ValidarPermisos("Pagos");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -90,14 +86,15 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarPagosPlanAfiliados();
-            rpPagosWompi.DataSource = dt;
-            rpPagosWompi.DataBind();
+            rpPagos.DataSource = dt;
+            rpPagos.DataBind();
             dt.Dispose();
         }
 
         private string listarDetalle(int id)
         {
             string parametro = string.Empty;
+            string nomAfiliado = string.Empty;
             string mensaje = string.Empty;
 
             clasesglobales cg = new clasesglobales();
@@ -106,7 +103,8 @@ namespace fpWebApp
 
             if (dt.Rows.Count > 0)
             {
-                parametro = dt.Rows[0]["IdReferenciaWompi"].ToString();
+                parametro = dt.Rows[0]["IdReferencia"].ToString();
+                nomAfiliado = dt.Rows[0]["NombreAfiliado"].ToString();
             }
 
             string url = dti.Rows[0]["urlTest"].ToString() + parametro;
@@ -148,7 +146,7 @@ namespace fpWebApp
 
                 sb.Append("<table class=\"table table-bordered table-striped\">");
                 sb.Append("<tr>");
-                sb.Append("<th>ID</th><th>Fecha Cre.</th><th>Fecha Fin.</th><th>Valor</th>");
+                sb.Append("<th>ID</th><th>Afiliado</th><th>Fecha Cre.</th><th>Fecha Fin.</th><th>Valor</th>");
                 sb.Append("<th>Método Pago</th><th>Estado</th><th>Referencia</th><th>Tarjeta</th><th>Estado3DS</th>");
                 sb.Append("</tr>");
 
@@ -157,6 +155,7 @@ namespace fpWebApp
                 {
                     sb.Append("<tr>");
                     sb.Append($"<td>{pago.Id}</td>");
+                    sb.Append($"<td>{nomAfiliado}</td>");
                     sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.FechaCreacion)) + "</td>");
                     sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.FechaFinalizacion)) + "</td>");
                     sb.Append($"<td>{pago.Valor}</td>");
@@ -168,7 +167,7 @@ namespace fpWebApp
                     sb.Append("</tr>");
                 }
 
-                sb.Append("</table>"); 
+                sb.Append("</table>");
 
                 return sb.ToString();
             }
@@ -178,7 +177,7 @@ namespace fpWebApp
             }
         }
 
-        protected void rpPagosWompi_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        protected void rpPagos_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
@@ -187,11 +186,9 @@ namespace fpWebApp
                     HtmlAnchor btnVer = (HtmlAnchor)e.Item.FindControl("btnVer");
                     btnVer.Attributes.Add("href", "reportepagoswompi?verid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnVer.Visible = false;
-
-                    Literal ltDetalle = (Literal)e.Item.FindControl("ltDetalle");
-                    //ltDetalle.Text = listarDetalle(int.Parse(((DataRowView)e.Item.DataItem).Row[0].ToString())).ToString();
                 }
             }
+
         }
 
         private static string EnviarPeticion(string url, out bool mensaje)
@@ -227,5 +224,54 @@ namespace fpWebApp
         {
 
         }
+
+
+
+        //protected void btnDetalle_Command(object sender, CommandEventArgs e)
+        //{
+        //    if (e.CommandName == "mostrarDetalle")
+        //    {
+        //        int idAfiliadoPlan = int.Parse(e.CommandArgument.ToString());
+        //        RepeaterItem item = ((Control)sender).NamingContainer as RepeaterItem;
+
+        //        if (item != null)
+        //        {
+        //            HiddenField hfDetalle = (HiddenField)this.FindControl("hfDetalle");
+        //            Literal ltDetalleModal = (Literal)this.FindControl("ltDetalleModal");
+
+        //            if (hfDetalle != null && ltDetalleModal != null)
+        //            {
+        //                string detalle = listarDetalle(idAfiliadoPlan);
+        //                hfDetalle.Value = detalle;
+        //                ltDetalleModal.Text = detalle;
+        //            }
+
+        //            ScriptManager.RegisterStartupScript(this, this.GetType(), "MostrarModal",
+        //                "setTimeout(function() { $('#ModalDetalle').modal('show'); }, 500);", true);
+        //        }
+        //    }
+        //}
+
+        protected void btnDetalle_Command(object sender, CommandEventArgs e)
+        {
+            if (e.CommandName == "mostrarDetalle")
+            {
+                int idAfiliadoPlan = int.Parse(e.CommandArgument.ToString());
+
+                // Buscar el control en toda la página
+                Literal ltDetalleModal = (Literal)Page.FindControl("ltDetalleModal");
+
+                if (ltDetalleModal != null)
+                {
+                    ltDetalleModal.Text = listarDetalle(idAfiliadoPlan);
+                }
+
+                // Mostrar la modal con JavaScript
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "MostrarModal",
+                   "setTimeout(function() { $('#ModalDetalle').modal('show'); }, 500);", true);
+            }
+        }
+
+
     }
 }

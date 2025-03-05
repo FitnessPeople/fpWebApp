@@ -832,7 +832,7 @@
     <Content Include="planesAfil.aspx" />
     <Content Include="plantilla.aspx" />
     <Content Include="profesiones.aspx" />
-    <Content Include="reportepagoswompi.aspx" />
+    <Content Include="reportepagos.aspx" />
     <Content Include="respuestaautorizacion.aspx" />
     <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjax.js" />
     <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxApplicationServices.js" />
@@ -1379,12 +1379,12 @@
       <DependentUpon>profesiones.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="reportepagoswompi.aspx.cs">
-      <DependentUpon>reportepagoswompi.aspx</DependentUpon>
+    <Compile Include="reportepagos.aspx.cs">
+      <DependentUpon>reportepagos.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="reportepagoswompi.aspx.designer.cs">
-      <DependentUpon>reportepagoswompi.aspx</DependentUpon>
+    <Compile Include="reportepagos.aspx.designer.cs">
+      <DependentUpon>reportepagos.aspx</DependentUpon>
     </Compile>
     <Compile Include="respuestaautorizacion.aspx.cs">
       <DependentUpon>respuestaautorizacion.aspx</DependentUpon>

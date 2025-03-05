@@ -1,4 +1,7 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="reportepagoswompi.aspx.cs" Inherits="fpWebApp.reportespagoswompi" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="reportepagos.aspx.cs" Inherits="fpWebApp.reportepagos" %>
+
+<!DOCTYPE html>
+
 
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
@@ -15,13 +18,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Pagos Wompi</title>
+    <title>Fitness People | Pagos</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <%--<link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />--%>
     <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
@@ -34,9 +36,12 @@
         }
     </style>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#reportepagoswompi");
+            var element1 = document.querySelector("#reportepagos");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#reportes");
             element2.classList.remove("collapse");
@@ -45,13 +50,14 @@
 </head>
 
 <body onload="changeClass()">
-    <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
+
+    <div class="modal inmodal" id="myModal" tabindex="-1" aria-labelledby="miModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                     <i class="fas fa-hand-holding-usd"></i>
-                    <h4 class="modal-title">Guía para administrar Reporte Wompi</h4>
+                    <h4 class="modal-title">Guía para administrar Reportes</h4>
                     <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
                 </div>
                 <div class="modal-body">
@@ -87,11 +93,13 @@
                 </div>
             </div>
         </div>
+
+
+
     </div>
+
     <div id="wrapper">
-
         <uc1:navbar runat="server" ID="navbar" />
-
         <div id="page-wrapper" class="gray-bg">
             <div class="row border-bottom">
                 <uc1:header runat="server" ID="header" />
@@ -100,11 +108,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fas fa-hand-holding-usd text-success m-r-sm"></i>Pagos Wompi</h2>
+                    <h2><i class="fas fa-hand-holding-usd text-success m-r-sm"></i>Pagos</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Reportes</li>
-                        <li class="active"><strong>Pagos Wompi</strong></li>
+                        <li class="active"><strong>Pagos</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -128,6 +136,28 @@
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
                     <form id="form1" runat="server">
+                        <asp:ScriptManager ID="ScriptManager1" runat="server" />
+
+                        <!-- Modal de Ver Detalle -->
+                        <div class="modal fade" id="ModalDetalle" tabindex="-1" aria-labelledby="miModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content animated bounceInRight">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Detalle de la transacción</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <asp:Literal ID="ltDetalleModal" runat="server"></asp:Literal>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row" id="divContenido" runat="server">
                             <div class="col-lg-12">
                                 <div class="ibox float-e-margins">
@@ -167,32 +197,37 @@
                                                     <th data-breakpoints="xs">Doc. Afiliado</th>
                                                     <th data-breakpoints="xs">Afiliado</th>
                                                     <th data-breakpoints="xs">Valor</th>
-                                                    <th data-breakpoints="xs">Referencia Wompi</th>
+                                                    <th data-breakpoints="xs">Tipo Pago</th>
+                                                    <th data-breakpoints="xs">Referencia</th>
                                                     <th data-breakpoints="xs">Fecha Hora Pago</th>
-                                                    <th data-breakpoints="all" data-title="Info"></th>
-                                                     <th data-sortable="false" data-filterable="false" class="text-right"></th>
+                                                    <th data-breakpoints="xs">Estado Pago</th>
+                                                    <th data-breakpoints="xs">Detalle</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpPagosWompi" runat="server" OnItemDataBound="rpPagosWompi_ItemDataBound">
-                                                    <ItemTemplate>
-                                                        <tr class="feed-element">
-                                                            <td><%# Eval("idAfiliadoPlan") %></td>
-                                                            <td><%# Eval("DocumentoAfiliado") %></td>
-                                                            <td><%# Eval("NombreAfiliado") %></td>
-                                                            <td><%# Eval("Valor") %></td>
-                                                            <td><%# Eval("IdReferenciaWompi") %></td>
-                                                            <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy}") %></td>
-                                                            <td>
-                                                                <asp:Literal ID="ltDetalle" runat="server"></asp:Literal>
-                                                            </td>
-                                                            <td style="display: flex; flex-wrap: nowrap;">
-                                                                <a runat="server" id="btnVer" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
-                                                            </td>
-                                                        </tr>
-                                                    </ItemTemplate>
-                                                </asp:Repeater>
+                                             <asp:Repeater ID="rpPagos" runat="server">
+                                               <ItemTemplate>
+                                                    <tr class="feed-element">
+                                                        <td><%# Eval("idAfiliadoPlan") %></td>
+                                                        <td><%# Eval("DocumentoAfiliado") %></td>
+                                                        <td><%# Eval("NombreAfiliado") %></td>
+                                                        <td><%# Eval("Valor") %></td>
+                                                        <td><%# Eval("TipoPago") %></td>
+                                                        <td><%# Eval("IdReferencia") %></td>
+                                                        <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy}") %></td>
+                                                        <td>Aprobado</td>
+            
+                                                        <td>
+                                                            <asp:Button ID="btnDetalle" runat="server" Text="Ver detalle"
+                                                                CssClass="btn btn-primary"
+                                                                CommandArgument='<%# Eval("idAfiliadoPlan") %>'
+                                                                OnCommand="btnDetalle_Command"
+                                                                CommandName="mostrarDetalle"
+                                                                 />
+                                                        </td>
+                                                    </tr>
+                                                </ItemTemplate>
+                                            </asp:Repeater>
                                             </tbody>
                                         </table>
                                     </div>
@@ -207,6 +242,8 @@
         </div>
         <uc1:rightsidebar runat="server" ID="rightsidebar" />
     </div>
+
+
 
     <!-- Mainly scripts -->
     <script src="js/jquery-3.1.1.min.js"></script>
@@ -226,7 +263,9 @@
         $('.footable').footable();
     </script>
 
+
 </body>
 
 </html>
+
 

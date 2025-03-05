@@ -68,7 +68,7 @@
             <li>
                 <a href="#"><i class="fa fa-file-lines"></i><span class="nav-label">Reportes</span><span class="fa arrow"></span></a>
                 <ul id="reportes" class="nav nav-second-level collapse">
-                    <li id="reportepagoswompi" class="old"><a href="reportepagoswompi" ><i class="fas fa-hand-holding-usd"></i>Pagos Wompi</a></li>
+                    <li id="reportepagos" class="old"><a href="reportepagos" ><i class="fas fa-hand-holding-usd"></i>Pagos</a></li>
                     <li><a href="#">Dashboard</a></li>
                     <li><a href="#">Informe de ventas</a></li>
                     <li><a href="#">Ventas por producto</a></li>
