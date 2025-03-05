@@ -465,6 +465,24 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltRegalos;
 
         /// <summary>
+        /// Control lbEnlaceWompi.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbEnlaceWompi;
+
+        /// <summary>
+        /// Control hdEnlaceWompi.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdEnlaceWompi;
+
+        /// <summary>
         /// Control div1.
         /// </summary>
         /// <remarks>
@@ -499,6 +517,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbWompi;
+
+        /// <summary>
+        /// Control txbNroAprobacion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbNroAprobacion;
 
         /// <summary>
         /// Control txbDatafono.

@@ -403,7 +403,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-sm-4">
+                                                    <div class="col-sm-3">
                                                         <div class="form-group">
                                                             <div class="panel panel-default" runat="server" id="divPanelResumen">
                                                                 <div class="panel-heading">
@@ -417,13 +417,16 @@
                                                                         <hr />
                                                                         <asp:Literal ID="ltCortesias" runat="server"></asp:Literal>
                                                                         <asp:Literal ID="ltRegalos" runat="server"></asp:Literal>
+                                                                        <asp:Label ID="lbEnlaceWompi" runat="server" ></asp:Label>
+                                                                        <asp:HiddenField ID="hdEnlaceWompi" runat="server" />
+                                                                        <button class="btn btn-success btn-circle" onclick="copyToClipboard()"><i class="fa fa-copy"></i></button>
                                                                     </p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-sm-4">
+                                                    <div class="col-sm-5">
                                                         <div class="form-group">
                                                             <div class="panel panel-default" runat="server" id="div1">
                                                                 <div class="panel-heading">
@@ -439,8 +442,8 @@
                                                                     </div>
 
                                                                     <div class="form-group" style="margin-bottom: 5px;">
-                                                                        <label class="col-lg-7 control-label">Pago por Wompi:</label>
-                                                                        <div class="col-lg-5">
+                                                                        <label class="col-lg-8 control-label">Pago por Wompi:</label>
+                                                                        <div class="col-lg-4">
                                                                             <asp:TextBox ID="txbWompi" CssClass="form-control input-sm" 
                                                                                 runat="server" OnTextChanged="txbWompi_TextChanged" 
                                                                                 AutoPostBack="true" style="text-align: right;"></asp:TextBox>
@@ -448,8 +451,12 @@
                                                                     </div>
 
                                                                     <div class="form-group" style="margin-bottom: 5px;">
-                                                                        <label class="col-lg-7 control-label">Pago por Datafono:</label>
-                                                                        <div class="col-lg-5">
+                                                                        <label class="col-lg-5 control-label">Pago por Datafono:</label>
+                                                                        <div class="col-lg-3">
+                                                                            <asp:TextBox ID="txbNroAprobacion" CssClass="form-control input-sm" 
+                                                                                runat="server"></asp:TextBox>
+                                                                        </div>
+                                                                        <div class="col-lg-4">
                                                                             <asp:TextBox ID="txbDatafono" CssClass="form-control input-sm" 
                                                                                 runat="server" OnTextChanged="txbDatafono_TextChanged" 
                                                                                 AutoPostBack="true" style="text-align: right;"></asp:TextBox>
@@ -457,8 +464,8 @@
                                                                     </div>
 
                                                                     <div class="form-group" style="margin-bottom: 5px;">
-                                                                        <label class="col-lg-7 control-label">Pago en Efectivo:</label>
-                                                                        <div class="col-lg-5">
+                                                                        <label class="col-lg-8 control-label">Pago en Efectivo:</label>
+                                                                        <div class="col-lg-4">
                                                                             <asp:TextBox ID="txbEfectivo" CssClass="form-control input-sm" 
                                                                                 runat="server" OnTextChanged="txbEfectivo_TextChanged" 
                                                                                 AutoPostBack="true" style="text-align: right;"></asp:TextBox>
@@ -466,8 +473,8 @@
                                                                     </div>
 
                                                                     <div class="form-group" style="margin-bottom: 5px;">
-                                                                        <label class="col-lg-7 control-label">Pago por Transferencia:</label>
-                                                                        <div class="col-lg-5">
+                                                                        <label class="col-lg-8 control-label">Pago por Transferencia:</label>
+                                                                        <div class="col-lg-4">
                                                                             <asp:TextBox ID="txbTransferencia" CssClass="form-control input-sm" 
                                                                                 runat="server" OnTextChanged="txbTransferencia_TextChanged" 
                                                                                 AutoPostBack="true" style="text-align: right;"></asp:TextBox>
@@ -555,6 +562,18 @@
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
     <script>
+
+        function copyToClipboard() {
+            // Get the text field
+            var copyText = document.getElementById("hdEnlaceWompi");
+
+            // Select the text field
+            copyText.select();
+            //copyText.setSelectionRange(0, 99999); // For mobile devices
+
+            // Copy the text inside the text field
+            navigator.clipboard.writeText(copyText.value);
+        }
 
         var ddlRegalos = document.getElementById("ddlRegalos");
         var check15 = document.getElementById("check15");

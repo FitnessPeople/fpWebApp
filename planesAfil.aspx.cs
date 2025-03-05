@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
+using System.IO;
+using System.Net;
+using System.Security.Policy;
 using System.Text;
 using System.Web;
 using System.Web.Configuration;
@@ -151,7 +154,7 @@ namespace fpWebApp
                     ltApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
                     ltEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
                     ViewState["EmailAfiliado"] = dt.Rows[0]["EmailAfiliado"].ToString();
-                    ltCelular.Text = dt.Rows[0]["CelularAfiliado"].ToString();
+                    ltCelular.Text = "<a href=\"https://wa.me/57" + dt.Rows[0]["CelularAfiliado"].ToString() + "\" target=\"_blank\">" + dt.Rows[0]["CelularAfiliado"].ToString() + "</a>";
                     ltSede.Text = dt.Rows[0]["NombreSede"].ToString();
                     ltDireccion.Text = dt.Rows[0]["DireccionAfiliado"].ToString();
                     ltCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
@@ -273,7 +276,7 @@ namespace fpWebApp
             ltDescuento.Text = "0%";
             ltAhorro.Text = "$0";
             ltConDescuento.Text = "$0";
-            ltDescripcion.Text = "<b>Caracteristicas</b>: " + dt.Rows[0]["DescripcionPlan"].ToString() + "<br />";
+            ltDescripcion.Text = "<b>Características</b>: " + dt.Rows[0]["DescripcionPlan"].ToString() + "<br />";
 
             ltNombrePlan.Text = "<b>Plan " + ViewState["nombrePlan"].ToString() + "</b>";
 
@@ -588,6 +591,35 @@ namespace fpWebApp
 
             ViewState["observaciones"] = ltObservaciones.Text.ToString().Replace("<b>","").Replace("</b>", "").Replace("<br />", "\r\n");
             ltValorTotal.Text = "($" + string.Format("{0:N0}", dobTotal) + ")";
+
+            string strDataWompi = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + ViewState["precio"].ToString()));
+            //lbEnlaceWompi.Text = "https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi;
+            lbEnlaceWompi.Text = MakeTinyUrl("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
+            hdEnlaceWompi.Value = MakeTinyUrl("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
+        }
+
+        public static string MakeTinyUrl(string url)
+        {
+            try
+            {
+                if (url.Length <= 30)
+                {
+                    return url;
+                }
+                
+                var request = WebRequest.Create("http://tinyurl.com/api-create.php?url=" + url);
+                var res = request.GetResponse();
+                string text;
+                using (var reader = new StreamReader(res.GetResponseStream()))
+                {
+                    text = reader.ReadToEnd();
+                }
+                return text;
+            }
+            catch (Exception)
+            {
+                return url;
+            }
         }
 
         private void ActivarCortesia(string strCortesia)
