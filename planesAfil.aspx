@@ -490,7 +490,7 @@
                                                                         <label>Pago por Transferencia:</label>
                                                                         <div class="row">
                                                                             <div class="col-lg-8">
-                                                                                <asp:RadioButtonList ID="tblBancos" runat="server" 
+                                                                                <asp:RadioButtonList ID="rblBancos" runat="server" 
                                                                                     RepeatDirection="Horizontal" CssClass="form-control input-sm">
                                                                                     <asp:ListItem Text="Bancolombia" Value="Bancolombia" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
                                                                                     <asp:ListItem Text="Davivienda" Value="Davivienda" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
@@ -517,17 +517,17 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                             </ContentTemplate>
                                             <Triggers>
-                                                <%--<asp:AsyncPostBackTrigger ControlID="btnDeluxe" EventName="Click" />
-                                                <asp:AsyncPostBackTrigger ControlID="btnPremium" EventName="Click" />
+                                                <asp:AsyncPostBackTrigger ControlID="lkVerificarPago" EventName="Click" />
+                                                <%--<asp:AsyncPostBackTrigger ControlID="btnPremium" EventName="Click" />
                                                 <asp:AsyncPostBackTrigger ControlID="btnRegalo1" EventName="Click" />--%>
                                             </Triggers>
                                         </asp:UpdatePanel>
 
                                         <div>
-                                            <asp:GridView ID="GridView1" runat="server"></asp:GridView>
-                                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                            
                                             <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"
                                                 onclick="window.location.href='afiliados'">
                                                 <strong>Cancelar</strong></button>

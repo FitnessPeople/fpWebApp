@@ -564,13 +564,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbEfectivo;
 
         /// <summary>
-        /// Control tblBancos.
+        /// Control rblBancos.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList tblBancos;
+        protected global::System.Web.UI.WebControls.RadioButtonList rblBancos;
 
         /// <summary>
         /// Control txbTransferencia.
@@ -598,15 +598,6 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbTotal;
-
-        /// <summary>
-        /// Control GridView1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridView1;
 
         /// <summary>
         /// Control ltMensaje.
