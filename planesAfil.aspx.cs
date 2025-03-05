@@ -1,9 +1,15 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Microsoft.Ajax.Utilities;
+using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
+using System.IO;
+using System.Net;
+using System.Security.Policy;
 using System.Text;
 using System.Web;
 using System.Web.Configuration;
@@ -37,6 +43,31 @@ namespace fpWebApp
                         DateTime dt60 = DateTime.Now.AddMonths(2);
                         txbFechaInicio.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
                         txbFechaInicio.Attributes.Add("max", dt60.Year.ToString() + "-" + String.Format("{0:MM}", dt60) + "-" + String.Format("{0:dd}", dt60));
+                        txbFechaInicio.Text = String.Format("{0:yyyy-MM-dd}", dtHoy);
+
+                        txbWompi.Attributes.Add("type", "number");
+                        txbWompi.Attributes.Add("min", "0");
+                        txbWompi.Attributes.Add("max", "10000000");
+                        txbWompi.Attributes.Add("step", "100");
+                        txbWompi.Text = "0";
+
+                        txbDatafono.Attributes.Add("type", "number");
+                        txbDatafono.Attributes.Add("min", "0");
+                        txbDatafono.Attributes.Add("max", "10000000");
+                        txbDatafono.Attributes.Add("step", "100");
+                        txbDatafono.Text = "0";
+
+                        txbEfectivo.Attributes.Add("type", "number");
+                        txbEfectivo.Attributes.Add("min", "0");
+                        txbEfectivo.Attributes.Add("max", "10000000");
+                        txbEfectivo.Attributes.Add("step", "100");
+                        txbEfectivo.Text = "0";
+
+                        txbTransferencia.Attributes.Add("type", "number");
+                        txbTransferencia.Attributes.Add("min", "0");
+                        txbTransferencia.Attributes.Add("max", "10000000");
+                        txbTransferencia.Attributes.Add("step", "100");
+                        txbTransferencia.Text = "0";
 
                         ViewState.Add("precioBase", 0);
                         ltPrecioBase.Text = "$0";
@@ -44,6 +75,8 @@ namespace fpWebApp
                         ltPrecioFinal.Text = "$0";
                         ltAhorro.Text = "$0";
                         ltConDescuento.Text = "$0";
+
+                        ltNombrePlan.Text = "Nombre del plan";
 
                         //btnMes1.Attributes.Add("style", "padding: 6px 9px;");
 
@@ -108,10 +141,12 @@ namespace fpWebApp
         {
             if (Request.QueryString.Count > 0)
             {
-                string strQuery = "SELECT * " +
-                    "FROM afiliados a, sedes s " +
-                    "WHERE a.idAfiliado = " + Request.QueryString["id"].ToString() + " " +
-                    "AND a.idSede = s.idSede ";
+                string strQuery = "SELECT *, " +
+                    "IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS label " +
+                    "FROM afiliados a " +
+                    "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +
+                    "LEFT JOIN ciudades ON ciudades.idCiudad = a.idCiudadAfiliado " +
+                    "WHERE a.idAfiliado = " + Request.QueryString["id"].ToString() + " ";
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(strQuery);
 
@@ -122,9 +157,13 @@ namespace fpWebApp
                     ltApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
                     ltEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
                     ViewState["EmailAfiliado"] = dt.Rows[0]["EmailAfiliado"].ToString();
-                    ltCelular.Text = dt.Rows[0]["CelularAfiliado"].ToString();
+                    ltCelular.Text = "<a href=\"https://wa.me/57" + dt.Rows[0]["CelularAfiliado"].ToString() + "\" target=\"_blank\">" + dt.Rows[0]["CelularAfiliado"].ToString() + "</a>";
                     ltSede.Text = dt.Rows[0]["NombreSede"].ToString();
-                    ltEstado.Text = dt.Rows[0]["EstadoAfiliado"].ToString();
+                    ltDireccion.Text = dt.Rows[0]["DireccionAfiliado"].ToString();
+                    ltCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
+                    ltCumple.Text = String.Format("{0:dd MMM}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]));
+                    ltEstado.Text = "<span class=\"label label-" + dt.Rows[0]["label"].ToString() + "\">" + dt.Rows[0]["EstadoAfiliado"].ToString() + "</span>";
+                    ViewState["EstadoAfiliado"] = dt.Rows[0]["EstadoAfiliado"].ToString();
 
                     if (dt.Rows[0]["FechaNacAfiliado"].ToString() != "1900-01-00")
                     {
@@ -176,12 +215,11 @@ namespace fpWebApp
                 //clasesglobales cg = new clasesglobales();
                 //DataTable dt = cg.TraerDatos(strQuery);
 
-                if (dt.Rows.Count > 0)
-                {
+                //if (dt.Rows.Count > 0)
+                //{
                     rpPlanesAfiliado.DataSource = dt;
                     rpPlanesAfiliado.DataBind();
-
-                }
+                //}
                 dt.Dispose();
             }
         }
@@ -230,8 +268,8 @@ namespace fpWebApp
             ViewState["descuentoMensual"] = Convert.ToDouble(dt.Rows[0]["DescuentoMensual"].ToString());
             ViewState["mesesMaximo"] = Convert.ToDouble(dt.Rows[0]["MesesMaximo"].ToString());
 
-            divPanelResumen.Attributes.Remove("class");
-            divPanelResumen.Attributes.Add("class", "panel panel-" + dt.Rows[0]["NombreColorPlan"].ToString());
+            //divPanelResumen.Attributes.Remove("class");
+            //divPanelResumen.Attributes.Add("class", "panel panel-" + dt.Rows[0]["NombreColorPlan"].ToString());
 
             ltPrecioBase.Text = "$" + String.Format("{0:N0}", ViewState["precioBase"]);
             ltPrecioFinal.Text = ltPrecioBase.Text;
@@ -241,9 +279,9 @@ namespace fpWebApp
             ltDescuento.Text = "0%";
             ltAhorro.Text = "$0";
             ltConDescuento.Text = "$0";
-            ltDescripcion.Text = "<b>Caracteristicas</b>: " + dt.Rows[0]["DescripcionPlan"].ToString() + "<br />";
+            ltDescripcion.Text = "<b>Características</b>: " + dt.Rows[0]["DescripcionPlan"].ToString() + "<br />";
 
-            ltTituloRegalo.Text = "<b>Plan " + ViewState["nombrePlan"].ToString() + "</b>";
+            ltNombrePlan.Text = "<b>Plan " + ViewState["nombrePlan"].ToString() + "</b>";
 
             MesesEnabled();
         }
@@ -302,109 +340,109 @@ namespace fpWebApp
 
         }
 
-        protected void btnAgregarPlan_Click(object sender, EventArgs e)
-        {
-            if (ltEstado.Text.ToString() != "Activo")
-            {
-                ltMensaje.Text = "<div class=\"ibox-content\">" +
-                    "<div class=\"alert alert-danger alert-dismissable\">" +
-                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    "El afiliado no se encuentra activo." +
-                    "</div></div>";
-            }
-            else
-            {
-                if (ViewState["nombrePlan"] != null)
-                {
-                    if (txbFechaInicio.Text != "")
-                    {
-                        // Consultar si este usuario tiene un plan activo y cual es su fecha de inicio y fecha final.
-                        string strQuery = "SELECT * FROM AfiliadosPlanes " +
-                            "WHERE idAfiliado = " + Request.QueryString["id"].ToString() + " " +
-                            "AND EstadoPlan = 'Activo'";
-                        clasesglobales cg = new clasesglobales();
-                        DataTable dt = cg.TraerDatos(strQuery);
-                        if (dt.Rows.Count > 0)
-                        {
-                            ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                "<div class=\"alert alert-danger alert-dismissable\">" +
-                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                "Este afiliado ya tiene un plan activo, hasta " + dt.Rows[0]["FechaFinalPlan"].ToString() +
-                                "</div></div>";
-                        }
-                        else
-                        {
-                            try
-                            {
-                                DateTime fechainicio = Convert.ToDateTime(txbFechaInicio.Text.ToString());
-                                DateTime fechafinal = fechainicio.AddMonths(Convert.ToInt16(ViewState["meses"].ToString()));
-                                strQuery = "INSERT INTO AfiliadosPlanes " +
-                                    "(idAfiliado, idPlan, FechaInicioPlan, FechaFinalPlan, EstadoPlan, Meses, Valor, ObservacionesPlan) " +
-                                    "VALUES (" + Request.QueryString["id"].ToString() + ", " + ViewState["idPlan"].ToString() + ", " +
-                                    "'" + txbFechaInicio.Text.ToString() + "', '" + String.Format("{0:yyyy-MM-dd}", fechafinal) + "', 'Inactivo', " +
-                                    "" + ViewState["meses"].ToString() + ", " + ViewState["precio"].ToString() + ",  " +
-                                    "'" + ViewState["observaciones"].ToString() + "') ";
+        //protected void btnAgregarPlan_Click(object sender, EventArgs e)
+        //{
+        //    if (ltEstado.Text.ToString() != "Activo")
+        //    {
+        //        ltMensaje.Text = "<div class=\"ibox-content\">" +
+        //            "<div class=\"alert alert-danger alert-dismissable\">" +
+        //            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+        //            "El afiliado no se encuentra activo." +
+        //            "</div></div>";
+        //    }
+        //    else
+        //    {
+        //        if (ViewState["nombrePlan"] != null)
+        //        {
+        //            if (txbFechaInicio.Text != "")
+        //            {
+        //                // Consultar si este usuario tiene un plan activo y cual es su fecha de inicio y fecha final.
+        //                string strQuery = "SELECT * FROM AfiliadosPlanes " +
+        //                    "WHERE idAfiliado = " + Request.QueryString["id"].ToString() + " " +
+        //                    "AND EstadoPlan = 'Activo'";
+        //                clasesglobales cg = new clasesglobales();
+        //                DataTable dt = cg.TraerDatos(strQuery);
+        //                if (dt.Rows.Count > 0)
+        //                {
+        //                    ltMensaje.Text = "<div class=\"ibox-content\">" +
+        //                        "<div class=\"alert alert-danger alert-dismissable\">" +
+        //                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+        //                        "Este afiliado ya tiene un plan activo, hasta " + dt.Rows[0]["FechaFinalPlan"].ToString() +
+        //                        "</div></div>";
+        //                }
+        //                else
+        //                {
+        //                    try
+        //                    {
+        //                        DateTime fechainicio = Convert.ToDateTime(txbFechaInicio.Text.ToString());
+        //                        DateTime fechafinal = fechainicio.AddMonths(Convert.ToInt16(ViewState["meses"].ToString()));
+        //                        strQuery = "INSERT INTO AfiliadosPlanes " +
+        //                            "(idAfiliado, idPlan, FechaInicioPlan, FechaFinalPlan, EstadoPlan, Meses, Valor, ObservacionesPlan) " +
+        //                            "VALUES (" + Request.QueryString["id"].ToString() + ", " + ViewState["idPlan"].ToString() + ", " +
+        //                            "'" + txbFechaInicio.Text.ToString() + "', '" + String.Format("{0:yyyy-MM-dd}", fechafinal) + "', 'Inactivo', " +
+        //                            "" + ViewState["meses"].ToString() + ", " + ViewState["precio"].ToString() + ",  " +
+        //                            "'" + ViewState["observaciones"].ToString() + "') ";
 
-                                try
-                                {
-                                    string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+        //                        try
+        //                        {
+        //                            string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
 
-                                    using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
-                                    {
-                                        mysqlConexion.Open();
-                                        using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
-                                        {
-                                            cmd.CommandType = CommandType.Text;
-                                            cmd.ExecuteNonQuery();
-                                        }
-                                        mysqlConexion.Close();
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    string respuesta = "ERROR: " + ex.Message;
-                                }
+        //                            using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+        //                            {
+        //                                mysqlConexion.Open();
+        //                                using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
+        //                                {
+        //                                    cmd.CommandType = CommandType.Text;
+        //                                    cmd.ExecuteNonQuery();
+        //                                }
+        //                                mysqlConexion.Close();
+        //                            }
+        //                        }
+        //                        catch (Exception ex)
+        //                        {
+        //                            string respuesta = "ERROR: " + ex.Message;
+        //                        }
 
-                                string strString = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + ViewState["precio"].ToString()));
+        //                        string strString = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + ViewState["precio"].ToString()));
 
-                                string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
-                                strMensaje += "Descripción del plan.\r\n\r\n";
-                                strMensaje += "Por favor, agradecemos realice el pago a través del siguiente enlace: \r\n";
-                                strMensaje += "https://fitnesspeoplecolombia.com/wompiplan?code=" + strString;
+        //                        string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
+        //                        strMensaje += "Descripción del plan.\r\n\r\n";
+        //                        strMensaje += "Por favor, agradecemos realice el pago a través del siguiente enlace: \r\n";
+        //                        strMensaje += "https://fitnesspeoplecolombia.com/wompiplan?code=" + strString;
 
-                                cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", ViewState["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
+        //                        cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", ViewState["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
 
-                                // Enviar correo electrónico al afiliado para que pague.
-                            }
-                            catch (Exception ex)
-                            {
-                                ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                "<div class=\"alert alert-danger alert-dismissable\">" +
-                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message.ToString() +
-                                "</div></div>";
-                                throw;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        ltMensaje.Text = "<div class=\"ibox-content\">" +
-                            "<div class=\"alert alert-danger alert-dismissable\">" +
-                            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                            "Elija la fecha de inicio del plan." +
-                            "</div></div>";
-                    }
-                }
-                else
-                {
-                    ltMensaje.Text = "<div class=\"ibox-content\">" +
-                        "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Elija el tipo de plan." +
-                        "</div></div>";
-                }
-            }
-        }
+        //                        // Enviar correo electrónico al afiliado para que pague.
+        //                    }
+        //                    catch (Exception ex)
+        //                    {
+        //                        ltMensaje.Text = "<div class=\"ibox-content\">" +
+        //                        "<div class=\"alert alert-danger alert-dismissable\">" +
+        //                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message.ToString() +
+        //                        "</div></div>";
+        //                        throw;
+        //                    }
+        //                }
+        //            }
+        //            else
+        //            {
+        //                ltMensaje.Text = "<div class=\"ibox-content\">" +
+        //                    "<div class=\"alert alert-danger alert-dismissable\">" +
+        //                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+        //                    "Elija la fecha de inicio del plan." +
+        //                    "</div></div>";
+        //            }
+        //        }
+        //        else
+        //        {
+        //            ltMensaje.Text = "<div class=\"ibox-content\">" +
+        //                "<div class=\"alert alert-danger alert-dismissable\">" +
+        //                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+        //                "Elija el tipo de plan." +
+        //                "</div></div>";
+        //        }
+        //    }
+        //}
 
         private void LimpiarFormulario()
         {
@@ -555,6 +593,38 @@ namespace fpWebApp
             ltObservaciones.Text += "<b>Valor Total</b>: $" + string.Format("{0:N0}", dobTotal) + ".<br />";
 
             ViewState["observaciones"] = ltObservaciones.Text.ToString().Replace("<b>","").Replace("</b>", "").Replace("<br />", "\r\n");
+            ltValorTotal.Text = "($" + string.Format("{0:N0}", dobTotal) + ")";
+
+            string strDataWompi = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + ViewState["precio"].ToString()));
+            //lbEnlaceWompi.Text = "https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi;
+            lbEnlaceWompi.Text = "<b>Enlace de pago Wompi:</b> <br />";
+            lbEnlaceWompi.Text += MakeTinyUrl("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
+            hdEnlaceWompi.Value = MakeTinyUrl("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
+            btnPortapaleles.Visible = true;
+        }
+
+        public static string MakeTinyUrl(string url)
+        {
+            try
+            {
+                if (url.Length <= 30)
+                {
+                    return url;
+                }
+                
+                var request = WebRequest.Create("http://tinyurl.com/api-create.php?url=" + url);
+                var res = request.GetResponse();
+                string text;
+                using (var reader = new StreamReader(res.GetResponseStream()))
+                {
+                    text = reader.ReadToEnd();
+                }
+                return text;
+            }
+            catch (Exception)
+            {
+                return url;
+            }
         }
 
         private void ActivarCortesia(string strCortesia)
@@ -741,6 +811,279 @@ namespace fpWebApp
             btnRegalo1.CssClass = btnRegalo1.CssClass.Replace("active", "");
             btnRegalo2.CssClass = btnRegalo2.CssClass.Replace("active", "");
             ltRegalos.Text = "<b>Regalo: </b>Cita con nutricionista.<br />";
+        }
+
+        protected void rpPlanesAfiliado_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            Repeater rptPlanes = sender as Repeater; // Get the Repeater control object.
+
+            // If the Repeater contains no data.
+            if (rpPlanesAfiliado.Items.Count < 1)
+            {
+                if (e.Item.ItemType == ListItemType.Footer)
+                {
+                    // Show the Error Label (if no data is present).
+                    Label lblSinRegistros = e.Item.FindControl("lblSinRegistros") as Label;
+                    if (lblSinRegistros != null)
+                    {
+                        lblSinRegistros.Visible = true;
+                    }
+                }
+            }
+        }
+
+        protected void lbAgregarPlan_Click(object sender, EventArgs e)
+        {
+            if (ViewState["EstadoAfiliado"].ToString() != "Activo")
+            {
+                ltMensaje.Text = "<div class=\"ibox-content\">" +
+                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                    "El afiliado no se encuentra activo." +
+                    "</div></div>";
+            }
+            else
+            {
+                if (ViewState["nombrePlan"] != null)
+                {
+                    if (txbFechaInicio.Text != "")
+                    {
+                        // Consultar si este usuario tiene un plan activo y cual es su fecha de inicio y fecha final.
+                        string strQuery = "SELECT * FROM AfiliadosPlanes " +
+                            "WHERE idAfiliado = " + Request.QueryString["id"].ToString() + " " +
+                            "AND EstadoPlan = 'Activo'";
+                        clasesglobales cg = new clasesglobales();
+                        DataTable dt = cg.TraerDatos(strQuery);
+                        if (dt.Rows.Count > 0)
+                        {
+                            ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                "<div class=\"alert alert-danger alert-dismissable\">" +
+                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                "Este afiliado ya tiene un plan activo, hasta el " + string.Format("{0:dd MMM yyyy}", dt.Rows[0]["FechaFinalPlan"]) +
+                                "</div></div>";
+                        }
+                        else
+                        {
+                            if (ViewState["precio"].ToString() != txbTotal.Text.ToString())
+                            {
+                                ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                "<div class=\"alert alert-danger alert-dismissable\">" +
+                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                "El precio del plan es diferente al precio a pagar." +
+                                "</div></div>";
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    DateTime fechainicio = Convert.ToDateTime(txbFechaInicio.Text.ToString());
+                                    DateTime fechafinal = fechainicio.AddMonths(Convert.ToInt16(ViewState["meses"].ToString()));
+                                    strQuery = "INSERT INTO AfiliadosPlanes " +
+                                        "(idAfiliado, idPlan, FechaInicioPlan, FechaFinalPlan, EstadoPlan, Meses, Valor, ObservacionesPlan) " +
+                                        "VALUES (" + Request.QueryString["id"].ToString() + ", " + ViewState["idPlan"].ToString() + ", " +
+                                        "'" + txbFechaInicio.Text.ToString() + "', '" + String.Format("{0:yyyy-MM-dd}", fechafinal) + "', 'Inactivo', " +
+                                        "" + ViewState["meses"].ToString() + ", " + ViewState["precio"].ToString() + ",  " +
+                                        "'" + ViewState["observaciones"].ToString() + "') ";
+
+                                    try
+                                    {
+                                        string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                                        using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                                        {
+                                            mysqlConexion.Open();
+                                            using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
+                                            {
+                                                cmd.CommandType = CommandType.Text;
+                                                cmd.ExecuteNonQuery();
+                                            }
+                                            mysqlConexion.Close();
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        string respuesta = "ERROR: " + ex.Message;
+                                    }
+
+                                    if (txbWompi.Text.ToString() != "0")
+                                    {
+                                        string strString = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + ViewState["precio"].ToString()));
+
+                                        string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
+                                        strMensaje += "Descripción del plan.\r\n\r\n";
+                                        strMensaje += "Por favor, agradecemos realice el pago a través del siguiente enlace: \r\n";
+                                        strMensaje += "https://fitnesspeoplecolombia.com/wompiplan?code=" + strString;
+
+                                        cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", ViewState["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
+                                    }
+
+                                }
+                                catch (Exception ex)
+                                {
+                                    ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message.ToString() +
+                                    "</div></div>";
+                                    throw;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ltMensaje.Text = "<div class=\"ibox-content\">" +
+                            "<div class=\"alert alert-danger alert-dismissable\">" +
+                            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                            "Elija la fecha de inicio del plan." +
+                            "</div></div>";
+                    }
+                }
+                else
+                {
+                    ltMensaje.Text = "<div class=\"ibox-content\">" +
+                        "<div class=\"alert alert-danger alert-dismissable\">" +
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        "Elija el tipo de plan." +
+                        "</div></div>";
+                }
+            }
+        }
+
+        protected void txbWompi_TextChanged(object sender, EventArgs e)
+        {
+            if (txbWompi.Text != "" && txbDatafono.Text != "" && txbEfectivo.Text != "" && txbTransferencia.Text != "")
+            {
+                txbTotal.Text = Convert.ToString(Convert.ToInt32(txbWompi.Text) + Convert.ToInt32(txbDatafono.Text) + Convert.ToInt32(txbEfectivo.Text) + Convert.ToInt32(txbTransferencia.Text));
+            }
+        }
+
+        protected void txbDatafono_TextChanged(object sender, EventArgs e)
+        {
+            if (txbWompi.Text != "" && txbDatafono.Text != "" && txbEfectivo.Text != "" && txbTransferencia.Text != "")
+            {
+                txbTotal.Text = Convert.ToString(Convert.ToInt32(txbWompi.Text) + Convert.ToInt32(txbDatafono.Text) + Convert.ToInt32(txbEfectivo.Text) + Convert.ToInt32(txbTransferencia.Text));
+            }
+        }
+
+        protected void txbEfectivo_TextChanged(object sender, EventArgs e)
+        {
+            if (txbWompi.Text != "" && txbDatafono.Text != "" && txbEfectivo.Text != "" && txbTransferencia.Text != "")
+            {
+                txbTotal.Text = Convert.ToString(Convert.ToInt32(txbWompi.Text) + Convert.ToInt32(txbDatafono.Text) + Convert.ToInt32(txbEfectivo.Text) + Convert.ToInt32(txbTransferencia.Text));
+            }
+        }
+
+        protected void txbTransferencia_TextChanged(object sender, EventArgs e)
+        {
+            if (txbWompi.Text != "" && txbDatafono.Text != "" && txbEfectivo.Text != "" && txbTransferencia.Text != "")
+            {
+                txbTotal.Text = Convert.ToString(Convert.ToInt32(txbWompi.Text) + Convert.ToInt32(txbDatafono.Text) + Convert.ToInt32(txbEfectivo.Text) + Convert.ToInt32(txbTransferencia.Text));
+            }
+        }
+
+        protected void lkVerificarPago_Click(object sender, EventArgs e)
+        {
+            string strData = listarDetalle();
+        }
+
+        private string listarDetalle()
+        {
+            string parametro = string.Empty;
+            string mensaje = string.Empty;
+            clasesglobales cg = new clasesglobales();
+            DataTable dti = cg.ConsultarUrl(4);
+
+            parametro = "?from_date=2025-02-01&until_date=2025-03-05&page=1&page_size=50&order_by=created_at&order=DESC";
+
+            string url = dti.Rows[0]["urlTest"].ToString() + parametro;
+            string[] respuesta = cg.EnviarPeticionGet(url, out mensaje);
+            JToken token = JToken.Parse(respuesta[0]);
+            string prettyJson = token.ToString(Formatting.Indented);
+
+            if (mensaje == "Ok") //Verifica respuesta ok
+            {
+                //JObject jsonData = JObject.Parse(prettyJson);
+
+                DataTable tester = (DataTable)JsonConvert.DeserializeObject(, (typeof(DataTable)));
+
+                GridView1.DataSource = tester;
+                GridView1.DataBind();
+            }
+            return "";
+        }
+
+        public class CustomerData
+        {
+            public string device_id { get; set; }
+            public string full_name { get; set; }
+            public string phone_number { get; set; }
+            public string device_data_token { get; set; }
+        }
+
+        public class Datum
+        {
+            public string id { get; set; }
+            public DateTime created_at { get; set; }
+            public DateTime finalized_at { get; set; }
+            public int amount_in_cents { get; set; }
+            public string reference { get; set; }
+            public string customer_email { get; set; }
+            public string currency { get; set; }
+            public string payment_method_type { get; set; }
+            public PaymentMethod payment_method { get; set; }
+            public string status { get; set; }
+            public object status_message { get; set; }
+            public object shipping_address { get; set; }
+            public string redirect_url { get; set; }
+            public object payment_source_id { get; set; }
+            public object payment_link_id { get; set; }
+            public CustomerData customer_data { get; set; }
+            public object bill_id { get; set; }
+            public object disbursement { get; set; }
+        }
+
+        public class Extra
+        {
+            public string bin { get; set; }
+            public string name { get; set; }
+            public string brand { get; set; }
+            public string exp_year { get; set; }
+            public string card_type { get; set; }
+            public string exp_month { get; set; }
+            public string last_four { get; set; }
+            public string card_holder { get; set; }
+            public bool is_three_ds { get; set; }
+            public ThreeDsAuth three_ds_auth { get; set; }
+            public object three_ds_auth_type { get; set; }
+            public string external_identifier { get; set; }
+            public string processor_response_code { get; set; }
+        }
+
+        public class Meta
+        {
+            public int page { get; set; }
+            public int page_size { get; set; }
+            public int total_results { get; set; }
+        }
+
+        public class PaymentMethod
+        {
+            public string type { get; set; }
+            public Extra extra { get; set; }
+            public int installments { get; set; }
+        }
+
+        public class Root
+        {
+            public List<Datum> data { get; set; }
+            public Meta meta { get; set; }
+        }
+
+        public class ThreeDsAuth
+        {
+            public ThreeDsAuth three_ds_auth { get; set; }
+            public string current_step { get; set; }
+            public string current_step_status { get; set; }
         }
     }
 }

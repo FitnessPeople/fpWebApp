@@ -16,7 +16,7 @@
 
     <title>Fitness People | Nuevo afiliado</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/bootstrap.css" rel="stylesheet" />
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
@@ -199,7 +199,7 @@
                                                     <label>Ciudad:</label>
                                                     <asp:DropDownList ID="ddlCiudadAfiliado" runat="server" 
                                                         AppendDataBoundItems="true" DataTextField="NombreCiudad" 
-                                                        DataValueField="idCiudad" CssClass="chosen-select input-sm">
+                                                        DataValueField="idCiudad" CssClass="chosen-select form-control input-sm">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>

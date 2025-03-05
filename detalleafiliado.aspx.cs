@@ -338,7 +338,7 @@ namespace fpWebApp
 
             if (dt.Rows.Count > 0)
             {
-                parametro = dt.Rows[0]["IdReferenciaWompi"].ToString();
+                parametro = dt.Rows[0]["IdReferencia"].ToString();
             }
 
             string url = dti.Rows[0]["urlTest"].ToString() + parametro;

@@ -16,7 +16,7 @@
 
     <title>Fitness People | Plan afiliado</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/bootstrap.css" rel="stylesheet" />
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
@@ -134,10 +134,15 @@
                             <div class="profile-info">
                                 <div class="">
                                     <div>
-                                        <h2 class="no-margins"><asp:Literal ID="ltNombre" runat="server"></asp:Literal> <asp:Literal ID="ltApellido" runat="server"></asp:Literal>
-                                </h2>
-                                        <h4><asp:Literal ID="ltEmail" runat="server"></asp:Literal></h4>
-                                        <small>There are many variations of passages of Lorem Ipsum available.</small>
+                                        <h2 class="no-margins">
+                                            <asp:Literal ID="ltNombre" runat="server"></asp:Literal>
+                                            <asp:Literal ID="ltApellido" runat="server"></asp:Literal>
+                                        </h2>
+                                        <h4>
+                                            <asp:Literal ID="ltEmail" runat="server"></asp:Literal></h4>
+                                        <small>
+                                            <asp:Literal ID="ltDireccion" runat="server"></asp:Literal>,
+                                            <asp:Literal ID="ltCiudad" runat="server"></asp:Literal></small>
                                     </div>
                                 </div>
                             </div>
@@ -146,15 +151,19 @@
                             <table class="table small m-b-xs">
                                 <tbody>
                                     <tr>
-                                        <td><strong><i class="fab fa-whatsapp"></i></strong> <asp:Literal ID="ltCelular" runat="server"></asp:Literal></td>
-                                        <td><strong><i class="fa fa-shield"></i></strong> Estado: <asp:Literal ID="ltEstado" runat="server"></asp:Literal></td>
+                                        <td><strong><i class="fab fa-whatsapp"></i></strong>
+                                            <asp:Literal ID="ltCelular" runat="server"></asp:Literal></td>
+                                        <td><strong><i class="fa fa-shield"></i></strong> Estado: 
+                                            <asp:Literal ID="ltEstado" runat="server"></asp:Literal></td>
                                     </tr>
                                     <tr>
-                                        <td><strong><i class="fa fa-building"></i></strong> Sede: <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
+                                        <td><strong><i class="fa fa-building"></i></strong> Sede:
+                                            <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
                                         <td><strong>54</strong> Días asistidos</td>
                                     </tr>
                                     <tr>
-                                        <td><strong><i class="fa fa-cake"></i></strong> <asp:Literal ID="ltCumple" runat="server"></asp:Literal></td>
+                                        <td><strong><i class="fa fa-cake"></i></strong>
+                                            <asp:Literal ID="ltCumple" runat="server"></asp:Literal></td>
                                         <td><strong>2</strong> Congelaciones</td>
                                     </tr>
                                 </tbody>
@@ -162,7 +171,7 @@
                         </div>
                         <div class="col-md-4">
                             <ul class="todo-list small-list">
-                                <asp:Repeater ID="rpPlanesAfiliado" runat="server">
+                                <asp:Repeater ID="rpPlanesAfiliado" runat="server" OnItemDataBound="rpPlanesAfiliado_ItemDataBound">
                                     <ItemTemplate>
                                         <li>
                                             <div class="i-checks">
@@ -179,6 +188,11 @@
                                             </div>
                                         </li>
                                     </ItemTemplate>
+                                    <FooterTemplate>
+                                        <%-- Etiqueta para mostrar que no hay registros --%>
+                                        <asp:Label ID="lblSinRegistros" runat="server" Text="El afiliado no tiene planes asignados." Visible="false">
+                                        </asp:Label>
+                                    </FooterTemplate>
                                 </asp:Repeater>
                             </ul>
                         </div>
@@ -351,7 +365,7 @@
                                                 </div>
                                                 <hr />
                                                 <div class="row">
-                                                    <div class="col-sm-5">
+                                                    <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Días de cortesía:</label>
                                                             <div class="form-group">
@@ -389,13 +403,12 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-sm-7">
-                                                        <label>Resumen:</label>
+                                                    <div class="col-sm-3">
                                                         <div class="form-group">
                                                             <div class="panel panel-default" runat="server" id="divPanelResumen">
                                                                 <div class="panel-heading">
-                                                                    <i class="fa fa-gift"></i>
-                                                                    <asp:Literal ID="ltTituloRegalo" runat="server"></asp:Literal>
+                                                                    <i class="fa fa-ticket"></i>
+                                                                    <asp:Literal ID="ltNombrePlan" runat="server"></asp:Literal>
                                                                 </div>
                                                                 <div class="panel-body">
                                                                     <p>
@@ -404,11 +417,100 @@
                                                                         <hr />
                                                                         <asp:Literal ID="ltCortesias" runat="server"></asp:Literal>
                                                                         <asp:Literal ID="ltRegalos" runat="server"></asp:Literal>
+                                                                        <asp:Label ID="lbEnlaceWompi" runat="server" ></asp:Label>
+                                                                        <asp:HiddenField ID="hdEnlaceWompi" runat="server" />
+                                                                        <button class="btn btn-success btn-circle" visible="false" id="btnPortapaleles" 
+                                                                            onclick="copyToClipboard()" runat="server" title="Copiar enlace"><i class="fa fa-copy"></i></button>
                                                                     </p>
-                                                                    <hr />
-                                                                    <div class="form-group">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-5">
+                                                        <div class="form-group">
+                                                            <div class="panel panel-default" runat="server" id="div1">
+                                                                <div class="panel-heading">
+                                                                    <i class="fa fa-money-bill"></i> Pago
+                                                                    <asp:Literal ID="Literal1" runat="server"></asp:Literal>
+                                                                </div>
+                                                                <div class="panel-body">
+                                                                    <div class="form-group" style="margin-bottom: 5px;">
                                                                         <label>Fecha de inicio:</label>
-                                                                        <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm" runat="server" name="txbFechaInicio"></asp:TextBox>
+                                                                        <%--<div class="col-lg-7">--%>
+                                                                            <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm" runat="server" name="txbFechaInicio"></asp:TextBox>
+                                                                        <%--</div>--%>
+                                                                    </div>
+
+                                                                    <div class="form-group" style="margin-bottom: 5px;">
+                                                                        <label>Pago por Wompi:</label>
+                                                                        <div class="row">
+                                                                            <div class="col-lg-8">
+                                                                                <asp:LinkButton ID="lkVerificarPago" 
+                                                                                    runat="server" OnClick="lkVerificarPago_Click">Verificar pago...</asp:LinkButton>
+                                                                            </div>
+                                                                            <div class="col-lg-4">
+                                                                                <asp:TextBox ID="txbWompi" CssClass="form-control input-sm" 
+                                                                                    runat="server" OnTextChanged="txbWompi_TextChanged" 
+                                                                                    AutoPostBack="true" style="text-align: right;"></asp:TextBox>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group" style="margin-bottom: 5px;">
+                                                                        <label>Pago por Datafono:</label>
+                                                                        <div class="row">
+                                                                            <div class="col-lg-8">
+                                                                                <asp:TextBox ID="txbNroAprobacion" CssClass="form-control input-sm" 
+                                                                                    runat="server" placeholder="Ref."></asp:TextBox>
+                                                                            </div>
+                                                                            <div class="col-lg-4">
+                                                                                <asp:TextBox ID="txbDatafono" CssClass="form-control input-sm" 
+                                                                                    runat="server" OnTextChanged="txbDatafono_TextChanged" 
+                                                                                    AutoPostBack="true" style="text-align: right;"></asp:TextBox>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group" style="margin-bottom: 5px;">
+                                                                        <label>Pago en Efectivo:</label>
+                                                                        <div class="row">
+                                                                            <div class="col-lg-8">
+                                                                                
+                                                                            </div>
+                                                                            <div class="col-lg-4">
+                                                                                <asp:TextBox ID="txbEfectivo" CssClass="form-control input-sm" 
+                                                                                    runat="server" OnTextChanged="txbEfectivo_TextChanged" 
+                                                                                    AutoPostBack="true" style="text-align: right;"></asp:TextBox>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group" style="margin-bottom: 5px;">
+                                                                        <label>Pago por Transferencia:</label>
+                                                                        <div class="row">
+                                                                            <div class="col-lg-8">
+                                                                                <asp:RadioButtonList ID="tblBancos" runat="server" 
+                                                                                    RepeatDirection="Horizontal" CssClass="form-control input-sm">
+                                                                                    <asp:ListItem Text="Bancolombia" Value="Bancolombia" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                                                    <asp:ListItem Text="Davivienda" Value="Davivienda" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                                                    <asp:ListItem Text="BBVA" Value="BBVA" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                                                </asp:RadioButtonList>
+                                                                            </div>
+                                                                            <div class="col-lg-4">
+                                                                                <asp:TextBox ID="txbTransferencia" CssClass="form-control input-sm" 
+                                                                                    runat="server" OnTextChanged="txbTransferencia_TextChanged" 
+                                                                                    AutoPostBack="true" style="text-align: right;"></asp:TextBox>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr />  
+                                                                    <div class="form-group" style="margin-bottom: 5px;">
+                                                                        <label class="col-lg-7 control-label">TOTAL <asp:Literal ID="ltValorTotal" runat="server"></asp:Literal>:</label>
+                                                                        <div class="col-lg-5">
+                                                                            <asp:TextBox ID="txbTotal" CssClass="form-control input-sm" 
+                                                                                runat="server" ReadOnly style="text-align: right;"></asp:TextBox>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -424,12 +526,17 @@
                                         </asp:UpdatePanel>
 
                                         <div>
+                                            <asp:GridView ID="GridView1" runat="server"></asp:GridView>
                                             <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                             <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"
                                                 onclick="window.location.href='afiliados'">
                                                 <strong>Cancelar</strong></button>
-                                            <asp:Button ID="btnAgregarPlan" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
-                                                Text="Agregar Plan" OnClick="btnAgregarPlan_Click" />
+                                            <asp:LinkButton ID="lbAgregarPlan" runat="server"
+                                                CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" 
+                                                OnClick="lbAgregarPlan_Click">
+                                                <i class="fa fa-ticket"></i> Agregar plan</asp:LinkButton>
+                                            <%--<asp:Button ID="btnAgregarPlan" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
+                                                Text="Agregar Plan" OnClick="btnAgregarPlan_Click" />--%>
                                         </div>
                                     </div>
                                 </form>
@@ -480,6 +587,18 @@
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
     <script>
+
+        function copyToClipboard() {
+            // Get the text field
+            var copyText = document.getElementById("hdEnlaceWompi");
+
+            // Select the text field
+            copyText.select();
+            //copyText.setSelectionRange(0, 99999); // For mobile devices
+
+            // Copy the text inside the text field
+            navigator.clipboard.writeText(copyText.value);
+        }
 
         var ddlRegalos = document.getElementById("ddlRegalos");
         var check15 = document.getElementById("check15");

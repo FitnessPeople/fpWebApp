@@ -95,11 +95,8 @@ namespace fpWebApp
 
         private void CargarCiudad()
         {
-            string strQuery = "SELECT * FROM Ciudades WHERE CodigoPais = 'Co' " +
-                "AND CodigoEstado = 68 " +
-                "ORDER BY NombreCiudad";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarCiudadesCol();
 
             ddlCiudadAfiliado.DataSource = dt;
             ddlCiudadAfiliado.DataBind();
