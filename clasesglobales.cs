@@ -227,6 +227,7 @@ namespace fpWebApp
                 WebRequest oRequest = WebRequest.Create(url);
                 oRequest.Method = "GET";
                 oRequest.ContentType = "application/json;charset=UTF-8";
+                oRequest.Headers.Add("Authorization", "Bearer prv_test_GWPWL8e9md24zYyTuF5KojJmH7Y4Sez2");
 
                 WebResponse oResponse = oRequest.GetResponse();
                 using (var oSr = new StreamReader(oResponse.GetResponseStream()))
@@ -4216,7 +4217,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public DataTable ConsultarPagosWompiPorId(int idPago)
+        public DataTable ConsultarPagosWompiPorId(int idAfiliadoPlan)
         {
             DataTable dt = new DataTable();
 
@@ -4228,7 +4229,7 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PAGOS_TRANSAC_ID", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@p_id_pago", idPago);
+                        cmd.Parameters.AddWithValue("@p_id_pago", idAfiliadoPlan);
 
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
                         {

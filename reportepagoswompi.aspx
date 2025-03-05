@@ -181,7 +181,7 @@
                                                             <td><%# Eval("DocumentoAfiliado") %></td>
                                                             <td><%# Eval("NombreAfiliado") %></td>
                                                             <td><%# Eval("Valor") %></td>
-                                                            <td><%# Eval("IdReferenciaWompi") %></td>
+                                                            <td><%# Eval("IdReferencia") %></td>
                                                             <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy}") %></td>
                                                             <td>
                                                                 <asp:Literal ID="ltDetalle" runat="server"></asp:Literal>

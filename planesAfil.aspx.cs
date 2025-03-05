@@ -1,4 +1,7 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Microsoft.Ajax.Utilities;
+using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -594,8 +597,10 @@ namespace fpWebApp
 
             string strDataWompi = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + ViewState["precio"].ToString()));
             //lbEnlaceWompi.Text = "https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi;
-            lbEnlaceWompi.Text = MakeTinyUrl("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
+            lbEnlaceWompi.Text = "<b>Enlace de pago Wompi:</b> <br />";
+            lbEnlaceWompi.Text += MakeTinyUrl("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
             hdEnlaceWompi.Value = MakeTinyUrl("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
+            btnPortapaleles.Visible = true;
         }
 
         public static string MakeTinyUrl(string url)
@@ -854,7 +859,7 @@ namespace fpWebApp
                             ltMensaje.Text = "<div class=\"ibox-content\">" +
                                 "<div class=\"alert alert-danger alert-dismissable\">" +
                                 "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                "Este afiliado ya tiene un plan activo, hasta " + dt.Rows[0]["FechaFinalPlan"].ToString() +
+                                "Este afiliado ya tiene un plan activo, hasta el " + string.Format("{0:dd MMM yyyy}", dt.Rows[0]["FechaFinalPlan"]) +
                                 "</div></div>";
                         }
                         else
@@ -974,6 +979,111 @@ namespace fpWebApp
             {
                 txbTotal.Text = Convert.ToString(Convert.ToInt32(txbWompi.Text) + Convert.ToInt32(txbDatafono.Text) + Convert.ToInt32(txbEfectivo.Text) + Convert.ToInt32(txbTransferencia.Text));
             }
+        }
+
+        protected void lkVerificarPago_Click(object sender, EventArgs e)
+        {
+            string strData = listarDetalle();
+        }
+
+        private string listarDetalle()
+        {
+            string parametro = string.Empty;
+            string mensaje = string.Empty;
+            clasesglobales cg = new clasesglobales();
+            DataTable dti = cg.ConsultarUrl(4);
+
+            parametro = "?from_date=2025-02-01&until_date=2025-03-05&page=1&page_size=50&order_by=created_at&order=DESC";
+
+            string url = dti.Rows[0]["urlTest"].ToString() + parametro;
+            string[] respuesta = cg.EnviarPeticionGet(url, out mensaje);
+            JToken token = JToken.Parse(respuesta[0]);
+            string prettyJson = token.ToString(Formatting.Indented);
+
+            if (mensaje == "Ok") //Verifica respuesta ok
+            {
+                //JObject jsonData = JObject.Parse(prettyJson);
+
+                DataTable tester = (DataTable)JsonConvert.DeserializeObject(, (typeof(DataTable)));
+
+                GridView1.DataSource = tester;
+                GridView1.DataBind();
+            }
+            return "";
+        }
+
+        public class CustomerData
+        {
+            public string device_id { get; set; }
+            public string full_name { get; set; }
+            public string phone_number { get; set; }
+            public string device_data_token { get; set; }
+        }
+
+        public class Datum
+        {
+            public string id { get; set; }
+            public DateTime created_at { get; set; }
+            public DateTime finalized_at { get; set; }
+            public int amount_in_cents { get; set; }
+            public string reference { get; set; }
+            public string customer_email { get; set; }
+            public string currency { get; set; }
+            public string payment_method_type { get; set; }
+            public PaymentMethod payment_method { get; set; }
+            public string status { get; set; }
+            public object status_message { get; set; }
+            public object shipping_address { get; set; }
+            public string redirect_url { get; set; }
+            public object payment_source_id { get; set; }
+            public object payment_link_id { get; set; }
+            public CustomerData customer_data { get; set; }
+            public object bill_id { get; set; }
+            public object disbursement { get; set; }
+        }
+
+        public class Extra
+        {
+            public string bin { get; set; }
+            public string name { get; set; }
+            public string brand { get; set; }
+            public string exp_year { get; set; }
+            public string card_type { get; set; }
+            public string exp_month { get; set; }
+            public string last_four { get; set; }
+            public string card_holder { get; set; }
+            public bool is_three_ds { get; set; }
+            public ThreeDsAuth three_ds_auth { get; set; }
+            public object three_ds_auth_type { get; set; }
+            public string external_identifier { get; set; }
+            public string processor_response_code { get; set; }
+        }
+
+        public class Meta
+        {
+            public int page { get; set; }
+            public int page_size { get; set; }
+            public int total_results { get; set; }
+        }
+
+        public class PaymentMethod
+        {
+            public string type { get; set; }
+            public Extra extra { get; set; }
+            public int installments { get; set; }
+        }
+
+        public class Root
+        {
+            public List<Datum> data { get; set; }
+            public Meta meta { get; set; }
+        }
+
+        public class ThreeDsAuth
+        {
+            public ThreeDsAuth three_ds_auth { get; set; }
+            public string current_step { get; set; }
+            public string current_step_status { get; set; }
         }
     }
 }

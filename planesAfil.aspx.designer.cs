@@ -483,6 +483,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.HiddenField hdEnlaceWompi;
 
         /// <summary>
+        /// Control btnPortapaleles.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton btnPortapaleles;
+
+        /// <summary>
         /// Control div1.
         /// </summary>
         /// <remarks>
@@ -508,6 +517,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbFechaInicio;
+
+        /// <summary>
+        /// Control lkVerificarPago.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lkVerificarPago;
 
         /// <summary>
         /// Control txbWompi.
@@ -546,6 +564,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbEfectivo;
 
         /// <summary>
+        /// Control tblBancos.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList tblBancos;
+
+        /// <summary>
         /// Control txbTransferencia.
         /// </summary>
         /// <remarks>
@@ -571,6 +598,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbTotal;
+
+        /// <summary>
+        /// Control GridView1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridView1;
 
         /// <summary>
         /// Control ltMensaje.
