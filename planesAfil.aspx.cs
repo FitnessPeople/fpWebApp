@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics.Metrics;
 using System.IO;
 using System.Net;
 using System.Security.Policy;
@@ -244,9 +245,7 @@ namespace fpWebApp
                     btn.CssClass = "btn btn-" + dt.Rows[i]["NombreColorPlan"].ToString() + " btn-outline btn-block btn-lg font-bold";
                     btn.ToolTip = dt.Rows[i]["NombrePlan"].ToString();
                     btn.Command += new CommandEventHandler(btn_Click);
-                    //btn.CommandName = dt.Rows[i]["NombrePlan"].ToString();
                     btn.CommandArgument = dt.Rows[i]["idPlan"].ToString();
-                    //btn.Click += new EventHandler(btn_Click);
                     btn.ID = dt.Rows[i]["idPlan"].ToString();
                     ph.Controls.Add(btn);
                 }
@@ -273,6 +272,8 @@ namespace fpWebApp
 
             ltPrecioBase.Text = "$" + String.Format("{0:N0}", ViewState["precioBase"]);
             ltPrecioFinal.Text = ltPrecioBase.Text;
+
+            CalculoPrecios("1");
             ActivarBotones("1");
             ActivarCortesia("0");
 
@@ -895,7 +896,7 @@ namespace fpWebApp
                                             using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
                                             {
                                                 cmd.CommandType = CommandType.Text;
-                                                cmd.ExecuteNonQuery();
+                                                //cmd.ExecuteNonQuery();
                                             }
                                             mysqlConexion.Close();
                                         }
@@ -905,16 +906,78 @@ namespace fpWebApp
                                         string respuesta = "ERROR: " + ex.Message;
                                     }
 
+                                    //if (txbWompi.Text.ToString() != "0")
+                                    //{
+                                    //    string strString = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + ViewState["precio"].ToString()));
+
+                                    //    string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
+                                    //    strMensaje += "Descripción del plan.\r\n\r\n";
+                                    //    strMensaje += "Por favor, agradecemos realice el pago a través del siguiente enlace: \r\n";
+                                    //    strMensaje += "https://fitnesspeoplecolombia.com/wompiplan?code=" + strString;
+
+                                    //    cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", ViewState["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
+                                    //}
+
+                                    strQuery = "SELECT * FROM AfiliadosPlanes ORDER BY idAfiliadoPlan DESC LIMIT 1";
+                                    DataTable dt1 = cg.TraerDatos(strQuery);
+
+                                    string strTipoPago = string.Empty;
+                                    string strReferencia = string.Empty;
+                                    string strBanco = string.Empty;
+
                                     if (txbWompi.Text.ToString() != "0")
                                     {
-                                        string strString = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + ViewState["precio"].ToString()));
+                                        strTipoPago = "Wompi";
+                                    }
+                                    if (txbDatafono.Text.ToString() != "0")
+                                    {
+                                        strTipoPago = "Datafono";
+                                        strReferencia = txbNroAprobacion.Text.ToString();
+                                    }
+                                    if (txbTransferencia.Text.ToString() != "0")
+                                    {
+                                        strTipoPago = "Transferencia";
+                                    }
+                                    if (txbEfectivo.Text.ToString() != "0")
+                                    {
+                                        strTipoPago = "Efectivo";
+                                    }
 
-                                        string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
-                                        strMensaje += "Descripción del plan.\r\n\r\n";
-                                        strMensaje += "Por favor, agradecemos realice el pago a través del siguiente enlace: \r\n";
-                                        strMensaje += "https://fitnesspeoplecolombia.com/wompiplan?code=" + strString;
+                                    if (rblBancos.SelectedItem == null)
+                                    {
+                                        strBanco = "(NULL)";
+                                    }
+                                    else
+                                    {
+                                        strBanco = rblBancos.SelectedItem.Value.ToString();
+                                    }
 
-                                        cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", ViewState["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
+                                    strQuery = "INSERT INTO PagosPlanAfiliado (idAfiliadoPlan, Valor, TipoPago, idReferencia, Banco, FechaHoraPago) " +
+                                    "VALUES (" + dt1.Rows[0]["idAfiliadoPlan"].ToString() + ", " +
+                                    "" + txbTotal.Text.ToString() + ", " +
+                                    "'" + strTipoPago + "', " +
+                                    "'" + strReferencia + "', " +
+                                    "'" + strBanco + "', " +
+                                    "NOW()) ";
+
+                                    try
+                                    {
+                                        string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                                        using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                                        {
+                                            mysqlConexion.Open();
+                                            using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
+                                            {
+                                                cmd.CommandType = CommandType.Text;
+                                                //cmd.ExecuteNonQuery();
+                                            }
+                                            mysqlConexion.Close();
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        string respuesta = "ERROR: " + ex.Message;
                                     }
 
                                 }
@@ -928,6 +991,7 @@ namespace fpWebApp
                                 }
                             }
                         }
+                        dt.Dispose();
                     }
                     else
                     {
@@ -984,11 +1048,17 @@ namespace fpWebApp
         protected void lkVerificarPago_Click(object sender, EventArgs e)
         {
             string strData = listarDetalle();
+            ltMensaje.Text = "<div class=\"ibox-content\">" +
+                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                    strData +
+                    "</div></div>";
         }
 
         private string listarDetalle()
         {
             string parametro = string.Empty;
+            string tester = string.Empty;
             string mensaje = string.Empty;
             clasesglobales cg = new clasesglobales();
             DataTable dti = cg.ConsultarUrl(4);
@@ -1002,14 +1072,9 @@ namespace fpWebApp
 
             if (mensaje == "Ok") //Verifica respuesta ok
             {
-                //JObject jsonData = JObject.Parse(prettyJson);
-
-                DataTable tester = (DataTable)JsonConvert.DeserializeObject(, (typeof(DataTable)));
-
-                GridView1.DataSource = tester;
-                GridView1.DataBind();
+                tester = prettyJson;
             }
-            return "";
+            return tester;
         }
 
         public class CustomerData
