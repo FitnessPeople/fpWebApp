@@ -1,21 +1,13 @@
-﻿using Microsoft.Ajax.Utilities;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
-using System.Data.Common;
-using System.Diagnostics.Metrics;
 using System.IO;
 using System.Net;
-using System.Security.Policy;
 using System.Text;
-using System.Web;
 using System.Web.Configuration;
-using System.Web.Optimization;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace fpWebApp
@@ -1063,7 +1055,7 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             DataTable dti = cg.ConsultarUrl(4);
 
-            parametro = "?from_date=2025-02-01&until_date=2025-03-05&page=1&page_size=50&order_by=created_at&order=DESC";
+            parametro = "?from_date=2025-02-24&until_date=2025-03-06&page=1&page_size=50&order_by=created_at&order=DESC";
 
             string url = dti.Rows[0]["urlTest"].ToString() + parametro;
             string[] respuesta = cg.EnviarPeticionGet(url, out mensaje);
@@ -1072,83 +1064,81 @@ namespace fpWebApp
 
             if (mensaje == "Ok") //Verifica respuesta ok
             {
-                tester = prettyJson;
-            }
-            return tester;
-        }
+                JObject jsonData = JObject.Parse(prettyJson);
 
-        public class CustomerData
-        {
-            public string device_id { get; set; }
-            public string full_name { get; set; }
-            public string phone_number { get; set; }
-            public string device_data_token { get; set; }
+                List<Datum> listaDatos = new List<Datum>();
+
+                foreach (var item in jsonData["data"])
+                {
+                    listaDatos.Add(new Datum
+                    {
+                        id = item["id"]?.ToString(),
+                        created_at = item["created_at"]?.ToString(),
+                        finalized_at = item["finalized_at"]?.ToString(),
+                        amount_in_cents = item["amount_in_cents"]?.ToString(),
+                        reference = item["reference"]?.ToString(),
+                        customer_email = item["customer_email"]?.ToString(),
+                        currency = item["currency"]?.ToString(),
+                        payment_method_type = item["payment_method_type"]?.ToString(),
+                        status = item["status"]?.ToString(),
+                        status_message = item["status_message"]?.ToString(),
+                        device_id = item["customer_data"]?["device_id"]?.ToString(),
+                        full_name = item["customer_data"]?["full_name"]?.ToString(),
+                        phone_number = item["customer_data"]?["phone_number"]?.ToString()
+                    });
+                }
+
+                StringBuilder sb = new StringBuilder();
+
+                sb.Append("<table class=\"table table-bordered table-striped\">");
+                sb.Append("<tr>");
+                sb.Append("<th>ID</th><th>Afiliado</th><th>Fecha Cre.</th><th>Fecha Fin.</th><th>Valor</th>");
+                sb.Append("<th>Método Pago</th><th>Estado</th><th>Referencia</th><th>Telefono</th>");
+                sb.Append("</tr>");
+
+
+                foreach (var pago in listaDatos)
+                {
+                    sb.Append("<tr>");
+                    sb.Append($"<td>{pago.id}</td>");
+                    sb.Append($"<td>{pago.full_name}</td>");
+                    sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.created_at)) + "</td>");
+                    sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.finalized_at)) + "</td>");
+                    sb.Append($"<td>{pago.amount_in_cents}</td>");
+                    sb.Append($"<td>{pago.payment_method_type}</td>");
+                    sb.Append($"<td>{pago.status}</td>");
+                    sb.Append($"<td>{pago.reference}</td>");
+                    sb.Append($"<td>{pago.phone_number}</td>");
+                    sb.Append("</tr>");
+                }
+
+                sb.Append("</table>");
+
+                return sb.ToString();
+
+            }
+            else
+            {
+                return prettyJson;
+            }
         }
 
         public class Datum
         {
             public string id { get; set; }
-            public DateTime created_at { get; set; }
-            public DateTime finalized_at { get; set; }
-            public int amount_in_cents { get; set; }
+            public string created_at { get; set; }
+            public string finalized_at { get; set; }
+            public string amount_in_cents { get; set; }
             public string reference { get; set; }
             public string customer_email { get; set; }
             public string currency { get; set; }
             public string payment_method_type { get; set; }
-            public PaymentMethod payment_method { get; set; }
             public string status { get; set; }
-            public object status_message { get; set; }
-            public object shipping_address { get; set; }
-            public string redirect_url { get; set; }
-            public object payment_source_id { get; set; }
-            public object payment_link_id { get; set; }
-            public CustomerData customer_data { get; set; }
-            public object bill_id { get; set; }
-            public object disbursement { get; set; }
+            public string status_message { get; set; }
+            public string device_id { get; set; }
+            public string full_name { get; set; }
+            public string phone_number { get; set; }
         }
 
-        public class Extra
-        {
-            public string bin { get; set; }
-            public string name { get; set; }
-            public string brand { get; set; }
-            public string exp_year { get; set; }
-            public string card_type { get; set; }
-            public string exp_month { get; set; }
-            public string last_four { get; set; }
-            public string card_holder { get; set; }
-            public bool is_three_ds { get; set; }
-            public ThreeDsAuth three_ds_auth { get; set; }
-            public object three_ds_auth_type { get; set; }
-            public string external_identifier { get; set; }
-            public string processor_response_code { get; set; }
-        }
-
-        public class Meta
-        {
-            public int page { get; set; }
-            public int page_size { get; set; }
-            public int total_results { get; set; }
-        }
-
-        public class PaymentMethod
-        {
-            public string type { get; set; }
-            public Extra extra { get; set; }
-            public int installments { get; set; }
-        }
-
-        public class Root
-        {
-            public List<Datum> data { get; set; }
-            public Meta meta { get; set; }
-        }
-
-        public class ThreeDsAuth
-        {
-            public ThreeDsAuth three_ds_auth { get; set; }
-            public string current_step { get; set; }
-            public string current_step_status { get; set; }
-        }
     }
 }

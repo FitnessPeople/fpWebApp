@@ -170,7 +170,9 @@
     <Content Include="500.html" />
     <Content Include="afiliados.aspx" />
     <Content Include="agenda.aspx" />
+    <Content Include="agendarcita.aspx" />
     <Content Include="arl.aspx" />
+    <Content Include="asignarcita.aspx" />
     <Content Include="autorizaciones.aspx" />
     <Content Include="blogs.aspx" />
     <Content Include="cajascomp.aspx" />
@@ -868,6 +870,13 @@
     <Compile Include="agenda.aspx.designer.cs">
       <DependentUpon>agenda.aspx</DependentUpon>
     </Compile>
+    <Compile Include="agendarcita.aspx.cs">
+      <DependentUpon>agendarcita.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="agendarcita.aspx.designer.cs">
+      <DependentUpon>agendarcita.aspx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="arl.aspx.cs">
       <DependentUpon>arl.aspx</DependentUpon>
@@ -875,6 +884,13 @@
     </Compile>
     <Compile Include="arl.aspx.designer.cs">
       <DependentUpon>arl.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="asignarcita.aspx.cs">
+      <DependentUpon>asignarcita.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="asignarcita.aspx.designer.cs">
+      <DependentUpon>asignarcita.aspx</DependentUpon>
     </Compile>
     <Compile Include="autorizaciones.aspx.cs">
       <DependentUpon>autorizaciones.aspx</DependentUpon>

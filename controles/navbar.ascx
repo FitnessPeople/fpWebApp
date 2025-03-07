@@ -58,7 +58,8 @@
             <li>
                 <a href="#"><i class="fa fa-user-doctor"></i><span class="nav-label">Médico</span><span class="fa arrow"></span></a>
                 <ul id="medico" class="nav nav-second-level collapse">
-                    <li id="agenda" class="old"><a href="agenda"><i class="fa fa-calendar-days"></i>Agenda</a></li>
+                    <li id="agenda" class="old"><a href="agenda"><i class="fa fa-calendar-days"></i>Administrar agenda</a></li>
+                    <li id="agendarcita" class="old"><a href="agendarcita"><i class="fa fa-calendar-days"></i>Agendar cita</a></li>
                     <li id="historias" class="old"><a href="historiasclinicas"><i class="fa fa-notes-medical"></i>Historias clínicas</a></li>
                     <li id="nuevahistoria" class="old"><a href="nuevahistoriaclinica"><i class="fa fa-notes-medical"></i>Crear historia clínica</a></li>
                     <li id="especialistas" class="old"><a href="especialistas"><i class="fa fa-user-doctor"></i>Especialistas</a></li>
