@@ -100,162 +100,161 @@ namespace fpWebApp
 
             dt.Dispose();
 
-            // Agregar festivos 2024
+            AgregarFestivos(_strEventos, "2025");
 
-            _strEventos += "{\r\n";
-            _strEventos += "start: '2024-01-01',\r\n";
-            _strEventos += "end: '2024-01-01',\r\n";
-            _strEventos += "rendering: 'background',\r\n";
-            _strEventos += "color: '#ff9f89',\r\n";
-            _strEventos += "allDay: true,\r\n";
-            _strEventos += "},\r\n";
+        }
 
-            _strEventos += "{\r\n";
-            _strEventos += "start: '2024-01-08',\r\n";
-            _strEventos += "end: '2024-01-08',\r\n";
-            _strEventos += "rendering: 'background',\r\n";
-            _strEventos += "color: '#ff9f89',\r\n";
-            _strEventos += "allDay: true,\r\n";
-            _strEventos += "},\r\n";
+        private string AgregarFestivos(string eventos, string anho)
+        {
+            _strEventos = eventos;
 
-            _strEventos += "{\r\n";
-            _strEventos += "start: '2024-03-25',\r\n";
-            _strEventos += "end: '2024-03-25',\r\n";
-            _strEventos += "rendering: 'background',\r\n";
-            _strEventos += "color: '#ff9f89',\r\n";
-            _strEventos += "allDay: true,\r\n";
-            _strEventos += "},\r\n";
+            if (anho == "2025")
+            {
+                _strEventos += "{\r\n";
+                _strEventos += "start: '2025-01-01',\r\n";
+                _strEventos += "end: '2025-01-01',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#ff9f89',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "},\r\n";
 
-            _strEventos += "{\r\n";
-            _strEventos += "start: '2024-03-28',\r\n";
-            _strEventos += "end: '2024-03-28',\r\n";
-            _strEventos += "rendering: 'background',\r\n";
-            _strEventos += "color: '#ff9f89',\r\n";
-            _strEventos += "allDay: true,\r\n";
-            _strEventos += "},\r\n";
+                _strEventos += "{\r\n";
+                _strEventos += "start: '2025-01-06',\r\n";
+                _strEventos += "end: '2025-01-06',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#ff9f89',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "},\r\n";
 
-            _strEventos += "{\r\n";
-            _strEventos += "start: '2024-03-29',\r\n";
-            _strEventos += "end: '2024-03-29',\r\n";
-            _strEventos += "rendering: 'background',\r\n";
-            _strEventos += "color: '#ff9f89',\r\n";
-            _strEventos += "allDay: true,\r\n";
-            _strEventos += "},\r\n";
+                _strEventos += "{\r\n";
+                _strEventos += "start: '2025-03-24',\r\n";
+                _strEventos += "end: '2025-03-24',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#ff9f89',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "},\r\n";
 
-            _strEventos += "{\r\n";
-            _strEventos += "start: '2024-03-31',\r\n";
-            _strEventos += "end: '2024-03-31',\r\n";
-            _strEventos += "rendering: 'background',\r\n";
-            _strEventos += "color: '#ff9f89',\r\n";
-            _strEventos += "allDay: true,\r\n";
-            _strEventos += "},\r\n";
+                _strEventos += "{\r\n";
+                _strEventos += "start: '2025-04-17',\r\n";
+                _strEventos += "end: '2025-04-17',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#ff9f89',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "},\r\n";
 
-            _strEventos += "{\r\n";
-            _strEventos += "start: '2024-05-01',\r\n";
-            _strEventos += "end: '2024-05-01',\r\n";
-            _strEventos += "rendering: 'background',\r\n";
-            _strEventos += "color: '#ff9f89',\r\n";
-            _strEventos += "allDay: true,\r\n";
-            _strEventos += "},\r\n";
+                _strEventos += "{\r\n";
+                _strEventos += "start: '2025-04-18',\r\n";
+                _strEventos += "end: '2025-04-18',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#ff9f89',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "},\r\n";
 
-            _strEventos += "{\r\n";
-            _strEventos += "start: '2024-05-13',\r\n";
-            _strEventos += "end: '2024-05-13',\r\n";
-            _strEventos += "rendering: 'background',\r\n";
-            _strEventos += "color: '#ff9f89',\r\n";
-            _strEventos += "allDay: true,\r\n";
-            _strEventos += "},\r\n";
+                _strEventos += "{\r\n";
+                _strEventos += "start: '2025-05-01',\r\n";
+                _strEventos += "end: '2025-05-01',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#ff9f89',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "},\r\n";
 
-            _strEventos += "{\r\n";
-            _strEventos += "start: '2024-06-03',\r\n";
-            _strEventos += "end: '2024-06-03',\r\n";
-            _strEventos += "rendering: 'background',\r\n";
-            _strEventos += "color: '#ff9f89',\r\n";
-            _strEventos += "allDay: true,\r\n";
-            _strEventos += "},\r\n";
+                _strEventos += "{\r\n";
+                _strEventos += "start: '2025-06-02',\r\n";
+                _strEventos += "end: '2025-06-02',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#ff9f89',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "},\r\n";
 
-            _strEventos += "{\r\n";
-            _strEventos += "start: '2024-06-10',\r\n";
-            _strEventos += "end: '2024-06-10',\r\n";
-            _strEventos += "rendering: 'background',\r\n";
-            _strEventos += "color: '#ff9f89',\r\n";
-            _strEventos += "allDay: true,\r\n";
-            _strEventos += "},\r\n";
+                _strEventos += "{\r\n";
+                _strEventos += "start: '2025-06-23',\r\n";
+                _strEventos += "end: '2025-06-23',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#ff9f89',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "},\r\n";
 
-            _strEventos += "{\r\n";
-            _strEventos += "start: '2024-07-01',\r\n";
-            _strEventos += "end: '2024-07-01',\r\n";
-            _strEventos += "rendering: 'background',\r\n";
-            _strEventos += "color: '#ff9f89',\r\n";
-            _strEventos += "allDay: true,\r\n";
-            _strEventos += "},\r\n";
+                _strEventos += "{\r\n";
+                _strEventos += "start: '2025-06-30',\r\n";
+                _strEventos += "end: '2025-06-23',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#ff9f89',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "},\r\n";
 
-            _strEventos += "{\r\n";
-            _strEventos += "start: '2024-07-20',\r\n";
-            _strEventos += "end: '2024-07-20',\r\n";
-            _strEventos += "rendering: 'background',\r\n";
-            _strEventos += "color: '#ff9f89',\r\n";
-            _strEventos += "allDay: true,\r\n";
-            _strEventos += "},\r\n";
+                _strEventos += "{\r\n";
+                _strEventos += "start: '2025-07-20',\r\n";
+                _strEventos += "end: '2025-07-20',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#ff9f89',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "},\r\n";
 
-            _strEventos += "{\r\n";
-            _strEventos += "start: '2024-08-07',\r\n";
-            _strEventos += "end: '2024-08-07',\r\n";
-            _strEventos += "rendering: 'background',\r\n";
-            _strEventos += "color: '#ff9f89',\r\n";
-            _strEventos += "allDay: true,\r\n";
-            _strEventos += "},\r\n";
+                _strEventos += "{\r\n";
+                _strEventos += "start: '2025-08-07',\r\n";
+                _strEventos += "end: '2025-08-07',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#ff9f89',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "},\r\n";
 
-            _strEventos += "{\r\n";
-            _strEventos += "start: '2024-08-19',\r\n";
-            _strEventos += "end: '2024-08-19',\r\n";
-            _strEventos += "rendering: 'background',\r\n";
-            _strEventos += "color: '#ff9f89',\r\n";
-            _strEventos += "allDay: true,\r\n";
-            _strEventos += "},\r\n";
+                _strEventos += "{\r\n";
+                _strEventos += "start: '2025-08-18',\r\n";
+                _strEventos += "end: '2025-08-18',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#ff9f89',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "},\r\n";
 
-            _strEventos += "{\r\n";
-            _strEventos += "start: '2024-10-14',\r\n";
-            _strEventos += "end: '2024-10-14',\r\n";
-            _strEventos += "rendering: 'background',\r\n";
-            _strEventos += "color: '#ff9f89',\r\n";
-            _strEventos += "allDay: true,\r\n";
-            _strEventos += "},\r\n";
+                _strEventos += "{\r\n";
+                _strEventos += "start: '2025-10-13',\r\n";
+                _strEventos += "end: '2025-10-13',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#ff9f89',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "},\r\n";
 
-            _strEventos += "{\r\n";
-            _strEventos += "start: '2024-11-04',\r\n";
-            _strEventos += "end: '2024-11-04',\r\n";
-            _strEventos += "rendering: 'background',\r\n";
-            _strEventos += "color: '#ff9f89',\r\n";
-            _strEventos += "allDay: true,\r\n";
-            _strEventos += "},\r\n";
+                _strEventos += "{\r\n";
+                _strEventos += "start: '2025-11-03',\r\n";
+                _strEventos += "end: '2025-11-03',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#ff9f89',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "},\r\n";
 
-            _strEventos += "{\r\n";
-            _strEventos += "start: '2024-11-11',\r\n";
-            _strEventos += "end: '2024-11-11',\r\n";
-            _strEventos += "rendering: 'background',\r\n";
-            _strEventos += "color: '#ff9f89',\r\n";
-            _strEventos += "allDay: true,\r\n";
-            _strEventos += "},\r\n";
+                _strEventos += "{\r\n";
+                _strEventos += "start: '2025-11-17',\r\n";
+                _strEventos += "end: '2025-11-17',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#ff9f89',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "},\r\n";
 
-            _strEventos += "{\r\n";
-            _strEventos += "start: '2024-12-08',\r\n";
-            _strEventos += "end: '2024-12-08',\r\n";
-            _strEventos += "rendering: 'background',\r\n";
-            _strEventos += "color: '#ff9f89',\r\n";
-            _strEventos += "allDay: true,\r\n";
-            _strEventos += "},\r\n";
+                _strEventos += "{\r\n";
+                _strEventos += "start: '2025-12-08',\r\n";
+                _strEventos += "end: '2025-12-08',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#ff9f89',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "},\r\n";
 
-            _strEventos += "{\r\n";
-            _strEventos += "start: '2024-12-25',\r\n";
-            _strEventos += "end: '2024-12-25',\r\n";
-            _strEventos += "rendering: 'background',\r\n";
-            _strEventos += "color: '#ff9f89',\r\n";
-            _strEventos += "allDay: true,\r\n";
-            _strEventos += "},\r\n";
+                _strEventos += "{\r\n";
+                _strEventos += "start: '2025-12-25',\r\n";
+                _strEventos += "end: '2025-12-25',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#ff9f89',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "},\r\n";
 
-            _strEventos += "],\r\n";
+                _strEventos += "],\r\n";
+            }
 
+            if (anho == "2026")
+            {
+
+            }
+
+            return eventos;
         }
 
         private void CargarSedes()
@@ -274,6 +273,7 @@ namespace fpWebApp
             dt.Dispose();
 
             CargarAgenda();
+            ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
         }
 
         private void CargarEspecialistas()
@@ -367,7 +367,7 @@ namespace fpWebApp
                                                     if (Convert.ToInt16(dtFechaIniCita.DayOfWeek) == Convert.ToInt16(item.Value.ToString()))
                                                     {
                                                         strQuery = "INSERT INTO DisponibilidadEspecialistas " +
-                                                            "(idEspecialista, idSede, FechaHoraInicio, FechaHoraFinal, idUsuario) " +
+                                                            "(idEspecialista, idSede, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
                                                             "VALUES (" + ddlEspecialistas.SelectedItem.Value.ToString() + ", " + ddlSedesCita.SelectedItem.Value.ToString() + ", " +
                                                             "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
                                                             "" + Session["idusuario"].ToString() + ") ";
@@ -380,7 +380,7 @@ namespace fpWebApp
                                         else
                                         {
                                             strQuery = "INSERT INTO DisponibilidadEspecialistas " +
-                                                "(idEspecialista, idSede, FechaHoraInicio, FechaHoraFinal, idUsuario) " +
+                                                "(idEspecialista, idSede, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
                                                 "VALUES (" + ddlEspecialistas.SelectedItem.Value.ToString() + ", " + ddlSedesCita.SelectedItem.Value.ToString() + ", " +
                                                 "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
                                                 "" + Session["idusuario"].ToString() + ") ";

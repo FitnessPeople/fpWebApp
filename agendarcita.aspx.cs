@@ -105,18 +105,21 @@ namespace fpWebApp
                     _strEventos += "{\r\n";
                     _strEventos += "id: '" + dt.Rows[i]["idDisponibilidad"].ToString() + "',\r\n";
                     _strEventos += "title: '" + dt.Rows[i]["NombreEspecialista"].ToString() + " " + dt.Rows[i]["ApellidoEspecialista"].ToString() + "',\r\n";
-                    _strEventos += "description: 'Especialista',\r\n";
                     _strEventos += "start: '" + dt.Rows[i]["FechaHoraIni"].ToString() + "',\r\n";
                     _strEventos += "end: '" + dt.Rows[i]["FechaHoraFin"].ToString() + "',\r\n";
                     //_strEventos += "className: 'bg-primary',\r\n";
 
-                    if (dt.Rows[i]["idAfiliado"] != null)
+                    if (dt.Rows[i]["idAfiliado"].ToString() != "")
                     {
                         _strEventos += "color: '#FF0000',\r\n";
+                        _strEventos += "description: 'Cita asignada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                        _strEventos += "btnAsignar: 'none',\r\n";
                     }
                     else
                     {
                         _strEventos += "color: '" + dt.Rows[i]["ColorEspecialista"].ToString() + "',\r\n";
+                        _strEventos += "description: 'Cita disponible.',\r\n";
+                        _strEventos += "btnAsignar: 'inline',\r\n";
                     }
 
                     _strEventos += "allDay: false,\r\n";
@@ -304,7 +307,7 @@ namespace fpWebApp
             dt.Dispose();
 
             CargarAgenda();
-            btnAsignar.Visible = true;
+            //btnAsignar.Visible = true;
         }
     }
 }

@@ -103,7 +103,7 @@
                 <div class="modal-footer">
                     <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
                     <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'asignarcita.aspx?id=' + document.getElementById('event-id').innerHTML + '&idAfil=' + document.getElementById('hfIdAfiliado').value" runat="server" id="btnAsignar" visible="false"><i class='fa fa-calendar-plus m-r-sm'></i>Asignar</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href='asignarcita.aspx?id=' + document.getElementById('event-id').innerHTML + '&idAfil=' + document.getElementById('hfIdAfiliado').value" id="btnAsignar"><i class='fa fa-calendar-plus m-r-sm'></i>Asignar</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>
                 </div>
             </div>
@@ -151,7 +151,7 @@
 
                             <form runat="server" id="form">
                                 <div class="row animated fadeInDown" id="divContenido" runat="server">
-                                    <div class="col-xxl-2 col-lg-4 col-md-5 col-sm-6 col-xs-12">
+                                    <div class="col-xxl-2 col-lg-3 col-md-5 col-sm-6 col-xs-12">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <h5>Agendamiento de citas</h5>
@@ -194,17 +194,18 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xxl-10 col-lg-8 col-md-7 col-sm-6 col-xs-12">
+                                    <div class="col-xxl-10 col-lg-9 col-md-7 col-sm-6 col-xs-12">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <h5>Agenda <asp:Literal ID="ltSede" runat="server"></asp:Literal></h5>
                                                 <div class="ibox-tools">
-                                                    <a class="collapse-link">
+                                                    <%--<a class="collapse-link">
                                                         <i class="fa fa-chevron-up"></i>
                                                     </a>
                                                     <a class="close-link">
                                                         <i class="fa fa-times"></i>
-                                                    </a>
+                                                    </a>--%>
+                                                    <span class="label label-danger pull-right">Cita asignada</span>
                                                 </div>
                                             </div>
                                             <div class="ibox-content">
@@ -418,9 +419,11 @@
                     //console.log(formattedTime);
                     jQuery('.event-id').html(event.id);
                     jQuery('.event-icon').html("<i class='fa fa-" + event.icon + "'></i>");
-                    jQuery('.event-title').html(event.title);
+                    jQuery('.event-title').html('Especialista: ' + event.title);
                     jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />");
                     jQuery('.event-description').html(event.description);
+                    var btn = document.getElementById("btnAsignar");
+                    btn.style.display = event.btnAsignar;
                     //jQuery('.event-iconPago').html("<i class='fa fa-" + event.iconPago + "'></i>");
                     //jQuery('.event-pago').html(event.pago);
                     //jQuery('.event-cliente').html(event.cliente);

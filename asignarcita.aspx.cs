@@ -26,7 +26,8 @@ namespace fpWebApp
                         try
                         {
                             string strQuery = "UPDATE DisponibilidadEspecialistas SET " +
-                                "idAfiliado = " + Request.QueryString["idAfil"].ToString() + " " +
+                                "idAfiliado = " + Request.QueryString["idAfil"].ToString() + ", " +
+                                "idUsuarioAsigna = " + Session["idusuario"].ToString() + " " +
                                 "WHERE idDisponibilidad = " + Request.QueryString["id"].ToString();
                             clasesglobales cg = new clasesglobales();
                             string mensaje = cg.TraerDatosStr(strQuery);
@@ -35,6 +36,8 @@ namespace fpWebApp
                         {
                             string mensaje = ex.Message;
                         }
+                        
+                        //FALTA Enviar Correo al Afiliado con la cita.
                     }
                     Response.Redirect("agendarcita");
                 }
