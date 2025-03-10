@@ -357,6 +357,13 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
+                                                           <div class="form-group">
+                                                            <label>Canal de ventas</label>
+                                                            <asp:DropDownList ID="ddlCanalVenta" runat="server" AppendDataBoundItems="true"
+                                                                DataTextField="NombreCanalVenta" DataValueField="idCanalVenta" CssClass="form-control input-sm">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div>
@@ -475,6 +482,9 @@
                 ddlCesantias: {
                     required: true
                 },
+                ddlCanalVenta: {
+                    required: true
+                },
             },
             messages: {
                 ddlCiudadEmpleado: "*",
@@ -482,7 +492,7 @@
         });
 
         $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" }); 
-</script>
+    </script>
 
 </body>
 

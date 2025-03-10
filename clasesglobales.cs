@@ -4683,6 +4683,11 @@ namespace fpWebApp
 
 
         #endregion
+
+        #region Canales de venta
+
+
+        #endregion 
     }
 
     public class pagoswompidet

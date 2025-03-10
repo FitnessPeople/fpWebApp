@@ -47,6 +47,7 @@ namespace fpWebApp
                         CargarCajaComp();
                         CargarCesantias();
                         CargarEmpresasFP();
+                        CargarCanalesVenta();
                     }
                     else
                     {
@@ -173,6 +174,17 @@ namespace fpWebApp
 
             ddlCesantias.DataSource = dt;
             ddlCesantias.DataBind();
+
+            dt.Dispose();
+        }
+        private void CargarCanalesVenta()
+        {
+            string strQuery = "SELECT * FROM canalesventa";
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.TraerDatos(strQuery);
+
+            ddlCanalVenta.DataSource = dt;
+            ddlCanalVenta.DataBind();
 
             dt.Dispose();
         }

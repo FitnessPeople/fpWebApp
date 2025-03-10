@@ -42,6 +42,7 @@ namespace fpWebApp
                         CargarCesantias();
                         CargarEmpresasFP();
                         CargarEmpleado();
+                        CargarCanalesVenta();
                     }
                     else
                     {
@@ -149,6 +150,18 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        private void CargarCanalesVenta()
+        {
+            string strQuery = "SELECT * FROM canalesventa";
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.TraerDatos(strQuery);
+
+            ddlCanalVenta.DataSource = dt;
+            ddlCanalVenta.DataBind();
+
+            dt.Dispose();
+        }
+
         private void CargarEmpresasFP()
         {
             string strQuery = "SELECT * FROM empresasfp";
@@ -234,6 +247,10 @@ namespace fpWebApp
             {
                 ddlCesantias.SelectedIndex = Convert.ToInt16(ddlCesantias.Items.IndexOf(ddlCesantias.Items.FindByValue(dt.Rows[0]["idCesantias"].ToString())));
             }
+            if (dt.Rows[0]["idCanalVenta"].ToString() != "")
+            {
+                ddlCanalVenta.SelectedIndex = Convert.ToInt16(ddlCanalVenta.Items.IndexOf(ddlCanalVenta.Items.FindByValue(dt.Rows[0]["idCanalVenta"].ToString())));
+            }
             rblEstado.Items.FindByValue(dt.Rows[0]["Estado"].ToString()).Selected = true;
 
             dt.Dispose();
@@ -312,6 +329,7 @@ namespace fpWebApp
                 "idCajaComp = " + ddlCajaComp.SelectedItem.Value.ToString() + ", " +
                 "idCesantias = " + ddlCesantias.SelectedItem.Value.ToString() + ", " +
                 "Estado = '" + rblEstado.Text.ToString() + "' " +
+                "idCesantias = " + ddlCanalVenta.SelectedItem.Value.ToString() + ", " +
                 "WHERE DocumentoEmpleado = '" + txbDocumento.Text.ToString() + "' ";
                 
                 string mensaje = cg.TraerDatosStr(strQuery);
@@ -344,7 +362,7 @@ namespace fpWebApp
             string strQuery = "SELECT e.DocumentoEmpleado, td.TipoDocumento, e.NombreEmpleado, e.TelefonoEmpleado, e.EmailEmpleado, " +
                 "e.DireccionEmpleado, c.NombreCiudad, e.CargoEmpleado, e.FechaNacEmpleado, e.FotoEmpleado, e.NroContrato, e.TipoContrato, " +
                 "s.NombreSede, e.FechaInicio, e.FechaFinal, e.Sueldo, e.GrupoNomina, eps.NombreEps, fp.NombreFondoPension, " +
-                "arl.NombreArl, cp.NombreCajaComp, ces.NombreCesantias, e.Estado " +
+                "arl.NombreArl, cp.NombreCajaComp, ces.NombreCesantias, e.Estado, NombreCanalVenta " +
                 "FROM empleados e " +
                 "LEFT JOIN Ciudades c ON e.idCiudadEmpleado = c.idCiudad " +
                 "LEFT JOIN TiposDocumento td ON e.idTipoDocumento = td.idTipoDoc " +
@@ -354,6 +372,7 @@ namespace fpWebApp
                 "LEFT JOIN Arl ON e.idArl = arl.idArl " +
                 "LEFT JOIN CajasCompensacion cp ON e.idCajaComp = cp.idCajaComp " +
                 "LEFT JOIN Cesantias ces ON e.idCesantias = ces.idCesantias " +
+                "LEFT JOIN Canalesventa cv ON e.idCanalVenta = cv.idCanalVenta " +
                 "WHERE e.DocumentoEmpleado = '" + Request.QueryString["editid"].ToString() + "' ";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
