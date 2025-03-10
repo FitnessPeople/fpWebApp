@@ -85,7 +85,7 @@ namespace fpWebApp
         private void listaTransacciones()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosPlanAfiliados();
+            DataTable dt = cg.ConsultarPagosRecientes();
             rpPagos.DataSource = dt;
             rpPagos.DataBind();
             dt.Dispose();
@@ -96,86 +96,136 @@ namespace fpWebApp
             string parametro = string.Empty;
             string nomAfiliado = string.Empty;
             string mensaje = string.Empty;
-
+            string tipoPago = string.Empty;
+            StringBuilder sb = new StringBuilder();
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosWompiPorId(idAfiliadoPlan);
-            DataTable dti = cg.ConsultarUrl(1);
 
-            if (dt.Rows.Count > 0)
+            try
             {
-                parametro = dt.Rows[0]["IdReferencia"].ToString();
-                nomAfiliado = dt.Rows[0]["NombreAfiliado"].ToString();
-            }
+                DataTable dt = cg.ConsultarPagosWompiPorId(idAfiliadoPlan);
+                tipoPago = dt.Rows[0]["TipoPago"].ToString();
 
-            string url = dti.Rows[0]["urlTest"].ToString() + parametro;
-            string[] respuesta = cg.EnviarPeticionGet(url, out mensaje);
-            JToken token = JToken.Parse(respuesta[0]);
-            string prettyJson = token.ToString(Formatting.Indented);
 
-            if (mensaje == "Ok") //Verifica respuesta ok
-            {
-                JObject jsonData = JObject.Parse(prettyJson);
-
-                List<pagoswompidet> listaPagos = new List<pagoswompidet>
+                switch (tipoPago)
                 {
-                    new pagoswompidet
-                    {
-                        Id = jsonData["data"]["id"]?.ToString(),
-                        FechaCreacion = jsonData["data"]["created_at"]?.ToString(),
-                        FechaFinalizacion = jsonData["data"]["finalized_at"]?.ToString(),
-                        Valor = ((jsonData["data"]["amount_in_cents"]?.Value<int>() ?? 0) / 100).ToString("N0") + " " + jsonData["data"]["currency"]?.ToString(),
-                        Moneda = jsonData["data"]["currency"]?.ToString(),
-                        MetodoPago = jsonData["data"]["payment_method_type"]?.ToString(),
-                        Estado = jsonData["data"]["status"]?.ToString(),
-                        Referencia = jsonData["data"]["reference"]?.ToString(),
-                        NombreTarjeta = jsonData["data"]["payment_method"]["extra"]["name"]?.ToString(),
-                        UltimosDigitos = jsonData["data"]["payment_method"]["extra"]["last_four"]?.ToString(),
-                        MarcaTarjeta = jsonData["data"]["payment_method"]["extra"]["brand"]?.ToString(),
-                        TipoTarjeta = jsonData["data"]["payment_method"]["extra"]["card_type"]?.ToString(),
-                        NombreComercio = jsonData["data"]["merchant"]["name"]?.ToString(),
-                        ContactoComercio = jsonData["data"]["merchant"]["contact_name"]?.ToString(),
-                        TelefonoComercio = jsonData["data"]["merchant"]["phone_number"]?.ToString(),
-                        URLRedireccion = jsonData["data"]["redirect_url"]?.ToString(),
-                        PaymentLinkId = jsonData["data"]["payment_link_id"]?.ToString(),
-                        PublicKeyComercio = jsonData["data"]["merchant"]["public_key"]?.ToString(),
-                        EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString(),
-                        Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
-                };
 
-                StringBuilder sb = new StringBuilder();
+                    case "Efectivo":
+                        sb.Append("<table class=\"table table-bordered table-striped\">");
+                        sb.Append("<tr>");
+                        sb.Append("<th>ID</th><th>Documento afiliado</th><th>Nombre afiliado</th><th>Tipo pago</th><th>Valor</th><th>Fecha Cre.</th>");
+                        sb.Append("<th>Estado</th><th>Usuario</th>");
+                        sb.Append("</tr>");
+                   
+                            sb.Append("<tr>");
+                            sb.Append($"<td>{dt.Rows[0]["idAfiliadoPlan"].ToString()}</td>");
+                            sb.Append($"<td>{dt.Rows[0]["DocumentoAfiliado"].ToString()}</td>");
+                            sb.Append($"<td>{dt.Rows[0]["NombreAfiliado"].ToString()}</td>");
+                            sb.Append($"<td>{dt.Rows[0]["TipoPago"].ToString()}</td>");
+                            sb.Append($"<td>{dt.Rows[0]["Valor"].ToString()}</td>");
+                            sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaHoraPago"].ToString())) + "</td>");
+                            sb.Append($"<td>{"Aprobado"}</td>");
+                            sb.Append($"<td>{"Usuario"}</td>");
+                            sb.Append("</tr>");                
 
-                sb.Append("<table class=\"table table-bordered table-striped\">");
-                sb.Append("<tr>");
-                sb.Append("<th>ID</th><th>Afiliado</th><th>Fecha Cre.</th><th>Fecha Fin.</th><th>Valor</th>");
-                sb.Append("<th>Método Pago</th><th>Estado</th><th>Referencia</th><th>Tarjeta</th><th>Estado3DS</th>");
-                sb.Append("</tr>");
+                        sb.Append("</table>");
+                        break;
+                    case "Transferencia":
 
+                        break;
+                    case "Datafono":
 
-                foreach (var pago in listaPagos)
-                {
-                    sb.Append("<tr>");
-                    sb.Append($"<td>{pago.Id}</td>");
-                    sb.Append($"<td>{nomAfiliado}</td>");
-                    sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.FechaCreacion)) + "</td>");
-                    sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.FechaFinalizacion)) + "</td>");
-                    sb.Append($"<td>{pago.Valor}</td>");
-                    sb.Append($"<td>{pago.MetodoPago}</td>");
-                    sb.Append($"<td>{pago.Estado}</td>");
-                    sb.Append($"<td>{pago.Referencia}</td>");
-                    sb.Append($"<td>{pago.NombreTarjeta}</td>");
-                    sb.Append($"<td>{pago.Estado3DS}</td>");
-                    sb.Append("</tr>");
+                        break;
+                    case "Wompi":
+
+                        DataTable dti = cg.ConsultarUrl(1);//1-Wompi 2-Armatura 
+
+                        if (dt.Rows.Count > 0)
+                        {
+                            parametro = dt.Rows[0]["IdReferencia"].ToString();
+                            nomAfiliado = dt.Rows[0]["NombreAfiliado"].ToString();
+                        }
+
+                        string url = dti.Rows[0]["urlTest"].ToString() + parametro;
+                        string[] respuesta = cg.EnviarPeticionGet(url, out mensaje);
+                        JToken token = JToken.Parse(respuesta[0]);
+                        string prettyJson = token.ToString(Formatting.Indented);
+
+                        if (mensaje == "Ok") //Verifica respuesta ok
+                        {
+                            JObject jsonData = JObject.Parse(prettyJson);
+
+                            List<pagoswompidet> listaPagos = new List<pagoswompidet>
+                        {
+                            new pagoswompidet
+                            {
+                                Id = jsonData["data"]["id"]?.ToString(),
+                                FechaCreacion = jsonData["data"]["created_at"]?.ToString(),
+                                FechaFinalizacion = jsonData["data"]["finalized_at"]?.ToString(),
+                                Valor = ((jsonData["data"]["amount_in_cents"]?.Value<int>() ?? 0) / 100).ToString("N0") + " " + jsonData["data"]["currency"]?.ToString(),
+                                Moneda = jsonData["data"]["currency"]?.ToString(),
+                                MetodoPago = jsonData["data"]["payment_method_type"]?.ToString(),
+                                Estado = jsonData["data"]["status"]?.ToString(),
+                                Referencia = jsonData["data"]["reference"]?.ToString(),
+                                NombreTarjeta = jsonData["data"]["payment_method"]["extra"]["name"]?.ToString(),
+                                UltimosDigitos = jsonData["data"]["payment_method"]["extra"]["last_four"]?.ToString(),
+                                MarcaTarjeta = jsonData["data"]["payment_method"]["extra"]["brand"]?.ToString(),
+                                TipoTarjeta = jsonData["data"]["payment_method"]["extra"]["card_type"]?.ToString(),
+                                NombreComercio = jsonData["data"]["merchant"]["name"]?.ToString(),
+                                ContactoComercio = jsonData["data"]["merchant"]["contact_name"]?.ToString(),
+                                TelefonoComercio = jsonData["data"]["merchant"]["phone_number"]?.ToString(),
+                                URLRedireccion = jsonData["data"]["redirect_url"]?.ToString(),
+                                PaymentLinkId = jsonData["data"]["payment_link_id"]?.ToString(),
+                                PublicKeyComercio = jsonData["data"]["merchant"]["public_key"]?.ToString(),
+                                EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString(),
+                                Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
+                            };
+
+                            sb.Append("<table class=\"table table-bordered table-striped\">");
+                            sb.Append("<tr>");
+                            sb.Append("<th>ID</th><th>Afiliado</th><th>Fecha Cre.</th><th>Fecha Fin.</th><th>Valor</th>");
+                            sb.Append("<th>Método Pago</th><th>Estado</th><th>Referencia</th><th>Tarjeta</th><th>Estado3DS</th>");
+                            sb.Append("</tr>");
+
+                            foreach (var pago in listaPagos)
+                            {
+                                sb.Append("<tr>");
+                                sb.Append($"<td>{pago.Id}</td>");
+                                sb.Append($"<td>{nomAfiliado}</td>");
+                                sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.FechaCreacion)) + "</td>");
+                                sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.FechaFinalizacion)) + "</td>");
+                                sb.Append($"<td>{pago.Valor}</td>");
+                                sb.Append($"<td>{pago.MetodoPago}</td>");
+                                sb.Append($"<td>{pago.Estado}</td>");
+                                sb.Append($"<td>{pago.Referencia}</td>");
+                                sb.Append($"<td>{pago.NombreTarjeta}</td>");
+                                sb.Append($"<td>{pago.Estado3DS}</td>");
+                                sb.Append("</tr>");
+                            }
+
+                            sb.Append("</table>");
+
+                            //return sb.ToString();
+                        }
+                        else
+                        {
+                            return prettyJson;
+                        }
+                        break;
+                    default:
+                        prettyJson = JsonConvert.SerializeObject(new { error = "Sin datos del tipo de pago: " });                        
+                        break;
                 }
-
-                sb.Append("</table>");
-
-                return sb.ToString();
             }
-            else
+            catch (Exception ex)
             {
-                return prettyJson;
+                throw new Exception(ex.Message + " Error");
             }
+
+            return sb.ToString();
         }
+
+
+
 
         protected void rpPagos_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
