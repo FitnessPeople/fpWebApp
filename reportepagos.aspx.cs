@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using System.Globalization;
 
 namespace fpWebApp
 {
@@ -18,6 +19,10 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            CultureInfo culture = new CultureInfo("es-CO"); // Cambia según el país
+            System.Threading.Thread.CurrentThread.CurrentCulture = culture;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+
             if (!IsPostBack)
             {
                 if (Session["idUsuario"] != null)
@@ -85,7 +90,7 @@ namespace fpWebApp
         private void listaTransacciones()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosRecientes();
+            DataTable dt = cg.ConsultarPagosPlanAfiliados();
             rpPagos.DataSource = dt;
             rpPagos.DataBind();
             dt.Dispose();
@@ -102,7 +107,7 @@ namespace fpWebApp
 
             try
             {
-                DataTable dt = cg.ConsultarPagosWompiPorId(idAfiliadoPlan);
+                DataTable dt = cg.ConsultarPagosPorId(idAfiliadoPlan);
                 tipoPago = dt.Rows[0]["TipoPago"].ToString();
 
 
@@ -113,9 +118,8 @@ namespace fpWebApp
                         sb.Append("<table class=\"table table-bordered table-striped\">");
                         sb.Append("<tr>");
                         sb.Append("<th>ID</th><th>Documento afiliado</th><th>Nombre afiliado</th><th>Tipo pago</th><th>Valor</th><th>Fecha Cre.</th>");
-                        sb.Append("<th>Estado</th><th>Usuario</th>");
-                        sb.Append("</tr>");
-                   
+                        sb.Append("<th>Estado</th><th>Usuario</th><th>Canal de Venta</th>");
+                        sb.Append("</tr>");                   
                             sb.Append("<tr>");
                             sb.Append($"<td>{dt.Rows[0]["idAfiliadoPlan"].ToString()}</td>");
                             sb.Append($"<td>{dt.Rows[0]["DocumentoAfiliado"].ToString()}</td>");
@@ -124,12 +128,30 @@ namespace fpWebApp
                             sb.Append($"<td>{dt.Rows[0]["Valor"].ToString()}</td>");
                             sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaHoraPago"].ToString())) + "</td>");
                             sb.Append($"<td>{"Aprobado"}</td>");
-                            sb.Append($"<td>{"Usuario"}</td>");
-                            sb.Append("</tr>");                
-
+                            sb.Append($"<td>{dt.Rows[0]["Usuario"].ToString()}</td>");
+                            sb.Append($"<td>{dt.Rows[0]["CanalVenta"].ToString()}</td>");
+                            sb.Append("</tr>");
                         sb.Append("</table>");
                         break;
                     case "Transferencia":
+                        sb.Append("<table class=\"table table-bordered table-striped\">");
+                        sb.Append("<tr>");
+                        sb.Append("<th>ID</th><th>Documento afiliado</th><th>Nombre afiliado</th><th>Tipo pago</th><th>Valor</th><th>Fecha Cre.</th>");
+                        sb.Append("<th>Banco</th><th>Estado</th><th>Usuario</th><th>Canal de Venta</th>");
+                        sb.Append("</tr>");
+                        sb.Append("<tr>");
+                        sb.Append($"<td>{dt.Rows[0]["idAfiliadoPlan"].ToString()}</td>");
+                        sb.Append($"<td>{dt.Rows[0]["DocumentoAfiliado"].ToString()}</td>");
+                        sb.Append($"<td>{dt.Rows[0]["NombreAfiliado"].ToString()}</td>");
+                        sb.Append($"<td>{dt.Rows[0]["TipoPago"].ToString()}</td>");
+                        sb.Append($"<td>{dt.Rows[0]["Valor"].ToString()}</td>");
+                        sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaHoraPago"].ToString())) + "</td>");
+                        sb.Append($"<td>{dt.Rows[0]["Banco"].ToString()}</td>");
+                        sb.Append($"<td>{"Aprobado"}</td>");                        
+                        sb.Append($"<td>{dt.Rows[0]["Usuario"].ToString()}</td>");
+                        sb.Append($"<td>{dt.Rows[0]["CanalVenta"].ToString()}</td>");
+                        sb.Append("</tr>");
+                        sb.Append("</table>");
 
                         break;
                     case "Datafono":
@@ -183,7 +205,7 @@ namespace fpWebApp
                             sb.Append("<table class=\"table table-bordered table-striped\">");
                             sb.Append("<tr>");
                             sb.Append("<th>ID</th><th>Afiliado</th><th>Fecha Cre.</th><th>Fecha Fin.</th><th>Valor</th>");
-                            sb.Append("<th>Método Pago</th><th>Estado</th><th>Referencia</th><th>Tarjeta</th><th>Estado3DS</th>");
+                            sb.Append("<th>Método Pago</th><th>Estado</th><th>Referencia</th><th>Usuario</th><th>Canal de Venta</th>");
                             sb.Append("</tr>");
 
                             foreach (var pago in listaPagos)
@@ -196,9 +218,9 @@ namespace fpWebApp
                                 sb.Append($"<td>{pago.Valor}</td>");
                                 sb.Append($"<td>{pago.MetodoPago}</td>");
                                 sb.Append($"<td>{pago.Estado}</td>");
-                                sb.Append($"<td>{pago.Referencia}</td>");
-                                sb.Append($"<td>{pago.NombreTarjeta}</td>");
-                                sb.Append($"<td>{pago.Estado3DS}</td>");
+                                sb.Append($"<td>{pago.Referencia}</td>");                                
+                                sb.Append($"<td>{dt.Rows[0]["Usuario"].ToString()}</td>");
+                                sb.Append($"<td>{dt.Rows[0]["CanalVenta"].ToString()}</td>");
                                 sb.Append("</tr>");
                             }
 
@@ -240,35 +262,6 @@ namespace fpWebApp
             }
 
         }
-
-        private static string EnviarPeticion(string url, out bool mensaje)
-        {
-            string resultado = "";
-
-            try
-            {
-                WebRequest oRequest = WebRequest.Create(url);
-                oRequest.Method = "GET";
-                oRequest.ContentType = "application/json;charset=UTF-8";
-
-                WebResponse oResponse = oRequest.GetResponse();
-                using (var oSr = new StreamReader(oResponse.GetResponseStream()))
-                {
-                    resultado = oSr.ReadToEnd().Trim();
-                    mensaje = true;
-                }
-
-                return resultado;
-            }
-            catch (Exception ex)
-            {
-                string jsonError = JsonConvert.SerializeObject(new { error = "Error al enviar la petición: " + ex.Message });
-                mensaje = false;
-                resultado = jsonError;
-                return resultado;
-            }
-        }
-
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {

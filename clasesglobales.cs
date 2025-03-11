@@ -259,6 +259,34 @@ namespace fpWebApp
             }
         }
 
+        private static string EnviarPeticion(string url, out bool mensaje)
+        {
+            string resultado = "";
+
+            try
+            {
+                WebRequest oRequest = WebRequest.Create(url);
+                oRequest.Method = "GET";
+                oRequest.ContentType = "application/json;charset=UTF-8";
+
+                WebResponse oResponse = oRequest.GetResponse();
+                using (var oSr = new StreamReader(oResponse.GetResponseStream()))
+                {
+                    resultado = oSr.ReadToEnd().Trim();
+                    mensaje = true;
+                }
+
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                string jsonError = JsonConvert.SerializeObject(new { error = "Error al enviar la petición: " + ex.Message });
+                mensaje = false;
+                resultado = jsonError;
+                return resultado;
+            }
+        }
+
 
         #endregion
 
@@ -4248,7 +4276,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public DataTable ConsultarPagosWompiPorId(int idAfiliadoPlan)
+        public DataTable ConsultarPagosPorId(int idAfiliadoPlan)
         {
             DataTable dt = new DataTable();
 

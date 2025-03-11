@@ -70,6 +70,7 @@
                 <a href="#"><i class="fa fa-file-lines"></i><span class="nav-label">Reportes</span><span class="fa arrow"></span></a>
                 <ul id="reportes" class="nav nav-second-level collapse">
                     <li id="reportepagos" class="old"><a href="reportepagos" ><i class="fas fa-hand-holding-usd"></i>Pagos</a></li>
+                    <li id="reportepagosmulticanal" class="old"><a href="reportepagosmulticanal" ><i class="fas fa-hand-holding-usd"></i>Portal pagos recibidos</a></li>
                     <li><a href="#">Dashboard</a></li>
                     <li><a href="#">Informe de ventas</a></li>
                     <li><a href="#">Ventas por producto</a></li>
