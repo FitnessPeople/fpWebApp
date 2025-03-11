@@ -218,6 +218,12 @@
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
+                                                <%--<tr>
+                                                    <td><small>Pending...</small> </td>
+                                                    <td><i class="fa fa-clock-o"></i>12:08am</td>
+                                                    <td>Damian</td>
+                                                    <td class="text-navy"><i class="fa fa-level-up"></i>23% </td>
+                                                </tr>--%>
                                             </tbody>
                                         </table>
                                     </div>
