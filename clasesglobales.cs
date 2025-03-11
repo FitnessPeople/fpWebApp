@@ -4306,7 +4306,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public DataTable ConsultarPagosWompiPorId(int idAfiliadoPlan)
+        public DataTable ConsultarPagosPorId(int idAfiliadoPlan)
         {
             DataTable dt = new DataTable();
 
