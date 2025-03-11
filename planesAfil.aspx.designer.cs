@@ -15,6 +15,15 @@ namespace fpWebApp
     {
 
         /// <summary>
+        /// Control ltDetalleWompi.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltDetalleWompi;
+
+        /// <summary>
         /// Control navbar.
         /// </summary>
         /// <remarks>
@@ -517,15 +526,6 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbFechaInicio;
-
-        /// <summary>
-        /// Control lkVerificarPago.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lkVerificarPago;
 
         /// <summary>
         /// Control txbWompi.

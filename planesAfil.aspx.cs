@@ -76,6 +76,9 @@ namespace fpWebApp
                         CargarAfiliado();
                         CargarPlanesAfiliado();
                         MesesDisabled();
+
+                        string strData = listarDetalle();
+                        ltDetalleWompi.Text = strData;
                     }
                     else
                     {
@@ -1037,16 +1040,6 @@ namespace fpWebApp
             }
         }
 
-        protected void lkVerificarPago_Click(object sender, EventArgs e)
-        {
-            string strData = listarDetalle();
-            ltMensaje.Text = "<div class=\"ibox-content\">" +
-                    "<div class=\"alert alert-danger alert-dismissable\">" +
-                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    strData +
-                    "</div></div>";
-        }
-
         private string listarDetalle()
         {
             string parametro = string.Empty;
@@ -1055,7 +1048,10 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             DataTable dti = cg.ConsultarUrl(4);
 
-            parametro = "?from_date=2025-02-24&until_date=2025-03-06&page=1&page_size=50&order_by=created_at&order=DESC";
+            string strFechaHoy = string.Format("{0:yyyy-MM-dd}", DateTime.Now);
+
+            parametro = "?from_date=2025-01-01&until_date=2025-03-11&page=1&page_size=50&order_by=created_at&order=DESC";
+            //parametro = "?from_date=" + strFechaHoy + "&until_date=" + strFechaHoy + "&page=1&page_size=10&order_by=created_at&order=DESC";
 
             string url = dti.Rows[0]["urlTest"].ToString() + parametro;
             string[] respuesta = cg.EnviarPeticionGet(url, out mensaje);
@@ -1072,10 +1068,10 @@ namespace fpWebApp
                 {
                     listaDatos.Add(new Datum
                     {
-                        id = item["id"]?.ToString(),
+                        //id = item["id"]?.ToString(),
                         created_at = item["created_at"]?.ToString(),
-                        finalized_at = item["finalized_at"]?.ToString(),
-                        amount_in_cents = item["amount_in_cents"]?.ToString(),
+                        //finalized_at = item["finalized_at"]?.ToString(),
+                        amount_in_cents = ((item["amount_in_cents"]?.Value<int>() ?? 0) / 100).ToString("N0"),
                         reference = item["reference"]?.ToString(),
                         customer_email = item["customer_email"]?.ToString(),
                         currency = item["currency"]?.ToString(),
@@ -1092,23 +1088,31 @@ namespace fpWebApp
 
                 sb.Append("<table class=\"table table-bordered table-striped\">");
                 sb.Append("<tr>");
-                sb.Append("<th>ID</th><th>Afiliado</th><th>Fecha Cre.</th><th>Fecha Fin.</th><th>Valor</th>");
-                sb.Append("<th>Método Pago</th><th>Estado</th><th>Referencia</th><th>Telefono</th>");
+                sb.Append("<th>Afiliado</th><th>Teléfono</th><th>Fecha creación</th><th>Valor</th>");
+                sb.Append("<th>Método pago</th><th>Estado</th><th>Referencia</th>");
                 sb.Append("</tr>");
-
 
                 foreach (var pago in listaDatos)
                 {
+                    string strStatus = string.Empty;
                     sb.Append("<tr>");
-                    sb.Append($"<td>{pago.id}</td>");
                     sb.Append($"<td>{pago.full_name}</td>");
-                    sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.created_at)) + "</td>");
-                    sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.finalized_at)) + "</td>");
+                    sb.Append($"<td>{pago.phone_number}</td>");
+                    sb.Append($"<td>" + String.Format("{0:dd MMM yyyy HH:mm}", Convert.ToDateTime(pago.created_at)) + "</td>");
                     sb.Append($"<td>{pago.amount_in_cents}</td>");
                     sb.Append($"<td>{pago.payment_method_type}</td>");
-                    sb.Append($"<td>{pago.status}</td>");
+
+                    if (pago.status.ToString() == "APPROVED")
+                    {
+                        strStatus = "<span class=\"badge badge-info\">Aprobado</span>";
+                    }
+                    else
+                    {
+                        strStatus = "<span class=\"badge badge-danger\">Rechazado</span>";
+                    }
+
+                    sb.Append($"<td>" + strStatus + "</td>");
                     sb.Append($"<td>{pago.reference}</td>");
-                    sb.Append($"<td>{pago.phone_number}</td>");
                     sb.Append("</tr>");
                 }
 
