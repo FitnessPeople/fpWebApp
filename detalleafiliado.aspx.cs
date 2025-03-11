@@ -333,7 +333,7 @@ namespace fpWebApp
             string mensaje = string.Empty;
 
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosWompiPorId(id);
+            DataTable dt = cg.ConsultarPagosPorId(id);
             DataTable dti = cg.ConsultarUrl(1);
 
             if (dt.Rows.Count > 0)
