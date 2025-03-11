@@ -41,8 +41,9 @@ namespace fpWebApp
                         CargarCajaComp();
                         CargarCesantias();
                         CargarEmpresasFP();
-                        CargarEmpleado();
                         CargarCanalesVenta();
+                        CargarEmpleado();
+                        
                     }
                     else
                     {
@@ -223,8 +224,10 @@ namespace fpWebApp
             txbFechaFinal.Text = dtFechaFin.ToString("yyyy-MM-dd");
             ddlSedes.SelectedIndex = Convert.ToInt32(ddlSedes.Items.IndexOf(ddlSedes.Items.FindByValue(dt.Rows[0]["idSede"].ToString())));
             txbSueldo.Text = dt.Rows[0]["Sueldo"].ToString();
+            string canalventa = dt.Rows[0]["idCanalVenta"].ToString();
             if (dt.Rows[0]["GrupoNomina"].ToString() != "")
             {
+
                 ddlGrupo.SelectedIndex = Convert.ToInt16(ddlGrupo.Items.IndexOf(ddlGrupo.Items.FindByValue(dt.Rows[0]["GrupoNomina"].ToString())));
             }
             if (dt.Rows[0]["idEps"].ToString() != "")
@@ -247,11 +250,12 @@ namespace fpWebApp
             {
                 ddlCesantias.SelectedIndex = Convert.ToInt16(ddlCesantias.Items.IndexOf(ddlCesantias.Items.FindByValue(dt.Rows[0]["idCesantias"].ToString())));
             }
-            if (dt.Rows[0]["idCanalVenta"].ToString() != "")
+            rblEstado.Items.FindByValue(dt.Rows[0]["Estado"].ToString()).Selected = true;
+            
+            if (canalventa != "")
             {
                 ddlCanalVenta.SelectedIndex = Convert.ToInt16(ddlCanalVenta.Items.IndexOf(ddlCanalVenta.Items.FindByValue(dt.Rows[0]["idCanalVenta"].ToString())));
             }
-            rblEstado.Items.FindByValue(dt.Rows[0]["Estado"].ToString()).Selected = true;
 
             dt.Dispose();
         }
@@ -329,7 +333,7 @@ namespace fpWebApp
                 "idCajaComp = " + ddlCajaComp.SelectedItem.Value.ToString() + ", " +
                 "idCesantias = " + ddlCesantias.SelectedItem.Value.ToString() + ", " +
                 "Estado = '" + rblEstado.Text.ToString() + "' " +
-                "idCesantias = " + ddlCanalVenta.SelectedItem.Value.ToString() + ", " +
+                "idCanalVenta = " + ddlCanalVenta.SelectedItem.Value.ToString() + ", " +
                 "WHERE DocumentoEmpleado = '" + txbDocumento.Text.ToString() + "' ";
                 
                 string mensaje = cg.TraerDatosStr(strQuery);
