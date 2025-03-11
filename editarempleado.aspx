@@ -397,8 +397,7 @@
                                                               <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <label>Canal de ventas</label>
-                                                                    <asp:DropDownList ID="ddlCanalVenta" runat="server" AppendDataBoundItems="true"
-                                                                        DataTextField="NombreCanalVenta" DataValueField="idCanalVenta" CssClass="form-control input-sm">
+                                                                    <asp:DropDownList ID="ddlCanalVenta" runat="server" AppendDataBoundItems="true" DataTextField="NombreCanalVenta" DataValueField="idCanalVenta" CssClass="form-control input-sm">
                                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                     </asp:DropDownList>
                                                                 </div>

@@ -44,6 +44,8 @@ namespace fpWebApp
                         CargarCanalesVenta();
                         CargarEmpleado();
                         CargarCanalesVenta();
+                        CargarEmpleado();
+                        
                     }
                     else
                     {
@@ -250,7 +252,9 @@ namespace fpWebApp
             {
                 ddlCesantias.SelectedIndex = Convert.ToInt16(ddlCesantias.Items.IndexOf(ddlCesantias.Items.FindByValue(dt.Rows[0]["idCesantias"].ToString())));
             }
-            if (dt.Rows[0]["idCanalVenta"].ToString() != "")
+            rblEstado.Items.FindByValue(dt.Rows[0]["Estado"].ToString()).Selected = true;
+            
+            if (canalventa != "")
             {
                 ddlCanalVenta.SelectedIndex = Convert.ToInt16(ddlCanalVenta.Items.IndexOf(ddlCanalVenta.Items.FindByValue(dt.Rows[0]["idCanalVenta"].ToString())));
             }
@@ -337,7 +341,7 @@ namespace fpWebApp
                 "idCajaComp = " + ddlCajaComp.SelectedItem.Value.ToString() + ", " +
                 "idCesantias = " + ddlCesantias.SelectedItem.Value.ToString() + ", " +
                 "Estado = '" + rblEstado.Text.ToString() + "' " +
-                "idCesantias = " + ddlCanalVenta.SelectedItem.Value.ToString() + ", " +
+                "idCanalVenta = " + ddlCanalVenta.SelectedItem.Value.ToString() + ", " +
                 "WHERE DocumentoEmpleado = '" + txbDocumento.Text.ToString() + "' ";
                 
                 string mensaje = cg.TraerDatosStr(strQuery);
