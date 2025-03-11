@@ -86,6 +86,26 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="ModalDetalleWompi" tabindex="-1" aria-labelledby="miModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detalle de la transacción</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><asp:Literal ID="ltDetalleWompi" runat="server"></asp:Literal></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="wrapper">
 
         <uc1:navbar runat="server" ID="navbar" />
@@ -446,8 +466,9 @@
                                                                         <label>Pago por Wompi:</label>
                                                                         <div class="row">
                                                                             <div class="col-lg-8">
-                                                                                <asp:LinkButton ID="lkVerificarPago" 
-                                                                                    runat="server" OnClick="lkVerificarPago_Click">Verificar pago...</asp:LinkButton>
+                                                                                <a class="dropdown-toggle count-info" data-toggle="modal" href="#" data-target="#ModalDetalleWompi">Verificar pago...</a>
+                                                                                <%--<asp:LinkButton ID="lkVerificarPago" 
+                                                                                    runat="server" OnClick="lkVerificarPago_Click">Verificar pago...</asp:LinkButton>--%>
                                                                             </div>
                                                                             <div class="col-lg-4">
                                                                                 <asp:TextBox ID="txbWompi" CssClass="form-control input-sm" 
@@ -520,7 +541,7 @@
                                                 <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                             </ContentTemplate>
                                             <Triggers>
-                                                <asp:AsyncPostBackTrigger ControlID="lkVerificarPago" EventName="Click" />
+                                                <%--<asp:AsyncPostBackTrigger ControlID="lkVerificarPago" EventName="Click" />--%>
                                                 <%--<asp:AsyncPostBackTrigger ControlID="btnPremium" EventName="Click" />
                                                 <asp:AsyncPostBackTrigger ControlID="btnRegalo1" EventName="Click" />--%>
                                             </Triggers>

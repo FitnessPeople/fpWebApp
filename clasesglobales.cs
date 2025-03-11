@@ -227,7 +227,8 @@ namespace fpWebApp
                 WebRequest oRequest = WebRequest.Create(url);
                 oRequest.Method = "GET";
                 oRequest.ContentType = "application/json;charset=UTF-8";
-                oRequest.Headers.Add("Authorization", "Bearer prv_test_GWPWL8e9md24zYyTuF5KojJmH7Y4Sez2");
+                //oRequest.Headers.Add("Authorization", "Bearer prv_test_GWPWL8e9md24zYyTuF5KojJmH7Y4Sez2");
+                oRequest.Headers.Add("Authorization", "Bearer prv_prod_h7JHlOIL6EjCzotPnupYSbzy16ulQ5DO");
 
                 WebResponse oResponse = oRequest.GetResponse();
                 using (var oSr = new StreamReader(oResponse.GetResponseStream()))
@@ -4592,6 +4593,38 @@ namespace fpWebApp
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_id_sede", idSede);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultaCargarAgendaPorSedePorEspecialidad(int idSede, int idEspecialidad)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CARGAR_AGENDA_POR_SEDE_POR_ESPECIALIDAD", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_sede", idSede);
+                        cmd.Parameters.AddWithValue("@p_id_especialidad", idEspecialidad);
 
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
                         {
