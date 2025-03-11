@@ -287,12 +287,12 @@ namespace fpWebApp
                             "(DocumentoEmpleado, idTipoDocumento, NombreEmpleado, TelefonoEmpleado, EmailEmpleado, " +
                             "DireccionEmpleado, idCiudadEmpleado, CargoEmpleado, FechaNacEmpleado, FotoEmpleado, NroContrato, " +
                             "TipoContrato, idSede, FechaInicio, FechaFinal, Sueldo, GrupoNomina, idEPS, idFondoPension, idARL, " +
-                            "idCajaComp, idCesantias, Estado) " +
+                            "idCajaComp, idCesantias, Estado, idCanalVenta) " +
                             "VALUES ('" + txbDocumento.Text.ToString() + "', " + ddlTipoDocumento.SelectedItem.Value.ToString() + ", " +
                             "'" + txbNombre.Text.ToString() + "', '" + txbTelefono.Text.ToString() + "', " +
                             "'" + txbEmail.Text.ToString() + "', '" + txbDireccion.Text.ToString() + "', " +
                             "" + ddlCiudadEmpleado.SelectedItem.Value.ToString() + ", '" + txbCargo.Text.ToString() + "', " +
-                            "'" + txbFechaNac.Text.ToString() + "'" +
+                            "'" + txbFechaNac.Text.ToString() + "'" + "," +
                             "'" + strFilename + "', '" + txbContrato.Text.ToString() + "', " +
                             "'" + ddlTipoContrato.SelectedItem.Value.ToString() + "', " +
                             "" + ddlSedes.SelectedItem.Value.ToString() + ", '" + txbFechaInicio.Text.ToString() + "', " +
@@ -300,7 +300,7 @@ namespace fpWebApp
                             "'" + ddlGrupo.SelectedItem.Value.ToString() + "', " + ddlEps.SelectedItem.Value.ToString() + ", " +
                             "" + ddlFondoPension.SelectedItem.Value.ToString() + ", " + ddlArl.SelectedItem.Value.ToString() + ", " +
                             "" + ddlCajaComp.SelectedItem.Value.ToString() + ", " + ddlCesantias.SelectedItem.Value.ToString() + ", " +
-                            "'Activo') ";
+                            "'Activo'" + "," + ddlCanalVenta.SelectedItem.Value.ToString() + ")";
 
                             clasesglobales cg = new clasesglobales();
                             string mensaje = cg.TraerDatosStr(strQuery);

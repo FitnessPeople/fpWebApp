@@ -276,39 +276,12 @@ namespace fpWebApp
         }
 
 
-
-        //protected void btnDetalle_Command(object sender, CommandEventArgs e)
-        //{
-        //    if (e.CommandName == "mostrarDetalle")
-        //    {
-        //        int idAfiliadoPlan = int.Parse(e.CommandArgument.ToString());
-        //        RepeaterItem item = ((Control)sender).NamingContainer as RepeaterItem;
-
-        //        if (item != null)
-        //        {
-        //            HiddenField hfDetalle = (HiddenField)this.FindControl("hfDetalle");
-        //            Literal ltDetalleModal = (Literal)this.FindControl("ltDetalleModal");
-
-        //            if (hfDetalle != null && ltDetalleModal != null)
-        //            {
-        //                string detalle = listarDetalle(idAfiliadoPlan);
-        //                hfDetalle.Value = detalle;
-        //                ltDetalleModal.Text = detalle;
-        //            }
-
-        //            ScriptManager.RegisterStartupScript(this, this.GetType(), "MostrarModal",
-        //                "setTimeout(function() { $('#ModalDetalle').modal('show'); }, 500);", true);
-        //        }
-        //    }
-        //}
-
         protected void btnDetalle_Command(object sender, CommandEventArgs e)
         {
             if (e.CommandName == "mostrarDetalle")
             {
                 int idAfiliadoPlan = int.Parse(e.CommandArgument.ToString());
 
-                // Buscar el control en toda la página
                 Literal ltDetalleModal = (Literal)Page.FindControl("ltDetalleModal");
 
                 if (ltDetalleModal != null)
@@ -316,7 +289,6 @@ namespace fpWebApp
                     ltDetalleModal.Text = listarDetalle(idAfiliadoPlan);
                 }
 
-                // Mostrar la modal con JavaScript
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "MostrarModal",
                    "setTimeout(function() { $('#ModalDetalle').modal('show'); }, 500);", true);
             }
