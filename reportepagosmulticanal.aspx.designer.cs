@@ -87,6 +87,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbFechaInicio;
 
         /// <summary>
+        /// Control txbFechaIni.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbFechaIni;
+
+        /// <summary>
         /// Control txbFechaFin.
         /// </summary>
         /// <remarks>
