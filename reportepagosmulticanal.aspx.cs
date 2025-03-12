@@ -100,8 +100,8 @@ namespace fpWebApp
 
             if (dt.Rows.Count > 0)
             {
-                rpCortesias.DataSource = dt;
-                rpCortesias.DataBind();
+                //rpCortesias.DataSource = dt;
+                //rpCortesias.DataBind();
             }
 
             dt.Dispose();
