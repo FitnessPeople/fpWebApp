@@ -146,8 +146,9 @@
                                 <div class="ibox">
                                     <div class="ibox-title bg-info">
                                         <h5><i class="fa fa-gift"></i> Efectivo  Total : </h5>
-                                        <asp:Literal ID="ltValorTotal" runat="server">
-                                        </asp:Literal>
+                                        <span class="label label-warning">
+                                            <asp:Literal ID="ltValorTotal" runat="server"></asp:Literal>
+                                        </span>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up text-white"></i>
@@ -163,6 +164,7 @@
                                             <div class="col-md-4">
                                                 <label>Fecha Inicio:</label>
                                                 <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm datepicker" runat="server"></asp:TextBox>
+                                                <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker" />
                                             </div>
                                             <div class="col-md-4">
                                                 <label>Fecha Fin:</label>
@@ -175,7 +177,7 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="footable table table-striped" data-paging-size="10" 
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
                                             data-paging="true" data-paging-count-format="{CP} de {TP}" 
                                             data-empty="Sin resultados">
                                             <thead>
@@ -184,8 +186,8 @@
                                                      <th data-breakpoints="xs">Documento</th>
                                                     <%-- <th data-breakpoints="xs">Afiliado</th>--%>
                                                      <th data-breakpoints="xs">Valor</th>
-                                                     <th data-breakpoints="xs">Tipo</th>
-                                                     <th data-breakpoints="xs">Referencia</th>
+                                                     <%--<th data-breakpoints="xs">Tipo</th>
+                                                     <th data-breakpoints="xs">Referencia</th>--%>
                                                      <th data-breakpoints="xs">Fecha Hora</th>
                                                      <th data-breakpoints="xs">Estado</th>
                                                <%--      <th data-breakpoints="xs">Usuario</th>--%>
@@ -200,10 +202,10 @@
                                                             <td><%# Eval("DocumentoAfiliado") %></td>
                                                             <%--<td><%# Eval("NombreAfiliado") %></td>--%>
                                                             <td><%# Eval("Valor", "{0:C0}") %></td>
-                                                            <td><%# Eval("TipoPago") %></td>
-                                                            <td><%# Eval("idReferencia") %></td>
+                                                            <%--<td><%# Eval("TipoPago") %></td>
+                                                            <td><%# Eval("idReferencia") %></td>--%>
                                                             <td><%# Eval("FechaHoraPago") %></td>
-                                                            <td>Aprobado</td>
+                                                            <td><span class="badge badge-info">Aprobado</span></td>
                                                            <%-- <td><%# Eval("Usuario") %></td>--%>
                                                             <td><%# Eval("CanalVenta") %></td>
                                                         </tr>

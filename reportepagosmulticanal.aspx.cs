@@ -32,6 +32,8 @@ namespace fpWebApp
                     {
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
+                            txbFechaIni.Attributes.Add("type", "date");
+                            txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
                             txbFechaInicio.Text = DateTime.Now.ToString("yyyy-MM-01").ToString();
                             txbFechaFin.Text = DateTime.Now.ToString("yyyy-MM-dd").ToString();
                             listaTransacciones("Efectivo",(txbFechaInicio.Text.ToString()),(txbFechaFin.Text.ToString()));
