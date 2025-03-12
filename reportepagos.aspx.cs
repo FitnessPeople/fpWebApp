@@ -90,7 +90,7 @@ namespace fpWebApp
         private void listaTransacciones()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosRecientes();
+            DataTable dt = cg.ConsultarPagosPlanAfiliados();
             rpPagos.DataSource = dt;
             rpPagos.DataBind();
             dt.Dispose();
