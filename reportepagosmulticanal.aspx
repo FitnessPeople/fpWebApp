@@ -146,8 +146,9 @@
                                 <div class="ibox">
                                     <div class="ibox-title bg-info">
                                         <h5><i class="fa fa-gift"></i> Efectivo  Total : </h5>
-                                        <asp:Literal ID="ltValorTotal" runat="server">
-                                        </asp:Literal>
+                                        <span class="label label-success">
+                                            <asp:Literal ID="ltValorTotalEfe" runat="server"></asp:Literal>
+                                        </span>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up text-white"></i>
@@ -157,54 +158,41 @@
                                             </a>
                                         </div>
                                     </div>
-
                                     <div class="ibox-content">
                                         <div class="row">
-                                            <div class="col-md-4">
-                                                <label>Fecha Inicio:</label>
-                                                <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm datepicker" runat="server"></asp:TextBox>
+                                            <div class="col-md-4">                                       
+                                                <input type="text" runat="server" id="txbEfeFechaIni" class="form-control input-sm datepicker"  />
+                                            </div>
+                                            <div class="col-md-4">                                    
+                                              <input type="text" runat="server" id="txbEfeFechaFin" class="form-control input-sm datepicker"  />
                                             </div>
                                             <div class="col-md-4">
-                                                <label>Fecha Fin:</label>
-                                                <asp:TextBox ID="txbFechaFin" CssClass="form-control input-sm datepicker" runat="server"></asp:TextBox>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label> </label>
-                                                <asp:Button ID="btnFiltrar" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrar_Click" />
+                                                <label><br/></label>
+                                                <asp:Button ID="btnFiltrarEfe" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrarEfe_Click" />
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="ibox-content">
-                                        <table class="footable table table-striped" data-paging-size="10" 
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
                                             data-paging="true" data-paging-count-format="{CP} de {TP}" 
                                             data-empty="Sin resultados">
                                             <thead>
-                                                <tr>
-                                                     <th data-sortable="false" data-breakpoints="xs">Id</th>
+                                                <tr>                                                    
                                                      <th data-breakpoints="xs">Documento</th>
-                                                    <%-- <th data-breakpoints="xs">Afiliado</th>--%>
+                                                     <th data-breakpoints="xs">Afiliado</th>
                                                      <th data-breakpoints="xs">Valor</th>
-                                                     <th data-breakpoints="xs">Tipo</th>
-                                                     <th data-breakpoints="xs">Referencia</th>
                                                      <th data-breakpoints="xs">Fecha Hora</th>
                                                      <th data-breakpoints="xs">Estado</th>
-                                               <%--      <th data-breakpoints="xs">Usuario</th>--%>
                                                      <th data-breakpoints="xs">Canal</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <asp:Repeater ID="rpTipoEfectivo" runat="server">
                                                      <ItemTemplate>
-                                                        <tr>
-                                                            <td><%# Eval("idPago") %></td>
+                                                        <tr>                                                           
                                                             <td><%# Eval("DocumentoAfiliado") %></td>
-                                                            <%--<td><%# Eval("NombreAfiliado") %></td>--%>
-                                                            <td><%# Eval("Valor", "{0:C0}") %></td>
-                                                            <td><%# Eval("TipoPago") %></td>
-                                                            <td><%# Eval("idReferencia") %></td>
-                                                            <td><%# Eval("FechaHoraPago") %></td>
-                                                            <td>Aprobado</td>
-                                                           <%-- <td><%# Eval("Usuario") %></td>--%>
+                                                            <td><%# Eval("NombreAfiliado") %></td>
+                                                            <td><%# Eval("Valor", "{0:C0}") %></td>                                                        
+                                                            <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
+                                                            <td><span class="badge badge-info"><%# Eval("EstadoPago") %></span></td>                                                       
                                                             <td><%# Eval("CanalVenta") %></td>
                                                         </tr>
                                                     </ItemTemplate>
@@ -216,10 +204,12 @@
                             </div>
 
                             <div class="col-lg-6">
-
                                 <div class="ibox">
                                     <div class="ibox-title bg-success">
-                                        <h5><i class="fa fa-right-left"></i> Datafono</h5>
+                                        <h5><i class="fa fa-right-left"></i> Datafono  Total : </h5>
+                                        <span class="label label-info">
+                                            <asp:Literal ID="ltValorTotalData" runat="server"></asp:Literal>
+                                        </span>                                        
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up text-white"></i>
@@ -230,57 +220,63 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="footable table table-striped" data-paging-size="10" 
+                                        <div class="row">
+                                            <div class="col-md-4">                                       
+                                                <input type="text" runat="server" id="txbDataFechaIni" class="form-control input-sm datepicker"  />
+                                            </div>
+                                            <div class="col-md-4">                                    
+                                              <input type="text" runat="server" id="txbDataFechaFin" class="form-control input-sm datepicker"  />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label><br/></label>
+                                                <asp:Button ID="btnFiltrarData" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrarData_Click" />
+                                            </div>
+                                        </div>
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
                                             data-paging="true" data-paging-count-format="{CP} de {TP}" 
                                             data-empty="Sin resultados">
                                             <thead>
-                                                <tr>
-                                                    <th data-sortable="false">Afiliado Origen</th>
-                                                    <th data-sortable="false">Afiliado Destino</th>
-                                                    <th data-sortable="false">Observaciones</th>
-                                                    <th data-sortable="false">Usuario</th>
-                                                    <th data-sortable="false">Fecha</th>
-                                                    <th data-sortable="false">Acciones</th>
+                                                <tr>                                                    
+                                                     <th data-breakpoints="xs">Documento</th>
+                                                     <th data-breakpoints="xs">Afiliado</th>
+                                                     <th data-breakpoints="xs">Valor</th>
+                                                     <th data-breakpoints="xs">Fecha Hora</th>
+                                                     <th data-breakpoints="xs">Referencia</th>
+                                                     <th data-breakpoints="xs">Estado</th>
+                                                     <th data-breakpoints="xs">Canal</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpTraspasos" runat="server">
-                                                    <ItemTemplate>
+                                                <asp:Repeater ID="rpTipoDatafono" runat="server">
+                                                      <ItemTemplate>
                                                         <tr>
-                                                            <td><%# Eval("nomAfilOrigen") %></td>
-                                                            <td><%# Eval("nomAfilDestino") %></td>
-                                                            <td><%# Eval("Observaciones") %></td>
-                                                            <td><%# Eval("NombreUsuario") %></td>
-                                                            <td style="vertical-align:central;">
-                                                                <span class="<%# Eval("badge") %>" ><%# Eval("hacecuanto") %>/15</span> 
-                                                                <%# Eval("FechaTraspaso", "{0:dd MMM yyyy}") %>
-                                                            </td>
-                                                            <%--<td><a href="#" data-toggle="modal" data-target="#myModalRespuesta" 
-                                                                data-id="<%# Eval("idCortesia") %>"><span class="label label-primary">Responder</span></a></td>--%>
-                                                            <td><a href="respuestaautorizacion?idTraspaso=<%# Eval("idTraspaso") %>"><span class="label label-primary">Responder</span></a></td>
+                                                            <td><%# Eval("DocumentoAfiliado") %></td>
+                                                            <td><%# Eval("NombreAfiliado") %></td>
+                                                            <td><%# Eval("Valor", "{0:C0}") %></td>                                                        
+                                                            <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
+                                                            <td><%# Eval("idReferencia") %></td>  
+                                                            <td><span class="badge badge-info"><%# Eval("EstadoPago") %></span></td>                                                       
+                                                            <td><%# Eval("CanalVenta") %></td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
-                                                <%--<tr>
-                                                    <td><small>Pending...</small> </td>
-                                                    <td><i class="fa fa-clock-o"></i>12:08am</td>
-                                                    <td>Damian</td>
-                                                    <td class="text-navy"><i class="fa fa-level-up"></i>23% </td>
-                                                </tr>--%>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
+
                         <div class="row">
 
                             <div class="col-lg-6">
 
                                 <div class="ibox">
                                     <div class="ibox-title bg-warning">
-                                        <h5><i class="fa fa-snowflake"></i> Transferencia</h5>
+                                        <h5><i class="fa fa-snowflake"></i>Transferencia  Total : </h5>                                        
+                                        <span class="label label-danger">
+                                            <asp:Literal ID="ltValorTotalTrans" runat="server"></asp:Literal>
+                                        </span>   
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up text-white"></i>
@@ -291,41 +287,46 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="footable table table-striped" data-paging-size="10" 
+                                         <div class="row">
+                                            <div class="col-md-4">                                       
+                                                <input type="text" runat="server" id="txbTransFechaIni" class="form-control input-sm datepicker"  />
+                                            </div>
+                                            <div class="col-md-4">                                    
+                                              <input type="text" runat="server" id="txbTransFechaFin" class="form-control input-sm datepicker"  />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label><br/></label>
+                                                <asp:Button ID="btnFiltrarTrans" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrarTrans_Click" />
+                                            </div>
+                                        </div>
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
                                             data-paging="true" data-paging-count-format="{CP} de {TP}" 
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th data-sortable="false">Afiliado</th>
-                                                    <th data-sortable="false">Días de congelación</th>
-                                                    <th data-sortable="false">Observaciones</th>
-                                                    <th data-sortable="false">Usuario</th>
-                                                    <th data-sortable="false">Fecha</th>
-                                                    <th data-sortable="false">Acciones</th>
+                                                     <th data-breakpoints="xs">Documento</th>
+                                                     <th data-breakpoints="xs">Afiliado</th>
+                                                     <th data-breakpoints="xs">Valor</th>
+                                                     <th data-breakpoints="xs">Fecha Hora</th>
+                                                     <th data-breakpoints="xs">Banco</th>
+                                                     <th data-breakpoints="xs">Estado</th>
+                                                     <th data-breakpoints="xs">Canal</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <asp:Repeater ID="rpCongelaciones" runat="server">
+                                            <tbody>                                             
+                                                 <asp:Repeater ID="rpTransferencia" runat="server">
                                                     <ItemTemplate>
                                                         <tr>
-                                                            <td><%# Eval("NombreCompletoAfiliado") %></td>
-                                                            <td><%# Eval("Dias") %></td>
-                                                            <td><%# Eval("Observaciones") %></td>
-                                                            <td><%# Eval("NombreUsuario") %></td>
-                                                            <td style="vertical-align:central;">
-                                                                <span class="<%# Eval("badge") %>" ><%# Eval("hacecuanto") %>/15</span> 
-                                                                <%# Eval("Fecha", "{0:dd MMM yyyy}") %>
-                                                            </td>
-                                                            <td><a href="respuestaautorizacion?idCongelacion=<%# Eval("idCongelacion") %>"><span class="label label-primary">Responder</span></a></td>
+                                                            <td><%# Eval("DocumentoAfiliado") %></td>
+                                                            <td><%# Eval("NombreAfiliado") %></td>
+                                                            <td><%# Eval("Valor", "{0:C0}") %></td>                                                        
+                                                            <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
+                                                            <td><%# Eval("Banco") %></td>  
+                                                            <td><span class="badge badge-info"><%# Eval("EstadoPago") %></span></td>                                                       
+                                                            <td><%# Eval("CanalVenta") %></td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
-                                                <%--<tr>
-                                                    <td><small>Pending...</small> </td>
-                                                    <td><i class="fa fa-clock-o"></i>12:08am</td>
-                                                    <td>Damian</td>
-                                                    <td class="text-navy"><i class="fa fa-level-up"></i>23% </td>
-                                                </tr>--%>
                                             </tbody>
                                         </table>
                                     </div>

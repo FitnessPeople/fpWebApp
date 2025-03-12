@@ -69,40 +69,40 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContenido;
 
         /// <summary>
-        /// Control ltValorTotal.
+        /// Control ltValorTotalEfe.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltValorTotal;
+        protected global::System.Web.UI.WebControls.Literal ltValorTotalEfe;
 
         /// <summary>
-        /// Control txbFechaInicio.
+        /// Control txbEfeFechaIni.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbFechaInicio;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbEfeFechaIni;
 
         /// <summary>
-        /// Control txbFechaFin.
+        /// Control txbEfeFechaFin.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbFechaFin;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbEfeFechaFin;
 
         /// <summary>
-        /// Control btnFiltrar.
+        /// Control btnFiltrarEfe.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnFiltrar;
+        protected global::System.Web.UI.WebControls.Button btnFiltrarEfe;
 
         /// <summary>
         /// Control rpTipoEfectivo.
@@ -114,22 +114,94 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Repeater rpTipoEfectivo;
 
         /// <summary>
-        /// Control rpTraspasos.
+        /// Control ltValorTotalData.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpTraspasos;
+        protected global::System.Web.UI.WebControls.Literal ltValorTotalData;
 
         /// <summary>
-        /// Control rpCongelaciones.
+        /// Control txbDataFechaIni.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpCongelaciones;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbDataFechaIni;
+
+        /// <summary>
+        /// Control txbDataFechaFin.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbDataFechaFin;
+
+        /// <summary>
+        /// Control btnFiltrarData.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnFiltrarData;
+
+        /// <summary>
+        /// Control rpTipoDatafono.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpTipoDatafono;
+
+        /// <summary>
+        /// Control ltValorTotalTrans.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltValorTotalTrans;
+
+        /// <summary>
+        /// Control txbTransFechaIni.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbTransFechaIni;
+
+        /// <summary>
+        /// Control txbTransFechaFin.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbTransFechaFin;
+
+        /// <summary>
+        /// Control btnFiltrarTrans.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnFiltrarTrans;
+
+        /// <summary>
+        /// Control rpTransferencia.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpTransferencia;
 
         /// <summary>
         /// Control rpIncapacidades.
