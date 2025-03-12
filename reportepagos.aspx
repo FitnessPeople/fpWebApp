@@ -194,15 +194,15 @@
                                             <thead>
                                                 <tr>
                                                     <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">Id Pago</th>
-                                                    <th data-breakpoints="xs">Doc. Afiliado</th>
+                                                    <th data-breakpoints="xs">Documento</th>
                                                     <th data-breakpoints="xs">Afiliado</th>
                                                     <th data-breakpoints="xs">Valor</th>
                                                     <th data-breakpoints="xs">Tipo Pago</th>
                                                     <th data-breakpoints="xs">Referencia</th>
-                                                    <th data-breakpoints="xs">Fecha Hora Pago</th>
-                                                    <th data-breakpoints="xs">Estado Pago</th>
+                                                    <th data-breakpoints="xs">Fecha</th>
+                                                    <th data-breakpoints="xs">Estado</th>
                                                     <th data-breakpoints="xs">Usuario</th>
-                                                    <th data-breakpoints="xs">Canal de venta</th>
+                                                    <th data-breakpoints="xs">Canal</th>
                                                     <th data-breakpoints="xs">Detalle</th>
                                                 </tr>
                                             </thead>
@@ -216,7 +216,7 @@
                                                         <td><%# Eval("Valor", "{0:C0}") %></td>
                                                         <td><%# Eval("TipoPago") %></td>
                                                         <td><%# Eval("IdReferencia") %></td>
-                                                        <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy}") %></td>
+                                                        <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
                                                         <td>Aprobado</td>
                                                         <td><%# Eval("Usuario") %></td>            
                                                         <td><%# Eval("CanalVenta") %></td>            

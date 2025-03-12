@@ -13,7 +13,7 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            CultureInfo culture = new CultureInfo("es-CO"); // Cambia según el país
+            CultureInfo culture = new CultureInfo("es-CO"); 
             System.Threading.Thread.CurrentThread.CurrentCulture = culture;
             System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
 
@@ -32,15 +32,23 @@ namespace fpWebApp
                     {
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-                            txbFechaIni.Attributes.Add("type", "date");
-                            txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
-                            txbFechaInicio.Text = DateTime.Now.ToString("yyyy-MM-01").ToString();
-                            txbFechaFin.Text = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-                            listaTransacciones("Efectivo",(txbFechaInicio.Text.ToString()),(txbFechaFin.Text.ToString()));
-                            CargarCortesias();
-                            CargarTraspasos();
-                            CargarCongelaciones();
-                            CargarIncapacidades();
+                            txbEfeFechaIni.Attributes.Add("type", "date");
+                            txbEfeFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
+                            txbEfeFechaFin.Attributes.Add("type", "date");
+                            txbEfeFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+                            listaTransaccionesEfectivo("Efectivo",(txbEfeFechaIni.Value.ToString()),(txbEfeFechaFin.Value.ToString()));
+
+                            txbDataFechaIni.Attributes.Add("type", "date");
+                            txbDataFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
+                            txbDataFechaFin.Attributes.Add("type", "date");
+                            txbDataFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+                            listaTransaccionesDatafono("Datafono", (txbEfeFechaIni.Value.ToString()), (txbEfeFechaFin.Value.ToString()));
+
+                            txbTransFechaIni.Attributes.Add("type", "date");
+                            txbTransFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
+                            txbTransFechaFin.Attributes.Add("type", "date");
+                            txbTransFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+                            listaTransaccionesTransferencia("Transferencia", (txbTransFechaIni.Value.ToString()), (txbTransFechaFin.Value.ToString()));
                         }
                     }
                 }
@@ -74,113 +82,51 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void listaTransacciones(string tipoPago, string fechaIni, string fechaFin)
+        private void listaTransaccionesEfectivo(string tipoPago, string fechaIni, string fechaFin)
         {            
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin,out decimal valorTotal);
+            DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
             rpTipoEfectivo.DataSource = dt;
             rpTipoEfectivo.DataBind();
-            ltValorTotal.Text = valorTotal.ToString("C0");
+            ltValorTotalEfe.Text = valorTotal.ToString("C0");
             dt.Dispose();
         }
 
-        private void CargarCortesias()
+        private void listaTransaccionesDatafono(string tipoPago, string fechaIni, string fechaFin)
         {
-            string strQuery = "SELECT *, " +
-                "DATEDIFF(CURDATE(), FechaHoraCortesia) AS hacecuanto, " +
-                "IF(DATEDIFF(CURDATE(), FechaHoraCortesia)<5,'pie1',IF(DATEDIFF(CURDATE(), FechaHoraCortesia)<10,'pie2',IF(DATEDIFF(CURDATE(), FechaHoraCortesia)<15,'pie3','pie3'))) badge " +
-                "FROM Cortesias c, Afiliados a, AfiliadosPlanes ap, Usuarios u " +
-                "WHERE c.EstadoCortesia = 'Pendiente' " +
-                "AND c.idAfiliadoPlan = ap.idAfiliadoPlan " +
-                "AND ap.idAfiliado = a.idAfiliado " +
-                "AND c.idUsuario = u.idUsuario " +
-                "ORDER BY c.FechaHoraCortesia DESC";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
-            if (dt.Rows.Count > 0)
-            {
-                //rpCortesias.DataSource = dt;
-                //rpCortesias.DataBind();
-            }
-
+            DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
+            rpTipoDatafono.DataSource = dt;
+            rpTipoDatafono.DataBind();
+            ltValorTotalData.Text = valorTotal.ToString("C0");
             dt.Dispose();
         }
 
-        private void CargarTraspasos()
+        private void listaTransaccionesTransferencia(string tipoPago, string fechaIni, string fechaFin)
         {
-            string strQuery = "SELECT t.idTraspaso, CONCAT(a1.NombreAfiliado, ' ', a1.ApellidoAfiliado) nomAfilOrigen, " +
-                "CONCAT(a2.NombreAfiliado, ' ', a2.ApellidoAfiliado) nomAfilDestino, t.Observaciones, u.NombreUsuario, t.FechaTraspaso, " +
-                "DATEDIFF(CURDATE(), FechaTraspaso) AS hacecuanto, " +
-                "IF(DATEDIFF(CURDATE(), FechaTraspaso)<5,'pie1',IF(DATEDIFF(CURDATE(), FechaTraspaso)<10,'pie2',IF(DATEDIFF(CURDATE(), FechaTraspaso)<15,'pie3','pie3'))) badge " +
-                "FROM traspasoplanes t, Afiliados a1, Afiliados a2, AfiliadosPlanes ap, Usuarios u " +
-                "WHERE t.EstadoTraspaso = 'En proceso' " +
-                "AND t.idAfiliadoPlan = ap.idAfiliadoPlan " +
-                "AND t.idAfiliadoOrigen = a1.idAfiliado " +
-                "AND t.idAfiliadoDestino = a2.idAfiliado " +
-                "AND t.idUsuario = u.idUsuario " +
-                "ORDER BY t.FechaTraspaso DESC";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
-            if (dt.Rows.Count > 0)
-            {
-                rpTraspasos.DataSource = dt;
-                rpTraspasos.DataBind();
-            }
-
+            DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
+            rpTransferencia.DataSource = dt;
+            rpTransferencia.DataBind();
+            ltValorTotalTrans.Text = valorTotal.ToString("C0");
             dt.Dispose();
         }
 
-        private void CargarCongelaciones()
+
+        protected void btnFiltrarEfe_Click(object sender, EventArgs e)
         {
-            string strQuery = "SELECT *, CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado) AS NombreCompletoAfiliado, " +
-                "DATEDIFF(CURDATE(), Fecha) AS hacecuanto, " +
-                "IF(DATEDIFF(CURDATE(), Fecha)<5,'pie1',IF(DATEDIFF(CURDATE(), Fecha)<10,'pie2',IF(DATEDIFF(CURDATE(), Fecha)<15,'pie3','pie3'))) badge " +
-                "FROM Congelaciones c, Afiliados a, AfiliadosPlanes ap, Usuarios u " +
-                "WHERE Estado = 'En proceso' " +
-                "AND c.idAfiliadoPlan = ap.idAfiliadoPlan " +
-                "AND ap.idAfiliado = a.idAfiliado " +
-                "AND c.idUsuario = u.idUsuario " +
-                "ORDER BY Fecha DESC";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
-            if (dt.Rows.Count > 0)
-            {
-                rpCongelaciones.DataSource = dt;
-                rpCongelaciones.DataBind();
-            }
-
-            dt.Dispose();
+            listaTransaccionesEfectivo("Efectivo", txbEfeFechaIni.Value.ToString(), txbEfeFechaFin.Value.ToString());
         }
 
-        private void CargarIncapacidades()
+        protected void btnFiltrarData_Click(object sender, EventArgs e)
         {
-            string strQuery = "SELECT *, CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado) AS NombreCompletoAfiliado, " +
-                "DATEDIFF(CURDATE(), Fecha) AS hacecuanto, " +
-                "IF(DATEDIFF(CURDATE(), Fecha)<5,'pie1',IF(DATEDIFF(CURDATE(), Fecha)<10,'pie2',IF(DATEDIFF(CURDATE(), Fecha)<15,'pie3','pie3'))) badge " +
-                "FROM Incapacidades i, Afiliados a, AfiliadosPlanes ap, Usuarios u " +
-                "WHERE Estado = 'En proceso' " +
-                "AND i.idAfiliadoPlan = ap.idAfiliadoPlan " +
-                "AND ap.idAfiliado = a.idAfiliado " +
-                "AND i.idUsuario = u.idUsuario " +
-                "ORDER BY Fecha DESC";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
-            if (dt.Rows.Count > 0)
-            {
-                rpIncapacidades.DataSource = dt;
-                rpIncapacidades.DataBind();
-            }
-
-            dt.Dispose();
+            listaTransaccionesDatafono("Datafono", txbDataFechaIni.Value.ToString(), txbDataFechaFin.Value.ToString());
         }
 
-        protected void btnFiltrar_Click(object sender, EventArgs e)
+        protected void btnFiltrarTrans_Click(object sender, EventArgs e)
         {
-            listaTransacciones("Efectivo", txbFechaInicio.Text, txbFechaFin.Text);
+            listaTransaccionesTransferencia("Transferencia", txbTransFechaIni.Value.ToString(), txbTransFechaFin.Value.ToString());
+
         }
     }
 }
