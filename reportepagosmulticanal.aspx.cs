@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -12,6 +13,10 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            CultureInfo culture = new CultureInfo("es-CO"); // Cambia según el país
+            System.Threading.Thread.CurrentThread.CurrentCulture = culture;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+
             if (!IsPostBack)
             {
                 if (Session["idUsuario"] != null)
@@ -27,6 +32,9 @@ namespace fpWebApp
                     {
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
+                            txbFechaInicio.Text = DateTime.Now.ToString("yyyy-MM-01").ToString();
+                            txbFechaFin.Text = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+                            listaTransacciones("Efectivo",(txbFechaInicio.Text.ToString()),(txbFechaFin.Text.ToString()));
                             CargarCortesias();
                             CargarTraspasos();
                             CargarCongelaciones();
@@ -64,6 +72,16 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        private void listaTransacciones(string tipoPago, string fechaIni, string fechaFin)
+        {            
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin,out decimal valorTotal);
+            rpTipoEfectivo.DataSource = dt;
+            rpTipoEfectivo.DataBind();
+            ltValorTotal.Text = valorTotal.ToString("C0");
+            dt.Dispose();
+        }
+
         private void CargarCortesias()
         {
             string strQuery = "SELECT *, " +
@@ -80,8 +98,8 @@ namespace fpWebApp
 
             if (dt.Rows.Count > 0)
             {
-                rpCortesias.DataSource = dt;
-                rpCortesias.DataBind();
+                //rpCortesias.DataSource = dt;
+                //rpCortesias.DataBind();
             }
 
             dt.Dispose();
@@ -156,6 +174,11 @@ namespace fpWebApp
             }
 
             dt.Dispose();
+        }
+
+        protected void btnFiltrar_Click(object sender, EventArgs e)
+        {
+            listaTransacciones("Efectivo", txbFechaInicio.Text, txbFechaFin.Text);
         }
     }
 }

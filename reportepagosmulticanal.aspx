@@ -42,6 +42,16 @@
             element2.classList.remove("collapse");
         }
     </script>
+
+    <script>
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true
+            });
+        });
+    </script>
 </head>
 
 <body onload="changeClass()">
@@ -111,6 +121,7 @@
                 </div>
                 <%--Fin Breadcrumb!!!--%>
             </div>
+            <form id="form1" runat="server">
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row animated fadeInDown">
                     <%--Inicio Contenido!!!!--%>
@@ -134,7 +145,9 @@
 
                                 <div class="ibox">
                                     <div class="ibox-title bg-info">
-                                        <h5><i class="fa fa-gift"></i> Efectivo</h5>
+                                        <h5><i class="fa fa-gift"></i> Efectivo  Total : </h5>
+                                        <asp:Literal ID="ltValorTotal" runat="server">
+                                        </asp:Literal>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up text-white"></i>
@@ -144,44 +157,58 @@
                                             </a>
                                         </div>
                                     </div>
+
+                                    <div class="ibox-content">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label>Fecha Inicio:</label>
+                                                <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm datepicker" runat="server"></asp:TextBox>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Fecha Fin:</label>
+                                                <asp:TextBox ID="txbFechaFin" CssClass="form-control input-sm datepicker" runat="server"></asp:TextBox>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label> </label>
+                                                <asp:Button ID="btnFiltrar" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrar_Click" />
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="ibox-content">
                                         <table class="footable table table-striped" data-paging-size="10" 
                                             data-paging="true" data-paging-count-format="{CP} de {TP}" 
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th data-sortable="false">Afiliado</th>
-                                                    <th data-sortable="false">Días de Cortesía</th>
-                                                    <th data-sortable="false">Observaciones</th>
-                                                    <th data-sortable="false">Usuario</th>
-                                                    <th data-sortable="false">Fecha</th>
-                                                    <th data-sortable="false">Acciones</th>
+                                                     <th data-sortable="false" data-breakpoints="xs">Id</th>
+                                                     <th data-breakpoints="xs">Documento</th>
+                                                    <%-- <th data-breakpoints="xs">Afiliado</th>--%>
+                                                     <th data-breakpoints="xs">Valor</th>
+                                                     <th data-breakpoints="xs">Tipo</th>
+                                                     <th data-breakpoints="xs">Referencia</th>
+                                                     <th data-breakpoints="xs">Fecha Hora</th>
+                                                     <th data-breakpoints="xs">Estado</th>
+                                               <%--      <th data-breakpoints="xs">Usuario</th>--%>
+                                                     <th data-breakpoints="xs">Canal</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpCortesias" runat="server">
-                                                    <ItemTemplate>
+                                                <asp:Repeater ID="rpTipoEfectivo" runat="server">
+                                                     <ItemTemplate>
                                                         <tr>
-                                                            <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
-                                                            <td><%# Eval("DiasCortesia") %> días</td>
-                                                            <td><%# Eval("ObservacionesCortesia") %></td>
-                                                            <td><%# Eval("NombreUsuario") %></td>
-                                                            <td style="vertical-align:central;">
-                                                                <span class="<%# Eval("badge") %>" ><%# Eval("hacecuanto") %>/15</span> 
-                                                                <%# Eval("FechaHoraCortesia", "{0:dd MMM yyyy}") %>
-                                                            </td>
-                                                            <%--<td><a href="#" data-toggle="modal" data-target="#myModalRespuesta" 
-                                                                data-id="<%# Eval("idCortesia") %>"><span class="label label-primary">Responder</span></a></td>--%>
-                                                            <td><a href="respuestaautorizacion?idCortesia=<%# Eval("idCortesia") %>"><span class="label label-primary">Responder</span></a></td>
+                                                            <td><%# Eval("idPago") %></td>
+                                                            <td><%# Eval("DocumentoAfiliado") %></td>
+                                                            <%--<td><%# Eval("NombreAfiliado") %></td>--%>
+                                                            <td><%# Eval("Valor", "{0:C0}") %></td>
+                                                            <td><%# Eval("TipoPago") %></td>
+                                                            <td><%# Eval("idReferencia") %></td>
+                                                            <td><%# Eval("FechaHoraPago") %></td>
+                                                            <td>Aprobado</td>
+                                                           <%-- <td><%# Eval("Usuario") %></td>--%>
+                                                            <td><%# Eval("CanalVenta") %></td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
-                                                <%--<tr>
-                                                    <td><small>Pending...</small> </td>
-                                                    <td><i class="fa fa-clock-o"></i>12:08am</td>
-                                                    <td>Damian</td>
-                                                    <td class="text-navy"><i class="fa fa-level-up"></i>23% </td>
-                                                </tr>--%>
                                             </tbody>
                                         </table>
                                     </div>
@@ -370,7 +397,7 @@
             </div>
 
             <uc1:footer runat="server" ID="footer" />
-
+            </form>
         </div>
         <uc1:rightsidebar runat="server" ID="rightsidebar" />
     </div>
