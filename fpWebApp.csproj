@@ -185,6 +185,7 @@
     <Content Include="ciudadessedes.aspx" />
     <Content Include="congelaciones.aspx" />
     <Content Include="congelacionesAfil.aspx" />
+    <Content Include="contratoafiliado.aspx" />
     <Content Include="controles\footer.ascx" />
     <Content Include="controles\grafico01.ascx" />
     <Content Include="controles\header.ascx" />
@@ -970,6 +971,13 @@
     </Compile>
     <Compile Include="congelacionesAfil.aspx.designer.cs">
       <DependentUpon>congelacionesAfil.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="contratoafiliado.aspx.cs">
+      <DependentUpon>contratoafiliado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="contratoafiliado.aspx.designer.cs">
+      <DependentUpon>contratoafiliado.aspx</DependentUpon>
     </Compile>
     <Compile Include="controles\footer.ascx.cs">
       <DependentUpon>footer.ascx</DependentUpon>
