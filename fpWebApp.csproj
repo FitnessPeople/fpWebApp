@@ -178,6 +178,8 @@
     <Content Include="calendariofpadmin.aspx" />
     <Content Include="cambiaestadousuario.aspx" />
     <Content Include="cambiarpermiso.aspx" />
+    <Content Include="canalesventa.aspx" />
+    <Content Include="cargos.aspx" />
     <Content Include="cesantias.aspx" />
     <Content Include="ciudades.aspx" />
     <Content Include="ciudadessedes.aspx" />
@@ -833,6 +835,8 @@
     <Content Include="planesAfil.aspx" />
     <Content Include="plantilla.aspx" />
     <Content Include="profesiones.aspx" />
+    <Content Include="reportepagos.aspx" />
+    <Content Include="reportepagosmulticanal.aspx" />
     <Content Include="respuestaautorizacion.aspx" />
     <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjax.js" />
     <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxApplicationServices.js" />
@@ -917,6 +921,20 @@
     </Compile>
     <Compile Include="cambiarpermiso.aspx.designer.cs">
       <DependentUpon>cambiarpermiso.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="canalesventa.aspx.cs">
+      <DependentUpon>canalesventa.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="canalesventa.aspx.designer.cs">
+      <DependentUpon>canalesventa.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="cargos.aspx.cs">
+      <DependentUpon>cargos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="cargos.aspx.designer.cs">
+      <DependentUpon>cargos.aspx</DependentUpon>
     </Compile>
     <Compile Include="cesantias.aspx.cs">
       <DependentUpon>cesantias.aspx</DependentUpon>
@@ -1386,6 +1404,20 @@
       <DependentUpon>profesiones.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="reportepagos.aspx.cs">
+      <DependentUpon>reportepagos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="reportepagos.aspx.designer.cs">
+      <DependentUpon>reportepagos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="reportepagosmulticanal.aspx.cs">
+      <DependentUpon>reportepagosmulticanal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="reportepagosmulticanal.aspx.designer.cs">
+      <DependentUpon>reportepagosmulticanal.aspx</DependentUpon>
+    </Compile>
     <Compile Include="respuestaautorizacion.aspx.cs">
       <DependentUpon>respuestaautorizacion.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
