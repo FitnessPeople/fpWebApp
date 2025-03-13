@@ -171,21 +171,21 @@
                                             <button id="btnDocumentoAfiliado" data-button="DOCUMENTO" onclick="putText('btnDocumentoAfiliado')" class="btn btn-sm btn-info">Documento afiliado</button>
                                             <button id="btnDireccionAfiliado" data-button="DIRECCION" onclick="putText('btnDireccionAfiliado')" class="btn btn-sm btn-info">Dirección afiliado</button>
                                         </p>
-                                        <div class="row">
+                                    <div class="row">
                                             <div class="col-lg-12">
-                                                <form role="form" id="form" runat="server">
-                                                    <div class="form-group">
-                                                        <label>Documento:</label>
-                                                        <div id="editor" cssclass="form-control input-sm"></div>
-                                                        <asp:HiddenField ID="hiddenEditor" runat="server" />
-                                                    </div>
-                                                    <div class="form-group">
+                                        <form role="form" id="form" runat="server">
+                                            <div class="form-group">
+                                                <label>Documento:</label>
+                                                <div id="editor" cssclass="form-control input-sm"></div>
+                                                <asp:HiddenField ID="hiddenEditor" runat="server" />
+                                            </div>
+                                            <div class="form-group">
                                                         <a href="contratoafiliado" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                        <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
-                                                            CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar"
-                                                            OnClick="btnAgregar_Click" OnClientClick="guardarContenidoEditor()" />
-                                                    </div>
-                                                </form>
+                                                <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
+                                                    CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar"
+                                                    OnClick="btnAgregar_Click" OnClientClick="guardarContenidoEditor()" />
+                                            </div>
+                                        </form>
                                             </div>
                                         </div>
                                     </div>
