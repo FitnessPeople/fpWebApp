@@ -80,7 +80,7 @@
                         Asegúrate de seguir el proceso de envío indicado (hacer clic en "Agregar").
                         <br />
                         <br />
-                        ¡Siguiendo estos pasos, estarás listo para diligenciar tu formulario sin problemas! Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        ¡Siguiendo estos pasos,  estarás listo para diligenciar tu formulario sin problemas! Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -101,7 +101,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa-solid fa-list-ul"></i> Canales de venta</h2>
+                    <h2><i class="fa-solid fa-list-ul text-success m-r-sm"></i> Canales de venta</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Configuración</li>
