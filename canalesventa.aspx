@@ -1,11 +1,8 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="reportepagos.aspx.cs" Inherits="fpWebApp.reportepagos" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="canalesventa.aspx.cs" Inherits="fpWebApp.canalesventa" %>
 
-<!DOCTYPE html>
-
-
+<%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
-<%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
 <%@ Register Src="~/controles/indicadores01.ascx" TagPrefix="uc1" TagName="indicadores01" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
@@ -18,13 +15,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Pagos</title>
+    <title>Fitness People | Canales de venta</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
+    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
+    <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -36,38 +35,24 @@
         }
     </style>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
-
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#reportepagos");
+            var element1 = document.querySelector("#canalesventa");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#reportes");
+            var element2 = document.querySelector("#configuracion");
             element2.classList.remove("collapse");
         }
     </script>
-
-   <script>
-         $(document).ready(function () {
-         $('.datepicker').datepicker({
-           format: 'yyyy-mm-dd',
-           autoclose: true,
-           todayHighlight: true
-           });
-          });
-   </script>
 </head>
 
 <body onload="changeClass()">
-
-    <div class="modal inmodal" id="myModal" tabindex="-1" aria-labelledby="miModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+    <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fas fa-hand-holding-usd"></i>
-                    <h4 class="modal-title">Guía para administrar Reportes</h4>
+                    <i class="fa fa-person-chalkboard modal-icon"></i>
+                    <h4 class="modal-title">Guía para administrar canales de venta</h4>
                     <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
                 </div>
                 <div class="modal-body">
@@ -103,13 +88,11 @@
                 </div>
             </div>
         </div>
-
-
-
     </div>
-
     <div id="wrapper">
+
         <uc1:navbar runat="server" ID="navbar" />
+
         <div id="page-wrapper" class="gray-bg">
             <div class="row border-bottom">
                 <uc1:header runat="server" ID="header" />
@@ -118,11 +101,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fas fa-hand-holding-usd text-success m-r-sm"></i>Pagos</h2>
+                    <h2><i class="fa-solid fa-list-ul"></i> Canales de venta</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>Reportes</li>
-                        <li class="active"><strong>Pagos</strong></li>
+                        <li>Configuración</li>
+                        <li class="active"><strong>Canales de venta</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -146,33 +129,12 @@
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
                     <form id="form1" runat="server">
-                        <asp:ScriptManager ID="ScriptManager1" runat="server" />
-
-                        <!-- Modal de Ver Detalle -->
-                        <div class="modal fade" id="ModalDetalle" tabindex="-1" aria-labelledby="miModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content animated bounceInRight">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Detalle de la transacción</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <asp:Literal ID="ltDetalleModal" runat="server"></asp:Literal>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="row" id="divContenido" runat="server">
-                            <div class="col-lg-12">
+                            <div class="col-lg-4">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Transacciones: Recibir pagos</h5>
+                                        <h5>
+                                            <asp:Literal ID="ltTitulo" runat="server"></asp:Literal></h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -180,24 +142,50 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                         <div class="row">
-                                            <div class="col-md-4">
-                                                <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker" />
-                                            </div>
-                                            <div class="col-md-4">   
-                                                <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker" />                                           
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label><br/></label>
-                                                <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn btn-primary" />
-                                            </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>Nombre del canal de venta:</label>
+                                                    <asp:TextBox ID="txbNombreCanalVenta" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="rfvNombreCanalVenta" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="txbNombreCanalVenta" ValidationGroup="agregar"
+                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                </div>
+                                                <div class="form-group">
+                                                    <a href="canalesventa" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
+                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
+                                                        OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
+                                                </div>
+                                                <br />
+                                                <br />
+                                                <div class="form-group">
+                                                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                </div>
                                         </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Lista de canales de venta</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+
                                         <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
                                             <div class="col-lg-6 form-horizontal">
                                                 <div class="form-group">
                                                     <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                                 </div>
                                             </div>
+
                                             <div class="col-lg-6 form-horizontal">
                                                 <asp:LinkButton ID="lbExportarExcel" runat="server"
                                                     CausesValidation="false"
@@ -208,50 +196,33 @@
                                             </div>
                                         </div>
 
-                                        <table class="footable table table-striped" data-paging-size="10" data-filter-min="3" data-filter-placeholder="Buscar"
-                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
-                                            data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300"
-                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
+                                        <table class="footable table table-striped" data-paging-size="10"
+                                            data-filter-min="3" data-filter-placeholder="Buscar"
+                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
+                                            data-paging-limit="10" data-filtering="true"
+                                            data-filter-container="#filter-form-container" data-filter-delay="300"
+                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left"
+                                            data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">Id Pago</th>
-                                                    <th data-breakpoints="xs">Documento</th>
-                                                    <th data-breakpoints="xs">Afiliado</th>
-                                                    <th data-breakpoints="xs">Valor</th>
-                                                    <th data-breakpoints="xs">Tipo Pago</th>
-                                                    <th data-breakpoints="xs">Referencia</th>
-                                                    <th data-breakpoints="xs">Fecha</th>
-                                                    <th data-breakpoints="xs">Estado</th>
-                                                    <th data-breakpoints="xs">Usuario</th>
-                                                    <th data-breakpoints="xs">Canal</th>
-                                                    <th data-breakpoints="xs">Detalle</th>
+                                                    <th>Canales de venta</th>                                                  
+                                                    <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                             <asp:Repeater ID="rpPagos" runat="server">
-                                               <ItemTemplate>
-                                                    <tr class="feed-element">
-                                                        <td><%# Eval("idAfiliadoPlan") %></td>
-                                                        <td><%# Eval("DocumentoAfiliado") %></td>
-                                                        <td><%# Eval("NombreAfiliado") %></td>
-                                                        <td><%# Eval("Valor", "{0:C0}") %></td>
-                                                        <td><%# Eval("TipoPago") %></td>
-                                                        <td><%# Eval("IdReferencia") %></td>
-                                                        <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
-                                                        <td>Aprobado</td>
-                                                        <td><%# Eval("Usuario") %></td>            
-                                                        <td><%# Eval("CanalVenta") %></td>            
-                                                        <td>
-                                                            <asp:Button ID="btnDetalle" runat="server" Text="Ver"
-                                                                CssClass="btn btn-primary"
-                                                                CommandArgument='<%# Eval("idAfiliadoPlan") %>'
-                                                                OnCommand="btnDetalle_Command"
-                                                                CommandName="mostrarDetalle"
-                                                                 />
-                                                        </td>
-                                                    </tr>
-                                                </ItemTemplate>
-                                            </asp:Repeater>
+                                                <asp:Repeater ID="rpCanalesVenta" runat="server" OnItemDataBound="rpCanalesVenta_ItemDataBound">
+                                                    <ItemTemplate>
+                                                        <tr class="feed-element">                                                        
+                                                            <td><%# Eval("NombreCanalVenta") %></td>
+                                                            <td>
+                                                                <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                                <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
                                             </tbody>
                                         </table>
                                     </div>
@@ -267,8 +238,6 @@
         <uc1:rightsidebar runat="server" ID="rightsidebar" />
     </div>
 
-
-
     <!-- Mainly scripts -->
     <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -276,6 +245,7 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
+    <%--<script src="js/plugins/footable/footable.all.min.js"></script>--%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
     <!-- Custom and plugin javascript -->
@@ -287,9 +257,6 @@
         $('.footable').footable();
     </script>
 
-
 </body>
 
 </html>
-
-

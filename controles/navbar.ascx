@@ -133,6 +133,7 @@
                     <li id="objetivosafiliado" class="old"><a href="objetivosafiliado"><i class="fa fa-bullseye"></i>Objetivos afiliado</a></li>
                     <li id="parq" class="old"><a href="parq"><i class="fa fa-person-circle-question"></i>ParQ</a></li>
                     <li id="tiposincapacidades" class="old"><a href="tiposincapacidades"><i class="fa fa-hospital-user"></i>Tipos de incapacidad</a></li>
+                    <li id="canalesventa" class="old"><a href="canalesventa"><i class="fa-solid fa-list-ul"></i>Canales de venta</a></li>
                 </ul>
             </li>
             <li>

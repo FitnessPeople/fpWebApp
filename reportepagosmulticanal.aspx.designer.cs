@@ -204,13 +204,49 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Repeater rpTransferencia;
 
         /// <summary>
-        /// Control rpIncapacidades.
+        /// Control ltValortotalWompi.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpIncapacidades;
+        protected global::System.Web.UI.WebControls.Literal ltValortotalWompi;
+
+        /// <summary>
+        /// Control txbWompiFechaIni.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbWompiFechaIni;
+
+        /// <summary>
+        /// Control txbWompiFechaFin.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbWompiFechaFin;
+
+        /// <summary>
+        /// Control btnFiltrarWompi.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnFiltrarWompi;
+
+        /// <summary>
+        /// Control rpWompi.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpWompi;
 
         /// <summary>
         /// Control footer.

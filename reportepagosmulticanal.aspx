@@ -160,7 +160,7 @@
                                     </div>
                                     <div class="ibox-content">
                                         <div class="row">
-                                            <div class="col-md-4">                                       
+                                            <div class="col-md-4">                                                
                                                 <input type="text" runat="server" id="txbEfeFechaIni" class="form-control input-sm datepicker"  />
                                             </div>
                                             <div class="col-md-4">                                    
@@ -337,7 +337,10 @@
 
                                 <div class="ibox">
                                     <div class="ibox-title bg-info">
-                                        <h5><i class="fa fa-head-side-mask"></i> Wompi</h5>
+                                        <h5><i class="fa fa-head-side-mask"></i> Wompi   Total : </h5>                                        
+                                        <span class="label label-success">
+                                            <asp:Literal ID="ltValortotalWompi" runat="server"></asp:Literal>
+                                        </span>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up text-white"></i>
@@ -348,55 +351,56 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="footable table table-striped" data-paging-size="10" 
+                                         <div class="row">
+                                            <div class="col-md-4">                                       
+                                                <input type="text" runat="server" id="txbWompiFechaIni" class="form-control input-sm datepicker"  />
+                                            </div>
+                                            <div class="col-md-4">                                    
+                                              <input type="text" runat="server" id="txbWompiFechaFin" class="form-control input-sm datepicker"  />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label><br/></label>
+                                                <asp:Button ID="btnFiltrarWompi" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrarWompi_Click" />
+                                            </div>
+                                        </div>
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
                                             data-paging="true" data-paging-count-format="{CP} de {TP}" 
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th data-sortable="false">Afiliado</th>
-                                                    <th data-sortable="false">Días de incapacidad</th>
-                                                    <th data-sortable="false">Observaciones</th>
-                                                    <th data-sortable="false">Usuario</th>
-                                                    <th data-sortable="false">Fecha</th>
-                                                    <th data-sortable="false">Acciones</th>
+                                                     <th data-breakpoints="xs">Documento</th>
+                                                     <th data-breakpoints="xs">Afiliado</th>
+                                                     <th data-breakpoints="xs">Valor</th>
+                                                     <th data-breakpoints="xs">Fecha Hora</th>
+                                                     <th data-breakpoints="xs">Referencia</th>
+                                                     <th data-breakpoints="xs">Estado</th>
+                                                     <th data-breakpoints="xs">Canal</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpIncapacidades" runat="server">
+                                                <asp:Repeater ID="rpWompi" runat="server">                                                
                                                     <ItemTemplate>
                                                         <tr>
-                                                            <td><%# Eval("NombreCompletoAfiliado") %></td>
-                                                            <td><%# Eval("Dias") %></td>
-                                                            <td><%# Eval("Observaciones") %></td>
-                                                            <td><%# Eval("NombreUsuario") %></td>
-                                                            <td style="vertical-align:central;">
-                                                                <span class="<%# Eval("badge") %>" ><%# Eval("hacecuanto") %>/15</span> 
-                                                                <%# Eval("Fecha", "{0:dd MMM yyyy}") %>
-                                                            </td>
-                                                            <td><a href="respuestaautorizacion?idIncapacidad=<%# Eval("idIncapacidad") %>"><span class="label label-primary">Responder</span></a></td>
+                                                            <td><%# Eval("DocumentoAfiliado") %></td>
+                                                            <td><%# Eval("NombreAfiliado") %></td>
+                                                            <td><%# Eval("Valor", "{0:C0}") %></td>                                                        
+                                                            <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
+                                                            <td><%# Eval("idReferencia") %></td>  
+                                                            <td><span class="badge badge-info"><%# Eval("EstadoPago") %></span></td>                                                       
+                                                            <td><%# Eval("CanalVenta") %></td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
-                                                <%--<tr>
-                                                    <td><small>Pending...</small> </td>
-                                                    <td><i class="fa fa-clock-o"></i>12:08am</td>
-                                                    <td>Damian</td>
-                                                    <td class="text-navy"><i class="fa fa-level-up"></i>23% </td>
-                                                </tr>--%>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-                            </div>
-                        
+                            </div>                        
                         </div>
                     </div>
-
                     <%--Fin Contenido!!!!--%>
                 </div>
-
             </div>
-
             <uc1:footer runat="server" ID="footer" />
             </form>
         </div>
