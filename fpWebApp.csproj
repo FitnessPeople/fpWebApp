@@ -180,6 +180,7 @@
     <Content Include="calendariofpadmin.aspx" />
     <Content Include="cambiaestadousuario.aspx" />
     <Content Include="cambiarpermiso.aspx" />
+    <Content Include="canalesventa.aspx" />
     <Content Include="cesantias.aspx" />
     <Content Include="ciudades.aspx" />
     <Content Include="ciudadessedes.aspx" />
@@ -935,6 +936,13 @@
     </Compile>
     <Compile Include="cambiarpermiso.aspx.designer.cs">
       <DependentUpon>cambiarpermiso.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="canalesventa.aspx.cs">
+      <DependentUpon>canalesventa.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="canalesventa.aspx.designer.cs">
+      <DependentUpon>canalesventa.aspx</DependentUpon>
     </Compile>
     <Compile Include="cesantias.aspx.cs">
       <DependentUpon>cesantias.aspx</DependentUpon>

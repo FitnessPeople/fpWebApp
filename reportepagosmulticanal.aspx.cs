@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -30,8 +33,11 @@ namespace fpWebApp
                     }
                     if (ViewState["Consulta"].ToString() == "1")
                     {
+                        listarDetalle();
+
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
+                            listarDetalle();
                             txbEfeFechaIni.Attributes.Add("type", "date");
                             txbEfeFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
                             txbEfeFechaFin.Attributes.Add("type", "date");
@@ -49,6 +55,13 @@ namespace fpWebApp
                             txbTransFechaFin.Attributes.Add("type", "date");
                             txbTransFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
                             listaTransaccionesTransferencia("Transferencia", (txbTransFechaIni.Value.ToString()), (txbTransFechaFin.Value.ToString()));
+
+                            txbWompiFechaIni.Attributes.Add("type", "date");
+                            txbWompiFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
+                            txbWompiFechaFin.Attributes.Add("type", "date");
+                            txbWompiFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+                            listaTransaccionesWompi("Transferencia", (txbWompiFechaIni.Value.ToString()), (txbWompiFechaFin.Value.ToString()));
+
                         }
                     }
                 }
@@ -112,6 +125,120 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        private void listaTransaccionesWompi(string tipoPago, string fechaIni, string fechaFin)
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
+            rpWompi.DataSource = dt;
+            rpWompi.DataBind();
+            ltValortotalWompi.Text = valorTotal.ToString("C0");
+            dt.Dispose();
+        }
+
+        private string listarDetalle()
+        {
+            string parametro = string.Empty;
+            string tester = string.Empty;
+            string mensaje = string.Empty;
+            clasesglobales cg = new clasesglobales();
+            DataTable dti = cg.ConsultarUrl(4);
+
+            string strFechaHoy = string.Format("{0:yyyy-MM-dd}", DateTime.Now);
+
+            //parametro = "?from_date=2025-01-01&until_date=2025-03-11&page=1&page_size=50&order_by=created_at&order=DESC";
+            parametro = "?from_date=" + strFechaHoy + "&until_date=" + strFechaHoy + "&page=1&page_size=10&order_by=created_at&order=DESC";
+
+            string url = dti.Rows[0]["urlTest"].ToString() + parametro;
+            string[] respuesta = cg.EnviarPeticionGet(url, out mensaje);
+            JToken token = JToken.Parse(respuesta[0]);
+            string prettyJson = token.ToString(Formatting.Indented);
+
+            if (mensaje == "Ok") //Verifica respuesta ok
+            {
+                JObject jsonData = JObject.Parse(prettyJson);
+
+                List<Datum> listaDatos = new List<Datum>();
+
+                foreach (var item in jsonData["data"])
+                {
+                    listaDatos.Add(new Datum
+                    {
+                        //id = item["id"]?.ToString(),
+                        created_at = item["created_at"]?.ToString(),
+                        //finalized_at = item["finalized_at"]?.ToString(),
+                        amount_in_cents = ((item["amount_in_cents"]?.Value<int>() ?? 0) / 100).ToString("N0"),
+                        reference = item["reference"]?.ToString(),
+                        customer_email = item["customer_email"]?.ToString(),
+                        currency = item["currency"]?.ToString(),
+                        payment_method_type = item["payment_method_type"]?.ToString(),
+                        status = item["status"]?.ToString(),
+                        status_message = item["status_message"]?.ToString(),
+                        device_id = item["customer_data"]?["device_id"]?.ToString(),
+                        full_name = item["customer_data"]?["full_name"]?.ToString(),
+                        phone_number = item["customer_data"]?["phone_number"]?.ToString()
+                    });
+                }
+
+                StringBuilder sb = new StringBuilder();
+
+                sb.Append("<table class=\"table table-bordered table-striped\">");
+                sb.Append("<tr>");
+                sb.Append("<th>Afiliado</th><th>Teléfono</th><th>Fecha creación</th><th>Valor</th>");
+                sb.Append("<th>Método pago</th><th>Estado</th><th>Referencia</th>");
+                sb.Append("</tr>");
+
+                foreach (var pago in listaDatos)
+                {
+                    string strStatus = string.Empty;
+                    sb.Append("<tr>");
+                    sb.Append($"<td>{pago.full_name}</td>");
+                    sb.Append($"<td>{pago.phone_number}</td>");
+                    sb.Append($"<td>" + String.Format("{0:dd MMM yyyy HH:mm}", Convert.ToDateTime(pago.created_at)) + "</td>");
+                    sb.Append($"<td>{pago.amount_in_cents}</td>");
+                    sb.Append($"<td>{pago.payment_method_type}</td>");
+
+                    if (pago.status.ToString() == "APPROVED")
+                    {
+                        strStatus = "<span class=\"badge badge-info\">Aprobado</span>";
+                    }
+                    else
+                    {
+                        strStatus = "<span class=\"badge badge-danger\">Rechazado</span>";
+                    }
+
+                    sb.Append($"<td>" + strStatus + "</td>");
+                    sb.Append($"<td>{pago.reference}</td>");
+                    sb.Append("</tr>");
+                }
+
+                sb.Append("</table>");
+
+                return sb.ToString();
+
+            }
+            else
+            {
+                return prettyJson;
+            }
+        }
+
+        public class Datum
+        {
+            public string id { get; set; }
+            public string created_at { get; set; }
+            public string finalized_at { get; set; }
+            public string amount_in_cents { get; set; }
+            public string reference { get; set; }
+            public string customer_email { get; set; }
+            public string currency { get; set; }
+            public string payment_method_type { get; set; }
+            public string status { get; set; }
+            public string status_message { get; set; }
+            public string device_id { get; set; }
+            public string full_name { get; set; }
+            public string phone_number { get; set; }
+        }
+
 
         protected void btnFiltrarEfe_Click(object sender, EventArgs e)
         {
@@ -127,6 +254,11 @@ namespace fpWebApp
         {
             listaTransaccionesTransferencia("Transferencia", txbTransFechaIni.Value.ToString(), txbTransFechaFin.Value.ToString());
 
+        }
+
+        protected void btnFiltrarWompi_Click(object sender, EventArgs e)
+        {
+            listaTransaccionesWompi("Wompi", txbWompiFechaIni.Value.ToString(), txbWompiFechaFin.Value.ToString());
         }
     }
 }
