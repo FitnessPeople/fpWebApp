@@ -60,12 +60,8 @@ namespace fpWebApp
         {
             try
             {
-                string strQuery = "UPDATE empleados SET " +
-                "Estado = 'En pausa' " +
-                "WHERE Estado = 'Activo' " +
-                "AND FechaFinal < CURDATE()";
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.TraerDatosStr(strQuery);
+                string mensaje = cg.ActualizarEstadoEmpleadoPorFechaFinal();
             }
             catch (OdbcException ex)
             {
@@ -75,20 +71,11 @@ namespace fpWebApp
         }
 
         private void listaEmpleados()
-        {
-            string strQuery = "SELECT *, IF(Estado='Activo','primary',IF(Estado='En pausa','warning','danger')) AS label, " +
-                "DATEDIFF(CURDATE(), FechaInicio) diastrabajados, " +
-                "DATEDIFF(FechaFinal, CURDATE()) diasporterminar, " +
-                "DATEDIFF(FechaFinal, FechaInicio) diastotales, " +
-                "IF(Month(FechaNacEmpleado)=MONTH(CURRENT_DATE()),'<i class=\"fa fa-cake m-r-sm text-danger\"></i>','<i class=\"fa fa-cake m-r-sm\"></i>') AS icono " +
-                "FROM Empleados " +
-                "LEFT JOIN ciudades ON ciudades.idCiudad = Empleados.idCiudadEmpleado ";
+        {         
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
+            DataTable dt = cg.ConsultarEmpleados(); 
             rpEmpleados.DataSource = dt;
             rpEmpleados.DataBind();
-
             dt.Dispose();
         }
 
