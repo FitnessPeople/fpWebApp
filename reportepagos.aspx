@@ -180,6 +180,18 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
+                                         <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker" />
+                                            </div>
+                                            <div class="col-md-4">   
+                                                <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker" />                                           
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label><br/></label>
+                                                <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn btn-primary" />
+                                            </div>
+                                        </div>
                                         <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
                                             <div class="col-lg-2">
                                                 <div class="form-group">
