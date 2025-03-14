@@ -44,18 +44,18 @@ namespace fpWebApp
                 "FROM EmpresasFP " +
                 "WHERE idEmpresaFP = 1 ";
 
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+                    clasesglobales cg = new clasesglobales();
+                    DataTable dt = cg.TraerDatos(strQuery);
 
-            string strTextoContrato = dt.Rows[0]["ContratoMayorEdad"].ToString();
-            string contenidoEditor = hiddenEditor.Value;
-            hiddenEditor.Value = dt.Rows[0]["ContratoMayorEdad"].ToString();
+                    string strTextoContrato = dt.Rows[0]["ContratoMayorEdad"].ToString();
+                    string contenidoEditor = hiddenEditor.Value;
+                    hiddenEditor.Value = dt.Rows[0]["ContratoMayorEdad"].ToString();
 
             strQuery = "SELECT * " +
                 "FROM Afiliados " +
                         "WHERE idAfiliado = 12261 ";
 
-            DataTable dt1 = cg.TraerDatos(strQuery);
+                    DataTable dt1 = cg.TraerDatos(strQuery);
 
             strTextoContrato = strTextoContrato.Replace("#NOMBRE#", dt1.Rows[0]["NombreAfiliado"].ToString() + " " + dt1.Rows[0]["ApellidoAfiliado"].ToString());
                     strTextoContrato = strTextoContrato.Replace("#DOCUMENTO#", dt1.Rows[0]["DocumentoAfiliado"].ToString());
