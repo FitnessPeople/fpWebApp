@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="contratoafiliado.aspx.cs" Inherits="fpWebApp.contratoafiliado" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="contratoafiliado.aspx.cs" Inherits="fpWebApp.contratoafiliado" ValidateRequest="false" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
