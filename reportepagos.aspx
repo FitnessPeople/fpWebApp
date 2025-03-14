@@ -180,25 +180,40 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                         <div class="row">
-                                            <div class="col-md-4">
-                                                <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker" />
-                                            </div>
-                                            <div class="col-md-4">   
-                                                <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker" />                                           
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label><br/></label>
-                                                <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn btn-primary" />
-                                            </div>
-                                        </div>
                                         <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
-                                            <div class="col-lg-6 form-horizontal">
+                                            <div class="col-lg-2">
                                                 <div class="form-group">
                                                     <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 form-horizontal">
+                                            <div class="col-lg-2">
+                                                <div class="form-group">                                               
+                                                    <asp:DropDownList ID="ddlTipoPago" runat="server" AppendDataBoundItems="true"
+                                                        DataTextField="TipoDocumento" DataValueField="idTipoDoc" CssClass="form-control input-sm">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                        <asp:ListItem Text="Efectivo" Value="Efectivo"></asp:ListItem>
+                                                        <asp:ListItem Text="Transferencia" Value="Transferencia"></asp:ListItem>
+                                                        <asp:ListItem Text="Datafono" Value="Datafono"></asp:ListItem>
+                                                        <asp:ListItem Text="Wompi" Value="Wompi"></asp:ListItem>
+                                                 </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                               <div class="form-group">
+                                                   <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker" />
+                                               </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                               <div class="form-group">
+                                                   <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker" /> 
+                                               </div>
+                                           </div>
+                                             <div class="col-lg-2">
+                                               <div class="form-group">
+                                                <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnBuscar_Click" />
+                                               </div>
+                                           </div>
+                                            <div class="col-lg-2">
                                                 <asp:LinkButton ID="lbExportarExcel" runat="server"
                                                     CausesValidation="false"
                                                     CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"

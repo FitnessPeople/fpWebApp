@@ -52,7 +52,10 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-                            //btnAgregar.Visible = true;
+                            txbFechaIni.Attributes.Add("type", "date");
+                            txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
+                            txbFechaFin.Attributes.Add("type", "date");
+                            txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
                         }
                     }
                     listaTransacciones();
@@ -93,6 +96,16 @@ namespace fpWebApp
             DataTable dt = cg.ConsultarPagosPlanAfiliados();
             rpPagos.DataSource = dt;
             rpPagos.DataBind();
+            dt.Dispose();
+        }
+
+        private void listaTransaccionesPorFecha(string tipoPago, string fechaIni, string fechaFin)
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
+            rpPagos.DataSource = dt;
+            rpPagos.DataBind();
+            //ltValortotalWompi.Text = valorTotal.ToString("C0");
             dt.Dispose();
         }
 
@@ -287,6 +300,9 @@ namespace fpWebApp
             }
         }
 
-
+        protected void btnBuscar_Click(object sender, EventArgs e)
+        {
+            listaTransaccionesPorFecha(ddlTipoPago.SelectedValue.ToString(), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+        }
     }
 }
