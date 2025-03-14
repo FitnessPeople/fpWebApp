@@ -21,7 +21,6 @@ namespace fpWebApp
                         //No tiene acceso a esta página
                         divMensaje.Visible = true;
                         paginasperfil.Visible = true;
-                        divContenido.Visible = false;
                     }
                     else
                     {
