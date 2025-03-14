@@ -307,7 +307,7 @@ namespace fpWebApp
                             //"'Activo'" + "," + ddlCanalVenta.SelectedItem.Value.ToString() + ")";
 
                             clasesglobales cg = new clasesglobales();
-                            string mensaje = cg.InsertarNuevoEmpleado(txbDocumento.Text.ToString(), ddlTipoDocumento.SelectedItem.Value.ToString(), txbNombre.Text.ToString(),
+                            string mensaje = cg.InsertarNuevoEmpleado(txbDocumento.Text.ToString(), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbNombre.Text.ToString(),
                                txbTelefono.Text.ToString(), txbEmail.Text.ToString(), txbDireccion.Text.ToString(), Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()),
                                txbFechaNac.Text.ToString(), strFilename, txbContrato.Text.ToString(), ddlTipoContrato.SelectedItem.Value.ToString(), 
                                Convert.ToInt32(ddlempresasFP.SelectedItem.Value.ToString()), Convert.ToInt32( ddlSedes.SelectedItem.Value.ToString()),
