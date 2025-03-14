@@ -199,7 +199,7 @@
                                                         <td><%--<img class="img-sm" src="img/empleados/<%# Eval("FotoEmpleado") %>" />--%>
                                                             <%# Eval("NombreEmpleado") %></td>
                                                         <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoEmpleado") %>" target="_blank"><%# Eval("TelefonoEmpleado") %></a></td>
-                                                        <td><i class="fa fa-envelope m-r-xs font-bold"></i><%# Eval("CargoEmpleado") %></td>
+                                                        <td><i class="fa fa-user-nurse m-r-xs font-bold"></i><%# Eval("Cargo") %></td>
                                                         <%--<td><i class="fa fa-user-tie m-r-xs font-bold"></i><%# Eval("CargoEmpleado") %></td>--%>
                                                         <td><%# Eval("icono") %><%# Eval("FechaNacEmpleado", "{0:dd MMM}") %></td>
                                                         <td><span class="badge badge-<%# Eval("label") %>"><%# Eval("Estado") %></span></td>
@@ -213,7 +213,7 @@
                                                                 <tr>
                                                                     <td><%# Eval("DireccionEmpleado") %></td>
                                                                     <td><%# Eval("NombreCiudad") %> (<%# Eval("NombreEstado") %>)</td>
-                                                                    <td><%# Eval("CargoEmpleado") %></td>
+                                                                    <td><%# Eval("Cargo") %></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th><i class="fa fa-hashtag m-r-xs"></i>Nro Contrato</th>

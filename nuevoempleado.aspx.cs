@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Odbc;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -208,7 +209,6 @@ namespace fpWebApp
         private bool ExisteDocumento(string strDocumento)
         {
             bool rta = false;
-            //string strQuery = "SELECT DocumentoEmpleado FROM Empleados WHERE DocumentoEmpleado = '" + strDocumento + "' ";
             clasesglobales cg1 = new clasesglobales();
             DataTable dt = cg1.ConsultarExisteDocEmpleado(strDocumento);
 
@@ -224,7 +224,6 @@ namespace fpWebApp
         private bool ExisteEmail(string strEmail)
         {
             bool rta = false;
-            //string strQuery = "SELECT DocumentoEmpleado FROM Empleados WHERE EmailEmpleado = '" + strEmail + "' ";
             clasesglobales cg1 = new clasesglobales();
             DataTable dt = cg1.ConsultarExisteEmailEmpleado(strEmail);
 
@@ -240,7 +239,6 @@ namespace fpWebApp
         private bool ExisteTelefono(string strTelefono)
         {
             bool rta = false;
-            //string strQuery = "SELECT DocumentoEmpleado FROM Empleados WHERE TelefonoEmpleado = '" + strTelefono + "' ";
             clasesglobales cg1 = new clasesglobales();
             DataTable dt = cg1.ConsultarExisteTelEmpleado(strTelefono);
 
@@ -287,35 +285,17 @@ namespace fpWebApp
 
                         try
                         {
-                            //string strQuery = "INSERT INTO empleados " +
-                            //"(DocumentoEmpleado, idTipoDocumento, NombreEmpleado, TelefonoEmpleado, EmailEmpleado, " +
-                            //"DireccionEmpleado, idCiudadEmpleado, CargoEmpleado, FechaNacEmpleado, FotoEmpleado, NroContrato, " +
-                            //"TipoContrato, idSede, FechaInicio, FechaFinal, Sueldo, GrupoNomina, idEPS, idFondoPension, idARL, " +
-                            //"idCajaComp, idCesantias, Estado, idCanalVenta) " +
-                            //"VALUES ('" + txbDocumento.Text.ToString() + "', " + ddlTipoDocumento.SelectedItem.Value.ToString() + ", " +
-                            //"'" + txbNombre.Text.ToString() + "', '" + txbTelefono.Text.ToString() + "', " +
-                            //"'" + txbEmail.Text.ToString() + "', '" + txbDireccion.Text.ToString() + "', " +
-                            //"" + ddlCiudadEmpleado.SelectedItem.Value.ToString() + ", '" + ddlCargo.SelectedItem.Value.ToString() + "', " +
-                            //"'" + txbFechaNac.Text.ToString() + "'" + "," +
-                            //"'" + strFilename + "', '" + txbContrato.Text.ToString() + "', " +
-                            //"'" + ddlTipoContrato.SelectedItem.Value.ToString() + "', " +
-                            //"" + ddlSedes.SelectedItem.Value.ToString() + ", '" + txbFechaInicio.Text.ToString() + "', " +
-                            //"'" + txbFechaFinal.Text.ToString() + "', '" + txbSueldo.Text.ToString() + "', " +
-                            //"'" + ddlGrupo.SelectedItem.Value.ToString() + "', " + ddlEps.SelectedItem.Value.ToString() + ", " +
-                            //"" + ddlFondoPension.SelectedItem.Value.ToString() + ", " + ddlArl.SelectedItem.Value.ToString() + ", " +
-                            //"" + ddlCajaComp.SelectedItem.Value.ToString() + ", " + ddlCesantias.SelectedItem.Value.ToString() + ", " +
-                            //"'Activo'" + "," + ddlCanalVenta.SelectedItem.Value.ToString() + ")";
-
                             clasesglobales cg = new clasesglobales();
-                            string mensaje = cg.InsertarNuevoEmpleado(txbDocumento.Text.ToString(), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbNombre.Text.ToString(),
-                               txbTelefono.Text.ToString(), txbEmail.Text.ToString(), txbDireccion.Text.ToString(), Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()),
-                               txbFechaNac.Text.ToString(), strFilename, txbContrato.Text.ToString(), ddlTipoContrato.SelectedItem.Value.ToString(), 
-                               Convert.ToInt32(ddlempresasFP.SelectedItem.Value.ToString()), Convert.ToInt32( ddlSedes.SelectedItem.Value.ToString()),
-                               txbFechaInicio.Text.ToString(), txbFechaFinal.Text.ToString(), Convert.ToInt32(txbSueldo.Text.ToString()), ddlGrupo.SelectedItem.Value.ToString(), 
-                               Convert.ToInt32(ddlEps.SelectedItem.Value.ToString()), Convert.ToInt32(ddlFondoPension.SelectedItem.Value.ToString()), 
-                               Convert.ToInt32(ddlArl.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCajaComp.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCesantias.SelectedItem.Value.ToString()),
-                               "Activo", Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value.ToString()), 
-                               Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()));
+                            string mensaje = cg.InsertarNuevoEmpleado(txbDocumento.Text.ToString(), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
+                            txbNombre.Text.ToString(), txbTelefono.Text.ToString(), txbEmail.Text.ToString(), txbDireccion.Text.ToString(), 
+                            Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), txbFechaNac.Text.ToString(), strFilename, txbContrato.Text.ToString(), 
+                            ddlTipoContrato.SelectedItem.Value.ToString(), Convert.ToInt32(ddlempresasFP.SelectedItem.Value.ToString()), 
+                            Convert.ToInt32( ddlSedes.SelectedItem.Value.ToString()),txbFechaInicio.Text.ToString(), txbFechaFinal.Text.ToString(),
+                            Convert.ToInt32(Regex.Replace(txbSueldo.Text, @"[^\d]", "")), ddlGrupo.SelectedItem.Value.ToString(), Convert.ToInt32(ddlEps.SelectedItem.Value.ToString()), 
+                            Convert.ToInt32(ddlFondoPension.SelectedItem.Value.ToString()), Convert.ToInt32(ddlArl.SelectedItem.Value.ToString()), 
+                            Convert.ToInt32(ddlCajaComp.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCesantias.SelectedItem.Value.ToString()), "Activo", 
+                            Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value.ToString()), 
+                            Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()));
                             
                             cg.InsertarLog(Session["idusuario"].ToString(), "Empleados", "Nuevo registro", "El usuario agregó un nuevo empleado con documento " + txbDocumento.Text.ToString() + ".", "", "");
 
