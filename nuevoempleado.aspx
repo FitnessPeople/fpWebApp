@@ -212,7 +212,31 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Cargo</label>
-                                                            <asp:TextBox ID="txbCargo" CssClass="form-control input-sm" runat="server" placeholder="Cargo"></asp:TextBox>
+                                                            <asp:DropDownList ID="ddlCargo" runat="server" AppendDataBoundItems="true"
+                                                                DataTextField="NombreCargo" DataValueField="idCargo" CssClass="form-control input-sm">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                 <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Estado civil</label>
+                                                            <asp:DropDownList ID="ddlEstadoCivil" runat="server" AppendDataBoundItems="true"
+                                                                DataTextField="EstadoCivil" DataValueField="idEstadoCivil" CssClass="form-control input-sm">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Género</label>
+                                                            <asp:DropDownList ID="ddlGenero" runat="server" AppendDataBoundItems="true"
+                                                                DataTextField="Genero" DataValueField="idGenero" CssClass="form-control input-sm">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -363,6 +387,17 @@
                                                                  DataTextField="NombreCanalVenta" DataValueField="idCanalVenta" CssClass="form-control input-sm">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Empresa FP</label>
+                                                            <asp:DropDownList ID="ddlempresasFP" runat="server" AppendDataBoundItems="true"
+                                                                DataTextField="NombreEmpresaFP" DataValueField="idEmpresaFP" CssClass="form-control input-sm">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
                                                         </div>
                                                     </div>
                                                 </div>

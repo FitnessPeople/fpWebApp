@@ -48,6 +48,9 @@ namespace fpWebApp
                         CargarCesantias();
                         CargarEmpresasFP();
                         CargarCanalesVenta();
+                        CargarCargos();
+                        CargarEstadoCivil();
+                        CargarGeneros();
                     }
                     else
                     {
@@ -90,10 +93,8 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultartiposDocumento();
-
             ddlTipoDocumento.DataSource = dt;
             ddlTipoDocumento.DataBind();
-
             dt.Dispose();
         }
 
@@ -101,10 +102,8 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarCiudadesCol();
-
             ddlCiudadEmpleado.DataSource = dt;
             ddlCiudadEmpleado.DataBind();
-
             dt.Dispose();
         }
 
@@ -112,46 +111,35 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultaCargarSedes("Todos");
-
             ddlSedes.DataSource = dt;
             ddlSedes.DataBind();
-
             dt.Dispose();
         }
 
         private void CargarEps()
-        {
-            string strQuery = "SELECT * FROM eps";
+        {           
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
-
+            DataTable dt = cg1.ConsultarEpss();
             ddlEps.DataSource = dt;
             ddlEps.DataBind();
-
             dt.Dispose();
         }
 
         private void CargarFondoPension()
-        {
-            string strQuery = "SELECT * FROM fondospension";
+        {          
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
-
+            DataTable dt = cg1.ConsultarPensiones();
             ddlFondoPension.DataSource = dt;
             ddlFondoPension.DataBind();
-
             dt.Dispose();
         }
 
         private void CargarArl()
-        {
-            string strQuery = "SELECT * FROM arl";
+        {         
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
-
+            DataTable dt = cg1.ConsultarArls();
             ddlArl.DataSource = dt;
             ddlArl.DataBind();
-
             dt.Dispose();
         }
 
@@ -159,54 +147,70 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarCajasComp();
-
             ddlCajaComp.DataSource = dt;
             ddlCajaComp.DataBind();
-
             dt.Dispose();
         }
 
         private void CargarCesantias()
-        {
-            string strQuery = "SELECT * FROM cesantias";
+        {            
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
-
+            DataTable dt = cg1.ConsultarCesantias();
             ddlCesantias.DataSource = dt;
             ddlCesantias.DataBind();
-
             dt.Dispose();
         }
         private void CargarCanalesVenta()
-        {
-            string strQuery = "SELECT * FROM canalesventa";
+        {          
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
-
+            DataTable dt = cg1.ConsultarCanalesVenta();
             ddlCanalVenta.DataSource = dt;
             ddlCanalVenta.DataBind();
+            dt.Dispose();
+        }
 
+        private void CargarCargos()
+        {
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.ConsultarCargos();
+            ddlCargo.DataSource = dt;
+            ddlCargo.DataBind();
             dt.Dispose();
         }
 
         private void CargarEmpresasFP()
-        {
-            string strQuery = "SELECT * FROM empresasfp";
+        {           
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
+            DataTable dt = cg1.ConsultarEmpresasFP();
+            ddlempresasFP.DataSource = dt;
+            ddlempresasFP.DataBind();
+            dt.Dispose();
+        }
 
-            //ddlCesantias.DataSource = dt;
-            //ddlCesantias.DataBind();
+        private void CargarEstadoCivil()
+        {
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.ConsultarEstadosCiviles();
+            ddlEstadoCivil.DataSource = dt;
+            ddlEstadoCivil.DataBind();
+            dt.Dispose();
+        }
 
+        private void CargarGeneros()
+        {
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.ConsultarGeneros();
+            ddlGenero.DataSource = dt;
+            ddlGenero.DataBind();
             dt.Dispose();
         }
 
         private bool ExisteDocumento(string strDocumento)
         {
             bool rta = false;
-            string strQuery = "SELECT DocumentoEmpleado FROM Empleados WHERE DocumentoEmpleado = '" + strDocumento + "' ";
+            //string strQuery = "SELECT DocumentoEmpleado FROM Empleados WHERE DocumentoEmpleado = '" + strDocumento + "' ";
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
+            DataTable dt = cg1.ConsultarExisteDocEmpleado(strDocumento);
 
             if (dt.Rows.Count > 0)
             {
@@ -220,9 +224,9 @@ namespace fpWebApp
         private bool ExisteEmail(string strEmail)
         {
             bool rta = false;
-            string strQuery = "SELECT DocumentoEmpleado FROM Empleados WHERE EmailEmpleado = '" + strEmail + "' ";
+            //string strQuery = "SELECT DocumentoEmpleado FROM Empleados WHERE EmailEmpleado = '" + strEmail + "' ";
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
+            DataTable dt = cg1.ConsultarExisteEmailEmpleado(strEmail);
 
             if (dt.Rows.Count > 0)
             {
@@ -236,9 +240,9 @@ namespace fpWebApp
         private bool ExisteTelefono(string strTelefono)
         {
             bool rta = false;
-            string strQuery = "SELECT DocumentoEmpleado FROM Empleados WHERE TelefonoEmpleado = '" + strTelefono + "' ";
+            //string strQuery = "SELECT DocumentoEmpleado FROM Empleados WHERE TelefonoEmpleado = '" + strTelefono + "' ";
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
+            DataTable dt = cg1.ConsultarExisteTelEmpleado(strTelefono);
 
             if (dt.Rows.Count > 0)
             {
@@ -283,27 +287,36 @@ namespace fpWebApp
 
                         try
                         {
-                            string strQuery = "INSERT INTO empleados " +
-                            "(DocumentoEmpleado, idTipoDocumento, NombreEmpleado, TelefonoEmpleado, EmailEmpleado, " +
-                            "DireccionEmpleado, idCiudadEmpleado, CargoEmpleado, FechaNacEmpleado, FotoEmpleado, NroContrato, " +
-                            "TipoContrato, idSede, FechaInicio, FechaFinal, Sueldo, GrupoNomina, idEPS, idFondoPension, idARL, " +
-                            "idCajaComp, idCesantias, Estado, idCanalVenta) " +
-                            "VALUES ('" + txbDocumento.Text.ToString() + "', " + ddlTipoDocumento.SelectedItem.Value.ToString() + ", " +
-                            "'" + txbNombre.Text.ToString() + "', '" + txbTelefono.Text.ToString() + "', " +
-                            "'" + txbEmail.Text.ToString() + "', '" + txbDireccion.Text.ToString() + "', " +
-                            "" + ddlCiudadEmpleado.SelectedItem.Value.ToString() + ", '" + txbCargo.Text.ToString() + "', " +
-                            "'" + txbFechaNac.Text.ToString() + "'" + "," +
-                            "'" + strFilename + "', '" + txbContrato.Text.ToString() + "', " +
-                            "'" + ddlTipoContrato.SelectedItem.Value.ToString() + "', " +
-                            "" + ddlSedes.SelectedItem.Value.ToString() + ", '" + txbFechaInicio.Text.ToString() + "', " +
-                            "'" + txbFechaFinal.Text.ToString() + "', '" + txbSueldo.Text.ToString() + "', " +
-                            "'" + ddlGrupo.SelectedItem.Value.ToString() + "', " + ddlEps.SelectedItem.Value.ToString() + ", " +
-                            "" + ddlFondoPension.SelectedItem.Value.ToString() + ", " + ddlArl.SelectedItem.Value.ToString() + ", " +
-                            "" + ddlCajaComp.SelectedItem.Value.ToString() + ", " + ddlCesantias.SelectedItem.Value.ToString() + ", " +
-                            "'Activo'" + "," + ddlCanalVenta.SelectedItem.Value.ToString() + ")";
+                            //string strQuery = "INSERT INTO empleados " +
+                            //"(DocumentoEmpleado, idTipoDocumento, NombreEmpleado, TelefonoEmpleado, EmailEmpleado, " +
+                            //"DireccionEmpleado, idCiudadEmpleado, CargoEmpleado, FechaNacEmpleado, FotoEmpleado, NroContrato, " +
+                            //"TipoContrato, idSede, FechaInicio, FechaFinal, Sueldo, GrupoNomina, idEPS, idFondoPension, idARL, " +
+                            //"idCajaComp, idCesantias, Estado, idCanalVenta) " +
+                            //"VALUES ('" + txbDocumento.Text.ToString() + "', " + ddlTipoDocumento.SelectedItem.Value.ToString() + ", " +
+                            //"'" + txbNombre.Text.ToString() + "', '" + txbTelefono.Text.ToString() + "', " +
+                            //"'" + txbEmail.Text.ToString() + "', '" + txbDireccion.Text.ToString() + "', " +
+                            //"" + ddlCiudadEmpleado.SelectedItem.Value.ToString() + ", '" + ddlCargo.SelectedItem.Value.ToString() + "', " +
+                            //"'" + txbFechaNac.Text.ToString() + "'" + "," +
+                            //"'" + strFilename + "', '" + txbContrato.Text.ToString() + "', " +
+                            //"'" + ddlTipoContrato.SelectedItem.Value.ToString() + "', " +
+                            //"" + ddlSedes.SelectedItem.Value.ToString() + ", '" + txbFechaInicio.Text.ToString() + "', " +
+                            //"'" + txbFechaFinal.Text.ToString() + "', '" + txbSueldo.Text.ToString() + "', " +
+                            //"'" + ddlGrupo.SelectedItem.Value.ToString() + "', " + ddlEps.SelectedItem.Value.ToString() + ", " +
+                            //"" + ddlFondoPension.SelectedItem.Value.ToString() + ", " + ddlArl.SelectedItem.Value.ToString() + ", " +
+                            //"" + ddlCajaComp.SelectedItem.Value.ToString() + ", " + ddlCesantias.SelectedItem.Value.ToString() + ", " +
+                            //"'Activo'" + "," + ddlCanalVenta.SelectedItem.Value.ToString() + ")";
 
                             clasesglobales cg = new clasesglobales();
-                            string mensaje = cg.TraerDatosStr(strQuery);
+                            string mensaje = cg.InsertarNuevoEmpleado(txbDocumento.Text.ToString(), ddlTipoDocumento.SelectedItem.Value.ToString(), txbNombre.Text.ToString(),
+                               txbTelefono.Text.ToString(), txbEmail.Text.ToString(), txbDireccion.Text.ToString(), Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()),
+                               txbFechaNac.Text.ToString(), strFilename, txbContrato.Text.ToString(), ddlTipoContrato.SelectedItem.Value.ToString(), 
+                               Convert.ToInt32(ddlempresasFP.SelectedItem.Value.ToString()), Convert.ToInt32( ddlSedes.SelectedItem.Value.ToString()),
+                               txbFechaInicio.Text.ToString(), txbFechaFinal.Text.ToString(), Convert.ToInt32(txbSueldo.Text.ToString()), ddlGrupo.SelectedItem.Value.ToString(), 
+                               Convert.ToInt32(ddlEps.SelectedItem.Value.ToString()), Convert.ToInt32(ddlFondoPension.SelectedItem.Value.ToString()), 
+                               Convert.ToInt32(ddlArl.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCajaComp.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCesantias.SelectedItem.Value.ToString()),
+                               "Activo", Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value.ToString()), 
+                               Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()));
+                            
                             cg.InsertarLog(Session["idusuario"].ToString(), "Empleados", "Nuevo registro", "El usuario agregó un nuevo empleado con documento " + txbDocumento.Text.ToString() + ".", "", "");
 
                             Response.Redirect("empleados");
