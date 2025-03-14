@@ -21,9 +21,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- CSS de Quill -->
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
     <!-- JS de Quill -->
-    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
     <script>
         var quill;
@@ -155,9 +155,9 @@
 
                     <div class="row">
                         <div class="col-lg-10 col-lg-offset-1">
-                            <div class="ibox float-e-margins" runat="server" id="divContenido">
+                            <div class="ibox float-e-margins">
                                 <div class="ibox-title">
-                                    <h5>Título</h5>
+                                    <h5>Contrato de Afiliado Mayor de Edad</h5>
                                     <div class="ibox-tools">
                                         <a class="collapse-link">
                                             <i class="fa fa-chevron-up"></i>
@@ -165,6 +165,43 @@
                                     </div>
                                 </div>
                                 <div class="ibox-content">
+                                    <div class="scroll_content">
+                                        <p>
+                                            <button onclick="getSel('#NOMBRE#','','hiddenEditor');" class="btn btn-sm btn-info">Nombre Afiliado</button>
+                                        </p>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <form role="form" id="form" runat="server">
+                                                    <div class="form-group">
+                                                        <label>Documento:</label>
+                                                        <div id="editor" cssclass="form-control input-sm"></div>
+                                                        <asp:HiddenField ID="hiddenEditor" runat="server" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <a href="#" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                        <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
+                                                            CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar"
+                                                            OnClick="btnAgregar_Click" OnClientClick="guardarContenidoEditor()" />
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>Previsualización</h5>
+                                    <div class="ibox-tools">
+                                        <a class="collapse-link">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="ibox-content">
+                                    <div class="scroll_content">
+                                            <p><asp:Literal ID="ltContrato" runat="server"></asp:Literal></p>
                                     <div class="scroll_content">
                                         <p>
                                             <button onclick="getSel('#NOMBRE#','','hiddenEditor');" class="btn btn-sm btn-info">Nombre Afiliado</button>
