@@ -5383,7 +5383,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public string InsertarNuevoEmpleado(string documentoEmpleado, string tipoDocumento, string nombreEmpleado, string telEmpleado,
+        public string InsertarNuevoEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado,
             string emailEmpleado, string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato,
             string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
             int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo )
