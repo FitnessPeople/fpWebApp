@@ -223,7 +223,7 @@
                                             </div>
                                         </div>
 
-                                        <table class="footable table table-striped" data-paging-size="10" data-filter-min="3" data-filter-placeholder="Buscar"
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10" data-filter-min="3" data-filter-placeholder="Buscar"
                                             data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
                                             data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300"
                                             data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
@@ -262,6 +262,7 @@
                                                                 CommandArgument='<%# Eval("idAfiliadoPlan") %>'
                                                                 OnCommand="btnDetalle_Command"
                                                                 CommandName="mostrarDetalle"
+                                                                Visible='<%# Eval("TipoPago").ToString() == "Wompi" %>' 
                                                                  />
                                                         </td>
                                                     </tr>

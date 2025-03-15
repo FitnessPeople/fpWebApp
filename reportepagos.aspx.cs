@@ -12,6 +12,8 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Globalization;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.InkML;
 
 namespace fpWebApp
 {
@@ -92,8 +94,10 @@ namespace fpWebApp
 
         private void listaTransacciones()
         {
+            decimal valorTotal = 0;
+            int totalRegistros = 0;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosPlanAfiliados();
+            DataTable dt = cg.ConsultarPagosRecientes(out valorTotal, out totalRegistros);
             rpPagos.DataSource = dt;
             rpPagos.DataBind();
             dt.Dispose();
@@ -132,18 +136,18 @@ namespace fpWebApp
                         sb.Append("<tr>");
                         sb.Append("<th>ID</th><th>Documento afiliado</th><th>Nombre afiliado</th><th>Tipo pago</th><th>Valor</th><th>Fecha Cre.</th>");
                         sb.Append("<th>Estado</th><th>Usuario</th><th>Canal de Venta</th>");
-                        sb.Append("</tr>");                   
-                            sb.Append("<tr>");
-                            sb.Append($"<td>{dt.Rows[0]["idAfiliadoPlan"].ToString()}</td>");
-                            sb.Append($"<td>{dt.Rows[0]["DocumentoAfiliado"].ToString()}</td>");
-                            sb.Append($"<td>{dt.Rows[0]["NombreAfiliado"].ToString()}</td>");
-                            sb.Append($"<td>{dt.Rows[0]["TipoPago"].ToString()}</td>");
-                            sb.Append($"<td>{dt.Rows[0]["Valor"].ToString()}</td>");
-                            sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaHoraPago"].ToString())) + "</td>");
-                            sb.Append($"<td>{"Aprobado"}</td>");
-                            sb.Append($"<td>{dt.Rows[0]["Usuario"].ToString()}</td>");
-                            sb.Append($"<td>{dt.Rows[0]["CanalVenta"].ToString()}</td>");
-                            sb.Append("</tr>");
+                        sb.Append("</tr>");
+                        sb.Append("<tr>");
+                        sb.Append($"<td>{dt.Rows[0]["idAfiliadoPlan"].ToString()}</td>");
+                        sb.Append($"<td>{dt.Rows[0]["DocumentoAfiliado"].ToString()}</td>");
+                        sb.Append($"<td>{dt.Rows[0]["NombreAfiliado"].ToString()}</td>");
+                        sb.Append($"<td>{dt.Rows[0]["TipoPago"].ToString()}</td>");
+                        sb.Append($"<td>{dt.Rows[0]["Valor"].ToString()}</td>");
+                        sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaHoraPago"].ToString())) + "</td>");
+                        sb.Append($"<td>{"Aprobado"}</td>");
+                        sb.Append($"<td>{dt.Rows[0]["Usuario"].ToString()}</td>");
+                        sb.Append($"<td>{dt.Rows[0]["CanalVenta"].ToString()}</td>");
+                        sb.Append("</tr>");
                         sb.Append("</table>");
                         break;
                     case "Transferencia":
@@ -160,7 +164,7 @@ namespace fpWebApp
                         sb.Append($"<td>{dt.Rows[0]["Valor"].ToString()}</td>");
                         sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaHoraPago"].ToString())) + "</td>");
                         sb.Append($"<td>{dt.Rows[0]["Banco"].ToString()}</td>");
-                        sb.Append($"<td>{"Aprobado"}</td>");                        
+                        sb.Append($"<td>{"Aprobado"}</td>");
                         sb.Append($"<td>{dt.Rows[0]["Usuario"].ToString()}</td>");
                         sb.Append($"<td>{dt.Rows[0]["CanalVenta"].ToString()}</td>");
                         sb.Append("</tr>");
@@ -231,7 +235,7 @@ namespace fpWebApp
                                 sb.Append($"<td>{pago.Valor}</td>");
                                 sb.Append($"<td>{pago.MetodoPago}</td>");
                                 sb.Append($"<td>{pago.Estado}</td>");
-                                sb.Append($"<td>{pago.Referencia}</td>");                                
+                                sb.Append($"<td>{pago.Referencia}</td>");
                                 sb.Append($"<td>{dt.Rows[0]["Usuario"].ToString()}</td>");
                                 sb.Append($"<td>{dt.Rows[0]["CanalVenta"].ToString()}</td>");
                                 sb.Append("</tr>");
@@ -247,7 +251,7 @@ namespace fpWebApp
                         }
                         break;
                     default:
-                        prettyJson = JsonConvert.SerializeObject(new { error = "Sin datos del tipo de pago: " });                        
+                        prettyJson = JsonConvert.SerializeObject(new { error = "Sin datos del tipo de pago: " });
                         break;
                 }
             }
@@ -276,9 +280,40 @@ namespace fpWebApp
 
         }
 
+
+
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarPagosPorTipo(ddlTipoPago.SelectedValue.ToString(), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
 
+                if (dt.Rows.Count > 0)
+                {
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        var hoja = wb.Worksheets.Add(dt, "Pagos");
+                        hoja.Columns().AdjustToContents();
+                        Response.Clear();
+                        Response.Buffer = true;
+                        Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        Response.AddHeader("content-disposition", "attachment;filename=PagosRecientes.xlsx");
+
+                        using (MemoryStream memoryStream = new MemoryStream())
+                        {
+                            wb.SaveAs(memoryStream);
+                            memoryStream.WriteTo(Response.OutputStream);
+                            HttpContext.Current.ApplicationInstance.CompleteRequest();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+            }
         }
 
 

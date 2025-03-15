@@ -4246,9 +4246,41 @@ namespace fpWebApp
             return dt;
         }
 
-        public DataTable ConsultarPagosRecientes()
+        //public DataTable ConsultarPagosRecientes()
+        //{
+        //    DataTable dt = new DataTable();
+
+        //    try
+        //    {
+        //        string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+        //        using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+        //        {
+        //            using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PAGOS_RECIENTES", mysqlConexion))
+        //            {
+        //                cmd.CommandType = CommandType.StoredProcedure;
+        //                using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+        //                {
+        //                    mysqlConexion.Open();
+        //                    dataAdapter.Fill(dt);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        dt = new DataTable();
+        //        dt.Columns.Add("Error", typeof(string));
+        //        dt.Rows.Add(ex.Message);
+        //    }
+
+        //    return dt;
+        //}
+
+        public DataTable ConsultarPagosRecientes(out decimal valorTotal, out int totalRegistros)
         {
             DataTable dt = new DataTable();
+            valorTotal = 0;
+            totalRegistros = 0;
 
             try
             {
@@ -4258,10 +4290,29 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PAGOS_RECIENTES", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
+
+                        MySqlParameter ValorTotal = new MySqlParameter("@p_total_valor", MySqlDbType.Decimal);
+                        MySqlParameter TotalRegistros = new MySqlParameter("@v_total_registros", MySqlDbType.Int32); 
+
+                        ValorTotal.Direction = ParameterDirection.Output;
+                        TotalRegistros.Direction = ParameterDirection.Output;
+
+                        cmd.Parameters.Add(ValorTotal);
+                        cmd.Parameters.Add(TotalRegistros);
+
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
                         {
                             mysqlConexion.Open();
                             dataAdapter.Fill(dt);
+
+                            if (ValorTotal.Value != DBNull.Value)
+                            {
+                                valorTotal = Convert.ToDecimal(ValorTotal.Value);
+                            }
+                            if (TotalRegistros.Value != DBNull.Value)
+                            {
+                                totalRegistros = Convert.ToInt32(TotalRegistros.Value); 
+                            }
                         }
                     }
                 }
@@ -4305,6 +4356,7 @@ namespace fpWebApp
 
             return dt;
         }
+
 
         public DataTable ConsultarPagosPorId(int idAfiliadoPlan)
         {
