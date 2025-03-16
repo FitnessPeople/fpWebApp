@@ -1045,8 +1045,9 @@ namespace fpWebApp
             string parametro = string.Empty;
             string tester = string.Empty;
             string mensaje = string.Empty;
+            int idempresa = 4;//Wompi
             clasesglobales cg = new clasesglobales();
-            DataTable dti = cg.ConsultarUrl(4);
+            DataTable dti = cg.ConsultarUrl(idempresa);
 
             string strFechaHoy = string.Format("{0:yyyy-MM-dd}", DateTime.Now);
 
@@ -1054,7 +1055,7 @@ namespace fpWebApp
             //parametro = "?from_date=" + strFechaHoy + "&until_date=" + strFechaHoy + "&page=1&page_size=10&order_by=created_at&order=DESC";
 
             string url = dti.Rows[0]["urlTest"].ToString() + parametro;
-            string[] respuesta = cg.EnviarPeticionGet(url, out mensaje);
+            string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
             JToken token = JToken.Parse(respuesta[0]);
             string prettyJson = token.ToString(Formatting.Indented);
 
