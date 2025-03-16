@@ -143,9 +143,9 @@ namespace fpWebApp
             }
             ltDetalle.Text += "</table>";
 
-
+            int idempresa =2;//2 Armatura tabla integraciones
             string parametro = string.Empty;
-            DataTable dti = cg.ConsultarUrl(2);//2 Armatura tabla integraciones
+            DataTable dti = cg.ConsultarUrl(idempresa);
             string urlServicio = dti.Rows[0]["urlTest"].ToString() + parametro;
             if (dt.Rows.Count > 0)
             {
@@ -153,7 +153,7 @@ namespace fpWebApp
             }
             string mensaje = "falso";
             string url = urlServicio + strDocumento + parametro;
-            string[] respuesta = cg.EnviarPeticionGet(url, out mensaje);
+            string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
 
             ltImagen.Text = "<img src=\"img/facial-recognition.png\" width=\"100px\" />";
             if (mensaje=="Ok")
@@ -331,10 +331,11 @@ namespace fpWebApp
         {
             string parametro = string.Empty;
             string mensaje = string.Empty;
+            int idempresa = 1;
 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarPagosPorId(id);
-            DataTable dti = cg.ConsultarUrl(1);
+            DataTable dti = cg.ConsultarUrl(idempresa);
 
             if (dt.Rows.Count > 0)
             {
@@ -342,7 +343,7 @@ namespace fpWebApp
             }
 
             string url = dti.Rows[0]["urlTest"].ToString() + parametro;
-            string[] rta = cg.EnviarPeticionGet(url, out mensaje);
+            string[] rta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
             JToken token = JToken.Parse(rta[0]);
             string prettyJson = token.ToString(Formatting.Indented);
 

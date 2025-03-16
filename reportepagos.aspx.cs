@@ -21,7 +21,7 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            CultureInfo culture = new CultureInfo("es-CO"); // Cambia según el país
+            CultureInfo culture = new CultureInfo("es-CO"); 
             System.Threading.Thread.CurrentThread.CurrentCulture = culture;
             System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
 
@@ -121,6 +121,7 @@ namespace fpWebApp
             string tipoPago = string.Empty;
             StringBuilder sb = new StringBuilder();
             clasesglobales cg = new clasesglobales();
+            int idempresa = 1;
 
             try
             {
@@ -176,7 +177,7 @@ namespace fpWebApp
                         break;
                     case "Wompi":
 
-                        DataTable dti = cg.ConsultarUrl(1);//1-Wompi 2-Armatura 
+                        DataTable dti = cg.ConsultarUrl(idempresa);//1-Wompi 2-Armatura 
 
                         if (dt.Rows.Count > 0)
                         {
@@ -185,7 +186,7 @@ namespace fpWebApp
                         }
 
                         string url = dti.Rows[0]["urlTest"].ToString() + parametro;
-                        string[] respuesta = cg.EnviarPeticionGet(url, out mensaje);
+                        string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(),  out mensaje);
                         JToken token = JToken.Parse(respuesta[0]);
                         string prettyJson = token.ToString(Formatting.Indented);
 
@@ -263,9 +264,6 @@ namespace fpWebApp
             return sb.ToString();
         }
 
-
-
-
         protected void rpPagos_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
@@ -279,8 +277,6 @@ namespace fpWebApp
             }
 
         }
-
-
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
@@ -311,7 +307,6 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-
                 Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
             }
         }

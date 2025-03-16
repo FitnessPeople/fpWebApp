@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.IO;
 using System.Net;
+using static fpWebApp.reportepagosmulticanal;
 
 namespace fpWebApp
 {
@@ -216,19 +217,26 @@ namespace fpWebApp
 
         }
 
-        public string[] EnviarPeticionGet(string url, out string mensaje)
+        public string[] EnviarPeticionGet(string url, string idempresa, out string mensaje)
         {
             string[] strConjuntoResultados = new string[2];
             string resultado = "";
             string resultadoj = "";
+            string auth = string.Empty;
+            DataTable dt = new DataTable();
 
+            if(idempresa=="4")
+            {
+                dt = ConsultarUrl(Convert.ToInt32(idempresa));
+                auth = dt.Rows[0]["urlServicioAd1"].ToString();
+            }           
+            
             try
             {
                 WebRequest oRequest = WebRequest.Create(url);
                 oRequest.Method = "GET";
                 oRequest.ContentType = "application/json;charset=UTF-8";
-                oRequest.Headers.Add("Authorization", "Bearer prv_test_GWPWL8e9md24zYyTuF5KojJmH7Y4Sez2");
-                //oRequest.Headers.Add("Authorization", "Bearer prv_prod_h7JHlOIL6EjCzotPnupYSbzy16ulQ5DO");
+                oRequest.Headers.Add("Authorization", auth);
 
                 WebResponse oResponse = oRequest.GetResponse();
                 using (var oSr = new StreamReader(oResponse.GetResponseStream()))
@@ -4469,6 +4477,63 @@ namespace fpWebApp
             return dt;
         }
 
+        public DataTable InsertarYObtenerTransaccionesWompi(string json)
+        {
+            DataTable dataTable = new DataTable();
+            try
+            {
+                var data = JsonConvert.DeserializeObject<Root>(json);
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection conn = new MySqlConnection(strConexion))
+                {
+                    conn.Open();
+
+                      foreach (var item in data.data)
+                    {
+                        using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_DATOS_JSON_WOMPI", conn))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+
+                            cmd.Parameters.AddWithValue("@p_id", item.id);
+                            cmd.Parameters.AddWithValue("@p_created_at", DateTime.Parse(item.created_at));
+                            cmd.Parameters.AddWithValue("@p_finalized_at", DateTime.Parse(item.finalized_at));
+                            cmd.Parameters.AddWithValue("@p_amount_in_cents", item.amount_in_cents);
+                            cmd.Parameters.AddWithValue("@p_reference", item.reference);
+                            cmd.Parameters.AddWithValue("@p_customer_email", item.customer_email);
+                            cmd.Parameters.AddWithValue("@p_currency", item.currency);
+                            cmd.Parameters.AddWithValue("@p_payment_method_type", item.payment_method_type);
+                            cmd.Parameters.AddWithValue("@p_status", item.status);
+                            cmd.Parameters.AddWithValue("@p_status_message", (object)item.status_message ?? DBNull.Value);
+                            cmd.Parameters.AddWithValue("@p_device_id", item.customer_data.device_id);
+                            cmd.Parameters.AddWithValue("@p_full_name", item.customer_data.full_name);
+                            cmd.Parameters.AddWithValue("@p_phone_number", item.customer_data.phone_number);
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_DATOS_JSON_WOMPI", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                        {
+                            adapter.Fill(dataTable);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: " + ex.Message);
+            }
+
+            return dataTable;
+        }
+
+
+
+
 
         #endregion
 
@@ -5546,5 +5611,17 @@ namespace fpWebApp
         public string PublicKeyComercio { get; set; }
         public string EmailComercio { get; set; }
         public string Estado3DS { get; set; }
+        public CustomerData customer_data { get; set; }
+    }
+    public class Root
+    {
+        public List<Datum> data { get; set; }
+    }
+
+    public class CustomerData
+    {
+        public string device_id { get; set; }
+        public string full_name { get; set; }
+        public string phone_number { get; set; }
     }
 }
