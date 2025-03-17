@@ -39,13 +39,15 @@ namespace fpWebApp
                     }
                     if (ViewState["Consulta"].ToString() == "1")
                     {
+                        listarDetalle();
 
-                        if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             txbFechaIni.Attributes.Add("type", "date");
                             txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
                             txbFechaFin.Attributes.Add("type", "date");
                             txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+                            txbEfeFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+                            listaTransaccionesEfectivo("Efectivo",(txbEfeFechaIni.Value.ToString()),(txbEfeFechaFin.Value.ToString()));
 
                             listaTransaccionesEfectivo("Efectivo", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
 
@@ -120,8 +122,6 @@ namespace fpWebApp
 
         private void listaTransaccionesWompi(string tipoPago, string fechaIni, string fechaFin)
         {
-            bool rtaStatus = false;
-            clasesglobales cg = new clasesglobales();
             DataTable dt1 = listarDetalle(out rtaStatus);
 
             if (rtaStatus)
@@ -153,6 +153,8 @@ namespace fpWebApp
                     ltError.Text = "Ocurrió un error desconocido.";
                     trError.Visible = true;
                 }                
+            dt.Dispose();
+        }
 
                 rpWompi.DataSource = new DataTable();
                 rpWompi.DataBind();
@@ -184,8 +186,6 @@ namespace fpWebApp
             string url = dti.Rows[0]["urlTest"].ToString() + parametro;
             string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
 
-            JToken token = JToken.Parse(respuesta[0]);
-            string prettyJson = token.ToString(Formatting.Indented);
 
             if (mensaje == "Ok")
             {
@@ -299,6 +299,8 @@ namespace fpWebApp
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.ConsultarPagosPorTipo("Datafono", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
                 string nombreArchivo = $"Datafono_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+            var data = JsonConvert.DeserializeObject<Root>(prettyJson);
+            DataTable respuestaWompi = cg.InsertarYObtenerTransaccionesWompi(prettyJson);
 
                 if (dt.Rows.Count > 0)
                 {
