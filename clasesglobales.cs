@@ -4527,11 +4527,6 @@ namespace fpWebApp
             return dataTable;
         }
 
-
-
-
-
-
         #endregion
 
         #region Planes
