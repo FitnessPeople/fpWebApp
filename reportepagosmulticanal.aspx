@@ -368,11 +368,10 @@
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                     <th data-breakpoints="xs">Documento</th>
+                                                     <th data-breakpoints="xs">id</th>
                                                      <th data-breakpoints="xs">Afiliado</th>
                                                      <th data-breakpoints="xs">Valor</th>
-                                                     <th data-breakpoints="xs">Fecha Hora</th>
-                                                     <th data-breakpoints="xs">Referencia</th>
+                                                     <th data-breakpoints="xs">Fecha Hora</th>                                                    
                                                      <th data-breakpoints="xs">Estado</th>
                                                      <th data-breakpoints="xs">Canal</th>
                                                 </tr>
@@ -381,13 +380,12 @@
                                                 <asp:Repeater ID="rpWompi" runat="server">                                                
                                                     <ItemTemplate>
                                                         <tr>
-                                                            <td><%# Eval("DocumentoAfiliado") %></td>
-                                                            <td><%# Eval("NombreAfiliado") %></td>
-                                                            <td><%# Eval("Valor", "{0:C0}") %></td>                                                        
-                                                            <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
-                                                            <td><%# Eval("idReferencia") %></td>  
-                                                            <td><span class="badge badge-info"><%# Eval("EstadoPago") %></span></td>                                                       
-                                                            <td><%# Eval("CanalVenta") %></td>
+                                                            <td><%# Eval("id") %></td>
+                                                            <td><%# Eval("full_name") %></td>
+                                                            <td><%# Eval("amount_in_cents", "{0:C0}") %></td>                                                        
+                                                            <td><%# Eval("created_at", "{0:dd MMM yyyy HH:mm}") %></td>                                                           
+                                                            <td><span class="badge badge-info"><%# Eval("status") %></span></td>                                                       
+                                                            <td><%# Eval("phone_number") %></td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>

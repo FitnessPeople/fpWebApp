@@ -4489,11 +4489,13 @@ namespace fpWebApp
                 {
                     conn.Open();
 
-                      foreach (var item in data.data)
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_DATOS_JSON_WOMPI", conn))
                     {
-                        using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_DATOS_JSON_WOMPI", conn))
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        foreach (var item in data.data)
                         {
-                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.Clear();
 
                             cmd.Parameters.AddWithValue("@p_id", item.id);
                             cmd.Parameters.AddWithValue("@p_created_at", DateTime.Parse(item.created_at));
@@ -4509,16 +4511,10 @@ namespace fpWebApp
                             cmd.Parameters.AddWithValue("@p_full_name", item.customer_data.full_name);
                             cmd.Parameters.AddWithValue("@p_phone_number", item.customer_data.phone_number);
 
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_DATOS_JSON_WOMPI", conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
-                        {
-                            adapter.Fill(dataTable);
+                            using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                            {
+                                adapter.Fill(dataTable);
+                            }
                         }
                     }
                 }
@@ -4530,6 +4526,7 @@ namespace fpWebApp
 
             return dataTable;
         }
+
 
 
 

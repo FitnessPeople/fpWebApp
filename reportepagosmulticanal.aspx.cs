@@ -35,12 +35,10 @@ namespace fpWebApp
                         divContenido.Visible = false;
                     }
                     if (ViewState["Consulta"].ToString() == "1")
-                    {
-                        listarDetalle();
+                    {                       
 
                         if (ViewState["CrearModificar"].ToString() == "1")
-                        {
-                            listarDetalle();
+                        {                           
                             txbEfeFechaIni.Attributes.Add("type", "date");
                             txbEfeFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
                             txbEfeFechaFin.Attributes.Add("type", "date");
@@ -131,8 +129,13 @@ namespace fpWebApp
         private void listaTransaccionesWompi(string tipoPago, string fechaIni, string fechaFin)
         {
             clasesglobales cg = new clasesglobales();
+            DataTable dt1 = listarDetalle();
+            foreach (DataRow row in dt1.Rows)
+            {
+                row["amount_in_cents"] = Convert.ToInt32(row["amount_in_cents"]) / 100;
+            }
             DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
-            rpWompi.DataSource = dt;
+            rpWompi.DataSource = dt1;
             rpWompi.DataBind();
             ltValortotalWompi.Text = valorTotal.ToString("C0");
             dt.Dispose();
@@ -155,8 +158,6 @@ namespace fpWebApp
             string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
             JToken token = JToken.Parse(respuesta[0]);
             string prettyJson = token.ToString(Formatting.Indented);
-
-            var data = JsonConvert.DeserializeObject<Root>(prettyJson);
             DataTable respuestaWompi = cg.InsertarYObtenerTransaccionesWompi(prettyJson);
 
             return respuestaWompi;
