@@ -39,17 +39,13 @@ namespace fpWebApp
                     }
                     if (ViewState["Consulta"].ToString() == "1")
                     {
-                        listarDetalle();
 
                         {
                             txbFechaIni.Attributes.Add("type", "date");
                             txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
                             txbFechaFin.Attributes.Add("type", "date");
                             txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-                            txbEfeFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-                            listaTransaccionesEfectivo("Efectivo",(txbEfeFechaIni.Value.ToString()),(txbEfeFechaFin.Value.ToString()));
-
-                            listaTransaccionesEfectivo("Efectivo", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
+                            listaTransaccionesEfectivo("Efectivo",(txbFechaIni.Value.ToString()),(txbFechaFin.Value.ToString()));
 
                             listaTransaccionesDatafono("Datafono", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
 
