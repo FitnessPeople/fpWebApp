@@ -284,7 +284,8 @@ namespace fpWebApp
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
             try
-            {// se usó NPOI en nuguet
+            {
+                // se instaló NPOI en nuguet
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.ConsultarPagosPorTipo(ddlTipoPago.SelectedValue.ToString(), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
                 string nombreArchivo = $"{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
