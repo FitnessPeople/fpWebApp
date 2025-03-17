@@ -12,8 +12,11 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Globalization;
-using ClosedXML.Excel;
 using DocumentFormat.OpenXml.InkML;
+using OfficeOpenXml;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using NPOI.SS.Formula.Functions;
 
 namespace fpWebApp
 {
@@ -281,27 +284,52 @@ namespace fpWebApp
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
             try
-            {
+            {// se usó NPOI en nuguet
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.ConsultarPagosPorTipo(ddlTipoPago.SelectedValue.ToString(), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+                string nombreArchivo = $"{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
                 {
-                    using (XLWorkbook wb = new XLWorkbook())
+                    IWorkbook workbook = new XSSFWorkbook();
+                    ISheet sheet = workbook.CreateSheet("Pagos");
+
+                    IRow headerRow = sheet.CreateRow(0);
+                    for (int i = 0; i < dt.Columns.Count; i++)
                     {
-                        var hoja = wb.Worksheets.Add(dt, "Pagos");
-                        hoja.Columns().AdjustToContents();
+                        ICell cell = headerRow.CreateCell(i);
+                        cell.SetCellValue(dt.Columns[i].ColumnName);
+                    }
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        IRow row = sheet.CreateRow(i + 1);
+                        for (int j = 0; j < dt.Columns.Count; j++)
+                        {
+                            object value = dt.Rows[i][j];
+                            row.CreateCell(j).SetCellValue(value != DBNull.Value ? value.ToString() : "");
+                        }
+                    }
+
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        sheet.AutoSizeColumn(i);
+                    }
+
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        workbook.Write(memoryStream);
+                        workbook.Close(); 
+
+                        byte[] byteArray = memoryStream.ToArray();
+
                         Response.Clear();
                         Response.Buffer = true;
                         Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                        Response.AddHeader("content-disposition", "attachment;filename=PagosRecientes.xlsx");
-
-                        using (MemoryStream memoryStream = new MemoryStream())
-                        {
-                            wb.SaveAs(memoryStream);
-                            memoryStream.WriteTo(Response.OutputStream);
-                            HttpContext.Current.ApplicationInstance.CompleteRequest();
-                        }
+                        Response.AddHeader("Content-Disposition", $"attachment; filename={nombreArchivo}.xlsx");
+                        Response.BinaryWrite(byteArray);
+                        Response.Flush();
+                        HttpContext.Current.ApplicationInstance.CompleteRequest(); 
                     }
                 }
             }
