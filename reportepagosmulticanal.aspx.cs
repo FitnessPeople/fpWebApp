@@ -118,7 +118,7 @@ namespace fpWebApp
 
         private void listaTransaccionesWompi(string tipoPago, string fechaIni, string fechaFin)
         {
-            DataTable dt1 = listarDetalle(out rtaStatus);
+            DataTable dt1 = listarDetalle(out bool rtaStatus);
 
             if (rtaStatus)
             {
