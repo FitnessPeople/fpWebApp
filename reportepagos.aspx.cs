@@ -288,6 +288,11 @@ namespace fpWebApp
                 // se instaló NPOI en nuguet
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.ConsultarPagosPorTipo(ddlTipoPago.SelectedValue.ToString(), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+                if (dt.Rows.Count == 0)
+                {
+                    dt = cg.ConsultarPagosRecientes(out decimal valorTotal, out int totalRegistros);
+
+                }
                 string nombreArchivo = $"{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
