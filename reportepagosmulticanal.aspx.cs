@@ -153,7 +153,7 @@ namespace fpWebApp
             string strFechaInicioMes = string.Format("{0:yyyy-MM-01}", DateTime.Now);
             string strFechaHoy = string.Format("{0:yyyy-MM-dd}", DateTime.Now);
 
-           parametro = "?from_date=2025-01-01&until_date=2025-03-11&page=1&page_size=50&order_by=created_at&order=DESC";
+           parametro = "?from_date=2024-01-01&until_date=2025-03-11&page=1&page_size=50&order_by=created_at&order=DESC";
            //parametro = "?from_date=" + strFechaInicioMes + "&until_date=" + strFechaHoy + "&page=1&page_size=10&order_by=created_at&order=DESC";
 
             string url = dti.Rows[0]["urlTest"].ToString() + parametro;
