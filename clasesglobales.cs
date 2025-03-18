@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Net;
 using static fpWebApp.reportepagosmulticanal;
+using System.Globalization;
 
 namespace fpWebApp
 {
@@ -4497,9 +4498,19 @@ namespace fpWebApp
                         {
                             cmd.Parameters.Clear();
 
+                            // Manejo de fechas
+                            DateTime createdAt, finalizedAt;
+                            bool createdAtValid = DateTime.TryParseExact(item.created_at,
+                                new[] { "yyyy-MM-ddTHH:mm:ss.fffZ", "yyyy-MM-ddTHH:mm:ss.fZ" },
+                                CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out createdAt);
+
+                            bool finalizedAtValid = DateTime.TryParseExact(item.finalized_at,
+                                new[] { "yyyy-MM-ddTHH:mm:ss.fffZ", "yyyy-MM-ddTHH:mm:ss.fZ" },
+                                CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out finalizedAt);
+
                             cmd.Parameters.AddWithValue("@p_id", item.id);
-                            cmd.Parameters.AddWithValue("@p_created_at", DateTime.Parse(item.created_at));
-                            cmd.Parameters.AddWithValue("@p_finalized_at", DateTime.Parse(item.finalized_at));
+                            cmd.Parameters.AddWithValue("@p_created_at", createdAtValid ? (object)createdAt : DBNull.Value);
+                            cmd.Parameters.AddWithValue("@p_finalized_at", finalizedAtValid ? (object)finalizedAt : DBNull.Value);
                             cmd.Parameters.AddWithValue("@p_amount_in_cents", item.amount_in_cents);
                             cmd.Parameters.AddWithValue("@p_reference", item.reference);
                             cmd.Parameters.AddWithValue("@p_customer_email", item.customer_email);
@@ -4507,9 +4518,27 @@ namespace fpWebApp
                             cmd.Parameters.AddWithValue("@p_payment_method_type", item.payment_method_type);
                             cmd.Parameters.AddWithValue("@p_status", item.status);
                             cmd.Parameters.AddWithValue("@p_status_message", (object)item.status_message ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@p_device_id", item.customer_data.device_id);
-                            cmd.Parameters.AddWithValue("@p_full_name", item.customer_data.full_name);
-                            cmd.Parameters.AddWithValue("@p_phone_number", item.customer_data.phone_number);
+
+                            // Manejo de customer_data que puede ser `null`
+                            cmd.Parameters.AddWithValue("@p_device_id", string.IsNullOrEmpty(item.customer_data?.device_id) ? DBNull.Value : (object)item.customer_data.device_id);
+                            cmd.Parameters.AddWithValue("@p_full_name", string.IsNullOrEmpty(item.customer_data?.full_name) ? DBNull.Value : (object)item.customer_data.full_name);
+                            cmd.Parameters.AddWithValue("@p_phone_number", string.IsNullOrEmpty(item.customer_data?.phone_number) ? DBNull.Value : (object)item.customer_data.phone_number);
+
+                            // Manejo de payment_method.extra
+                            var extra = item.payment_method?.extra;
+                            cmd.Parameters.AddWithValue("@p_card_bin", extra?.bin ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@p_card_name", extra?.name ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@p_card_brand", extra?.brand ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@p_card_exp_year", extra?.exp_year ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@p_card_exp_month", extra?.exp_month ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@p_card_last_four", extra?.last_four ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@p_card_holder", extra?.card_holder ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@p_card_type", extra?.card_type ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@p_is_three_ds", extra?.is_three_ds ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@p_three_ds_step", extra?.three_ds_auth?.three_ds_auth?.current_step ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@p_three_ds_status", extra?.three_ds_auth?.three_ds_auth?.current_step_status ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@p_external_identifier", extra?.external_identifier ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@p_processor_response_code", extra?.processor_response_code ?? (object)DBNull.Value);
 
                             using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
                             {
@@ -4526,6 +4555,8 @@ namespace fpWebApp
 
             return dataTable;
         }
+
+
 
         #endregion
 
@@ -5605,6 +5636,22 @@ namespace fpWebApp
         public string Estado3DS { get; set; }
         public CustomerData customer_data { get; set; }
     }
+    public class Datum
+    {
+        public string id { get; set; }
+        public string created_at { get; set; }
+        public string finalized_at { get; set; }
+        public long amount_in_cents { get; set; }
+        public string reference { get; set; }
+        public string customer_email { get; set; }
+        public string currency { get; set; }
+        public string payment_method_type { get; set; }
+        public string status { get; set; }
+        public string status_message { get; set; }
+        public CustomerData customer_data { get; set; }
+        public PaymentMethod payment_method { get; set; }
+    }
+
     public class Root
     {
         public List<Datum> data { get; set; }
@@ -5615,5 +5662,39 @@ namespace fpWebApp
         public string device_id { get; set; }
         public string full_name { get; set; }
         public string phone_number { get; set; }
+    }
+
+    public class PaymentMethod
+    {
+        public string type { get; set; }
+        public Extra extra { get; set; }
+        public int installments { get; set; }
+    }
+
+    public class Extra
+    {
+        public string bin { get; set; }
+        public string name { get; set; }
+        public string brand { get; set; }
+        public string exp_year { get; set; }
+        public string card_type { get; set; }
+        public string exp_month { get; set; }
+        public string last_four { get; set; }
+        public string card_holder { get; set; }
+        public bool is_three_ds { get; set; }
+        public ThreeDsAuth three_ds_auth { get; set; }
+        public string external_identifier { get; set; }
+        public string processor_response_code { get; set; }
+    }
+
+    public class ThreeDsAuth
+    {
+        public ThreeDsAuthStep three_ds_auth { get; set; }
+    }
+
+    public class ThreeDsAuthStep
+    {
+        public string current_step { get; set; }
+        public string current_step_status { get; set; }
     }
 }

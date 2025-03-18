@@ -373,6 +373,7 @@
                                                      <th data-breakpoints="xs">Valor</th>
                                                      <th data-breakpoints="xs">Fecha Hora</th>                                                    
                                                      <th data-breakpoints="xs">Estado</th>
+                                                     <th data-breakpoints="xs">Método</th>
                                                      <th data-breakpoints="xs">Canal</th>
                                                 </tr>
                                             </thead>
@@ -381,11 +382,12 @@
                                                     <ItemTemplate>
                                                         <tr>
                                                             <td><%# Eval("id") %></td>
-                                                            <td><%# Eval("full_name") %></td>
+                                                            <td><%# Eval("full_name") %></td>                                                           
                                                             <td><%# Eval("amount_in_cents", "{0:C0}") %></td>                                                        
                                                             <td><%# Eval("created_at", "{0:dd MMM yyyy HH:mm}") %></td>                                                           
-                                                            <td><span class="badge badge-info"><%# Eval("status") %></span></td>                                                       
-                                                            <td><%# Eval("phone_number") %></td>
+                                                            <td><span class="badge badge-info"><%# Eval("status") %></span></td> 
+                                                             <td><%# Eval("payment_method_type") %></td>
+                                                            <td><%# Eval("Canal") %></td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
