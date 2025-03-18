@@ -53,11 +53,13 @@ namespace fpWebApp
 
                     strQuery = "SELECT * " +
                         "FROM Afiliados " +
-                        "WHERE idAfiliado = 10036 ";
+                        "WHERE idAfiliado = 12261 ";
 
                     DataTable dt1 = cg.TraerDatos(strQuery);
 
                     strTextoContrato = strTextoContrato.Replace("#NOMBRE#", dt1.Rows[0]["NombreAfiliado"].ToString() + " " + dt1.Rows[0]["ApellidoAfiliado"].ToString());
+                    strTextoContrato = strTextoContrato.Replace("#DOCUMENTO#", dt1.Rows[0]["DocumentoAfiliado"].ToString());
+                    strTextoContrato = strTextoContrato.Replace("#DIRECCION#", dt1.Rows[0]["DireccionAfiliado"].ToString());
 
                     ltContrato.Text = strTextoContrato;
                 }

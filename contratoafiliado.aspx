@@ -167,7 +167,9 @@
                                 <div class="ibox-content">
                                     <div class="scroll_content">
                                         <p>
-                                            <button onclick="getSel('#NOMBRE#','','hiddenEditor');" class="btn btn-sm btn-info">Nombre Afiliado</button>
+                                            <button id="btnNombreAfiliado" data-button="NOMBRE" onclick="putText('btnNombreAfiliado')" class="btn btn-sm btn-info">Nombre afiliado</button>
+                                            <button id="btnDocumentoAfiliado" data-button="DOCUMENTO" onclick="putText('btnDocumentoAfiliado')" class="btn btn-sm btn-info">Documento afiliado</button>
+                                            <button id="btnDireccionAfiliado" data-button="DIRECCION" onclick="putText('btnDireccionAfiliado')" class="btn btn-sm btn-info">Dirección afiliado</button>
                                         </p>
                                         <div class="row">
                                             <div class="col-lg-12">
@@ -178,7 +180,7 @@
                                                         <asp:HiddenField ID="hiddenEditor" runat="server" />
                                                     </div>
                                                     <div class="form-group">
-                                                        <a href="#" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                        <a href="contratoafiliado" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                         <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
                                                             CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar"
                                                             OnClick="btnAgregar_Click" OnClientClick="guardarContenidoEditor()" />
@@ -236,30 +238,22 @@
     <!-- Page-Level Scripts -->
     <script>
 
-        $(document).ready(function () {
-
-            // Add slimscroll to element
-            $('.scroll_content').slimscroll({
-                height: '400px'
-            })
-
-        });
-
-        function getSel(first, second, elemID) // javascript
+        function putText(idBtn) // javascript
         {
-            // obtiene todo el contenido del <textarea>
-            var txtarea = document.getElementById(elemID);
-            // Posición inicial del texto que tenemos seleccionado
-            var start = txtarea.selectionStart;
-            // Posición final del texto que tenemos seleccionado
-            var finish = txtarea.selectionEnd;
-            // extraemos el texto seleccionado
-            console.log(start);
-            var sel = txtarea.value.substring(start, finish);
-            // agregamos las etiquetas al texto seleccionado
-            var sel = second ? first + sel + second : first + sel;
-            // nos devolvería todo
-            txtarea.value = txtarea.value.substring(0, start) + sel + txtarea.value.substring(finish, txtarea.length);
+            const $btn = document.getElementById(idBtn);
+
+            var contenteditable = document.querySelector("[contenteditable]");
+            var text = contenteditable.innerHTML;
+
+            var selected = window.getSelection();
+            var textoselected = selected.anchorNode.data;
+            var textoantes = textoselected.substring(0, selected.anchorOffset);
+            var textodespues = textoselected.substring(selected.anchorOffset, textoselected.length);
+
+            var textoboton = "<b>#" + $btn.dataset.button + "#</b>";
+
+            var nuevotexto = textoantes + " " + textoboton + " " + textodespues;
+            contenteditable.innerHTML = text.replace(textoselected, nuevotexto);
         }
 
     </script>
