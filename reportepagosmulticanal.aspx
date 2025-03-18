@@ -141,6 +141,21 @@
                     <div class="ibox float-e-margins" runat="server" id="divContenido">
                         <div class="row">
 
+                            <div class="row">
+                              <div class="col-lg-6">
+                               <div class="col-md-4">                                                
+                                 <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker"  />
+                               </div>
+                               <div class="col-md-4">                                    
+                                 <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker"  />
+                               </div>
+                               <div class="col-md-4">
+                                <label><br/></label>
+                                    <asp:Button ID="btnFiltrar" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrarEfe_Click" />
+                              </div>
+                              </div>
+                           </div>
+
                             <div class="col-lg-6">
 
                                 <div class="ibox">

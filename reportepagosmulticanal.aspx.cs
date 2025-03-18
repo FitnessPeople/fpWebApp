@@ -146,14 +146,15 @@ namespace fpWebApp
             string parametro = string.Empty;
             string tester = string.Empty;
             string mensaje = string.Empty;
-            int idempresa = 4;
+            int idempresa = 4; //Wompi
+
             clasesglobales cg = new clasesglobales();
             DataTable dti = cg.ConsultarUrl(idempresa);
 
             string strFechaInicioMes = string.Format("{0:yyyy-MM-01}", DateTime.Now);
             string strFechaHoy = string.Format("{0:yyyy-MM-dd}", DateTime.Now);
 
-           parametro = "?from_date=2024-01-01&until_date=2025-03-11&page=1&page_size=50&order_by=created_at&order=DESC";
+            parametro = "?from_date=2024-01-01&until_date=2025-03-11&page=1&page_size=50&order_by=created_at&order=DESC";
            //parametro = "?from_date=" + strFechaInicioMes + "&until_date=" + strFechaHoy + "&page=1&page_size=10&order_by=created_at&order=DESC";
 
             string url = dti.Rows[0]["urlTest"].ToString() + parametro;
