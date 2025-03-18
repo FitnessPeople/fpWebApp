@@ -2,10 +2,13 @@
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -38,30 +41,19 @@ namespace fpWebApp
                     {                       
 
                         if (ViewState["CrearModificar"].ToString() == "1")
-                        {                           
-                            txbEfeFechaIni.Attributes.Add("type", "date");
-                            txbEfeFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
-                            txbEfeFechaFin.Attributes.Add("type", "date");
-                            txbEfeFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-                            listaTransaccionesEfectivo("Efectivo",(txbEfeFechaIni.Value.ToString()),(txbEfeFechaFin.Value.ToString()));
+                        {
+                            txbFechaIni.Attributes.Add("type", "date");
+                            txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
+                            txbFechaFin.Attributes.Add("type", "date");
+                            txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
 
-                            txbDataFechaIni.Attributes.Add("type", "date");
-                            txbDataFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
-                            txbDataFechaFin.Attributes.Add("type", "date");
-                            txbDataFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-                            listaTransaccionesDatafono("Datafono", (txbEfeFechaIni.Value.ToString()), (txbEfeFechaFin.Value.ToString()));
+                            listaTransaccionesEfectivo("Efectivo",(txbFechaIni.Value.ToString()),(txbFechaFin.Value.ToString()));
 
-                            txbTransFechaIni.Attributes.Add("type", "date");
-                            txbTransFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
-                            txbTransFechaFin.Attributes.Add("type", "date");
-                            txbTransFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-                            listaTransaccionesTransferencia("Transferencia", (txbTransFechaIni.Value.ToString()), (txbTransFechaFin.Value.ToString()));
+                            listaTransaccionesDatafono("Datafono", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
 
-                            txbWompiFechaIni.Attributes.Add("type", "date");
-                            txbWompiFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
-                            txbWompiFechaFin.Attributes.Add("type", "date");
-                            txbWompiFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-                            listaTransaccionesWompi("Transferencia", (txbWompiFechaIni.Value.ToString()), (txbWompiFechaFin.Value.ToString()));
+                            listaTransaccionesTransferencia("Transferencia", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
+
+                            listaTransaccionesWompi("Transferencia", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
 
                         }
                     }
@@ -133,6 +125,10 @@ namespace fpWebApp
             foreach (DataRow row in dt1.Rows)
             {
                 row["amount_in_cents"] = Convert.ToInt32(row["amount_in_cents"]) / 100;
+                string paymentMethod = row["payment_method_type"].ToString().ToLower();
+                row["payment_method_type"] = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(paymentMethod);
+                string status = row["status"].ToString().ToLower();
+                row["status"] = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(status);
             }
             DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
             rpWompi.DataSource = dt1;
@@ -150,70 +146,320 @@ namespace fpWebApp
 
             clasesglobales cg = new clasesglobales();
             DataTable dti = cg.ConsultarUrl(idempresa);
+            DataTable respuestaWompi = new DataTable();
 
-            string strFechaInicioMes = string.Format("{0:yyyy-MM-01}", DateTime.Now);
-            string strFechaHoy = string.Format("{0:yyyy-MM-dd}", DateTime.Now);
-
-            parametro = "?from_date=2024-01-01&until_date=2025-03-11&page=1&page_size=50&order_by=created_at&order=DESC";
-           //parametro = "?from_date=" + strFechaInicioMes + "&until_date=" + strFechaHoy + "&page=1&page_size=10&order_by=created_at&order=DESC";
+            parametro = "?from_date=" + txbFechaIni.Value + "&until_date=" + txbFechaFin.Value + "&page=1&page_size=10&order_by=created_at&order=DESC";
 
             string url = dti.Rows[0]["urlTest"].ToString() + parametro;
             string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
             JToken token = JToken.Parse(respuesta[0]);
             string prettyJson = token.ToString(Formatting.Indented);
-            DataTable respuestaWompi = cg.InsertarYObtenerTransaccionesWompi(prettyJson);
+            bool verificar = VerificarContenido(prettyJson);
+            if (verificar)            
+                respuestaWompi = cg.InsertarYObtenerTransaccionesWompi(prettyJson);            
 
             return respuestaWompi;
         }
 
-        public class Datum
+        private bool VerificarContenido(string respuesta)
         {
-            public string id { get; set; }
-            public string created_at { get; set; }
-            public string finalized_at { get; set; }
-            public string amount_in_cents { get; set; }
-            public string reference { get; set; }
-            public string customer_email { get; set; }
-            public string currency { get; set; }
-            public string payment_method_type { get; set; }
-            public string status { get; set; }
-            public string status_message { get; set; }
-            public string device_id { get; set; }
-            public string full_name { get; set; }
-            public string phone_number { get; set; }
-            public CustomerData customer_data { get; set; }
+            bool rta = true;
+            if (respuesta.Length > 0 && !string.IsNullOrEmpty(respuesta))
+            {
+                JObject jsonObject = JObject.Parse(respuesta); 
+
+                int totalResults = (int)jsonObject["meta"]["total_results"];
+
+                if (totalResults == 0)
+                {
+                    rta = false;
+                }             
+            }
+            else
+            {
+                rta = false;
+            }
+            return rta;
         }
 
-        public class Root
+        //public class Datum
+        //{
+        //    public string id { get; set; }
+        //    public string created_at { get; set; }
+        //    public string finalized_at { get; set; }
+        //    public string amount_in_cents { get; set; }
+        //    public string reference { get; set; }
+        //    public string customer_email { get; set; }
+        //    public string currency { get; set; }
+        //    public string payment_method_type { get; set; }
+        //    public string status { get; set; }
+        //    public string status_message { get; set; }
+        //    public string device_id { get; set; }
+        //    public string full_name { get; set; }
+        //    public string phone_number { get; set; }
+        //    public CustomerData customer_data { get; set; }
+        //}
+
+        //public class CustomerData
+        //{
+        //    public string device_id { get; set; }
+        //    public string full_name { get; set; }
+        //    public string phone_number { get; set; }
+        //}
+
+        protected void btnFiltrar_Click(object sender, EventArgs e)
         {
-            public List<Datum> data { get; set; }
+            listaTransaccionesEfectivo("Efectivo", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+            listaTransaccionesDatafono("Datafono", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+            listaTransaccionesTransferencia("Transferencia", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+            listaTransaccionesWompi("Wompi", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+        }
+        protected void btnExportarEfe_Click(object sender, EventArgs e)
+        {    
+            try
+            {                
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarPagosPorTipo("Efectivo", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+                string nombreArchivo = $"Efectivo_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+
+                if (dt.Rows.Count > 0)
+                {
+                    IWorkbook workbook = new XSSFWorkbook();
+                    ISheet sheet = workbook.CreateSheet("Pagos");
+
+                    IRow headerRow = sheet.CreateRow(0);
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        ICell cell = headerRow.CreateCell(i);
+                        cell.SetCellValue(dt.Columns[i].ColumnName);
+                    }
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        IRow row = sheet.CreateRow(i + 1);
+                        for (int j = 0; j < dt.Columns.Count; j++)
+                        {
+                            object value = dt.Rows[i][j];
+                            row.CreateCell(j).SetCellValue(value != DBNull.Value ? value.ToString() : "");
+                        }
+                    }
+
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        sheet.AutoSizeColumn(i);
+                    }
+
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        workbook.Write(memoryStream);
+                        workbook.Close(); 
+
+                        byte[] byteArray = memoryStream.ToArray();
+
+                        Response.Clear();
+                        Response.Buffer = true;
+                        Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        Response.AddHeader("Content-Disposition", $"attachment; filename={nombreArchivo}.xlsx");
+                        Response.BinaryWrite(byteArray);
+                        Response.Flush();
+                        HttpContext.Current.ApplicationInstance.CompleteRequest(); 
+                    }
+                }
+                else
+                {
+                    Response.Write("<script>alert('No existen registros para esta consulta');</script>");
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+            }
+        }        
+
+        protected void btnExportarData_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarPagosPorTipo("Datafono", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+                string nombreArchivo = $"Datafono_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+
+                if (dt.Rows.Count > 0)
+                {
+                    IWorkbook workbook = new XSSFWorkbook();
+                    ISheet sheet = workbook.CreateSheet("Pagos");
+
+                    IRow headerRow = sheet.CreateRow(0);
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        ICell cell = headerRow.CreateCell(i);
+                        cell.SetCellValue(dt.Columns[i].ColumnName);
+                    }
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        IRow row = sheet.CreateRow(i + 1);
+                        for (int j = 0; j < dt.Columns.Count; j++)
+                        {
+                            object value = dt.Rows[i][j];
+                            row.CreateCell(j).SetCellValue(value != DBNull.Value ? value.ToString() : "");
+                        }
+                    }
+
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        sheet.AutoSizeColumn(i);
+                    }
+
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        workbook.Write(memoryStream);
+                        workbook.Close();
+
+                        byte[] byteArray = memoryStream.ToArray();
+
+                        Response.Clear();
+                        Response.Buffer = true;
+                        Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        Response.AddHeader("Content-Disposition", $"attachment; filename={nombreArchivo}.xlsx");
+                        Response.BinaryWrite(byteArray);
+                        Response.Flush();
+                        HttpContext.Current.ApplicationInstance.CompleteRequest();
+                    }
+                }
+                else
+                {
+                    Response.Write("<script>alert('No existen registros para esta consulta');</script>");
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+            }
         }
 
-        public class CustomerData
+        protected void btnExportarTrans_Click(object sender, EventArgs e)
         {
-            public string device_id { get; set; }
-            public string full_name { get; set; }
-            public string phone_number { get; set; }
-        }
-        protected void btnFiltrarEfe_Click(object sender, EventArgs e)
-        {
-            listaTransaccionesEfectivo("Efectivo", txbEfeFechaIni.Value.ToString(), txbEfeFechaFin.Value.ToString());
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarPagosPorTipo("Transferencia", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+                string nombreArchivo = $"Transferencia_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+
+                if (dt.Rows.Count > 0)
+                {
+                    IWorkbook workbook = new XSSFWorkbook();
+                    ISheet sheet = workbook.CreateSheet("Pagos");
+
+                    IRow headerRow = sheet.CreateRow(0);
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        ICell cell = headerRow.CreateCell(i);
+                        cell.SetCellValue(dt.Columns[i].ColumnName);
+                    }
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        IRow row = sheet.CreateRow(i + 1);
+                        for (int j = 0; j < dt.Columns.Count; j++)
+                        {
+                            object value = dt.Rows[i][j];
+                            row.CreateCell(j).SetCellValue(value != DBNull.Value ? value.ToString() : "");
+                        }
+                    }
+
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        sheet.AutoSizeColumn(i);
+                    }
+
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        workbook.Write(memoryStream);
+                        workbook.Close();
+
+                        byte[] byteArray = memoryStream.ToArray();
+
+                        Response.Clear();
+                        Response.Buffer = true;
+                        Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        Response.AddHeader("Content-Disposition", $"attachment; filename={nombreArchivo}.xlsx");
+                        Response.BinaryWrite(byteArray);
+                        Response.Flush();
+                        HttpContext.Current.ApplicationInstance.CompleteRequest();
+                    }
+                }
+                else
+                {
+                    Response.Write("<script>alert('No existen registros para esta consulta');</script>");
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+            }
         }
 
-        protected void btnFiltrarData_Click(object sender, EventArgs e)
+        protected void btnExportarWompi_Click(object sender, EventArgs e)
         {
-            listaTransaccionesDatafono("Datafono", txbDataFechaIni.Value.ToString(), txbDataFechaFin.Value.ToString());
-        }
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarPagosPorTipo("Wompi", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+                string nombreArchivo = $"Wompi_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
-        protected void btnFiltrarTrans_Click(object sender, EventArgs e)
-        {
-            listaTransaccionesTransferencia("Transferencia", txbTransFechaIni.Value.ToString(), txbTransFechaFin.Value.ToString());
+                if (dt.Rows.Count > 0)
+                {
+                    IWorkbook workbook = new XSSFWorkbook();
+                    ISheet sheet = workbook.CreateSheet("Pagos");
 
-        }
+                    IRow headerRow = sheet.CreateRow(0);
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        ICell cell = headerRow.CreateCell(i);
+                        cell.SetCellValue(dt.Columns[i].ColumnName);
+                    }
 
-        protected void btnFiltrarWompi_Click(object sender, EventArgs e)
-        {
-            listaTransaccionesWompi("Wompi", txbWompiFechaIni.Value.ToString(), txbWompiFechaFin.Value.ToString());
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        IRow row = sheet.CreateRow(i + 1);
+                        for (int j = 0; j < dt.Columns.Count; j++)
+                        {
+                            object value = dt.Rows[i][j];
+                            row.CreateCell(j).SetCellValue(value != DBNull.Value ? value.ToString() : "");
+                        }
+                    }
+
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        sheet.AutoSizeColumn(i);
+                    }
+
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        workbook.Write(memoryStream);
+                        workbook.Close();
+
+                        byte[] byteArray = memoryStream.ToArray();
+
+                        Response.Clear();
+                        Response.Buffer = true;
+                        Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        Response.AddHeader("Content-Disposition", $"attachment; filename={nombreArchivo}.xlsx");
+                        Response.BinaryWrite(byteArray);
+                        Response.Flush();
+                        HttpContext.Current.ApplicationInstance.CompleteRequest();
+                    }
+                }
+                else
+                {
+                    Response.Write("<script>alert('No existen registros para esta consulta');</script>");
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+            }
         }
     }
 }
