@@ -4438,19 +4438,22 @@ namespace fpWebApp
                         {
                             cmd.Parameters.Clear();
 
-                            // Manejo de fechas
-                            DateTime createdAt, finalizedAt;
-                            bool createdAtValid = DateTime.TryParseExact(item.created_at,
-                                new[] { "yyyy-MM-ddTHH:mm:ss.fffZ", "yyyy-MM-ddTHH:mm:ss.fZ" },
-                                CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out createdAt);
 
-                            bool finalizedAtValid = DateTime.TryParseExact(item.finalized_at,
-                                new[] { "yyyy-MM-ddTHH:mm:ss.fffZ", "yyyy-MM-ddTHH:mm:ss.fZ" },
-                                CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out finalizedAt);
+                            //Validación de fecha/hora ss
+                            DateTime createdAt, finalizedAt;
+
+                            string normalizedCreatedAt = NormalizeDate(item.created_at);
+                            string normalizedFinalizedAt = NormalizeDate(item.finalized_at);
+
+                            bool createdAtValid = DateTime.TryParseExact(normalizedCreatedAt,
+                                "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out createdAt);
+
+                            bool finalizedAtValid = DateTime.TryParseExact(normalizedFinalizedAt,
+                                "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out finalizedAt);
 
                             cmd.Parameters.AddWithValue("@p_id", item.id);
                             cmd.Parameters.AddWithValue("@p_created_at", createdAtValid ? (object)createdAt : DBNull.Value);
-                            cmd.Parameters.AddWithValue("@p_finalized_at", finalizedAtValid ? (object)finalizedAt : DBNull.Value);
+                            cmd.Parameters.AddWithValue("@p_finalized_at", finalizedAtValid ? (object)finalizedAt : DBNull.Value); 
                             cmd.Parameters.AddWithValue("@p_amount_in_cents", item.amount_in_cents);
                             cmd.Parameters.AddWithValue("@p_reference", item.reference);
                             cmd.Parameters.AddWithValue("@p_customer_email", item.customer_email);
@@ -4459,12 +4462,10 @@ namespace fpWebApp
                             cmd.Parameters.AddWithValue("@p_status", item.status);
                             cmd.Parameters.AddWithValue("@p_status_message", (object)item.status_message ?? DBNull.Value);
 
-                            // Manejo de customer_data que puede ser `null`
                             cmd.Parameters.AddWithValue("@p_device_id", string.IsNullOrEmpty(item.customer_data?.device_id) ? DBNull.Value : (object)item.customer_data.device_id);
                             cmd.Parameters.AddWithValue("@p_full_name", string.IsNullOrEmpty(item.customer_data?.full_name) ? DBNull.Value : (object)item.customer_data.full_name);
                             cmd.Parameters.AddWithValue("@p_phone_number", string.IsNullOrEmpty(item.customer_data?.phone_number) ? DBNull.Value : (object)item.customer_data.phone_number);
 
-                            // Manejo de payment_method.extra
                             var extra = item.payment_method?.extra;
                             cmd.Parameters.AddWithValue("@p_card_bin", extra?.bin ?? (object)DBNull.Value);
                             cmd.Parameters.AddWithValue("@p_card_name", extra?.name ?? (object)DBNull.Value);
@@ -4496,13 +4497,30 @@ namespace fpWebApp
             return dataTable;
         }
 
+string NormalizeDate(string date)
+{
+    if (string.IsNullOrEmpty(date))
+        return date;
 
+    // Eliminar la 'Z' si está presente y recortar milisegundos si existen
+    int dotIndex = date.IndexOf('.');
+    if (dotIndex > 0)
+    {
+        date = date.Substring(0, dotIndex); // Recortar desde el punto en adelante
+    }
+    else if (date.EndsWith("Z"))
+    {
+        date = date.TrimEnd('Z'); // Si no tiene milisegundos pero tiene 'Z', la quitamos
+    }
 
-        #endregion
+    return date;
+}
 
-        #region Planes
+#endregion
 
-        public DataTable ConsultarPlanes()
+#region Planes
+
+public DataTable ConsultarPlanes()
         {
             DataTable dt = new DataTable();
 

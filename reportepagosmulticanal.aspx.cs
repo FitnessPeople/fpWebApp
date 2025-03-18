@@ -152,22 +152,23 @@ namespace fpWebApp
 
             string url = dti.Rows[0]["urlTest"].ToString() + parametro;
             string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
+            
             JToken token = JToken.Parse(respuesta[0]);
             string prettyJson = token.ToString(Formatting.Indented);
-            bool verificar = VerificarContenido(prettyJson);
+            
+            bool verificar = VerificarRespuetsJson(prettyJson);
             if (verificar)            
                 respuestaWompi = cg.InsertarYObtenerTransaccionesWompi(prettyJson);            
 
             return respuestaWompi;
         }
 
-        private bool VerificarContenido(string respuesta)
+        private bool VerificarRespuetsJson(string respuesta)
         {
             bool rta = true;
             if (respuesta.Length > 0 && !string.IsNullOrEmpty(respuesta))
             {
                 JObject jsonObject = JObject.Parse(respuesta); 
-
                 int totalResults = (int)jsonObject["meta"]["total_results"];
 
                 if (totalResults == 0)
