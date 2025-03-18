@@ -9,8 +9,8 @@ namespace fpWebApp
 {
 	public partial class contratoafiliado : System.Web.UI.Page
 	{
-		protected void Page_Load(object sender, EventArgs e)
-		{
+        protected void Page_Load(object sender, EventArgs e)
+        {
             if (!IsPostBack)
             {
                 if (Session["idUsuario"] != null)
@@ -28,11 +28,11 @@ namespace fpWebApp
                         btnAgregar.Visible = false;
                         if (ViewState["Consulta"].ToString() == "1")
                         {
-                            
+
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
-                            
+
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
@@ -43,38 +43,6 @@ namespace fpWebApp
                     string strQuery = "SELECT * " +
                         "FROM EmpresasFP " +
                         "WHERE idEmpresaFP = 1 ";
-            if (!IsPostBack)
-            {
-                if (Session["idUsuario"] != null)
-                {
-                    ValidarPermisos("Sedes");
-                    if (ViewState["SinPermiso"].ToString() == "1")
-                    {
-                        //No tiene acceso a esta página
-                        divMensaje.Visible = true;
-                        paginasperfil.Visible = true;
-                    }
-                    else
-                    {
-                        //Si tiene acceso a esta página
-                        btnAgregar.Visible = false;
-                        if (ViewState["Consulta"].ToString() == "1")
-                        {
-                            
-                        }
-                        if (ViewState["Exportar"].ToString() == "1")
-                        {
-                            
-                        }
-                        if (ViewState["CrearModificar"].ToString() == "1")
-                        {
-                            btnAgregar.Visible = true;
-                        }
-                    }
-
-            string strQuery = "SELECT * " +
-                "FROM EmpresasFP " +
-                "WHERE idEmpresaFP = 1 ";
 
                     clasesglobales cg = new clasesglobales();
                     DataTable dt = cg.TraerDatos(strQuery);
@@ -85,7 +53,7 @@ namespace fpWebApp
 
                     strQuery = "SELECT * " +
                         "FROM Afiliados " +
-                        "WHERE idAfiliado = 12261 ";
+                        "WHERE idAfiliado = 7 ";
 
                     DataTable dt1 = cg.TraerDatos(strQuery);
 
@@ -101,16 +69,6 @@ namespace fpWebApp
                 }
             }
         }
-                    ltContrato.Text = strTextoContrato;
-                }
-                else
-                {
-                    Response.Redirect("logout");
-                }
-            }
-        }
-
-            // Traer todo el texto del contrato desde la BD.
 
         private void ValidarPermisos(string strPagina)
         {
@@ -119,20 +77,9 @@ namespace fpWebApp
             ViewState["Exportar"] = "0";
             ViewState["CrearModificar"] = "0";
             ViewState["Borrar"] = "0";
-        private void ValidarPermisos(string strPagina)
-        {
-            ViewState["SinPermiso"] = "1";
-            ViewState["Consulta"] = "0";
-            ViewState["Exportar"] = "0";
-            ViewState["CrearModificar"] = "0";
-            ViewState["Borrar"] = "0";
-            //Traer los datos del afiliado en un dt
 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
-            // Llenar los campos del texto del contrato con los datos del dt del afiliado.
 
             if (dt.Rows.Count > 0)
             {
@@ -142,15 +89,6 @@ namespace fpWebApp
                 ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
                 ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
             }
-            if (dt.Rows.Count > 0)
-            {
-                ViewState["SinPermiso"] = dt.Rows[0]["SinPermiso"].ToString();
-                ViewState["Consulta"] = dt.Rows[0]["Consulta"].ToString();
-                ViewState["Exportar"] = dt.Rows[0]["Exportar"].ToString();
-                ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
-                ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
-            }
-            ltContrato.Text = strTextoContrato;
 
             dt.Dispose();
         }
@@ -163,8 +101,6 @@ namespace fpWebApp
             try
             {
                 string respuesta = cg.TraerDatosStr("UPDATE EmpresasFP SET ContratoMayorEdad = '" + contenidoEditor + "' WHERE idEmpresaFP = 1 ");
-                string respuesta = cg.TraerDatosStr("UPDATE EmpresasFP SET ContratoMayorEdad = '" + contenidoEditor + "' WHERE idEmpresaFP = 1 ");
-                string respuesta = cg.TraerDatosStr("UPDATE EmpresasFP" + contenidoEditor);
                 //cg.InsertarLog(Session["idusuario"].ToString(), "sedes", "Agrega", "El usuario agregó una nueva sede: " + txbSede.Text.ToString() + ".", "", "");
             }
             catch (Exception ex)

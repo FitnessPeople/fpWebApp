@@ -204,27 +204,6 @@
                                 <div class="ibox-content">
                                     <div class="scroll_content">
                                             <p><asp:Literal ID="ltContrato" runat="server"></asp:Literal></p>
-                                    <div class="scroll_content">
-                                        <p>
-                                            <button onclick="getSel('#NOMBRE#','','hiddenEditor');" class="btn btn-sm btn-info">Nombre Afiliado</button>
-                                        </p>
-                                    <div class="row">
-                                            <div class="col-lg-12">
-                                        <form role="form" id="form" runat="server">
-                                            <div class="form-group">
-                                                <label>Documento:</label>
-                                                <div id="editor" cssclass="form-control input-sm"></div>
-                                                <asp:HiddenField ID="hiddenEditor" runat="server" />
-                                            </div>
-                                            <div class="form-group">
-                                                <a href="sedes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
-                                                    CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar"
-                                                    OnClick="btnAgregar_Click" OnClientClick="guardarContenidoEditor()" />
-                                            </div>
-                                        </form>
-                                        <hr />
-                                        <asp:Literal ID="ltContrato" runat="server"></asp:Literal>
                                     </div>
                                 </div>
                             </div>
