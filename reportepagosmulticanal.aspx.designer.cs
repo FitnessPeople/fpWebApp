@@ -204,6 +204,24 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Repeater rpWompi;
 
         /// <summary>
+        /// Control trError.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trError;
+
+        /// <summary>
+        /// Control ltError.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltError;
+
+        /// <summary>
         /// Control footer.
         /// </summary>
         /// <remarks>

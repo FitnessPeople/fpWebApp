@@ -402,6 +402,7 @@
                                            </asp:LinkButton>
                                         </div>
                                         </div>
+
                                         <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
                                             data-paging="true" data-paging-count-format="{CP} de {TP}" 
                                             data-empty="Sin resultados">
@@ -432,6 +433,12 @@
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
+                                                        <!-- Fila para mostrar mensaje de error si no hay datos -->
+                                            <tr id="trError" runat="server" visible="false">
+                                                <td colspan="7" class="text-center">
+                                                    <asp:Literal ID="ltError" runat="server"></asp:Literal>
+                                                </td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>

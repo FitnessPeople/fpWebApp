@@ -22,7 +22,7 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            CultureInfo culture = new CultureInfo("es-CO"); 
+            CultureInfo culture = new CultureInfo("es-CO");
             System.Threading.Thread.CurrentThread.CurrentCulture = culture;
             System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
 
@@ -38,7 +38,7 @@ namespace fpWebApp
                         divContenido.Visible = false;
                     }
                     if (ViewState["Consulta"].ToString() == "1")
-                    {                       
+                    {
 
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
@@ -47,7 +47,7 @@ namespace fpWebApp
                             txbFechaFin.Attributes.Add("type", "date");
                             txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
 
-                            listaTransaccionesEfectivo("Efectivo",(txbFechaIni.Value.ToString()),(txbFechaFin.Value.ToString()));
+                            listaTransaccionesEfectivo("Efectivo", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
 
                             listaTransaccionesDatafono("Datafono", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
 
@@ -89,7 +89,7 @@ namespace fpWebApp
         }
 
         private void listaTransaccionesEfectivo(string tipoPago, string fechaIni, string fechaFin)
-        {            
+        {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
             rpTipoEfectivo.DataSource = dt;
@@ -120,46 +120,89 @@ namespace fpWebApp
 
         private void listaTransaccionesWompi(string tipoPago, string fechaIni, string fechaFin)
         {
+            bool rtaStatus = false;
             clasesglobales cg = new clasesglobales();
-            DataTable dt1 = listarDetalle();
-            foreach (DataRow row in dt1.Rows)
+            DataTable dt1 = listarDetalle(out rtaStatus);
+
+            if (rtaStatus)
             {
-                row["amount_in_cents"] = Convert.ToInt32(row["amount_in_cents"]) / 100;
-                string paymentMethod = row["payment_method_type"].ToString().ToLower();
-                row["payment_method_type"] = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(paymentMethod);
-                string status = row["status"].ToString().ToLower();
-                row["status"] = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(status);
+                foreach (DataRow row in dt1.Rows)
+                {
+                    row["amount_in_cents"] = Convert.ToInt32(row["amount_in_cents"]) / 100;
+                    string paymentMethod = row["payment_method_type"].ToString().ToLower();
+                    row["payment_method_type"] = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(paymentMethod);
+                    string status = row["status"].ToString().ToLower();
+                    row["status"] = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(status);
+                }
+                DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
+                rpWompi.DataSource = dt1;
+                rpWompi.DataBind();
+                ltValortotalWompi.Text = valorTotal.ToString("C0");
+                dt1.Dispose();
             }
-            DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
-            rpWompi.DataSource = dt1;
-            rpWompi.DataBind();
-            ltValortotalWompi.Text = valorTotal.ToString("C0");
-            dt.Dispose();
+            else
+            {
+                if (dt1.Columns.Contains("Error") && dt1.Rows.Count > 0)
+                {
+                    string mensajeError = dt1.Rows[0]["Error"].ToString();
+                    ltError.Text = mensajeError;
+                    trError.Visible = true; 
+                }
+                else
+                {
+                    ltError.Text = "Ocurrió un error desconocido.";
+                    trError.Visible = true;
+                }                
+
+                rpWompi.DataSource = new DataTable();
+                rpWompi.DataBind();
+            }
         }
 
-        private DataTable listarDetalle()
+        private DataTable listarDetalle(out bool rtaStatus)
         {
             string parametro = string.Empty;
             string tester = string.Empty;
             string mensaje = string.Empty;
             int idempresa = 4; //Wompi
+            rtaStatus = false;
 
             clasesglobales cg = new clasesglobales();
             DataTable dti = cg.ConsultarUrl(idempresa);
             DataTable respuestaWompi = new DataTable();
 
-            parametro = "?from_date=" + txbFechaIni.Value + "&until_date=" + txbFechaFin.Value + "&page=1&page_size=10&order_by=created_at&order=DESC";
+            string cadena = dti.Rows[0]["urlServicioAd3"].ToString(); //string de parámetro
+                  parametro = cadena
+                 .Replace("{from}", txbFechaIni.Value)
+                 .Replace("{until}", txbFechaFin.Value)
+                 .Replace("{page}", "1")
+                 .Replace("{size}", "10")
+                 .Replace("{order_by}", "created_at")
+                 .Replace("{order}", "DESC")
+                 .Trim('"'); 
 
             string url = dti.Rows[0]["urlTest"].ToString() + parametro;
             string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
-            
+
             JToken token = JToken.Parse(respuesta[0]);
             string prettyJson = token.ToString(Formatting.Indented);
-            
-            bool verificar = VerificarRespuetsJson(prettyJson);
-            if (verificar)            
-                respuestaWompi = cg.InsertarYObtenerTransaccionesWompi(prettyJson);            
 
+            if (mensaje == "Ok")
+            {
+                bool verificar = VerificarRespuetsJson(prettyJson);
+                if (verificar)
+                    respuestaWompi = cg.InsertarYObtenerTransaccionesWompi(prettyJson);
+                rtaStatus = true;
+            }
+            else
+            {
+                JObject jsonError = JObject.Parse(prettyJson);
+                string mensajeError = jsonError.ContainsKey("error") && jsonError["error"] != null ? jsonError["error"].ToString() : "Error desconocido";
+                rtaStatus = false;
+                respuestaWompi = new DataTable();
+                respuestaWompi.Columns.Add("Error", typeof(string));
+                respuestaWompi.Rows.Add(mensajeError);
+            }
             return respuestaWompi;
         }
 
@@ -168,45 +211,17 @@ namespace fpWebApp
             bool rta = true;
             if (respuesta.Length > 0 && !string.IsNullOrEmpty(respuesta))
             {
-                JObject jsonObject = JObject.Parse(respuesta); 
+                JObject jsonObject = JObject.Parse(respuesta);
                 int totalResults = (int)jsonObject["meta"]["total_results"];
 
-                if (totalResults == 0)
-                {
-                    rta = false;
-                }             
+                if (totalResults == 0)                
+                    rta = false;                
             }
-            else
-            {
+            else            
                 rta = false;
-            }
+            
             return rta;
         }
-
-        //public class Datum
-        //{
-        //    public string id { get; set; }
-        //    public string created_at { get; set; }
-        //    public string finalized_at { get; set; }
-        //    public string amount_in_cents { get; set; }
-        //    public string reference { get; set; }
-        //    public string customer_email { get; set; }
-        //    public string currency { get; set; }
-        //    public string payment_method_type { get; set; }
-        //    public string status { get; set; }
-        //    public string status_message { get; set; }
-        //    public string device_id { get; set; }
-        //    public string full_name { get; set; }
-        //    public string phone_number { get; set; }
-        //    public CustomerData customer_data { get; set; }
-        //}
-
-        //public class CustomerData
-        //{
-        //    public string device_id { get; set; }
-        //    public string full_name { get; set; }
-        //    public string phone_number { get; set; }
-        //}
 
         protected void btnFiltrar_Click(object sender, EventArgs e)
         {
@@ -216,9 +231,9 @@ namespace fpWebApp
             listaTransaccionesWompi("Wompi", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
         }
         protected void btnExportarEfe_Click(object sender, EventArgs e)
-        {    
+        {
             try
-            {                
+            {
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.ConsultarPagosPorTipo("Efectivo", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
                 string nombreArchivo = $"Efectivo_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
@@ -253,7 +268,7 @@ namespace fpWebApp
                     using (MemoryStream memoryStream = new MemoryStream())
                     {
                         workbook.Write(memoryStream);
-                        workbook.Close(); 
+                        workbook.Close();
 
                         byte[] byteArray = memoryStream.ToArray();
 
@@ -263,7 +278,7 @@ namespace fpWebApp
                         Response.AddHeader("Content-Disposition", $"attachment; filename={nombreArchivo}.xlsx");
                         Response.BinaryWrite(byteArray);
                         Response.Flush();
-                        HttpContext.Current.ApplicationInstance.CompleteRequest(); 
+                        HttpContext.Current.ApplicationInstance.CompleteRequest();
                     }
                 }
                 else
@@ -275,7 +290,7 @@ namespace fpWebApp
             {
                 Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
             }
-        }        
+        }
 
         protected void btnExportarData_Click(object sender, EventArgs e)
         {
