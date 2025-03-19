@@ -425,7 +425,7 @@
                                                             <td><%# Eval("full_name") %></td>                                                           
                                                             <td><%# Eval("amount_in_cents", "{0:C0}") %></td>                                                        
                                                             <td><%# Eval("created_at", "{0:dd MMM yyyy HH:mm}") %></td>                                                           
-                                                            <td><span class='badge <%# Eval("status").ToString() == "error" ? "badge-danger" : "badge-info" %>'>
+                                                            <td><span class='badge <%# Eval("status").ToString() == "Rechazado" ? "badge-danger" : "badge-info" %>'>
                                                                     <%# Eval("status") %> </span>
                                                             </td>
                                                              <td><%# Eval("payment_method_type") %></td>

@@ -176,7 +176,7 @@ namespace fpWebApp
                  .Replace("{from}", txbFechaIni.Value)
                  .Replace("{until}", txbFechaFin.Value)
                  .Replace("{page}", "1")
-                 .Replace("{size}", "10")
+                 .Replace("{size}", "50")
                  .Replace("{order_by}", "created_at")
                  .Replace("{order}", "DESC")
                  .Trim('"'); 
