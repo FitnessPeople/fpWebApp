@@ -45,7 +45,10 @@ namespace fpWebApp
                         CargarEmpleado();
                         CargarCanalesVenta();
                         CargarEmpleado();
-                        
+                        CargarCargos();
+                        CargarEstadoCivil();
+                        CargarGeneros();
+
                     }
                     else
                     {
@@ -96,37 +99,28 @@ namespace fpWebApp
 
         private void CargarEps()
         {
-            string strQuery = "SELECT * FROM eps";
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
-
+            DataTable dt = cg1.ConsultarEpss();
             ddlEps.DataSource = dt;
             ddlEps.DataBind();
-
             dt.Dispose();
         }
 
         private void CargarFondoPension()
         {
-            string strQuery = "SELECT * FROM fondospension";
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
-
+            DataTable dt = cg1.ConsultarPensiones();
             ddlFondoPension.DataSource = dt;
             ddlFondoPension.DataBind();
-
             dt.Dispose();
         }
 
         private void CargarArl()
         {
-            string strQuery = "SELECT * FROM arl";
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
-
+            DataTable dt = cg1.ConsultarArls();
             ddlArl.DataSource = dt;
             ddlArl.DataBind();
-
             dt.Dispose();
         }
 
@@ -143,48 +137,63 @@ namespace fpWebApp
 
         private void CargarCesantias()
         {
-            string strQuery = "SELECT * FROM cesantias";
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
-
+            DataTable dt = cg1.ConsultarCesantias();
             ddlCesantias.DataSource = dt;
             ddlCesantias.DataBind();
-
             dt.Dispose();
         }
 
         private void CargarCanalesVenta()
         {
-            string strQuery = "SELECT * FROM canalesventa";
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
-
+            DataTable dt = cg1.ConsultarCanalesVenta();
             ddlCanalVenta.DataSource = dt;
             ddlCanalVenta.DataBind();
+            dt.Dispose();
+        }
 
+        private void CargarCargos()
+        {
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.ConsultarCargos();
+            ddlCargo.DataSource = dt;
+            ddlCargo.DataBind();
             dt.Dispose();
         }
 
         private void CargarEmpresasFP()
         {
-            string strQuery = "SELECT * FROM empresasfp";
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
-
-            //ddlCesantias.DataSource = dt;
-            //ddlCesantias.DataBind();
-
+            DataTable dt = cg1.ConsultarEmpresasFP();
+            ddlempresasFP.DataSource = dt;
+            ddlempresasFP.DataBind();
             dt.Dispose();
         }
 
+        private void CargarEstadoCivil()
+        {
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.ConsultarEstadosCiviles();
+            ddlEstadoCivil.DataSource = dt;
+            ddlEstadoCivil.DataBind();
+            dt.Dispose();
+        }
+
+        private void CargarGeneros()
+        {
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.ConsultarGeneros();
+            ddlGenero.DataSource = dt;
+            ddlGenero.DataBind();
+            dt.Dispose();
+        }
+
+
         private void CargarEmpleado()
         {
-            string strQuery = "SELECT * " +
-                "FROM Empleados e " +
-                "LEFT JOIN Ciudades c ON e.idCiudadEmpleado = c.idCiudad " +
-                "WHERE e.DocumentoEmpleado = '" + Request.QueryString["editid"].ToString() + "' ";
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
+            DataTable dt = cg1.CargarEmpleados(Request.QueryString["editid"].ToString());
 
             txbDocumento.Text = dt.Rows[0]["DocumentoEmpleado"].ToString();
             ddlTipoDocumento.SelectedIndex = Convert.ToInt16(dt.Rows[0]["idTipoDocumento"].ToString());
@@ -207,8 +216,8 @@ namespace fpWebApp
             }
 
             txbFechaNac.Text = dtFecha.ToString("yyyy-MM-dd");
-            txbCargo.Text = dt.Rows[0]["CargoEmpleado"].ToString();
-            ltCargo.Text = dt.Rows[0]["CargoEmpleado"].ToString();
+            ddlCargo.SelectedValue = dt.Rows[0]["Cargo"].ToString();
+            //ltCargo.Text = dt.Rows[0]["CargoEmpleado"].ToString();
             ltCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
             if (dt.Rows[0]["FotoEmpleado"].ToString() != "")
             {
@@ -325,7 +334,7 @@ namespace fpWebApp
                 "EmailEmpleado = '" + txbEmail.Text.ToString() + "', " +
                 "DireccionEmpleado = '" + txbDireccion.Text.ToString() + "', " +
                 "idCiudadEmpleado = " + ddlCiudadEmpleado.SelectedItem.Value.ToString() + ", " +
-                "CargoEmpleado = '" + txbCargo.Text.ToString() + "', " +
+                "CargoEmpleado = '" + ddlCargo.SelectedItem.Value.ToString() + "', " +
                 "FechaNacEmpleado= '" + txbFechaNac.Text.ToString() + "', " +
                 "FotoEmpleado = '" + strFilename + "', " +
                 "NroContrato = '" + txbContrato.Text.ToString() + "', " +

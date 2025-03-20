@@ -133,13 +133,10 @@ namespace fpWebApp
 
         private void CargarEps()
         {
-            string strQuery = "SELECT * FROM eps";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.ConsultarEpss();
             ddlEps.DataSource = dt;
             ddlEps.DataBind();
-
             dt.Dispose();
         }
 
