@@ -105,31 +105,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltValorTotalEfe;
 
         /// <summary>
-        /// Control txbEfeFechaIni.
+        /// Control btnExportarEfe.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbEfeFechaIni;
-
-        /// <summary>
-        /// Control txbEfeFechaFin.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbEfeFechaFin;
-
-        /// <summary>
-        /// Control btnFiltrarEfe.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnFiltrarEfe;
+        protected global::System.Web.UI.WebControls.LinkButton btnExportarEfe;
 
         /// <summary>
         /// Control rpTipoEfectivo.
@@ -150,31 +132,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltValorTotalData;
 
         /// <summary>
-        /// Control txbDataFechaIni.
+        /// Control btnExportarData.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbDataFechaIni;
-
-        /// <summary>
-        /// Control txbDataFechaFin.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbDataFechaFin;
-
-        /// <summary>
-        /// Control btnFiltrarData.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnFiltrarData;
+        protected global::System.Web.UI.WebControls.LinkButton btnExportarData;
 
         /// <summary>
         /// Control rpTipoDatafono.
@@ -195,31 +159,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltValorTotalTrans;
 
         /// <summary>
-        /// Control txbTransFechaIni.
+        /// Control btnExportarTrans.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbTransFechaIni;
-
-        /// <summary>
-        /// Control txbTransFechaFin.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbTransFechaFin;
-
-        /// <summary>
-        /// Control btnFiltrarTrans.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnFiltrarTrans;
+        protected global::System.Web.UI.WebControls.LinkButton btnExportarTrans;
 
         /// <summary>
         /// Control rpTransferencia.
@@ -240,31 +186,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltValortotalWompi;
 
         /// <summary>
-        /// Control txbWompiFechaIni.
+        /// Control btnExportarWompi.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbWompiFechaIni;
-
-        /// <summary>
-        /// Control txbWompiFechaFin.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbWompiFechaFin;
-
-        /// <summary>
-        /// Control btnFiltrarWompi.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnFiltrarWompi;
+        protected global::System.Web.UI.WebControls.LinkButton btnExportarWompi;
 
         /// <summary>
         /// Control rpWompi.
@@ -274,6 +202,24 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpWompi;
+
+        /// <summary>
+        /// Control trError.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trError;
+
+        /// <summary>
+        /// Control ltError.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltError;
 
         /// <summary>
         /// Control footer.

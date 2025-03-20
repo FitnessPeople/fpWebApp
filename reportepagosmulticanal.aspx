@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="reportepagosmulticanal.aspx.cs" Inherits="fpWebApp.reportepagosmulticanal" %>
+﻿﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="reportepagosmulticanal.aspx.cs" Inherits="fpWebApp.reportepagosmulticanal" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
@@ -138,26 +138,26 @@
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
+
                     <div class="ibox float-e-margins" runat="server" id="divContenido">
                         <div class="row">
 
                             <div class="row">
                               <div class="col-lg-6">
-                               <div class="col-md-4">                                                
-                                 <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker"  />
+                               <div class="col-md-4"> 
+                                   <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker"/>                              
                                </div>
                                <div class="col-md-4">                                    
                                  <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker"  />
                                </div>
                                <div class="col-md-4">
                                 <label><br/></label>
-                                    <asp:Button ID="btnFiltrar" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrarEfe_Click" />
+                                    <asp:Button ID="btnFiltrar" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrar_Click" />
                               </div>
                               </div>
                            </div>
 
                             <div class="col-lg-6">
-
                                 <div class="ibox">
                                     <div class="ibox-title bg-info">
                                         <h5><i class="fa fa-gift"></i> Efectivo  Total : </h5>
@@ -175,16 +175,22 @@
                                     </div>
                                     <div class="ibox-content">
                                         <div class="row">
-                                            <div class="col-md-4">                                                
+<%--                                            <div class="col-md-3">                                                
                                                 <input type="text" runat="server" id="txbEfeFechaIni" class="form-control input-sm datepicker"  />
                                             </div>
-                                            <div class="col-md-4">                                    
+                                            <div class="col-md-3">                                    
                                               <input type="text" runat="server" id="txbEfeFechaFin" class="form-control input-sm datepicker"  />
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label><br/></label>
                                                 <asp:Button ID="btnFiltrarEfe" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrarEfe_Click" />
-                                            </div>
+                                            </div>--%>
+                                    <div class="col-lg-12">
+                                       <asp:LinkButton ID="btnExportarEfe" runat="server" CausesValidation="false"
+                                           CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
+                                           OnClick ="btnExportarEfe_Click"><i class="fa fa-file-excel"></i> EXCEL                                       
+                                       </asp:LinkButton>
+                                    </div>
                                         </div>
                                         <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
                                             data-paging="true" data-paging-count-format="{CP} de {TP}" 
@@ -236,7 +242,7 @@
                                     </div>
                                     <div class="ibox-content">
                                         <div class="row">
-                                            <div class="col-md-4">                                       
+<%--                                            <div class="col-md-4">                                       
                                                 <input type="text" runat="server" id="txbDataFechaIni" class="form-control input-sm datepicker"  />
                                             </div>
                                             <div class="col-md-4">                                    
@@ -245,7 +251,13 @@
                                             <div class="col-md-4">
                                                 <label><br/></label>
                                                 <asp:Button ID="btnFiltrarData" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrarData_Click" />
-                                            </div>
+                                            </div>--%>
+                                        <div class="col-lg-12">
+                                           <asp:LinkButton ID="btnExportarData" runat="server" CausesValidation="false"
+                                               CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
+                                               OnClick ="btnExportarData_Click"><i class="fa fa-file-excel"></i> EXCEL                                       
+                                           </asp:LinkButton>
+                                        </div>
                                         </div>
                                         <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
                                             data-paging="true" data-paging-count-format="{CP} de {TP}" 
@@ -303,7 +315,7 @@
                                     </div>
                                     <div class="ibox-content">
                                          <div class="row">
-                                            <div class="col-md-4">                                       
+<%--                                            <div class="col-md-4">                                       
                                                 <input type="text" runat="server" id="txbTransFechaIni" class="form-control input-sm datepicker"  />
                                             </div>
                                             <div class="col-md-4">                                    
@@ -312,7 +324,13 @@
                                             <div class="col-md-4">
                                                 <label><br/></label>
                                                 <asp:Button ID="btnFiltrarTrans" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrarTrans_Click" />
-                                            </div>
+                                            </div>--%>
+                                        <div class="col-lg-12">
+                                           <asp:LinkButton ID="btnExportarTrans" runat="server" CausesValidation="false"
+                                               CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
+                                               OnClick ="btnExportarTrans_Click"><i class="fa fa-file-excel"></i> EXCEL                                       
+                                           </asp:LinkButton>
+                                        </div>
                                         </div>
                                         <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
                                             data-paging="true" data-paging-count-format="{CP} de {TP}" 
@@ -367,7 +385,7 @@
                                     </div>
                                     <div class="ibox-content">
                                          <div class="row">
-                                            <div class="col-md-4">                                       
+<%--                                            <div class="col-md-4">                                       
                                                 <input type="text" runat="server" id="txbWompiFechaIni" class="form-control input-sm datepicker"  />
                                             </div>
                                             <div class="col-md-4">                                    
@@ -376,8 +394,15 @@
                                             <div class="col-md-4">
                                                 <label><br/></label>
                                                 <asp:Button ID="btnFiltrarWompi" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrarWompi_Click" />
-                                            </div>
+                                            </div>--%>
+                                         <div class="col-lg-12">
+                                           <asp:LinkButton ID="btnExportarWompi" runat="server" CausesValidation="false"
+                                               CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
+                                               OnClick ="btnExportarWompi_Click"><i class="fa fa-file-excel"></i> EXCEL                                       
+                                           </asp:LinkButton>
                                         </div>
+                                        </div>
+
                                         <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
                                             data-paging="true" data-paging-count-format="{CP} de {TP}" 
                                             data-empty="Sin resultados">
@@ -400,12 +425,22 @@
                                                             <td><%# Eval("full_name") %></td>                                                           
                                                             <td><%# Eval("amount_in_cents", "{0:C0}") %></td>                                                        
                                                             <td><%# Eval("created_at", "{0:dd MMM yyyy HH:mm}") %></td>                                                           
-                                                            <td><span class="badge badge-info"><%# Eval("status") %></span></td> 
-                                                             <td><%# Eval("payment_method_type") %></td>
+                                                            <td>
+                                                                <span class='<%# Eval("status").ToString() == "Error" ? "badge badge-danger" : "badge badge-info" %>'>
+                                                                    <%# Eval("status") %> 
+                                                                </span>
+                                                            </td>
+                                                            <td><%# Eval("payment_method_type") %></td>
                                                             <td><%# Eval("Canal") %></td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
+                                                        <!-- Fila para mostrar mensaje de error si no hay datos -->
+                                            <tr id="trError" runat="server" visible="false">
+                                                <td colspan="7" class="text-center">
+                                                    <asp:Literal ID="ltError" runat="server"></asp:Literal>                                                 
+                                                </td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -463,6 +498,3 @@
 </body>
 
 </html>
-
-
-
