@@ -40,12 +40,14 @@ namespace fpWebApp
                     if (ViewState["Consulta"].ToString() == "1")
                     {
 
+                        if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             txbFechaIni.Attributes.Add("type", "date");
                             txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
                             txbFechaFin.Attributes.Add("type", "date");
                             txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-                            listaTransaccionesEfectivo("Efectivo",(txbFechaIni.Value.ToString()),(txbFechaFin.Value.ToString()));
+
+                            listaTransaccionesEfectivo("Efectivo", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
 
                             listaTransaccionesDatafono("Datafono", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
 
@@ -118,7 +120,9 @@ namespace fpWebApp
 
         private void listaTransaccionesWompi(string tipoPago, string fechaIni, string fechaFin)
         {
-            DataTable dt1 = listarDetalle(out bool rtaStatus);
+            bool rtaStatus = false;
+            clasesglobales cg = new clasesglobales();
+            DataTable dt1 = listarDetalle(out rtaStatus);
 
             if (rtaStatus)
             {
@@ -142,15 +146,13 @@ namespace fpWebApp
                 {
                     string mensajeError = dt1.Rows[0]["Error"].ToString();
                     ltError.Text = mensajeError;
-                    trError.Visible = true; 
+                    trError.Visible = true;
                 }
                 else
                 {
                     ltError.Text = "Ocurrió un error desconocido.";
                     trError.Visible = true;
-                }                
-            dt.Dispose();
-        }
+                }
 
                 rpWompi.DataSource = new DataTable();
                 rpWompi.DataBind();
@@ -170,18 +172,20 @@ namespace fpWebApp
             DataTable respuestaWompi = new DataTable();
 
             string cadena = dti.Rows[0]["urlServicioAd3"].ToString(); //string de parámetro
-                  parametro = cadena
-                 .Replace("{from}", txbFechaIni.Value)
-                 .Replace("{until}", txbFechaFin.Value)
-                 .Replace("{page}", "1")
-                 .Replace("{size}", "50")
-                 .Replace("{order_by}", "created_at")
-                 .Replace("{order}", "DESC")
-                 .Trim('"'); 
+            parametro = cadena
+           .Replace("{from}", txbFechaIni.Value)
+           .Replace("{until}", txbFechaFin.Value)
+           .Replace("{page}", "1")
+           .Replace("{size}", "50")
+           .Replace("{order_by}", "created_at")
+           .Replace("{order}", "DESC")
+           .Trim('"');
 
             string url = dti.Rows[0]["urlTest"].ToString() + parametro;
             string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
 
+            JToken token = JToken.Parse(respuesta[0]);
+            string prettyJson = token.ToString(Formatting.Indented);
 
             if (mensaje == "Ok")
             {
@@ -210,12 +214,12 @@ namespace fpWebApp
                 JObject jsonObject = JObject.Parse(respuesta);
                 int totalResults = (int)jsonObject["meta"]["total_results"];
 
-                if (totalResults == 0)                
-                    rta = false;                
+                if (totalResults == 0)
+                    rta = false;
             }
-            else            
+            else
                 rta = false;
-            
+
             return rta;
         }
 
@@ -295,8 +299,6 @@ namespace fpWebApp
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.ConsultarPagosPorTipo("Datafono", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
                 string nombreArchivo = $"Datafono_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
-            var data = JsonConvert.DeserializeObject<Root>(prettyJson);
-            DataTable respuestaWompi = cg.InsertarYObtenerTransaccionesWompi(prettyJson);
 
                 if (dt.Rows.Count > 0)
                 {

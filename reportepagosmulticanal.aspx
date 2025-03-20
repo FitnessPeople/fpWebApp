@@ -144,8 +144,8 @@
 
                             <div class="row">
                               <div class="col-lg-6">
-                               <div class="col-md-4">                                                
-                                 <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker"  />
+                               <div class="col-md-4"> 
+                                   <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker"/>                              
                                </div>
                                <div class="col-md-4">                                    
                                  <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker"  />
