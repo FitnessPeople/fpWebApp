@@ -425,10 +425,12 @@
                                                             <td><%# Eval("full_name") %></td>                                                           
                                                             <td><%# Eval("amount_in_cents", "{0:C0}") %></td>                                                        
                                                             <td><%# Eval("created_at", "{0:dd MMM yyyy HH:mm}") %></td>                                                           
-                                                            <td><span class='badge <%# Eval("status").ToString() == "Rechazado" ? "badge-danger" : "badge-info" %>'>
-                                                                    <%# Eval("status") %> </span>
+                                                            <td>
+                                                                <span class='<%# Eval("status").ToString() == "Error" ? "badge badge-danger" : "badge badge-info" %>'>
+                                                                    <%# Eval("status") %> 
+                                                                </span>
                                                             </td>
-                                                             <td><%# Eval("payment_method_type") %></td>
+                                                            <td><%# Eval("payment_method_type") %></td>
                                                             <td><%# Eval("Canal") %></td>
                                                         </tr>
                                                     </ItemTemplate>
