@@ -831,36 +831,6 @@ namespace fpWebApp
             return dt;
         }
 
-        public DataTable CargarEmpleados(string docEmpleado)
-        {
-            DataTable dt = new DataTable();
-
-            try
-            {
-                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
-                {
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_CARGAR_EMPLEADO", mysqlConexion))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@p_doc_empleado", docEmpleado);
-                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
-                        {
-                            mysqlConexion.Open();
-                            dataAdapter.Fill(dt);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                dt = new DataTable();
-                dt.Columns.Add("Error", typeof(string));
-                dt.Rows.Add(ex.Message);
-            }
-
-            return dt;
-        }
 
         #endregion
 
@@ -4588,24 +4558,24 @@ namespace fpWebApp
             return dataTable;
         }
 
-string NormalizeDate(string date)
-{
-    if (string.IsNullOrEmpty(date))
-        return date;
+        string NormalizeDate(string date)
+        {
+            if (string.IsNullOrEmpty(date))
+                return date;
 
-    // Eliminar la 'Z' si está presente y recortar milisegundos si existen
-    int dotIndex = date.IndexOf('.');
-    if (dotIndex > 0)
-    {
-        date = date.Substring(0, dotIndex); // Recortar desde el punto en adelante
-    }
-    else if (date.EndsWith("Z"))
-    {
-        date = date.TrimEnd('Z'); // Si no tiene milisegundos pero tiene 'Z', la quitamos
-    }
+            // Eliminar la 'Z' si está presente y recortar milisegundos si existen
+            int dotIndex = date.IndexOf('.');
+            if (dotIndex > 0)
+            {
+                date = date.Substring(0, dotIndex); // Recortar desde el punto en adelante
+            }
+            else if (date.EndsWith("Z"))
+            {
+                date = date.TrimEnd('Z'); // Si no tiene milisegundos pero tiene 'Z', la quitamos
+            }
 
-    return date;
-}
+            return date;
+        }
 
 #endregion
 
@@ -5574,10 +5544,6 @@ public DataTable ConsultarPlanes()
 
 
 
-
-
-
-
         public string InsertarNuevoEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado,
             string emailEmpleado, string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato,
             string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
@@ -5663,6 +5629,156 @@ public DataTable ConsultarPlanes()
 
             return dt;
         }
+
+        public string ActualizarEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado,
+            string emailEmpleado, string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato,
+            string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
+            int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_EMPLEADO", mysqlConexion))
+                    { 
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_documento_empleado", documentoEmpleado);
+                        cmd.Parameters.AddWithValue("@p_tipo_doc_empleado", tipoDocumento);
+                        cmd.Parameters.AddWithValue("@p_nombre_empleado", nombreEmpleado);
+                        cmd.Parameters.AddWithValue("@p_tel_empleado", telEmpleado);
+                        cmd.Parameters.AddWithValue("@p_email_empleado", emailEmpleado);
+                        cmd.Parameters.AddWithValue("@p_dir_empleado", dirEmpleado);
+                        cmd.Parameters.AddWithValue("@p_id_ciu_empleado", idCiudadEmpleado);
+                        cmd.Parameters.AddWithValue("@p_fecha_nac_empleado", fechaNacEmpleado);
+                        cmd.Parameters.AddWithValue("@p_foto_empleado", fotoEmpleado);
+                        cmd.Parameters.AddWithValue("@p_nro_contrato", nroContrato);
+                        cmd.Parameters.AddWithValue("@p_tipo_contrato", tipoContrato);
+                        cmd.Parameters.AddWithValue("@p_id_empresa_fp", idEmpresaFP);
+                        cmd.Parameters.AddWithValue("@p_id_sede", idSede);
+                        cmd.Parameters.AddWithValue("@p_fecha_inicio", fechaIni);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", fechaFin);
+                        cmd.Parameters.AddWithValue("@p_sueldo", sueldo);
+                        cmd.Parameters.AddWithValue("@p_grupo_nomina", grupoNomina);
+                        cmd.Parameters.AddWithValue("@p_id_eps", idEps);
+                        cmd.Parameters.AddWithValue("@p_id_fondo_pension", idFondo);
+                        cmd.Parameters.AddWithValue("@p_id_arl", idArl);
+                        cmd.Parameters.AddWithValue("@p_id_caja_comp", idCajaCompensa);
+                        cmd.Parameters.AddWithValue("@p_cesantias", idCesantias);
+                        cmd.Parameters.AddWithValue("@p_estado", estadoEmpleado);
+                        cmd.Parameters.AddWithValue("@p_id_genero", idGenero);
+                        cmd.Parameters.AddWithValue("@p_estado_civil", idEstadoCivil);
+                        cmd.Parameters.AddWithValue("@p_canal_venta", idCanalVenta);
+                        cmd.Parameters.AddWithValue("@p_id_cargo", idCargo);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarEstadoUsuario(string documentoEmpleado)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open(); 
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_ESTADO_USUARIO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_documento_empleado", documentoEmpleado);
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public DataTable ConsultarEmpleado(string documentoEmpleado)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_EMPLEADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_doc_empleado", documentoEmpleado);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable CargarEmpleados(string docEmpleado)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CARGAR_EMPLEADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_doc_empleado", docEmpleado);
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
 
         #endregion
     }

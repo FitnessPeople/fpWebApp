@@ -44,7 +44,6 @@ namespace fpWebApp
                         CargarCanalesVenta();
                         CargarEmpleado();
                         CargarCanalesVenta();
-                        CargarEmpleado();
                         CargarCargos();
                         CargarEstadoCivil();
                         CargarGeneros();
@@ -216,8 +215,6 @@ namespace fpWebApp
             }
 
             txbFechaNac.Text = dtFecha.ToString("yyyy-MM-dd");
-            ddlCargo.SelectedValue = dt.Rows[0]["Cargo"].ToString();
-            //ltCargo.Text = dt.Rows[0]["CargoEmpleado"].ToString();
             ltCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
             if (dt.Rows[0]["FotoEmpleado"].ToString() != "")
             {
@@ -236,9 +233,12 @@ namespace fpWebApp
             ddlSedes.SelectedIndex = Convert.ToInt32(ddlSedes.Items.IndexOf(ddlSedes.Items.FindByValue(dt.Rows[0]["idSede"].ToString())));
             txbSueldo.Text = dt.Rows[0]["Sueldo"].ToString();
             string canalventa = dt.Rows[0]["idCanalVenta"].ToString();
+            string estadoCivil = dt.Rows[0]["idEstadoCivil"].ToString();
+            string genero = dt.Rows[0]["idGenero"].ToString();
+            string cargo = dt.Rows[0]["idCargo"].ToString();
+
             if (dt.Rows[0]["GrupoNomina"].ToString() != "")
             {
-
                 ddlGrupo.SelectedIndex = Convert.ToInt16(ddlGrupo.Items.IndexOf(ddlGrupo.Items.FindByValue(dt.Rows[0]["GrupoNomina"].ToString())));
             }
             if (dt.Rows[0]["idEps"].ToString() != "")
@@ -261,18 +261,31 @@ namespace fpWebApp
             {
                 ddlCesantias.SelectedIndex = Convert.ToInt16(ddlCesantias.Items.IndexOf(ddlCesantias.Items.FindByValue(dt.Rows[0]["idCesantias"].ToString())));
             }
-            rblEstado.Items.FindByValue(dt.Rows[0]["Estado"].ToString()).Selected = true;
+            rblEstado.Items.FindByValue(dt.Rows[0]["Estado"].ToString()).Selected = true;            
             
             if (canalventa != "")
             {
                 ddlCanalVenta.SelectedIndex = Convert.ToInt16(ddlCanalVenta.Items.IndexOf(ddlCanalVenta.Items.FindByValue(dt.Rows[0]["idCanalVenta"].ToString())));
             }
             rblEstado.Items.FindByValue(dt.Rows[0]["Estado"].ToString()).Selected = true;
-            
-            if (canalventa != "")
+            if (dt.Rows[0]["idEmpresaFP"].ToString() != "")
             {
-                ddlCanalVenta.SelectedIndex = Convert.ToInt16(ddlCanalVenta.Items.IndexOf(ddlCanalVenta.Items.FindByValue(dt.Rows[0]["idCanalVenta"].ToString())));
+                ddlempresasFP.SelectedIndex = Convert.ToInt16(ddlempresasFP.Items.IndexOf(ddlempresasFP.Items.FindByValue(dt.Rows[0]["idEmpresaFP"].ToString())));
             }
+            if (estadoCivil != "")
+            {
+                ddlEstadoCivil.SelectedIndex = Convert.ToInt16(ddlEstadoCivil.Items.IndexOf(ddlEstadoCivil.Items.FindByValue(dt.Rows[0]["idEstadoCivil"].ToString())));
+            }
+            if (genero != "")
+            {
+                ddlGenero.SelectedIndex = Convert.ToInt16(ddlGenero.Items.IndexOf(ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString())));
+            }
+            if(cargo != "")
+            {
+                ddlCargo.SelectedIndex = Convert.ToInt32(ddlCargo.Items.IndexOf(ddlCargo.Items.FindByValue(dt.Rows[0]["idCargo"].ToString())));
+            }
+
+
 
             dt.Dispose();
         }
@@ -327,40 +340,52 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                string strQuery = "UPDATE empleados SET " +
-                "idTipoDocumento = " + ddlTipoDocumento.SelectedItem.Value.ToString() + ", " +
-                "NombreEmpleado = '" + txbNombre.Text.ToString().Replace("'","").Trim() + "', " +
-                "TelefonoEmpleado = '" + txbTelefono.Text.ToString() + "', " +
-                "EmailEmpleado = '" + txbEmail.Text.ToString() + "', " +
-                "DireccionEmpleado = '" + txbDireccion.Text.ToString() + "', " +
-                "idCiudadEmpleado = " + ddlCiudadEmpleado.SelectedItem.Value.ToString() + ", " +
-                "CargoEmpleado = '" + ddlCargo.SelectedItem.Value.ToString() + "', " +
-                "FechaNacEmpleado= '" + txbFechaNac.Text.ToString() + "', " +
-                "FotoEmpleado = '" + strFilename + "', " +
-                "NroContrato = '" + txbContrato.Text.ToString() + "', " +
-                "TipoContrato = '" + ddlTipoContrato.SelectedItem.Value.ToString() + "', " +
-                "idSede = " + ddlSedes.SelectedItem.Value.ToString() + ", " +
-                "FechaInicio = '" + txbFechaInicio.Text.ToString() + "', " +
-                "FechaFinal = '" + txbFechaFinal.Text.ToString() + "', " +
-                "Sueldo = '" + txbSueldo.Text.ToString() + "', " +
-                "GrupoNomina = '" + ddlGrupo.SelectedItem.Value.ToString() + "', " +
-                "idEPS = " + ddlEps.SelectedItem.Value.ToString() + ", " +
-                "idFondoPension = " + ddlFondoPension.SelectedItem.Value.ToString() + ", " +
-                "idARL = " + ddlArl.SelectedItem.Value.ToString() + ", " +
-                "idCajaComp = " + ddlCajaComp.SelectedItem.Value.ToString() + ", " +
-                "idCesantias = " + ddlCesantias.SelectedItem.Value.ToString() + ", " +
-                "Estado = '" + rblEstado.Text.ToString() + "' " +
-                "idCanalVenta = " + ddlCanalVenta.SelectedItem.Value.ToString() + ", " +
-                "WHERE DocumentoEmpleado = '" + txbDocumento.Text.ToString() + "' ";
+                string mensaje = cg.ActualizarEmpleado(txbDocumento.Text.ToString(), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
+                    txbNombre.Text.ToString(), txbTelefono.Text.ToString(), txbEmail.Text.ToString(), txbDireccion.Text.ToString(),
+                    Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), txbFechaNac.Text.ToString(), strFilename, txbContrato.Text.ToString(),
+                    ddlTipoContrato.SelectedItem.Value.ToString(), Convert.ToInt32(ddlempresasFP.SelectedItem.Value.ToString()), 
+                    Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), txbFechaInicio.Text.ToString(), txbFechaInicio.Text.ToString(), 
+                    Convert.ToInt32(txbSueldo.Text.ToString()), ddlGrupo.SelectedItem.Value.ToString(),Convert.ToInt32(ddlEps.SelectedItem.Value.ToString()), 
+                    Convert.ToInt32(ddlFondoPension.SelectedItem.Value.ToString()), Convert.ToInt32(ddlArl.SelectedItem.Value.ToString()), 
+                    Convert.ToInt32(ddlCajaComp.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCesantias.SelectedItem.Value.ToString()), 
+                    rblEstado.Text.ToString(),Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value.ToString()), 
+                    Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()) );
+
+
+                //string strQuery = "UPDATE empleados SET " +
+                //"idTipoDocumento = " + ddlTipoDocumento.SelectedItem.Value.ToString() + ", " +
+                //"NombreEmpleado = '" + txbNombre.Text.ToString().Replace("'","").Trim() + "', " +
+                //"TelefonoEmpleado = '" + txbTelefono.Text.ToString() + "', " +
+                //"EmailEmpleado = '" + txbEmail.Text.ToString() + "', " +
+                //"DireccionEmpleado = '" + txbDireccion.Text.ToString() + "', " +
+                //"idCiudadEmpleado = " + ddlCiudadEmpleado.SelectedItem.Value.ToString() + ", " +
+                //"CargoEmpleado = '" + ddlCargo.SelectedItem.Value.ToString() + "', " +
+                //"FechaNacEmpleado= '" + txbFechaNac.Text.ToString() + "', " +
+                //"FotoEmpleado = '" + strFilename + "', " +
+                //"NroContrato = '" + txbContrato.Text.ToString() + "', " +
+                //"TipoContrato = '" + ddlTipoContrato.SelectedItem.Value.ToString() + "', " +
+                //"idSede = " + ddlSedes.SelectedItem.Value.ToString() + ", " +
+                //"FechaInicio = '" + txbFechaInicio.Text.ToString() + "', " +
+                //"FechaFinal = '" + txbFechaFinal.Text.ToString() + "', " +
+                //"Sueldo = '" + txbSueldo.Text.ToString() + "', " +
+                //"GrupoNomina = '" + ddlGrupo.SelectedItem.Value.ToString() + "', " +
+                //"idEPS = " + ddlEps.SelectedItem.Value.ToString() + ", " +
+                //"idFondoPension = " + ddlFondoPension.SelectedItem.Value.ToString() + ", " +
+                //"idARL = " + ddlArl.SelectedItem.Value.ToString() + ", " +
+                //"idCajaComp = " + ddlCajaComp.SelectedItem.Value.ToString() + ", " +
+                //"idCesantias = " + ddlCesantias.SelectedItem.Value.ToString() + ", " +
+                //"Estado = '" + rblEstado.Text.ToString() + "' " +
+                //"idCanalVenta = " + ddlCanalVenta.SelectedItem.Value.ToString() + ", " +
+                //"WHERE DocumentoEmpleado = '" + txbDocumento.Text.ToString() + "' ";
                 
-                string mensaje = cg.TraerDatosStr(strQuery);
+                //string mensaje = cg.TraerDatosStr(strQuery);
                 
                 if (rblEstado.Text.ToString() == "Inactivo")
                 {
-                    strQuery = "UPDATE Usuarios SET " +
-                            "EstadoUsuario = 'Inactivo' " +
-                            "WHERE idEmpleado = '" + txbDocumento.Text.ToString() + "' ";
-                    string restpuestaEstado = cg.TraerDatosStr(strQuery);
+                    //strQuery = "UPDATE Usuarios SET " +
+                    //        "EstadoUsuario = 'Inactivo' " +
+                    //        "WHERE idEmpleado = '" + txbDocumento.Text.ToString() + "' ";
+                    string restpuestaEstado = cg.ActualizarEstadoUsuario(txbDocumento.Text.ToString());
                 }
 
                 string strNewData = TraerData();
@@ -380,23 +405,23 @@ namespace fpWebApp
 
         private string TraerData()
         {
-            string strQuery = "SELECT e.DocumentoEmpleado, td.TipoDocumento, e.NombreEmpleado, e.TelefonoEmpleado, e.EmailEmpleado, " +
-                "e.DireccionEmpleado, c.NombreCiudad, e.CargoEmpleado, e.FechaNacEmpleado, e.FotoEmpleado, e.NroContrato, e.TipoContrato, " +
-                "s.NombreSede, e.FechaInicio, e.FechaFinal, e.Sueldo, e.GrupoNomina, eps.NombreEps, fp.NombreFondoPension, " +
-                "arl.NombreArl, cp.NombreCajaComp, ces.NombreCesantias, e.Estado, NombreCanalVenta " +
-                "FROM empleados e " +
-                "LEFT JOIN Ciudades c ON e.idCiudadEmpleado = c.idCiudad " +
-                "LEFT JOIN TiposDocumento td ON e.idTipoDocumento = td.idTipoDoc " +
-                "LEFT JOIN Sedes s ON e.idSede = s.idSede " +
-                "LEFT JOIN Eps ON e.idEps = eps.idEps " +
-                "LEFT JOIN FondosPension fp ON e.idFondoPension = fp.idFondoPension " +
-                "LEFT JOIN Arl ON e.idArl = arl.idArl " +
-                "LEFT JOIN CajasCompensacion cp ON e.idCajaComp = cp.idCajaComp " +
-                "LEFT JOIN Cesantias ces ON e.idCesantias = ces.idCesantias " +
-                "LEFT JOIN Canalesventa cv ON e.idCanalVenta = cv.idCanalVenta " +
-                "WHERE e.DocumentoEmpleado = '" + Request.QueryString["editid"].ToString() + "' ";
+            //string strQuery = "SELECT e.DocumentoEmpleado, td.TipoDocumento, e.NombreEmpleado, e.TelefonoEmpleado, e.EmailEmpleado, " +
+            //    "e.DireccionEmpleado, c.NombreCiudad, e.CargoEmpleado, e.FechaNacEmpleado, e.FotoEmpleado, e.NroContrato, e.TipoContrato, " +
+            //    "s.NombreSede, e.FechaInicio, e.FechaFinal, e.Sueldo, e.GrupoNomina, eps.NombreEps, fp.NombreFondoPension, " +
+            //    "arl.NombreArl, cp.NombreCajaComp, ces.NombreCesantias, e.Estado, NombreCanalVenta " +
+            //    "FROM empleados e " +
+            //    "LEFT JOIN Ciudades c ON e.idCiudadEmpleado = c.idCiudad " +
+            //    "LEFT JOIN TiposDocumento td ON e.idTipoDocumento = td.idTipoDoc " +
+            //    "LEFT JOIN Sedes s ON e.idSede = s.idSede " +
+            //    "LEFT JOIN Eps ON e.idEps = eps.idEps " +
+            //    "LEFT JOIN FondosPension fp ON e.idFondoPension = fp.idFondoPension " +
+            //    "LEFT JOIN Arl ON e.idArl = arl.idArl " +
+            //    "LEFT JOIN CajasCompensacion cp ON e.idCajaComp = cp.idCajaComp " +
+            //    "LEFT JOIN Cesantias ces ON e.idCesantias = ces.idCesantias " +
+            //    "LEFT JOIN Canalesventa cv ON e.idCanalVenta = cv.idCanalVenta " +
+            //    "WHERE e.DocumentoEmpleado = '" + Request.QueryString["editid"].ToString() + "' ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarEmpleado(Request.QueryString["editid"].ToString());
 
             string strData = "";
             foreach (DataColumn column in dt.Columns)

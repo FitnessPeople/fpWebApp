@@ -238,21 +238,6 @@
                                                                     <asp:TextBox ID="txbFechaNac" CssClass="form-control input-sm" runat="server" placeholder="Fecha nacimiento"></asp:TextBox>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <label>Cargo</label>
-                                                                    <asp:DropDownList ID="DropDownList1" runat="server" AppendDataBoundItems="true"
-                                                                        DataTextField="NombreCargo" DataValueField="idCargo" CssClass="form-control input-sm">
-                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                    </asp:DropDownList>
-                                                                </div>
-                                                            </div>
-<%--                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <label>Cargo</label>
-                                                                    <asp:TextBox ID="txbCargo" CssClass="form-control input-sm" runat="server" placeholder="Cargo"></asp:TextBox>
-                                                                </div>
-                                                            </div>--%>
                                                              <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <label>Cargo</label>
