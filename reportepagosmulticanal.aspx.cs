@@ -53,7 +53,7 @@ namespace fpWebApp
 
                             listaTransaccionesTransferencia("Transferencia", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
 
-                            listaTransaccionesWompi("Transferencia", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
+                            listaTransaccionesWompi("Wompi", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
 
                         }
                     }
@@ -421,7 +421,7 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarPagosPorTipo("Wompi", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+                DataTable dt = cg.ConsultarPagosTransaccWompi(txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
                 string nombreArchivo = $"Wompi_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
