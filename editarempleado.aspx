@@ -531,9 +531,8 @@
                 txbFechaNac: {
                     required: true
                 },
-                txbCargo: {
-                    required: true,
-                    minlength: 5
+                ddlCargo: {
+                    required: true                    
                 },
                 txbContrato: {
                     required: true,
