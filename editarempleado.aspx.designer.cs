@@ -78,15 +78,6 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltNombre;
 
         /// <summary>
-        /// Control ltCargo.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltCargo;
-
-        /// <summary>
         /// Control ltCiudad.
         /// </summary>
         /// <remarks>
@@ -213,13 +204,31 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbFechaNac;
 
         /// <summary>
-        /// Control txbCargo.
+        /// Control ddlCargo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbCargo;
+        protected global::System.Web.UI.WebControls.DropDownList ddlCargo;
+
+        /// <summary>
+        /// Control ddlEstadoCivil.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlEstadoCivil;
+
+        /// <summary>
+        /// Control ddlGenero.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlGenero;
 
         /// <summary>
         /// Control txbContrato.
@@ -346,6 +355,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlCanalVenta;
+
+        /// <summary>
+        /// Control ddlempresasFP.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlempresasFP;
 
         /// <summary>
         /// Control ltMensaje.
