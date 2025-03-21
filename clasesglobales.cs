@@ -226,12 +226,12 @@ namespace fpWebApp
             string auth = string.Empty;
             DataTable dt = new DataTable();
 
-            if(idempresa=="4")
+            if (idempresa == "4")
             {
                 dt = ConsultarUrl(Convert.ToInt32(idempresa));
                 auth = dt.Rows[0]["urlServicioAd1"].ToString();
-            }           
-            
+            }
+
             try
             {
                 WebRequest oRequest = WebRequest.Create(url);
@@ -566,7 +566,7 @@ namespace fpWebApp
                 {
                     using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_DEPARTAMENTOS", mysqlConexion))
                     {
-                        cmd.CommandType = CommandType.StoredProcedure;                     
+                        cmd.CommandType = CommandType.StoredProcedure;
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
                         {
                             mysqlConexion.Open();
@@ -830,6 +830,7 @@ namespace fpWebApp
 
             return dt;
         }
+
 
         #endregion
 
@@ -2863,7 +2864,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_direccion_sede", direccionSede);
                         cmd.Parameters.AddWithValue("@p_id_ciudad_sede", idCiudadSede);
                         cmd.Parameters.AddWithValue("@p_telefono_sede", telefonoSede);
-                        cmd.Parameters.AddWithValue("@p_horario_sede", horarioSede);                        
+                        cmd.Parameters.AddWithValue("@p_horario_sede", horarioSede);
                         cmd.Parameters.AddWithValue("@p_tipo_sede", tipoSede);
                         cmd.Parameters.AddWithValue("@p_clase_sede", claseSede);
 
@@ -3052,7 +3053,7 @@ namespace fpWebApp
                         // Parámetros de entrada
                         cmd.Parameters.AddWithValue("@p_id_tipo_documento", idTipoDocumento);
                         cmd.Parameters.AddWithValue("@p_tipo_documento", tipoDocumento);
-                        cmd.Parameters.AddWithValue("@p_sigla_documento", sigladocumento);                        
+                        cmd.Parameters.AddWithValue("@p_sigla_documento", sigladocumento);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -3096,7 +3097,7 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public DataTable ValidarTiposDocumentoTablas (int idTipoDocumento)
+        public DataTable ValidarTiposDocumentoTablas(int idTipoDocumento)
         {
             DataTable dt = new DataTable();
 
@@ -4301,7 +4302,7 @@ namespace fpWebApp
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         MySqlParameter ValorTotal = new MySqlParameter("@p_total_valor", MySqlDbType.Decimal);
-                        MySqlParameter TotalRegistros = new MySqlParameter("@v_total_registros", MySqlDbType.Int32); 
+                        MySqlParameter TotalRegistros = new MySqlParameter("@v_total_registros", MySqlDbType.Int32);
 
                         ValorTotal.Direction = ParameterDirection.Output;
                         TotalRegistros.Direction = ParameterDirection.Output;
@@ -4320,7 +4321,7 @@ namespace fpWebApp
                             }
                             if (TotalRegistros.Value != DBNull.Value)
                             {
-                                totalRegistros = Convert.ToInt32(TotalRegistros.Value); 
+                                totalRegistros = Convert.ToInt32(TotalRegistros.Value);
                             }
                         }
                     }
@@ -4402,7 +4403,7 @@ namespace fpWebApp
         public DataTable ConsultarPagosPorTipo(string tipoPago, string fechaIni, string fechaFin, out decimal valorTotal)
         {
             DataTable dt = new DataTable();
-            valorTotal = 0; 
+            valorTotal = 0;
 
             try
             {
@@ -4498,15 +4499,18 @@ namespace fpWebApp
                         {
                             cmd.Parameters.Clear();
 
-                            // Manejo de fechas
-                            DateTime createdAt, finalizedAt;
-                            bool createdAtValid = DateTime.TryParseExact(item.created_at,
-                                new[] { "yyyy-MM-ddTHH:mm:ss.fffZ", "yyyy-MM-ddTHH:mm:ss.fZ" },
-                                CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out createdAt);
 
-                            bool finalizedAtValid = DateTime.TryParseExact(item.finalized_at,
-                                new[] { "yyyy-MM-ddTHH:mm:ss.fffZ", "yyyy-MM-ddTHH:mm:ss.fZ" },
-                                CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out finalizedAt);
+                            //Validación de fecha/hora ss
+                            DateTime createdAt, finalizedAt;
+
+                            string normalizedCreatedAt = NormalizeDate(item.created_at);
+                            string normalizedFinalizedAt = NormalizeDate(item.finalized_at);
+
+                            bool createdAtValid = DateTime.TryParseExact(normalizedCreatedAt,
+                                "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out createdAt);
+
+                            bool finalizedAtValid = DateTime.TryParseExact(normalizedFinalizedAt,
+                                "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out finalizedAt);
 
                             cmd.Parameters.AddWithValue("@p_id", item.id);
                             cmd.Parameters.AddWithValue("@p_created_at", createdAtValid ? (object)createdAt : DBNull.Value);
@@ -4519,12 +4523,10 @@ namespace fpWebApp
                             cmd.Parameters.AddWithValue("@p_status", item.status);
                             cmd.Parameters.AddWithValue("@p_status_message", (object)item.status_message ?? DBNull.Value);
 
-                            // Manejo de customer_data que puede ser `null`
                             cmd.Parameters.AddWithValue("@p_device_id", string.IsNullOrEmpty(item.customer_data?.device_id) ? DBNull.Value : (object)item.customer_data.device_id);
                             cmd.Parameters.AddWithValue("@p_full_name", string.IsNullOrEmpty(item.customer_data?.full_name) ? DBNull.Value : (object)item.customer_data.full_name);
                             cmd.Parameters.AddWithValue("@p_phone_number", string.IsNullOrEmpty(item.customer_data?.phone_number) ? DBNull.Value : (object)item.customer_data.phone_number);
 
-                            // Manejo de payment_method.extra
                             var extra = item.payment_method?.extra;
                             cmd.Parameters.AddWithValue("@p_card_bin", extra?.bin ?? (object)DBNull.Value);
                             cmd.Parameters.AddWithValue("@p_card_name", extra?.name ?? (object)DBNull.Value);
@@ -4556,7 +4558,24 @@ namespace fpWebApp
             return dataTable;
         }
 
+        string NormalizeDate(string date)
+        {
+            if (string.IsNullOrEmpty(date))
+                return date;
 
+            // Eliminar la 'Z' si está presente y recortar milisegundos si existen
+            int dotIndex = date.IndexOf('.');
+            if (dotIndex > 0)
+            {
+                date = date.Substring(0, dotIndex); // Recortar desde el punto en adelante
+            }
+            else if (date.EndsWith("Z"))
+            {
+                date = date.TrimEnd('Z'); // Si no tiene milisegundos pero tiene 'Z', la quitamos
+            }
+
+            return date;
+        }
 
         #endregion
 
@@ -4688,7 +4707,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public string InsertarPlan(string nombrePlan, string descripcionPlan, int precio, double descuentoMensual, int mesesMaximo, 
+        public string InsertarPlan(string nombrePlan, string descripcionPlan, int precio, double descuentoMensual, int mesesMaximo,
             string color, int idUsuario, double Dias, string fechaInicio, string fechaFinal)
         {
             string respuesta = string.Empty;
@@ -4725,7 +4744,7 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarPlan(int idPlan, string nombrePlan, string descripcionPlan, int precio, double descuentoMensual, int mesesMaximo, 
+        public string ActualizarPlan(int idPlan, string nombrePlan, string descripcionPlan, int precio, double descuentoMensual, int mesesMaximo,
             string color, double Dias, string fechaInicio, string fechaFinal)
         {
             string respuesta = string.Empty;
@@ -5037,7 +5056,7 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_CANAL_VENTA", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@p_nombre_canal_venta", nombreCanalVenta);                   
+                        cmd.Parameters.AddWithValue("@p_nombre_canal_venta", nombreCanalVenta);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -5068,7 +5087,7 @@ namespace fpWebApp
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVEnta);
-                        cmd.Parameters.AddWithValue("@p_nombre_canal_venta", nombreCanalVenta);                      
+                        cmd.Parameters.AddWithValue("@p_nombre_canal_venta", nombreCanalVenta);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -5407,7 +5426,7 @@ namespace fpWebApp
 
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
-                    mysqlConexion.Open(); 
+                    mysqlConexion.Open();
 
                     using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_ESTADO_EMPLE_POR_FECHA", mysqlConexion))
                     {
@@ -5523,10 +5542,12 @@ namespace fpWebApp
             return dt;
         }
 
+
+
         public string InsertarNuevoEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado,
             string emailEmpleado, string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato,
             string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
-            int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo )
+            int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo)
         {
             string respuesta = string.Empty;
             try
@@ -5540,7 +5561,7 @@ namespace fpWebApp
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_documento_empleado", documentoEmpleado);
                         cmd.Parameters.AddWithValue("@p_tipo_doc_empleado", tipoDocumento);
-                        cmd.Parameters.AddWithValue("@p_nombre_empleado",nombreEmpleado);
+                        cmd.Parameters.AddWithValue("@p_nombre_empleado", nombreEmpleado);
                         cmd.Parameters.AddWithValue("@p_tel_empleado", telEmpleado);
                         cmd.Parameters.AddWithValue("@p_email_empleado", emailEmpleado);
                         cmd.Parameters.AddWithValue("@p_dir_empleado", dirEmpleado);
@@ -5608,6 +5629,156 @@ namespace fpWebApp
 
             return dt;
         }
+
+        public string ActualizarEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado,
+            string emailEmpleado, string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato,
+            string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
+            int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_EMPLEADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_documento_empleado", documentoEmpleado);
+                        cmd.Parameters.AddWithValue("@p_tipo_doc_empleado", tipoDocumento);
+                        cmd.Parameters.AddWithValue("@p_nombre_empleado", nombreEmpleado);
+                        cmd.Parameters.AddWithValue("@p_tel_empleado", telEmpleado);
+                        cmd.Parameters.AddWithValue("@p_email_empleado", emailEmpleado);
+                        cmd.Parameters.AddWithValue("@p_dir_empleado", dirEmpleado);
+                        cmd.Parameters.AddWithValue("@p_id_ciu_empleado", idCiudadEmpleado);
+                        cmd.Parameters.AddWithValue("@p_fecha_nac_empleado", fechaNacEmpleado);
+                        cmd.Parameters.AddWithValue("@p_foto_empleado", fotoEmpleado);
+                        cmd.Parameters.AddWithValue("@p_nro_contrato", nroContrato);
+                        cmd.Parameters.AddWithValue("@p_tipo_contrato", tipoContrato);
+                        cmd.Parameters.AddWithValue("@p_id_empresa_fp", idEmpresaFP);
+                        cmd.Parameters.AddWithValue("@p_id_sede", idSede);
+                        cmd.Parameters.AddWithValue("@p_fecha_inicio", fechaIni);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", fechaFin);
+                        cmd.Parameters.AddWithValue("@p_sueldo", sueldo);
+                        cmd.Parameters.AddWithValue("@p_grupo_nomina", grupoNomina);
+                        cmd.Parameters.AddWithValue("@p_id_eps", idEps);
+                        cmd.Parameters.AddWithValue("@p_id_fondo_pension", idFondo);
+                        cmd.Parameters.AddWithValue("@p_id_arl", idArl);
+                        cmd.Parameters.AddWithValue("@p_id_caja_comp", idCajaCompensa);
+                        cmd.Parameters.AddWithValue("@p_cesantias", idCesantias);
+                        cmd.Parameters.AddWithValue("@p_estado", estadoEmpleado);
+                        cmd.Parameters.AddWithValue("@p_id_genero", idGenero);
+                        cmd.Parameters.AddWithValue("@p_estado_civil", idEstadoCivil);
+                        cmd.Parameters.AddWithValue("@p_canal_venta", idCanalVenta);
+                        cmd.Parameters.AddWithValue("@p_id_cargo", idCargo);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarEstadoUsuario(string documentoEmpleado)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_ESTADO_USUARIO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_documento_empleado", documentoEmpleado);
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public DataTable ConsultarEmpleado(string documentoEmpleado)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_EMPLEADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_doc_empleado", documentoEmpleado);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable CargarEmpleados(string docEmpleado)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CARGAR_EMPLEADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_doc_empleado", docEmpleado);
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
 
         #endregion
     }
