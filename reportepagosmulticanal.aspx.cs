@@ -134,7 +134,8 @@ namespace fpWebApp
                     string status = row["status"].ToString().ToLower();
                     row["status"] = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(status);
                 }
-                DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
+                
+                DataTable dt = cg.ConsultarPagosTransaccWompi(txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valorTotal);
                 rpWompi.DataSource = dt1;
                 rpWompi.DataBind();
                 ltValortotalWompi.Text = valorTotal.ToString("C0");
