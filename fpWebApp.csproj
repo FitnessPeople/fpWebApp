@@ -267,6 +267,7 @@
     <Content Include="controles\rightsidebar.ascx" />
     <Content Include="cortesias.aspx" />
     <Content Include="cortesiasAfil.aspx" />
+    <Content Include="nuevocontactocrm.aspx" />
     <Content Include="css\animate.css" />
     <Content Include="css\bootstrap.css" />
     <Content Include="css\bootstrap.min.css" />
@@ -1131,6 +1132,13 @@
     </Compile>
     <Compile Include="cortesiasAfil.aspx.designer.cs">
       <DependentUpon>cortesiasAfil.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="nuevocontactocrm.aspx.cs">
+      <DependentUpon>nuevocontactocrm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="nuevocontactocrm.aspx.designer.cs">
+      <DependentUpon>nuevocontactocrm.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
