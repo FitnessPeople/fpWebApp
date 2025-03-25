@@ -53,6 +53,7 @@
                     <li id="incapacidades" class="old"><a href="incapacidades"><i class="fa fa-head-side-mask"></i>Incapacidades</a></li>
                     <li id="congelaciones" class="old"><a href="congelaciones"><i class="fa fa-snowflake"></i>Congelaciones</a></li>
                     <li id="autorizaciones" class="old"><a href="autorizaciones"><i class="fa fa-unlock"></i>Autorizaciones</a></li>
+                    <li id="contratoafiliado" class="old"><a href="contratoafiliado"><i class="fa fa-file-contract"></i>Contrato afiliado</a></li>
                 </ul>
             </li>
             <li>
@@ -140,6 +141,8 @@
             <li>
                 <a href="#"><i class="fa fa-globe"></i><span class="nav-label">Página Web</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
+                    <li id="productos" class="old"><a href="productostienda"><i class="fa fa-store"></i>Productos tienda</a></li>
+                    <li id="categorias" class="old"><a href="categoriastienda"><i class="fa fa-cart-shopping"></i>Categorías tienda</a></li>
                     <li id="blog" class="old"><a href="blogs"><i class="fab fa-blogger"></i>Blog</a></li>
                 </ul>
             </li>

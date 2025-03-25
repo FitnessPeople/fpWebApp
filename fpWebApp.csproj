@@ -248,6 +248,7 @@
     <Content Include="cambiarpermiso.aspx" />
     <Content Include="canalesventa.aspx" />
     <Content Include="cargos.aspx" />
+    <Content Include="categoriastienda.aspx" />
     <Content Include="cesantias.aspx" />
     <Content Include="ciudades.aspx" />
     <Content Include="ciudadessedes.aspx" />
@@ -902,6 +903,7 @@
     <Content Include="planes.aspx" />
     <Content Include="planesAfil.aspx" />
     <Content Include="plantilla.aspx" />
+    <Content Include="productostienda.aspx" />
     <Content Include="profesiones.aspx" />
     <Content Include="reportepagos.aspx" />
     <Content Include="reportepagosmulticanal.aspx" />
@@ -1003,6 +1005,13 @@
     </Compile>
     <Compile Include="cargos.aspx.designer.cs">
       <DependentUpon>cargos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="categoriastienda.aspx.cs">
+      <DependentUpon>categoriastienda.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="categoriastienda.aspx.designer.cs">
+      <DependentUpon>categoriastienda.aspx</DependentUpon>
     </Compile>
     <Compile Include="cesantias.aspx.cs">
       <DependentUpon>cesantias.aspx</DependentUpon>
@@ -1463,6 +1472,13 @@
     </Compile>
     <Compile Include="plantilla.aspx.designer.cs">
       <DependentUpon>plantilla.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="productostienda.aspx.cs">
+      <DependentUpon>productostienda.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="productostienda.aspx.designer.cs">
+      <DependentUpon>productostienda.aspx</DependentUpon>
     </Compile>
     <Compile Include="profesiones.aspx.cs">
       <DependentUpon>profesiones.aspx</DependentUpon>

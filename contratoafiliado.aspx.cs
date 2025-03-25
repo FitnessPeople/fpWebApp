@@ -15,7 +15,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Sedes");
+                    ValidarPermisos("Contrato afiliado");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página

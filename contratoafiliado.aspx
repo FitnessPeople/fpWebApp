@@ -63,9 +63,9 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#usuarios");
+            var element1 = document.querySelector("#contratoafiliado");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#configuracion");
+            var element2 = document.querySelector("#afiliados2");
             element2.classList.remove("collapse");
         }
     </script>
@@ -127,10 +127,10 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-user-tie text-success m-r-sm"></i>Dashboard</h2>
+                    <h2><i class="fa fa-file-contract text-success m-r-sm"></i>Contrato afiliado</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li class="active"><strong>Dashboard</strong></li>
+                        <li class="active"><strong>Contrato afiliado</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -175,13 +175,12 @@
                                             <div class="col-lg-12">
                                         <form role="form" id="form" runat="server">
                                             <div class="form-group">
-                                                <label>Documento:</label>
                                                 <div id="editor" cssclass="form-control input-sm"></div>
                                                 <asp:HiddenField ID="hiddenEditor" runat="server" />
                                             </div>
                                             <div class="form-group">
                                                         <a href="contratoafiliado" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
+                                                <asp:Button ID="btnAgregar" runat="server" Text="Agregar" Visible="false" 
                                                     CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar"
                                                     OnClick="btnAgregar_Click" OnClientClick="guardarContenidoEditor()" />
                                             </div>
