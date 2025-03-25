@@ -90,7 +90,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-user-plus text-success m-r-sm"></i>Nuevo usuario</h2>
+                    <h2><i class="fas fa-user-plus text-success m-r-sm"></i>Nuevo usuario</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Sistema</li>

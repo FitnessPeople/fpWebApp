@@ -1,4 +1,4 @@
-﻿﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="reportepagosmulticanal.aspx.cs" Inherits="fpWebApp.reportepagosmulticanal" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="reportepagosmulticanal.aspx.cs" Inherits="fpWebApp.reportepagosmulticanal" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
@@ -17,7 +17,6 @@
     <title>Fitness People | Pagos recibidos multicanal</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
-    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
@@ -25,7 +24,6 @@
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
 
     <!-- Morris -->
@@ -36,9 +34,9 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#autorizaciones");
+            var element1 = document.querySelector("#reportepagosmulticanal");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#afiliados2");
+            var element2 = document.querySelector("#configuracion");
             element2.classList.remove("collapse");
         }
     </script>
@@ -110,11 +108,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa-solid fa-coins text-success m-r-sm"></i>Portal pagos recibidos</h2>
+                    <h2><i class="fa-solid fa-coins text-success m-r-sm"></i>Pagos multicanal</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Reportes</li>
-                        <li class="active"><strong>Portal pagos recibidos</strong></li>
+                        <li class="active"><strong>Pagos multicanal</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -175,16 +173,6 @@
                                     </div>
                                     <div class="ibox-content">
                                         <div class="row">
-<%--                                            <div class="col-md-3">                                                
-                                                <input type="text" runat="server" id="txbEfeFechaIni" class="form-control input-sm datepicker"  />
-                                            </div>
-                                            <div class="col-md-3">                                    
-                                              <input type="text" runat="server" id="txbEfeFechaFin" class="form-control input-sm datepicker"  />
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label><br/></label>
-                                                <asp:Button ID="btnFiltrarEfe" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrarEfe_Click" />
-                                            </div>--%>
                                     <div class="col-lg-12">
                                        <asp:LinkButton ID="btnExportarEfe" runat="server" CausesValidation="false"
                                            CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
@@ -242,16 +230,6 @@
                                     </div>
                                     <div class="ibox-content">
                                         <div class="row">
-<%--                                            <div class="col-md-4">                                       
-                                                <input type="text" runat="server" id="txbDataFechaIni" class="form-control input-sm datepicker"  />
-                                            </div>
-                                            <div class="col-md-4">                                    
-                                              <input type="text" runat="server" id="txbDataFechaFin" class="form-control input-sm datepicker"  />
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label><br/></label>
-                                                <asp:Button ID="btnFiltrarData" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrarData_Click" />
-                                            </div>--%>
                                         <div class="col-lg-12">
                                            <asp:LinkButton ID="btnExportarData" runat="server" CausesValidation="false"
                                                CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
@@ -315,16 +293,6 @@
                                     </div>
                                     <div class="ibox-content">
                                          <div class="row">
-<%--                                            <div class="col-md-4">                                       
-                                                <input type="text" runat="server" id="txbTransFechaIni" class="form-control input-sm datepicker"  />
-                                            </div>
-                                            <div class="col-md-4">                                    
-                                              <input type="text" runat="server" id="txbTransFechaFin" class="form-control input-sm datepicker"  />
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label><br/></label>
-                                                <asp:Button ID="btnFiltrarTrans" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrarTrans_Click" />
-                                            </div>--%>
                                         <div class="col-lg-12">
                                            <asp:LinkButton ID="btnExportarTrans" runat="server" CausesValidation="false"
                                                CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
@@ -385,16 +353,6 @@
                                     </div>
                                     <div class="ibox-content">
                                          <div class="row">
-<%--                                            <div class="col-md-4">                                       
-                                                <input type="text" runat="server" id="txbWompiFechaIni" class="form-control input-sm datepicker"  />
-                                            </div>
-                                            <div class="col-md-4">                                    
-                                              <input type="text" runat="server" id="txbWompiFechaFin" class="form-control input-sm datepicker"  />
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label><br/></label>
-                                                <asp:Button ID="btnFiltrarWompi" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrarWompi_Click" />
-                                            </div>--%>
                                          <div class="col-lg-12">
                                            <asp:LinkButton ID="btnExportarWompi" runat="server" CausesValidation="false"
                                                CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
@@ -435,10 +393,9 @@
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
-                                                        <!-- Fila para mostrar mensaje de error si no hay datos -->
                                             <tr id="trError" runat="server" visible="false">
                                                 <td colspan="7" class="text-center">
-                                                    <asp:Literal ID="ltError" runat="server"></asp:Literal>                                                 
+                                                    <asp:Literal ID="ltError" runat="server"></asp:Literal>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -498,3 +455,6 @@
 </body>
 
 </html>
+
+
+

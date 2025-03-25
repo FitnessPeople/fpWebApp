@@ -250,7 +250,7 @@
                                                         <td><%# Eval("TipoPago") %></td>
                                                         <td><%# Eval("IdReferencia") %></td>
                                                         <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
-                                                        <td>Aprobado</td>
+                                                        <td><%# Eval("EstadoPago") %></td>
                                                         <td><%# Eval("Usuario") %></td>            
                                                         <td><%# Eval("CanalVenta") %></td>            
                                                         <td>

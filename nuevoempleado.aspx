@@ -44,7 +44,7 @@
         formatCurrency(input);
     }
     function getNumericValue(input) {
-        return input.value.replace(/[^0-9]/g, ''); 
+        return input.value.replace(/[^0-9]/g, '');
     }
 </script>
 
@@ -109,7 +109,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-user-plus text-success m-r-sm"></i>Nuevo empleado</h2>
+                    <h2><i class="fas fa-user-plus text-success m-r-sm"></i>Nuevo empleado</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Sistema</li>
@@ -548,7 +548,7 @@
             }
         });
 
-        $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" }); 
+        $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
     </script>
 
 </body>

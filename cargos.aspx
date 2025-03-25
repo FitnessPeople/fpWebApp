@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="cargos.aspx.cs" Inherits="fpWebApp.cargos" %>
+﻿﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="cargos.aspx.cs" Inherits="fpWebApp.cargos" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
@@ -39,7 +39,7 @@
         function changeClass() {
             var element1 = document.querySelector("#cargos");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#configuracion");
+            var element2 = document.querySelector("#sistema");
             element2.classList.remove("collapse");
         }
     </script>
@@ -101,11 +101,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa-solid fa-user-tie text-success m-r-sm"></i>Cargos empleados</h2>
+                    <h2><i class="fa-solid fas fa-address-card text-success m-r-sm"></i>Cargos empleado</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Configuración</li>
-                        <li class="active"><strong>Cargos empleados</strong></li>
+                        <li class="active"><strong>Cargos empleado</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -262,4 +262,3 @@
 </body>
 
 </html>
-
