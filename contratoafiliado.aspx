@@ -130,6 +130,7 @@
                     <h2><i class="fa fa-file-contract text-success m-r-sm"></i>Contrato afiliado</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
+                        <li>Afiliados</li>
                         <li class="active"><strong>Contrato afiliado</strong></li>
                     </ol>
                 </div>

@@ -96,10 +96,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-user-tie text-success m-r-sm"></i>Dashboard</h2>
+                    <h2><i class="fa fa-user-tie text-success m-r-sm"></i>Titulo</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li class="active"><strong>Dashboard</strong></li>
+                        <li>Menu principal</li>
+                        <li class="active"><strong>Titulo</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">

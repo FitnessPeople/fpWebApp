@@ -140,7 +140,7 @@
             </li>
             <li>
                 <a href="#"><i class="fa fa-globe"></i><span class="nav-label">Página Web</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse">
+                <ul id="webpage" class="nav nav-second-level collapse">
                     <li id="productos" class="old"><a href="productostienda"><i class="fa fa-store"></i>Productos tienda</a></li>
                     <li id="categorias" class="old"><a href="categoriastienda"><i class="fa fa-cart-shopping"></i>Categorías tienda</a></li>
                     <li id="blog" class="old"><a href="blogs"><i class="fab fa-blogger"></i>Blog</a></li>
