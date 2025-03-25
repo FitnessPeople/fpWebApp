@@ -1,8 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="reportepagos.aspx.cs" Inherits="fpWebApp.reportepagos" %>
 
-<!DOCTYPE html>
-
-
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
@@ -49,13 +46,13 @@
     </script>
 
    <script>
-         $(document).ready(function () {
-         $('.datepicker').datepicker({
-           format: 'yyyy-mm-dd',
-           autoclose: true,
-           todayHighlight: true
+       $(document).ready(function () {
+           $('.datepicker').datepicker({
+               format: 'yyyy-mm-dd',
+               autoclose: true,
+               todayHighlight: true
            });
-          });
+       });
    </script>
 </head>
 
@@ -307,5 +304,3 @@
 </body>
 
 </html>
-
-
