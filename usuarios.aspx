@@ -104,7 +104,7 @@
             <div class="row wrapper border-bottom white-bg page-heading">
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-circle-user text-success m-r-sm"></i>Usuarios</h2>
+                    <h2><i class="fas fa-users text-success m-r-sm"></i>Usuarios</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Sistema</li>

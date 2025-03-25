@@ -34,9 +34,9 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#autorizaciones");
+            var element1 = document.querySelector("#reportepagosmulticanal");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#afiliados2");
+            var element2 = document.querySelector("#configuracion");
             element2.classList.remove("collapse");
         }
     </script>
@@ -108,11 +108,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa-solid fa-coins text-success m-r-sm"></i>Portal pagos recibidos</h2>
+                    <h2><i class="fa-solid fa-coins text-success m-r-sm"></i>Pagos multicanal</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Reportes</li>
-                        <li class="active"><strong>Portal pagos recibidos</strong></li>
+                        <li class="active"><strong>Pagos multicanal</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">

@@ -70,7 +70,7 @@
                 <a href="#"><i class="fa fa-file-lines"></i><span class="nav-label">Reportes</span><span class="fa arrow"></span></a>
                 <ul id="reportes" class="nav nav-second-level collapse">
                     <li id="reportepagos" class="old"><a href="reportepagos" ><i class="fas fa-hand-holding-usd"></i>Pagos</a></li>
-                    <li id="reportepagosmulticanal" class="old"><a href="reportepagosmulticanal" ><i class="fa-solid fa-coins"></i>Portal pagos recibidos</a></li>
+                    <li id="reportepagosmulticanal" class="old"><a href="reportepagosmulticanal" ><i class="fa-solid fa-coins"></i>Pagos multicanal</a></li>
                     <li><a href="#">Dashboard</a></li>
                     <li><a href="#">Informe de ventas</a></li>
                     <li><a href="#">Ventas por producto</a></li>
@@ -103,9 +103,10 @@
                 <a href="#"><i class="fa fa-desktop"></i><span class="nav-label">Sistema</span><span class="fa arrow"></span></a>
                 <ul id="sistema" class="nav nav-second-level collapse">
                     <li id="empleados" class="old"><a href="empleados"><i class="fa fa-user-tie"></i>Empleados<span class="label label-warning1 pull-right"><asp:Literal ID="ltTotalEmpleados" runat="server"></asp:Literal></span></a></li>
-                    <li id="nuevoempleado" class="old"><a href="nuevoempleado"><i class="fa fa-user-tie"></i>Nuevo empleado</a></li>
-                    <li id="usuarios" class="old"><a href="usuarios"><i class="fa fa-user-circle"></i>Usuarios<span class="label label-warning1 pull-right"><asp:Literal ID="ltTotalUsuarios" runat="server"></asp:Literal></span></a></li>
-                    <li id="nuevousuario" class="old"><a href="nuevousuario"><i class="fa fa-user-circle"></i>Nuevo usuario</a></li>
+                    <li id="nuevoempleado" class="old"><a href="nuevoempleado"><i class="fas fa-user-plus"></i>Nuevo empleado</a></li>
+                    <li id="cargos" class="old"><a href="cargos"><i class="fa-solid fas fa-address-card"></i>Cargos empleado</a></li>
+                    <li id="usuarios" class="old"><a href="usuarios"><i class="fas fa-users"></i>Usuarios<span class="label label-warning1 pull-right"><asp:Literal ID="ltTotalUsuarios" runat="server"></asp:Literal></span></a></li>
+                    <li id="nuevousuario" class="old"><a href="nuevousuario"><i class="fas fa-user-plus"></i>Nuevo usuario</a></li>
                     <li id="sedes" class="old"><a href="sedes"><i class="fa fa-school-flag"></i>Sedes</a></li>
                     <li id="planes" class="old"><a href="planes"><i class="fa fa-ticket"></i>Planes</a></li>
                     <li><a href="#">Resolución de facturas</a></li>
@@ -133,7 +134,6 @@
                     <li id="objetivosafiliado" class="old"><a href="objetivosafiliado"><i class="fa fa-bullseye"></i>Objetivos afiliado</a></li>
                     <li id="parq" class="old"><a href="parq"><i class="fa fa-person-circle-question"></i>ParQ</a></li>
                     <li id="tiposincapacidades" class="old"><a href="tiposincapacidades"><i class="fa fa-hospital-user"></i>Tipos de incapacidad</a></li>
-                    <li id="cargos" class="old"><a href="cargos"><i class="fa-solid fa-user-tie"></i>Cargos empleados</a></li>
                     <li id="canalesventa" class="old"><a href="canalesventa"><i class="fa-solid fa-list-ul"></i>Canales de venta</a></li>
                 </ul>
             </li>
