@@ -29,6 +29,9 @@
     <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
     <script>
         function changeClass() {
             var element1 = document.querySelector("#nuevoproducto");
@@ -136,19 +139,20 @@
 
                             <div class="row">
                                 <form role="form" enctype="multipart/form-data" runat="server" id="form1">
+                                    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
                                     <div class="col-sm-6 b-r">
                                         <div class="row">
                                             <div class="col-sm-8">
                                                 <div class="form-group">
                                                     <label>Nombre del producto:</label>
-                                                    <asp:TextBox ID="txbNombre" CssClass="form-control input-sm" runat="server" 
-                                                        placeholder="Nombre del producto"></asp:TextBox>
+                                                    <asp:TextBox ID="txbNombre" CssClass="form-control input-sm" runat="server"
+                                                        placeholder="Nombre del producto" required></asp:TextBox>
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                     <label>Código:</label>
-                                                    <asp:TextBox ID="txbCodigo" CssClass="form-control input-sm" runat="server" 
+                                                    <asp:TextBox ID="txbCodigo" CssClass="form-control input-sm" runat="server"
                                                         placeholder="Código"></asp:TextBox>
                                                 </div>
                                             </div>
@@ -158,8 +162,8 @@
                                             <div class="col-sm-8">
                                                 <div class="form-group">
                                                     <label>Categoría:</label>
-                                                    <asp:DropDownList ID="ddlCategoria" runat="server" 
-                                                        AppendDataBoundItems="true" DataTextField="NombreCat" 
+                                                    <asp:DropDownList ID="ddlCategorias" runat="server"
+                                                        AppendDataBoundItems="true" DataTextField="NombreCat"
                                                         DataValueField="idCategoria" CssClass="form-control input-sm m-b">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
@@ -177,48 +181,121 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label>Detalle:</label>
-                                                    <asp:TextBox ID="txbTelefono" CssClass="form-control input-sm" runat="server" placeholder="Teléfono" TextMode="MultiLine"></asp:TextBox>
+                                                    <asp:TextBox ID="txbDetalle" CssClass="form-control input-sm" runat="server" placeholder="Detalle" TextMode="MultiLine"></asp:TextBox>
                                                 </div>
                                             </div>
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label>Descripción:</label>
-                                                    <asp:TextBox ID="txbEmail" CssClass="form-control input-sm" runat="server" placeholder="Email" required TextMode="MultiLine"></asp:TextBox>
+                                                    <asp:TextBox ID="txbDescripcion" CssClass="form-control input-sm" runat="server" placeholder="Descripción" TextMode="MultiLine"></asp:TextBox>
                                                 </div>
                                             </div>
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label>Beneficios:</label>
-                                                    <asp:TextBox ID="TextBox1" CssClass="form-control input-sm" runat="server" placeholder="Email" required TextMode="MultiLine"></asp:TextBox>
+                                                    <asp:TextBox ID="txbBeneficios" CssClass="form-control input-sm" runat="server" placeholder="Beneficios" TextMode="MultiLine"></asp:TextBox>
                                                 </div>
                                             </div>
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label>Características:</label>
-                                                    <asp:TextBox ID="TextBox2" CssClass="form-control input-sm" runat="server" placeholder="Email" required TextMode="MultiLine"></asp:TextBox>
+                                                    <asp:TextBox ID="txbCaracteristicas" CssClass="form-control input-sm" runat="server" placeholder="Características" TextMode="MultiLine"></asp:TextBox>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-sm-6">
-                                        
-                                        
-                                        <div class="row">
-                                            <div class="row">
-                                                <div id="dropzoneForm form-group" class="dropzone">
-                                                    <div class="fallback">
-                                                        <input name="file" type="file" multiple="multiple" runat="server" />
-                                                        <asp:Label ID="lblFallbackMessage" runat="server" />
+                                        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                            <ContentTemplate>
+
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Imagen 1:</label>
+                                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 150px; max-height: 50px;"></div>
+                                                                <div class="form-control input-sm" data-trigger="fileinput">
+                                                                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                                    <span class="fileinput-filename"></span>
+                                                                </div>
+                                                                <span class="input-group-addon btn btn-success btn-file input-sm">
+                                                                    <span class="fileinput-new input-sm">Seleccionar imagen 1</span>
+                                                                    <span class="fileinput-exists input-sm">Cambiar</span>
+                                                                    <asp:FileUpload ID="imgInp1" runat="server" />
+                                                                </span>
+                                                                <span class="input-group-addon btn btn-danger fileinput-exists input-sm" data-dismiss="fileinput">Quitar</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Imagen 2:</label>
+                                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 150px; max-height: 50px;"></div>
+                                                                <div class="form-control input-sm" data-trigger="fileinput">
+                                                                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                                    <span class="fileinput-filename"></span>
+                                                                </div>
+                                                                <span class="input-group-addon btn btn-success btn-file input-sm">
+                                                                    <span class="fileinput-new input-sm">Seleccionar imagen 2</span>
+                                                                    <span class="fileinput-exists input-sm">Cambiar</span>
+                                                                    <asp:FileUpload ID="imgInp2" runat="server" />
+                                                                </span>
+                                                                <span class="input-group-addon btn btn-danger fileinput-exists input-sm" data-dismiss="fileinput">Quitar</span>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
 
-                                        <div>
-                                            <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='afiliados'"><strong>Cancelar</strong></button>
-                                            <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
-                                        </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Imagen 3:</label>
+                                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 150px; max-height: 50px;"></div>
+                                                                <div class="form-control input-sm" data-trigger="fileinput">
+                                                                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                                    <span class="fileinput-filename"></span>
+                                                                </div>
+                                                                <span class="input-group-addon btn btn-success btn-file input-sm">
+                                                                    <span class="fileinput-new input-sm">Seleccionar imagen 3</span>
+                                                                    <span class="fileinput-exists input-sm">Cambiar</span>
+                                                                    <asp:FileUpload ID="imgInp3" runat="server" />
+                                                                </span>
+                                                                <span class="input-group-addon btn btn-danger fileinput-exists input-sm" data-dismiss="fileinput">Quitar</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Imagen 4:</label>
+                                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 150px; max-height: 50px;"></div>
+                                                                <div class="form-control input-sm" data-trigger="fileinput">
+                                                                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                                    <span class="fileinput-filename"></span>
+                                                                </div>
+                                                                <span class="input-group-addon btn btn-success btn-file input-sm">
+                                                                    <span class="fileinput-new input-sm">Seleccionar imagen 4</span>
+                                                                    <span class="fileinput-exists input-sm">Cambiar</span>
+                                                                    <asp:FileUpload ID="imgInp4" runat="server" />
+                                                                </span>
+                                                                <span class="input-group-addon btn btn-danger fileinput-exists input-sm" data-dismiss="fileinput">Quitar</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='afiliados'"><strong>Cancelar</strong></button>
+                                                    <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
+                                                </div>
+                                            </ContentTemplate>
+                                            <Triggers>
+                                                <asp:PostBackTrigger ControlID="btnAgregar" />
+                                            </Triggers>
+                                        </asp:UpdatePanel>
                                     </div>
                                 </form>
                             </div>
@@ -237,8 +314,6 @@
     </div>
 
     <!-- Mainly scripts -->
-    <script src="js/jquery-3.1.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
@@ -252,34 +327,56 @@
     <!-- Jquery Validate -->
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
+    <!-- Jasny -->
+    <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
+
     <!-- DROPZONE -->
     <script src="js/plugins/dropzone/dropzone.js"></script>
 
-    <!-- Jasny -->
-    <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <!-- CodeMirror -->
+    <script src="js/plugins/codemirror/codemirror.js"></script>
+    <script src="js/plugins/codemirror/mode/xml/xml.js"></script>
 
     <script>
 
         $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" })
 
-        $("#form").validate({
+        $("#form1").validate({
             rules: {
-                
+                txbNombre: {
+                    required: true,
+                    minlength: 3
+                },
+                txbCodigo: {
+                    required: true,
+                    minlength: 3
+                },
+                txbPrecio: {
+                    required: true
+                },
+                txbDetalle: {
+                    required: true,
+                    minlength: 3
+                },
+                txbDescripcion: {
+                    required: true,
+                    minlength: 3
+                },
+                txbBeneficios: {
+                    required: true,
+                    minlength: 3
+                },
+                txbCaracteristicas: {
+                    required: true,
+                    minlength: 3
+                },
             },
             messages: {
-                //ddlCiudadAfiliado: "*",
+                ddlCategorias: "*",
             }
         });
 
         $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
-    </script>
-
-    <script>
-        Dropzone.options.dropzoneForm = {
-            paramName: "file", // The name that will be used to transfer the file
-            maxFilesize: 2, // MB
-            dictDefaultMessage: "<strong>Drop files here or click to upload. </strong></br> (This is just a demo dropzone. Selected files are not actually uploaded.)"
-        };
     </script>
 
 </body>

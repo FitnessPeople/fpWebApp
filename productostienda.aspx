@@ -121,116 +121,141 @@
 
                     <div runat="server" id="divContenido">
                         <div class="row">
-                <div class="col-md-3">
-                    <div class="ibox">
-                        <div class="ibox-content product-box">
 
-                            <div>
-                                <img src="img/gallery/11.jpg" class="img-responsive" />
-                            </div>
-                            <div class="product-desc" style="padding: 20px;">
-                                <span class="product-price" style="background-color: #1ab394;">
-                                    $10
-                                </span>
-                                <small class="text-muted">Categoría</small>
-                                <a href="#" class="product-name"> Nombre del producto</a>
+                            <asp:Repeater ID="rpProductos" runat="server">
+                                <ItemTemplate>
+                                    <div class="col-md-3">
+                                        <div class="ibox">
+                                            <div class="ibox-content product-box">
+
+                                                <div>
+                                                    <img src="img/productos/<%# Eval("Imagen1Prod") %>" class="img-responsive" />
+                                                </div>
+                                                <div class="product-desc" style="padding: 20px;">
+                                                    <span class="product-price" style="background-color: #1ab394;"><%# Eval("PrecioPublicoProd", "{0:C0}") %>
+                                                    </span>
+                                                    <small class="text-muted"><%# Eval("NombreCat") %></small>
+                                                    <a href="#" class="product-name"><%# Eval("NombreProd") %></a>
+
+                                                    <div class="small m-t-xs">
+                                                        <%# Eval("DescripcionProd") %>
+                                                    </div>
+                                                    <div class="m-t text-righ">
+                                                        <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ItemTemplate>
+                            </asp:Repeater>
+
+                            <%--<div class="col-md-3">
+                                <div class="ibox">
+                                    <div class="ibox-content product-box">
+
+                                        <div>
+                                            <img src="img/gallery/11.jpg" class="img-responsive" />
+                                        </div>
+                                        <div class="product-desc" style="padding: 20px;">
+                                            <span class="product-price" style="background-color: #1ab394;">$10
+                                            </span>
+                                            <small class="text-muted">Categoría</small>
+                                            <a href="#" class="product-name">Nombre del producto</a>
 
 
 
-                                <div class="small m-t-xs">
-                                    Descripción del producto
+                                            <div class="small m-t-xs">
+                                                Descripción del producto
+                                            </div>
+                                            <div class="m-t text-righ">
+
+                                                <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="m-t text-righ">
+                            </div>
+                            <div class="col-md-3">
+                                <div class="ibox">
+                                    <div class="ibox-content product-box">
 
-                                    <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
+                                        <div>
+                                            <img src="img/gallery/2.jpg" class="img-responsive" />
+                                        </div>
+                                        <div class="product-desc" style="padding: 20px;">
+                                            <span class="product-price" style="background-color: #1ab394;">$10
+                                            </span>
+                                            <small class="text-muted">Categoría</small>
+                                            <a href="#" class="product-name">Nombre del producto</a>
+
+
+
+                                            <div class="small m-t-xs">
+                                                Descripción del producto
+                                            </div>
+                                            <div class="m-t text-righ">
+
+                                                <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="col-md-3">
+                                <div class="ibox">
+                                    <div class="ibox-content product-box">
+
+                                        <div>
+                                            <img src="img/gallery/3.jpg" class="img-responsive" />
+                                        </div>
+                                        <div class="product-desc" style="padding: 20px;">
+                                            <span class="product-price" style="background-color: #1ab394;">$10
+                                            </span>
+                                            <small class="text-muted">Categoría</small>
+                                            <a href="#" class="product-name">Nombre del producto</a>
+
+
+
+                                            <div class="small m-t-xs">
+                                                Descripción del producto
+                                            </div>
+                                            <div class="m-t text-righ">
+
+                                                <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="ibox">
+                                    <div class="ibox-content product-box">
+
+                                        <div>
+                                            <img src="img/gallery/5.jpg" class="img-responsive" />
+                                        </div>
+                                        <div class="product-desc" style="padding: 20px;">
+                                            <span class="product-price" style="background-color: #1ab394;">$10
+                                            </span>
+                                            <small class="text-muted">Categoría</small>
+                                            <a href="#" class="product-name">Nombre del producto</a>
+
+
+
+                                            <div class="small m-t-xs">
+                                                Descripción del producto
+                                            </div>
+                                            <div class="m-t text-righ">
+
+                                                <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>--%>
+
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="ibox">
-                        <div class="ibox-content product-box">
-
-                            <div>
-                                <img src="img/gallery/2.jpg" class="img-responsive" />
-                            </div>
-                            <div class="product-desc" style="padding: 20px;">
-                                <span class="product-price" style="background-color: #1ab394;">
-                                    $10
-                                </span>
-                                <small class="text-muted">Categoría</small>
-                                <a href="#" class="product-name"> Nombre del producto</a>
-
-
-
-                                <div class="small m-t-xs">
-                                    Descripción del producto
-                                </div>
-                                <div class="m-t text-righ">
-
-                                    <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="ibox">
-                        <div class="ibox-content product-box">
-
-                            <div>
-                                <img src="img/gallery/3.jpg" class="img-responsive" />
-                            </div>
-                            <div class="product-desc" style="padding: 20px;">
-                                <span class="product-price" style="background-color: #1ab394;">
-                                    $10
-                                </span>
-                                <small class="text-muted">Categoría</small>
-                                <a href="#" class="product-name"> Nombre del producto</a>
-
-
-
-                                <div class="small m-t-xs">
-                                    Descripción del producto
-                                </div>
-                                <div class="m-t text-righ">
-
-                                    <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="ibox">
-                        <div class="ibox-content product-box">
-
-                            <div>
-                                <img src="img/gallery/5.jpg" class="img-responsive" />
-                            </div>
-                            <div class="product-desc" style="padding: 20px;">
-                                <span class="product-price" style="background-color: #1ab394;">
-                                    $10
-                                </span>
-                                <small class="text-muted">Categoría</small>
-                                <a href="#" class="product-name"> Nombre del producto</a>
-
-
-
-                                <div class="small m-t-xs">
-                                    Descripción del producto
-                                </div>
-                                <div class="m-t text-righ">
-
-                                    <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
                     </div>
 
                     <%--Fin Contenido!!!!--%>

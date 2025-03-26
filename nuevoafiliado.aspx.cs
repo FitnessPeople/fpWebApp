@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
 using System.IO;
-using System.Net.Mail;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.UI;
