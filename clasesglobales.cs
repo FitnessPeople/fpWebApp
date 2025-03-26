@@ -5826,7 +5826,47 @@ public DataTable ConsultarPlanes()
 
 
         #endregion
+
+
+    #region CMR
+
+            public DataTable ConsultarContactosCMR()
+            {
+                DataTable dt = new DataTable();
+
+                try
+                {
+                    string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                    using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                    {
+                        using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CONTACTOS_CMR", mysqlConexion))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                            {
+                                mysqlConexion.Open();
+                                dataAdapter.Fill(dt);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    dt = new DataTable();
+                    dt.Columns.Add("Error", typeof(string));
+                    dt.Rows.Add(ex.Message);
+                }
+
+                return dt;
+            }
+
+        #endregion
+
     }
+
+
+    #region Modelos
+
 
     public class pagoswompidet
     {
@@ -5913,4 +5953,7 @@ public DataTable ConsultarPlanes()
         public string current_step { get; set; }
         public string current_step_status { get; set; }
     }
+
+
+    #endregion
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -32,19 +33,30 @@ namespace fpWebApp
                         //btnAgregar.Visible = false;
                         if (ViewState["Consulta"].ToString() == "1")
                         {
-                            lbExportarExcel.Visible = false;
+                            //lbExportarExcel.Visible = false;
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
-                            lbExportarExcel.Visible = true;
+                            //lbExportarExcel.Visible = true;
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             //btnAgregar.Visible = true;
                         }
                     }
-                    ListaHistorias();
 
+                    clasesglobales cg = new clasesglobales();
+                    DataTable dt = cg.ConsultarContactosCMR();
+                    txbFechaPrim.Attributes.Add("type", "date");
+                    txbFechaPrim.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+                    txbFechaProx.Attributes.Add("type", "date");
+                    txbFechaProx.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+                    int valorPropuesta = Convert.ToInt32("0");
+                    txbValorPropuesta.Text = valorPropuesta.ToString("C0", new CultureInfo("es-CO"));
+                    //ListaHistorias();
+                    ListaContactos();
+
+                    
                 }
                 else
                 {
@@ -78,23 +90,22 @@ namespace fpWebApp
 
         private void ListaHistorias()
         {
-            string strQuery = "SELECT *, " +
-                "IF(g.idGenero=1,'<i class=\"fa fa-mars\"></i>',IF(g.idGenero=2,'<i class=\"fa fa-venus\"></i>','<i class=\"fa fa-venus-mars\"></i>')) AS iconGenero, " +
-                "IF(Tabaquismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS fuma, " +
-                "IF(Alcoholismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS toma, " +
-                "IF(Sedentarismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS sedentario, " +
-                "IF(Diabetes=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS diabetico, " +
-                "IF(Colesterol=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(Colesterol=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS colesterado, " +
-                "IF(Trigliceridos=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(Trigliceridos=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS triglicerado, " +
-                "IF(HTA=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(HTA=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS hipertenso " +
-                "FROM HistoriasClinicas hc " +
-                "LEFT JOIN Afiliados a ON hc.idAfiliado = a.idAfiliado " +
-                "LEFT JOIN Generos g ON a.idGenero = g.idGenero ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarContactosCMR();
 
-            rpHistoriasClinicas.DataSource = dt;
-            rpHistoriasClinicas.DataBind();
+            rpContactosCMR.DataSource = dt;
+            rpContactosCMR.DataBind();
+
+            dt.Dispose();
+        }
+
+        private void ListaContactos()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarContactosCMR();
+
+            rpContactosCMR.DataSource = dt;
+            rpContactosCMR.DataBind();
 
             dt.Dispose();
         }

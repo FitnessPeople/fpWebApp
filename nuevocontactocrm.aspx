@@ -31,22 +31,50 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
+    <!-- CSS de Quill -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <!-- JS de Quill -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+    <%--    formato de los status--%>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             var ddl = document.getElementById("<%= ddlStatusLead.ClientID %>");
-                var colors = {
-                    "Primer contacto": "blue",
-                    "Propuesta enviada": "green",
-                    "Negociación propuesta": "orange",
-                    "Negociación aceptada": "lightgreen",
-                    "Negociación rechazada": "red"
-                };
+            var colors = {
+                "Primer contacto": "blue",
+                "Propuesta enviada": "green",
+                "Negociación propuesta": "orange",
+                "Negociación aceptada": "lightgreen",
+                "Negociación rechazada": "red"
+            };
 
-        ddl.addEventListener("change", function () {
-            var selectedText = ddl.options[ddl.selectedIndex].text;
-            ddl.style.backgroundColor = colors[selectedText] || "white";
+            ddl.addEventListener("change", function () {
+                var selectedText = ddl.options[ddl.selectedIndex].text;
+                ddl.style.backgroundColor = colors[selectedText] || "white";
+            });
         });
-    });
+    </script>
+    <%--  formato de moneda--%>
+    <script>
+        function formatCurrency(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value === "") {
+                input.value = "";
+                return;
+            }
+            let formattedValue = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(value);
+            input.value = formattedValue;
+        }
+        function keepFormatted(input) {
+            if (input.value.trim() === "") {
+                input.value = "";
+                return;
+            }
+            formatCurrency(input);
+        }
+        function getNumericValue(input) {
+            return input.value.replace(/[^0-9]/g, '');
+        }
     </script>
 
     <script>
@@ -57,6 +85,52 @@
             element2.classList.remove("collapse");
         }
     </script>
+
+    <%--    formato de las observaciones--%>
+
+    <script>
+        var quill;
+        document.addEventListener("DOMContentLoaded", function () {
+            quill = new Quill("#editor", {
+                theme: "snow",
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold'], // Negrita y Tachado
+                        ['italic', 'underline'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'align': [] }],
+                    ]
+                }
+            });
+            function ajustarAlturaEditor() {
+                var editorContenido = document.querySelector(".ql-editor");
+                editorContenido.style.height = "auto";
+                editorContenido.style.height = editorContenido.scrollHeight + "px";
+            }
+            quill.on("text-change", ajustarAlturaEditor);
+
+            var contenidoGuardado = document.getElementById('<%= hiddenEditor.ClientID %>').value;
+            if (contenidoGuardado.trim() !== "") {
+                quill.root.innerHTML = contenidoGuardado;
+            }
+        });
+        function guardarContenidoEditor() {
+            var contenido = quill.root.innerHTML;
+            document.getElementById('<%= hiddenEditor.ClientID %>').value = contenido;
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true
+            });
+        });
+    </script>
+
 </head>
 
 <body onload="changeClass()">
@@ -176,12 +250,14 @@
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
+                                                                    <i class="fa fa-user-tie text-primary"></i>
                                                                     <label for="recipient-name" class="col-form-label">Nombre completo:</label>
                                                                     <input type="text" class="form-control" id="recipient-name">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                 <div class="col-sm-6">
+                                                                <div class="col-sm-6">
+                                                                    <i class="fa-solid fa-phone text-success"></i>
                                                                     <label for="message-text" class="col-form-label">Teléfono:</label>
                                                                     <input type="text" class="form-control" id="telefono-text">
                                                                 </div>
@@ -190,12 +266,14 @@
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
+                                                                    <span class="glyphicon glyphicon-envelope text-primary"></span>
                                                                     <label for="message-text" class="col-form-label">Correo electrónico:</label>
                                                                     <input type="text" class="form-control" id="correo-text">
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
+                                                                    <i class="fas fa-industry text-primary"></i>
                                                                     <label for="message-text" class="col-form-label">Empresa:</label>
                                                                     <asp:DropDownList ID="ddlEmpresa" runat="server"
                                                                         AppendDataBoundItems="true" CssClass="form-control input-sm">
@@ -210,48 +288,56 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
+                                                            <i class="fas fa-flag text-primary"></i>
                                                             <label for="message-text" class="col-form-label">Status Lead:</label>
                                                             <asp:DropDownList ID="ddlStatusLead" runat="server"
                                                                 AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                <asp:ListItem Text="Primer contacto" Value="Primer contacto"></asp:ListItem>
-                                                                <asp:ListItem Text="Propuesta enviada" Value="Propuesta enviada"></asp:ListItem>
-                                                                <asp:ListItem Text="Negociación propuesta" Value="Negociación propuesta"></asp:ListItem>
-                                                                <asp:ListItem Text="Negociación aceptada" Value="Negociación aceptada"></asp:ListItem>
-                                                                <asp:ListItem Text="Negociación rechazada" Value="Negociación rechazada"></asp:ListItem>
+                                                                <asp:ListItem Text="Primer contacto" Value="Primer contacto" Class="text-dark"></asp:ListItem>
+                                                                <asp:ListItem Text="Propuesta enviada" Value="Propuesta enviada" Class="text-success"></asp:ListItem>
+                                                                <asp:ListItem Text="Negociación propuesta" Value="Negociación propuesta" Class="text-warning"></asp:ListItem>
+                                                                <asp:ListItem Text="Negociación aceptada" Value="Negociación aceptada" Class="text-primary"></asp:ListItem>
+                                                                <asp:ListItem Text="Negociación rechazada" Value="Negociación rechazada" Class="text-danger"></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
+                                                                    <i class="fas fa-angle-down text-primary"></i>
                                                                     <label for="message-text" class="col-form-label">Primer contacto:</label>
-                                                                    <input type="text" class="form-control" id="fechaIni-text">
+                                                                    <input type="text" runat="server" id="txbFechaPrim" class="form-control input-sm datepicker" />
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
+                                                                    <i class="fas fa-angle-right text-primary"></i>
                                                                     <label for="message-text" class="col-form-label">Próximo contacto:</label>
-                                                                    <input type="text" class="form-control" id="fechaProx-text">
+                                                                    <input type="text" runat="server" id="txbFechaProx" class="form-control input-sm datepicker" />
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
+                                                                    <i class="fa fa-dollar text-primary"></i>
                                                                     <label for="message-text" class="col-form-label">Valor Propuesta:</label>
-                                                                    <input type="text" class="form-control" id="propuesta-text">
+                                                                    <asp:TextBox ID="txbValorPropuesta" CssClass="form-control input-sm" runat="server" placeholder="Valor"
+                                                                        onkeyup="formatCurrency(this)" onblur="keepFormatted(this)"></asp:TextBox>
                                                                 </div>
-                                                             </div>
+                                                            </div>
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
+                                                                    <i class="fas fa-paperclip text-primary"></i>
                                                                     <label for="message-text" class="col-form-label">Archivo Propuesta:</label>
-                                                                    <input type="text" class="form-control" id="archivo-text">
+                                                                    <input type="file" class="form-control" id="archivo-text" placeholder="subir archivo">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
+                                                            <i class="fas fa-pen text-primary"></i>
                                                             <label for="message-text" class="col-form-label">Observaciones:</label>
-                                                            <textarea class="form-control" id="observaciones-text"></textarea>
+                                                            <div id="editor" cssclass="form-control input-sm"></div>
+                                                            <asp:HiddenField ID="hiddenEditor" runat="server" />
                                                         </div>
                                                     </form>
                                                 </div>
@@ -264,15 +350,7 @@
                                     </div>
 
                                     <div class="col-lg-6 form-horizontal">
-                                        <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
-                                            CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
-                                            OnClick="lbExportarExcel_Click">
-                                                    <i class="fa fa-file-excel"></i> EXCEL
-                                        </asp:LinkButton>
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Nuevo</button>
-                                        <%--                                                <a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;" 
-                                                    href="nuevahistoriaclinica" title="Agregar historia clínica" runat="server" 
-                                                    id="btnAgregar" visible="false"><i class="fa fa-square-plus"></i> NUEVO</a>--%>
+                                        <button type="button" class="btn btn-success pull-right dim m-l-md" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Nuevo</button>
                                     </div>
                                 </form>
                             </div>
@@ -286,42 +364,44 @@
                                 data-empty="Sin resultados">
                                 <thead>
                                     <tr>
-                                        <%--<th data-sortable="false" data-breakpoints="xs" style="width: 110px;">ID</th>--%>
-                                        <th data-type="date" data-breakpoints="xs sm md">Nombre</th>
-                                        <th data-breakpoints="xs">Teléfono</th>
-                                        <th data-breakpoints="xs">Correo eletrónico</th>
-                                        <th data-breakpoints="xs">Empresa</th>
-                                        <th data-breakpoints="all" data-title="Statud Lead"></th>
+                                        <th data-breakpoints="xs" width="25%"><i class="fa fa-user-tie text-primary"></i> Nombre </th>
+                                        <th data-breakpoints="xs"><i class="fa-solid fa-phone text-success"></i> Teléfono</th>
+                                        <th data-breakpoints="xs"><span class="glyphicon glyphicon-envelope text-warning"></span> Correo</th>
+                                        <th data-breakpoints="xs"><i class="fas fa-industry text-danger"></i> Organización / Empresa</th>
+                                        <th data-breakpoints="xs"><i class="fas fa-flag text-info"></i> Staus lead</th>
+                                        <th data-breakpoints="xs"><i class="fas fa-angle-down text-success"></i> Primer contacto</th>
+                                        <th data-breakpoints="xs"><i class="fas fa-angle-right text-primary"></i> Próximo contacto</th>
+                                        <th data-breakpoints="xs"><i class="fa fa-dollar text-primary"></i> Valor propuesta</th>
+                                        <th data-breakpoints="all" data-title="Info"></th>
                                         <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <asp:Repeater ID="rpHistoriasClinicas" runat="server" OnItemDataBound="rpHistoriasClinicas_ItemDataBound">
-                                        <ItemTemplate>
-                                            <tr class="feed-element">
-                                                <%--<td><%# Eval("idHistoria") %></td>--%>
-                                                <td><i class="fa fa-calendar-day"></i><%# Eval("FechaHora", "{0:dd MMM yyyy}") %> <i class="fa fa-clock"></i><%# Eval("FechaHora", "{0:HH:mm}") %></td>
-                                                <td><%# Eval("DocumentoAfiliado") %></td>
-                                                <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
-                                                <td><%# Eval("iconGenero") %> <%# Eval("Genero") %></td>
+                                    <asp:Repeater ID="rpContactosCMR" runat="server">
+                                       <ItemTemplate>
+                                            <tr class="feed-element">                                              
+                                                <td><%# Eval("NombreContacto") %></td>
+                                                <td><%# Eval("TelefonoContacto") %> </td>
+                                                <td><%# Eval("EmailContacto") %> </td>
+                                                <td><%# Eval("idEmpresa") %> </td>
+                                                <td><%# Eval("idstatusLead") %> </td>
+                                                <td><%# Eval("FechaPrimerCon", "{0:yyyy-MM-dd}") %></td>
+                                                <td><%# Eval("FechaProximoCon", "{0:yyyy-MM-dd}") %></td>
+                                                <td><%# Eval("ValorPropuesta", "{0:C0}") %></td>
                                                 <td>
-                                                    <h3 class="text-info">Antecedentes</h3>
+                                                    <h3 class="text-info">Propuesta y observaciones</h3>
                                                     <table class="table table-bordered table-striped">
                                                         <tr>
-                                                            <th width="20%"><i class="fa fa-people-roof m-r-sm"></i>Familiares</th>
-                                                            <th width="20%"><i class="fa fa-virus m-r-sm"></i>Patológicos</th>
-                                                            <th width="20%"><i class="fa fa-syringe m-r-sm"></i>Quirúrgicos</th>
-                                                            <th width="20%"><i class="fa fa-biohazard m-r-sm"></i>Toxicológico</th>
-                                                            <th width="20%"><i class="fa fa-hospital m-r-sm"></i>Hospitalario</th>
+                                                            <th width="20%"><i class="fas fa-paperclip text-primary"></i> Archivo Propuesta</th>
+                                                            <th width="20%"><i class="fas fa-pen text-primary"></i> Observaciones</th>
+                                                            <th width="20%"><i class="fa fa-user-tie text-primary"></i>Usuario</th>
                                                         </tr>
                                                         <tr>
-                                                            <td><%# Eval("AnteFamiliar") %></td>
-                                                            <td><%# Eval("AntePatologico") %></td>
-                                                            <td><%# Eval("AnteQuirurgico") %></td>
-                                                            <td><%# Eval("AnteToxicologico") %></td>
-                                                            <td><%# Eval("AnteHospitalario") %></td>
+                                                            <td><%# Eval("ArchivoPropuesta") %> </td>
+                                                            <td><%# Eval("Observaciones") %> </td>
+                                                            <td><%# Eval("idUsuario") %> </td>
                                                         </tr>
-                                                        <tr>
+<%--                                                        <tr>
                                                             <th width="20%"><i class="fa fa-crutch m-r-sm"></i>Traumatológico</th>
                                                             <th width="20%"><i class="fa fa-capsules m-r-sm"></i>Farmacológico</th>
                                                             <th width="20%"><i class="fa fa-droplet m-r-sm"></i>F.U.M.</th>
@@ -329,38 +409,14 @@
                                                             <th width="20%"><i class="fa fa-person-pregnant m-r-sm"></i>Gineco-Obstetricia</th>
                                                         </tr>
                                                         <tr>
-                                                            <td><%# Eval("AnteTraumatologico") %></td>
-                                                            <td><%# Eval("AnteFarmacologico") %></td>
-                                                            <td><%# Eval("AnteFUM") %></td>
-                                                            <td><%# Eval("AnteActividadFisica") %></td>
-                                                            <td><%# Eval("AnteGineco") %></td>
-                                                        </tr>
+                                                            <td><%# Eval("NombreContacto") %></td>
+                                                            <td><%# Eval("NombreContacto") %></td>
+                                                            <td><%# Eval("NombreContacto") %></td>
+                                                            <td><%# Eval("NombreContacto") %></td>
+                                                            <td><%# Eval("NombreContacto") %></td>
+                                                        </tr>--%>
                                                     </table>
-                                                    <h3 class="text-info">Factores de Riesgo Cardiovascular</h3>
-                                                    <table class="table table-bordered table-striped">
-                                                        <tr>
-                                                            <th width="10%"><i class="fa fa-smoking m-r-sm"></i>Tabaco</th>
-                                                            <th width="13%"><i class="fa fa-smoking m-r-sm"></i>Cigarrillos/día</th>
-                                                            <th width="10%"><i class="fa fa-wine-bottle m-r-sm"></i>Alcohol</th>
-                                                            <th width="12%"><i class="fa fa-wine-bottle m-r-sm"></i>Bebidas/mes</th>
-                                                            <th width="13%"><i class="fa fa-chair m-r-sm"></i>Sedentarismo</th>
-                                                            <th width="10%"><i class="fa fa-vial m-r-sm"></i>Diabetes</th>
-                                                            <th width="10%"><i class="fa fa-heart-pulse m-r-sm"></i>Colesterol</th>
-                                                            <th width="12%"><i class="fa fa-heart-circle-bolt m-r-sm"></i>Triglicéridos</th>
-                                                            <th width="10%"><i class="fa fa-stethoscope m-r-sm"></i>H.T.A.</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><%# Eval("fuma") %></td>
-                                                            <td><%# Eval("Cigarrillos") %></td>
-                                                            <td><%# Eval("toma") %></td>
-                                                            <td><%# Eval("Bebidas") %></td>
-                                                            <td><%# Eval("sedentario") %></td>
-                                                            <td><%# Eval("diabetico") %></td>
-                                                            <td><%# Eval("colesterado") %></td>
-                                                            <td><%# Eval("triglicerado") %></td>
-                                                            <td><%# Eval("hipertenso") %></td>
-                                                        </tr>
-                                                    </table>
+
                                                 </td>
                                                 <td>
                                                     <button runat="server" id="btnAgregar" class="btn btn-outline btn-success pull-right"
