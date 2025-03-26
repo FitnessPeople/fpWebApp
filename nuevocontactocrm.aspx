@@ -32,6 +32,24 @@
     <link href="css/style.css" rel="stylesheet" />
 
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var ddl = document.getElementById("<%= ddlStatusLead.ClientID %>");
+                var colors = {
+                    "Primer contacto": "blue",
+                    "Propuesta enviada": "green",
+                    "Negociación propuesta": "orange",
+                    "Negociación aceptada": "lightgreen",
+                    "Negociación rechazada": "red"
+                };
+
+        ddl.addEventListener("change", function () {
+            var selectedText = ddl.options[ddl.selectedIndex].text;
+            ddl.style.backgroundColor = colors[selectedText] || "white";
+        });
+    });
+    </script>
+
+    <script>
         function changeClass() {
             var element1 = document.querySelector("#historias");
             element1.classList.replace("old", "active");
@@ -110,226 +128,270 @@
             </div>
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row animated fadeInDown">
-                            <%--Inicio Contenido!!!!--%>
-                            <uc1:indicadoresmedico runat="server" id="indicadoresmedico" />
+                    <%--Inicio Contenido!!!!--%>
+                    <uc1:indicadoresmedico runat="server" ID="indicadoresmedico" />
 
-                            <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
-                                <div class="p-xs">
-                                    <div class="pull-left m-r-md">
-                                        <i class="fa fa-triangle-exclamation text-danger mid-icon"></i>
-                                    </div>
-                                    <h2>Acceso Denegado</h2>
-                                    <span>Lamentablemente, no tienes permiso para acceder a esta página. Por favor, verifica que estás usando una cuenta con los permisos adecuados o contacta a nuestro soporte técnico para más información. Si crees que esto es un error, no dudes en ponerte en contacto con nosotros para resolver cualquier problema. Gracias por tu comprensión.</span>
-                                </div>
+                    <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
+                        <div class="p-xs">
+                            <div class="pull-left m-r-md">
+                                <i class="fa fa-triangle-exclamation text-danger mid-icon"></i>
                             </div>
+                            <h2>Acceso Denegado</h2>
+                            <span>Lamentablemente, no tienes permiso para acceder a esta página. Por favor, verifica que estás usando una cuenta con los permisos adecuados o contacta a nuestro soporte técnico para más información. Si crees que esto es un error, no dudes en ponerte en contacto con nosotros para resolver cualquier problema. Gracias por tu comprensión.</span>
+                        </div>
+                    </div>
 
-                            <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
+                    <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                            <div class="ibox float-e-margins" runat="server" id="divContenido">
-                                <div class="ibox-title">
-                                    <h5>Contactos</h5>
-                                    <div class="ibox-tools">
-                                        <a class="collapse-link">
-                                            <i class="fa fa-chevron-up"></i>
-                                        </a>
+                    <div class="ibox float-e-margins" runat="server" id="divContenido">
+                        <div class="ibox-title">
+                            <h5>Contactos</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="ibox-content">
+                            <div class="row">
+                                <form id="form1" runat="server">
+                                    <div class="col-lg-6 form-horizontal">
+                                        <div class="form-group">
+                                            <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
+                                        </div>
                                     </div>
-                                </div>
 
-            
-                                
-
-                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                  <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                      <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                        </button>
-                                      </div>
-                                      <div class="modal-body">
-                                        <form>
-                                          <div class="form-group">
-                                            <label for="recipient-name" class="col-form-label">Nombre contacto:</label>
-                                            <input type="text" class="form-control" id="recipient-name">
-                                          </div>
-                                          <div class="form-group">
-                                            <label for="message-text" class="col-form-label">Telefono:</label>
-                                              <input type="text" class="form-control" id="telefono-text">
-                                          </div>
-                                          <div class="form-group">
-                                            <label for="message-text" class="col-form-label">Correo electrónico:</label>
-                                              <input type="text" class="form-control" id="correo-text">
-                                          </div>
-                                          <div class="form-group">
-                                            <label for="message-text" class="col-form-label">Estado:</label>
-                                              <input type="text" class="form-control" id="estado-text">
-                                          </div>
-                                             <div class="form-group">
-                                            <label for="message-text" class="col-form-label">Fecha contacto:</label>
-                                             <input type="text" class="form-control" id="fechaIni-text">
-                                          </div>
-                                           <div class="form-group">
-                                            <label for="message-text" class="col-form-label">Próxima fecha:</label>
-                                            <input type="text" class="form-control" id="fechaProx-text">
-                                          </div>
-                                          <div class="form-group">
-                                            <label for="message-text" class="col-form-label">Propuesta:</label>
-                                            <input type="text" class="form-control" id="propuesta-text">
-                                          </div>
-                                          <div class="form-group">
-                                            <label for="message-text" class="col-form-label">Observaciones:</label>
-                                            <textarea class="form-control" id="observaciones-text"></textarea>
-                                          </div>
-                                        </form>
-                                      </div>
-                                      <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                        <button type="submit" class="btn btn-primary mb-3">Guardar</button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="ibox-content">
-
-                                    <div class="row">
-                                        <form id="form1" runat="server">
-                                            <div class="col-lg-6 form-horizontal">
-                                                <div class="form-group">
-                                                    <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Registrar contacto</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label for="recipient-name" class="col-form-label">Nombre completo:</label>
+                                                                    <input type="text" class="form-control" id="recipient-name">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                 <div class="col-sm-6">
+                                                                    <label for="message-text" class="col-form-label">Teléfono:</label>
+                                                                    <input type="text" class="form-control" id="telefono-text">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label for="message-text" class="col-form-label">Correo electrónico:</label>
+                                                                    <input type="text" class="form-control" id="correo-text">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label for="message-text" class="col-form-label">Empresa:</label>
+                                                                    <asp:DropDownList ID="ddlEmpresa" runat="server"
+                                                                        AppendDataBoundItems="true" CssClass="form-control input-sm">
+                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                        <asp:ListItem Text="Empresa 1" Value="Empresa 1"></asp:ListItem>
+                                                                        <asp:ListItem Text="Empresa 2" Value="Empresa 2"></asp:ListItem>
+                                                                        <asp:ListItem Text="Empresa 3" Value="Empresa 3"></asp:ListItem>
+                                                                        <asp:ListItem Text="Empresa 4" Value="Empresa 4"></asp:ListItem>
+                                                                        <asp:ListItem Text="Empresa 5" Value="Empresa 5"></asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="message-text" class="col-form-label">Status Lead:</label>
+                                                            <asp:DropDownList ID="ddlStatusLead" runat="server"
+                                                                AppendDataBoundItems="true" CssClass="form-control input-sm">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:ListItem Text="Primer contacto" Value="Primer contacto"></asp:ListItem>
+                                                                <asp:ListItem Text="Propuesta enviada" Value="Propuesta enviada"></asp:ListItem>
+                                                                <asp:ListItem Text="Negociación propuesta" Value="Negociación propuesta"></asp:ListItem>
+                                                                <asp:ListItem Text="Negociación aceptada" Value="Negociación aceptada"></asp:ListItem>
+                                                                <asp:ListItem Text="Negociación rechazada" Value="Negociación rechazada"></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label for="message-text" class="col-form-label">Primer contacto:</label>
+                                                                    <input type="text" class="form-control" id="fechaIni-text">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label for="message-text" class="col-form-label">Próximo contacto:</label>
+                                                                    <input type="text" class="form-control" id="fechaProx-text">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label for="message-text" class="col-form-label">Valor Propuesta:</label>
+                                                                    <input type="text" class="form-control" id="propuesta-text">
+                                                                </div>
+                                                             </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label for="message-text" class="col-form-label">Archivo Propuesta:</label>
+                                                                    <input type="text" class="form-control" id="archivo-text">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="message-text" class="col-form-label">Observaciones:</label>
+                                                            <textarea class="form-control" id="observaciones-text"></textarea>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                    <button type="submit" class="btn btn-primary mb-3">Guardar</button>
                                                 </div>
                                             </div>
- 
-                                            <div class="col-lg-6 form-horizontal">
-                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false" 
-                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;" 
-                                                    OnClick="lbExportarExcel_Click">
-                                                    <i class="fa fa-file-excel"></i> EXCEL
-                                                </asp:LinkButton>
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Nuevo</button>
-<%--                                                <a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;" 
-                                                    href="nuevahistoriaclinica" title="Agregar historia clínica" runat="server" 
-                                                    id="btnAgregar" visible="false"><i class="fa fa-square-plus"></i> NUEVO</a>--%>
-                                            </div>
-                                        </form>
+                                        </div>
                                     </div>
 
-                                    <table class="footable table table-striped list-group-item-text" data-paging-size="10"
-                                        data-filter-min="3" data-filter-placeholder="Buscar"
-                                        data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
-                                        data-paging-limit="10" data-filtering="true"
-                                        data-filter-container="#filter-form-container" data-filter-delay="300"
-                                        data-filter-dropdown-title="Buscar en:" data-filter-position="left"
-                                        data-empty="Sin resultados">
-                                        <thead>
-                                            <tr>
-                                                <%--<th data-sortable="false" data-breakpoints="xs" style="width: 110px;">ID</th>--%>
-                                                <th data-type="date" data-breakpoints="xs sm md">Fecha de creación</th>
-                                                <th data-breakpoints="xs">Documento</th>
-                                                <th data-breakpoints="xs">Afiliado</th>
-                                                <th data-breakpoints="xs">Género</th>
-                                                <th data-breakpoints="all" data-title="Info"></th>
-                                                <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <asp:Repeater ID="rpHistoriasClinicas" runat="server" OnItemDataBound="rpHistoriasClinicas_ItemDataBound">
-                                                <ItemTemplate>
-                                                    <tr class="feed-element">
-                                                        <%--<td><%# Eval("idHistoria") %></td>--%>
-                                                        <td><i class="fa fa-calendar-day"></i> <%# Eval("FechaHora", "{0:dd MMM yyyy}") %> <i class="fa fa-clock"></i> <%# Eval("FechaHora", "{0:HH:mm}") %></td>
-                                                        <td><%# Eval("DocumentoAfiliado") %></td>
-                                                        <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
-                                                        <td><%# Eval("iconGenero") %> <%# Eval("Genero") %></td>
-                                                        <td>
-                                                            <h3 class="text-info">Antecedentes</h3>
-                                                            <table class="table table-bordered table-striped">
-                                                                <tr>
-                                                                    <th width="20%"><i class="fa fa-people-roof m-r-sm"></i>Familiares</th>
-                                                                    <th width="20%"><i class="fa fa-virus m-r-sm"></i>Patológicos</th>
-                                                                    <th width="20%"><i class="fa fa-syringe m-r-sm"></i>Quirúrgicos</th>
-                                                                    <th width="20%"><i class="fa fa-biohazard m-r-sm"></i>Toxicológico</th>
-                                                                    <th width="20%"><i class="fa fa-hospital m-r-sm"></i>Hospitalario</th>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><%# Eval("AnteFamiliar") %></td>
-                                                                    <td><%# Eval("AntePatologico") %></td>
-                                                                    <td><%# Eval("AnteQuirurgico") %></td>
-                                                                    <td><%# Eval("AnteToxicologico") %></td>
-                                                                    <td><%# Eval("AnteHospitalario") %></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th width="20%"><i class="fa fa-crutch m-r-sm"></i>Traumatológico</th>
-                                                                    <th width="20%"><i class="fa fa-capsules m-r-sm"></i>Farmacológico</th>
-                                                                    <th width="20%"><i class="fa fa-droplet m-r-sm"></i>F.U.M.</th>
-                                                                    <th width="20%"><i class="fa fa-person-running m-r-sm"></i>Actividad Física</th>
-                                                                    <th width="20%"><i class="fa fa-person-pregnant m-r-sm"></i>Gineco-Obstetricia</th>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><%# Eval("AnteTraumatologico") %></td>
-                                                                    <td><%# Eval("AnteFarmacologico") %></td>
-                                                                    <td><%# Eval("AnteFUM") %></td>
-                                                                    <td><%# Eval("AnteActividadFisica") %></td>
-                                                                    <td><%# Eval("AnteGineco") %></td>
-                                                                </tr>
-                                                            </table>
-                                                            <h3 class="text-info">Factores de Riesgo Cardiovascular</h3>
-                                                            <table class="table table-bordered table-striped">
-                                                                <tr>
-                                                                    <th width="10%"><i class="fa fa-smoking m-r-sm"></i>Tabaco</th>
-                                                                    <th width="13%"><i class="fa fa-smoking m-r-sm"></i>Cigarrillos/día</th>
-                                                                    <th width="10%"><i class="fa fa-wine-bottle m-r-sm"></i>Alcohol</th>
-                                                                    <th width="12%"><i class="fa fa-wine-bottle m-r-sm"></i>Bebidas/mes</th>
-                                                                    <th width="13%"><i class="fa fa-chair m-r-sm"></i>Sedentarismo</th>
-                                                                    <th width="10%"><i class="fa fa-vial m-r-sm"></i>Diabetes</th>
-                                                                    <th width="10%"><i class="fa fa-heart-pulse m-r-sm"></i>Colesterol</th>
-                                                                    <th width="12%"><i class="fa fa-heart-circle-bolt m-r-sm"></i>Triglicéridos</th>
-                                                                    <th width="10%"><i class="fa fa-stethoscope m-r-sm"></i>H.T.A.</th>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><%# Eval("fuma") %></td>
-                                                                    <td><%# Eval("Cigarrillos") %></td>
-                                                                    <td><%# Eval("toma") %></td>
-                                                                    <td><%# Eval("Bebidas") %></td>
-                                                                    <td><%# Eval("sedentario") %></td>
-                                                                    <td><%# Eval("diabetico") %></td>
-                                                                    <td><%# Eval("colesterado") %></td>
-                                                                    <td><%# Eval("triglicerado") %></td>
-                                                                    <td><%# Eval("hipertenso") %></td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                        <td>
-                                                            <button runat="server" id="btnAgregar" class="btn btn-outline btn-success pull-right"
-                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Agregar control">
-                                                                <i class="fa fa-notes-medical"></i>
-                                                            </button>
-                                                            <button runat="server" id="btnEliminar" class="btn btn-outline btn-danger pull-right m-r-xs"
-                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Eliminar historia">
-                                                                <i class="fa fa-trash"></i>
-                                                            </button>
-                                                            <button runat="server" id="btnEditar" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Editar historia">
-                                                                <i class="fa fa-edit"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                </ItemTemplate>
-                                            </asp:Repeater>
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <td colspan="6">
-                                                    <ul class="pagination"></ul>
+                                    <div class="col-lg-6 form-horizontal">
+                                        <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
+                                            CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
+                                            OnClick="lbExportarExcel_Click">
+                                                    <i class="fa fa-file-excel"></i> EXCEL
+                                        </asp:LinkButton>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Nuevo</button>
+                                        <%--                                                <a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;" 
+                                                    href="nuevahistoriaclinica" title="Agregar historia clínica" runat="server" 
+                                                    id="btnAgregar" visible="false"><i class="fa fa-square-plus"></i> NUEVO</a>--%>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                data-filter-min="3" data-filter-placeholder="Buscar"
+                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
+                                data-paging-limit="10" data-filtering="true"
+                                data-filter-container="#filter-form-container" data-filter-delay="300"
+                                data-filter-dropdown-title="Buscar en:" data-filter-position="left"
+                                data-empty="Sin resultados">
+                                <thead>
+                                    <tr>
+                                        <%--<th data-sortable="false" data-breakpoints="xs" style="width: 110px;">ID</th>--%>
+                                        <th data-type="date" data-breakpoints="xs sm md">Nombre</th>
+                                        <th data-breakpoints="xs">Teléfono</th>
+                                        <th data-breakpoints="xs">Correo eletrónico</th>
+                                        <th data-breakpoints="xs">Empresa</th>
+                                        <th data-breakpoints="all" data-title="Statud Lead"></th>
+                                        <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <asp:Repeater ID="rpHistoriasClinicas" runat="server" OnItemDataBound="rpHistoriasClinicas_ItemDataBound">
+                                        <ItemTemplate>
+                                            <tr class="feed-element">
+                                                <%--<td><%# Eval("idHistoria") %></td>--%>
+                                                <td><i class="fa fa-calendar-day"></i><%# Eval("FechaHora", "{0:dd MMM yyyy}") %> <i class="fa fa-clock"></i><%# Eval("FechaHora", "{0:HH:mm}") %></td>
+                                                <td><%# Eval("DocumentoAfiliado") %></td>
+                                                <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
+                                                <td><%# Eval("iconGenero") %> <%# Eval("Genero") %></td>
+                                                <td>
+                                                    <h3 class="text-info">Antecedentes</h3>
+                                                    <table class="table table-bordered table-striped">
+                                                        <tr>
+                                                            <th width="20%"><i class="fa fa-people-roof m-r-sm"></i>Familiares</th>
+                                                            <th width="20%"><i class="fa fa-virus m-r-sm"></i>Patológicos</th>
+                                                            <th width="20%"><i class="fa fa-syringe m-r-sm"></i>Quirúrgicos</th>
+                                                            <th width="20%"><i class="fa fa-biohazard m-r-sm"></i>Toxicológico</th>
+                                                            <th width="20%"><i class="fa fa-hospital m-r-sm"></i>Hospitalario</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><%# Eval("AnteFamiliar") %></td>
+                                                            <td><%# Eval("AntePatologico") %></td>
+                                                            <td><%# Eval("AnteQuirurgico") %></td>
+                                                            <td><%# Eval("AnteToxicologico") %></td>
+                                                            <td><%# Eval("AnteHospitalario") %></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th width="20%"><i class="fa fa-crutch m-r-sm"></i>Traumatológico</th>
+                                                            <th width="20%"><i class="fa fa-capsules m-r-sm"></i>Farmacológico</th>
+                                                            <th width="20%"><i class="fa fa-droplet m-r-sm"></i>F.U.M.</th>
+                                                            <th width="20%"><i class="fa fa-person-running m-r-sm"></i>Actividad Física</th>
+                                                            <th width="20%"><i class="fa fa-person-pregnant m-r-sm"></i>Gineco-Obstetricia</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><%# Eval("AnteTraumatologico") %></td>
+                                                            <td><%# Eval("AnteFarmacologico") %></td>
+                                                            <td><%# Eval("AnteFUM") %></td>
+                                                            <td><%# Eval("AnteActividadFisica") %></td>
+                                                            <td><%# Eval("AnteGineco") %></td>
+                                                        </tr>
+                                                    </table>
+                                                    <h3 class="text-info">Factores de Riesgo Cardiovascular</h3>
+                                                    <table class="table table-bordered table-striped">
+                                                        <tr>
+                                                            <th width="10%"><i class="fa fa-smoking m-r-sm"></i>Tabaco</th>
+                                                            <th width="13%"><i class="fa fa-smoking m-r-sm"></i>Cigarrillos/día</th>
+                                                            <th width="10%"><i class="fa fa-wine-bottle m-r-sm"></i>Alcohol</th>
+                                                            <th width="12%"><i class="fa fa-wine-bottle m-r-sm"></i>Bebidas/mes</th>
+                                                            <th width="13%"><i class="fa fa-chair m-r-sm"></i>Sedentarismo</th>
+                                                            <th width="10%"><i class="fa fa-vial m-r-sm"></i>Diabetes</th>
+                                                            <th width="10%"><i class="fa fa-heart-pulse m-r-sm"></i>Colesterol</th>
+                                                            <th width="12%"><i class="fa fa-heart-circle-bolt m-r-sm"></i>Triglicéridos</th>
+                                                            <th width="10%"><i class="fa fa-stethoscope m-r-sm"></i>H.T.A.</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><%# Eval("fuma") %></td>
+                                                            <td><%# Eval("Cigarrillos") %></td>
+                                                            <td><%# Eval("toma") %></td>
+                                                            <td><%# Eval("Bebidas") %></td>
+                                                            <td><%# Eval("sedentario") %></td>
+                                                            <td><%# Eval("diabetico") %></td>
+                                                            <td><%# Eval("colesterado") %></td>
+                                                            <td><%# Eval("triglicerado") %></td>
+                                                            <td><%# Eval("hipertenso") %></td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <button runat="server" id="btnAgregar" class="btn btn-outline btn-success pull-right"
+                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Agregar control">
+                                                        <i class="fa fa-notes-medical"></i>
+                                                    </button>
+                                                    <button runat="server" id="btnEliminar" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Eliminar historia">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                    <button runat="server" id="btnEditar" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Editar historia">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
                                                 </td>
                                             </tr>
-                                        </tfoot>
-                                    </table>
+                                        </ItemTemplate>
+                                    </asp:Repeater>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="6">
+                                            <ul class="pagination"></ul>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
 
-                                </div>
-                            </div>
-                            <%--Fin Contenido!!!!--%>
+                        </div>
+                    </div>
+                    <%--Fin Contenido!!!!--%>
                 </div>
             </div>
 
