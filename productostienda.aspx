@@ -141,7 +141,9 @@
                                                         <%# Eval("DescripcionProd") %>
                                                     </div>
                                                     <div class="m-t text-righ">
-                                                        <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i></a>
+                                                        <a href="#" class="btn btn-xs btn-outline btn-primary">Ver <i class="fa fa-magnifying-glass"></i></a>
+                                                        <a href="editarproductotienda?id=<%# Eval("idProducto") %>" class="btn btn-xs btn-outline btn-success">Editar <i class="fa fa-edit"></i></a>
+                                                        <a href="#" class="btn btn-xs btn-outline btn-danger">Borrar <i class="fa fa-trash"></i></a>
                                                     </div>
                                                 </div>
                                             </div>

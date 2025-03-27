@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.UI;
@@ -10,39 +11,46 @@ using MySql.Data.MySqlClient;
 
 namespace fpWebApp
 {
-    public partial class nuevoproductotienda : System.Web.UI.Page
+    public partial class editarproductotienda : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                if (Session["idUsuario"] != null)
+                if (Request.QueryString["id"].ToString() != "")
                 {
-                    ValidarPermisos("Nuevo producto");
-                    if (ViewState["SinPermiso"].ToString() == "1")
+                    if (Session["idUsuario"] != null)
                     {
-                        divMensaje.Visible = true;
-                        paginasperfil.Visible = true;
-                        divContenido.Visible = false;
-                    }
-                    if (ViewState["CrearModificar"].ToString() == "1")
-                    {
-                        txbPrecio.Attributes.Add("type", "number");
-                        txbPrecio.Attributes.Add("step", "100");
-                        txbPrecio.Attributes.Add("min", "1000");
-                        CargarCategorias();
+                        ValidarPermisos("Productos tienda");
+                        if (ViewState["SinPermiso"].ToString() == "1")
+                        {
+                            divMensaje.Visible = true;
+                            paginasperfil.Visible = true;
+                            divContenido.Visible = false;
+                        }
+                        if (ViewState["CrearModificar"].ToString() == "1")
+                        {
+                            txbPrecio.Attributes.Add("type", "number");
+                            txbPrecio.Attributes.Add("step", "100");
+                            txbPrecio.Attributes.Add("min", "1000");
+                            CargarCategorias();
+                        }
+                        else
+                        {
+                            divMensaje.Visible = true;
+                            paginasperfil.Visible = true;
+                            divContenido.Visible = false;
+                        }
                     }
                     else
                     {
-                        divMensaje.Visible = true;
-                        paginasperfil.Visible = true;
-                        divContenido.Visible = false;
+                        Response.Redirect("logout");
                     }
                 }
                 else
                 {
-                    Response.Redirect("logout");
-                }
+                    Response.Redirect("productostienda");
+                }                
             }
         }
 
@@ -161,9 +169,6 @@ namespace fpWebApp
                 cg.InsertarLog(Session["idusuario"].ToString(), "productos", "Nuevo", "El usuario creó un nuevo producto con código: " + txbCodigo.Text.ToString() + ".", "", "");
 
             }
-
-            
-
         }
     }
 }
