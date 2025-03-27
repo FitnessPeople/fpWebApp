@@ -5,7 +5,8 @@
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
-<%@ Register Src="~/controles/indicadoresmedico.ascx" TagPrefix="uc1" TagName="indicadoresmedico" %>
+<%@ Register Src="~/controles/indicadoresusucmr.ascx" TagPrefix="uc2" TagName="indicadoresusucmr" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -37,6 +38,7 @@
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
     <%--    formato de los status--%>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             var ddl = document.getElementById("<%= ddlStatusLead.ClientID %>");
@@ -54,7 +56,9 @@
             });
         });
     </script>
-    <%--  formato de moneda--%>
+
+    <%--    formato de moneda--%>
+
     <script>
         function formatCurrency(input) {
             let value = input.value.replace(/\D/g, '');
@@ -77,11 +81,13 @@
         }
     </script>
 
+    <%--    formato de posición en el menú--%>
+
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#historias");
+            var element1 = document.querySelector("#nuevocontactocrm");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#medico");
+            var element2 = document.querySelector("#crm");
             element2.classList.remove("collapse");
         }
     </script>
@@ -120,6 +126,8 @@
             document.getElementById('<%= hiddenEditor.ClientID %>').value = contenido;
         }
     </script>
+
+    <%--    formato de fecha--%>
 
     <script>
         $(document).ready(function () {
@@ -203,7 +211,8 @@
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row animated fadeInDown">
                     <%--Inicio Contenido!!!!--%>
-                    <uc1:indicadoresmedico runat="server" ID="indicadoresmedico" />
+
+                    <uc2:indicadoresusucmr runat="server" ID="indicadoresusucmr"/>
 
                     <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
                         <div class="p-xs">
@@ -364,7 +373,7 @@
                                 data-empty="Sin resultados">
                                 <thead>
                                     <tr>
-                                        <th data-breakpoints="xs" width="25%"><i class="fa fa-user-tie text-primary"></i> Nombre </th>
+                                        <th data-breakpoints="xs" width="15%"><i class="fa fa-user-tie text-primary"></i> Nombre </th>
                                         <th data-breakpoints="xs"><i class="fa-solid fa-phone text-success"></i> Teléfono</th>
                                         <th data-breakpoints="xs"><span class="glyphicon glyphicon-envelope text-warning"></span> Correo</th>
                                         <th data-breakpoints="xs"><i class="fas fa-industry text-danger"></i> Organización / Empresa</th>

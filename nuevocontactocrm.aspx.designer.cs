@@ -33,13 +33,13 @@ namespace fpWebApp
         protected global::fpWebApp.controles.header header;
 
         /// <summary>
-        /// Control indicadoresmedico.
+        /// Control indicadoresusucmr.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.indicadoresmedico indicadoresmedico;
+        protected global::fpWebApp.controles.indicadoresusucmr indicadoresusucmr;
 
         /// <summary>
         /// Control divMensaje.
