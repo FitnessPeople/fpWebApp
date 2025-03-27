@@ -125,102 +125,81 @@
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                    <div class="row">
-                        <div class="col-lg-12">
-
-                            <div class="ibox product-detail">
-                                <div class="ibox-content">
-
-                                    <div class="row">
-                                        <div class="col-md-5">
-
-
-                                            <div class="product-images">
-
-                                                <div>
-                                                    <div class="image-imitation" style="padding: initial">
-                                                        <img src="img/productos/course_1.jpg" width="100%" />
+                    <div class="ibox float-e-margins" runat="server" id="div1">
+                        <div class="ibox-title">
+                            <h5>Detalle del producto</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="ibox product-detail">
+                                        <div class="ibox-content">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="product-images">
+                                                        <asp:Literal ID="ltImagen1Prod" runat="server"></asp:Literal>
+                                                        <asp:Literal ID="ltImagen2Prod" runat="server"></asp:Literal>
+                                                        <asp:Literal ID="ltImagen3Prod" runat="server"></asp:Literal>
+                                                        <asp:Literal ID="ltImagen4Prod" runat="server"></asp:Literal>
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <div class="image-imitation" style="padding: initial">
-                                                        <img src="img/productos/course_2.jpg" width="100%" />
+                                                <div class="col-md-8">
+
+                                                    <h2 class="font-bold m-b-xs"><asp:Literal ID="ltNombre" runat="server"></asp:Literal></h2>
+                                                    <small><asp:Literal ID="ltDetalle" runat="server"></asp:Literal></small>
+                                                    <div class="m-t-md">
+                                                        <h2 class="product-main-price"><asp:Literal ID="ltPrecio" runat="server"></asp:Literal></h2>
                                                     </div>
-                                                </div>
-                                                <div>
-                                                    <div class="image-imitation" style="padding: initial">
-                                                        <img src="img/productos/course_3.jpg" width="100%" />
+                                                    <hr>
+
+                                                    <h4>Descripción</h4>
+
+                                                    <div class="small text-muted">
+                                                        <asp:Literal ID="ltDescripcion" runat="server"></asp:Literal>
                                                     </div>
-                                                </div>
+                                                    <dl class="small m-t-md">
+                                                        <dt>Características</dt>
+                                                        <dd><asp:Literal ID="ltCaracteristicas" runat="server"></asp:Literal></dd>
+                                                        <dt>Beneficios</dt>
+                                                        <dd><asp:Literal ID="ltBeneficios" runat="server"></asp:Literal></dd>
+                                                    </dl>
+                                                    <hr>
+
+                                                    <div>
+                                                        <div class="btn-group">
+                                                            <button class="btn btn-primary btn-sm"><i class="fa fa-cart-plus"></i>Add to cart</button>
+                                                            <button class="btn btn-white btn-sm"><i class="fa fa-star"></i>Add to wishlist </button>
+                                                            <button class="btn btn-white btn-sm"><i class="fa fa-envelope"></i>Contact with author </button>
+                                                        </div>
+                                                    </div>
 
 
+
+                                                </div>
                                             </div>
 
                                         </div>
-                                        <div class="col-md-7">
-
-                                            <h2 class="font-bold m-b-xs">Desktop publishing software
-                                    </h2>
-                                            <small>Many desktop publishing packages and web page editors now.</small>
-                                            <div class="m-t-md">
-                                                <h2 class="product-main-price">$406,602 <small class="text-muted">Exclude Tax</small> </h2>
-                                            </div>
-                                            <hr>
-
-                                            <h4>Product description</h4>
-
-                                            <div class="small text-muted">
-                                                It is a long established fact that a reader will be distracted by the readable
-                                        content of a page when looking at its layout. The point of using Lorem Ipsum is
-
-                                       
-
-                                                <br />
-                                                <br />
-                                                There are many variations of passages of Lorem Ipsum available, but the majority
-                                        have suffered alteration in some form, by injected humour, or randomised words
-                                        which don't look even slightly believable.
-                                   
-                                            </div>
-                                            <dl class="small m-t-md">
-                                                <dt>Description lists</dt>
-                                                <dd>A description list is perfect for defining terms.</dd>
-                                                <dt>Euismod</dt>
-                                                <dd>Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.</dd>
-                                                <dd>Donec id elit non mi porta gravida at eget metus.</dd>
-                                                <dt>Malesuada porta</dt>
-                                                <dd>Etiam porta sem malesuada magna mollis euismod.</dd>
-                                            </dl>
-                                            <hr>
-
-                                            <div>
-                                                <div class="btn-group">
-                                                    <button class="btn btn-primary btn-sm"><i class="fa fa-cart-plus"></i>Add to cart</button>
-                                                    <button class="btn btn-white btn-sm"><i class="fa fa-star"></i>Add to wishlist </button>
-                                                    <button class="btn btn-white btn-sm"><i class="fa fa-envelope"></i>Contact with author </button>
-                                                </div>
-                                            </div>
-
-
-
+                                        <div class="ibox-footer">
+                                            <span class="pull-right">Full stock - <i class="fa fa-clock-o"></i>14.04.2016 10:04 pm
+                                            </span>
+                                            The generated Lorem Ipsum is therefore always free
+                       
                                         </div>
                                     </div>
 
                                 </div>
-                                <div class="ibox-footer">
-                                    <span class="pull-right">Full stock - <i class="fa fa-clock-o"></i>14.04.2016 10:04 pm
-                            </span>
-                                    The generated Lorem Ipsum is therefore always free
-                       
-                                </div>
                             </div>
-
                         </div>
                     </div>
 
                     <div class="ibox float-e-margins" runat="server" id="divContenido">
                         <div class="ibox-title">
-                            <h5>Formulario para la creación de un nuevo producto</h5>
+                            <h5>Formulario para la edición de un producto</h5>
                             <div class="ibox-tools">
                                 <a class="collapse-link">
                                     <i class="fa fa-chevron-up"></i>

@@ -33,6 +33,7 @@ namespace fpWebApp
                             txbPrecio.Attributes.Add("type", "number");
                             txbPrecio.Attributes.Add("step", "100");
                             txbPrecio.Attributes.Add("min", "1000");
+                            CargarProductos();
                             CargarCategorias();
                         }
                         else
@@ -85,6 +86,51 @@ namespace fpWebApp
 
             ddlCategorias.DataSource = dt;
             ddlCategorias.DataBind();
+
+            dt.Dispose();
+        }
+
+        private void CargarProductos()
+        {
+            string strQuery = "SELECT * FROM Productos p, Categorias c " +
+                "WHERE p.idCategoria = c.idCategoria " +
+                "AND p.idProducto = " + Request.QueryString["id"].ToString();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            txbNombre.Text = dt.Rows[0]["NombreProd"].ToString();
+            ltNombre.Text = dt.Rows[0]["NombreProd"].ToString();
+
+            txbCodigo.Text = dt.Rows[0]["CodigoProd"].ToString();
+            txbPrecio.Text = dt.Rows[0]["PrecioPublicoProd"].ToString();
+            ltPrecio.Text = dt.Rows[0]["PrecioPublicoProd"].ToString();
+
+            txbDetalle.Text = dt.Rows[0]["DetalleProd"].ToString();
+            ltDetalle.Text = dt.Rows[0]["DetalleProd"].ToString();
+
+            txbDescripcion.Text = dt.Rows[0]["DescripcionProd"].ToString();
+            ltDescripcion.Text = dt.Rows[0]["DescripcionProd"].ToString();
+
+            txbCaracteristicas.Text = dt.Rows[0]["CaracteristicasProd"].ToString();
+            ltCaracteristicas.Text = dt.Rows[0]["CaracteristicasProd"].ToString();
+
+            txbBeneficios.Text = dt.Rows[0]["BeneficiosProd"].ToString();
+            ltBeneficios.Text = dt.Rows[0]["BeneficiosProd"].ToString();
+
+            ltImagen1Prod.Text = "<div><div class=\"image-imitation\" style=\"padding: initial\"><img src=\"img/productos/" + dt.Rows[0]["Imagen1Prod"].ToString() + "\" width=\"100%\" /></div></div>";
+
+            if (dt.Rows[0]["Imagen2Prod"].ToString() != "")
+            {
+                ltImagen2Prod.Text = "<div><div class=\"image-imitation\" style=\"padding: initial\"><img src=\"img/productos/" + dt.Rows[0]["Imagen2Prod"].ToString() + "\" width=\"100%\" /></div></div>";
+            }
+            if (dt.Rows[0]["Imagen3Prod"].ToString() != "")
+            {
+                ltImagen3Prod.Text = "<div><div class=\"image-imitation\" style=\"padding: initial\"><img src=\"img/productos/" + dt.Rows[0]["Imagen3Prod"].ToString() + "\" width=\"100%\" /></div></div>";
+            }
+            if (dt.Rows[0]["Imagen4Prod"].ToString() != "")
+            {
+                ltImagen4Prod.Text = "<div><div class=\"image-imitation\" style=\"padding: initial\"><img src=\"img/productos/" + dt.Rows[0]["Imagen4Prod"].ToString() + "\" width=\"100%\" /></div></div>";
+            }
 
             dt.Dispose();
         }
