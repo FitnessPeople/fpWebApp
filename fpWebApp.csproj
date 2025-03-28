@@ -505,6 +505,10 @@
     <Content Include="img\p6.jpg" />
     <Content Include="img\p7.jpg" />
     <Content Include="img\p8.jpg" />
+    <Content Include="img\productos\course_1.jpg" />
+    <Content Include="img\productos\course_2.jpg" />
+    <Content Include="img\productos\course_3.jpg" />
+    <Content Include="img\productos\course_5.jpg" />
     <Content Include="img\profile.jpg" />
     <Content Include="img\profile_big.jpg" />
     <Content Include="img\profile_small.jpg" />
@@ -1585,7 +1589,6 @@
     <Folder Include="docs\incapacidades\" />
     <Folder Include="docs\traspasos\" />
     <Folder Include="img\contratos\" />
-    <Folder Include="img\productos\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\bootstrap.css.map" />

@@ -138,7 +138,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="ibox product-detail">
-                                        <div class="ibox-content">
+                                        <div class="ibox-content" style="padding: 30px 30px 0px 30px; border-style: none">
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div class="product-images">
@@ -172,23 +172,13 @@
 
                                                     <div>
                                                         <div class="btn-group">
-                                                            <button class="btn btn-primary btn-sm"><i class="fa fa-cart-plus"></i>Add to cart</button>
-                                                            <button class="btn btn-white btn-sm"><i class="fa fa-star"></i>Add to wishlist </button>
-                                                            <button class="btn btn-white btn-sm"><i class="fa fa-envelope"></i>Contact with author </button>
+                                                            <input type="number" class="form-control" />
+                                                            <button class="btn btn-primary btn-sm"><i class="fa fa-cart-plus"></i> Actualizar inventario</button>
                                                         </div>
                                                     </div>
-
-
-
                                                 </div>
                                             </div>
 
-                                        </div>
-                                        <div class="ibox-footer">
-                                            <span class="pull-right">Full stock - <i class="fa fa-clock-o"></i>14.04.2016 10:04 pm
-                                            </span>
-                                            The generated Lorem Ipsum is therefore always free
-                       
                                         </div>
                                     </div>
 
@@ -360,12 +350,12 @@
                                                 </div>
 
                                                 <div>
-                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='afiliados'"><strong>Cancelar</strong></button>
-                                                    <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
+                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='productostienda'"><strong>Cancelar</strong></button>
+                                                    <asp:Button ID="btnEditar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Editar" OnClick="btnEditar_Click" />
                                                 </div>
                                             </ContentTemplate>
                                             <Triggers>
-                                                <asp:PostBackTrigger ControlID="btnAgregar" />
+                                                <asp:PostBackTrigger ControlID="btnEditar" />
                                             </Triggers>
                                         </asp:UpdatePanel>
                                     </div>

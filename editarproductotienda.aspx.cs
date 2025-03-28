@@ -33,8 +33,8 @@ namespace fpWebApp
                             txbPrecio.Attributes.Add("type", "number");
                             txbPrecio.Attributes.Add("step", "100");
                             txbPrecio.Attributes.Add("min", "1000");
-                            CargarProductos();
                             CargarCategorias();
+                            CargarProductos();
                         }
                         else
                         {
@@ -102,8 +102,9 @@ namespace fpWebApp
             ltNombre.Text = dt.Rows[0]["NombreProd"].ToString();
 
             txbCodigo.Text = dt.Rows[0]["CodigoProd"].ToString();
+
             txbPrecio.Text = dt.Rows[0]["PrecioPublicoProd"].ToString();
-            ltPrecio.Text = dt.Rows[0]["PrecioPublicoProd"].ToString();
+            ltPrecio.Text = string.Format("{0:C0}", dt.Rows[0]["PrecioPublicoProd"]);
 
             txbDetalle.Text = dt.Rows[0]["DetalleProd"].ToString();
             ltDetalle.Text = dt.Rows[0]["DetalleProd"].ToString();
@@ -117,31 +118,40 @@ namespace fpWebApp
             txbBeneficios.Text = dt.Rows[0]["BeneficiosProd"].ToString();
             ltBeneficios.Text = dt.Rows[0]["BeneficiosProd"].ToString();
 
+            ddlCategorias.SelectedIndex = Convert.ToInt32(ddlCategorias.Items.IndexOf(ddlCategorias.Items.FindByValue(dt.Rows[0]["idCategoria"].ToString())));
+
             ltImagen1Prod.Text = "<div><div class=\"image-imitation\" style=\"padding: initial\"><img src=\"img/productos/" + dt.Rows[0]["Imagen1Prod"].ToString() + "\" width=\"100%\" /></div></div>";
+            ViewState.Add("Imagen1Prod", dt.Rows[0]["Imagen1Prod"].ToString());
+            ViewState["Imagen2Prod"] = "";
+            ViewState["Imagen3Prod"] = "";
+            ViewState["Imagen4Prod"] = "";
 
             if (dt.Rows[0]["Imagen2Prod"].ToString() != "")
             {
                 ltImagen2Prod.Text = "<div><div class=\"image-imitation\" style=\"padding: initial\"><img src=\"img/productos/" + dt.Rows[0]["Imagen2Prod"].ToString() + "\" width=\"100%\" /></div></div>";
+                ViewState["Imagen2Prod"] = dt.Rows[0]["Imagen2Prod"].ToString();
             }
             if (dt.Rows[0]["Imagen3Prod"].ToString() != "")
             {
                 ltImagen3Prod.Text = "<div><div class=\"image-imitation\" style=\"padding: initial\"><img src=\"img/productos/" + dt.Rows[0]["Imagen3Prod"].ToString() + "\" width=\"100%\" /></div></div>";
+                ViewState["Imagen3Prod"] = dt.Rows[0]["Imagen3Prod"].ToString();
             }
             if (dt.Rows[0]["Imagen4Prod"].ToString() != "")
             {
                 ltImagen4Prod.Text = "<div><div class=\"image-imitation\" style=\"padding: initial\"><img src=\"img/productos/" + dt.Rows[0]["Imagen4Prod"].ToString() + "\" width=\"100%\" /></div></div>";
+                ViewState["Imagen4Prod"] = dt.Rows[0]["Imagen4Prod"].ToString();
             }
 
             dt.Dispose();
         }
 
-        protected void btnAgregar_Click(object sender, EventArgs e)
+        protected void btnEditar_Click(object sender, EventArgs e)
         {
             //Accede al archivo usando el nombre del archivo HTML INPUT.
-            string strFilename1 = "";
-            string strFilename2 = "";
-            string strFilename3 = "";
-            string strFilename4 = "";
+            string strFilename1 = ViewState["Imagen1Prod"].ToString();
+            string strFilename2 = ViewState["Imagen2Prod"].ToString();
+            string strFilename3 = ViewState["Imagen3Prod"].ToString();
+            string strFilename4 = ViewState["Imagen4Prod"].ToString();
 
             if (imgInp1.PostedFile.FileName != "")
             {
@@ -180,19 +190,24 @@ namespace fpWebApp
             }
             else
             {
-                string strQuery = "INSERT INTO productos " +
-                    "(idCategoria, CodigoProd, NombreProd, PrecioPublicoProd, DetalleProd, DescripcionProd, " +
-                    "CaracteristicasProd, BeneficiosProd, Imagen1Prod, Imagen2Prod, Imagen3Prod, Imagen4Prod, VideoProd, " +
-                    "FavoritoProd, NuevoProd, MostrarProd) " +
-                    "VALUES (" + ddlCategorias.SelectedItem.Value.ToString() + ", " +
-                    "'" + txbCodigo.Text.ToString() + "', '" + txbNombre.Text.ToString() + "', " +
-                    "" + txbPrecio.Text.ToString() + ", '" + txbDetalle.Text.ToString() + "', " +
-                    "'" + txbDescripcion.Text.ToString() + "', '" + txbCaracteristicas.Text.ToString() + "', " +
-                    "'" + txbBeneficios.Text.ToString() + "', '" + strFilename1 + "', '" + strFilename2 + "', " +
-                    "'" + strFilename3 + "', '" + strFilename4 + "', '', 1, 1, 1) ";
-
+                string strInitData = TraerData();
                 try
                 {
+                    string strQuery = "UPDATE productos SET " +
+                       "idCategoria = " + ddlCategorias.SelectedItem.Value.ToString() + ", " +
+                       "CodigoProd = '" + txbCodigo.Text.ToString() + "', " +
+                       "NombreProd = '" + txbNombre.Text.ToString() + "', " +
+                       "PrecioPublicoProd = " + txbPrecio.Text.ToString() + ", " +
+                       "DetalleProd = '" + txbDetalle.Text.ToString() + "', " +
+                       "DescripcionProd = '" + txbDescripcion.Text.ToString() + "', " +
+                       "CaracteristicasProd = '" + txbCaracteristicas.Text.ToString() + "', " +
+                       "BeneficiosProd = '" + txbBeneficios.Text.ToString() + "', " +
+                       "Imagen1Prod = '" + strFilename1 + "', " +
+                       "Imagen2Prod = '" + strFilename2 + "', " +
+                       "Imagen3Prod = '" + strFilename3 + "', " +
+                       "Imagen4Prod = '" + strFilename4 + "'" +
+                       "WHERE idProducto = " + Request.QueryString["id"].ToString();
+
                     string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
 
                     using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
@@ -211,10 +226,28 @@ namespace fpWebApp
                     string respuesta = "ERROR: " + ex.Message;
                 }
 
+                string strNewData = TraerData();
                 clasesglobales cg = new clasesglobales();
-                cg.InsertarLog(Session["idusuario"].ToString(), "productos", "Nuevo", "El usuario creó un nuevo producto con código: " + txbCodigo.Text.ToString() + ".", "", "");
+                cg.InsertarLog(Session["idusuario"].ToString(), "productos", "Modifica", "El usuario modificó datos al producto con código: " + txbCodigo.Text.ToString() + ".", strInitData, strNewData);
 
             }
+            Response.Redirect("editarproductotienda?id=" + Request.QueryString["id"].ToString());
+        }
+
+        private string TraerData()
+        {
+            string strQuery = "SELECT * FROM productos WHERE idProducto = " + Request.QueryString["id"].ToString();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
         }
     }
 }

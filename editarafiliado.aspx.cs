@@ -311,13 +311,13 @@ namespace fpWebApp
                 "ContactoAfiliado = '" + txbTelefonoContacto.Text.ToString() + "' " +
                 "WHERE idAfiliado = " + Request.QueryString["editid"].ToString();
 
-                string strNewData = TraerData();
                 clasesglobales cg = new clasesglobales();
 
                 string mensaje = cg.TraerDatosStr(strQuery);
 
                 if (mensaje == "OK")
                 {
+                    string strNewData = TraerData();
                     cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Modifica", "El usuario modificó datos al afiliado con documento " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
 
                     //Consulta si existe el afiliado en Armatura y lo actualiza
