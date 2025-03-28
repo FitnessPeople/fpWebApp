@@ -32,6 +32,13 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
+    <style type="text/css" media="print">
+        body {
+            visibility: hidden;
+            display: none
+        }
+    </style>
+
     <!-- CSS de Quill -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <!-- JS de Quill -->
@@ -139,6 +146,7 @@
         });
     </script>
 
+
 </head>
 
 <body onload="changeClass()">
@@ -200,8 +208,8 @@
                     <h2><i class="fa fa-notes-medical text-success m-r-sm"></i>CRM Contactos</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>Médico</li>
-                        <li class="active"><strong>CRM Contactos</strong></li>
+                        <li>CMR</li>
+                        <li class="active"><strong>Contactos</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -259,14 +267,14 @@
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
-                                                                    <i class="fa fa-user-tie text-primary"></i>
+                                                                    <i class="fa fa-user-tie text-info"></i>
                                                                     <label for="recipient-name" class="col-form-label">Nombre completo:</label>
                                                                     <input type="text" class="form-control" id="recipient-name">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <div class="col-sm-6">
-                                                                    <i class="fa-solid fa-phone text-success"></i>
+                                                                    <i class="fa-solid fa-phone text-info"></i>
                                                                     <label for="message-text" class="col-form-label">Teléfono:</label>
                                                                     <input type="text" class="form-control" id="telefono-text">
                                                                 </div>
@@ -275,14 +283,14 @@
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
-                                                                    <span class="glyphicon glyphicon-envelope text-primary"></span>
+                                                                    <span class="glyphicon glyphicon-envelope text-info"></span>
                                                                     <label for="message-text" class="col-form-label">Correo electrónico:</label>
                                                                     <input type="text" class="form-control" id="correo-text">
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
-                                                                    <i class="fas fa-industry text-primary"></i>
+                                                                    <i class="fas fa-industry text-info"></i>
                                                                     <label for="message-text" class="col-form-label">Empresa:</label>
                                                                     <asp:DropDownList ID="ddlEmpresa" runat="server"
                                                                         AppendDataBoundItems="true" CssClass="form-control input-sm">
@@ -297,7 +305,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <i class="fas fa-flag text-primary"></i>
+                                                            <i class="fas fa-flag text-info"></i>
                                                             <label for="message-text" class="col-form-label">Status Lead:</label>
                                                             <asp:DropDownList ID="ddlStatusLead" runat="server"
                                                                 AppendDataBoundItems="true" CssClass="form-control input-sm">
@@ -312,14 +320,14 @@
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
-                                                                    <i class="fas fa-angle-down text-primary"></i>
+                                                                    <i class="fa-solid fa-hand-point-up text-info"></i>
                                                                     <label for="message-text" class="col-form-label">Primer contacto:</label>
                                                                     <input type="text" runat="server" id="txbFechaPrim" class="form-control input-sm datepicker" />
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
-                                                                    <i class="fas fa-angle-right text-primary"></i>
+                                                                    <i class="fas fa-angle-right text-info"></i>
                                                                     <label for="message-text" class="col-form-label">Próximo contacto:</label>
                                                                     <input type="text" runat="server" id="txbFechaProx" class="form-control input-sm datepicker" />
                                                                 </div>
@@ -328,7 +336,7 @@
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
-                                                                    <i class="fa fa-dollar text-primary"></i>
+                                                                    <i class="fa fa-dollar text-info"></i>
                                                                     <label for="message-text" class="col-form-label">Valor Propuesta:</label>
                                                                     <asp:TextBox ID="txbValorPropuesta" CssClass="form-control input-sm" runat="server" placeholder="Valor"
                                                                         onkeyup="formatCurrency(this)" onblur="keepFormatted(this)"></asp:TextBox>
@@ -336,14 +344,14 @@
                                                             </div>
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
-                                                                    <i class="fas fa-paperclip text-primary"></i>
+                                                                    <i class="fas fa-paperclip text-info"></i>
                                                                     <label for="message-text" class="col-form-label">Archivo Propuesta:</label>
                                                                     <input type="file" class="form-control" id="archivo-text" placeholder="subir archivo">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <i class="fas fa-pen text-primary"></i>
+                                                            <i class="fas fa-pen text-info"></i>
                                                             <label for="message-text" class="col-form-label">Observaciones:</label>
                                                             <div id="editor" cssclass="form-control input-sm"></div>
                                                             <asp:HiddenField ID="hiddenEditor" runat="server" />
@@ -373,24 +381,24 @@
                                 data-empty="Sin resultados">
                                 <thead>
                                     <tr>
-                                        <th data-breakpoints="xs" width="15%"><i class="fa fa-user-tie text-primary"></i> Nombre </th>
-                                        <th data-breakpoints="xs"><i class="fa-solid fa-phone text-success"></i> Teléfono</th>
-                                        <th data-breakpoints="xs"><span class="glyphicon glyphicon-envelope text-warning"></span> Correo</th>
-                                        <th data-breakpoints="xs"><i class="fas fa-industry text-danger"></i> Organización / Empresa</th>
+                                        <th data-breakpoints="xs" width="15%"><i class="fa fa-user-tie text-info"></i> Nombre </th>
+                                        <th data-breakpoints="xs"><i class="fa-solid fa-phone text-info"></i> Teléfono</th>
+                                        <th data-breakpoints="xs"><span class="glyphicon glyphicon-envelope text-info"></span> Correo</th>
+                                        <th data-breakpoints="xs"><i class="fas fa-industry text-info"></i> Organización / Empresa</th>
                                         <th data-breakpoints="xs"><i class="fas fa-flag text-info"></i> Staus lead</th>
-                                        <th data-breakpoints="xs"><i class="fas fa-angle-down text-success"></i> Primer contacto</th>
-                                        <th data-breakpoints="xs"><i class="fas fa-angle-right text-primary"></i> Próximo contacto</th>
-                                        <th data-breakpoints="xs"><i class="fa fa-dollar text-primary"></i> Valor propuesta</th>
+                                        <th data-breakpoints="xs"><i class="fa-solid fa-hand-point-up text-info"></i> Primer contacto</th>
+                                        <th data-breakpoints="xs"><i class="fas fa-angle-right text-success"></i> Próximo contacto</th>
+                                        <th data-breakpoints="xs"><i class="fa fa-dollar text-warning"></i> Valor propuesta</th>
                                         <th data-breakpoints="all" data-title="Info"></th>
                                         <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <asp:Repeater ID="rpContactosCMR" runat="server">
+                                    <asp:Repeater ID="rpContactosCMR" runat="server" OnItemDataBound="rpContactosCMR_ItemDataBound">
                                        <ItemTemplate>
                                             <tr class="feed-element">                                              
                                                 <td><%# Eval("NombreContacto") %></td>
-                                                <td><%# Eval("TelefonoContacto") %> </td>
+                                                <td><a href="https://wa.me/57<%# Eval("TelefonoContacto") %>" target="_blank"><i class="fab fa-whatsapp m-r-xs font-bold"></i> <%# Eval("TelefonoContacto") %></a></td>
                                                 <td><%# Eval("EmailContacto") %> </td>
                                                 <td><%# Eval("idEmpresa") %> </td>
                                                 <td><%# Eval("idstatusLead") %> </td>
@@ -410,20 +418,6 @@
                                                             <td><%# Eval("Observaciones") %> </td>
                                                             <td><%# Eval("idUsuario") %> </td>
                                                         </tr>
-<%--                                                        <tr>
-                                                            <th width="20%"><i class="fa fa-crutch m-r-sm"></i>Traumatológico</th>
-                                                            <th width="20%"><i class="fa fa-capsules m-r-sm"></i>Farmacológico</th>
-                                                            <th width="20%"><i class="fa fa-droplet m-r-sm"></i>F.U.M.</th>
-                                                            <th width="20%"><i class="fa fa-person-running m-r-sm"></i>Actividad Física</th>
-                                                            <th width="20%"><i class="fa fa-person-pregnant m-r-sm"></i>Gineco-Obstetricia</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><%# Eval("NombreContacto") %></td>
-                                                            <td><%# Eval("NombreContacto") %></td>
-                                                            <td><%# Eval("NombreContacto") %></td>
-                                                            <td><%# Eval("NombreContacto") %></td>
-                                                            <td><%# Eval("NombreContacto") %></td>
-                                                        </tr>--%>
                                                     </table>
 
                                                 </td>
@@ -432,14 +426,23 @@
                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Agregar control">
                                                         <i class="fa fa-notes-medical"></i>
                                                     </button>
-                                                    <button runat="server" id="btnEliminar" class="btn btn-outline btn-danger pull-right m-r-xs"
-                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Eliminar historia">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                    <button runat="server" id="btnEditar" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Editar historia">
+                                                    <a runat="server" id="btnEditar" class="btn btn-outline btn-success pull-right"
+                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" >
                                                         <i class="fa fa-edit"></i>
-                                                    </button>
+                                                    </a>
+                                                     <a runat="server" id="btnEliminar" class="btn btn-outline btn-danger pull-right"
+                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" >
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+
+<%--                                                    <button runat="server" id="btnEliminar" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Eliminar contacto">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>--%>
+<%--                                                    <button runat="server" id="btnEditar" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Editar contacto">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>--%>
                                                 </td>
                                             </tr>
                                         </ItemTemplate>
