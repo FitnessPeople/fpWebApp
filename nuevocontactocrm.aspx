@@ -61,7 +61,7 @@
 
     <%--    formato de los status--%>
 
-    <script>
+<%--    <script>
         document.addEventListener("DOMContentLoaded", function () {
             var ddl = document.getElementById("<%= ddlStatusLead.ClientID %>");
             var colors = {
@@ -77,7 +77,7 @@
                 ddl.style.backgroundColor = colors[selectedText] || "white";
             });
         });
-    </script>
+    </script>--%>
 
     <%--    formato de moneda--%>
 
@@ -220,12 +220,10 @@
                                             <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                         </div>
                                     </div>
-                                    <%-- Modal Nuevo--%>
+                                    <%-- Modal Nuevo/Editar--%>
 
                                     <asp:UpdatePanel ID="upModal" runat="server" UpdateMode="Conditional">
                                         <ContentTemplate>
-
-
                                             <div class="modal fade" id="ModalContacto" tabindex="-1" role="dialog" aria-labelledby="ModalContactoLabel" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
@@ -263,14 +261,9 @@
                                                                     <div class="form-group">
                                                                         <i class="fas fa-industry text-info"></i>
                                                                         <label for="Empresa" class="col-form-label">Empresa:</label>
-                                                                        <asp:DropDownList ID="ddlEmpresa" runat="server"
-                                                                            AppendDataBoundItems="true" CssClass="form-control input-sm">
-                                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                            <asp:ListItem Text="Empresa 1" Value="Empresa 1"></asp:ListItem>
-                                                                            <asp:ListItem Text="Empresa 2" Value="Empresa 2"></asp:ListItem>
-                                                                            <asp:ListItem Text="Empresa 3" Value="Empresa 3"></asp:ListItem>
-                                                                            <asp:ListItem Text="Empresa 4" Value="Empresa 4"></asp:ListItem>
-                                                                            <asp:ListItem Text="Empresa 5" Value="Empresa 5"></asp:ListItem>
+                                                                        <asp:DropDownList ID="ddlEmpresa" DataTextField="NombreEmpresaCMR" DataValueField="idEmpresaCmr" 
+                                                                            runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
+                                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>                                                                          
                                                                         </asp:DropDownList>
                                                                     </div>
                                                                 </div>
@@ -278,14 +271,9 @@
                                                             <div class="form-group">
                                                                 <i class="fas fa-flag text-info"></i>
                                                                 <label for="StatusLead" class="col-form-label">Status Lead:</label>
-                                                                <asp:DropDownList ID="ddlStatusLead" runat="server"
-                                                                    AppendDataBoundItems="true" CssClass="form-control input-sm">
+                                                                <asp:DropDownList ID="ddlStatusLead" DataTextField="NombreEstado" DataValueField="idEstado"  
+                                                                    runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                     <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                    <asp:ListItem Text="Primer contacto" Value="Primer contacto" Class="text-dark"></asp:ListItem>
-                                                                    <asp:ListItem Text="Propuesta enviada" Value="Propuesta enviada" Class="text-success"></asp:ListItem>
-                                                                    <asp:ListItem Text="Negociación propuesta" Value="Negociación propuesta" Class="text-warning"></asp:ListItem>
-                                                                    <asp:ListItem Text="Negociación aceptada" Value="Negociación aceptada" Class="text-primary"></asp:ListItem>
-                                                                    <asp:ListItem Text="Negociación rechazada" Value="Negociación rechazada" Class="text-danger"></asp:ListItem>
                                                                 </asp:DropDownList>
                                                             </div>
                                                             <div class="row">
@@ -338,6 +326,39 @@
                                             </div>
                                         </ContentTemplate>
                                     </asp:UpdatePanel>
+                                     <%-- Termina Modal --%>
+
+                                     <%-- Modal eliminar--%>
+                                     <asp:UpdatePanel ID="upEliminar" runat="server" UpdateMode="Conditional">
+                                        <ContentTemplate>
+                                            <div class="modal fade" id="Modaleliminar" tabindex="-1" role="dialog" aria-labelledby="ModalEliminarLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="alert">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="ModaleliminarLabel">Contactos CRM</h5>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <i class="fa-solid fa-exclamation"></i>                                                                      
+                                                                        <asp:Literal ID="ltEliminar" runat="server"></asp:Literal>
+                                                                    </div>
+                                                                </div>
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.reload();">Cerrar</button>
+                                                            <button type="submit" class="btn btn-danger mb-3">Eliminar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ContentTemplate>
+                                    </asp:UpdatePanel>
+                                     <%-- Termina Modal eliminar--%>
+
 
                                     <div class="col-lg-6 form-horizontal">
                                         <button type="button" class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;" data-toggle="modal" data-target="#ModalContacto" data-whatever="@fat">Nuevo</button>
@@ -371,10 +392,10 @@
                                                         <ItemTemplate>
                                                             <tr class="feed-element">
                                                                 <td><%# Eval("NombreContacto")%></td>
-                                                                <td><a href="https://wa.me/57<%# Eval("TelefonoContacto") %>" target="_blank"><i class="fab fa-whatsapp m-r-xs font-bold"></i><%# Eval("TelefonoContacto") %></a></td>
+                                                                <td><a href="https://wa.me/57<%# Eval("TelefonoContacto") %>" target="_blank"><i class="fab fa-whatsapp m-r-xs font-bold" style="color:forestgreen""></i><%# Eval("TelefonoContacto") %></a></td>
                                                                 <td><%# Eval("EmailContacto") %> </td>
-                                                                <td><%# Eval("idEmpresa") %> </td>
-                                                                <td><%# Eval("idstatusLead") %> </td>
+                                                                <td><%# Eval("NombreEmpresaCMR") %> </td>
+                                                                <td><%# Eval("NombreEstado") %> </td>
                                                                 <td><%# Eval("FechaPrimerCon", "{0:yyyy-MM-dd}") %></td>
                                                                 <td><%# Eval("FechaProximoCon", "{0:yyyy-MM-dd}") %></td>
                                                                 <td><%# Eval("ValorPropuesta", "{0:C0}") %></td>
@@ -398,8 +419,16 @@
                                                                         CssClass="btn btn-outline btn-primary pull-left m-r-xs"
                                                                         CommandArgument='<%# Eval("idContacto") %>'
                                                                         OnClick="btnEditar_Click"
-                                                                        Text="&#128221;"
+                                                                        Text="&#9998;"
                                                                         ToolTip="Editar contacto"
+                                                                        Style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" />
+                                                              
+                                                                    <asp:Button ID="btnEliminar" runat="server"
+                                                                        CssClass="btn btn-outline btn-danger pull-left m-r-xs"
+                                                                        CommandArgument='<%# Eval("idContacto") %>'
+                                                                        OnClick="btnEliminar_Click"
+                                                                        Text="&#128465;"
+                                                                        ToolTip="Eliminar contacto"
                                                                         Style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" />
                                                                 </td>
                                                             </tr>

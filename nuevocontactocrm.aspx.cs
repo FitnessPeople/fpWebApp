@@ -48,7 +48,11 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
+                            
+                            ListaEmpresasCMR();
+                            ListaEstadosCMR();
                             ListaContactos();
+                            
                         }
                        //ListaContactos();
                     }
@@ -96,6 +100,26 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        private void ListaEmpresasCMR()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEmpresasCMR();
+
+            ddlEmpresa.DataSource = dt;
+            ddlEmpresa.DataBind();
+            dt.Dispose();            
+        }
+
+        private void ListaEstadosCMR()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEstadossCMR();
+
+            ddlStatusLead.DataSource = dt;
+            ddlStatusLead.DataBind();
+            dt.Dispose();
+        }
+
         protected void btnEditar_Click(object sender, EventArgs e)
         {
             Button btnEditar = (Button)sender;
@@ -127,22 +151,47 @@ namespace fpWebApp
 
         private void CargarDatosContacto(int idContacto)
         {
+            bool respuesta = false;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarContactosCMRPorId(idContacto);
+            DataTable dt = cg.ConsultarContactosCMRPorId(idContacto, out respuesta);
 
-            if (dt.Rows.Count > 0)
+            if (respuesta) { 
+                if (dt.Rows.Count > 0)
+                {
+                    DataRow row = dt.Rows[0];
+
+                    txbNombreContacto.Value = row["NombreContacto"].ToString();
+                    txbTelefonoContacto.Value = row["TelefonoContacto"].ToString();
+                    txbCorreoContacto.Value = row["EmailContacto"].ToString();
+                    ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaCmr"].ToString())));
+                    ddlStatusLead.SelectedIndex = Convert.ToInt32(ddlStatusLead.Items.IndexOf(ddlStatusLead.Items.FindByValue(dt.Rows[0]["idEstado"].ToString())));
+                    txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
+                    txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
+                    int ValorPropuesta = Convert.ToInt32(dt.Rows[0]["ValorPropuesta"]);
+                    txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));               
+                }
+            }
+            else
             {
                 DataRow row = dt.Rows[0];
-
-                txbNombreContacto.Value = row["NombreContacto"].ToString();
-                txbTelefonoContacto.Value = row["TelefonoContacto"].ToString();
-                txbCorreoContacto.Value = row["EmailContacto"].ToString();
-                ddlEmpresa.SelectedValue = row["idEmpresa"].ToString();
-                ddlStatusLead.SelectedValue = row["idStatusLead"].ToString();
-                txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
-                txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
-                txbValorPropuesta.Text = row["ValorPropuesta"].ToString();
+                txbNombreContacto.Value = row["Error"].ToString(); ;
             }
-        }  
+        }
+
+
+
+        protected void btnEliminar_Click(object sender, EventArgs e)
+        {
+            Button btnEliminar = (Button)sender;
+            int idContacto = Convert.ToInt32(btnEliminar.CommandArgument);
+
+            if (idContacto > 0)
+            {
+                ltEliminar.Text = "<span style='color: red;'>¿Está seguro de eliminar el contacto</span>" ;
+                CargarDatosContacto(idContacto);
+                upEliminar.Update();
+                ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#Modaleliminar').modal('show');", true);
+            }
+        }
     }
 }
