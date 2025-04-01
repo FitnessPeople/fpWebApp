@@ -172,7 +172,7 @@
 
                                                     <div>
                                                         <div class="btn-group">
-                                                            <input type="number" class="form-control" />
+                                                            <input type="number" class="form-control" runat="server" />
                                                             <button class="btn btn-primary btn-sm"><i class="fa fa-cart-plus"></i> Actualizar inventario</button>
                                                         </div>
                                                     </div>

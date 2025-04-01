@@ -92,11 +92,14 @@ namespace fpWebApp
 
         private void CargarProductos()
         {
-            string strQuery = "SELECT * FROM Productos p, Categorias c " +
-                "WHERE p.idCategoria = c.idCategoria " +
+            string strQuery = "SELECT * FROM Productos p " +
+                "LEFT JOIN Inventario i ON i.idProducto = p.idProducto " +
+                "LEFT JOIN Categorias c ON p.idCategoria = c.idCategoria " +
                 "AND p.idProducto = " + Request.QueryString["id"].ToString();
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
+
+
 
             txbNombre.Text = dt.Rows[0]["NombreProd"].ToString();
             ltNombre.Text = dt.Rows[0]["NombreProd"].ToString();

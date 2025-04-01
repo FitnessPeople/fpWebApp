@@ -135,6 +135,7 @@
                                                     <span class="product-price" style="background-color: #1ab394;"><%# Eval("PrecioPublicoProd", "{0:C0}") %>
                                                     </span>
                                                     <small class="text-muted"><%# Eval("NombreCat") %></small>
+                                                    <small class="text-muted">(<%# Eval("Stock") %> unidades en stock)</small>
                                                     <a href="#" class="product-name"><%# Eval("NombreProd") %></a>
 
                                                     <div class="small m-t-xs">
