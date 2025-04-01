@@ -319,7 +319,10 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.reload();">Cerrar</button>
-                                                            <button type="submit" class="btn btn-primary mb-3">Guardar</button>
+                                                            <asp:Button ID="btnAgregar" runat="server" OnClick="btnAgregar_Click" 
+                                                                Text="Agregar"
+                                                                class="btn btn-primary mb-3"
+                                                                ValidationGroup="agregar"/>                                                          
                                                         </div>
                                                     </div>
                                                 </div>
@@ -335,7 +338,7 @@
                                                 <div class="modal-dialog" role="alert">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="ModaleliminarLabel">Contactos CRM</h5>
+                                                            <h5 class="modal-title" id="ModaleliminarLabel">CRM Contactos</h5>
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
@@ -405,12 +408,12 @@
                                                                         <tr>
                                                                             <th width="20%"><i class="fas fa-paperclip text-primary"></i>Archivo Propuesta</th>
                                                                             <th width="20%"><i class="fas fa-pen text-primary"></i>Observaciones</th>
-                                                                            <th width="20%"><i class="fa fa-user-tie text-primary"></i>Usuario</th>
+                                                                            <th width="20%"><i class="fa fa-user-tie text-primary"></i>Asesor</th>
                                                                         </tr>
                                                                         <tr>
                                                                             <td><%# Eval("ArchivoPropuesta") %> </td>
                                                                             <td><%# Eval("Observaciones") %> </td>
-                                                                            <td><%# Eval("idUsuario") %> </td>
+                                                                            <td><%# Eval("NombreUsuario") %> </td>
                                                                         </tr>
                                                                     </table>
                                                                 </td>
@@ -465,21 +468,8 @@
                 });
             });
         </script>
-</body>
 
-<!-- Custom and plugin javascript -->
-<script src="js/inspinia.js"></script>
-<script src="js/plugins/pace/pace.min.js"></script>
-
-<!-- jQuery UI -->
-<%--   <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>--%>
-
-<!-- Page-Level Scripts -->
-<script>
-    $('.footable').footable();
-</script>
-
-<%--    formato de fecha--%>
+        <%--    formato de fecha--%>
 
 <script>
     $(document).ready(function () {
@@ -490,5 +480,22 @@
         });
     });
 </script>
+
+        <!-- Custom and plugin javascript -->
+<script src="js/inspinia.js"></script>
+<script src="js/plugins/pace/pace.min.js"></script>
+
+<!-- jQuery UI -->
+<%--   <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>--%>
+
+<!-- Page-Level Scripts -->
+<script>
+    $('.footable').footable();
+</script>
+</body>
+
+
+
+
 
 </html>
