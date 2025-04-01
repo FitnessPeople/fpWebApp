@@ -124,7 +124,7 @@
                     </div>
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
-
+                    <form role="form" enctype="multipart/form-data" runat="server" id="form1">
                     <div class="ibox float-e-margins" runat="server" id="div1">
                         <div class="ibox-title">
                             <h5>Detalle del producto</h5>
@@ -172,8 +172,7 @@
 
                                                     <div>
                                                         <div class="btn-group">
-                                                            <input type="number" class="form-control" runat="server" />
-                                                            <button class="btn btn-primary btn-sm"><i class="fa fa-cart-plus"></i> Actualizar inventario</button>
+                                                            <asp:TextBox ID="txbStock" CssClass="form-control input-sm" runat="server" required></asp:TextBox>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -189,7 +188,7 @@
 
                     <div class="ibox float-e-margins" runat="server" id="divContenido">
                         <div class="ibox-title">
-                            <h5>Formulario para la edición de un producto</h5>
+                            <h5>Editar el producto</h5>
                             <div class="ibox-tools">
                                 <a class="collapse-link">
                                     <i class="fa fa-chevron-up"></i>
@@ -200,7 +199,7 @@
                             <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
 
                             <div class="row">
-                                <form role="form" enctype="multipart/form-data" runat="server" id="form1">
+                                
                                     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
                                     <div class="col-sm-6 b-r">
                                         <div class="row">
@@ -351,7 +350,7 @@
 
                                                 <div>
                                                     <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='productostienda'"><strong>Cancelar</strong></button>
-                                                    <asp:Button ID="btnEditar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Editar" OnClick="btnEditar_Click" />
+                                                    <asp:Button ID="btnEditar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Guardar" OnClick="btnEditar_Click" />
                                                 </div>
                                             </ContentTemplate>
                                             <Triggers>
@@ -359,13 +358,13 @@
                                             </Triggers>
                                         </asp:UpdatePanel>
                                     </div>
-                                </form>
+                                
                             </div>
 
                             <%--Fin Contenido!!!!--%>
                         </div>
                     </div>
-
+                    </form>
                 </div>
             </div>
 

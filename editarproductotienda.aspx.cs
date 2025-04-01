@@ -30,6 +30,7 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
+                            txbStock.Attributes.Add("type", "number");
                             txbPrecio.Attributes.Add("type", "number");
                             txbPrecio.Attributes.Add("step", "100");
                             txbPrecio.Attributes.Add("min", "1000");
@@ -95,11 +96,11 @@ namespace fpWebApp
             string strQuery = "SELECT * FROM Productos p " +
                 "LEFT JOIN Inventario i ON i.idProducto = p.idProducto " +
                 "LEFT JOIN Categorias c ON p.idCategoria = c.idCategoria " +
-                "AND p.idProducto = " + Request.QueryString["id"].ToString();
+                "WHERE p.idProducto = " + Request.QueryString["id"].ToString();
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
-
+            txbStock.Text = dt.Rows[0]["stock"].ToString();
 
             txbNombre.Text = dt.Rows[0]["NombreProd"].ToString();
             ltNombre.Text = dt.Rows[0]["NombreProd"].ToString();
@@ -233,6 +234,29 @@ namespace fpWebApp
                 clasesglobales cg = new clasesglobales();
                 cg.InsertarLog(Session["idusuario"].ToString(), "productos", "Modifica", "El usuario modificó datos al producto con código: " + txbCodigo.Text.ToString() + ".", strInitData, strNewData);
 
+                try
+                {
+                    string strQuery = "UPDATE inventario SET " +
+                       "stock = " + txbStock.Text.ToString() + " " + 
+                       "WHERE idProducto = " + Request.QueryString["id"].ToString();
+
+                    string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                    using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                    {
+                        mysqlConexion.Open();
+                        using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
+                        {
+                            cmd.CommandType = CommandType.Text;
+                            cmd.ExecuteNonQuery();
+                        }
+                        mysqlConexion.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    string respuesta = "ERROR: " + ex.Message;
+                }
             }
             Response.Redirect("editarproductotienda?id=" + Request.QueryString["id"].ToString());
         }

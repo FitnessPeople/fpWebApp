@@ -51,6 +51,15 @@ namespace fpWebApp
         protected global::fpWebApp.controles.paginasperfil paginasperfil;
 
         /// <summary>
+        /// Control form1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+
+        /// <summary>
         /// Control div1.
         /// </summary>
         /// <remarks>
@@ -150,6 +159,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltBeneficios;
 
         /// <summary>
+        /// Control txbStock.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbStock;
+
+        /// <summary>
         /// Control divContenido.
         /// </summary>
         /// <remarks>
@@ -166,15 +184,6 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltMensaje;
-
-        /// <summary>
-        /// Control form1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
         /// Control ScriptManager1.
