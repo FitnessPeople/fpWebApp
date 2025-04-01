@@ -47,7 +47,7 @@ namespace fpWebApp.controles
 
         private void CuantosEspecialistasActivos()
         {
-            string strQuery = "SELECT COUNT(*) AS cuantos FROM contactoscmr WHERE idEstado = 1 ";
+            string strQuery = "SELECT COUNT(*) AS cuantos FROM contactoscrm WHERE idEstadoCRM = 1 ";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
@@ -58,7 +58,7 @@ namespace fpWebApp.controles
 
         private void CuantosEspecialistasInactivos()
         {
-            string strQuery = "SELECT COUNT(*) AS cuantos FROM contactoscmr WHERE idEstado = 2 ";
+            string strQuery = "SELECT COUNT(*) AS cuantos FROM contactoscrm WHERE idEstadoCRM = 2 ";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
@@ -69,7 +69,7 @@ namespace fpWebApp.controles
 
         private void CuantasEspecialidades()
         {
-            string strQuery = "SELECT COUNT(*) AS cuantos FROM contactoscmr WHERE idEstado = 3 ";
+            string strQuery = "SELECT COUNT(*) AS cuantos FROM contactoscrm WHERE idEstadoCRM = 3 ";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
@@ -80,7 +80,7 @@ namespace fpWebApp.controles
 
         private void CuantasCitasHoy()
         {
-            string strQuery = "SELECT COUNT(*) AS cuantos FROM contactoscmr WHERE idEstado = 4 ";
+            string strQuery = "SELECT COUNT(*) AS cuantos FROM contactoscrm WHERE idEstadoCRM = 4 ";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 

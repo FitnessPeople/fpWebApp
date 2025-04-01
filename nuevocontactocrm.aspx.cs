@@ -54,8 +54,8 @@ namespace fpWebApp
                             txbFechaPrim.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
                             txbFechaProx.Attributes.Add("type", "date");
                             txbFechaProx.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-                            ListaEmpresasCMR();
-                            ListaEstadosCMR();
+                            ListaEmpresasCRM();
+                            ListaEstadosCRM();
                             ListaContactos();                            
                         }                      
                     }
@@ -125,28 +125,28 @@ namespace fpWebApp
         private void ListaContactos()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarContactosCMR();
+            DataTable dt = cg.ConsultarContactosCRM();
 
-            rpContactosCMR.DataSource = dt;
-            rpContactosCMR.DataBind();
+            rpContactosCRM.DataSource = dt;
+            rpContactosCRM.DataBind();
 
             dt.Dispose();
         }
 
-        private void ListaEmpresasCMR()
+        private void ListaEmpresasCRM()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEmpresasCMR();
+            DataTable dt = cg.ConsultarEmpresasCRM();
 
             ddlEmpresa.DataSource = dt;
             ddlEmpresa.DataBind();
             dt.Dispose();            
         }
 
-        private void ListaEstadosCMR()
+        private void ListaEstadosCRM()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEstadossCMR();
+            DataTable dt = cg.ConsultarEstadossCRM();
 
             ddlStatusLead.DataSource = dt;
             ddlStatusLead.DataBind();
@@ -167,7 +167,8 @@ namespace fpWebApp
            
         }
 
-        protected void rpContactosCMR_ItemDataBound(object sender, RepeaterItemEventArgs e)
+
+        protected void rpContactosCRM_ItemDataBound1(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
@@ -186,7 +187,7 @@ namespace fpWebApp
         {
             bool respuesta = false;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarContactosCMRPorId(idContacto, out respuesta);
+            DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out respuesta);
 
             if (respuesta) { 
                 if (dt.Rows.Count > 0)
@@ -203,17 +204,17 @@ namespace fpWebApp
                         txbTelefonoContacto.Value = row["TelefonoContacto"].ToString();
                     }
                     txbCorreoContacto.Value = row["EmailContacto"].ToString();
-                    if (row["idEmpresaCmr"].ToString() != "")                    
-                        ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaCmr"].ToString())));
+                    if (row["idEmpresaCRM"].ToString() != "")                    
+                        ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaCRM"].ToString())));
                     else
                         ddlEmpresa.SelectedItem.Value = "0";
-                    ddlStatusLead.SelectedIndex = Convert.ToInt32(ddlStatusLead.Items.IndexOf(ddlStatusLead.Items.FindByValue(dt.Rows[0]["idEstado"].ToString())));
-                    txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
-                    txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
-                    int ValorPropuesta = Convert.ToInt32(dt.Rows[0]["ValorPropuesta"]);
-                    txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
-                    string contenidoEditor = hiddenEditor.Value;
-                    hiddenEditor.Value = row["observaciones"].ToString();
+                        ddlStatusLead.SelectedIndex = Convert.ToInt32(ddlStatusLead.Items.IndexOf(ddlStatusLead.Items.FindByValue(dt.Rows[0]["idEstadoCRM"].ToString())));
+                        txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
+                        txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
+                        int ValorPropuesta = Convert.ToInt32(dt.Rows[0]["ValorPropuesta"]);
+                        txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
+                        string contenidoEditor = hiddenEditor.Value;
+                        hiddenEditor.Value = row["observaciones"].ToString();
                 }
             }
             else
@@ -255,7 +256,7 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             try
             {
-                    respuesta = cg.InsertarContactoCMR(txbNombreContacto.Value.ToString().Trim(), txbTelefonoContacto.Value.ToString().Trim(),
+                    respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim(), txbTelefonoContacto.Value.ToString().Trim(),
                     txbCorreoContacto.Value.ToString().Trim(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
                     Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
                     txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "", contenidoEditor,
@@ -264,23 +265,16 @@ namespace fpWebApp
                     if (salida)
                     {
                         respuesta = mensaje.ToString();
-                        Response.Redirect("nuevocontactocrm");
+                        Response.Redirect("nuevocontactocrm", false);
                     }
-                    else
-                    {
-                        string script = $"alert('{mensaje.Replace("'", "\\'")}');";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);
-                        Response.Redirect("nuevocontactocrm");
-                }
-               
-
             }
             catch (Exception ex)
             {
                 string script = $"alert('{mensaje.Replace("'", "\\'")}');";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);
-                Response.Redirect("nuevocontactocrm");
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);               
             }
         }
+
+
     }
 }

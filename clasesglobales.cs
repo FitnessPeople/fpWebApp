@@ -5829,7 +5829,7 @@ public DataTable ConsultarPlanes()
 
         #region CMR
 
-            public DataTable ConsultarContactosCMR()
+            public DataTable ConsultarContactosCRM()
             {
                 DataTable dt = new DataTable();
 
@@ -5838,7 +5838,7 @@ public DataTable ConsultarPlanes()
                     string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
                     using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                     {
-                        using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CONTACTOS_CMR", mysqlConexion))
+                        using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CONTACTOS_CRM", mysqlConexion))
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
                             using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
@@ -5859,7 +5859,7 @@ public DataTable ConsultarPlanes()
                 return dt;
             }
 
-        public DataTable ConsultarContactosCMRPorId(int idContacto, out bool respuesta)
+        public DataTable ConsultarContactosCRMPorId(int idContacto, out bool respuesta)
         {
             DataTable dt = new DataTable();
             respuesta = false;
@@ -5869,7 +5869,7 @@ public DataTable ConsultarPlanes()
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CONTACTOS_CMR_POR_ID", mysqlConexion))
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CONTACTOS_CRM_POR_ID", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_id_contacto", idContacto);
@@ -5894,7 +5894,7 @@ public DataTable ConsultarPlanes()
             return dt;
         }
 
-        public DataTable ConsultarEmpresasCMR()
+        public DataTable ConsultarEmpresasCRM()
         {
             DataTable dt = new DataTable();
 
@@ -5903,7 +5903,7 @@ public DataTable ConsultarPlanes()
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_EMPRESAS_CMR", mysqlConexion))
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_EMPRESAS_CRM", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
@@ -5924,7 +5924,7 @@ public DataTable ConsultarPlanes()
             return dt;
         }
 
-        public DataTable ConsultarEstadossCMR()
+        public DataTable ConsultarEstadossCRM()
         {
             DataTable dt = new DataTable();
 
@@ -5933,7 +5933,7 @@ public DataTable ConsultarPlanes()
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_ESTADOS_CMR", mysqlConexion))
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_ESTADOS_CRM", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
@@ -5954,7 +5954,7 @@ public DataTable ConsultarPlanes()
             return dt;
         }
 
-        public string InsertarContactoCMR(string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
+        public string InsertarContactoCRM(string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
             int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones, 
             int idUsuario, out bool respuesta, out string mensaje)
         {
@@ -5966,7 +5966,7 @@ public DataTable ConsultarPlanes()
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
                     mysqlConexion.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_CONTACTO_CMR", mysqlConexion))
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_CONTACTO_CRM", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_nombre_contacto", nombreContacto);

@@ -156,6 +156,44 @@
         }
     </script>
 
+        <%--    Formatear telefono --%>
+    <script>
+        function formatearTelefono(input) {
+            let num = input.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
+    
+            // Si el número tiene 10 dígitos, es un celular
+            if (num.length === 10) {
+                input.value = num.substring(0, 3) + '-' + num.substring(3, 6) + '-' + num.substring(6, 10);
+            }
+            // Si el número tiene 7 o más dígitos, es un teléfono fijo
+            else if (num.length > 6) {
+                input.value = '(' + num.substring(0, 3) + ') ' + num.substring(3, 6) + '-' + num.substring(6, 10);
+            } else {
+                input.value = num;
+            }
+        }
+    </script>
+
+        <%--    Formatear solo letraas --%>
+    <script>
+        function validarSoloLetras(input) {
+            // Eliminar cualquier caracter que no sea letra o espacio
+            input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+        }
+    </script>
+
+        <%--    Formatear solo correo --%>
+    <script>
+        function validarCorreo(input) {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(input.value)) {
+                input.setCustomValidity('Por favor ingrese un correo electrónico válido.');
+            } else {
+                input.setCustomValidity('');
+            }
+        }
+    </script>
+
 </head>
 
 <body onload="changeClass()">
@@ -175,7 +213,7 @@
                     <h2><i class="fa fa-notes-medical text-success m-r-sm"></i>CRM Contactos</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>CMR</li>
+                        <li>CRM</li>
                         <li class="active"><strong>Contactos</strong></li>
                     </ol>
                 </div>
@@ -238,14 +276,18 @@
                                                                     <div class="form-group">
                                                                         <i class="fa fa-user-tie text-info"></i>
                                                                         <label for="nombreContacto" class="col-form-label">Nombre completo:</label>
-                                                                        <input type="text" runat="server" class="form-control" id="txbNombreContacto" />
+                                                                        <input type="text" runat="server" class="form-control" id="txbNombreContacto" 
+                                                                            placeholder="ej:  &quot;Juan Pérez&quot;" spellcheck="false" autocomplete="off" 
+                                                                            oninput="validarSoloLetras(this)"/>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <div class="col-sm-6">
                                                                         <i class="fa-solid fa-phone text-info"></i>
                                                                         <label for="telefonoContacto" class="col-form-label">Teléfono:</label>
-                                                                        <input type="text" runat="server" class="form-control" id="txbTelefonoContacto">
+                                                                        <input type="text" runat="server" class="form-control" id="txbTelefonoContacto"
+                                                                            placeholder="ej: 310 123 4567" spellcheck="false" autocomplete="off" 
+                                                                            onkeyup="formatearTelefono(this)" maxlength="14">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -254,16 +296,19 @@
                                                                     <div class="form-group">
                                                                         <span class="glyphicon glyphicon-envelope text-info"></span>
                                                                         <label for="correoContacto" class="col-form-label">Correo electrónico:</label>
-                                                                        <input type="text" runat="server" class="form-control" id="txbCorreoContacto">
+                                                                        <input type="text" runat="server" class="form-control" id="txbCorreoContacto"
+                                                                            spellcheck="false" placeholder="ej: cliente@ejemplo.com"  autocomplete="off"
+                                                                            oninput="validarCorreo(this)">
+                                                                        <asp:Literal ID="ltError" runat="server" Visible="false"></asp:Literal>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-sm-6">
                                                                     <div class="form-group">
                                                                         <i class="fas fa-industry text-info"></i>
                                                                         <label for="Empresa" class="col-form-label">Empresa:</label>
-                                                                        <asp:DropDownList ID="ddlEmpresa" DataTextField="NombreEmpresaCMR" DataValueField="idEmpresaCmr" 
+                                                                        <asp:DropDownList ID="ddlEmpresa" DataTextField="NombreEmpresaCRM" DataValueField="idEmpresaCRM" 
                                                                             runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
-                                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>                                                                          
+                                                                            <asp:ListItem Text="No aplica" Value="0"></asp:ListItem>                                                                          
                                                                         </asp:DropDownList>
                                                                     </div>
                                                                 </div>
@@ -271,7 +316,7 @@
                                                             <div class="form-group">
                                                                 <i class="fas fa-flag text-info"></i>
                                                                 <label for="StatusLead" class="col-form-label">Status Lead:</label>
-                                                                <asp:DropDownList ID="ddlStatusLead" DataTextField="NombreEstado" DataValueField="idEstado"  
+                                                                <asp:DropDownList ID="ddlStatusLead" DataTextField="NombreEstadoCRM" DataValueField="idEstadoCRM"  
                                                                     runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                     <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                 </asp:DropDownList>
@@ -297,15 +342,15 @@
                                                                     <div class="form-group">
                                                                         <i class="fa fa-dollar text-info"></i>
                                                                         <label for="ValorPropuesta" class="col-form-label">Valor Propuesta:</label>
-                                                                        <asp:TextBox ID="txbValorPropuesta" CssClass="form-control input-sm" runat="server" placeholder="Valor"
-                                                                            onkeyup="formatCurrency(this)" onblur="keepFormatted(this)"></asp:TextBox>
+                                                                        <asp:TextBox ID="txbValorPropuesta" CssClass="form-control input-sm" runat="server" placeholder="$0"
+                                                                            onkeyup="formatCurrency(this)" onblur="keepFormatted(this)"  autocomplete="off"></asp:TextBox>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-sm-6">
                                                                     <div class="form-group">
                                                                         <i class="fas fa-paperclip text-info"></i>
                                                                         <label for="ArchivoPropuesta" class="col-form-label">Archivo Propuesta:</label>
-                                                                        <input type="file" runat="server" class="form-control" id="ArchivoPropuesta" placeholder="subir archivo">
+                                                                        <input type="file" runat="server" class="form-control" id="ArchivoPropuesta" placeholder="subir archivo" >
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -391,28 +436,30 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <asp:Repeater ID="rpContactosCMR" runat="server" OnItemDataBound="rpContactosCMR_ItemDataBound">
+                                                    <asp:Repeater ID="rpContactosCRM" runat="server" OnItemDataBound="rpContactosCRM_ItemDataBound1">
                                                         <ItemTemplate>
                                                             <tr class="feed-element">
                                                                 <td><%# Eval("NombreContacto")%></td>
                                                                 <td><a href="https://wa.me/57<%# Eval("TelefonoContacto") %>" target="_blank"><i class="fab fa-whatsapp m-r-xs font-bold" style="color:forestgreen""></i><%# Eval("TelefonoContacto") %></a></td>
                                                                 <td><%# Eval("EmailContacto") %> </td>
-                                                                <td><%# Eval("NombreEmpresaCMR") %> </td>
-                                                                <td><%# Eval("NombreEstado") %> </td>
+                                                                <td><%# Eval("NombreEmpresaCRM") %> </td>
+                                                                <td><%# Eval("NombreEstadoCRM") %> </td>
                                                                 <td><%# Eval("FechaPrimerCon", "{0:yyyy-MM-dd}") %></td>
                                                                 <td><%# Eval("FechaProximoCon", "{0:yyyy-MM-dd}") %></td>
                                                                 <td><%# Eval("ValorPropuesta", "{0:C0}") %></td>
                                                                 <td>
                                                                     <h3 class="text-info">Propuesta y observaciones</h3>
                                                                     <table class="table table-bordered table-striped">
-                                                                        <tr>
-                                                                            <th width="20%"><i class="fas fa-paperclip text-primary"></i>Archivo Propuesta</th>
+                                                                        <tr>                                                                            
                                                                             <th width="20%"><i class="fas fa-pen text-primary"></i>Observaciones</th>
+                                                                            <th width="20%"><i class="fas fa-paperclip text-primary"></i>Archivo Propuesta</th>
+                                                                            <th width="20%"><i class="fas fa-paperclip text-primary"></i>Histórico</th>
                                                                             <th width="20%"><i class="fa fa-user-tie text-primary"></i>Asesor</th>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td><%# Eval("ArchivoPropuesta") %> </td>
                                                                             <td><%# Eval("Observaciones") %> </td>
+                                                                            <td><%# Eval("ArchivoPropuesta") %> </td>                                                                            
+                                                                            <td> </td>                                                                            
                                                                             <td><%# Eval("NombreUsuario") %> </td>
                                                                         </tr>
                                                                     </table>

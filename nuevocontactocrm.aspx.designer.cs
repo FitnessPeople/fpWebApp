@@ -123,6 +123,15 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlInputText txbCorreoContacto;
 
         /// <summary>
+        /// Control ltError.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltError;
+
+        /// <summary>
         /// Control ddlEmpresa.
         /// </summary>
         /// <remarks>
@@ -222,13 +231,13 @@ namespace fpWebApp
         protected global::System.Web.UI.UpdatePanel upTabla;
 
         /// <summary>
-        /// Control rpContactosCMR.
+        /// Control rpContactosCRM.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpContactosCMR;
+        protected global::System.Web.UI.WebControls.Repeater rpContactosCRM;
 
         /// <summary>
         /// Control footer.
