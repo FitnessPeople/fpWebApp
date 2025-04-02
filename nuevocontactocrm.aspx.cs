@@ -155,6 +155,8 @@ namespace fpWebApp
 
         protected void btnEditar_Click(object sender, EventArgs e)
         {
+            btnActualizar.Visible = true;
+            btnAgregar.Visible = false;
             Button btnEditar = (Button)sender;
             int idContacto = Convert.ToInt32(btnEditar.CommandArgument);
 
@@ -247,8 +249,7 @@ namespace fpWebApp
         {
             bool salida = false;            
             string mensaje = string.Empty;
-            string respuesta = string.Empty;
-            btnActualizar.Visible = true ;
+            string respuesta = string.Empty;        
 
 
             string contenidoEditor = hiddenEditor.Value;
@@ -307,7 +308,14 @@ namespace fpWebApp
                     respuesta = mensaje.ToString();
                     Response.Redirect("nuevocontactocrm", false);
                 }
+                else 
+                {
+                    string script = $"alert('{mensaje.Replace("'", "\\'")}');";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);                    
+                }
+               
             }
+                
             catch (Exception ex)
             {
                 string script = $"alert('{mensaje.Replace("'", "\\'")}');";

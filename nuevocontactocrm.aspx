@@ -369,7 +369,7 @@
                                                                 class="btn btn-primary mb-3"
                                                                 ValidationGroup="agregar"/>
                                                             <asp:Button ID="btnActualizar" runat="server" OnClick="btnActualizar_Click"
-                                                                Text="Actualizar" Visible="true"
+                                                                Text="Actualizar" Visible="false"
                                                                 class="btn btn-primary mb-3"/> 
                                                         </div>
                                                     </div>
