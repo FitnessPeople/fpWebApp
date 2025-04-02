@@ -5996,6 +5996,49 @@ public DataTable ConsultarPlanes()
             return mensaje;
         }
 
+        public string ActualizarContactoCRM(int idContactoCMR, string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
+        int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
+        int idUsuario, out bool respuesta, out string mensaje)
+        {
+            mensaje = string.Empty;
+            respuesta = false;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_CONTACTO_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_contacto_cmr", idContactoCMR);
+                        cmd.Parameters.AddWithValue("@p_nombre_contacto", nombreContacto);
+                        cmd.Parameters.AddWithValue("@p_telefono_contacto", telefonoContacto);
+                        cmd.Parameters.AddWithValue("@p_email_contacto", emailContacto);
+                        cmd.Parameters.AddWithValue("@p_id_empresa", idEmpresaCMR);
+                        cmd.Parameters.AddWithValue("@p_id_estado", idEstado);
+                        cmd.Parameters.AddWithValue("@p_fecha_primer_con", fechaPrimerCon);
+                        cmd.Parameters.AddWithValue("@p_fecha_proximo_con", fechaProxCon);
+                        cmd.Parameters.AddWithValue("@p_valor_propuesta", valorPropuesta);
+                        cmd.Parameters.AddWithValue("@p_archivo_propuesta", archivoPropuesta);
+                        cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = true;
+                        mensaje = "Ok";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
+        }
+
 
         #endregion
 

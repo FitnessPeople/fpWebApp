@@ -163,8 +163,7 @@ namespace fpWebApp
                 CargarDatosContacto(idContacto);
                 upModal.Update();
                 ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#ModalContacto').modal('show');", true);
-            }
-           
+            }           
         }
 
 
@@ -188,6 +187,7 @@ namespace fpWebApp
             bool respuesta = false;
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out respuesta);
+            Session["contactoId"] = idContacto;
 
             if (respuesta) { 
                 if (dt.Rows.Count > 0)
@@ -208,13 +208,14 @@ namespace fpWebApp
                         ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaCRM"].ToString())));
                     else
                         ddlEmpresa.SelectedItem.Value = "0";
-                        ddlStatusLead.SelectedIndex = Convert.ToInt32(ddlStatusLead.Items.IndexOf(ddlStatusLead.Items.FindByValue(dt.Rows[0]["idEstadoCRM"].ToString())));
-                        txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
-                        txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
-                        int ValorPropuesta = Convert.ToInt32(dt.Rows[0]["ValorPropuesta"]);
-                        txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
-                        string contenidoEditor = hiddenEditor.Value;
-                        hiddenEditor.Value = row["observaciones"].ToString();
+
+                    string contenidoEditor = hiddenEditor.Value;
+                    ddlStatusLead.SelectedIndex = Convert.ToInt32(ddlStatusLead.Items.IndexOf(ddlStatusLead.Items.FindByValue(dt.Rows[0]["idEstadoCRM"].ToString())));
+                    txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
+                    txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
+                    int ValorPropuesta = Convert.ToInt32(dt.Rows[0]["ValorPropuesta"]);
+                    txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));                       
+                    hiddenEditor.Value = row["observaciones"].ToString();
                 }
             }
             else
@@ -229,6 +230,8 @@ namespace fpWebApp
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
             Button btnEliminar = (Button)sender;
+            btnActualizar.Visible = true;
+            btnAgregar.Visible = false;
             int idContacto = Convert.ToInt32(btnEliminar.CommandArgument);
 
             if (idContacto > 0)
@@ -245,7 +248,9 @@ namespace fpWebApp
             bool salida = false;            
             string mensaje = string.Empty;
             string respuesta = string.Empty;
-           
+            btnActualizar.Visible = true ;
+
+
             string contenidoEditor = hiddenEditor.Value;
 
             if (ddlEmpresa.SelectedItem.Value != "")
@@ -275,6 +280,40 @@ namespace fpWebApp
             }
         }
 
+        protected void btnActualizar_Click(object sender, EventArgs e)
+        {            
+            bool salida = false;
+            string mensaje = string.Empty;
+            string respuesta = string.Empty;
 
+            string contenidoEditor = hiddenEditor.Value;
+
+            if (ddlEmpresa.SelectedItem.Value != "")
+                ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
+            else
+                ddlEmpresa.SelectedItem.Value = "0";
+
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()),txbNombreContacto.Value.ToString().Trim(), txbTelefonoContacto.Value.ToString().Trim(),
+                txbCorreoContacto.Value.ToString().Trim(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
+                Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
+                txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "", contenidoEditor,
+                Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
+
+                if (salida)
+                {
+                    respuesta = mensaje.ToString();
+                    Response.Redirect("nuevocontactocrm", false);
+                }
+            }
+            catch (Exception ex)
+            {
+                string script = $"alert('{mensaje.Replace("'", "\\'")}');";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);
+            }
+
+        }
     }
 }

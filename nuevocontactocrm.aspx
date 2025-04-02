@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="nuevocontactocrm.aspx.cs" Inherits="fpWebApp.nuevocontactocrm" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="nuevocontactocrm.aspx.cs" Inherits="fpWebApp.nuevocontactocrm" ValidateRequest="false" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
@@ -367,7 +367,10 @@
                                                             <asp:Button ID="btnAgregar" runat="server" OnClick="btnAgregar_Click" 
                                                                 Text="Agregar"
                                                                 class="btn btn-primary mb-3"
-                                                                ValidationGroup="agregar"/>                                                          
+                                                                ValidationGroup="agregar"/>
+                                                            <asp:Button ID="btnActualizar" runat="server" OnClick="btnActualizar_Click"
+                                                                Text="Actualizar" Visible="true"
+                                                                class="btn btn-primary mb-3"/> 
                                                         </div>
                                                     </div>
                                                 </div>
