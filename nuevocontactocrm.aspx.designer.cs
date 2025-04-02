@@ -87,6 +87,15 @@ namespace fpWebApp
         protected global::System.Web.UI.ScriptManager ScriptManager1;
 
         /// <summary>
+        /// Control hfAbrirModal.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfAbrirModal;
+
+        /// <summary>
         /// Control upModal.
         /// </summary>
         /// <remarks>
@@ -186,13 +195,13 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlInputFile ArchivoPropuesta;
 
         /// <summary>
-        /// Control hiddenEditor.
+        /// Control txaObservaciones.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hiddenEditor;
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea txaObservaciones;
 
         /// <summary>
         /// Control btnAgregar.

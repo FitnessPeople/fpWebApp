@@ -37,6 +37,9 @@
             visibility: hidden;
             display: none
         }
+        textarea {
+            border: 2px solid #17a2b8; /* Bootstrap info color */
+        }
     </style>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -59,9 +62,9 @@
     <!-- JS de Quill -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
-    <%--    formato de los status--%>
+    <%--        formato de los status--%>
 
-<%--    <script>
+    <%--    <script>
         document.addEventListener("DOMContentLoaded", function () {
             var ddl = document.getElementById("<%= ddlStatusLead.ClientID %>");
             var colors = {
@@ -79,7 +82,7 @@
         });
     </script>--%>
 
-    <%--    formato de moneda--%>
+    <%--        formato de moneda--%>
 
     <script>
         function formatCurrency(input) {
@@ -103,7 +106,7 @@
         }
     </script>
 
-    <%--    formato de posición en el menú--%>
+    <%--        formato de posición en el menú--%>
 
     <script>
         function changeClass() {
@@ -114,42 +117,9 @@
         }
     </script>
 
-    <%--    formato de las observaciones--%>
+    <%--        formato de las observaciones--%>
 
-    <script>
-        var quill;
-        document.addEventListener("DOMContentLoaded", function () {
-            quill = new Quill("#editor", {
-                theme: "snow",
-                modules: {
-                    toolbar: [
-                        [{ 'header': [1, 2, 3, false] }],
-                        ['bold'], // Negrita y Tachado
-                        ['italic', 'underline'],
-                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                        [{ 'align': [] }],
-                    ]
-                }
-            });
-            function ajustarAlturaEditor() {
-                var editorContenido = document.querySelector(".ql-editor");
-                editorContenido.style.height = "auto";
-                editorContenido.style.height = editorContenido.scrollHeight + "px";
-            }
-            quill.on("text-change", ajustarAlturaEditor);
-
-            var contenidoGuardado = document.getElementById('<%= hiddenEditor.ClientID %>').value;
-            if (contenidoGuardado.trim() !== "") {
-                quill.root.innerHTML = contenidoGuardado;
-            }
-        });
-        function guardarContenidoEditor() {
-            var contenido = quill.root.innerHTML;
-            document.getElementById('<%= hiddenEditor.ClientID %>').value = contenido;
-        }
-    </script>
-
-    <%--    Abrir modal--%>
+    <%--        Abrir modal--%>
     <script>
         function AbrirModal() {
             $("#ModalContacto").modal("show");
@@ -193,6 +163,9 @@
             }
         }
     </script>
+
+        <%--    Formatear textarea --%>
+
 
 </head>
 
@@ -260,9 +233,11 @@
                                     </div>
                                     <%-- Modal Nuevo/Editar--%>
 
+                                    <asp:HiddenField ID="hfAbrirModal" runat="server" Value="0" />
+
                                     <asp:UpdatePanel ID="upModal" runat="server" UpdateMode="Conditional">
                                         <ContentTemplate>
-                                            <div class="modal fade" id="ModalContacto" tabindex="-1" role="dialog" aria-labelledby="ModalContactoLabel" aria-hidden="true">
+                                            <div class="modal fade" id="ModalContacto" tabindex="-1" role="dialog" aria-labelledby="ModalContactoLabel" aria-hidden="false">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -354,11 +329,19 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group">
+<%--                                                            <div class="form-group">
                                                                 <i class="fas fa-pen text-info"></i>
                                                                 <label for="message-text" class="col-form-label">Observaciones:</label>
                                                                 <div id="editor" cssclass="form-control input-sm"></div>
                                                                 <asp:HiddenField ID="hiddenEditor" runat="server" />
+                                                            </div>--%>
+                                                            <div class="form-group">
+                                                                <i class="fas fa-pen text-info"></i>
+                                                                <label for="message-text" class="col-form-label">Observaciones:</label>
+                                                                <textarea id="txaObservaciones" runat="server" rows="3" 
+                                                                     
+                                                                     cssclass="form-control input-sm" class="form-control">
+                                                                </textarea>
                                                             </div>
 
                                                         </div>
