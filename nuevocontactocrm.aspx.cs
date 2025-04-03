@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace fpWebApp
             
             if (!IsPostBack)
             {
+                ListaEstadosCRM();
                 ListaContactos();
 
                 if (Session["idUsuario"] != null)
@@ -65,7 +67,8 @@ namespace fpWebApp
                     Response.StatusCode = 401;
                     Response.End();
                     Response.Redirect("logout.aspx");
-                }     
+                }
+                ScriptManager.RegisterStartupScript(this, GetType(), "updateDDL", "changeBadge(document.getElementById('" + ddlStatusLead.ClientID + "'));", true);
             }
         }
 
@@ -113,15 +116,49 @@ namespace fpWebApp
             dt.Dispose();            
         }
 
+        //private void ListaEstadosCRM()
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarEstadossCRM();
+
+        //    ddlStatusLead.DataSource = dt;
+        //    ddlStatusLead.DataBind();
+        //    dt.Dispose();
+        //}
         private void ListaEstadosCRM()
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarEstadossCRM();
 
-            ddlStatusLead.DataSource = dt;
-            ddlStatusLead.DataBind();
-            dt.Dispose();
+            ddlStatusLead.Items.Clear();
+            ddlStatusLead.Items.Add(new ListItem("Seleccione", "")); // Opción por defecto
+
+            Dictionary<string, string> estadosColores = new Dictionary<string, string>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                string id = row["idEstadoCRM"].ToString();
+                string nombre = row["NombreEstadoCRM"].ToString();
+                string color = "badge-" + row["ColorEstadoCRM"].ToString().ToLower();
+
+                ListItem item = new ListItem(nombre, id);
+                ddlStatusLead.Items.Add(item);
+
+                // Guardamos el color en un diccionario
+                estadosColores[id] = color;
+            }
+
+            // Guardar el JSON en el HiddenField
+            hiddenEstadosColores.Value = Newtonsoft.Json.JsonConvert.SerializeObject(estadosColores);
+
+            // Asegurar que el JavaScript se ejecute después de la actualización
+            ScriptManager.RegisterStartupScript(this, GetType(), "updateDDL",
+                "setTimeout(function() { updateDropdownBadges(); }, 100);", true);
         }
+
+
+
+
 
         protected void rpContactosCRM_ItemDataBound1(object sender, RepeaterItemEventArgs e)
         {
@@ -292,5 +329,13 @@ namespace fpWebApp
         }
 
 
+        protected void ddlStatusLead_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Aquí puedes agregar lógica adicional si la necesitas
+
+            // Reabrir el modal después del postback
+            ScriptManager.RegisterStartupScript(this, GetType(), "OpenModal",
+                "$('#miModal').modal('show');", true);
+        }
     }
 }

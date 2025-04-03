@@ -40,6 +40,37 @@
         textarea {
             border: 2px solid #17a2b8; /* Bootstrap info color */
         }
+        .status-dropdown option {
+    background-color: white !important; /* Evita que el fondo cambie */
+    color: black !important; /* Mantiene el texto visible */
+    padding: 5px;
+}
+
+.status-dropdown option[data-badge="badge-info"] {
+    color: #17a2b8; /* Azul claro */
+    font-weight: bold;
+}
+
+.status-dropdown option[data-badge="badge-primary"] {
+    color: #007bff; /* Azul */
+    font-weight: bold;
+}
+
+.status-dropdown option[data-badge="badge-warning"] {
+    color: #ffc107; /* Amarillo */
+    font-weight: bold;
+}
+
+.status-dropdown option[data-badge="badge-success"] {
+    color: #28a745; /* Verde */
+    font-weight: bold;
+}
+
+.status-dropdown option[data-badge="badge-danger"] {
+    color: #dc3545; /* Rojo */
+    font-weight: bold;
+}
+
     </style>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -64,23 +95,52 @@
 
     <%--        formato de los status--%>
 
-    <%--    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var ddl = document.getElementById("<%= ddlStatusLead.ClientID %>");
-            var colors = {
-                "Primer contacto": "blue",
-                "Propuesta enviada": "green",
-                "Negociación propuesta": "orange",
-                "Negociación aceptada": "lightgreen",
-                "Negociación rechazada": "red"
-            };
+<script>
+    function updateDropdownBadges() {
+        var ddl = document.getElementById('<%= ddlStatusLead.ClientID %>');
+        var estadosColores = JSON.parse(document.getElementById('<%= hiddenEstadosColores.ClientID %>').value || "{}");
 
-            ddl.addEventListener("change", function () {
-                var selectedText = ddl.options[ddl.selectedIndex].text;
-                ddl.style.backgroundColor = colors[selectedText] || "white";
-            });
-        });
-    </script>--%>
+        for (var i = 0; i < ddl.options.length; i++) {
+            var value = ddl.options[i].value;
+            if (estadosColores[value]) {
+                ddl.options[i].className = estadosColores[value]; // Aplica la clase de badge
+            }
+        }
+    }
+
+    // Aplicar cuando el modal se abre
+    $('#miModal').on('shown.bs.modal', function () {
+        updateDropdownBadges();
+    });
+
+    // Aplicar cuando cambia la selección
+    document.addEventListener("change", function (event) {
+        if (event.target.id === '<%= ddlStatusLead.ClientID %>') {
+            updateDropdownBadges();
+        }
+    });
+
+    // Aplicar cuando la página carga
+    document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(updateDropdownBadges, 100);
+    });
+</script>
+
+<script>
+    // Función para reabrir el modal si fue cerrado por un PostBack
+    function reopenModal() {
+        setTimeout(function () {
+            $('#miModal').modal('show');
+        }, 100);
+    }
+
+    // Detectar cuándo se actualiza el UpdatePanel y reabrir el Modal
+    var prm = Sys.WebForms.PageRequestManager.getInstance();
+    prm.add_endRequest(function () {
+        reopenModal();
+    });
+</script>
+
 
     <%--        formato de moneda--%>
 
@@ -231,9 +291,9 @@
                                             <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                         </div>
                                     </div>
-                                    <%-- Modal Nuevo/Editar--%>
+                                  
 
-                                    <asp:HiddenField ID="hfAbrirModal" runat="server" Value="0" />
+                                  <asp:HiddenField ID="hiddenEstadosColores" runat="server" />
 
                                     <asp:UpdatePanel ID="upModal" runat="server" UpdateMode="Conditional">
                                         <ContentTemplate>
@@ -291,9 +351,9 @@
                                                             <div class="form-group">
                                                                 <i class="fas fa-flag text-info"></i>
                                                                 <label for="StatusLead" class="col-form-label">Status Lead:</label>
-                                                                <asp:DropDownList ID="ddlStatusLead" DataTextField="NombreEstadoCRM" DataValueField="idEstadoCRM"  
-                                                                    runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
-                                                                    <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:DropDownList ID="ddlStatusLead" runat="server"
+                                                                    CssClass="form-control status-dropdown"
+                                                                    OnSelectedIndexChanged="ddlStatusLead_SelectedIndexChanged">
                                                                 </asp:DropDownList>
                                                             </div>
                                                             <div class="row">
@@ -329,17 +389,10 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-<%--                                                            <div class="form-group">
-                                                                <i class="fas fa-pen text-info"></i>
-                                                                <label for="message-text" class="col-form-label">Observaciones:</label>
-                                                                <div id="editor" cssclass="form-control input-sm"></div>
-                                                                <asp:HiddenField ID="hiddenEditor" runat="server" />
-                                                            </div>--%>
                                                             <div class="form-group">
                                                                 <i class="fas fa-pen text-info"></i>
                                                                 <label for="message-text" class="col-form-label">Observaciones:</label>
-                                                                <textarea id="txaObservaciones" runat="server" rows="3" 
-                                                                     
+                                                                <textarea id="txaObservaciones" runat="server" rows="3"                                                                      
                                                                      cssclass="form-control input-sm" class="form-control">
                                                                 </textarea>
                                                             </div>
@@ -417,6 +470,7 @@
                                                         <th data-breakpoints="xs"><i class="fa-solid fa-hand-point-up text-info"></i>Primer contacto</th>
                                                         <th data-breakpoints="xs"><i class="fas fa-angle-right text-success"></i>Próximo contacto</th>
                                                         <th data-breakpoints="xs"><i class="fa fa-dollar text-warning"></i>Valor propuesta</th>
+                                                        <th data-breakpoints="xs"><i class="fa fa-school-flag text-info"></i>Canal</th>
                                                         <th data-breakpoints="all" data-title="Info"></th>
                                                         <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                     </tr>
@@ -429,10 +483,13 @@
                                                                 <td><a href="https://wa.me/57<%# Eval("TelefonoContacto") %>" target="_blank"><i class="fab fa-whatsapp m-r-xs font-bold" style="color:forestgreen""></i><%# Eval("TelefonoContacto") %></a></td>
                                                                 <td><%# Eval("EmailContacto") %> </td>
                                                                 <td><%# Eval("NombreEmpresaCRM") %> </td>
-                                                                <td><%# Eval("NombreEstadoCRM") %> </td>
+                                                                <td><span class='badge badge-<%# Eval("ColorEstadoCRM")%>'>
+                                                                    <%# Eval("NombreEstadoCRM") %></span>
+                                                                </td>
                                                                 <td><%# Eval("FechaPrimerCon", "{0:yyyy-MM-dd}") %></td>
                                                                 <td><%# Eval("FechaProximoCon", "{0:yyyy-MM-dd}") %></td>
                                                                 <td><%# Eval("ValorPropuesta", "{0:C0}") %></td>
+                                                                <td><%# Eval("NombreCanalVenta", "{0:C0}") %></td>
                                                                 <td>
                                                                     <h3 class="text-info">Propuesta y observaciones</h3>
                                                                     <table class="table table-bordered table-striped">
