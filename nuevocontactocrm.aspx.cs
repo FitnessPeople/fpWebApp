@@ -53,9 +53,11 @@ namespace fpWebApp
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             txbFechaPrim.Attributes.Add("type", "date");
+                            txbFechaPrim.Attributes.Add("min", DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd").ToString());
                             txbFechaPrim.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
                             txbFechaProx.Attributes.Add("type", "date");
                             txbFechaProx.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+                            txbCorreoContacto.Attributes.Add("type", "email");
                             ListaEmpresasCRM();
                             ListaEstadosCRM();
                             ListaContactos();                            
@@ -116,45 +118,45 @@ namespace fpWebApp
             dt.Dispose();            
         }
 
-        //private void ListaEstadosCRM()
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.ConsultarEstadossCRM();
-
-        //    ddlStatusLead.DataSource = dt;
-        //    ddlStatusLead.DataBind();
-        //    dt.Dispose();
-        //}
         private void ListaEstadosCRM()
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarEstadossCRM();
 
-            ddlStatusLead.Items.Clear();
-            ddlStatusLead.Items.Add(new ListItem("Seleccione", "")); // Opción por defecto
-
-            Dictionary<string, string> estadosColores = new Dictionary<string, string>();
-
-            foreach (DataRow row in dt.Rows)
-            {
-                string id = row["idEstadoCRM"].ToString();
-                string nombre = row["NombreEstadoCRM"].ToString();
-                string color = "badge-" + row["ColorEstadoCRM"].ToString().ToLower();
-
-                ListItem item = new ListItem(nombre, id);
-                ddlStatusLead.Items.Add(item);
-
-                // Guardamos el color en un diccionario
-                estadosColores[id] = color;
-            }
-
-            // Guardar el JSON en el HiddenField
-            hiddenEstadosColores.Value = Newtonsoft.Json.JsonConvert.SerializeObject(estadosColores);
-
-            // Asegurar que el JavaScript se ejecute después de la actualización
-            ScriptManager.RegisterStartupScript(this, GetType(), "updateDDL",
-                "setTimeout(function() { updateDropdownBadges(); }, 100);", true);
+            ddlStatusLead.DataSource = dt;
+            ddlStatusLead.DataBind();
+            dt.Dispose();
         }
+        //private void ListaEstadosCRM()
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarEstadossCRM();
+
+        //    ddlStatusLead.Items.Clear();
+        //    ddlStatusLead.Items.Add(new ListItem("Seleccione", "")); // Opción por defecto
+
+        //    Dictionary<string, string> estadosColores = new Dictionary<string, string>();
+
+        //    foreach (DataRow row in dt.Rows)
+        //    {
+        //        string id = row["idEstadoCRM"].ToString();
+        //        string nombre = row["NombreEstadoCRM"].ToString();
+        //        string color = "badge-" + row["ColorEstadoCRM"].ToString().ToLower();
+
+        //        ListItem item = new ListItem(nombre, id);
+        //        ddlStatusLead.Items.Add(item);
+
+        //        // Guardamos el color en un diccionario
+        //        estadosColores[id] = color;
+        //    }
+
+        //    // Guardar el JSON en el HiddenField
+        //    hiddenEstadosColores.Value = Newtonsoft.Json.JsonConvert.SerializeObject(estadosColores);
+
+        //    // Asegurar que el JavaScript se ejecute después de la actualización
+        //    ScriptManager.RegisterStartupScript(this, GetType(), "updateDDL",
+        //        "setTimeout(function() { updateDropdownBadges(); }, 100);", true);
+        //}
 
 
 
@@ -182,7 +184,8 @@ namespace fpWebApp
             DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out respuesta);
             Session["contactoId"] = idContacto;
 
-            if (respuesta) { 
+            if (respuesta) {
+               
                 if (dt.Rows.Count > 0)
                 {
                     DataRow row = dt.Rows[0];
