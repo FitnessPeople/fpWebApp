@@ -40,37 +40,6 @@
         textarea {
             border: 2px solid #17a2b8; /* Bootstrap info color */
         }
-        .status-dropdown option {
-    background-color: white !important; /* Evita que el fondo cambie */
-    color: black !important; /* Mantiene el texto visible */
-    padding: 5px;
-}
-
-.status-dropdown option[data-badge="badge-info"] {
-    color: #17a2b8; /* Azul claro */
-    font-weight: bold;
-}
-
-.status-dropdown option[data-badge="badge-primary"] {
-    color: #007bff; /* Azul */
-    font-weight: bold;
-}
-
-.status-dropdown option[data-badge="badge-warning"] {
-    color: #ffc107; /* Amarillo */
-    font-weight: bold;
-}
-
-.status-dropdown option[data-badge="badge-success"] {
-    color: #28a745; /* Verde */
-    font-weight: bold;
-}
-
-.status-dropdown option[data-badge="badge-danger"] {
-    color: #dc3545; /* Rojo */
-    font-weight: bold;
-}
-
     </style>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -93,40 +62,7 @@
     <!-- JS de Quill -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
-    <%--        formato de los status--%>
-
-<%--<script>
-    function updateDropdownBadges() {
-        var ddl = document.getElementById('<%= ddlStatusLead.ClientID %>');
-        var estadosColores = JSON.parse(document.getElementById('<%= hiddenEstadosColores.ClientID %>').value || "{}");
-
-        for (var i = 0; i < ddl.options.length; i++) {
-            var value = ddl.options[i].value;
-            if (estadosColores[value]) {
-                ddl.options[i].className = estadosColores[value]; // Aplica la clase de badge
-            }
-        }
-    }
-
-    // Aplicar cuando el modal se abre
-    $('#miModal').on('shown.bs.modal', function () {
-        updateDropdownBadges();
-    });
-
-    // Aplicar cuando cambia la selección
-    document.addEventListener("change", function (event) {
-        if (event.target.id === '<%= ddlStatusLead.ClientID %>') {
-            updateDropdownBadges();
-        }
-    });
-
-    // Aplicar cuando la página carga
-    document.addEventListener("DOMContentLoaded", function () {
-        setTimeout(updateDropdownBadges, 100);
-    });
-</script>--%>
-
-<script>
+    <script>
     // Función para reabrir el modal si fue cerrado por un PostBack
     function reopenModal() {
         setTimeout(function () {
@@ -292,10 +228,7 @@
                                         <div class="form-group">
                                             <div class="form-group" <%--id="filter-form-container"--%> style="margin-left: 28px;"></div>
                                         </div>
-                                    </div>
-                                  
-
-                                 
+                                    </div> 
 
                                     <asp:UpdatePanel ID="upModal" runat="server" UpdateMode="Conditional">
                                         <ContentTemplate>
@@ -398,11 +331,10 @@
                                                                      cssclass="form-control input-sm" class="form-control">
                                                                 </textarea>
                                                             </div>
-
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.reload();">Cerrar</button>
-                                                            <input id="Submit1" type="submit" value="Agregar" class="btn btn-primary mb-3" runat="server" onserverclick="btnAgregar_Click"/>
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" 
+                                                            onclick="window.location.reload();">Cerrar</button>
                                                             <asp:Button ID="btnAgregar" runat="server" OnClick="btnAgregar_Click" 
                                                                 Text="Agregar" CssClass="btn btn-primary mb-3"                                                               
                                                                 ValidationGroup="agregar"/>
@@ -540,295 +472,11 @@
                                             </table>
                                         </ContentTemplate>
                                     </asp:UpdatePanel>
-                              <%--  </form>--%>
+                                </form>
                             </div>
                         </div>
                         <%--Fin Contenido!!!!--%>
                     </div>
-
-                   <%-- Div Empresas--%>
-
-                      <div class="ibox float-e-margins" runat="server" id="div1">
-                        <div class="ibox-title">
-                            <h5><b>Empresas</b></h5>
-                            <div class="ibox-tools">
-                                <a class="collapse-link">
-                                    <i class="fa fa-chevron-up"></i>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div id="ibox-content" class="ibox-content collapse">
-                            <p>Contenido de la sección Empresas...</p>
-                        </div>
-
-                        <div class="ibox-content" >
-                            <div class="row">
-                              <%--  <form id="form2" runat="server">--%>
-                                  <%--  <asp:ScriptManager ID="ScriptManager2" runat="server" />--%>
-                                    <div class="col-lg-6 form-horizontal">
-                                        <div class="form-group">
-                                            <div class="form-group" <%--id="filter-form-container"--%> style="margin-left: 28px;"></div>
-                                        </div>
-                                    </div>
-                                  
-
-                                  <asp:HiddenField ID="HiddenField1" runat="server" />
-
-                                    <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
-                                        <ContentTemplate>
-                                            <div class="modal fade" id="ModalEmpresa" tabindex="-1" role="dialog" aria-labelledby="ModalContactoLabel" aria-hidden="false">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="ModalEmpresaLabel">Registrar contacto</h5>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-
-                                                            <div class="row">
-                                                                <div class="col-sm-6">
-                                                                    <div class="form-group">
-                                                                        <i class="fa fa-user-tie text-info"></i>
-                                                                        <label for="nombreContacto" class="col-form-label">Nombre completo:</label>
-                                                                        <input type="text" runat="server" class="form-control" id="Text1" 
-                                                                            placeholder="ej:  &quot;Juan Pérez&quot;" spellcheck="false" autocomplete="off" 
-                                                                            oninput="validarSoloLetras(this)"/>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <div class="col-sm-6">
-                                                                        <i class="fa-solid fa-phone text-info"></i>
-                                                                        <label for="telefonoContacto" class="col-form-label">Teléfono:</label>
-                                                                        <input type="text" runat="server" class="form-control" id="Text2"
-                                                                            placeholder="ej: 310 123 4567" spellcheck="false" autocomplete="off" 
-                                                                            onkeyup="formatearTelefono(this)" maxlength="14">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-6">
-                                                                    <div class="form-group">
-                                                                        <span class="glyphicon glyphicon-envelope text-info"></span>
-                                                                        <label for="correoContacto" class="col-form-label">Correo electrónico:</label>
-                                                                        <input type="text" runat="server" class="form-control" id="Text3"
-                                                                            spellcheck="false" placeholder="ej: cliente@ejemplo.com"  autocomplete="off"
-                                                                            oninput="validarCorreo(this)">
-                                                                        <asp:Literal ID="Literal1" runat="server" Visible="false"></asp:Literal>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-sm-6">
-                                                                    <div class="form-group">
-                                                                        <i class="fas fa-industry text-info"></i>
-                                                                        <label for="Empresa" class="col-form-label">Empresa:</label>
-                                                                        <asp:DropDownList ID="DropDownList1" DataTextField="NombreEmpresaCRM" DataValueField="idEmpresaCRM" 
-                                                                            runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
-                                                                            <asp:ListItem Text="No aplica" Value="0"></asp:ListItem>                                                                          
-                                                                        </asp:DropDownList>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <i class="fas fa-flag text-info"></i>
-                                                                <label for="StatusLead" class="col-form-label">Status Lead:</label>
-                                                                        <asp:DropDownList ID="DropDownList2" DataTextField="NombreEstadoCRM" DataValueField="idEstadoCRM" 
-                                                                            runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
-                                                                            <asp:ListItem Text="No aplica" Value="0"></asp:ListItem>                                                                          
-                                                                        </asp:DropDownList>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-6">
-                                                                    <div class="form-group">
-                                                                        <i class="fa-solid fa-hand-point-up text-info"></i>
-                                                                        <label for="txbFechaPrim" class="col-form-label">Primer contacto:</label>
-                                                                        <input type="text" runat="server" id="Text4" class="form-control input-sm datepicker" />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-sm-6">
-                                                                    <div class="form-group">
-                                                                        <i class="fas fa-angle-right text-info"></i>
-                                                                        <label for="txbFechaProx" class="col-form-label">Próximo contacto:</label>
-                                                                        <input type="text" runat="server" id="Text5" class="form-control input-sm datepicker" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-6">
-                                                                    <div class="form-group">
-                                                                        <i class="fa fa-dollar text-info"></i>
-                                                                        <label for="ValorPropuesta" class="col-form-label">Valor Propuesta:</label>
-                                                                        <asp:TextBox ID="TextBox1" CssClass="form-control input-sm" runat="server" placeholder="$0"
-                                                                            onkeyup="formatCurrency(this)" onblur="keepFormatted(this)"  autocomplete="off"></asp:TextBox>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-sm-6">
-                                                                    <div class="form-group">
-                                                                        <i class="fas fa-paperclip text-info"></i>
-                                                                        <label for="ArchivoPropuesta" class="col-form-label">Archivo Propuesta:</label>
-                                                                        <input type="file" runat="server" class="form-control" id="File1" placeholder="subir archivo" >
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <i class="fas fa-pen text-info"></i>
-                                                                <label for="message-text" class="col-form-label">Observaciones:</label>
-                                                                <textarea id="Textarea1" runat="server" rows="3"                                                                      
-                                                                     cssclass="form-control input-sm" class="form-control">
-                                                                </textarea>
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.reload();">Cerrar</button>
-                                                            <asp:Button ID="Button1" runat="server" OnClick="btnAgregar_Click" 
-                                                                Text="Agregar"
-                                                                class="btn btn-primary mb-3"
-                                                                ValidationGroup="agregar"/>
-                                                            <asp:Button ID="Button2" runat="server" OnClick="btnActualizar_Click"
-                                                                Text="Actualizar" Visible="false"
-                                                                class="btn btn-primary mb-3"/> 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </ContentTemplate>
-                                    </asp:UpdatePanel>
-                                     <%-- Termina Modal --%>
-
-                                     <%-- Modal eliminar--%>
-                                     <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
-                                        <ContentTemplate>
-                                            <div class="modal fade" id="Modaleliminarc" tabindex="-1" role="dialog" aria-labelledby="ModalEliminarLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="alert">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="ModaleliminarcLabel">CRM Contactos</h5>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-
-                                                                <div class="col-sm-6">
-                                                                    <div class="form-group">
-                                                                        <i class="fa-solid fa-exclamation"></i>                                                                      
-                                                                        <asp:Literal ID="Literal2" runat="server"></asp:Literal>
-                                                                    </div>
-                                                                </div>
-
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.reload();">Cerrar</button>
-                                                            <button type="submit" class="btn btn-danger mb-3">Eliminar</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </ContentTemplate>
-                                    </asp:UpdatePanel>
-                                     <%-- Termina Modal eliminar--%>
-
-
-                                    <div class="col-lg-6 form-horizontal">
-                                        <button type="button" class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;" data-toggle="modal" data-target="#ModalContacto" data-whatever="@fat">Nuevo</button>
-                                    </div>
-
-                                    <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
-                                        <ContentTemplate>
-                                            <table class="footable table table-striped list-group-item-text" data-paging-size="10"
-                                                data-filter-min="3" data-filter-placeholder="Buscar"
-                                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
-                                                data-paging-limit="10" data-filtering="true"
-                                                data-filter-container="#filter-form-container" data-filter-delay="300"
-                                                data-filter-dropdown-title="Buscar en:" data-filter-position="left"
-                                                data-empty="Sin resultados">
-                                                <thead>
-                                                    <tr>
-                                                        <th data-breakpoints="xs" width="15%"><i class="fa fa-user-tie text-info"></i>Nombre </th>
-                                                        <th data-breakpoints="xs" width="15%"><i class="fa-solid fa-phone text-info"></i>Teléfono</th>
-                                                        <th data-breakpoints="xs"><span class="glyphicon glyphicon-envelope text-info"></span>Correo</th>
-                                                        <th data-breakpoints="xs"><i class="fas fa-industry text-info"></i>Organización / Empresa</th>
-                                                        <th data-breakpoints="xs"><i class="fas fa-flag text-info"></i>Staus lead</th>
-                                                        <th data-breakpoints="xs"><i class="fa-solid fa-hand-point-up text-info"></i>Primer contacto</th>
-                                                        <th data-breakpoints="xs"><i class="fas fa-angle-right text-success"></i>Próximo contacto</th>
-                                                        <th data-breakpoints="xs"><i class="fa fa-dollar text-warning"></i>Valor propuesta</th>
-                                                        <th data-breakpoints="xs"><i class="fa fa-school-flag text-info"></i>Canal</th>
-                                                        <th data-breakpoints="all" data-title="Info"></th>
-                                                        <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <asp:Repeater ID="Repeater1" runat="server" OnItemDataBound="rpContactosCRM_ItemDataBound1">
-                                                        <ItemTemplate>
-                                                            <tr class="feed-element">
-                                                                <td><%# Eval("NombreContacto")%></td>
-                                                                <td><a href="https://wa.me/57<%# Eval("TelefonoContacto") %>" target="_blank"><i class="fab fa-whatsapp m-r-xs font-bold" style="color:forestgreen""></i><%# Eval("TelefonoContacto") %></a></td>
-                                                                <td><%# Eval("EmailContacto") %> </td>
-                                                                <td><%# Eval("NombreEmpresaCRM") %> </td>
-                                                                <td><span class='badge badge-<%# Eval("ColorEstadoCRM")%>'>
-                                                                    <%# Eval("NombreEstadoCRM") %></span>
-                                                                </td>
-                                                                <td><%# Eval("FechaPrimerCon", "{0:yyyy-MM-dd}") %></td>
-                                                                <td><%# Eval("FechaProximoCon", "{0:yyyy-MM-dd}") %></td>
-                                                                <td><%# Eval("ValorPropuesta", "{0:C0}") %></td>
-                                                                <td><%# Eval("NombreCanalVenta", "{0:C0}") %></td>
-                                                                <td>
-                                                                    <h3 class="text-info">Propuesta y observaciones</h3>
-                                                                    <table class="table table-bordered table-striped">
-                                                                        <tr>                                                                            
-                                                                            <th width="20%"><i class="fas fa-pen text-primary"></i>Observaciones</th>
-                                                                            <th width="20%"><i class="fas fa-paperclip text-primary"></i>Archivo Propuesta</th>
-                                                                            <th width="20%"><i class="fas fa-paperclip text-primary"></i>Histórico</th>
-                                                                            <th width="20%"><i class="fa fa-user-tie text-primary"></i>Asesor</th>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td><%# Eval("Observaciones") %> </td>
-                                                                            <td><%# Eval("ArchivoPropuesta") %> </td>                                                                            
-                                                                            <td> </td>                                                                            
-                                                                            <td><%# Eval("NombreUsuario") %> </td>
-                                                                        </tr>
-                                                                    </table>
-                                                                </td>
-                                                                <td>
-                                                                    <asp:Button ID="btnEditar" runat="server"
-                                                                        CssClass="btn btn-outline btn-primary pull-left m-r-xs"
-                                                                        CommandArgument='<%# Eval("idContacto") %>'
-                                                                        OnClick="btnEditar_Click"
-                                                                        Text="&#9998;"
-                                                                        ToolTip="Editar contacto"
-                                                                        Style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" />
-                                                              
-                                                                    <asp:Button ID="btnEliminar" runat="server"
-                                                                        CssClass="btn btn-outline btn-danger pull-left m-r-xs"
-                                                                        CommandArgument='<%# Eval("idContacto") %>'
-                                                                        OnClick="btnEliminar_Click"
-                                                                        Text="&#128465;"
-                                                                        ToolTip="Eliminar contacto"
-                                                                        Style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" />
-                                                                </td>
-                                                            </tr>
-                                                        </ItemTemplate>
-                                                    </asp:Repeater>
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        <td colspan="6">
-                                                            <ul class="pagination"></ul>
-                                                        </td>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </ContentTemplate>
-                                    </asp:UpdatePanel>
-                                <%--</form>--%>
-
-                            </div>
-
-                        </div>
-                        <%--Fin Contenido!!!!--%>
-
-                    </div>
-
-                    </form>
-
                 </div>
 
                 <uc1:footer runat="server" ID="footer" />
