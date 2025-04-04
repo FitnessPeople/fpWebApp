@@ -41,7 +41,7 @@ namespace fpWebApp
                     else
                     {
                         //Si tiene acceso a esta página
-                        //btnAgregar.Visible = false;
+
                         if (ViewState["Consulta"].ToString() == "1")
                         {
                             //lbExportarExcel.Visible = false;
