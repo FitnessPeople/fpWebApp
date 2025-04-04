@@ -77,7 +77,6 @@
     });
 </script>
 
-
     <%--        formato de moneda--%>
 
     <script>
@@ -160,8 +159,60 @@
         }
     </script>
 
-        <%--    Formatear textarea --%>
+        <%--   Validar botón Agregar --%>
+    <script>
+        function validarFormulario() {
+            const nombre = document.getElementById('txbNombreContacto').value.trim();
+            const telefono = document.getElementById('txbTelefonoContacto').value.trim();
+            const correo = document.getElementById('txbCorreoContacto').value.trim();
+            const fechaPrim = document.getElementById('txbFechaPrim').value.trim();
+            const fechaProx = document.getElementById('txbFechaProx').value.trim();
+            const valor = document.getElementById('txbValorPropuesta').value.trim();
+            const empresa = document.getElementById('ddlEmpresa').value;
+            const status = document.getElementById('ddlStatusLead').value;
 
+            const boton = document.getElementById('<%= btnAgregar.ClientID %>');
+
+            const camposCompletos =
+                nombre !== "" &&
+                telefono !== "" &&
+                correo !== "" &&
+                fechaPrim !== "" &&
+                fechaProx !== "" &&
+                valor !== "" &&
+                empresa !== "0" &&
+                status !== "0";
+
+            if (camposCompletos) {
+                boton.disabled = false;
+                boton.classList.remove('btn-secondary');
+                boton.classList.add('btn-primary');
+            } else {
+                boton.disabled = true;
+                boton.classList.remove('btn-primary');
+                boton.classList.add('btn-secondary');
+            }
+        }
+
+        // Asignar eventos a cada campo
+        document.addEventListener("DOMContentLoaded", function () {
+            const campos = [
+                'txbNombreContacto', 'txbTelefonoContacto', 'txbCorreoContacto',
+                'txbFechaPrim', 'txbFechaProx', 'txbValorPropuesta',
+                'ddlEmpresa', 'ddlStatusLead'
+            ];
+
+            campos.forEach(id => {
+                const campo = document.getElementById(id);
+                if (campo) {
+                    campo.addEventListener('input', validarFormulario);
+                    campo.addEventListener('change', validarFormulario);
+                }
+            });
+
+            validarFormulario(); // Ejecutar al cargar
+        });
+    </script>
 
 </head>
 
@@ -232,7 +283,7 @@
 
                                     <asp:UpdatePanel ID="upModal" runat="server" UpdateMode="Conditional">
                                         <ContentTemplate>
-                                            <div class="modal fade" id="ModalContacto" tabindex="-1" role="dialog" aria-labelledby="ModalContactoLabel" aria-hidden="false">
+                                            <div class="modal fade" id="ModalContacto" tabindex="-1" role="dialog" aria-labelledby="ModalContactoLabel" aria-hidden="false" ClientIDMode="Static">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -246,8 +297,8 @@
                                                                     <div class="form-group">
                                                                         <i class="fa fa-user-tie text-info"></i>
                                                                         <label for="nombreContacto" class="col-form-label">Nombre completo:</label>
-                                                                        <input type="text" runat="server" class="form-control" id="txbNombreContacto" 
-                                                                            placeholder="Nombre" spellcheck="false" autocomplete="off" 
+                                                                        <input type="text" runat="server" class="form-control" id="txbNombreContacto"  
+                                                                            placeholder="Nombre" spellcheck="false" autocomplete="off" ClientIDMode="Static"
                                                                             oninput="validarSoloLetras(this)"/>
                                                                     </div>
                                                                 </div>
@@ -256,7 +307,7 @@
                                                                         <i class="fa-solid fa-phone text-info"></i>
                                                                         <label for="telefonoContacto" class="col-form-label">Teléfono:</label>
                                                                         <input type="text" runat="server" class="form-control" id="txbTelefonoContacto"
-                                                                            placeholder="ej: 310 123 4567" spellcheck="false" autocomplete="off" 
+                                                                            placeholder="ej: 310 123 4567" spellcheck="false" autocomplete="off" ClientIDMode="Static"
                                                                             onkeyup="formatearTelefono(this)" maxlength="14">
                                                                     </div>
                                                                 </div>
@@ -267,7 +318,7 @@
                                                                         <span class="glyphicon glyphicon-envelope text-info"></span>
                                                                         <label for="correoContacto" class="col-form-label">Correo electrónico:</label>
                                                                         <input type="text" runat="server" class="form-control" id="txbCorreoContacto"
-                                                                            spellcheck="false" placeholder="ej: cliente@ejemplo.com"  autocomplete="off"
+                                                                            spellcheck="false" placeholder="ej: cliente@ejemplo.com"  autocomplete="off" ClientIDMode="Static"
                                                                             oninput="validarCorreo(this)">
                                                                         <asp:Literal ID="ltError" runat="server" Visible="false"></asp:Literal>
                                                                     </div>
@@ -276,7 +327,7 @@
                                                                     <div class="form-group">
                                                                         <i class="fas fa-industry text-info"></i>
                                                                         <label for="Empresa" class="col-form-label">Empresa / Persona:</label>
-                                                                        <asp:DropDownList ID="ddlEmpresa" DataTextField="NombreEmpresaCRM" DataValueField="idEmpresaCRM" 
+                                                                        <asp:DropDownList ID="ddlEmpresa" DataTextField="NombreEmpresaCRM" DataValueField="idEmpresaCRM" ClientIDMode="Static"
                                                                             runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                             <asp:ListItem Text="No aplica" Value="0"></asp:ListItem>                                                                          
                                                                         </asp:DropDownList>
@@ -286,9 +337,9 @@
                                                             <div class="form-group">
                                                                 <i class="fas fa-flag text-info"></i>
                                                                 <label for="StatusLead" class="col-form-label">Status Lead:</label>
-                                                                        <asp:DropDownList ID="ddlStatusLead" DataTextField="NombreEstadoCRM" DataValueField="idEstadoCRM" 
-                                                                            runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
-                                                                            <asp:ListItem Text="No aplica" Value="0"></asp:ListItem>                                                                          
+                                                                        <asp:DropDownList ID="ddlStatusLead" DataTextField="NombreEstadoCRM" DataValueField="idEstadoCRM" ClientIDMode="Static"
+                                                                            runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm"> 
+                                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>                                                                          
                                                                         </asp:DropDownList>
                                                             </div>
                                                             <div class="row">
@@ -296,14 +347,14 @@
                                                                     <div class="form-group">
                                                                         <i class="fa-solid fa-hand-point-up text-info"></i>
                                                                         <label for="txbFechaPrim" class="col-form-label">Primer contacto:</label>
-                                                                        <input type="text" runat="server" id="txbFechaPrim" class="form-control input-sm datepicker" />
+                                                                        <input type="text" runat="server" id="txbFechaPrim" class="form-control input-sm datepicker" ClientIDMode="Static"/>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-sm-6">
                                                                     <div class="form-group">
                                                                         <i class="fas fa-angle-right text-info"></i>
                                                                         <label for="txbFechaProx" class="col-form-label">Próximo contacto:</label>
-                                                                        <input type="text" runat="server" id="txbFechaProx" class="form-control input-sm datepicker" />
+                                                                        <input type="text" runat="server" id="txbFechaProx" class="form-control input-sm datepicker" ClientIDMode="Static" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -312,7 +363,7 @@
                                                                     <div class="form-group">
                                                                         <i class="fa fa-dollar text-info"></i>
                                                                         <label for="ValorPropuesta" class="col-form-label">Valor Propuesta:</label>
-                                                                        <asp:TextBox ID="txbValorPropuesta" CssClass="form-control input-sm" runat="server" placeholder="$0"
+                                                                        <asp:TextBox ID="txbValorPropuesta" CssClass="form-control input-sm" runat="server" placeholder="$0" ClientIDMode="Static"
                                                                             onkeyup="formatCurrency(this)" onblur="keepFormatted(this)"  autocomplete="off"></asp:TextBox>
                                                                     </div>
                                                                 </div>
@@ -328,21 +379,23 @@
                                                                 <i class="fas fa-pen text-info"></i>
                                                                 <label for="message-text" class="col-form-label">Observaciones:</label>
                                                                 <textarea id="txaObservaciones" runat="server" rows="3"                                                                      
-                                                                     cssclass="form-control input-sm" class="form-control">
+                                                                     cssclass="form-control input-sm" class="form-control">                                                                   
                                                                 </textarea>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" 
+                                                             <div class="form-group">
+                                                                <asp:Literal ID="ltMensajeVal" runat="server"></asp:Literal>
+                                                            </div>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" 
                                                             onclick="window.location.reload();">Cerrar</button>
                                                             <asp:Button ID="btnAgregar" runat="server" OnClick="btnAgregar_Click" 
                                                                 Text="Agregar" CssClass="btn btn-primary mb-3"                                                               
-                                                                ValidationGroup="agregar"/>
+                                                                ValidationGroup="agregar" Enabled="false"/>
                                                             <asp:Button ID="btnActualizar" runat="server" OnClick="btnActualizar_Click"
                                                                 Text="Actualizar" Visible="false"
-                                                                class="btn btn-primary mb-3"/> 
+                                                                class="btn btn-primary mb-3"/>
                                                         </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </ContentTemplate>

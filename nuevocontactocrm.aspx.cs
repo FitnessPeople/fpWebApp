@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using DocumentFormat.OpenXml.Math;
+using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using NPOI.SS.Formula.Functions;
 using System;
@@ -57,6 +58,7 @@ namespace fpWebApp
                             txbFechaProx.Attributes.Add("type", "date");
                             txbFechaProx.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
                             txbCorreoContacto.Attributes.Add("type", "email");
+
                             ListaEmpresasCRM();
                             ListaEstadosCRM();
                             ListaContactos();                            
@@ -70,6 +72,8 @@ namespace fpWebApp
                     Response.Redirect("logout.aspx");
                 }
                 ScriptManager.RegisterStartupScript(this, GetType(), "updateDDL", "changeBadge(document.getElementById('" + ddlStatusLead.ClientID + "'));", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "activarBoton", "setTimeout(validarBotonActualizar, 100);", true);
+
             }
         }
 
@@ -188,6 +192,7 @@ namespace fpWebApp
         {
             bool salida = false;
             string mensaje = string.Empty;
+            string mensajeValidacion = string.Empty;
             string respuesta = string.Empty;           
 
             if (ddlEmpresa.SelectedItem.Value != "")
@@ -198,21 +203,53 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             try
             {
-                respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
-                txbCorreoContacto.Value.ToString().Trim(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
-                Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
-                txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
-                txaObservaciones.Value.ToString(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
+                // Obtener y limpiar valores
+                string nombre = txbNombreContacto.Value?.ToString().Trim();
+                string telefono = Regex.Replace(txbTelefonoContacto.Value?.ToString().Trim(), @"\D", "");
+                string correo = txbCorreoContacto.Value?.ToString().Trim();
+                string fechaPrim = txbFechaPrim?.Value?.ToString().Trim();
+                string fechaProx = txbFechaProx?.Value?.ToString().Trim();
+                string valorPropuestaTexto = Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "");
+                string empresa = ddlEmpresa.SelectedItem?.Value;
+                string statusLead = ddlStatusLead.SelectedItem?.Value;
 
-                if (salida)
+                // Validar campos requeridos
+                if (string.IsNullOrWhiteSpace(nombre) ||
+                    string.IsNullOrWhiteSpace(telefono) ||
+                    string.IsNullOrWhiteSpace(correo) ||
+                    string.IsNullOrWhiteSpace(empresa) ||
+                    string.IsNullOrWhiteSpace(statusLead) ||
+                    string.IsNullOrWhiteSpace(fechaPrim) ||
+                    string.IsNullOrWhiteSpace(fechaProx) ||
+                    string.IsNullOrWhiteSpace(valorPropuestaTexto))
                 {
-                    respuesta = mensaje.ToString();
-                    Response.Redirect("nuevocontactocrm", false);
+                    mensajeValidacion = "Todos los campos son obligatorios.";
+
+                    ltMensajeVal.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                    "Todos los campos son obligatorios." +
+                    "</div>";
+                    // Script para volver a mostrar la modal después del postback
+                    ScriptManager.RegisterStartupScript(this, GetType(), "mostrarModal", "$('#ModalContacto').modal('show');", true);
                 }
                 else
                 {
-                    string script = $"alert('{mensaje.Replace("'", "\\'")}');";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);
+                    respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
+                    txbCorreoContacto.Value.ToString().Trim(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
+                    txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
+                    txaObservaciones.Value.ToString(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
+
+                    if (salida)
+                    {
+                        respuesta = mensaje.ToString();
+                        Response.Redirect("nuevocontactocrm", false);
+                    }
+                    else
+                    {
+                        string script = $"alert('{mensaje.Replace("'", "\\'")}');";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);
+                    }
                 }
             }
             catch (Exception ex)
