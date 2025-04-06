@@ -26,6 +26,11 @@ namespace fpWebApp
             if (!IsPostBack)
             {
                 ListaContactos();
+                if (ViewState["AbrirModal"] != null && (bool)ViewState["AbrirModal"] == true)
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "abrirModal", "$('#ModalContacto').modal('show');", true);
+                    ViewState["AbrirModal"] = null; // Limpiar para que no se repita
+                }
 
                 if (Session["idUsuario"] != null)
                 {
@@ -52,6 +57,8 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
+
+
                             txbFechaPrim.Attributes.Add("type", "date");
                             txbFechaPrim.Attributes.Add("min", DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd").ToString());
                             txbFechaPrim.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
@@ -191,9 +198,71 @@ namespace fpWebApp
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             bool salida = false;
+            ViewState["AbrirModal"] = true;
             string mensaje = string.Empty;
             string mensajeValidacion = string.Empty;
             string respuesta = string.Empty;           
+
+            if (ddlEmpresa.SelectedItem.Value != "")
+                ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
+            else
+                ddlEmpresa.SelectedItem.Value = "0";
+
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                    respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
+                    txbCorreoContacto.Value.ToString().Trim(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
+                    txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
+                    txaObservaciones.Value.ToString(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
+
+                    if (salida)
+                    {
+                        respuesta = mensaje.ToString();
+                        Response.Redirect("nuevocontactocrm", false);
+                    }
+                    else
+                    {
+                        string script = $"alert('{mensaje.Replace("'", "\\'")}');";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);
+                    }
+                
+            }
+            catch (Exception ex)
+            {
+                string script = $"alert('{mensaje.Replace("'", "\\'")}');";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);
+            }
+        }
+
+        protected void btnEditar_Click(object sender, EventArgs e)
+        {
+            btnActualizar.Visible = true;
+            btnAgregar.Visible = false;
+            Button btnEditar = (Button)sender;
+            int idContacto = Convert.ToInt32(btnEditar.CommandArgument);
+
+            if (idContacto > 0)
+            {
+                CargarDatosContacto(idContacto);
+                upModal.Update();
+                ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#ModalContacto').modal('show');", true);
+            }
+        }
+        private void MostrarModalEditar(int idContacto)
+        {
+            CargarDatosContacto(idContacto);
+            upModal.Update();
+            ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#ModalContacto').modal('show');", true);
+        }
+
+        protected void btnActualizar_Click(object sender, EventArgs e)
+        {
+            bool salida = false;
+            string mensaje = string.Empty;
+            string respuesta = string.Empty;
+            string mensajeValidacion = string.Empty;
 
             if (ddlEmpresa.SelectedItem.Value != "")
                 ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
@@ -225,20 +294,17 @@ namespace fpWebApp
                 {
                     mensajeValidacion = "Todos los campos son obligatorios.";
 
-                    ltMensajeVal.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    "Todos los campos son obligatorios." +
-                    "</div>";
-                    // Script para volver a mostrar la modal después del postback
-                    ScriptManager.RegisterStartupScript(this, GetType(), "mostrarModal", "$('#ModalContacto').modal('show');", true);
+                    ltMensajeVal.Text = "<div class='alert alert-danger'>Todos los campos son obligatorios.</div>";
+                    MostrarModalEditar(Convert.ToInt32(Session["contactoId"]));
+                    return;
                 }
                 else
                 {
-                    respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
-                    txbCorreoContacto.Value.ToString().Trim(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
-                    txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
-                    txaObservaciones.Value.ToString(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
+                    respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.ToString().Trim(),
+                            Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), txbCorreoContacto.Value.ToString().Trim(),
+                            Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()),
+                            txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
+                            txaObservaciones.Value.ToString(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
 
                     if (salida)
                     {
@@ -251,61 +317,6 @@ namespace fpWebApp
                         ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                string script = $"alert('{mensaje.Replace("'", "\\'")}');";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);
-            }
-        }
-
-        protected void btnEditar_Click(object sender, EventArgs e)
-        {
-            btnActualizar.Visible = true;
-            btnAgregar.Visible = false;
-            Button btnEditar = (Button)sender;
-            int idContacto = Convert.ToInt32(btnEditar.CommandArgument);
-
-            if (idContacto > 0)
-            {
-                CargarDatosContacto(idContacto);
-                upModal.Update();
-                ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#ModalContacto').modal('show');", true);
-            }
-        }
-
-        protected void btnActualizar_Click(object sender, EventArgs e)
-        {
-            bool salida = false;
-            string mensaje = string.Empty;
-            string respuesta = string.Empty;
-            
-
-            if (ddlEmpresa.SelectedItem.Value != "")
-                ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
-            else
-                ddlEmpresa.SelectedItem.Value = "0";
-
-            clasesglobales cg = new clasesglobales();
-            try
-            {
-                respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.ToString().Trim(),
-                            Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), txbCorreoContacto.Value.ToString().Trim(), 
-                            Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), 
-                            txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
-                            txaObservaciones.Value.ToString(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
-
-                if (salida)
-                {
-                    respuesta = mensaje.ToString();
-                    Response.Redirect("nuevocontactocrm", false);
-                }
-                else
-                {
-                    string script = $"alert('{mensaje.Replace("'", "\\'")}');";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);
-                }
-
             }
 
             catch (Exception ex)

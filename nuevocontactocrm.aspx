@@ -63,19 +63,20 @@
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
     <script>
-    // Función para reabrir el modal si fue cerrado por un PostBack
-    function reopenModal() {
-        setTimeout(function () {
-            $('#miModal').modal('show');
-        }, 100);
-    }
+        // Función para reabrir el modal si fue cerrado por un PostBack
+        function reopenModal() {
+            setTimeout(function () {
+                $('#miModal').modal('show');
+            }, 100);
+        }
 
-    // Detectar cuándo se actualiza el UpdatePanel y reabrir el Modal
-    var prm = Sys.WebForms.PageRequestManager.getInstance();
-    prm.add_endRequest(function () {
-        reopenModal();
-    });
-</script>
+        // Detectar cuándo se actualiza el UpdatePanel y reabrir el Modal
+        var prm = Sys.WebForms.PageRequestManager.getInstance();
+        prm.add_endRequest(function () {
+            reopenModal();
+        });
+    </script>
+
 
     <%--        formato de moneda--%>
 
@@ -112,54 +113,7 @@
         }
     </script>
 
-    <%--        formato de las observaciones--%>
-
-    <%--        Abrir modal--%>
-    <script>
-        function AbrirModal() {
-            $("#ModalContacto").modal("show");
-        }
-    </script>
-
-        <%--    Formatear telefono --%>
-    <script>
-        function formatearTelefono(input) {
-            let num = input.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
-    
-            // Si el número tiene 10 dígitos, es un celular
-            if (num.length === 10) {
-                input.value = num.substring(0, 3) + '-' + num.substring(3, 6) + '-' + num.substring(6, 10);
-            }
-            // Si el número tiene 7 o más dígitos, es un teléfono fijo
-            else if (num.length > 6) {
-                input.value = '(' + num.substring(0, 3) + ') ' + num.substring(3, 6) + '-' + num.substring(6, 10);
-            } else {
-                input.value = num;
-            }
-        }
-    </script>
-
-        <%--    Formatear solo letraas --%>
-    <script>
-        function validarSoloLetras(input) {
-            // Eliminar cualquier caracter que no sea letra o espacio
-            input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
-        }
-    </script>
-
-        <%--    Formatear solo correo --%>
-    <script>
-        function validarCorreo(input) {
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            if (!emailRegex.test(input.value)) {
-                input.setCustomValidity('Por favor ingrese un correo electrónico válido.');
-            } else {
-                input.setCustomValidity('');
-            }
-        }
-    </script>
-
-        <%--   Validar botón Agregar --%>
+    <%--        Validar botón Agregar --%>
     <script>
         function validarFormulario() {
             const nombre = document.getElementById('txbNombreContacto').value.trim();
@@ -213,6 +167,54 @@
             validarFormulario(); // Ejecutar al cargar
         });
     </script>
+
+    <%--        Abrir modal--%>
+    <script>
+        function AbrirModal() {
+            $("#ModalContacto").modal("show");
+        }
+    </script>
+
+        <%--    Formatear telefono --%>
+    <script>
+        function formatearTelefono(input) {
+            let num = input.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
+
+            // Si el número tiene 10 dígitos, es un celular
+            if (num.length === 10) {
+                input.value = num.substring(0, 3) + '-' + num.substring(3, 6) + '-' + num.substring(6, 10);
+            }
+            // Si el número tiene 7 o más dígitos, es un teléfono fijo
+            else if (num.length > 6) {
+                input.value = '(' + num.substring(0, 3) + ') ' + num.substring(3, 6) + '-' + num.substring(6, 10);
+            } else {
+                input.value = num;
+            }
+        }
+    </script>
+
+        <%--    Formatear solo letraas --%>
+    <script>
+        function validarSoloLetras(input) {
+            // Eliminar cualquier caracter que no sea letra o espacio
+            input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+        }
+    </script>
+
+        <%--    Formatear solo correo --%>
+    <script>
+        function validarCorreo(input) {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(input.value)) {
+                input.setCustomValidity('Por favor ingrese un correo electrónico válido.');
+            } else {
+                input.setCustomValidity('');
+            }
+        }
+    </script>
+
+        <%--    Formatear textarea --%>
+
 
 </head>
 
@@ -283,7 +285,7 @@
 
                                     <asp:UpdatePanel ID="upModal" runat="server" UpdateMode="Conditional">
                                         <ContentTemplate>
-                                            <div class="modal fade" id="ModalContacto" tabindex="-1" role="dialog" aria-labelledby="ModalContactoLabel" aria-hidden="false" ClientIDMode="Static">
+                                            <div class="modal fade" id="ModalContacto" tabindex="-1" role="dialog" aria-labelledby="ModalContactoLabel" aria-hidden="false">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -297,8 +299,8 @@
                                                                     <div class="form-group">
                                                                         <i class="fa fa-user-tie text-info"></i>
                                                                         <label for="nombreContacto" class="col-form-label">Nombre completo:</label>
-                                                                        <input type="text" runat="server" class="form-control" id="txbNombreContacto"  
-                                                                            placeholder="Nombre" spellcheck="false" autocomplete="off" ClientIDMode="Static"
+                                                                        <input type="text" runat="server" class="form-control" id="txbNombreContacto" 
+                                                                            placeholder="Nombre" spellcheck="false" autocomplete="off" 
                                                                             oninput="validarSoloLetras(this)"/>
                                                                     </div>
                                                                 </div>
@@ -307,7 +309,7 @@
                                                                         <i class="fa-solid fa-phone text-info"></i>
                                                                         <label for="telefonoContacto" class="col-form-label">Teléfono:</label>
                                                                         <input type="text" runat="server" class="form-control" id="txbTelefonoContacto"
-                                                                            placeholder="ej: 310 123 4567" spellcheck="false" autocomplete="off" ClientIDMode="Static"
+                                                                            placeholder="ej: 310 123 4567" spellcheck="false" autocomplete="off" 
                                                                             onkeyup="formatearTelefono(this)" maxlength="14">
                                                                     </div>
                                                                 </div>
@@ -318,7 +320,7 @@
                                                                         <span class="glyphicon glyphicon-envelope text-info"></span>
                                                                         <label for="correoContacto" class="col-form-label">Correo electrónico:</label>
                                                                         <input type="text" runat="server" class="form-control" id="txbCorreoContacto"
-                                                                            spellcheck="false" placeholder="ej: cliente@ejemplo.com"  autocomplete="off" ClientIDMode="Static"
+                                                                            spellcheck="false" placeholder="ej: cliente@ejemplo.com"  autocomplete="off"
                                                                             oninput="validarCorreo(this)">
                                                                         <asp:Literal ID="ltError" runat="server" Visible="false"></asp:Literal>
                                                                     </div>
@@ -327,7 +329,7 @@
                                                                     <div class="form-group">
                                                                         <i class="fas fa-industry text-info"></i>
                                                                         <label for="Empresa" class="col-form-label">Empresa / Persona:</label>
-                                                                        <asp:DropDownList ID="ddlEmpresa" DataTextField="NombreEmpresaCRM" DataValueField="idEmpresaCRM" ClientIDMode="Static"
+                                                                        <asp:DropDownList ID="ddlEmpresa" DataTextField="NombreEmpresaCRM" DataValueField="idEmpresaCRM" 
                                                                             runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                             <asp:ListItem Text="No aplica" Value="0"></asp:ListItem>                                                                          
                                                                         </asp:DropDownList>
@@ -337,9 +339,9 @@
                                                             <div class="form-group">
                                                                 <i class="fas fa-flag text-info"></i>
                                                                 <label for="StatusLead" class="col-form-label">Status Lead:</label>
-                                                                        <asp:DropDownList ID="ddlStatusLead" DataTextField="NombreEstadoCRM" DataValueField="idEstadoCRM" ClientIDMode="Static"
-                                                                            runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm"> 
-                                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>                                                                          
+                                                                        <asp:DropDownList ID="ddlStatusLead" DataTextField="NombreEstadoCRM" DataValueField="idEstadoCRM" 
+                                                                            runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
+                                                                            <asp:ListItem Text="No aplica" Value="0"></asp:ListItem>                                                                          
                                                                         </asp:DropDownList>
                                                             </div>
                                                             <div class="row">
@@ -347,14 +349,14 @@
                                                                     <div class="form-group">
                                                                         <i class="fa-solid fa-hand-point-up text-info"></i>
                                                                         <label for="txbFechaPrim" class="col-form-label">Primer contacto:</label>
-                                                                        <input type="text" runat="server" id="txbFechaPrim" class="form-control input-sm datepicker" ClientIDMode="Static"/>
+                                                                        <input type="text" runat="server" id="txbFechaPrim" class="form-control input-sm datepicker" />
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-sm-6">
                                                                     <div class="form-group">
                                                                         <i class="fas fa-angle-right text-info"></i>
                                                                         <label for="txbFechaProx" class="col-form-label">Próximo contacto:</label>
-                                                                        <input type="text" runat="server" id="txbFechaProx" class="form-control input-sm datepicker" ClientIDMode="Static" />
+                                                                        <input type="text" runat="server" id="txbFechaProx" class="form-control input-sm datepicker" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -363,7 +365,7 @@
                                                                     <div class="form-group">
                                                                         <i class="fa fa-dollar text-info"></i>
                                                                         <label for="ValorPropuesta" class="col-form-label">Valor Propuesta:</label>
-                                                                        <asp:TextBox ID="txbValorPropuesta" CssClass="form-control input-sm" runat="server" placeholder="$0" ClientIDMode="Static"
+                                                                        <asp:TextBox ID="txbValorPropuesta" CssClass="form-control input-sm" runat="server" placeholder="$0"
                                                                             onkeyup="formatCurrency(this)" onblur="keepFormatted(this)"  autocomplete="off"></asp:TextBox>
                                                                     </div>
                                                                 </div>
@@ -379,23 +381,22 @@
                                                                 <i class="fas fa-pen text-info"></i>
                                                                 <label for="message-text" class="col-form-label">Observaciones:</label>
                                                                 <textarea id="txaObservaciones" runat="server" rows="3"                                                                      
-                                                                     cssclass="form-control input-sm" class="form-control">                                                                   
+                                                                     cssclass="form-control input-sm" class="form-control">
                                                                 </textarea>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                             <div class="form-group">
-                                                                <asp:Literal ID="ltMensajeVal" runat="server"></asp:Literal>
-                                                            </div>
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" 
+                                                            <asp:Literal ID="ltMensajeVal" runat="server"></asp:Literal>
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" 
                                                             onclick="window.location.reload();">Cerrar</button>
                                                             <asp:Button ID="btnAgregar" runat="server" OnClick="btnAgregar_Click" 
                                                                 Text="Agregar" CssClass="btn btn-primary mb-3"                                                               
-                                                                ValidationGroup="agregar" Enabled="false"/>
+                                                                ValidationGroup="agregar"/>
                                                             <asp:Button ID="btnActualizar" runat="server" OnClick="btnActualizar_Click"
                                                                 Text="Actualizar" Visible="false"
-                                                                class="btn btn-primary mb-3"/>
+                                                                class="btn btn-primary mb-3"/> 
                                                         </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </ContentTemplate>
@@ -575,42 +576,42 @@
  
 <script>
 
-      $("#form1").validate({
-          rules: {
-              txbNombreContacto: {
-                  required: true,
-                  minlength: 3
-              },
-              txbTelefonoContacto: {
-                  required: true,
-                  minlength: 10
-              },
-              txbCorreoContacto: {
-                  required: true,
-                  maxlength: 150                  
-              },
-              ddlEmpresa: {
-                  required: true
-              },
-              ddlStatusLead: {
-                  required: true
-              },
-              txbFechaPrim: {
-                  required: true
-              },
-              txbFechaProx: {
-                  required: true,
-              },
-              txbValorPropuesta: {
-                  required: true,
-              },
-              txaObservaciones: {
-                  required: true,
-              },
-          }
-      });
+    $("#form1").validate({
+        rules: {
+            txbNombreContacto: {
+                required: true,
+                minlength: 3
+            },
+            txbTelefonoContacto: {
+                required: true,
+                minlength: 10
+            },
+            txbCorreoContacto: {
+                required: true,
+                maxlength: 150
+            },
+            ddlEmpresa: {
+                required: true
+            },
+            ddlStatusLead: {
+                required: true
+            },
+            txbFechaPrim: {
+                required: true
+            },
+            txbFechaProx: {
+                required: true,
+            },
+            txbValorPropuesta: {
+                required: true,
+            },
+            txaObservaciones: {
+                required: true,
+            },
+        }
+    });
 
-      $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
+    $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
 </script>
 
 
