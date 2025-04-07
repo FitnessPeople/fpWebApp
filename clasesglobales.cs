@@ -6075,12 +6075,11 @@ namespace fpWebApp
 
                         cmd.Parameters.AddWithValue("@p_id_contacto_cmr", idContactoCMR);
 
-                        // Parámetro de salida: mensaje
+                        // ParámetroS de salida
                         MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
                         pMensaje.Direction = ParameterDirection.Output;
                         cmd.Parameters.Add(pMensaje);
 
-                        // Parámetro de salida: respuesta
                         MySqlParameter pRespuesta = new MySqlParameter("@p_respuesta", MySqlDbType.Bit);
                         pRespuesta.Direction = ParameterDirection.Output;
                         cmd.Parameters.Add(pRespuesta);

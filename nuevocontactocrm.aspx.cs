@@ -362,14 +362,19 @@ namespace fpWebApp
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
             Button btnEliminar = (Button)sender;
-
+            bool respuesta = false;
+            clasesglobales cg = new clasesglobales();
 
             int idContacto = Convert.ToInt32(btnEliminar.CommandArgument);
+            
+            DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out respuesta);
+            Session["Contacto"] = dt.Rows[0]["NombreContacto"].ToString();
+
 
             if (idContacto > 0)
             {
                 Session["contactoId"] = idContacto;
-                ltEliminar.Text = "<span style='color: red;'>¿Está seguro de eliminar el contacto</span>" ;
+                ltEliminar.Text = "<span style='color: red;'>¿Está seguro de eliminar el contacto de : " + Session["Contacto"] + "</span>" ;
                 upEliminar.Update();
                 ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#Modaleliminar').modal('show');", true);
             }
@@ -377,14 +382,20 @@ namespace fpWebApp
 
         protected void btnAccionEliminar_Click(object sender, EventArgs e)
         {
-            clasesglobales cg = new clasesglobales();
+            ltEliminar.Text = string.Empty;
             bool respuesta = false;
             string mensaje = string.Empty;
             int idContacto = Convert.ToInt32(Session["contactoId"]);
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out respuesta);
+            Session["contactoId"] = idContacto;             
+            
             if (idContacto > 0)
             {                
                 cg.EliminarContactoCRM(idContacto, out respuesta, out mensaje);
+                ltEliminar.Text = "<span style='color: red;'>¿Está seguro de eliminar el contacto de : " + Session["Contacto"] + "</span>";
             }
+            
 
         }
     }
