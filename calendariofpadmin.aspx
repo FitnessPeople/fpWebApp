@@ -149,24 +149,66 @@
                 },
                 events: [
                     {
-                        title: 'Afiliados, Perfiles',
-                        start: new Date(2024, 7, 29),
-                        end: new Date(2024, 7, 31)
+                        title: 'Reunión Equipo Sistemas',
+                        start: new Date(2025, 3, 7, 8, 0),
+                        end: new Date(2025, 3, 7, 8, 30),
+                        color: '#DBADFF'
                     },
                     {
-                        title: 'Usuarios, Empleados',
-                        start: new Date(2024, 8, 2),
-                        end: new Date(2024, 8, 7)
+                        title: 'Inducción Carlos Rivera',
+                        start: new Date(2025, 3, 7, 8, 30),
+                        end: new Date(2025, 3, 7, 9, 0)
                     },
                     {
-                        title: 'Dashboards',
-                        start: new Date(2024, 8, 9),
-                        end: new Date(2024, 8, 14)
+                        title: 'Instalación equipo Carlos Rivera',
+                        start: new Date(2025, 3, 7, 9, 0),
+                        end: new Date(2025, 3, 7, 11, 0)
                     },
                     {
-                        title: 'Afiliados, Perfiles',
-                        start: new Date(2024, 8, 16),
-                        end: new Date(2024, 8, 21)
+                        title: 'Revisión de avances',
+                        start: new Date(2025, 3, 11, 11, 0),
+                        end: new Date(2025, 3, 11, 12, 0),
+                        color: '#DBADFF'
+                    },
+                    {
+                        title: 'Revisión de avances',
+                        start: new Date(2025, 3, 16, 11, 0),
+                        end: new Date(2025, 3, 16, 12, 0),
+                        color: '#DBADFF'
+                    },
+                    {
+                        title: 'Revisión de avances',
+                        start: new Date(2025, 3, 25, 11, 0),
+                        end: new Date(2025, 3, 25, 12, 0),
+                        color: '#DBADFF'
+                    },
+                    {
+                        title: 'Revisión de avances',
+                        start: new Date(2025, 3, 30, 11, 0),
+                        end: new Date(2025, 3, 30, 12, 0),
+                        color: '#DBADFF'
+                    },
+
+                    {
+                        start: '2025-04-17',
+                        end: '2025-04-17',
+                        rendering: 'background',
+                        color: '#ff9f89',
+                        allDay: true,
+                    },
+                    {
+                        start: '2025-04-18',
+                        end: '2025-04-18',
+                        rendering: 'background',
+                        color: '#ff9f89',
+                        allDay: true,
+                    },
+                    {
+                        start: '2025-05-01',
+                        end: '2025-05-01',
+                        rendering: 'background',
+                        color: '#ff9f89',
+                        allDay: true,
                     },
                 ]
             });
@@ -174,7 +216,7 @@
 
         });
 
-</script>
+    </script>
 
 
 </body>
