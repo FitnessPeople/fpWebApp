@@ -888,6 +888,7 @@
     <Content Include="nuevaempresaafiliada.aspx" />
     <Content Include="nuevahistoriaclinica.aspx" />
     <Content Include="nuevoafiliado.aspx" />
+    <Content Include="nuevocontactocrm.aspx" />
     <Content Include="nuevoconvenio.aspx" />
     <Content Include="nuevoempleado.aspx" />
     <Content Include="nuevoespecialista.aspx" />
@@ -1389,6 +1390,13 @@
     </Compile>
     <Compile Include="nuevoafiliado.aspx.designer.cs">
       <DependentUpon>nuevoafiliado.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="nuevocontactocrm.aspx.cs">
+      <DependentUpon>nuevocontactocrm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="nuevocontactocrm.aspx.designer.cs">
+      <DependentUpon>nuevocontactocrm.aspx</DependentUpon>
     </Compile>
     <Compile Include="nuevoconvenio.aspx.cs">
       <DependentUpon>nuevoconvenio.aspx</DependentUpon>

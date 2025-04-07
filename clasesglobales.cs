@@ -4492,6 +4492,7 @@ namespace fpWebApp
             return dt;
         }
 
+
         public DataTable ConsultarUrl(int idIntegracion)
         {
             DataTable dt = new DataTable();
@@ -6042,7 +6043,288 @@ namespace fpWebApp
 
 
         #endregion
+
+        #region CMR
+
+        public DataTable ConsultarContactosCRM(out decimal valorTotal)
+        {
+            DataTable dt = new DataTable();
+            valorTotal = 0;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CONTACTOS_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        // Parámetro de salida
+                        MySqlParameter ValorTotal = new MySqlParameter("@Total_Valor_Propuesta", MySqlDbType.Decimal);
+                        ValorTotal.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(ValorTotal);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+
+                            if (ValorTotal.Value != DBNull.Value)
+                            {
+                                valorTotal = Convert.ToDecimal(ValorTotal.Value);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarContactosCRMPorId(int idContacto, out bool respuesta)
+        {
+            DataTable dt = new DataTable();
+            respuesta = false;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CONTACTOS_CRM_POR_ID", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_contacto", idContacto);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                        respuesta = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+                respuesta = false;
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarEmpresasCRM()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_EMPRESAS_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarEstadossCRM()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_ESTADOS_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public string InsertarContactoCRM(string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
+            int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
+            int idUsuario, out bool respuesta, out string mensaje)
+        {
+            mensaje = string.Empty;
+            respuesta = false;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_CONTACTO_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_nombre_contacto", nombreContacto);
+                        cmd.Parameters.AddWithValue("@p_telefono_contacto", telefonoContacto);
+                        cmd.Parameters.AddWithValue("@p_email_contacto", emailContacto);
+                        cmd.Parameters.AddWithValue("@p_id_empresa", idEmpresaCMR);
+                        cmd.Parameters.AddWithValue("@p_id_estado", idEstado);
+                        cmd.Parameters.AddWithValue("@p_fecha_primer_con", fechaPrimerCon);
+                        cmd.Parameters.AddWithValue("@p_fecha_proximo_con", fechaProxCon);
+                        cmd.Parameters.AddWithValue("@p_valor_propuesta", valorPropuesta);
+                        cmd.Parameters.AddWithValue("@p_archivo_propuesta", archivoPropuesta);
+                        cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+                        // Parámetro de salida
+                        MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
+                        pMensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pMensaje);
+
+                        cmd.ExecuteNonQuery();
+                        mensaje = pMensaje.Value?.ToString();
+
+                        if (mensaje == "OK") respuesta = true;
+                        else respuesta = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
+        }
+
+        public string ActualizarContactoCRM(int idContactoCMR, string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
+        int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
+        int idUsuario, out bool respuesta, out string mensaje)
+        {
+            mensaje = string.Empty;
+            respuesta = false;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_CONTACTO_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_contacto_cmr", idContactoCMR);
+                        cmd.Parameters.AddWithValue("@p_nombre_contacto", nombreContacto);
+                        cmd.Parameters.AddWithValue("@p_telefono_contacto", telefonoContacto);
+                        cmd.Parameters.AddWithValue("@p_email_contacto", emailContacto);
+                        cmd.Parameters.AddWithValue("@p_id_empresa", idEmpresaCMR);
+                        cmd.Parameters.AddWithValue("@p_id_estado", idEstado);
+                        cmd.Parameters.AddWithValue("@p_fecha_primer_con", fechaPrimerCon);
+                        cmd.Parameters.AddWithValue("@p_fecha_proximo_con", fechaProxCon);
+                        cmd.Parameters.AddWithValue("@p_valor_propuesta", valorPropuesta);
+                        cmd.Parameters.AddWithValue("@p_archivo_propuesta", archivoPropuesta);
+                        cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = true;
+                        mensaje = "Ok";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
+        }
+
+        public string EliminarContactoCRM(int idContactoCMR, out bool respuesta, out string mensaje)
+        {
+            mensaje = string.Empty;
+            respuesta = false;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ELIMINAR_CONTACTO_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_id_contacto_cmr", idContactoCMR);
+
+                        // ParámetroS de salida
+                        MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
+                        pMensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pMensaje);
+
+                        MySqlParameter pRespuesta = new MySqlParameter("@p_respuesta", MySqlDbType.Bit);
+                        pRespuesta.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pRespuesta);
+
+                        cmd.ExecuteNonQuery();
+
+                        mensaje = pMensaje.Value?.ToString();
+                        respuesta = Convert.ToBoolean(pRespuesta.Value);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
+        }
+
+
+        #endregion
+
     }
+
+
+    #region Modelos
+
 
     public class pagoswompidet
     {
@@ -6129,4 +6411,7 @@ namespace fpWebApp
         public string current_step { get; set; }
         public string current_step_status { get; set; }
     }
+
+
+    #endregion
 }
