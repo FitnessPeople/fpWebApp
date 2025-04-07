@@ -12,7 +12,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
+    <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
 
     <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet" />
 
@@ -66,12 +66,18 @@
                         </div>
                         <div class="col-lg-2 form-horizontal">
                             <div class="form-group">
-                                <button onclick="window.print()" class="btn btn-info btn-sm m-l-lg"><i class="fa fa-print m-r-sm"></i>Imprimir</button>
+                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false" 
+                                    CssClass="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
+                                    OnClick="lbExportarExcel_Click" >
+                                    <i class="fa fa-file-excel"></i> EXCEL
+                                </asp:LinkButton>
                             </div>
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table class="footable table" data-page-size="100" data-filter="#filter" data-filter-minimum="3">
+                        <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
+                            data-paging="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10" 
+                            data-empty="Sin resultados" data-toggle-column="first">
                             <thead>
                                 <tr>
                                     <%--<th data-sort-ignore="true">ID</th>--%>
@@ -109,7 +115,7 @@
     <script src="js/bootstrap.min.js"></script>
 
     <!-- FooTable -->
-    <script src="js/plugins/footable/footable.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
    <!-- Data picker -->
    <script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>

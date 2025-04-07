@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Odbc;
+using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 
 namespace fpWebApp
 {
@@ -123,7 +126,64 @@ namespace fpWebApp
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarEmpleados();
+                string nombreArchivo = $"Empleados_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
+                if (dt.Rows.Count > 0)
+                {
+                    IWorkbook workbook = new XSSFWorkbook();
+                    ISheet sheet = workbook.CreateSheet("Empleados");
+
+                    IRow headerRow = sheet.CreateRow(0);
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        ICell cell = headerRow.CreateCell(i);
+                        cell.SetCellValue(dt.Columns[i].ColumnName);
+                    }
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        IRow row = sheet.CreateRow(i + 1);
+                        for (int j = 0; j < dt.Columns.Count; j++)
+                        {
+                            object value = dt.Rows[i][j];
+                            row.CreateCell(j).SetCellValue(value != DBNull.Value ? value.ToString() : "");
+                        }
+                    }
+
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        sheet.AutoSizeColumn(i);
+                    }
+
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        workbook.Write(memoryStream);
+                        workbook.Close();
+
+                        byte[] byteArray = memoryStream.ToArray();
+
+                        Response.Clear();
+                        Response.Buffer = true;
+                        Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        Response.AddHeader("Content-Disposition", $"attachment; filename={nombreArchivo}.xlsx");
+                        Response.BinaryWrite(byteArray);
+                        Response.Flush();
+                        HttpContext.Current.ApplicationInstance.CompleteRequest();
+                    }
+                }
+                else
+                {
+                    Response.Write("<script>alert('No existen registros para esta consulta');</script>");
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+            }
         }
     }
 }

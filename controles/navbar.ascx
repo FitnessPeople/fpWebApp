@@ -61,6 +61,7 @@
                 <ul id="medico" class="nav nav-second-level collapse">
                     <li id="agenda" class="old"><a href="agenda"><i class="fa fa-calendar-days"></i>Administrar agenda</a></li>
                     <li id="agendarcita" class="old"><a href="agendarcita"><i class="fa fa-calendar-days"></i>Agendar cita</a></li>
+                    <li id="agendaespecialista" class="old"><a href="agendaespecialista"><i class="fa fa-calendar-days"></i>Agenda especialista</a></li>
                     <li id="historias" class="old"><a href="historiasclinicas"><i class="fa fa-notes-medical"></i>Historias clínicas</a></li>
                     <li id="nuevahistoria" class="old"><a href="nuevahistoriaclinica"><i class="fa fa-notes-medical"></i>Crear historia clínica</a></li>
                     <li id="especialistas" class="old"><a href="especialistas"><i class="fa fa-user-doctor"></i>Especialistas</a></li>
@@ -86,9 +87,8 @@
             </li>
             <li>
                 <a href="#"><i class="fa fa-users-rectangle"></i><span class="nav-label">CRM</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse">
-                    <li id="nuevocontactocrm" class="old"><a href="nuevocontactocrm"><i class="fas fa-user-plus"></i>Contactos</a></li>
-                    <li id="tablerocrm" class="old"><a href="tablerocrm"><i class="fa fa-desktop"></i>Tablero</a></li>
+                <ul id="crm" class="nav nav-second-level collapse">
+                    <li id="nuevocontactocrm"><a href="nuevocontactocrm">Nuevo contacto</a></li>
                     <li><a href="#">Efectividad en actividades</a></li>
                     <li><a href="#">Efectividad en gestion</a></li>
                     <li><a href="#">Traspasos de agenda</a></li>

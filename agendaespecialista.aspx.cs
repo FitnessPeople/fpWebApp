@@ -7,17 +7,17 @@ using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
-	public partial class agendarcita : System.Web.UI.Page
-	{
+    public partial class agendaespecialista : System.Web.UI.Page
+    {
         private string _strEventos;
         protected string strEventos { get { return this._strEventos; } }
         protected void Page_Load(object sender, EventArgs e)
-		{
+        {
             if (!IsPostBack)
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Agendar cita");
+                    ValidarPermisos("Agenda especialista");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         divMensaje.Visible = true;
@@ -101,29 +101,22 @@ namespace fpWebApp
             if (dt.Rows.Count > 0)
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    _strEventos += "{\r\n";
-                    _strEventos += "id: '" + dt.Rows[i]["idDisponibilidad"].ToString() + "',\r\n";
-                    _strEventos += "title: '" + dt.Rows[i]["NombreEspecialista"].ToString() + " " + dt.Rows[i]["ApellidoEspecialista"].ToString() + "',\r\n";
-                    _strEventos += "start: '" + dt.Rows[i]["FechaHoraIni"].ToString() + "',\r\n";
-                    _strEventos += "end: '" + dt.Rows[i]["FechaHoraFin"].ToString() + "',\r\n";
+                {   
                     //_strEventos += "className: 'bg-primary',\r\n";
 
                     if (dt.Rows[i]["idAfiliado"].ToString() != "")
                     {
+                        _strEventos += "{\r\n";
+                        _strEventos += "id: '" + dt.Rows[i]["idDisponibilidad"].ToString() + "',\r\n";
+                        _strEventos += "title: `" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "\r\nInformación del Afiliado`,\r\n";
+                        _strEventos += "start: '" + dt.Rows[i]["FechaHoraIni"].ToString() + "',\r\n";
+                        _strEventos += "end: '" + dt.Rows[i]["FechaHoraFin"].ToString() + "',\r\n";
                         _strEventos += "color: '#F8AC59',\r\n";
-                        _strEventos += "description: 'Cita asignada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + " (" + dt.Rows[i]["DocumentoAfiliado"].ToString() + ")',\r\n";
-                        _strEventos += "btnAsignar: 'none',\r\n";
+                        _strEventos += "url: 'historiasclinicas?id=" + dt.Rows[i]["DocumentoAfiliado"].ToString() + "',\r\n";
+                        //_strEventos += "btnAsignar: 'none',\r\n";
+                        _strEventos += "allDay: false,\r\n";
+                        _strEventos += "},\r\n";
                     }
-                    else
-                    {
-                        _strEventos += "color: '" + dt.Rows[i]["ColorEspecialista"].ToString() + "',\r\n";
-                        _strEventos += "description: 'Cita disponible.',\r\n";
-                        _strEventos += "btnAsignar: 'inline',\r\n";
-                    }
-
-                    _strEventos += "allDay: false,\r\n";
-                    _strEventos += "},\r\n";
                 }
             }
 
@@ -292,7 +285,7 @@ namespace fpWebApp
         }
 
         protected void btnAfiliado_Click(object sender, EventArgs e)
-        {   
+        {
             string[] strDocumento = txbAfiliado.Text.ToString().Split('-');
             string strQuery = "SELECT * FROM Afiliados a " +
                 "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +

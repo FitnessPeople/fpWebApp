@@ -38,7 +38,7 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#agenda");
+            var element1 = document.querySelector("#agendarcita");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#medico");
             element2.classList.remove("collapse");
@@ -205,7 +205,7 @@
                                                     <a class="close-link">
                                                         <i class="fa fa-times"></i>
                                                     </a>--%>
-                                                    <span class="label label-danger pull-right">Cita asignada</span>
+                                                    <span class="label label-warning pull-right" style="color: #000;">Cita asignada</span>
                                                 </div>
                                             </div>
                                             <div class="ibox-content">
