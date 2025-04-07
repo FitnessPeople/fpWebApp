@@ -84,8 +84,7 @@ namespace fpWebApp.controles
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
-            //ltCuantos4.Text = dt.Rows[0]["cuantos"].ToString();
-            ltCuantos4.Text = "15";
+            ltCuantos4.Text = dt.Rows[0]["cuantos"].ToString();           
 
             dt.Dispose();
         }
