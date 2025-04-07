@@ -226,12 +226,12 @@ namespace fpWebApp
             string auth = string.Empty;
             DataTable dt = new DataTable();
 
-            if(idempresa=="4")
+            if (idempresa == "4")
             {
                 dt = ConsultarUrl(Convert.ToInt32(idempresa));
                 auth = dt.Rows[0]["urlServicioAd1"].ToString();
-            }           
-            
+            }
+
             try
             {
                 WebRequest oRequest = WebRequest.Create(url);
@@ -566,7 +566,7 @@ namespace fpWebApp
                 {
                     using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_DEPARTAMENTOS", mysqlConexion))
                     {
-                        cmd.CommandType = CommandType.StoredProcedure;                     
+                        cmd.CommandType = CommandType.StoredProcedure;
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
                         {
                             mysqlConexion.Open();
@@ -2864,7 +2864,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_direccion_sede", direccionSede);
                         cmd.Parameters.AddWithValue("@p_id_ciudad_sede", idCiudadSede);
                         cmd.Parameters.AddWithValue("@p_telefono_sede", telefonoSede);
-                        cmd.Parameters.AddWithValue("@p_horario_sede", horarioSede);                        
+                        cmd.Parameters.AddWithValue("@p_horario_sede", horarioSede);
                         cmd.Parameters.AddWithValue("@p_tipo_sede", tipoSede);
                         cmd.Parameters.AddWithValue("@p_clase_sede", claseSede);
 
@@ -3053,7 +3053,7 @@ namespace fpWebApp
                         // Parámetros de entrada
                         cmd.Parameters.AddWithValue("@p_id_tipo_documento", idTipoDocumento);
                         cmd.Parameters.AddWithValue("@p_tipo_documento", tipoDocumento);
-                        cmd.Parameters.AddWithValue("@p_sigla_documento", sigladocumento);                        
+                        cmd.Parameters.AddWithValue("@p_sigla_documento", sigladocumento);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -3097,7 +3097,7 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public DataTable ValidarTiposDocumentoTablas (int idTipoDocumento)
+        public DataTable ValidarTiposDocumentoTablas(int idTipoDocumento)
         {
             DataTable dt = new DataTable();
 
@@ -4302,7 +4302,7 @@ namespace fpWebApp
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         MySqlParameter ValorTotal = new MySqlParameter("@p_total_valor", MySqlDbType.Decimal);
-                        MySqlParameter TotalRegistros = new MySqlParameter("@v_total_registros", MySqlDbType.Int32); 
+                        MySqlParameter TotalRegistros = new MySqlParameter("@v_total_registros", MySqlDbType.Int32);
 
                         ValorTotal.Direction = ParameterDirection.Output;
                         TotalRegistros.Direction = ParameterDirection.Output;
@@ -4321,7 +4321,7 @@ namespace fpWebApp
                             }
                             if (TotalRegistros.Value != DBNull.Value)
                             {
-                                totalRegistros = Convert.ToInt32(TotalRegistros.Value); 
+                                totalRegistros = Convert.ToInt32(TotalRegistros.Value);
                             }
                         }
                     }
@@ -4403,7 +4403,7 @@ namespace fpWebApp
         public DataTable ConsultarPagosPorTipo(string tipoPago, string fechaIni, string fechaFin, out decimal valorTotal)
         {
             DataTable dt = new DataTable();
-            valorTotal = 0; 
+            valorTotal = 0;
 
             try
             {
@@ -4447,7 +4447,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public DataTable ConsultarPagosTransaccWompi( string fechaIni, string fechaFin, out decimal valorTotal)
+        public DataTable ConsultarPagosTransaccWompi(string fechaIni, string fechaFin, out decimal valorTotal)
         {
             DataTable dt = new DataTable();
             valorTotal = 0;
@@ -4559,7 +4559,7 @@ namespace fpWebApp
 
                             cmd.Parameters.AddWithValue("@p_id", item.id);
                             cmd.Parameters.AddWithValue("@p_created_at", createdAtValid ? (object)createdAt : DBNull.Value);
-                            cmd.Parameters.AddWithValue("@p_finalized_at", finalizedAtValid ? (object)finalizedAt : DBNull.Value); 
+                            cmd.Parameters.AddWithValue("@p_finalized_at", finalizedAtValid ? (object)finalizedAt : DBNull.Value);
                             cmd.Parameters.AddWithValue("@p_amount_in_cents", item.amount_in_cents);
                             cmd.Parameters.AddWithValue("@p_reference", item.reference);
                             cmd.Parameters.AddWithValue("@p_customer_email", item.customer_email);
@@ -4622,11 +4622,11 @@ namespace fpWebApp
             return date;
         }
 
-#endregion
+        #endregion
 
         #region Planes
 
-public DataTable ConsultarPlanes()
+        public DataTable ConsultarPlanes()
         {
             DataTable dt = new DataTable();
 
@@ -4752,7 +4752,7 @@ public DataTable ConsultarPlanes()
             return dt;
         }
 
-        public string InsertarPlan(string nombrePlan, string descripcionPlan, int precio, double descuentoMensual, int mesesMaximo, 
+        public string InsertarPlan(string nombrePlan, string descripcionPlan, int precio, double descuentoMensual, int mesesMaximo,
             string color, int idUsuario, double Dias, string fechaInicio, string fechaFinal)
         {
             string respuesta = string.Empty;
@@ -4789,7 +4789,7 @@ public DataTable ConsultarPlanes()
             return respuesta;
         }
 
-        public string ActualizarPlan(int idPlan, string nombrePlan, string descripcionPlan, int precio, double descuentoMensual, int mesesMaximo, 
+        public string ActualizarPlan(int idPlan, string nombrePlan, string descripcionPlan, int precio, double descuentoMensual, int mesesMaximo,
             string color, double Dias, string fechaInicio, string fechaFinal)
         {
             string respuesta = string.Empty;
@@ -5101,7 +5101,7 @@ public DataTable ConsultarPlanes()
                     using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_CANAL_VENTA", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@p_nombre_canal_venta", nombreCanalVenta);                   
+                        cmd.Parameters.AddWithValue("@p_nombre_canal_venta", nombreCanalVenta);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -5132,7 +5132,7 @@ public DataTable ConsultarPlanes()
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVEnta);
-                        cmd.Parameters.AddWithValue("@p_nombre_canal_venta", nombreCanalVenta);                      
+                        cmd.Parameters.AddWithValue("@p_nombre_canal_venta", nombreCanalVenta);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -5471,7 +5471,7 @@ public DataTable ConsultarPlanes()
 
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
-                    mysqlConexion.Open(); 
+                    mysqlConexion.Open();
 
                     using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_ESTADO_EMPLE_POR_FECHA", mysqlConexion))
                     {
@@ -5592,7 +5592,7 @@ public DataTable ConsultarPlanes()
         public string InsertarNuevoEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado,
             string emailEmpleado, string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato,
             string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
-            int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo )
+            int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo)
         {
             string respuesta = string.Empty;
             try
@@ -5606,7 +5606,7 @@ public DataTable ConsultarPlanes()
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_documento_empleado", documentoEmpleado);
                         cmd.Parameters.AddWithValue("@p_tipo_doc_empleado", tipoDocumento);
-                        cmd.Parameters.AddWithValue("@p_nombre_empleado",nombreEmpleado);
+                        cmd.Parameters.AddWithValue("@p_nombre_empleado", nombreEmpleado);
                         cmd.Parameters.AddWithValue("@p_tel_empleado", telEmpleado);
                         cmd.Parameters.AddWithValue("@p_email_empleado", emailEmpleado);
                         cmd.Parameters.AddWithValue("@p_dir_empleado", dirEmpleado);
@@ -5690,7 +5690,7 @@ public DataTable ConsultarPlanes()
                     mysqlConexion.Open();
 
                     using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_EMPLEADO", mysqlConexion))
-                    { 
+                    {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_documento_empleado", documentoEmpleado);
                         cmd.Parameters.AddWithValue("@p_tipo_doc_empleado", tipoDocumento);
@@ -5742,7 +5742,7 @@ public DataTable ConsultarPlanes()
 
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
-                    mysqlConexion.Open(); 
+                    mysqlConexion.Open();
 
                     using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_ESTADO_USUARIO", mysqlConexion))
                     {
@@ -5829,35 +5829,45 @@ public DataTable ConsultarPlanes()
 
         #region CMR
 
-            public DataTable ConsultarContactosCRM()
+        public DataTable ConsultarContactosCRM(out decimal valorTotal)
+        {
+            DataTable dt = new DataTable();
+            valorTotal = 0;
+            try
             {
-                DataTable dt = new DataTable();
-
-                try
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
-                    string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-                    using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CONTACTOS_CRM", mysqlConexion))
                     {
-                        using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CONTACTOS_CRM", mysqlConexion))
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        // Parámetro de salida
+                        MySqlParameter ValorTotal = new MySqlParameter("@Total_Valor_Propuesta", MySqlDbType.Decimal);
+                        ValorTotal.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(ValorTotal);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
                         {
-                            cmd.CommandType = CommandType.StoredProcedure;
-                            using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+
+                            if (ValorTotal.Value != DBNull.Value)
                             {
-                                mysqlConexion.Open();
-                                dataAdapter.Fill(dt);
+                                valorTotal = Convert.ToDecimal(ValorTotal.Value);
                             }
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    dt = new DataTable();
-                    dt.Columns.Add("Error", typeof(string));
-                    dt.Rows.Add(ex.Message);
-                }
-
-                return dt;
             }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
 
         public DataTable ConsultarContactosCRMPorId(int idContacto, out bool respuesta)
         {
@@ -5955,7 +5965,7 @@ public DataTable ConsultarPlanes()
         }
 
         public string InsertarContactoCRM(string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
-            int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones, 
+            int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
             int idUsuario, out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
@@ -5981,9 +5991,16 @@ public DataTable ConsultarPlanes()
                         cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
 
+                        // Parámetro de salida
+                        MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
+                        pMensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pMensaje);
+
                         cmd.ExecuteNonQuery();
-                        respuesta = true;
-                        mensaje = "Ok";
+                        mensaje = pMensaje.Value?.ToString();
+
+                        if (mensaje == "OK") respuesta = true;
+                        else respuesta = false;                       
                     }
                 }
             }
@@ -6027,6 +6044,51 @@ public DataTable ConsultarPlanes()
                         cmd.ExecuteNonQuery();
                         respuesta = true;
                         mensaje = "Ok";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
+        }
+
+        public string EliminarContactoCRM(int idContactoCMR, out bool respuesta, out string mensaje)
+        {
+            mensaje = string.Empty;
+            respuesta = false;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ELIMINAR_CONTACTO_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_id_contacto_cmr", idContactoCMR);
+
+                        // Parámetro de salida: mensaje
+                        MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
+                        pMensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pMensaje);
+
+                        // Parámetro de salida: respuesta
+                        MySqlParameter pRespuesta = new MySqlParameter("@p_respuesta", MySqlDbType.Bit);
+                        pRespuesta.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pRespuesta);
+
+                        cmd.ExecuteNonQuery();
+
+                        mensaje = pMensaje.Value?.ToString();
+                        respuesta = Convert.ToBoolean(pRespuesta.Value);
                     }
                 }
             }

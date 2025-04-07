@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Script.Services;
 using System.Web.Services;
 using System.Web.UI;
@@ -109,12 +110,14 @@ namespace fpWebApp
 
         private void ListaContactos()
         {
+            decimal valorTotal = 0;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarContactosCRM();
+            DataTable dt = cg.ConsultarContactosCRM(out valorTotal);
 
             rpContactosCRM.DataSource = dt;
             rpContactosCRM.DataBind();
 
+            ltValorTotal.Text = valorTotal.ToString("C0");
             dt.Dispose();
         }
 
@@ -224,10 +227,12 @@ namespace fpWebApp
                     }
                     else
                     {
-                        string script = $"alert('{mensaje.Replace("'", "\\'")}');";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);
-                    }
-                
+                    string script = $@"
+                    alert('{mensaje.Replace("'", "\\'")}');    $('#ModalContacto').modal('show');";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+
+                }
+
             }
             catch (Exception ex)
             {
@@ -235,6 +240,33 @@ namespace fpWebApp
                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);
             }
         }
+
+        //[WebMethod]
+        //public static string ValidarTelefono(string telefono)
+        //{
+        //    string resultado = "ok";
+        //    string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+        //    using (MySqlConnection conexion = new MySqlConnection(strConexion))
+        //    {
+        //        conexion.Open();
+        //        string query = "SELECT NombreContacto FROM contactoscrm WHERE TelefonoContacto = @telefono LIMIT 1";
+
+        //        using (MySqlCommand cmd = new MySqlCommand(query, conexion))
+        //        {
+        //            cmd.Parameters.AddWithValue("@telefono", telefono);
+        //            object nombre = cmd.ExecuteScalar();
+
+        //            if (nombre != null)
+        //            {
+        //                resultado = $"El teléfono ya está registrado a nombre de: {nombre.ToString()}";
+        //            }
+        //        }
+        //    }
+
+        //    return resultado;
+        //}
+
 
         protected void btnEditar_Click(object sender, EventArgs e)
         {
@@ -330,17 +362,30 @@ namespace fpWebApp
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
             Button btnEliminar = (Button)sender;
-            btnActualizar.Visible = true;
-            btnAgregar.Visible = false;
+
+
             int idContacto = Convert.ToInt32(btnEliminar.CommandArgument);
 
             if (idContacto > 0)
             {
+                Session["contactoId"] = idContacto;
                 ltEliminar.Text = "<span style='color: red;'>¿Está seguro de eliminar el contacto</span>" ;
-                CargarDatosContacto(idContacto);
                 upEliminar.Update();
                 ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#Modaleliminar').modal('show');", true);
             }
+        }
+
+        protected void btnAccionEliminar_Click(object sender, EventArgs e)
+        {
+            clasesglobales cg = new clasesglobales();
+            bool respuesta = false;
+            string mensaje = string.Empty;
+            int idContacto = Convert.ToInt32(Session["contactoId"]);
+            if (idContacto > 0)
+            {                
+                cg.EliminarContactoCRM(idContacto, out respuesta, out mensaje);
+            }
+
         }
     }
 }
