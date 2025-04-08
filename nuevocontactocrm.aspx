@@ -61,6 +61,8 @@
     <!-- JS de Quill -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
+
+      <%--        Validación postback modal--%>
     <script>
         // Función para reabrir el modal si fue cerrado por un PostBack
         function reopenModal() {
@@ -76,9 +78,7 @@
         });
     </script>
 
-
     <%--        formato de moneda--%>
-
     <script>
         function formatCurrency(input) {
             let value = input.value.replace(/\D/g, '');
@@ -102,7 +102,6 @@
     </script>
 
     <%--        formato de posición en el menú--%>
-
     <script>
         function changeClass() {
             var element1 = document.querySelector("#nuevocontactocrm");
@@ -212,44 +211,8 @@
         }
     </script>
 
-        <%--    Formatear textarea --%>
-
-<%--    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#<%= txbTelefonoContacto.ClientID %>').on('blur', function () {
-        var telefono = $(this).val();
-
-        if (telefono.length >= 7) {
-            $.ajax({
-                type: "POST",
-                url: "nuevocontactocrm.aspx/ValidarTelefono",
-                data: JSON.stringify({ telefono: telefono }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    var resultado = response.d;
-
-                    if (resultado !== "ok") {
-                        // Mostrar el mensaje debajo del input
-                        $('#mensajeTelefono').text(resultado).show();
-                        $('#<%= txbTelefonoContacto.ClientID %>').focus();
-                    } else {
-                        // Ocultar si no hay error
-                        $('#mensajeTelefono').hide();
-                    }
-                },
-                error: function () {
-                    $('#mensajeTelefono').text("Error al verificar el número. Intenta más tarde.").show();
-                }
-            });
-        }
-    });
-});
-
-    </script>--%>
-
-    <!-- SweetAlert2 CDN -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <!--    SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 </head>
@@ -316,24 +279,10 @@
                                     <div class="col-lg-6 form-horizontal">
                                         <div class="form-group">
                                             <div class="form-group" <%--id="filter-form-container"--%> style="margin-left: 28px;"></div>
-                                             <h5><i class="fa fa-gift"></i> Total propuestas: <asp:Literal ID="ltValorTotal" runat="server"></asp:Literal></h5>
+                                             <h5><i class="fa-solid fa-sack-dollar"></i> Total propuestas: <asp:Literal ID="ltValorTotal" runat="server"></asp:Literal></h5>
                                             
                                         </div>
                                     </div> 
-<%--                                      <div class="ibox-title bg-info">
-                                        <h5><i class="fa fa-gift"></i> Total : </h5>
-                                        <span class="label label-success">
-                                            
-                                        </span>
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-up text-white"></i>
-                                            </a>
-                                            <a class="fullscreen-link">
-                                                <i class="fa fa-expand text-white"></i>
-                                            </a>
-                                        </div>
-                                    </div>--%>
 
                                     <asp:UpdatePanel ID="upModal" runat="server" UpdateMode="Conditional">
                                         <ContentTemplate>
@@ -467,14 +416,12 @@
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-
                                                                 <div class="col-sm-">
                                                                     <div class="form-group">
                                                                         <i class="fa-solid fa-exclamation"></i>                                                                      
                                                                         <asp:Literal ID="ltEliminar" runat="server"></asp:Literal>
                                                                     </div>
                                                                 </div>
-
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="window.location.reload();">Cerrar</button>
@@ -523,7 +470,8 @@
                                                         <ItemTemplate>
                                                             <tr class="feed-element">
                                                                 <td><%# Eval("NombreContacto")%></td>
-                                                                <td><a href="https://wa.me/57<%# Eval("TelefonoContacto") %>" target="_blank"><i class="fab fa-whatsapp m-r-xs font-bold" style="color:forestgreen""></i><%# Eval("TelefonoContacto") %></a></td>
+<%--                                                                <td><a href="https://wa.me/57<%# Eval("TelefonoContacto") %>" target="_blank"><i class="fab fa-whatsapp m-r-xs font-bold" style="color:forestgreen""></i><%# Eval("TelefonoContacto") %></a></td>--%>
+                                                                <td><%# GetTelefonoHTML(Eval("TelefonoContacto")) %></a></td>
                                                                 <td><%# Eval("EmailContacto") %> </td>
                                                                 <td><%# Eval("NombreEmpresaCRM") %> </td>
                                                                 <td><span class='badge badge-<%# Eval("ColorEstadoCRM")%>'>
@@ -628,7 +576,8 @@
 <script>
     $('.footable').footable();
 </script>
- 
+
+<!-- Validación de campos de entrada --> 
 <script>
 
     $("#form1").validate({
