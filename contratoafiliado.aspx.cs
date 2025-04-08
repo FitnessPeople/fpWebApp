@@ -55,6 +55,8 @@ namespace fpWebApp
                 "FROM Afiliados " +
                         "WHERE idAfiliado = 12261 ";
 
+                    //Hola, estoy haciendo cambios desde mi rama FullStack
+
                     DataTable dt1 = cg.TraerDatos(strQuery);
 
             strTextoContrato = strTextoContrato.Replace("#NOMBRE#", dt1.Rows[0]["NombreAfiliado"].ToString() + " " + dt1.Rows[0]["ApellidoAfiliado"].ToString());
