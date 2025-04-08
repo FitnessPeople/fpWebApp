@@ -388,15 +388,25 @@ namespace fpWebApp
             int idContacto = Convert.ToInt32(Session["contactoId"]);
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out respuesta);
-            Session["contactoId"] = idContacto;             
-            
-            if (idContacto > 0)
-            {                
-                cg.EliminarContactoCRM(idContacto, out respuesta, out mensaje);
-                ltEliminar.Text = "<span style='color: red;'>¿Está seguro de eliminar el contacto de : " + Session["Contacto"] + "</span>";
-            }
-            
+            Session["contactoId"] = idContacto;
 
+            if (idContacto > 0)
+            {
+                cg.EliminarContactoCRM(idContacto, out respuesta, out mensaje);
+
+                // Cerrar modal (opcional)
+                ScriptManager.RegisterStartupScript(this, GetType(), "CerrarModal", "$('#Modaleliminar').modal('hide');", true);
+
+                // Mostrar mensaje con SweetAlert
+                string tipoMensaje = respuesta ? "Éxito" : "Error";
+                string tipoIcono = respuesta ? "success" : "error";
+                string js = $"Swal.fire('{tipoMensaje}', '{mensaje}', '{tipoIcono}');";
+
+                // Inyectar el script al cliente
+                ScriptManager.RegisterStartupScript(this, GetType(), "Mensaje", js, true);
+            }
         }
+
+
     }
 }
