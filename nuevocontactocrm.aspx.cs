@@ -222,22 +222,51 @@ namespace fpWebApp
 
                     if (salida)
                     {
-                        respuesta = mensaje.ToString();
-                        Response.Redirect("nuevocontactocrm", false);
+                        string script = @"
+                            $('#ModalContacto').modal('hide');
+                            $('.modal-backdrop').remove();
+                            Swal.fire({
+                                title: 'Registro exitoso',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'success'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = 'nuevocontactocrm';
+                                }
+                            });
+                        ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
                     }
                     else
                     {
-                    string script = $@"
-                    alert('{mensaje.Replace("'", "\\'")}');    $('#ModalContacto').modal('show');";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-
-                }
-
+                        string script = @"
+                            $('#ModalContacto').modal('hide');
+                            $('.modal-backdrop').remove();
+                            Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $('#ModalContacto').modal('show');
+                                }
+                            });
+                        ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                    }
             }
             catch (Exception ex)
             {
-                string script = $"alert('{mensaje.Replace("'", "\\'")}');";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);
+                string script = @"
+                    $('#ModalContacto').modal('hide');
+                    $('.modal-backdrop').remove();
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Ha ocurrido un error inesperado.',
+                        icon: 'error'
+                    });
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
             }
         }
 
@@ -340,21 +369,53 @@ namespace fpWebApp
 
                     if (salida)
                     {
-                        respuesta = mensaje.ToString();
-                        Response.Redirect("nuevocontactocrm", false);
+                        string script = @"
+                            $('#ModalContacto').modal('hide');
+                            $('.modal-backdrop').remove();
+                            Swal.fire({
+                                title: 'El contacto se actualizó de forma exitosa',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'success'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = 'nuevocontactocrm';
+                                }
+                            });
+                        ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
                     }
                     else
                     {
-                        string script = $"alert('{mensaje.Replace("'", "\\'")}');";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);
+                        string script = @"
+                            $('#ModalContacto').modal('hide');
+                            $('.modal-backdrop').remove();
+                            Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $('#ModalContacto').modal('show');
+                                }
+                            });
+                        ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
                     }
                 }
             }
 
             catch (Exception ex)
             {
-                string script = $"alert('{mensaje.Replace("'", "\\'")}');";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);
+                string script = @"
+                    $('#ModalContacto').modal('hide');
+                    $('.modal-backdrop').remove();
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Ha ocurrido un error inesperado.',
+                        icon: 'error'
+                    });
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
             }
 
         }
@@ -374,7 +435,13 @@ namespace fpWebApp
             if (idContacto > 0)
             {
                 Session["contactoId"] = idContacto;
-                ltEliminar.Text = "<span style='color: red;'>¿Está seguro de eliminar el contacto de : " + Session["Contacto"] + "</span>" ;
+
+                string nombreContacto = Session["Contacto"].ToString().Trim();
+                ltEliminar.Text = $@"
+                <div style='color: #b30000; font-weight: bold; font-size: 1.1rem;'>
+                    ¿Está seguro de que desea eliminar el contacto <span style='text-decoration: underline;'>{nombreContacto}</span>?
+                </div>";
+
                 upEliminar.Update();
                 ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#Modaleliminar').modal('show');", true);
             }
@@ -394,18 +461,28 @@ namespace fpWebApp
             {
                 cg.EliminarContactoCRM(idContacto, out respuesta, out mensaje);
 
-                // Cerrar modal (opcional)
-                ScriptManager.RegisterStartupScript(this, GetType(), "CerrarModal", "$('#Modaleliminar').modal('hide');", true);
-
-                // Mostrar mensaje con SweetAlert
+                // Mostrar alerta limpia
                 string tipoMensaje = respuesta ? "Éxito" : "Error";
                 string tipoIcono = respuesta ? "success" : "error";
-                string js = $"Swal.fire('{tipoMensaje}', '{mensaje}', '{tipoIcono}');";
 
-                // Inyectar el script al cliente
-                ScriptManager.RegisterStartupScript(this, GetType(), "Mensaje", js, true);
+                string script = @"
+                    $('#Modaleliminar').modal('hide');
+                    $('.modal-backdrop').remove();
+                    Swal.fire({
+                        title: '" + tipoMensaje + @"',
+                        text: '" + mensaje + @"',
+                        icon: '" + tipoIcono + @"'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                    });
+                ";
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "EliminarYAlerta", script, true);
             }
         }
+
 
 
     }

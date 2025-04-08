@@ -468,7 +468,7 @@
                                                         </div>
                                                         <div class="modal-body">
 
-                                                                <div class="col-sm-6">
+                                                                <div class="col-sm-">
                                                                     <div class="form-group">
                                                                         <i class="fa-solid fa-exclamation"></i>                                                                      
                                                                         <asp:Literal ID="ltEliminar" runat="server"></asp:Literal>
