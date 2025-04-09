@@ -466,7 +466,7 @@ namespace fpWebApp
 
                 if (idContacto > 0)
                 {
-                    cg.EliminarContactoCRM(idContacto, out respuesta, out mensaje);
+                    cg.EliminarContactoCRM(idContacto, idUsuario, Usuario, out respuesta, out mensaje);
 
                     if (respuesta)
                     {
