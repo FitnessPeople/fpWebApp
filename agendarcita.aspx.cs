@@ -79,14 +79,15 @@ namespace fpWebApp
 
             dt.Dispose();
 
-            CargarAgenda();
             ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
+            CargarAgenda();
         }
 
         protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlSedes.SelectedItem.Value.ToString() != "")
             {
+                ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
                 CargarAgenda();
             }
         }
@@ -118,7 +119,7 @@ namespace fpWebApp
                     else
                     {
                         _strEventos += "color: '" + dt.Rows[i]["ColorEspecialista"].ToString() + "',\r\n";
-                        _strEventos += "description: 'Cita disponible.',\r\n";
+                        _strEventos += "description: 'Agenda disponible.',\r\n";
                         _strEventos += "btnAsignar: 'inline',\r\n";
                     }
 
@@ -295,7 +296,7 @@ namespace fpWebApp
         {   
             string[] strDocumento = txbAfiliado.Text.ToString().Split('-');
             string strQuery = "SELECT * FROM Afiliados a " +
-                "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +
+                "LEFT JOIN Sedes s ON a.idSede = s.idSede " +
                 "WHERE DocumentoAfiliado = '" + strDocumento[0].Trim() + "' ";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);

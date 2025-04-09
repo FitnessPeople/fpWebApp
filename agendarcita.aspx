@@ -18,6 +18,7 @@
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/smoothness/jquery-ui.css">
 
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
@@ -131,25 +132,27 @@
                 <div class="col-sm-2">
                 </div>
                 <%--Fin Breadcrumb!!!--%>
-
             </div>
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row animated fadeInDown">
-                            <%--Inicio Contenido!!!!--%>
+                    <%--Inicio Contenido!!!!--%>
 
-                            <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
-                                <div class="p-xs">
-                                    <div class="pull-left m-r-md">
-                                        <i class="fa fa-triangle-exclamation text-danger mid-icon"></i>
-                                    </div>
-                                    <h2>Acceso Denegado</h2>
-                                    <span>Lamentablemente, no tienes permiso para acceder a esta página. Por favor, verifica que estás usando una cuenta con los permisos adecuados o contacta a nuestro soporte técnico para más información. Si crees que esto es un error, no dudes en ponerte en contacto con nosotros para resolver cualquier problema. Gracias por tu comprensión.</span>
-                                </div>
+                    <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
+                        <div class="p-xs">
+                            <div class="pull-left m-r-md">
+                                <i class="fa fa-triangle-exclamation text-danger mid-icon"></i>
                             </div>
+                            <h2>Acceso Denegado</h2>
+                            <span>Lamentablemente, no tienes permiso para acceder a esta página. Por favor, verifica que estás usando una cuenta con los permisos adecuados o contacta a nuestro soporte técnico para más información. Si crees que esto es un error, no dudes en ponerte en contacto con nosotros para resolver cualquier problema. Gracias por tu comprensión.</span>
+                        </div>
+                    </div>
 
-                            <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
+                    <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                            <form runat="server" id="form">
+                    <form runat="server" id="form">
+                        <%--<asp:ScriptManager ID="sm1" runat="server"></asp:ScriptManager>
+                        <asp:UpdatePanel ID="upAgendarCita" runat="server">
+                            <ContentTemplate>--%>
                                 <div class="row animated fadeInDown" id="divContenido" runat="server">
                                     <div class="col-xxl-2 col-lg-3 col-md-5 col-sm-6 col-xs-12">
                                         <div class="ibox float-e-margins">
@@ -176,7 +179,7 @@
                                                 <div class="form-group">
                                                     <label>Especialidad:</label>
                                                     <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEspecialidad" runat="server"
-                                                        OnSelectedIndexChanged="ddlEspecialidad_SelectedIndexChanged" 
+                                                        OnSelectedIndexChanged="ddlEspecialidad_SelectedIndexChanged"
                                                         AutoPostBack="true">
                                                         <asp:ListItem Text="Deportólogo" Value="4"></asp:ListItem>
                                                         <asp:ListItem Text="Fisioterapeuta" Value="5"></asp:ListItem>
@@ -185,10 +188,10 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Afiliado</label>
-                                                    <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server" 
+                                                    <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server"
                                                         placeholder="Nombre / Cédula / Email / Celular"></asp:TextBox>
-                                                     <asp:Button ID="btnAfiliado" runat="server" Text="" 
-                                                        style="display:none;" OnClick="btnAfiliado_Click" />
+                                                    <asp:Button ID="btnAfiliado" runat="server" Text=""
+                                                        Style="display: none;" OnClick="btnAfiliado_Click" />
                                                     <asp:HiddenField ID="hfIdAfiliado" runat="server" />
                                                 </div>
                                             </div>
@@ -197,7 +200,8 @@
                                     <div class="col-xxl-10 col-lg-9 col-md-7 col-sm-6 col-xs-12">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
-                                                <h5>Agenda <asp:Literal ID="ltSede" runat="server"></asp:Literal></h5>
+                                                <h5>Agenda
+                                            <asp:Literal ID="ltSede" runat="server"></asp:Literal></h5>
                                                 <div class="ibox-tools">
                                                     <%--<a class="collapse-link">
                                                         <i class="fa fa-chevron-up"></i>
@@ -214,8 +218,10 @@
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                            <%--Fin Contenido!!!!--%>
+                            <%--</ContentTemplate>
+                        </asp:UpdatePanel>--%>
+                    </form>
+                    <%--Fin Contenido!!!!--%>
                 </div>
             </div>
 
@@ -242,23 +248,11 @@
     <!-- Full Calendar -->
     <script src="js/plugins/fullcalendar/fullcalendar.min.js"></script>
 
-    <!-- Date range picker -->
-    <script src="js/plugins/daterangepicker/daterangepicker.js"></script>
-
     <!-- Chosen -->
     <script src="js/plugins/chosen/chosen.jquery.js"></script>
 
     <!-- Input Mask-->
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
-
-    <!-- Data picker -->
-    <script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
-
-    <!-- Clock picker -->
-    <script src="js/plugins/clockpicker/clockpicker.js"></script>
-
-    <!-- Date range picker -->
-    <script src="js/plugins/daterangepicker/daterangepicker.js"></script>
 
     <!-- Jquery Validate -->
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
@@ -303,44 +297,7 @@
 
     <script>
 
-        !(function (a) {
-            a.fn.datepicker.dates.es = {
-                days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
-                daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
-                daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
-                months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-                monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
-                today: "Hoy",
-                monthsTitle: "Meses",
-                clear: "Borrar",
-                weekStart: 1,
-                format: "yyyy-mm-d",
-            };
-        })(jQuery);
-
         $(document).ready(function () {
-
-            $('#data_1 .input-group.date').datepicker({
-                language: "es",
-                daysOfWeekDisabled: "0",
-                todayBtn: "linked",
-                todayHighlight: true,
-                keyboardNavigation: false,
-                forceParse: false,
-                autoclose: true,
-            });
-
-            $('#data_2 .input-group.date').datepicker({
-                language: "es",
-                daysOfWeekDisabled: "0",
-                todayBtn: "linked",
-                todayHighlight: true,
-                keyboardNavigation: false,
-                forceParse: false,
-                autoclose: true,
-            });
-
-            $('.clockpicker').clockpicker();
 
             /* initialize the calendar
              -----------------------------------------------------------------*/
@@ -420,7 +377,7 @@
                     jQuery('.event-id').html(event.id);
                     jQuery('.event-icon').html("<i class='fa fa-" + event.icon + "'></i>");
                     jQuery('.event-title').html('Especialista: ' + event.title);
-                    jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />");
+                    jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + " " + formattedmesini + " " + fechainicial.getFullYear() + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />");
                     jQuery('.event-description').html(event.description);
                     var btn = document.getElementById("btnAsignar");
                     btn.style.display = event.btnAsignar;

@@ -152,7 +152,7 @@
                             <form runat="server" id="form">
                                 <div class="row animated fadeInDown" id="divContenido" runat="server">
                                     <div class="col-xxl-3 col-lg-4 col-md-5 col-sm-6 col-xs-12">
-                                        <div class="ibox float-e-margins">
+                                        <%--<div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <h5>Agenda por sede</h5>
                                                 <div class="ibox-tools">
@@ -178,7 +178,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>--%>
 
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
@@ -197,22 +197,23 @@
                                                     <div class="form-group">
                                                         <label>Especialista:</label>
                                                         <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEspecialistas" runat="server"
-                                                            DataValueField="idEspecialista" DataTextField="NombreCompleto"
+                                                            DataValueField="idEspecialista" DataTextField="NombreCompletoProfesion"
                                                             AppendDataBoundItems="true">
                                                             <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                         </asp:DropDownList>
                                                     </div>
-                                                    <div class="form-horizontal">
-                                                        <div class="form-group m-b-md">
-                                                            <label class="col-sm-2 control-label">Sede:</label>
-                                                            <div class="col-sm-10">
-                                                                <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedesCita" runat="server"
-                                                                    DataValueField="idSede" DataTextField="NombreSede" AppendDataBoundItems="true">
-                                                                    <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                </asp:DropDownList>
-                                                            </div>
-                                                        </div>
+                                                    <%--<div class="form-horizontal">--%>
+                                                    <div class="form-group">
+                                                        <%--<label class="col-sm-2 control-label">Sede:</label>--%>
+                                                        <label>Sede:</label>
+                                                        <%--<div class="col-sm-10">--%>
+                                                        <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedesCita" runat="server"
+                                                            DataValueField="idSede" DataTextField="NombreSede" AppendDataBoundItems="true">
+                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                        </asp:DropDownList>
+                                                        <%--</div>--%>
                                                     </div>
+                                                    <%--</div>--%>
                                                     <div class="row">
                                                         <div class="col-sm-6 m-b-xs">
                                                             <div class="form-group" id="data_1">
@@ -256,13 +257,13 @@
                                                     </div>
                                                     <div class="form-horizontal">
                                                         <div class="form-group m-b-mb">
-                                                            <label class="col-sm-6">Duración cita:</label>
-                                                            <div class="col-sm-6">
+                                                            <label class="col-sm-4">Duración cita:</label>
+                                                            <div class="col-sm-8">
                                                                 <asp:DropDownList CssClass="form-control input-sm required" ID="ddlDuracion" runat="server"
                                                                     AppendDataBoundItems="true">
-                                                                    <asp:ListItem Text="30 min" Value="30"></asp:ListItem>
-                                                                    <asp:ListItem Text="40 min" Value="40"></asp:ListItem>
-                                                                    <asp:ListItem Text="45 min" Value="45"></asp:ListItem>
+                                                                    <asp:ListItem Text="30 minutos" Value="30"></asp:ListItem>
+                                                                    <asp:ListItem Text="40 minutos" Value="40"></asp:ListItem>
+                                                                    <asp:ListItem Text="45 minutos" Value="45"></asp:ListItem>
                                                                 </asp:DropDownList>
                                                             </div>
                                                         </div>
@@ -272,7 +273,7 @@
                                                         <asp:CheckBoxList ID="cbDiasRepite" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="form-control input-sm">
                                                             <asp:ListItem Text="&nbsp;Lun" Value="1" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
                                                             <asp:ListItem Text="&nbsp;Mar" Value="2" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                            <asp:ListItem Text="&nbsp;Mie" Value="3" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                            <asp:ListItem Text="&nbsp;Mié" Value="3" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
                                                             <asp:ListItem Text="&nbsp;Jue" Value="4" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
                                                             <asp:ListItem Text="&nbsp;Vie" Value="5" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
                                                             <asp:ListItem Text="&nbsp;Sáb" Value="6" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
@@ -300,6 +301,19 @@
                                                 </div>
                                             </div>
                                             <div class="ibox-content">
+                                                <div class="form-horizontal">
+                                                    <div class="form-group m-b-n-sm">
+                                                        <label class="col-sm-2 col-sm-2 control-label">Sede</label>
+                                                        <div class="col-sm-10">
+                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedes" runat="server"
+                                                                OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
+                                                                DataValueField="idSede" DataTextField="NombreSede"
+                                                                AutoPostBack="true" AppendDataBoundItems="true">
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr />
                                                 <div id="calendar"></div>
                                             </div>
                                         </div>

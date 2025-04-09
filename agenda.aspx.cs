@@ -287,8 +287,8 @@ namespace fpWebApp
 
             dt.Dispose();
 
-            CargarAgenda();
             ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
+            CargarAgenda();
         }
 
         private void CargarEspecialistas()
@@ -306,6 +306,7 @@ namespace fpWebApp
         {
             if (ddlSedes.SelectedItem.Value.ToString() != "")
             {
+                ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
                 CargarAgenda();
             }
         }
@@ -360,8 +361,8 @@ namespace fpWebApp
                                 // Consulta si se cruza la cita del especialista con la fecha y hora de otra disponible
                                 strQuery = "SELECT * FROM DisponibilidadEspecialistas " +
                                     "WHERE idEspecialista = " + ddlEspecialistas.SelectedItem.Value.ToString() + " " +
-                                    "AND (('" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal) " +
-                                    "OR ('" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal))";
+                                    "AND (('" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' >= FechaHoraInicio AND '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' <= FechaHoraFinal) " +
+                                    "OR ('" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' >= FechaHoraInicio AND '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' <= FechaHoraFinal))";
                                 DataTable dt1 = cg.TraerDatos(strQuery);
 
                                 if (dt1.Rows.Count == 0)
@@ -369,7 +370,7 @@ namespace fpWebApp
                                     if (dtFechaIniCita.Hour < 6 || dtFechaIniCita.Hour >= 21)
                                     {
                                         ltMensaje.Text = "Horario fuera del intervalo del especialista";
-                                        dtFechaIniCita = dtFechaFin;
+                                        dtFechaIniCita = dtFechaFinCita;
                                     }
                                     else
                                     {
@@ -408,14 +409,14 @@ namespace fpWebApp
                                 else
                                 {
                                     ltMensaje.Text = "Ya esta ocupado este especialista en otra sede.";
-                                    dtFechaIniCita = dtFechaFin;
+                                    dtFechaIniCita = dtFechaFinCita;
                                 }
                                 dt1.Dispose();
                             }
                             else
                             {
                                 ltMensaje.Text = "Ya esta ocupado este horario en la sede.";
-                                dtFechaIniCita = dtFechaFin;
+                                dtFechaIniCita = dtFechaFinCita;
                             }
                             dt.Dispose();
                         }
