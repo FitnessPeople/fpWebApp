@@ -15,6 +15,9 @@ using System.IO;
 using System.Net;
 using static fpWebApp.reportepagosmulticanal;
 using System.Globalization;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using System.Security.Cryptography;
 
 namespace fpWebApp
 {
@@ -218,6 +221,47 @@ namespace fpWebApp
 
         }
 
+        public void ExportarExcel(DataTable dt, string nombreArchivo)
+        {
+            if (dt.Rows.Count > 0)
+            {
+                IWorkbook workbook = new XSSFWorkbook();
+                ISheet sheet = workbook.CreateSheet("Datos");
+                IRow headerRow = sheet.CreateRow(0);
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    ICell cell = headerRow.CreateCell(i);
+                    cell.SetCellValue(dt.Columns[i].ColumnName);
+                }
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    IRow row = sheet.CreateRow(i + 1);
+                    for (int j = 0; j < dt.Columns.Count; j++)
+                    {
+                        object value = dt.Rows[i][j];
+                        row.CreateCell(j).SetCellValue(value != DBNull.Value ? value.ToString() : "");
+                    }
+                }
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    sheet.AutoSizeColumn(i);
+                }
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    workbook.Write(memoryStream);
+                    workbook.Close();
+                    byte[] byteArray = memoryStream.ToArray();
+                    HttpContext.Current.Response.Clear();
+                    HttpContext.Current.Response.Buffer = true;
+                    HttpContext.Current.Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    HttpContext.Current.Response.AddHeader("Content-Disposition", $"attachment; filename={nombreArchivo}.xlsx");
+                    HttpContext.Current.Response.BinaryWrite(byteArray);
+                    HttpContext.Current.Response.Flush();
+                    HttpContext.Current.ApplicationInstance.CompleteRequest();
+                }
+            }
+        }
+
         public string[] EnviarPeticionGet(string url, string idempresa, out string mensaje)
         {
             string[] strConjuntoResultados = new string[2];
@@ -268,31 +312,21 @@ namespace fpWebApp
             }
         }
 
-        private static string EnviarPeticion(string url, out bool mensaje)
+        public string ComputeSha256Hash(string strData)
         {
-            string resultado = "";
-
-            try
+            // Crea un SHA256
+            using (SHA256 sha256Hash = SHA256.Create())
             {
-                WebRequest oRequest = WebRequest.Create(url);
-                oRequest.Method = "GET";
-                oRequest.ContentType = "application/json;charset=UTF-8";
+                // ComputeHash - devuelve una matriz de bytes
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(strData));
 
-                WebResponse oResponse = oRequest.GetResponse();
-                using (var oSr = new StreamReader(oResponse.GetResponseStream()))
+                // Convierte una matriz de bytes en una cadena
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
                 {
-                    resultado = oSr.ReadToEnd().Trim();
-                    mensaje = true;
+                    builder.Append(bytes[i].ToString("x2"));
                 }
-
-                return resultado;
-            }
-            catch (Exception ex)
-            {
-                string jsonError = JsonConvert.SerializeObject(new { error = "Error al enviar la petición: " + ex.Message });
-                mensaje = false;
-                resultado = jsonError;
-                return resultado;
+                return builder.ToString();
             }
         }
 

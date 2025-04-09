@@ -101,7 +101,7 @@ namespace fpWebApp
             txbNombre.Text = dt.Rows[0]["NombreUsuario"].ToString();
             txbCargo.Text = dt.Rows[0]["CargoUsuario"].ToString();
             txbEmail.Text = dt.Rows[0]["EmailUsuario"].ToString();
-            txbClave.Text = dt.Rows[0]["ClaveUsuario"].ToString();
+            //txbClave.Text = dt.Rows[0]["ClaveUsuario"].ToString();
             ddlPerfiles.SelectedIndex = Convert.ToInt16(dt.Rows[0]["idPerfil"].ToString());
             if (dt.Rows[0]["idEmpleado"].ToString() != "")
             {
@@ -118,13 +118,16 @@ namespace fpWebApp
 
             try
             {
+                clasesglobales cg = new clasesglobales();
+                string strHashClave = cg.ComputeSha256Hash(txbClave.Text.ToString());
+
                 string strQuery = "UPDATE usuarios SET " +
-                "EmailUsuario = '" + txbEmail.Text.ToString() + "', ClaveUsuario = '" + txbClave.Text.ToString() + "', " +
+                "EmailUsuario = '" + txbEmail.Text.ToString() + "', ClaveUsuario = '" + strHashClave + "', " +
                 "NombreUsuario = '" + txbNombre.Text.ToString() + "', CargoUsuario = '" + txbCargo.Text.ToString() + "', " +
                 "idPerfil = " + ddlPerfiles.SelectedItem.Value.ToString() + ", idEmpleado = '" + ddlEmpleados.SelectedItem.Value.ToString() + "', " +
                 "EstadoUsuario = '" + rblEstado.SelectedItem.Value.ToString() + "' " +
                 "WHERE idUsuario = " + Request.QueryString["editid"].ToString();
-                clasesglobales cg = new clasesglobales();
+                
                 string mensaje = cg.TraerDatosStr(strQuery);
 
                 string strNewData = TraerData();

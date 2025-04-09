@@ -53,7 +53,7 @@ namespace fpWebApp
 
             strQuery = "SELECT * " +
                 "FROM Afiliados " +
-                        "WHERE idAfiliado = 12261 ";
+                        "WHERE idAfiliado = 1 ";
 
                     DataTable dt1 = cg.TraerDatos(strQuery);
 

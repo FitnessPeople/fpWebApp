@@ -151,13 +151,16 @@ namespace fpWebApp
                 {
                     try
                     {
+                        clasesglobales cg = new clasesglobales();
+                        string strHashClave = cg.ComputeSha256Hash(txbClave.Text.ToString());
+
                         string strQuery = "INSERT INTO usuarios " +
                         "(EmailUsuario, ClaveUsuario, NombreUsuario, CargoUsuario, idPerfil, idEmpleado, idEmpresa, EstadoUsuario) " +
-                        "VALUES ('" + txbEmail.Text.ToString() + "', '" + txbClave.Text.ToString() + "', " +
+                        "VALUES ('" + txbEmail.Text.ToString() + "', '" + strHashClave + "', " +
                         "'" + txbNombre.Text.ToString() + "', '" + txbCargo.Text.ToString() + "', " +
                         "'" + ddlPerfiles.SelectedItem.Value.ToString() + "', '" + ddlEmpleados.SelectedItem.Value.ToString() + "', " +
                         "1, 'Activo') ";
-                        clasesglobales cg = new clasesglobales();
+                        
                         string mensaje = cg.TraerDatosStr(strQuery);
                     }
                     catch (OdbcException ex)
