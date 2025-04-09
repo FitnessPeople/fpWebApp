@@ -58,8 +58,6 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-
-
                             txbFechaPrim.Attributes.Add("type", "date");
                             txbFechaPrim.Attributes.Add("min", DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd").ToString());
                             txbFechaPrim.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
@@ -81,7 +79,6 @@ namespace fpWebApp
                 }
                 ScriptManager.RegisterStartupScript(this, GetType(), "updateDDL", "changeBadge(document.getElementById('" + ddlStatusLead.ClientID + "'));", true);
                 ScriptManager.RegisterStartupScript(this, GetType(), "activarBoton", "setTimeout(validarBotonActualizar, 100);", true);
-
             }
         }
 
@@ -224,51 +221,80 @@ namespace fpWebApp
 
                 if (salida)
                 {
-                    respuesta = mensaje.ToString();
-                    Response.Redirect("nuevocontactocrm", false);
+                    string script = @"
+                        $('#ModalContacto').modal('hide');
+                        $('.modal-backdrop').remove();
+                        Swal.fire({
+                            title: 'El contacto se creó de forma exitosa',
+                            text: '" + mensaje.Replace("'", "\\'") + @"',
+                            icon: 'success',
+                            timer: 3000, // 3 segundos
+                            showConfirmButton: false,
+                            timerProgressBar: true
+                        }).then(() => {
+                            window.location.href = 'nuevocontactocrm';
+                        });
+                    ";
+
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
                 }
                 else
                 {
-                    string script = $@"
-                    alert('{mensaje.Replace("'", "\\'")}');    $('#ModalContacto').modal('show');";
+                    string script = @"
+                            $('#ModalContacto').modal('hide');
+                            $('.modal-backdrop').remove();
+                            Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $('#ModalContacto').modal('show');
+                                }
+                            });
+                        ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-
                 }
-
             }
             catch (Exception ex)
             {
-                string script = $"alert('{mensaje.Replace("'", "\\'")}');";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);
+                string script = @"
+                    $('#ModalContacto').modal('hide');
+                    $('.modal-backdrop').remove();
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Ha ocurrido un error inesperado.',
+                        icon: 'error'
+                    });
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
             }
         }
 
-        //[WebMethod]
-        //public static string ValidarTelefono(string telefono)
-        //{
-        //    string resultado = "ok";
-        //    string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+        public string GetTelefonoHTML(object telefonoObj)
+        {
+            if (telefonoObj == null) return "";
 
-        //    using (MySqlConnection conexion = new MySqlConnection(strConexion))
-        //    {
-        //        conexion.Open();
-        //        string query = "SELECT NombreContacto FROM contactoscrm WHERE TelefonoContacto = @telefono LIMIT 1";
+            // 1. Limpiar el número (quitar espacios, guiones, paréntesis, etc.)
+            string telefonoLimpio = Regex.Replace(telefonoObj.ToString(), @"\D", "");
 
-        //        using (MySqlCommand cmd = new MySqlCommand(query, conexion))
-        //        {
-        //            cmd.Parameters.AddWithValue("@telefono", telefono);
-        //            object nombre = cmd.ExecuteScalar();
+            // 2. Validar longitud y aplicar formato visual
+            string telefonoFormateado = telefonoLimpio;
+            if (telefonoLimpio.Length == 10)
+            {
+                telefonoFormateado = $"{telefonoLimpio.Substring(0, 3)} {telefonoLimpio.Substring(3, 3)} {telefonoLimpio.Substring(6, 4)}";
+            }
 
-        //            if (nombre != null)
-        //            {
-        //                resultado = $"El teléfono ya está registrado a nombre de: {nombre.ToString()}";
-        //            }
-        //        }
-        //    }
+            bool esCelular = telefonoLimpio.StartsWith("3");
+            bool esFijo = telefonoLimpio.StartsWith("60");
+            string icono = esCelular ? "fab fa-whatsapp" : "fas fa-phone";
+            string color = esCelular ? "forestgreen" : "#007bff";
+            string enlace = esCelular ? $"https://wa.me/57{telefonoLimpio}" : $"tel:{telefonoLimpio}";
 
-        //    return resultado;
-        //}
-
+            // 4. Devolver HTML
+            return $"<a href='{enlace}' target='_blank'>" +
+                   $"<i class='{icono} m-r-xs font-bold' style='color:{color};'></i> {telefonoFormateado}</a>";
+        }
 
         protected void btnEditar_Click(object sender, EventArgs e)
         {
@@ -284,6 +310,7 @@ namespace fpWebApp
                 ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#ModalContacto').modal('show');", true);
             }
         }
+
         private void MostrarModalEditar(int idContacto)
         {
             CargarDatosContacto(idContacto);
@@ -342,21 +369,54 @@ namespace fpWebApp
 
                     if (salida)
                     {
-                        respuesta = mensaje.ToString();
-                        Response.Redirect("nuevocontactocrm", false);
+                        string script = @"
+                            $('#ModalContacto').modal('hide');
+                            $('.modal-backdrop').remove();
+                            Swal.fire({
+                                title: 'El contacto se actualizó de forma exitosa',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'success',
+                                timer: 3000, // 3 segundos
+                                showConfirmButton: false,
+                                timerProgressBar: true
+                            }).then(() => {
+                                window.location.href = 'nuevocontactocrm';
+                            });
+                        ";
+
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
                     }
                     else
                     {
-                        string script = $"alert('{mensaje.Replace("'", "\\'")}');";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);
+                        string script = @"
+                            $('#ModalContacto').modal('hide');
+                            $('.modal-backdrop').remove();
+                            Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $('#ModalContacto').modal('show');
+                                }
+                            });
+                        ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
                     }
                 }
             }
-
             catch (Exception ex)
             {
-                string script = $"alert('{mensaje.Replace("'", "\\'")}');";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensaje", script, true);
+                string script = @"
+                    $('#ModalContacto').modal('hide');
+                    $('.modal-backdrop').remove();
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Ha ocurrido un error inesperado.',
+                        icon: 'error'
+                    });
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
             }
 
         }
@@ -376,7 +436,13 @@ namespace fpWebApp
             if (idContacto > 0)
             {
                 Session["contactoId"] = idContacto;
-                ltEliminar.Text = "<span style='color: red;'>¿Está seguro de eliminar el contacto de : " + Session["Contacto"] + "</span>";
+
+                string nombreContacto = Session["Contacto"].ToString().Trim();
+                ltEliminar.Text = $@"
+                <div style='color: #b30000; font-weight: bold; '>
+                    ⚠ ¿Está seguro de que desea eliminar el contacto <span style='text-decoration: underline;'>{nombreContacto}</span>?
+                </div>";
+
                 upEliminar.Update();
                 ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#Modaleliminar').modal('show');", true);
             }
@@ -386,19 +452,78 @@ namespace fpWebApp
         {
             ltEliminar.Text = string.Empty;
             bool respuesta = false;
+            bool _respuesta = false;
             string mensaje = string.Empty;
             int idContacto = Convert.ToInt32(Session["contactoId"]);
+            int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
+            string Usuario = Session["NombreUsuario"].ToString();
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out respuesta);
-            Session["contactoId"] = idContacto;
 
-            if (idContacto > 0)
+            try
             {
-                cg.EliminarContactoCRM(idContacto, out respuesta, out mensaje);
-                ltEliminar.Text = "<span style='color: red;'>¿Está seguro de eliminar el contacto de : " + Session["Contacto"] + "</span>";
+                DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out _respuesta);
+                Session["contactoId"] = idContacto;
+
+                if (idContacto > 0)
+                {
+                    cg.EliminarContactoCRM(idContacto, out respuesta, out mensaje);
+
+                    if (respuesta)
+                    {
+                        string tipoMensaje = respuesta ? "Éxito" : "Error";
+                        string tipoIcono = respuesta ? "success" : "error";
+                        string script = @"
+                                $('#Modaleliminar').modal('hide');
+                                $('.modal-backdrop').remove();
+                                Swal.fire({
+                                    title: '" + tipoMensaje + @"',
+                                    text: '" + mensaje + @"',
+                                    icon: '" + tipoIcono + @"'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                });
+                            ";
+
+                        ScriptManager.RegisterStartupScript(this, GetType(), "EliminarYAlerta", script, true);
+                    }
+                    else
+                    {
+                        string script = @"
+                            $('#ModalContacto').modal('hide');
+                            $('.modal-backdrop').remove();
+                            Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error',
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: false
+                            }).then(() => {
+                                location.reload();
+                            });
+                        ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+
+                    }
+                }
             }
-
-
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+                string script = @"
+                    $('#ModalContacto').modal('hide');
+                    $('.modal-backdrop').remove();
+                    Swal.fire({
+                        title: 'Error',                       
+                        text: '"" + mensaje.Replace(""'"", ""\\'"") + @""',
+                        icon: 'error'
+                    });
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+            }
         }
+
     }
 }
