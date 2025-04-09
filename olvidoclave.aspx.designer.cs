@@ -11,7 +11,7 @@ namespace fpWebApp
 {
 
 
-    public partial class _Default
+    public partial class olvidoclave
     {
 
         /// <summary>
@@ -42,22 +42,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlDominio;
 
         /// <summary>
-        /// Control txbPassword.
+        /// Control btnRecuperar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbPassword;
-
-        /// <summary>
-        /// Control btnIngresar.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnIngresar;
+        protected global::System.Web.UI.WebControls.Button btnRecuperar;
 
         /// <summary>
         /// Control divMensaje.

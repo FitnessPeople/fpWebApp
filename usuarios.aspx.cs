@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Odbc;
+using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 
 namespace fpWebApp
 {
@@ -120,7 +123,30 @@ namespace fpWebApp
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
+            try
+            {
+                string strQuery = "SELECT *, " +
+                    "IF(NombreEmpleado is null,'-Sin asociar-',NombreEmpleado) AS Empleado " +
+                    "FROM Usuarios u " +
+                    "LEFT JOIN Empleados e ON u.idEmpleado = e.DocumentoEmpleado " +
+                    "INNER JOIN Perfiles pf ON u.idPerfil = pf.idPerfil";
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.TraerDatos(strQuery);
+                string nombreArchivo = $"Usuarios_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
+                if (dt.Rows.Count > 0)
+                {
+                    cg.ExportarExcel(dt, nombreArchivo);
+                }
+                else
+                {
+                    Response.Write("<script>alert('No existen registros para esta consulta');</script>");
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Fitness Peple | Login" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="fpWebApp._Default" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="olvidoclave.aspx.cs" Inherits="fpWebApp.olvidoclave" %>
 
 <!DOCTYPE html>
 <html>
@@ -25,10 +25,9 @@
                 <h1 class="logo-name">FP+</h1>
 
             </div>
-            <h3 class="text-white"><i class="fa fa-dumbbell m-r-sm"></i>Bienvenido a FP+</h3>
+            <h3 class="text-white">Olvido de Clave</h3>
             <p class="text-white">
-                ¡Nuestra app está lista, reconstruida desde cero!<br />
-                Se avecinan muchas funciones y mejoras.
+                Ingresa los siguientes datos:
             </p>
             <form class="m-t" role="form" id="form1" runat="server">
                 <div class="row">
@@ -48,19 +47,12 @@
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <asp:TextBox ID="txbPassword" CssClass="form-control" runat="server" placeholder="Password" required TextMode="Password"></asp:TextBox>
-                </div>
-                <asp:Button ID="btnIngresar" runat="server" CssClass="btn btn-warning1 block full-width m-b font-bold" Text="INGRESAR" OnClick="btnIngresar_Click" />
+                <asp:Button ID="btnRecuperar" runat="server" CssClass="btn btn-warning1 block full-width m-b font-bold" Text="RECUPERAR CLAVE" OnClick="btnRecuperar_Click" />
 
                 <div class="alert alert-danger alert-dismissable" runat="server" id="divMensaje" visible="false">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
                     <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                 </div>
-
-                <p><a href="olvidoclave"><small>Olvidaste la contraseña?</small></a></p>
-                <%--<p class="text-muted text-center text-white"><small>No tienes una cuenta?</small></p>--%>
-                <a class="btn btn-warning1 block full-width m-b font-bold" href="soporte">No tengo cuenta</a>
 
             </form>
             <p class="m-t text-white"><small>Fitness People &copy; <asp:Label ID="lblAnho" runat="server" /></small> </p>

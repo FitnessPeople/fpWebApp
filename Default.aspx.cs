@@ -6,6 +6,7 @@ using System.Data.Odbc;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using NPOI.OpenXmlFormats.Spreadsheet;
 
 namespace fpWebApp
 {
@@ -13,38 +14,52 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            txbEmail.Attributes.Add("type", "email");
+            lblAnho.Text = DateTime.Now.Year.ToString();
+            txbEmail.Focus();
         }
 
         private bool YourValidationFunction(string UserName, string Password)
         {
             bool boolReturnValue = false;
-            Password = Password.Replace("'", "");
             UserName = UserName.Replace("'", "");
+
             string strQuery = "SELECT u.*, e.*, p.* " +
                 "FROM Usuarios u " +
                 "LEFT JOIN Empleados p ON u.idEmpleado = p.DocumentoEmpleado " +
                 "LEFT JOIN Empresas e ON u.idEmpresa = e.idEmpresa " +
                 "WHERE u.EmailUsuario = '" + UserName + "' " +
-                "AND u.ClaveUsuario = '" + Password + "' " +
-                "AND u.EstadoUsuario = 'Activo' ";
+                "AND u.ClaveUsuario = '" + Password + "' ";
 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
-            //DataTable dt = TraerDatos(strQuery);
+
+            string strMensaje;
 
             if (dt.Rows.Count > 0)
             {
-                Session["idUsuario"] = dt.Rows[0]["idUsuario"].ToString();
-                Session["NombreUsuario"] = dt.Rows[0]["NombreUsuario"].ToString();
-                Session["idEmpresa"] = dt.Rows[0]["idEmpresa"].ToString();
-                Session["Cargo"] = dt.Rows[0]["CargoUsuario"].ToString();
-                Session["Foto"] = dt.Rows[0]["FotoEmpleado"].ToString();
-                Session["idPerfil"] = dt.Rows[0]["idPerfil"].ToString();
-                boolReturnValue = true;
+                if (dt.Rows[0]["EstadoUsuario"].ToString() == "Inactivo")
+                {
+                    strMensaje = "Usuario inactivo.<br />";
+                    strMensaje += "<a class=\"alert-link\" href=\"soporte\">Consulte al administrador.</a>.";
+                    ltMensaje.Text = strMensaje;
+                    divMensaje.Visible = true;
+                }
+                else
+                {
+                    Session["idUsuario"] = dt.Rows[0]["idUsuario"].ToString();
+                    Session["NombreUsuario"] = dt.Rows[0]["NombreUsuario"].ToString();
+                    Session["idEmpresa"] = dt.Rows[0]["idEmpresa"].ToString();
+                    Session["Cargo"] = dt.Rows[0]["CargoUsuario"].ToString();
+                    Session["Foto"] = dt.Rows[0]["FotoEmpleado"].ToString();
+                    Session["idPerfil"] = dt.Rows[0]["idPerfil"].ToString();
+                    boolReturnValue = true;
+                }
             }
             else
             {
+                strMensaje = "Email o contraseña errada.<br />";
+                strMensaje += "<a class=\"alert-link\" href=\"#\">Intente nuevamente</a>.";
+                ltMensaje.Text = strMensaje;
                 divMensaje.Visible = true;
             }
 
@@ -55,12 +70,14 @@ namespace fpWebApp
 
         protected void btnIngresar_Click(object sender, EventArgs e)
         {
-            string usuario = txbEmail.Text.ToString();
+            string usuario = txbEmail.Text.ToString() + ddlDominio.SelectedItem.Value.ToString();
             string clave = txbPassword.Text.ToString();
 
-            if (YourValidationFunction(usuario, clave))
+            clasesglobales cg = new clasesglobales();
+            string strHashClave = cg.ComputeSha256Hash(clave);
+
+            if (YourValidationFunction(usuario, strHashClave))
             {
-                clasesglobales cg = new clasesglobales();
                 cg.InsertarLog(Session["idusuario"].ToString(), "usuarios", "Login", "El usuario inicio sesión.", "", "");
                 Response.Redirect("inicio");
             }

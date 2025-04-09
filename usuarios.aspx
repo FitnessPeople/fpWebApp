@@ -178,7 +178,7 @@
                                                 <th data-sortable="false" data-breakpoints="xs">Nombre</th>
                                                 <th data-sortable="false" data-breakpoints="xs sm md">Empleado</th>
                                                 <th data-breakpoints="xs sm md">Correo</th>
-                                                <th data-sortable="false" data-breakpoints="xs sm md">Clave</th>
+                                                <%--<th data-sortable="false" data-breakpoints="xs sm md">Clave</th>--%>
                                                 <%--<th data-sort-ignore="true">Cargo</th>--%>
                                                 <th data-breakpoints="xs sm md">Perfil</th>
                                                 <th class="text-nowrap" data-breakpoints="xs">Estado</th>
@@ -192,7 +192,7 @@
                                                         <td><%# Eval("NombreUsuario") %></td>
                                                         <td><span class='badge badge-<%# Eval("label") %>'><%# Eval("Empleado") %></span></td>
                                                         <td><i class="fa fa-circle-user m-r-xs font-bold"></i><%# Eval("EmailUsuario") %></td>
-                                                        <td><i class="fa fa-unlock-keyhole m-r-xs font-bold"></i><%# Eval("ClaveUsuario") %></td>
+                                                        <%--<td><i class="fa fa-unlock-keyhole m-r-xs font-bold"></i><%# Eval("ClaveUsuario") %></td>--%>
                                                         <%--<td><%# Eval("CargoUsuario") %></td>--%>
                                                         <td><i class="fa fa-user-shield m-r-xs font-bold"></i><%# Eval("Perfil") %></td>
                                                         <td><a runat="server" id="cambiaestado" visible="false"><span class='badge badge-<%# Eval("estatus") %>'><%# Eval("EstadoUsuario") %></span></a></td>

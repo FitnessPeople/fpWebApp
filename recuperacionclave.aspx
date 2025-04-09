@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Fitness Peple | Login" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="fpWebApp._Default" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="recuperacionclave.aspx.cs" Inherits="fpWebApp.recuperacionclave" %>
 
 <!DOCTYPE html>
 <html>
@@ -25,42 +25,27 @@
                 <h1 class="logo-name">FP+</h1>
 
             </div>
-            <h3 class="text-white"><i class="fa fa-dumbbell m-r-sm"></i>Bienvenido a FP+</h3>
-            <p class="text-white">
-                ¡Nuestra app está lista, reconstruida desde cero!<br />
-                Se avecinan muchas funciones y mejoras.
-            </p>
+            <h3 class="text-white">Restaurar Clave</h3>
             <form class="m-t" role="form" id="form1" runat="server">
+                <p class="text-white">
+                    Restaurar la clave para el usuario: <asp:Literal ID="ltUsuario" runat="server"></asp:Literal><br /><br />
+                    Escriba la nueva clave y haga clic en "RESTAURAR CLAVE".<br />
+                </p>
+            
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                         <div class="form-group">
-                            <asp:TextBox ID="txbEmail" CssClass="form-control" runat="server" placeholder="Usuario" required></asp:TextBox>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <asp:DropDownList ID="ddlDominio" runat="server" CssClass="form-control">
-                                <asp:ListItem Text="@fitnesspeoplecmd.com" Value="@fitnesspeoplecmd.com"></asp:ListItem>
-                                <asp:ListItem Text="@fitnesspeoplecolombia.com" Value="@fitnesspeoplecolombia.com"></asp:ListItem>
-                                <asp:ListItem Text="Usuario externo" Value=""></asp:ListItem>
-                            </asp:DropDownList>
+                            <asp:TextBox ID="txbNuevaClave" CssClass="form-control" runat="server" placeholder="Nueva clave" required></asp:TextBox>
                         </div>
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <asp:TextBox ID="txbPassword" CssClass="form-control" runat="server" placeholder="Password" required TextMode="Password"></asp:TextBox>
-                </div>
-                <asp:Button ID="btnIngresar" runat="server" CssClass="btn btn-warning1 block full-width m-b font-bold" Text="INGRESAR" OnClick="btnIngresar_Click" />
+                <asp:Button ID="btnRestaurar" runat="server" CssClass="btn btn-warning1 block full-width m-b font-bold" Text="RESTAURAR CLAVE" OnClick="btnRestaurar_Click" />
 
                 <div class="alert alert-danger alert-dismissable" runat="server" id="divMensaje" visible="false">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
                     <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                 </div>
-
-                <p><a href="olvidoclave"><small>Olvidaste la contraseña?</small></a></p>
-                <%--<p class="text-muted text-center text-white"><small>No tienes una cuenta?</small></p>--%>
-                <a class="btn btn-warning1 block full-width m-b font-bold" href="soporte">No tengo cuenta</a>
 
             </form>
             <p class="m-t text-white"><small>Fitness People &copy; <asp:Label ID="lblAnho" runat="server" /></small> </p>

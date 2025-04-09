@@ -49,7 +49,7 @@ namespace fpWebApp
                         }
                     }
                     listaEmpleados();
-                    ActualizarEstadoxFechaFinal();
+                    //ActualizarEstadoxFechaFinal();
                     //indicadores01.Visible = false;
                 }
                 else
