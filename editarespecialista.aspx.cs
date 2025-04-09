@@ -245,6 +245,7 @@ namespace fpWebApp
                 strFilename = postedFile.FileName;
             }
 
+            string strInitData = TraerData();
             try
             {
                 string strQuery = "UPDATE Especialistas SET " +
@@ -260,6 +261,10 @@ namespace fpWebApp
 
                 clasesglobales cg = new clasesglobales();
                 string mensaje = cg.TraerDatosStr(strQuery);
+
+                string strNewData = TraerData();
+
+                cg.InsertarLog(Session["idusuario"].ToString(), "Especialistas", "Modifica", "El usuario modificó datos al especialista con documento " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
             }
             catch (OdbcException ex)
             {
@@ -267,6 +272,22 @@ namespace fpWebApp
             }
 
             Response.Redirect("especialistas");
+        }
+
+        private string TraerData()
+        {
+            string strQuery = "SELECT * FROM especialistas WHERE idEspecialista = " + Request.QueryString["editid"].ToString();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
         }
     }
 }

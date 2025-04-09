@@ -114,6 +114,8 @@ namespace fpWebApp
 
         protected void btnActualizar_Click(object sender, EventArgs e)
         {
+            string strInitData = TraerData();
+
             try
             {
                 string strQuery = "UPDATE usuarios SET " +
@@ -124,6 +126,11 @@ namespace fpWebApp
                 "WHERE idUsuario = " + Request.QueryString["editid"].ToString();
                 clasesglobales cg = new clasesglobales();
                 string mensaje = cg.TraerDatosStr(strQuery);
+
+                string strNewData = TraerData();
+
+                cg.InsertarLog(Session["idusuario"].ToString(), "Usuarios", "Modifica", "El usuario modificó datos del correo " + txbEmail.Text.ToString() + ".", strInitData, strNewData);
+
             }
             catch (OdbcException ex)
             {
@@ -131,6 +138,22 @@ namespace fpWebApp
             }
 
             Response.Redirect("usuarios");
+        }
+
+        private string TraerData()
+        {
+            string strQuery = "SELECT * FROM usuarios WHERE idUsuario = " + Request.QueryString["editid"].ToString();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
         }
     }
 }
