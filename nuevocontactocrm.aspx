@@ -120,7 +120,6 @@
             const fechaPrim = document.getElementById('txbFechaPrim').value.trim();
             const fechaProx = document.getElementById('txbFechaProx').value.trim();
             const valor = document.getElementById('txbValorPropuesta').value.trim();
-            const empresa = document.getElementById('ddlEmpresa').value;
             const status = document.getElementById('ddlStatusLead').value;
 
             const boton = document.getElementById('<%= btnAgregar.ClientID %>');
@@ -151,7 +150,7 @@
             const campos = [
                 'txbNombreContacto', 'txbTelefonoContacto', 'txbCorreoContacto',
                 'txbFechaPrim', 'txbFechaProx', 'txbValorPropuesta',
-                'ddlEmpresa', 'ddlStatusLead'
+                , 'ddlStatusLead'
             ];
 
             campos.forEach(id => {
@@ -312,7 +311,6 @@
                                                                         <input type="text" runat="server" class="form-control" id="txbTelefonoContacto"
                                                                             placeholder="ej: 310 123 4567" spellcheck="false" autocomplete="off" 
                                                                             onkeyup="formatearTelefono(this)" maxlength="14">
-<%--                                                                        <span id="mensajeTelefono" class="text-danger" style="display:none;"></span>--%>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -342,8 +340,7 @@
                                                                 <i class="fas fa-flag text-info"></i>
                                                                 <label for="StatusLead" class="col-form-label">Status Lead:</label>
                                                                         <asp:DropDownList ID="ddlStatusLead" DataTextField="NombreEstadoCRM" DataValueField="idEstadoCRM" 
-                                                                            runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
-                                                                            <asp:ListItem Text="No aplica" Value="0"></asp:ListItem>                                                                          
+                                                                            runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">                                                                                                                                                 
                                                                         </asp:DropDownList>
                                                             </div>
                                                             <div class="row">
@@ -381,7 +378,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <i class="fas fa-pen text-info"></i>
-                                                                <label for="message-text" class="col-form-label">Observaciones:</label>
+                                                                <label for="message-text" class="col-form-label">Contexto de la negociación:</label>
                                                                 <textarea id="txaObservaciones" runat="server" rows="3"                                                                      
                                                                      cssclass="form-control input-sm" class="form-control">
                                                                 </textarea>
@@ -417,8 +414,7 @@
                                                         </div>
                                                         <div class="modal-body">
                                                                 <div class="col-sm-">
-                                                                    <div class="form-group">
-                                                                        <i class="fa-solid fa-exclamation"></i>                                                                      
+                                                                    <div class="form-group">                                                                                                                                            
                                                                         <asp:Literal ID="ltEliminar" runat="server"></asp:Literal>
                                                                     </div>
                                                                 </div>
@@ -470,7 +466,6 @@
                                                         <ItemTemplate>
                                                             <tr class="feed-element">
                                                                 <td><%# Eval("NombreContacto")%></td>
-<%--                                                                <td><a href="https://wa.me/57<%# Eval("TelefonoContacto") %>" target="_blank"><i class="fab fa-whatsapp m-r-xs font-bold" style="color:forestgreen""></i><%# Eval("TelefonoContacto") %></a></td>--%>
                                                                 <td><%# GetTelefonoHTML(Eval("TelefonoContacto")) %></a></td>
                                                                 <td><%# Eval("EmailContacto") %> </td>
                                                                 <td><%# Eval("NombreEmpresaCRM") %> </td>

@@ -23,7 +23,7 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+
             if (!IsPostBack)
             {
                 ListaContactos();
@@ -58,8 +58,6 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-
-
                             txbFechaPrim.Attributes.Add("type", "date");
                             txbFechaPrim.Attributes.Add("min", DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd").ToString());
                             txbFechaPrim.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
@@ -69,8 +67,8 @@ namespace fpWebApp
 
                             ListaEmpresasCRM();
                             ListaEstadosCRM();
-                            ListaContactos();                            
-                        }                      
+                            ListaContactos();
+                        }
                     }
                 }
                 else
@@ -81,7 +79,6 @@ namespace fpWebApp
                 }
                 ScriptManager.RegisterStartupScript(this, GetType(), "updateDDL", "changeBadge(document.getElementById('" + ddlStatusLead.ClientID + "'));", true);
                 ScriptManager.RegisterStartupScript(this, GetType(), "activarBoton", "setTimeout(validarBotonActualizar, 100);", true);
-
             }
         }
 
@@ -128,7 +125,7 @@ namespace fpWebApp
 
             ddlEmpresa.DataSource = dt;
             ddlEmpresa.DataBind();
-            dt.Dispose();            
+            dt.Dispose();
         }
 
         private void ListaEstadosCRM()
@@ -162,15 +159,17 @@ namespace fpWebApp
             DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out respuesta);
             Session["contactoId"] = idContacto;
 
-            if (respuesta) {
-               
+            if (respuesta)
+            {
+
                 if (dt.Rows.Count > 0)
                 {
                     DataRow row = dt.Rows[0];
 
                     txbNombreContacto.Value = row["NombreContacto"].ToString();
                     string telefono = Convert.ToString(row["TelefonoContacto"]);
-                    if (!string.IsNullOrEmpty(telefono) && telefono.Length == 10) { 
+                    if (!string.IsNullOrEmpty(telefono) && telefono.Length == 10)
+                    {
                         txbTelefonoContacto.Value = $"{telefono.Substring(0, 3)} {telefono.Substring(3, 3)} {telefono.Substring(6, 4)}";
                     }
                     else
@@ -178,11 +177,11 @@ namespace fpWebApp
                         txbTelefonoContacto.Value = row["TelefonoContacto"].ToString();
                     }
                     txbCorreoContacto.Value = row["EmailContacto"].ToString();
-                    if (row["idEmpresaCRM"].ToString() != "")                    
+                    if (row["idEmpresaCRM"].ToString() != "")
                         ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaCRM"].ToString())));
                     else
                         ddlEmpresa.SelectedItem.Value = "0";
-                    
+
                     ddlStatusLead.SelectedIndex = Convert.ToInt32(ddlStatusLead.Items.IndexOf(ddlStatusLead.Items.FindByValue(dt.Rows[0]["idEstadoCRM"].ToString())));
                     txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
                     txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
@@ -204,7 +203,7 @@ namespace fpWebApp
             ViewState["AbrirModal"] = true;
             string mensaje = string.Empty;
             string mensajeValidacion = string.Empty;
-            string respuesta = string.Empty;           
+            string respuesta = string.Empty;
 
             if (ddlEmpresa.SelectedItem.Value != "")
                 ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
@@ -214,32 +213,34 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             try
             {
-                    respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
-                    txbCorreoContacto.Value.ToString().Trim(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
-                    txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
-                    txaObservaciones.Value.ToString(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
+                respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
+                txbCorreoContacto.Value.ToString().Trim(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
+                Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
+                txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
+                txaObservaciones.Value.ToString(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
 
-                    if (salida)
-                    {
-                        string script = @"
-                            $('#ModalContacto').modal('hide');
-                            $('.modal-backdrop').remove();
-                            Swal.fire({
-                                title: 'Registro exitoso',
-                                text: '" + mensaje.Replace("'", "\\'") + @"',
-                                icon: 'success'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = 'nuevocontactocrm';
-                                }
-                            });
-                        ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                    }
-                    else
-                    {
-                        string script = @"
+                if (salida)
+                {
+                    string script = @"
+                        $('#ModalContacto').modal('hide');
+                        $('.modal-backdrop').remove();
+                        Swal.fire({
+                            title: 'El contacto se creó de forma exitosa',
+                            text: '" + mensaje.Replace("'", "\\'") + @"',
+                            icon: 'success',
+                            timer: 3000, // 3 segundos
+                            showConfirmButton: false,
+                            timerProgressBar: true
+                        }).then(() => {
+                            window.location.href = 'nuevocontactocrm';
+                        });
+                    ";
+
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                }
+                else
+                {
+                    string script = @"
                             $('#ModalContacto').modal('hide');
                             $('.modal-backdrop').remove();
                             Swal.fire({
@@ -252,8 +253,8 @@ namespace fpWebApp
                                 }
                             });
                         ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-                    }
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                }
             }
             catch (Exception ex)
             {
@@ -309,6 +310,7 @@ namespace fpWebApp
                 ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#ModalContacto').modal('show');", true);
             }
         }
+        
         private void MostrarModalEditar(int idContacto)
         {
             CargarDatosContacto(idContacto);
@@ -373,13 +375,15 @@ namespace fpWebApp
                             Swal.fire({
                                 title: 'El contacto se actualizó de forma exitosa',
                                 text: '" + mensaje.Replace("'", "\\'") + @"',
-                                icon: 'success'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = 'nuevocontactocrm';
-                                }
+                                icon: 'success',
+                                timer: 3000, // 3 segundos
+                                showConfirmButton: false,
+                                timerProgressBar: true
+                            }).then(() => {
+                                window.location.href = 'nuevocontactocrm';
                             });
                         ";
+
                         ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
                     }
                     else
@@ -401,7 +405,6 @@ namespace fpWebApp
                     }
                 }
             }
-
             catch (Exception ex)
             {
                 string script = @"
@@ -425,7 +428,7 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
 
             int idContacto = Convert.ToInt32(btnEliminar.CommandArgument);
-            
+
             DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out respuesta);
             Session["Contacto"] = dt.Rows[0]["NombreContacto"].ToString();
 
@@ -436,8 +439,8 @@ namespace fpWebApp
 
                 string nombreContacto = Session["Contacto"].ToString().Trim();
                 ltEliminar.Text = $@"
-                <div style='color: #b30000; font-weight: bold; font-size: 1.1rem;'>
-                    ¿Está seguro de que desea eliminar el contacto <span style='text-decoration: underline;'>{nombreContacto}</span>?
+                <div style='color: #b30000; font-weight: bold; '>
+                    ⚠ ¿Está seguro de que desea eliminar el contacto <span style='text-decoration: underline;'>{nombreContacto}</span>?
                 </div>";
 
                 upEliminar.Update();
@@ -449,39 +452,78 @@ namespace fpWebApp
         {
             ltEliminar.Text = string.Empty;
             bool respuesta = false;
+            bool _respuesta = false;
             string mensaje = string.Empty;
             int idContacto = Convert.ToInt32(Session["contactoId"]);
+            int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
+            string Usuario = Session["NombreUsuario"].ToString();
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out respuesta);
-            Session["contactoId"] = idContacto;
 
-            if (idContacto > 0)
+            try
             {
-                cg.EliminarContactoCRM(idContacto, out respuesta, out mensaje);
+                DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out _respuesta);
+                Session["contactoId"] = idContacto;
 
-                // Mostrar alerta limpia
-                string tipoMensaje = respuesta ? "Éxito" : "Error";
-                string tipoIcono = respuesta ? "success" : "error";
+                if (idContacto > 0)
+                {
+                    cg.EliminarContactoCRM(idContacto, idUsuario, Usuario, out respuesta, out mensaje);
 
+                    if (respuesta)
+                    {
+                        string tipoMensaje = respuesta ? "Éxito" : "Error";
+                        string tipoIcono = respuesta ? "success" : "error";
+                        string script = @"
+                                $('#Modaleliminar').modal('hide');
+                                $('.modal-backdrop').remove();
+                                Swal.fire({
+                                    title: '" + tipoMensaje + @"',
+                                    text: '" + mensaje + @"',
+                                    icon: '" + tipoIcono + @"'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                });
+                            ";
+
+                        ScriptManager.RegisterStartupScript(this, GetType(), "EliminarYAlerta", script, true);
+                    }
+                    else
+                    {
+                        string script = @"
+                            $('#ModalContacto').modal('hide');
+                            $('.modal-backdrop').remove();
+                            Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error',
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: false
+                            }).then(() => {
+                                location.reload();
+                            });
+                        ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
                 string script = @"
-                    $('#Modaleliminar').modal('hide');
+                    $('#ModalContacto').modal('hide');
                     $('.modal-backdrop').remove();
                     Swal.fire({
-                        title: '" + tipoMensaje + @"',
-                        text: '" + mensaje + @"',
-                        icon: '" + tipoIcono + @"'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            location.reload();
-                        }
+                        title: 'Error',                       
+                        text: '"" + mensaje.Replace(""'"", ""\\'"") + @""',
+                        icon: 'error'
                     });
                 ";
-
-                ScriptManager.RegisterStartupScript(this, GetType(), "EliminarYAlerta", script, true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
             }
         }
-
-
 
     }
 }

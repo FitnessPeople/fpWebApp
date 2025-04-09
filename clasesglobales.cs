@@ -6056,7 +6056,7 @@ namespace fpWebApp
             return mensaje;
         }
 
-        public string EliminarContactoCRM(int idContactoCMR, out bool respuesta, out string mensaje)
+        public string EliminarContactoCRM(int idContactoCMR, int idUsuario, string Usuario, out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -6074,6 +6074,8 @@ namespace fpWebApp
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         cmd.Parameters.AddWithValue("@p_id_contacto_cmr", idContactoCMR);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_usuario", Usuario);
 
                         // ParámetroS de salida
                         MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
