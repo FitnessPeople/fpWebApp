@@ -15,10 +15,7 @@ namespace fpWebApp.controles
             ValidarPermisos("Especialistas");
             if (ViewState["SinPermiso"].ToString() == "0")
             {
-                CuantosEspecialistasActivos();
-                CuantosEspecialistasInactivos();
-                CuantasEspecialidades();
-                CuantasCitasHoy();
+                CuantosContactosPorId();
             }
         }
 
@@ -45,48 +42,38 @@ namespace fpWebApp.controles
             dt.Dispose();
         }
 
-        private void CuantosEspecialistasActivos()
+        private void CuantosContactosPorId()
         {
-            string strQuery = "SELECT COUNT(*) AS cuantos FROM contactoscrm WHERE idEstadoCRM = 1 ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
 
-            ltCuantos1.Text = dt.Rows[0]["cuantos"].ToString();
+            DataTable estados = cg.ConsultarEstadossCRM();
 
-            dt.Dispose();
+            List<Literal> literales = new List<Literal> { ltCuantos1, ltCuantos2, ltCuantos3, ltCuantos4 };
+            List<Literal> literalesEtiqueta = new List<Literal> { ltEstado1, ltEstado2, ltEstado3, ltEstado4 };
+            List<Literal> literalesColor = new List<Literal> { ltColor1, ltColor2, ltColor3, ltColor4 };
+
+            for (int i = 0; i < estados.Rows.Count && i < literales.Count; i++)
+            {
+                int idEstado = Convert.ToInt32(estados.Rows[i]["IdEstadoCRM"]);
+                string NombreEstado = estados.Rows[i]["NombreEstadoCRM"].ToString();
+                string ColorEstado = "bg-" + estados.Rows[i]["ColorEstadoCRM"].ToString();
+
+                literalesEtiqueta[i].Text = NombreEstado;
+                literalesColor[i].Text = "<div class='widget style1 bg-" + estados.Rows[i]["ColorEstadoCRM"].ToString() + "'>"; ;
+              
+
+                DataTable dtCantidad = cg.ConsultarCuantosPorEstadosCRM(idEstado);
+
+                if (dtCantidad.Rows.Count > 0)
+                {
+                    literales[i].Text = dtCantidad.Rows[0]["cuantos"].ToString();
+                    
+                }
+
+                dtCantidad.Dispose();
+            }
+
         }
 
-        private void CuantosEspecialistasInactivos()
-        {
-            string strQuery = "SELECT COUNT(*) AS cuantos FROM contactoscrm WHERE idEstadoCRM = 2 ";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
-            ltCuantos2.Text = dt.Rows[0]["cuantos"].ToString();
-
-            dt.Dispose();
-        }
-
-        private void CuantasEspecialidades()
-        {
-            string strQuery = "SELECT COUNT(*) AS cuantos FROM contactoscrm WHERE idEstadoCRM = 3 ";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
-            ltCuantos3.Text = dt.Rows[0]["cuantos"].ToString();
-
-            dt.Dispose();
-        }
-
-        private void CuantasCitasHoy()
-        {
-            string strQuery = "SELECT COUNT(*) AS cuantos FROM contactoscrm WHERE idEstadoCRM = 4 ";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
-            ltCuantos4.Text = dt.Rows[0]["cuantos"].ToString();           
-
-            dt.Dispose();
-        }
     }
 }
