@@ -407,7 +407,7 @@
                 monthsTitle: "Meses",
                 clear: "Borrar",
                 weekStart: 1,
-                format: "yyyy-mm-d",
+                format: "yyyy-mm-dd",
             };
         })(jQuery);
 
