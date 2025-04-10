@@ -11,7 +11,9 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            litTitulo.Text = "<span class='badge badge-primary'>Próximo Contacto</span>";
+            Literal1.Text = "<span class='badge badge-warning'>Propuesta en gestión</span>";
+            Literal2.Text = "<span class='badge badge-success'>Negociación aceptada</span>";
         }
     }
 }

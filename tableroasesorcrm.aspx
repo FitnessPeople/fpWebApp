@@ -38,6 +38,7 @@
             element2.classList.remove("collapse");
         }
     </script>
+
 </head>
 
 <body onload="changeClass()">
@@ -96,10 +97,10 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-user-tie text-success m-r-sm"></i>Dashboard</h2>
+                    <h2><i class="fa fa-user-tie text-success m-r-sm"></i>Tablero</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li class="active"><strong>Dashboard</strong></li>
+                        <li class="active"><strong>CRM Tablero </strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -110,12 +111,59 @@
                 <div class="row animated fadeInDown">
                     <%--Inicio Contenido!!!!--%>
 
+                  <div class="row">
+                      <div class="col-lg-3 d-flex">
+                        <div class="ibox w-100">
+                          <div class="ibox-content h-100">
+                                <h5 class="m-b-md">Server status Q12</h5>
+                                <h2 class="text-navy">
+                                    <i class="fa fa-play fa-rotate-270"></i> Up
+                                </h2>
+                                <small>Last down 42 days ago</small>
+                            </div>
+                        </div>
+                    </div>
+                      <div class="col-lg-3 d-flex">
+                        <div class="ibox w-100">
+                          <div class="ibox-content h-100">
+                                <h5>Visits in last 24h</h5>
+                                <h2>198 009</h2>
+                                <div id="sparkline1"></div>
+                            </div>
+                        </div>
+                    </div>
+                      <div class="col-lg-3 d-flex">
+                        <div class="ibox w-100">
+                          <div class="ibox-content h-100">
+                              <h5>Percentage division</h5>
+                                <h2>100/54</h2>
+                                <div class="text-center">
+                                    <div id="sparkline6"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      <div class="col-lg-3 d-flex">
+                        <div class="ibox w-100">
+                          <div class="ibox-content h-100">
+                                <h5>Usage</h5>
+                                <h2>65%</h2>
+                                <div class="progress progress-mini">
+                                    <div style="width: 68%;" class="progress-bar"></div>
+                                </div>
+
+                                <div class="m-t-sm small">Server down since 4:32 pm.</div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="ibox">
                                 <div class="ibox-content">
-                                    <h3>To-do</h3>
-                                    <p class="small"><i class="fa fa-hand-o-up"></i>Drag task between list</p>
+                                    <h3><asp:Literal ID="litTitulo" runat="server" /></h3>
+                                    <p class="small"><i class="fa fa-hand-o-up"></i>Arrastrar tarea entre listas</p>
 
                                     <div class="input-group">
                                         <input type="text" placeholder="Add new task. " class="input input-sm form-control">
@@ -125,7 +173,7 @@
                                     </div>
 
                                     <ul class="sortable-list connectList agile-list" id="todo">
-                                        <li class="warning-element" id="task1">Simply dummy text of the printing and typesetting industry.
+                                        <li class="warning-element" id="task1">Javier Galvan - Observaciones del contacto.
                                    
                                             <div class="agile-detail">
                                                 <a href="#" class="pull-right btn btn-xs btn-white">Tag</a>
@@ -149,46 +197,6 @@
                                    
                                             </div>
                                         </li>
-                                        <li class="danger-element" id="task4">All the Lorem Ipsum generators
-                                   
-                                            <div class="agile-detail">
-                                                <a href="#" class="pull-right btn btn-xs btn-primary">Done</a>
-                                                <i class="fa fa-clock-o"></i>06.10.2015
-                                   
-                                            </div>
-                                        </li>
-                                        <li class="warning-element" id="task5">Which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
-                                   
-                                            <div class="agile-detail">
-                                                <a href="#" class="pull-right btn btn-xs btn-white">Tag</a>
-                                                <i class="fa fa-clock-o"></i>09.12.2015
-                                   
-                                            </div>
-                                        </li>
-                                        <li class="warning-element" id="task6">Packages and web page editors now use Lorem Ipsum as
-                                   
-                                            <div class="agile-detail">
-                                                <a href="#" class="pull-right btn btn-xs btn-primary">Done</a>
-                                                <i class="fa fa-clock-o"></i>08.04.2015
-                                   
-                                            </div>
-                                        </li>
-                                        <li class="success-element" id="task7">Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                   
-                                            <div class="agile-detail">
-                                                <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                                <i class="fa fa-clock-o"></i>05.04.2015
-                                   
-                                            </div>
-                                        </li>
-                                        <li class="info-element" id="task8">Sometimes by accident, sometimes on purpose (injected humour and the like).
-                                   
-                                            <div class="agile-detail">
-                                                <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                                <i class="fa fa-clock-o"></i>16.11.2015
-                                   
-                                            </div>
-                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -196,8 +204,8 @@
                         <div class="col-lg-4">
                             <div class="ibox">
                                 <div class="ibox-content">
-                                    <h3>In Progress</h3>
-                                    <p class="small"><i class="fa fa-hand-o-up"></i>Drag task between list</p>
+                                    <h3><asp:Literal ID="Literal1" runat="server" /></h3>
+                                    <p class="small"><i class="fa fa-hand-o-up"></i>Arrastrar tarea entre listas</p>
                                     <ul class="sortable-list connectList agile-list" id="inprogress">
                                         <li class="success-element" id="task9">Quisque venenatis ante in porta suscipit.
                                    
@@ -263,8 +271,8 @@
                         <div class="col-lg-4">
                             <div class="ibox">
                                 <div class="ibox-content">
-                                    <h3>Completed</h3>
-                                    <p class="small"><i class="fa fa-hand-o-up"></i>Drag task between list</p>
+                                    <h3><asp:Literal ID="Literal2" runat="server" /></h3>
+                                    <p class="small"><i class="fa fa-hand-o-up"></i>Arrastrar tarea entre listas</p>
                                     <ul class="sortable-list connectList agile-list" id="completed">
                                         <li class="info-element" id="task16">Sometimes by accident, sometimes on purpose (injected humour and the like).
                                    
@@ -354,18 +362,115 @@
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-    <!-- FooTable -->
-    <script src="js/plugins/footable/footable.all.min.js"></script>
+    <!-- jquery UI -->
+    <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <!-- Touch Punch - Touch Event Support for jQuery UI -->
+    <script src="js/plugins/touchpunch/jquery.ui.touch-punch.min.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
-    <!-- Chosen -->
-    <script src="js/plugins/chosen/chosen.jquery.js"></script>
 
-    <!-- Page-Level Scripts -->
+    <!-- Sparkline -->
+    <script src="js/plugins/sparkline/jquery.sparkline.min.js"></script>
 
+    <!-- Peity -->
+    <script src="js/plugins/peity/jquery.peity.min.js"></script>
+    <script src="js/demo/peity-demo.js"></script>
+
+
+
+    <script>
+        $(document).ready(function () {
+
+            $("#todo, #inprogress, #completed").sortable({
+                connectWith: ".connectList",
+                update: function (event, ui) {
+
+                    var todo = $("#todo").sortable("toArray");
+                    var inprogress = $("#inprogress").sortable("toArray");
+                    var completed = $("#completed").sortable("toArray");
+                    $('.output').html("ToDo: " + window.JSON.stringify(todo) + "<br/>" + "In Progress: " + window.JSON.stringify(inprogress) + "<br/>" + "Completed: " + window.JSON.stringify(completed));
+                }
+            }).disableSelection();
+
+        });
+    </script>
+        <script>
+            $(document).ready(function () {
+
+                var sparklineCharts = function () {
+                    $("#sparkline1").sparkline([34, 43, 43, 35, 44, 32, 44, 52], {
+                        type: 'line',
+                        width: '100%',
+                        height: '60',
+                        lineColor: '#1ab394',
+                        fillColor: "#ffffff"
+                    });
+
+                    $("#sparkline2").sparkline([24, 43, 43, 55, 44, 62, 44, 72], {
+                        type: 'line',
+                        width: '100%',
+                        height: '60',
+                        lineColor: '#1ab394',
+                        fillColor: "#ffffff"
+                    });
+
+                    $("#sparkline3").sparkline([74, 43, 23, 55, 54, 32, 24, 12], {
+                        type: 'line',
+                        width: '100%',
+                        height: '60',
+                        lineColor: '#ed5565',
+                        fillColor: "#ffffff"
+                    });
+
+                    $("#sparkline4").sparkline([24, 43, 33, 55, 64, 72, 44, 22], {
+                        type: 'line',
+                        width: '100%',
+                        height: '60',
+                        lineColor: '#ed5565',
+                        fillColor: "#ffffff"
+                    });
+
+                    $("#sparkline5").sparkline([1, 4], {
+                        type: 'pie',
+                        height: '140',
+                        sliceColors: ['#1ab394', '#F5F5F5']
+                    });
+
+                    $("#sparkline6").sparkline([5, 3], {
+                        type: 'pie',
+                        height: '140',
+                        sliceColors: ['#1ab394', '#F5F5F5']
+                    });
+
+                    $("#sparkline7").sparkline([2, 2], {
+                        type: 'pie',
+                        height: '140',
+                        sliceColors: ['#ed5565', '#F5F5F5']
+                    });
+
+                    $("#sparkline8").sparkline([2, 3], {
+                        type: 'pie',
+                        height: '140',
+                        sliceColors: ['#ed5565', '#F5F5F5']
+                    });
+                };
+
+                var sparkResize;
+
+                $(window).resize(function (e) {
+                    clearTimeout(sparkResize);
+                    sparkResize = setTimeout(sparklineCharts, 500);
+                });
+
+                sparklineCharts();
+
+
+            });
+        </script>
 </body>
 
 </html>
