@@ -188,9 +188,14 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
+                string strInitData = TraerData();
+
                 if (Request.QueryString["editid"] != null)
                 {
                     string respuesta = cg.ActualizarTipoDocumento(int.Parse(Request.QueryString["editid"].ToString()), txbTipoDoc.Text.ToString().Trim(),txtSiglaDoc.Text.ToString().Trim());
+
+                    string strNewData = TraerData();
+                    cg.InsertarLog(Session["idusuario"].ToString(), "tipo documento", "Modifica", "El usuario modificó el tipo de documento con nombre " + txbTipoDoc.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -205,6 +210,8 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.InsertarTipoDocumento(txbTipoDoc.Text.ToString().Trim(), txtSiglaDoc.Text.ToString().Trim());
+
+                        cg.InsertarLog(Session["idusuario"].ToString(), "tipo documento", "Nuevo", "El usuario creó un nuevo tipo de documento con nombre " + txbTipoDoc.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -236,6 +243,19 @@ namespace fpWebApp
         {
         }
 
+        private string TraerData()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultartiposDocumentoPorId(int.Parse(Request.QueryString["editid"].ToString()));
 
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
+        }
     }
 }

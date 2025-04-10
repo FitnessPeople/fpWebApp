@@ -186,9 +186,14 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
+                string strInitData = TraerData();
+
                 if (Request.QueryString["editid"] != null)
                 {
                     string respuesta = cg.ActualizarCiudadSede(int.Parse(Request.QueryString["editid"].ToString()), txbCiudadSede.Text.ToString().Trim());
+
+                    string strNewData = TraerData();
+                    cg.InsertarLog(Session["idusuario"].ToString(), "ciudades sedes", "Modifica", "El usuario modificó la ciudad sede con nombre " + txbCiudadSede.Text.ToString() + ".", strInitData, strNewData);
                 }
 
                 if (Request.QueryString["deleteid"] != null)
@@ -204,6 +209,8 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.InsertarCiudadSede(txbCiudadSede.Text.ToString().Trim());
+
+                        cg.InsertarLog(Session["idusuario"].ToString(), "ciudades sedes", "Nuevo", "El usuario creó una nueva ciudad sede con nombre " + txbCiudadSede.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -235,5 +242,19 @@ namespace fpWebApp
 
         }
 
+        private string TraerData()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCiudadSedePorId(int.Parse(Request.QueryString["editid"].ToString()));
+
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
+        }
     }
 }

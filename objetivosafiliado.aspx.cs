@@ -181,9 +181,14 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
+                string strInitData = TraerData();
+
                 if (Request.QueryString["editid"] != null)
                 {
                     string respuesta = cg.ActualizarObjetivoAfiliado(int.Parse(Request.QueryString["editid"].ToString()), txbObjetivo.Text.ToString().Trim());
+
+                    string strNewData = TraerData();
+                    cg.InsertarLog(Session["idusuario"].ToString(), "objetivo afiliado", "Modifica", "El usuario modificó el objetivo del afiliado con nombre " + txbObjetivo.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -198,6 +203,8 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.InsertarObjetivoAfiliado(txbObjetivo.Text.ToString().Trim());
+
+                        cg.InsertarLog(Session["idusuario"].ToString(), "objetivo afiliado", "Nuevo", "El usuario creó un nuevo objetivo del afiliado con nombre " + txbObjetivo.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -230,5 +237,19 @@ namespace fpWebApp
 
         }
 
+        private string TraerData()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarObjetivoAfiliadoPorId(int.Parse(Request.QueryString["editid"].ToString()));
+
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
+        }
     }
 }

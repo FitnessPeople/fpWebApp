@@ -179,9 +179,14 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
+                string strInitData = TraerData();
+
                 if (Request.QueryString["editid"] != null)
                 {
                     string respuesta = cg.ActualizarTipoIncapacidad(int.Parse(Request.QueryString["editid"].ToString()), txbTipoIncapacidad.Text.ToString().Trim());
+
+                    string strNewData = TraerData();
+                    cg.InsertarLog(Session["idusuario"].ToString(), "tipo incapacidad", "Modifica", "El usuario modificó el tipo de incapacidad con nombre " + txbTipoIncapacidad.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -196,6 +201,8 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.InsertarTipoIncapacidad(txbTipoIncapacidad.Text.ToString().Trim());
+
+                        cg.InsertarLog(Session["idusuario"].ToString(), "tipo incapacidad", "Nuevo", "El usuario creó un nuevo tipo de incapacidad con nombre " + txbTipoIncapacidad.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -228,6 +235,19 @@ namespace fpWebApp
 
         }
 
+        private string TraerData()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarTipoIncapacidadPorId(int.Parse(Request.QueryString["editid"].ToString()));
 
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
+        }
     }
 }

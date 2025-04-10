@@ -181,9 +181,14 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
+                string strInitData = TraerData();
+
                 if (Request.QueryString["editid"] != null)
                 {
                     string respuesta = cg.ActualizarEstadoCivil(int.Parse(Request.QueryString["editid"].ToString()), txbEstadoCivil.Text.ToString().Trim());
+
+                    string strNewData = TraerData();
+                    cg.InsertarLog(Session["idusuario"].ToString(), "estado civil", "Modifica", "El usuario modificó el estado civil con nombre " + txbEstadoCivil.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -198,6 +203,8 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.InsertarEstadoCivil(txbEstadoCivil.Text.ToString().Trim());
+
+                        cg.InsertarLog(Session["idusuario"].ToString(), "estado civil", "Nuevo", "El usuario creó un nuevo estado civil con nombre " + txbEstadoCivil.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -229,6 +236,19 @@ namespace fpWebApp
         {
         }
 
+        private string TraerData()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEstadoCivilPorId(int.Parse(Request.QueryString["editid"].ToString()));
 
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
+        }
     }
 }
