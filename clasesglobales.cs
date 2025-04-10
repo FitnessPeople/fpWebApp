@@ -4960,6 +4960,38 @@ namespace fpWebApp
             return dt;
         }
 
+        public DataTable ConsultaCargarAgendaPorSedePorEspecialista(int idSede, int idEspecialista)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CARGAR_AGENDA_POR_SEDE_POR_ESPECIALISTA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_sede", idSede);
+                        cmd.Parameters.AddWithValue("@p_id_especialista", idEspecialista);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
         public DataTable ConsultaCargarEspecialistas()
         {
             DataTable dt = new DataTable();

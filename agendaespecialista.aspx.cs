@@ -94,7 +94,7 @@ namespace fpWebApp
         private void CargarAgenda()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultaCargarAgendaPorSedePorEspecialidad(int.Parse(ddlSedes.SelectedItem.Value.ToString()), int.Parse(ddlEspecialidad.SelectedItem.Value.ToString()));
+            DataTable dt = cg.ConsultaCargarAgendaPorSedePorEspecialista(int.Parse(ddlSedes.SelectedItem.Value.ToString()), int.Parse(Session["idUsuario"].ToString()));
 
             _strEventos = "events: [\r\n";
 

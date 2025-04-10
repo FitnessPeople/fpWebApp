@@ -215,22 +215,17 @@
                                                     </div>
                                                     <%--</div>--%>
                                                     <div class="row">
-                                                        <div class="col-sm-6 m-b-xs">
-                                                            <div class="form-group" id="data_1">
-                                                                <label>Fecha Inicial:</label>
-                                                                <div class="input-group date">
-                                                                    <span class="input-group-addon"><i class="fa fa-calendar-day"></i></span>
-                                                                    <input type="text" class="form-control input-sm" id="txbFechaIni" name="txbFechaIni" runat="server">
-                                                                </div>
+                                                        <div class="col-sm-6">
+                                                            <label>Fecha Inicial:</label>
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control input-sm" id="txbFechaIni" name="txbFechaIni" runat="server">
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-6 m-b-xs">
-                                                            <div class="form-group" id="data_2">
-                                                                <label>Fecha Final:</label>
-                                                                <div class="input-group date">
-                                                                    <span class="input-group-addon"><i class="fa fa-calendar-day"></i></span>
-                                                                    <input type="text" class="form-control input-sm" id="txbFechaFin" name="txbFechaFin" runat="server">
-                                                                </div>
+                                                        <div class="col-sm-6">
+                                                            <label>Fecha Final:</label>
+                                                            <div class="form-group">
+                                                                <%--<span class="input-group-addon"><i class="fa fa-calendar-day"></i></span>--%>
+                                                                <input type="text" class="form-control input-sm" id="txbFechaFin" name="txbFechaFin" runat="server">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -292,12 +287,16 @@
                                             <div class="ibox-title">
                                                 <h5>Agenda <asp:Literal ID="ltSede" runat="server"></asp:Literal></h5>
                                                 <div class="ibox-tools">
-                                                    <a class="collapse-link">
+                                                    <%--<a class="collapse-link">
                                                         <i class="fa fa-chevron-up"></i>
                                                     </a>
                                                     <a class="close-link">
                                                         <i class="fa fa-times"></i>
-                                                    </a>
+                                                    </a>--%>
+                                                    <span class="label label-success pull-right" style="color: #000;">Cita atendida</span>
+                                                    <span class="label label-danger pull-right" style="color: #000;">Cita cancelada</span>
+                                                    <span class="label label-warning pull-right" style="color: #000;">Cita asignada</span>
+                                                    <span class="label label-primary pull-right" style="color: #000;">Cita disponible</span>
                                                 </div>
                                             </div>
                                             <div class="ibox-content">
@@ -444,6 +443,7 @@
 
             $('#calendar').fullCalendar({
                 firstDay: 1,
+                timeFormat: 'H:mm',
                 defaultView: 'month',
                 dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb'],
                 dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'],

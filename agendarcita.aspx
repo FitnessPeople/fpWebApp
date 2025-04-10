@@ -308,6 +308,7 @@
 
             $('#calendar').fullCalendar({
                 firstDay: 1,
+                timeFormat: 'H:mm',
                 defaultView: 'month',
                 dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb'],
                 dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'],

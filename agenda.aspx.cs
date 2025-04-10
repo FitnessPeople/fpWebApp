@@ -32,6 +32,11 @@ namespace fpWebApp
                     }
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
+                        DateTime dtHoy = DateTime.Now;
+                        txbFechaIni.Attributes.Add("type", "date");
+                        txbFechaFin.Attributes.Add("type", "date");
+                        txbFechaIni.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
+                        txbFechaFin.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
                         divCrear.Visible = true;
                         CargarSedes();
                         CargarEspecialistas();
@@ -360,10 +365,15 @@ namespace fpWebApp
                             if (dt.Rows.Count == 0)
                             {
                                 // Consulta si se cruza la cita del especialista con la fecha y hora de otra disponible
+                                //strQuery = "SELECT * FROM DisponibilidadEspecialistas " +
+                                //    "WHERE idEspecialista = " + ddlEspecialistas.SelectedItem.Value.ToString() + " " +
+                                //    "AND (('" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal) " +
+                                //    "OR ('" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal))";
                                 strQuery = "SELECT * FROM DisponibilidadEspecialistas " +
                                     "WHERE idEspecialista = " + ddlEspecialistas.SelectedItem.Value.ToString() + " " +
-                                    "AND (('" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal) " +
-                                    "OR ('" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal))";
+                                    "AND idSede != " + ddlSedes.SelectedItem.Value.ToString() + " " +
+                                    "AND TIMESTAMPDIFF(MINUTE, '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', FechaHoraInicio) <= 60 " +
+                                    "AND '" + dtFechaIniCita.ToString("yyyy-MM-dd") + "' = DATE(FechaHoraInicio) ";
                                 DataTable dt1 = cg.TraerDatos(strQuery);
 
                                 if (dt1.Rows.Count == 0)
@@ -410,14 +420,14 @@ namespace fpWebApp
                                 else
                                 {
                                     ltMensaje.Text = "Ya esta ocupado este especialista en otra sede.";
-                                    dtFechaIniCita = dtFechaFinCita.AddMinutes(Convert.ToDouble(ddlDuracion.SelectedItem.Value.ToString()));
+                                    dtFechaIniCita = dtFechaFinCitaDia;
                                 }
                                 dt1.Dispose();
                             }
                             else
                             {
                                 ltMensaje.Text = "Ya esta ocupado este horario en la sede.";
-                                dtFechaIniCita = dtFechaFinCita.AddMinutes(Convert.ToDouble(ddlDuracion.SelectedItem.Value.ToString()));
+                                dtFechaIniCita = dtFechaFinCitaDia;
                             }
                             dt.Dispose();
                         }
