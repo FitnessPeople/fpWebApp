@@ -61,7 +61,7 @@ namespace fpWebApp
                             DataTable dt = cg.ConsultarPensionPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                txbFondoPension.Text = dt.Rows[0]["NombrePension"].ToString();
+                                txbFondoPension.Text = dt.Rows[0]["NombreFondoPension"].ToString();
                                 btnAgregar.Text = "Actualizar";
                                 ltTitulo.Text = "Actualizar Fondo de Pensión";
                             }
@@ -183,9 +183,14 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
+                string strInitData = TraerData();
+
                 if (Request.QueryString["editid"] != null)
                 {
                     string respuesta = cg.ActualizarPension(int.Parse(Request.QueryString["editid"].ToString()), txbFondoPension.Text.ToString().Trim());
+
+                    string strNewData = TraerData();
+                    cg.InsertarLog(Session["idusuario"].ToString(), "fondos pensiones", "Modifica", "El usuario modificó el fondo de pensión con nombre " + txbFondoPension.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -230,6 +235,21 @@ namespace fpWebApp
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private string TraerData()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPaginaPorId(int.Parse(Request.QueryString["editid"].ToString()));
+
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
         }
     }
 }

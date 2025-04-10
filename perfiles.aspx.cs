@@ -131,9 +131,14 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
+                string strInitData = TraerData();
+
                 if (Request.QueryString["editid"] != null)
                 {
                     string respuesta = cg.ActualizarPerfil(int.Parse(Request.QueryString["editid"].ToString()), txbPerfil.Text.ToString().Trim());
+
+                    string strNewData = TraerData();
+                    cg.InsertarLog(Session["idusuario"].ToString(), "perfiles", "Modifica", "El usuario modificó el perfil con nombre " + txbPerfil.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -148,6 +153,8 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.InsertarPerfil(txbPerfil.Text.ToString().Trim());
+
+                        cg.InsertarLog(Session["idusuario"].ToString(), "perfiles", "Nuevo", "El usuario creó un nuevo perfil con nombre " + txbPerfil.Text.ToString() + ".", "", "");
 
                         DataTable dt = cg.ConsultarUltimoPerfil();
                         int IdPerfil = int.Parse(dt.Rows[0]["idPerfil"].ToString());
@@ -390,6 +397,21 @@ namespace fpWebApp
 
             dt.Dispose();
             ListaPermisosPerfiles();
+        }
+
+        private string TraerData()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPerfilPorId(int.Parse(Request.QueryString["editid"].ToString()));
+
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
         }
     }
 }

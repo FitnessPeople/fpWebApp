@@ -179,9 +179,14 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
+                string strInitData = TraerData();
+
                 if (Request.QueryString["editid"] != null)
                 {
                     string respuesta = cg.ActualizarCajaComp(int.Parse(Request.QueryString["editid"].ToString()), txbCajaComp.Text.ToString().Trim());
+
+                    string strNewData = TraerData();
+                    cg.InsertarLog(Session["idusuario"].ToString(), "caja compensación", "Modifica", "El usuario modificó la caja de compensación con nombre " + txbCajaComp.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -196,6 +201,8 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.InsertarCajaComp(txbCajaComp.Text.ToString().Trim());
+
+                        cg.InsertarLog(Session["idusuario"].ToString(), "caja compensación", "Nuevo", "El usuario creó una nueva caja de compensación con nombre " + txbCajaComp.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -226,6 +233,21 @@ namespace fpWebApp
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private string TraerData()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCajaCompPorId(int.Parse(Request.QueryString["editid"].ToString()));
+
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
         }
     }
 }
