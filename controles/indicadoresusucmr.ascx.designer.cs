@@ -15,15 +15,6 @@ namespace fpWebApp.controles
     {
 
         /// <summary>
-        /// Control ltColor4.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltColor4;
-
-        /// <summary>
         /// Control ltEstado1.
         /// </summary>
         /// <remarks>
@@ -40,15 +31,6 @@ namespace fpWebApp.controles
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltCuantos1;
-
-        /// <summary>
-        /// Control ltColor1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltColor1;
 
         /// <summary>
         /// Control ltEstado2.
@@ -69,15 +51,6 @@ namespace fpWebApp.controles
         protected global::System.Web.UI.WebControls.Literal ltCuantos2;
 
         /// <summary>
-        /// Control ltColor2.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltColor2;
-
-        /// <summary>
         /// Control ltEstado3.
         /// </summary>
         /// <remarks>
@@ -94,15 +67,6 @@ namespace fpWebApp.controles
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltCuantos3;
-
-        /// <summary>
-        /// Control ltColor3.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltColor3;
 
         /// <summary>
         /// Control ltEstado4.
