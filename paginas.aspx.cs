@@ -246,9 +246,8 @@ namespace fpWebApp
 
         private string TraerData()
         {
-            string strQuery = "SELECT * FROM paginas WHERE idPagina = " + Request.QueryString["editid"].ToString();
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarPaginaPorId(int.Parse(Request.QueryString["editid"].ToString()));
 
             string strData = "";
             foreach (DataColumn column in dt.Columns)

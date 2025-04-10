@@ -183,9 +183,14 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
+                string strInitData = TraerData();
+
                 if (Request.QueryString["editid"] != null)
                 {
                     string respuesta = cg.ActualizarEps(int.Parse(Request.QueryString["editid"].ToString()), txbEps.Text.ToString().Trim());
+
+                    string strNewData = TraerData();
+                    cg.InsertarLog(Session["idusuario"].ToString(), "eps", "Modifica", "El usuario modificó la EPS con nombre " + txbEps.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -200,6 +205,8 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.InsertarEps(txbEps.Text.ToString().Trim());
+
+                        cg.InsertarLog(Session["idusuario"].ToString(), "eps", "Nuevo", "El usuario creó una nueva EPS con nombre " + txbEps.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -230,6 +237,21 @@ namespace fpWebApp
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private string TraerData()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEpsPorId(int.Parse(Request.QueryString["editid"].ToString()));
+
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
         }
     }
 }
