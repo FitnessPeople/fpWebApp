@@ -182,9 +182,14 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
+                string strInitData = TraerData();
+
                 if (Request.QueryString["editid"] != null)
                 {
                     string respuesta = cg.ActualizarArl(int.Parse(Request.QueryString["editid"].ToString()), txbArl.Text.ToString().Trim());
+
+                    string strNewData = TraerData();
+                    cg.InsertarLog(Session["idusuario"].ToString(), "arl", "Modifica", "El usuario modificó el ARL con nombre " + txbArl.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -199,6 +204,8 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.InsertarArl(txbArl.Text.ToString().Trim());
+
+                        cg.InsertarLog(Session["idusuario"].ToString(), "arl", "Nuevo", "El usuario creó un nuevo ARL con nombre " + txbArl.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -229,6 +236,21 @@ namespace fpWebApp
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private string TraerData()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarArlPorId(int.Parse(Request.QueryString["editid"].ToString()));
+
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
         }
     }
 }

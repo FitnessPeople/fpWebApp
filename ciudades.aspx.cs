@@ -200,9 +200,14 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
+                string strInitData = TraerData();
+
                 if (Request.QueryString["editid"] != null)
                 {
                     string respuesta = cg.ActualizarCiudad(int.Parse(Request.QueryString["editid"].ToString()), txbCiudad.Text.ToString().Trim(), ddlDepartamentos.SelectedItem.Text.ToString(), ddlDepartamentos.SelectedItem.Value.ToString());
+
+                    string strNewData = TraerData();
+                    cg.InsertarLog(Session["idusuario"].ToString(), "ciudades", "Modifica", "El usuario modificó la ciudad con nombre " + txbCiudad.Text.ToString() + " del departamento " + ddlDepartamentos.SelectedItem.Text.ToString() + ".", strInitData, strNewData);
                 }
 
                 if (Request.QueryString["deleteid"] != null)
@@ -218,6 +223,8 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.InsertarCiudad(txbCiudad.Text.ToString().Trim(),"",ddlDepartamentos.SelectedItem.Text.ToString(),ddlDepartamentos.SelectedItem.Value.ToString(),"Colombia","Co");
+
+                        cg.InsertarLog(Session["idusuario"].ToString(), "ciudades", "Nuevo", "El usuario creó una nueva ciudad con nombre " + txbCiudad.Text.ToString() + " del departamento " + ddlDepartamentos.SelectedItem.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -248,6 +255,21 @@ namespace fpWebApp
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private string TraerData()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCiudadesPorId(int.Parse(Request.QueryString["editid"].ToString()));
+
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
         }
     }
 }

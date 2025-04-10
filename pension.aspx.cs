@@ -205,6 +205,8 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.InsertarPension(txbFondoPension.Text.ToString().Trim());
+
+                        cg.InsertarLog(Session["idusuario"].ToString(), "fondos pensiones", "Nuevo", "El usuario creó un nuevo fondo de pensión con nombre " + txbFondoPension.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {

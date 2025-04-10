@@ -182,9 +182,14 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
+                string strInitData = TraerData();
+
                 if (Request.QueryString["editid"] != null)
                 {
                     string respuesta = cg.ActualizarCanalVenta(int.Parse(Request.QueryString["editid"].ToString()), txbNombreCanalVenta.Text.ToString().Trim());
+
+                    string strNewData = TraerData();
+                    cg.InsertarLog(Session["idusuario"].ToString(), "canales venta", "Modifica", "El usuario modificó el canal de venta con nombre " + txbNombreCanalVenta.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -199,6 +204,8 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.InsertarCanalVenta(txbNombreCanalVenta.Text.ToString().Trim());
+
+                        cg.InsertarLog(Session["idusuario"].ToString(), "canales venta", "Nuevo", "El usuario creó un nuevo canal de venta con nombre " + txbNombreCanalVenta.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -228,8 +235,22 @@ namespace fpWebApp
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
+
         }
 
+        private string TraerData()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCanalesVentaPorId(int.Parse(Request.QueryString["editid"].ToString()));
 
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
+        }
     }
 }

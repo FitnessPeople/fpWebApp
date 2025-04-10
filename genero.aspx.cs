@@ -184,9 +184,14 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
+                string strInitData = TraerData();
+
                 if (Request.QueryString["editid"] != null)
                 {
                     string respuesta = cg.ActualizarGenero(int.Parse(Request.QueryString["editid"].ToString()), txbGenero.Text.ToString().Trim());
+
+                    string strNewData = TraerData();
+                    cg.InsertarLog(Session["idusuario"].ToString(), "generos", "Modifica", "El usuario modificó el género con nombre " + txbGenero.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -201,6 +206,8 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.InsertarGenero(txbGenero.Text.ToString().Trim());
+
+                        cg.InsertarLog(Session["idusuario"].ToString(), "generos", "Nuevo", "El usuario creó un nuevo género con nombre " + txbGenero.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -231,6 +238,21 @@ namespace fpWebApp
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private string TraerData()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarGeneroPorId(int.Parse(Request.QueryString["editid"].ToString()));
+
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
         }
     }
 }
