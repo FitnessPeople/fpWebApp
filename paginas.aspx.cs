@@ -192,6 +192,7 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.InsertarPagina(txbPagina.Text.ToString().Trim(), ddlCategorias.SelectedItem.Value.ToString());
+
                         cg.InsertarLog(Session["idusuario"].ToString(), "paginas", "Nuevo", "El usuario creó una nueva página con nombre " + txbPagina.Text.ToString() + " de categoría " + ddlCategorias.SelectedItem.Value.ToString() + ".", "", "");
 
                         DataTable dt = cg.ConsultarUltimaPagina();
@@ -241,7 +242,7 @@ namespace fpWebApp
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         private string TraerData()

@@ -133,7 +133,6 @@ namespace fpWebApp
                 string strNewData = TraerData();
 
                 cg.InsertarLog(Session["idusuario"].ToString(), "usuarios", "Modifica", "El usuario modificó datos del correo " + txbEmail.Text.ToString() + ".", strInitData, strNewData);
-
             }
             catch (OdbcException ex)
             {
