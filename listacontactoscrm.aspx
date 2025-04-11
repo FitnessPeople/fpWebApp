@@ -96,10 +96,10 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-user-tie text-success m-r-sm"></i>Dashboard</h2>
+                    <h2><i class="fa fa-user-tie text-success m-r-sm"></i>CMR Contactos / Empresas</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li class="active"><strong>Dashboard</strong></li>
+                        <li class="active"><strong>CMR Contactos / Empresas</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -120,14 +120,15 @@
                         </div>
                     </div>
 
-                    <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
+              <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
+
               <form id="form" runat="server">         
                <div class="row">
                 <div class="col-sm-8">
                     <div class="ibox">
                         <div class="ibox-content">
                             <span class="text-muted small pull-right">Last modification: <i class="fa fa-clock-o"></i> 2:10 pm - 12.06.2014</span>
-                            <h2>CMR Contactos / Empresas</h2>
+                            <h2>CMR</h2>
                             <p>
                                 All clients need to be verified before you can send email and set a project.
                             </p>
@@ -151,21 +152,27 @@
                                                 <tbody>
                                                        <asp:Repeater ID="rpContactosCRM" runat="server" OnItemDataBound="rpContactosCRM_ItemDataBound1">
                                                         <ItemTemplate>
-                                                            <tr class="feed-element">
-                                                                <td><%# Eval("NombreContacto")%></td>
+                                                            <tr class="feed-element">                                                               
+                                                                <%--<td><a data-toggle="tab" href="#contact-2" class="client-link"><%# Eval("NombreContacto")%></a></td>--%>
+                                                                <td>
+                                                                  <a data-toggle="tab" href='<%# "#" + Eval("IdContacto") %>' class="client-link">
+                                                                    <%# Eval("NombreContacto") %>
+                                                                  </a>
+                                                                </td>
                                                                 <td><%# GetTelefonoHTML(Eval("TelefonoContacto")) %></a></td>
+                                                                <td class="contact-type"><i class="fa fa-envelope"> </i></td>                                                                
                                                                 <td><%# Eval("EmailContacto") %> </td>
                                                                 <td><%# Eval("NombreEmpresaCRM") %> </td>
                                                                 <td><span class='badge badge-<%# Eval("ColorEstadoCRM")%>'>
                                                                     <%# Eval("NombreEstadoCRM") %></span>
                                                                 </td>
-                                                                <td><%# Eval("FechaPrimerCon", "{0:yyyy-MM-dd}") %></td>
-                                                                <td><%# Eval("FechaProximoCon", "{0:yyyy-MM-dd}") %></td>
-                                                                <td><%# Eval("ValorPropuesta", "{0:C0}") %></td>
+                                                               <%-- <td><%# Eval("FechaPrimerCon", "{0:yyyy-MM-dd}") %></td>
+                                                                <td><%# Eval("FechaProximoCon", "{0:yyyy-MM-dd}") %></td>--%>
+                                                                <%--<td><%# Eval("ValorPropuesta", "{0:C0}") %></td>--%>
                                                                 <td><%# Eval("NombreCanalVenta", "{0:C0}") %></td>
-                                                                <td>
+<%--                                                                <td>
                                                                     <h3 class="text-info">Propuesta y observaciones</h3>
-                                                                    <table class="table table-bordered table-striped">
+                                                                   <%-- <table class="table table-bordered table-striped">
                                                                         <tr>                                                                            
                                                                             <th width="20%"><i class="fas fa-pen text-primary"></i>Observaciones</th>
                                                                             <th width="20%"><i class="fas fa-paperclip text-primary"></i>Archivo Propuesta</th>
@@ -178,9 +185,9 @@
                                                                             <td> </td>                                                                            
                                                                             <td><%# Eval("NombreUsuario") %> </td>
                                                                         </tr>
-                                                                    </table>
-                                                                </td>
-                                                                <td>
+                                                                    </table>--%>
+                                                                <%--</td>--%>
+<%--                                                                <td>
                                                                     <asp:Button ID="btnEditar" runat="server"
                                                                         CssClass="btn btn-outline btn-primary pull-left m-r-xs"
                                                                         CommandArgument='<%# Eval("idContacto") %>'
@@ -196,7 +203,7 @@
                                                                         Text="&#128465;"
                                                                         ToolTip="Eliminar contacto"
                                                                         Style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" />
-                                                                </td>
+                                                                </td>--%>
                                                             </tr>
                                                         </ItemTemplate>
                                                     </asp:Repeater>
@@ -268,7 +275,7 @@
 
                         <div class="ibox-content">
                             <div class="tab-content">
-                                <div id="contact-1" class="tab-pane active">
+                                <div id="2" class="tab-pane active">
                                     <div class="row m-b-lg">
                                         <div class="col-lg-4 text-center">
                                             <h2>Nicki Smith</h2>
@@ -391,10 +398,10 @@
                                     </div>
                                     </div>
                                 </div>
-                                <div id="contact-2" class="tab-pane">
+                                <div id='1' class="tab-pane">
                                     <div class="row m-b-lg">
                                         <div class="col-lg-4 text-center">
-                                            <h2>Edan Randall</h2>
+                                            <h2>Lindsay Galvan</h2>
 
                                             <div class="m-b-sm">
                                                 <img alt="image" class="img-circle" src="img/a3.jpg"
