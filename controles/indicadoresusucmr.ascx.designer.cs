@@ -15,15 +15,6 @@ namespace fpWebApp.controles
     {
 
         /// <summary>
-        /// Control ltWidget1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltWidget1;
-
-        /// <summary>
         /// Control ltEstado1.
         /// </summary>
         /// <remarks>
@@ -42,15 +33,6 @@ namespace fpWebApp.controles
         protected global::System.Web.UI.WebControls.Literal ltCuantos1;
 
         /// <summary>
-        /// Control ltWidget2.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltWidget2;
-
-        /// <summary>
         /// Control ltEstado2.
         /// </summary>
         /// <remarks>
@@ -67,15 +49,6 @@ namespace fpWebApp.controles
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltCuantos2;
-
-        /// <summary>
-        /// Control ltWidget3.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltWidget3;
 
         /// <summary>
         /// Control ltEstado3.
