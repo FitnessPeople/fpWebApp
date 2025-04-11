@@ -187,7 +187,7 @@ namespace fpWebApp
                     txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
                     int ValorPropuesta = Convert.ToInt32(dt.Rows[0]["ValorPropuesta"]);
                     txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
-                    txaObservaciones.Value = row["observaciones"].ToString();
+                    //txaObservaciones.Value = row["observaciones"].ToString();
                 }
             }
             else

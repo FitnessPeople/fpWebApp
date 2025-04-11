@@ -270,6 +270,7 @@
     <Content Include="cortesiasAfil.aspx" />
     <Content Include="ILLink\ILLink.Descriptors.LibraryBuild.xml" />
     <Content Include="img\pen-to-square-regular.png" />
+    <Content Include="listacontactoscrm.aspx" />
     <Content Include="nuevocontactocrm.aspx" />
     <Content Include="css\animate.css" />
     <Content Include="css\bootstrap.css" />
@@ -1143,6 +1144,13 @@
     </Compile>
     <Compile Include="cortesiasAfil.aspx.designer.cs">
       <DependentUpon>cortesiasAfil.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="listacontactoscrm.aspx.cs">
+      <DependentUpon>listacontactoscrm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="listacontactoscrm.aspx.designer.cs">
+      <DependentUpon>listacontactoscrm.aspx</DependentUpon>
     </Compile>
     <Compile Include="nuevocontactocrm.aspx.cs">
       <DependentUpon>nuevocontactocrm.aspx</DependentUpon>
