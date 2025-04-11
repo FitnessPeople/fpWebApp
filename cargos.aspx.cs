@@ -256,8 +256,6 @@ namespace fpWebApp
             }
         }
 
-        }
-
         private string TraerData()
         {
             clasesglobales cg = new clasesglobales();
