@@ -3915,9 +3915,11 @@ namespace fpWebApp
             return dt;
         }
 
-        public string InsertarPreguntaParQ(string preguntaParQ)
+        public string InsertarPreguntaParQ(string preguntaParQ, out int _idParQ)
         {
             string respuesta = string.Empty;
+            _idParQ = 0;
+
             try
             {
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
@@ -3929,7 +3931,14 @@ namespace fpWebApp
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_pregunta_parq", preguntaParQ);
 
+                        // Parámetro de salida
+                        MySqlParameter idParQ = new MySqlParameter("@p_pregunta_id", MySqlDbType.Int32);
+                        idParQ.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(idParQ);
+
                         cmd.ExecuteNonQuery();
+                        _idParQ = Convert.ToInt32(idParQ.Value);
+
                         respuesta = "OK";
                     }
                 }

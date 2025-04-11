@@ -182,9 +182,14 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
+                string strInitData = TraerData();
+
                 if (Request.QueryString["editid"] != null)
                 {
                     string respuesta = cg.ActualizarCargo(int.Parse(Request.QueryString["editid"].ToString()), txbNombreCargo.Text.ToString().Trim());
+
+                    string strNewData = TraerData();
+                    cg.InsertarLog(Session["idusuario"].ToString(), "Cargos Empleados", "Modifica", "El usuario modificó datos del cargo de empleados con nombre " + txbNombreCargo.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -199,6 +204,8 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.InsertarCargo(txbNombreCargo.Text.ToString().Trim());
+
+                        cg.InsertarLog(Session["idusuario"].ToString(), "Cargos Empleados", "Nuevo", "El usuario agregó un nuevo cargo de empleados con nombre " + txbNombreCargo.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -228,7 +235,40 @@ namespace fpWebApp
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarCargos();
+                string nombreArchivo = $"CargosEmpleados_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+
+                if (dt.Rows.Count > 0)
+                {
+                    cg.ExportarExcel(dt, nombreArchivo);
+                }
+                else
+                {
+                    Response.Write("<script>alert('No existen registros para esta consulta');</script>");
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+            }
         }
 
+        private string TraerData()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCargosPorId(int.Parse(Request.QueryString["editid"].ToString()));
+
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
+        }
     }
 }

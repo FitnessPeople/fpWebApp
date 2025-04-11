@@ -239,7 +239,25 @@ namespace fpWebApp
         }
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarCiudadesSedes();
+                string nombreArchivo = $"CiudadesSedes_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
+                if (dt.Rows.Count > 0)
+                {
+                    cg.ExportarExcel(dt, nombreArchivo);
+                }
+                else
+                {
+                    Response.Write("<script>alert('No existen registros para esta consulta');</script>");
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+            }
         }
 
         private string TraerData()

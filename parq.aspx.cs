@@ -188,11 +188,18 @@ namespace fpWebApp
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
+            int _idParq = 0;
+
             if (Request.QueryString.Count > 0)
             {
+                string strInitData = TraerData();
+
                 if (Request.QueryString["editid"] != null)
                 {
                     string respuesta = cg.ActualizarPreguntaParQ(int.Parse(Request.QueryString["editid"].ToString()), txbParQ.Text.ToString().Trim(),rblParQ.SelectedValue.ToString(), int.Parse(txbOrdenParQ.Text.ToString()));
+
+                    string strNewData = TraerData();
+                    cg.InsertarLog(Session["idusuario"].ToString(), "ParQ", "Modifica", "El usuario modificó la pregunta ParQ con id " + int.Parse(Request.QueryString["editid"].ToString()) + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -207,7 +214,9 @@ namespace fpWebApp
                 {
                     try
                     {
-                        string respuesta = cg.InsertarPreguntaParQ(txbParQ.Text.ToString().Trim());
+                        string respuesta = cg.InsertarPreguntaParQ(txbParQ.Text.ToString().Trim(), out _idParq);
+
+                        cg.InsertarLog(Session["idusuario"].ToString(), "ParQ", "Nuevo", "El usuario creó una nueva pregunta ParQ con id " + _idParq + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -237,9 +246,40 @@ namespace fpWebApp
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarPreguntasParq();
+                string nombreArchivo = $"PreguntasParQ_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
+                if (dt.Rows.Count > 0)
+                {
+                    cg.ExportarExcel(dt, nombreArchivo);
+                }
+                else
+                {
+                    Response.Write("<script>alert('No existen registros para esta consulta');</script>");
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+            }
         }
 
+        private string TraerData()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPreguntaParQPorId(int.Parse(Request.QueryString["editid"].ToString()));
 
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
+        }
     }
 }
