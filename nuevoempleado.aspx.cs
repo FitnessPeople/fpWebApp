@@ -33,6 +33,7 @@ namespace fpWebApp
                         txbFechaNac.Attributes.Add("type", "date");
                         txbFechaInicio.Attributes.Add("type", "date");
                         txbFechaFinal.Attributes.Add("type", "date");
+                        txbEmail.Attributes.Add("type", "email");
 
                         DateTime dt14 = DateTime.Now.AddYears(-14);
                         DateTime dt80 = DateTime.Now.AddYears(-80);
@@ -297,16 +298,54 @@ namespace fpWebApp
                             Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value.ToString()),
                             Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()));
 
-                            cg.InsertarLog(Session["idusuario"].ToString(), "Empleados", "Nuevo registro", "El usuario agregó un nuevo empleado con documento " + txbDocumento.Text.ToString() + ".", "", "");
+                            if (mensaje == "OK")
+                            {
+                                cg.InsertarLog(Session["idusuario"].ToString(), "Empleados", "Nuevo registro", "El usuario agregó un nuevo empleado con documento " + txbDocumento.Text.ToString() + ".", "", "");
 
-                            Response.Redirect("empleados");
+                                string script = @"
+                                    Swal.fire({
+                                        title: 'El empleado se creo de forma exitosa',
+                                        text: 'Texto.',
+                                        icon: 'success',
+                                        timer: 3000, // 3 segundos
+                                        showConfirmButton: false,
+                                        timerProgressBar: true
+                                    }).then(() => {
+                                        window.location.href = 'empleados';
+                                    });
+                                    ";
+                                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                            }
+                            else
+                            {
+                                string script = @"
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: '" + mensaje.Replace("'", "\\'") + @"',
+                                        icon: 'error'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            
+                                        }
+                                    });
+                                ";
+                                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                            }
+
+                                                        
                         }
                         catch (OdbcException ex)
                         {
-                            ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                "<div class=\"alert alert-danger alert-dismissable\">" +
-                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
-                                "</div></div>";
+                            string script = @"
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Ha ocurrido un error inesperado. " + ex.Message.ToString() + @"',
+                                    icon: 'error'
+                                }).then(() => {
+                                    window.location.href = 'nuevoempleado';
+                                });
+                            ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                         }
                     }
                 }

@@ -56,21 +56,37 @@ namespace fpWebApp
 
         private void listaEspecialistas(string strParam)
         {
+            //string strQuery = "SELECT *, " +
+            //    "IF(TIMESTAMPDIFF(YEAR, FechaNacEspecialista, CURDATE()) IS NOT NULL, CONCAT('(',TIMESTAMPDIFF(YEAR, FechaNacEspecialista, CURDATE()),' Años)'),'<i class=\"fa fa-circle-question m-r-lg m-l-lg\"></i>') AS edad, " +
+            //    "IF(TIMESTAMPDIFF(YEAR, FechaNacEspecialista, CURDATE()) < 14,'danger',IF(TIMESTAMPDIFF(YEAR, FechaNacEspecialista, CURDATE()) < 18,'success',IF(TIMESTAMPDIFF(YEAR, FechaNacEspecialista, CURDATE()) < 60,'info','warning'))) badge, " +
+            //    "IF(EstadoEspecialista='Activo','success','danger') badge2 " +
+            //    "FROM Especialistas e " +
+            //    "LEFT JOIN generos g ON g.idGenero = e.idGenero " +
+            //    "LEFT JOIN sedes s ON s.idSede = e.idSede " +
+            //    "LEFT JOIN estadocivil ec ON ec.idEstadoCivil = e.idEstadoCivilEspecialista " +
+            //    "LEFT JOIN profesiones p ON p.idProfesion = e.idProfesion " +
+            //    "LEFT JOIN eps ON eps.idEps = e.idEps " +
+            //    "LEFT JOIN ciudades ON ciudades.idCiudad = e.idCiudadEspecialista " +
+            //    "WHERE DocumentoEspecialista like '%" + strParam + "%' " +
+            //    "OR NombreEspecialista like '%" + strParam + "%' " +
+            //    "OR EmailEspecialista like '%" + strParam + "%' " +
+            //    "LIMIT 100";
             string strQuery = "SELECT *, " +
-                "IF(TIMESTAMPDIFF(YEAR, FechaNacEspecialista, CURDATE()) IS NOT NULL, CONCAT('(',TIMESTAMPDIFF(YEAR, FechaNacEspecialista, CURDATE()),' Años)'),'<i class=\"fa fa-circle-question m-r-lg m-l-lg\"></i>') AS edad, " +
-                "IF(TIMESTAMPDIFF(YEAR, FechaNacEspecialista, CURDATE()) < 14,'danger',IF(TIMESTAMPDIFF(YEAR, FechaNacEspecialista, CURDATE()) < 18,'success',IF(TIMESTAMPDIFF(YEAR, FechaNacEspecialista, CURDATE()) < 60,'info','warning'))) badge, " +
-                "IF(EstadoEspecialista='Activo','success','danger') badge2 " +
-                "FROM Especialistas e " +
+                "IF(TIMESTAMPDIFF(YEAR, FechaNacEmpleado, CURDATE()) IS NOT NULL, CONCAT('(',TIMESTAMPDIFF(YEAR, FechaNacEmpleado, CURDATE()),' Años)'),'<i class=\"fa fa-circle-question m-r-lg m-l-lg\"></i>') AS edad, " +
+                "IF(TIMESTAMPDIFF(YEAR, FechaNacEmpleado, CURDATE()) < 14,'danger',IF(TIMESTAMPDIFF(YEAR, FechaNacEmpleado, CURDATE()) < 18,'success',IF(TIMESTAMPDIFF(YEAR, FechaNacEmpleado, CURDATE()) < 60,'info','warning'))) badge, " +
+                "IF(EstadoEmpleado='Activo','success','danger') badge2 " +
+                "FROM Empleados e " +
                 "LEFT JOIN generos g ON g.idGenero = e.idGenero " +
                 "LEFT JOIN sedes s ON s.idSede = e.idSede " +
-                "LEFT JOIN estadocivil ec ON ec.idEstadoCivil = e.idEstadoCivilEspecialista " +
+                "LEFT JOIN estadocivil ec ON ec.idEstadoCivil = e.idEstadoCivil " +
                 "LEFT JOIN profesiones p ON p.idProfesion = e.idProfesion " +
+                "LEFT JOIN cargos c ON p.idCargo = c.idCargo " +
                 "LEFT JOIN eps ON eps.idEps = e.idEps " +
-                "LEFT JOIN ciudades ON ciudades.idCiudad = e.idCiudadEspecialista " +
-                "WHERE DocumentoEspecialista like '%" + strParam + "%' " +
-                "OR NombreEspecialista like '%" + strParam + "%' " +
-                "OR EmailEspecialista like '%" + strParam + "%' " +
-                "LIMIT 100";
+                "LEFT JOIN ciudades ON ciudades.idCiudad = e.idCiudadEmpleado " +
+                "WHERE e.DocumentoEmpleado like '%" + strParam + "%' " +
+                "OR e.NombreEmpleado like '%" + strParam + "%' " +
+                "OR e.EmailEmpleado like '%" + strParam + "%' " +
+                "AND c.NombreCargo = 'Nutricionista' ";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 

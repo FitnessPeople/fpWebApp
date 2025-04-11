@@ -148,13 +148,13 @@
                                         <ItemTemplate>
                                             <tr>
                                                 <%--<td><%# Eval("idEspecialista") %></td>--%>
-                                                <td style="white-space: nowrap;"><%# Eval("DocumentoEspecialista") %></td>
-                                                <td><%# Eval("NombreEspecialista") %> <%# Eval("ApellidoEspecialista") %></td>
-                                                <td style="white-space: nowrap;"><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("CelularEspecialista") %>" target="_blank"><%# Eval("CelularEspecialista") %></a></td>
-                                                <td style="white-space: nowrap;"><i class="fa fa-envelope m-r-xs font-bold"></i><%# Eval("EmailEspecialista") %></td>
+                                                <td style="white-space: nowrap;"><%# Eval("DocumentoEmpleado") %></td>
+                                                <td><%# Eval("NombreEmpleado") %> <%# Eval("ApellidoEmpleado") %></td>
+                                                <td style="white-space: nowrap;"><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoEmpleado") %>" target="_blank"><%# Eval("TelefonoEmpleado") %></a></td>
+                                                <td style="white-space: nowrap;"><i class="fa fa-envelope m-r-xs font-bold"></i><%# Eval("EmailEmpleado") %></td>
                                                 <td style="white-space: nowrap;"><i class="fa fa-user-tie m-r-xs font-bold"></i><%# Eval("Profesion") %></td>
-                                                <td style="white-space: nowrap;"><i class="fa fa-cake m-r-xs font-bold"></i><span class="text-<%# Eval("badge") %> font-bold"><%# Eval("FechaNacEspecialista", "{0:dd MMM yyyy}") %> <%# Eval("edad") %></span></td>
-                                                <td><span class="badge badge-<%# Eval("badge2") %>"><%# Eval("EstadoEspecialista") %></span></td>
+                                                <td style="white-space: nowrap;"><i class="fa fa-cake m-r-xs font-bold"></i><span class="text-<%# Eval("badge") %> font-bold"><%# Eval("FechaNacEmpleado", "{0:dd MMM yyyy}") %> <%# Eval("edad") %></span></td>
+                                                <td><span class="badge badge-<%# Eval("badge2") %>"><%# Eval("Estado") %></span></td>
                                                 <td>
                                                     <table class="table table-bordered table-striped">
                                                         <tr>
@@ -163,7 +163,7 @@
                                                             <th width="30%" class="text-nowrap"><i class="fa fa-venus-mars m-r-xs"></i>Genero</th>
                                                         </tr>
                                                         <tr>
-                                                            <td><%# Eval("DireccionEspecialista") %></td>
+                                                            <td><%# Eval("DireccionEmpleado") %></td>
                                                             <td><%# Eval("NombreCiudad") %> (<%# Eval("NombreEstado") %>)</td>
                                                             <td><%# Eval("Genero") %></td>
                                                         </tr>

@@ -34,6 +34,7 @@ namespace fpWebApp
                         txbFechaNac.Attributes.Add("type", "date");
                         txbFechaInicio.Attributes.Add("type", "date");
                         txbFechaFinal.Attributes.Add("type", "date");
+                        txbEmail.Attributes.Add("type", "email");
                         CargarTipoDocumento();
                         CargarCiudad();
                         CargarSedes();
@@ -373,15 +374,15 @@ namespace fpWebApp
                 clasesglobales cg = new clasesglobales();
 
                 string mensaje = cg.ActualizarEmpleado(txbDocumento.Text.ToString(), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
-                                txbNombre.Text.ToString(), txbTelefono.Text.ToString(), txbEmail.Text.ToString(), txbDireccion.Text.ToString(),
-                                Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), txbFechaNac.Text.ToString(), strFilename,
-                                txbContrato.Text.ToString(), ddlTipoContrato.SelectedItem.Value.ToString(), Convert.ToInt32(ddlempresasFP.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), txbFechaInicio.Text.ToString(), txbFechaInicio.Text.ToString(),
-                                Convert.ToInt32(Regex.Replace(txbSueldo.Text, @"[^\d]", "")), ddlGrupo.SelectedItem.Value.ToString(), Convert.ToInt32(ddlEps.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(ddlFondoPension.SelectedItem.Value.ToString()), Convert.ToInt32(ddlArl.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(ddlCajaComp.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCesantias.SelectedItem.Value.ToString()),
-                                rblEstado.Text.ToString(), Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()));
+                    txbNombre.Text.ToString(), txbTelefono.Text.ToString(), txbEmail.Text.ToString(), txbDireccion.Text.ToString(),
+                    Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), txbFechaNac.Text.ToString(), strFilename,
+                    txbContrato.Text.ToString(), ddlTipoContrato.SelectedItem.Value.ToString(), Convert.ToInt32(ddlempresasFP.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), txbFechaInicio.Text.ToString(), txbFechaFinal.Text.ToString(),
+                    Convert.ToInt32(Regex.Replace(txbSueldo.Text, @"[^\d]", "")), ddlGrupo.SelectedItem.Value.ToString(), Convert.ToInt32(ddlEps.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(ddlFondoPension.SelectedItem.Value.ToString()), Convert.ToInt32(ddlArl.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(ddlCajaComp.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCesantias.SelectedItem.Value.ToString()),
+                    rblEstado.Text.ToString(), Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()));
 
                 if (rblEstado.Text.ToString() == "Inactivo")
                 {
@@ -390,16 +391,58 @@ namespace fpWebApp
 
                 string strNewData = TraerData();
 
-                cg.InsertarLog(Session["idusuario"].ToString(), "Empleados", "Modifica", "El usuario modificó datos al empleado con documento " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
+                //cg.InsertarLog(Session["idusuario"].ToString(), "Empleados", "Modifica", "El usuario modificó datos al empleado con documento " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
 
-                Response.Redirect("empleados");
+                if (mensaje == "OK")
+                {
+                    cg.InsertarLog(Session["idusuario"].ToString(), "Empleados", "Modifica", "El usuario modificó datos al empleado con documento " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
+
+                    string script = @"
+                        Swal.fire({
+                            title: 'El empleado se actualizó de forma exitosa',
+                            text: 'Texto.',
+                            icon: 'success',
+                            timer: 4000, // 4 segundos
+                            showConfirmButton: false,
+                            timerProgressBar: true
+                        }).then(() => {
+                            window.location.href = 'empleados';
+                        });
+                        ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                }
+                else
+                {
+                    string script = @"
+                        Swal.fire({
+                            title: 'Error',
+                            text: '" + mensaje.Replace("'", "\\'") + @"',
+                            icon: 'error'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                            
+                            }
+                        });
+                        ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                }
+
+                //Response.Redirect("empleados");
+
+
             }
             catch (OdbcException ex)
             {
-                ltMensaje.Text = "<div class=\"ibox-content\">" +
-                    "<div class=\"alert alert-danger alert-dismissable\">" +
-                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
-                    "</div></div>";
+                string script = @"
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Ha ocurrido un error inesperado. " + ex.Message.ToString() + @"',
+                        icon: 'error'
+                    }).then(() => {
+                        window.location.href = 'editarempleado?" + Request.QueryString["editid"].ToString() + @"';
+                    });
+                    ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
             }
         }
 

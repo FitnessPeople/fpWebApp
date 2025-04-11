@@ -26,29 +26,35 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
-<script>
-    function formatCurrency(input) {
-        let value = input.value.replace(/\D/g, '');
-        if (value === "") {
-            input.value = "";
-            return;
-        }
-        let formattedValue = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(value);
-        input.value = formattedValue;
-    }
-    function keepFormatted(input) {
-        if (input.value.trim() === "") {
-            input.value = "";
-            return;
-        }
-        formatCurrency(input);
-    }
-    function getNumericValue(input) {
-        return input.value.replace(/[^0-9]/g, '');
-    }
-</script>
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <!-- Sweet alert -->
+    <script src="js/plugins/sweetalert/sweetalert.min.js"></script>
 
     <script>
+        function formatCurrency(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value === "") {
+                input.value = "";
+                return;
+            }
+            let formattedValue = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(value);
+            input.value = formattedValue;
+        }
+
+        function keepFormatted(input) {
+            if (input.value.trim() === "") {
+                input.value = "";
+                return;
+            }
+            formatCurrency(input);
+        }
+
+        function getNumericValue(input) {
+            return input.value.replace(/[^0-9]/g, '');
+        }
+
         function changeClass() {
             var element1 = document.querySelector("#nuevoempleado");
             element1.classList.replace("old", "active");

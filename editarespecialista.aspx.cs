@@ -30,6 +30,7 @@ namespace fpWebApp
                         txbDocumento.Attributes.Add("type", "number");
                         txbTelefono.Attributes.Add("type", "number");
                         txbFechaNac.Attributes.Add("type", "date");
+                        txbEmail.Attributes.Add("type", "email");
                         CargarTipoDocumento();
                         CargarCiudad();
                         CargarEstadoCivil();

@@ -26,6 +26,12 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         function formatCurrency(input) {
             let value = input.value.replace(/\D/g, '');
@@ -46,9 +52,7 @@
         function getNumericValue(input) {
             return input.value.replace(/[^0-9]/g, '');
         }
-    </script>
 
-    <script>
         function changeClass() {
             var element1 = document.querySelector("#empleados");
             element1.classList.replace("old", "active");
@@ -56,6 +60,7 @@
             element2.classList.remove("collapse");
         }
     </script>
+
 </head>
 
 <body onload="changeClass()">
