@@ -230,6 +230,9 @@ namespace fpWebApp
             Session["contactoId"] = idContacto;
             rptContenido.DataSource = dt;
             rptContenido.DataBind();
+
+            //Literal1.Visible = true;
+            //ltHistorialCon.Text = dt.Rows[0]["historialHTML"].ToString();
             if (respuesta)
             {
 
