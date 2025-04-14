@@ -49,13 +49,32 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-                            //txbFechaPrim.Attributes.Add("type", "date");
-                            //txbFechaPrim.Attributes.Add("min", DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd").ToString());
-                            //txbFechaPrim.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-                            //txbFechaProx.Attributes.Add("type", "date");
-                            //txbFechaProx.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-                            //txbCorreoContacto.Attributes.Add("type", "email");
 
+                            int idContacto = 0;
+                            decimal valorT = 0;
+                            
+                            // Verificar si viene en querystring
+                            if (Request.QueryString["idContacto"] != null)
+                            {
+                                int.TryParse(Request.QueryString["idContacto"], out idContacto);
+                            }
+                            else
+                            {
+                              
+                                DataTable dtContactos = cg.ConsultarContactosCRM( out valorT);
+
+                                //if (respuesta && dtContactos.Rows.Count > 0)
+                                //{
+                                    idContacto = Convert.ToInt32(dtContactos.Rows[0]["IdContacto"]);
+                                //}
+                            }
+                            rpContactosCRM.ItemDataBound += rpContactosCRM_ItemDataBound;
+                            // Cargar el contacto seleccionado o el primero por defecto
+                            CargarDatosContacto(idContacto);
+                            CargarHistotialCRN(idContacto);
+
+
+                            // También puedes cargar otras listas como lo hacías
                             ListaEmpresasCRM();
                             ListaEstadosCRM();
                             ListaContactos();
@@ -128,17 +147,77 @@ namespace fpWebApp
             //ddlStatusLead.DataBind();
             dt.Dispose();
         }
-        protected void rpContactosCRM_ItemDataBound1(object sender, RepeaterItemEventArgs e)
+
+        private void CargarHistotialCRN(int idContacto)
         {
+            bool salida = false;
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarHistorialPorContactoCMR(idContacto, out salida);
+
+            DataTable dtFiltrado = dt.Clone(); // Crea tabla con misma estructura
+
+            List<string> clavesUnicas = new List<string>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                string clave = row["idEstadoCRM"].ToString() + "|" +
+                               row["Observaciones"].ToString() + "|" +
+                               Convert.ToDateTime(row["FechaActualiza"]).ToString("yyyy-MM-dd HH:mm:ss");
+
+                if (!clavesUnicas.Contains(clave))
+                {
+                    clavesUnicas.Add(clave);
+                    dtFiltrado.ImportRow(row); // Agrega la fila filtrada
+                }
+            }
+
+            // Finalmente ordenas
+            DataView dv = dtFiltrado.DefaultView;
+            dv.Sort = "FechaActualiza DESC";
+
+            DataTable dtOrdenado = dv.ToTable();
+            
+      
+
+            //ddlStatusLead.DataSource = dt;
+            //ddlStatusLead.DataBind();
+        }
+        //protected void rpContactosCRM_ItemDataBound1(object sender, RepeaterItemEventArgs e)
+        //{
+        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        //    {
+        //        if (ViewState["CrearModificar"]?.ToString() == "1")
+        //        {
+        //            Button btnEditar = (Button)e.Item.FindControl("btnEditar");
+        //            if (btnEditar != null)
+        //            {
+        //                btnEditar.Visible = true;
+        //            }
+        //        }
+        //    }
+        //}
+
+
+
+        protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            clasesglobales cg = new clasesglobales();
+            bool salida = false;
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                if (ViewState["CrearModificar"]?.ToString() == "1")
+                DataRowView drv = (DataRowView)e.Item.DataItem;
+                int idContacto = Convert.ToInt32(drv["IdContacto"]);
+
+                // Lógica para obtener historial por contacto
+                DataTable historial = cg.ConsultarHistorialPorContactoCMR(idContacto, out salida); // tu función personalizada
+
+                // Buscar el repeater hijo
+                Repeater rptHistorial = (Repeater)e.Item.FindControl("rptHistorial");
+
+                if (historial != null && rptHistorial != null)
                 {
-                    Button btnEditar = (Button)e.Item.FindControl("btnEditar");
-                    if (btnEditar != null)
-                    {
-                        btnEditar.Visible = true;
-                    }
+                    rptHistorial.DataSource = historial;
+                    rptHistorial.DataBind();
                 }
             }
         }
@@ -149,7 +228,8 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out respuesta);
             Session["contactoId"] = idContacto;
-
+            rptContenido.DataSource = dt;
+            rptContenido.DataBind();
             if (respuesta)
             {
 
@@ -515,6 +595,7 @@ namespace fpWebApp
                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
             }
         }
+
 
     }
 }
