@@ -49,7 +49,54 @@
 </head>
 
 <body onload="changeClass()">
-
+    <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                    <i class="fa fa-id-card text-danger modal-icon"></i>
+                    <h4 class="modal-title">Guía para visualizar los afiliados registrados</h4>
+                    <small class="font-bold">¡Bienvenido! Te explicamos cómo gestionar el listado de forma rápida y sencilla.</small>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <b>1️⃣ Paso 1: Busca y Filtra Empresas</b><br />
+                        Usa el buscador para encontrar afiliados específicos.<br />
+                        🔍 Filtra por: 👤 <b>Nombre</b>, 📄 <b>Cédula</b>, ✉️ <b>Correo</b> o 📱 <b>Celular.</b><br />
+                        Además, selecciona una 📍 Sede en el menú desplegable para filtrar por ubicación.<br />
+                        Tip: ¡Combina filtros para resultados más precisos!
+                    <br />
+                        <br />
+                        <b>2️⃣ Paso 2: Revisa la Tabla de Resultados</b><br />
+                        La tabla muestra toda la información clave de cada afiliado.<br />
+                        En la columna "Acciones" encontrarás estas opciones:<br />
+                        ✏️ <b>Editar:</b> Modifica los datos del afiliado.<br />
+                        🗑️ <b>Eliminar:</b> Da de baja al afiliado (sistema pedirá confirmación).<br />
+                        📋 <b>Asignar Plan:</b> Selecciona o cambia su plan actual.<br />
+                        🔄 <b>Traspaso:</b> Transfiere el afiliado a otra sede o plan.<br />
+                        🎁 <b>Cortesía:</b> Asigna beneficios especiales.<br />
+                        🎫 <b>FreePass:</b> Otorga acceso temporal.<br />
+                        🏥 <b>Incapacidad:</b> Registra una incapacidad médica.<br />
+                        ❄️ <b>Congelación:</b> Pausa temporalmente su membresía.
+                    <br />
+                        <br />
+                        <b>3️⃣ Paso 3: Acciones Adicionales</b><br />
+                        Al lado opuesto del buscador encontrarás dos botones útiles:<br />
+                        📤 <b>Exportar a Excel:</b><br />
+                        Genera un archivo Excel con los datos visibles en la tabla.<br />
+                        ➕ <b>Crear Nuevo Afiliado:</b><br />
+                        Te lleva a un formulario para registrar un nuevo afiliado.
+                   <br />
+                        <br />
+                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="wrapper">
 
         <uc1:navbar runat="server" ID="navbar1" />
