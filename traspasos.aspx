@@ -52,36 +52,36 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-person-chalkboard modal-icon"></i>
-                    <h4 class="modal-title">Guía para realizar un traspaso</h4>
-                    <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
+                    <i class="fa fa-right-left modal-icon"></i>
+                    <h4 class="modal-title">Guía para Traspaso de Planes entre Afiliados</h4>
+                    <small class="font-bold">¡Bienvenido! Te explicamos cómo transferir un plan de un afiliado a otro de forma fácil y segura.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>1. Lee las Instrucciones</b><br />
-                        Antes de comenzar, es importante que leas todas las instrucciones del formulario. Esto te ayudará a entender qué información se requiere y cómo debe ser presentada.
+                        <b>1️⃣ Paso 1: Busca al Afiliado Origen</b><br />
+                        Usa el buscador izquierdo para encontrar al afiliado que cede el plan:<br />
+                        🔍 Filtra por: 👤 <b>Nombre</b>, 📄 <b>Cédula</b>, ✉️ <b>Correo</b> o 📱 <b>Celular.</b><br />
+                        Selecciona al afiliado para ver sus 📋 Planes actuales.
+                    <br />
                         <br />
+                        <b>2️⃣ Paso 2: Busca al Afiliado Destino</b><br />
+                        Usa el buscador derecho para ubicar al afiliado que recibirá el plan:<br />
+                        🔍 Mismos filtros: 👤 <b>Nombre</b>, 📄 <b>Cédula</b>, ✉️ <b>Correo</b> o 📱 <b>Celular.</b><br />
+                        Verifica que sus datos sean correctos.
+                    <br />
                         <br />
-                        <b>2. Reúne la Información Necesaria</b><br />
-                        Asegúrate de tener a mano todos los documentos e información que necesitas, como:
-                        Datos personales (nombre, dirección, número de teléfono, etc.)
-                        Información específica relacionada con el propósito del formulario (por ejemplo, detalles de empleo, historial médico, etc.)
+                        <b>3️⃣ Paso 3: Confirma el Traspaso o Cancela</b><br />
+                        🔄 <b>Traspasar: </b> Realiza la acción y finaliza el proceso.<br />
+                        El sistema pedirá confirmación antes de proceder.<br />
+                        ↩️ <b>Cancelar:</b> Si necesitas volver atrás sin guardar modificaciones.
+                    <br />
                         <br />
+                        ⚠️ <b>Importante:</b><br />
+                        El afiliado origen <b>perderá acceso</b> al plan traspasado.<br />
+                        El afiliado destino <b>debe cumplir</b> con los requisitos del nuevo plan (si aplica).
+                   <br />
                         <br />
-                        <b>3. Completa los Campos Requeridos</b><br />
-                        Campos Obligatorios: Identifica cuáles son los campos obligatorios (generalmente marcados con un asterisco *) y asegúrate de completarlos.
-                        Campos Opcionales: Si hay campos opcionales, completa solo los que consideres relevantes.
-                        <br />
-                        <br />
-                        <b>4. Confirma la Información</b><br />
-                        Asegúrate de que todos los datos ingresados son correctos y actualizados. Una revisión final puede evitar errores que podrían complicar el proceso.
-                        <br />
-                        <br />
-                        <b>5. Envía el Formulario</b><br />
-                        Asegúrate de seguir el proceso de envío indicado (hacer clic en "Agregar").
-                        <br />
-                        <br />
-                        ¡Siguiendo estos pasos, estarás listo para diligenciar tu formulario sin problemas! Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">

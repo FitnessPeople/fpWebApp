@@ -59,12 +59,12 @@
                     <p>
                         <b>1️⃣ Paso 1: Busca y Filtra Empresas</b><br />
                         Usa el buscador para encontrar empresas específicas. Puedes filtrar por:<br />
-                        📄 Documento (CC, TI, etc.).<br />
+                        📄 <b>Documento (CC, TI, etc.).<br />
                         🏷️ Nombre Comercial.<br />
                         📱 Celular o Correo.<br />
                         📅 Fecha de Convenio.<br />
                         🟢 Estado (Activo/Inactivo).<br />
-                        ℹ️ Info (datos adicionales).<br />
+                        ℹ️ Info (datos adicionales).</b><br />
                         Tip: ¡Combina filtros para resultados más exactos!
                     <br />
                         <br />

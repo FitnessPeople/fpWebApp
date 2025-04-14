@@ -45,36 +45,38 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-person-chalkboard modal-icon"></i>
-                    <h4 class="modal-title">Guía para crear una cortesía</h4>
-                    <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
+                    <i class="fa fa-gift modal-icon"></i>
+                    <h4 class="modal-title">Guía para realizar Cortesías</h4>
+                    <small class="font-bold">¡Bienvenido! Te explicamos cómo asignar días de cortesía a un afiliado de forma sencilla.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>1. Lee las Instrucciones</b><br />
-                        Antes de comenzar, es importante que leas todas las instrucciones del formulario. Esto te ayudará a entender qué información se requiere y cómo debe ser presentada.
+                        <b>1️⃣ Paso 1: Busca al Afiliado</b><br />
+                        Usa el <b>buscador</b> para encontrar al afiliado:<br />
+                        🔍 Filtra por: 👤 <b>Nombre</b>, 📄 <b>Cédula</b>, ✉️ <b>Correo</b> o 📱 <b>Celular.</b><br />
+                        Selecciona al afiliado correcto de la lista.
+                    <br />
                         <br />
+                        <b>2️⃣ Paso 2: Configura la Cortesía</b><br />
+                        <b>Selecciona los días de cortesía:</b><br />
+                        🎁 Opciones: <b>7, 15, 30 o 60 días.</b><br />
+                        <b>Escribe el motivo:</b><br />
+                        ✍️ Describe brevemente la razón (ej: "Compensación por falla técnica", "Promoción especial").
+                    <br />
                         <br />
-                        <b>2. Reúne la Información Necesaria</b><br />
-                        Asegúrate de tener a mano todos los documentos e información que necesitas, como:
-                        Datos personales (nombre, dirección, número de teléfono, etc.)
-                        Información específica relacionada con el propósito del formulario (por ejemplo, detalles de empleo, historial médico, etc.)
+                        ⚠️ <b>Importante:</b><br />
+                        Antes de finalizar, verifica en la <b>sección inferior</b> que:<br />
+                        ✔ Los datos del afiliado sean correctos.<br />
+                        ✔ Los días seleccionados coincidan con lo planeado.<br />
+                        ✔ El motivo esté claro y completo.
+                    <br />
                         <br />
+                        <b>3️⃣ Paso 3: Confirma o cancela</b><br />
+                        ✅ <b>Actualizar:</b> Guarda los cambios realizados.<br />
+                        ↩️ <b>Cancelar:</b> Si necesitas volver atrás sin guardar modificaciones.
+                   <br />
                         <br />
-                        <b>3. Completa los Campos Requeridos</b><br />
-                        Campos Obligatorios: Identifica cuáles son los campos obligatorios (generalmente marcados con un asterisco *) y asegúrate de completarlos.
-                        Campos Opcionales: Si hay campos opcionales, completa solo los que consideres relevantes.
-                        <br />
-                        <br />
-                        <b>4. Confirma la Información</b><br />
-                        Asegúrate de que todos los datos ingresados son correctos y actualizados. Una revisión final puede evitar errores que podrían complicar el proceso.
-                        <br />
-                        <br />
-                        <b>5. Envía el Formulario</b><br />
-                        Asegúrate de seguir el proceso de envío indicado (hacer clic en "Agregar").
-                        <br />
-                        <br />
-                        ¡Siguiendo estos pasos, estarás listo para diligenciar tu formulario sin problemas! Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">

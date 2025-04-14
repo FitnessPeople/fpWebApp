@@ -54,11 +54,11 @@
                     <p>
                         <b>1️⃣ Paso 1: Prepara la información</b><br />
                         Asegúrate de tener estos datos del afiliado a mano:<br />
-                        👤 Nombres, apellidos, tipo y número de documento.<br />
-                        📅 Fecha de nacimiento, género, estado civil.<br />
-                        📞 Teléfono, email, dirección, ciudad.<br />
-                        🤵 Profesión, EPS, empresa convenio, sede, foto (si aplica).<br />
-                        👥 Nombre, parentesco y teléfono de contacto.
+                        👤 <b>Nombre(s), Apellido(s), Tipo y Número de Documento.<br />
+                        📅 Fecha de Nacimiento, Género, Estado Civil.<br />
+                        📞 Teléfono, Email, Dirección, Ciudad.<br />
+                        🤵 Profesión, EPS, Empresa Convenio, Sede, Foto (si aplica).<br />
+                        👥 Nombre, Parentesco y Teléfono de Contacto.</b>
                     <br />
                         <br />
                         <b>2️⃣ Paso 2: Completa el formulario</b><br />

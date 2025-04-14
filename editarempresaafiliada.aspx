@@ -48,36 +48,45 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-person-chalkboard modal-icon"></i>
-                    <h4 class="modal-title">Guía para editar una empresa con convenio</h4>
-                    <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
+                    <i class="fa fa-building modal-icon"></i>
+                    <h4 class="modal-title">Guía para modificar información</h4>
+                    <small class="font-bold">¡Bienvenido! Sigue estos pasos para actualizar la información de manera rápida y segura.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>1. Lee las Instrucciones</b><br />
-                        Antes de comenzar, es importante que leas todas las instrucciones del formulario. Esto te ayudará a entender qué información se requiere y cómo debe ser presentada.
+                        <b>1️⃣ Paso 1: Modifica los datos necesarios</b><br />
+                        Actualiza solo los campos que requieran cambios:<br />
+                        📄 <b>Datos básicos:<br />
+                        ✔ Nombre Comercial.<br />
+                        ✔ Documento (NIT, RUC, etc.) + DV (dígito de verificación).<br />
+                        ✔ Razón Social.<br />
+                        ✔ Tipo de Documento.<br />
+
+                        📞 Contacto:<br />
+                        ✔ Teléfono Principal y Secundario.<br />
+                        ✔ Celular.<br />
+                        ✔ Email.<br />
+                        ✔ Dirección y Ciudad.<br />
+
+                        📅 Datos del convenio:<br />
+                        ✔ Fecha de Convenio.<br />
+                        ✔ Número de Empleados.<br />
+                        ✔ Tipo de Negociación.<br />
+                        ✔ Días de Crédito.<br />
+                        ✔ 📂 PDF del Contrato (listo para cargar).</b>
+                    <br />
                         <br />
+                        <b>2️⃣ Paso 2: Completa el formulario</b><br />
+                        🖊️ Llena todos los campos obligatorios (generalmente marcados con *).<br />
+                        🔍 Verifica que los datos estén correctos y actualizados.
+                    <br />
                         <br />
-                        <b>2. Reúne la Información Necesaria</b><br />
-                        Asegúrate de tener a mano todos los documentos e información que necesitas, como:
-                        Datos personales (nombre, dirección, número de teléfono, etc.)
-                        Información específica relacionada con el propósito del formulario (por ejemplo, detalles de empleo, historial médico, etc.)
+                        <b>3️⃣ Paso 3: Confirma o cancela</b><br />
+                        ✅ <b>Actualizar:</b> Guarda los cambios realizados.<br />
+                        ↩️ <b>Cancelar:</b> Si necesitas volver atrás sin guardar modificaciones.
+                    <br />
                         <br />
-                        <br />
-                        <b>3. Completa los Campos Requeridos</b><br />
-                        Campos Obligatorios: Identifica cuáles son los campos obligatorios (generalmente marcados con un asterisco *) y asegúrate de completarlos.
-                        Campos Opcionales: Si hay campos opcionales, completa solo los que consideres relevantes.
-                        <br />
-                        <br />
-                        <b>4. Confirma la Información</b><br />
-                        Asegúrate de que todos los datos ingresados son correctos y actualizados. Una revisión final puede evitar errores que podrían complicar el proceso.
-                        <br />
-                        <br />
-                        <b>5. Envía el Formulario</b><br />
-                        Asegúrate de seguir el proceso de envío indicado (hacer clic en "Agregar").
-                        <br />
-                        <br />
-                        ¡Siguiendo estos pasos, estarás listo para diligenciar tu formulario sin problemas! Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
