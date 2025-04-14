@@ -51,36 +51,38 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-person-chalkboard modal-icon"></i>
-                    <h4 class="modal-title">Guía para ver un documento</h4>
-                    <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
+                    <i class="fa fa-building modal-icon"></i>
+                    <h4 class="modal-title">Guía para visualizar empresas con convenio</h4>
+                    <small class="font-bold">¡Bienvenido! Te explicamos cómo gestionar el listado de forma rápida y sencilla.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>1. Lee las Instrucciones</b><br />
-                        Antes de comenzar, es importante que leas todas las instrucciones del formulario. Esto te ayudará a entender qué información se requiere y cómo debe ser presentada.
+                        <b>1️⃣ Paso 1: Busca y Filtra Empresas</b><br />
+                        Usa el buscador para encontrar empresas específicas. Puedes filtrar por:<br />
+                        📄 Documento (CC, TI, etc.).<br />
+                        🏷️ Nombre Comercial.<br />
+                        📱 Celular o Correo.<br />
+                        📅 Fecha de Convenio.<br />
+                        🟢 Estado (Activo/Inactivo).<br />
+                        ℹ️ Info (datos adicionales).<br />
+                        Tip: ¡Combina filtros para resultados más exactos!
+                    <br />
                         <br />
+                        <b>2️⃣ Paso 2: Revisa la Tabla de Resultados</b><br />
+                        La tabla muestra toda la información de las empresas.<br />
+                        ✏️ <b>Editar:</b> Haz clic para modificar datos.<br />
+                        🗑️ <b>Eliminar:</b> Elimina el convenio (sistema pedirá confirmación).
+                    <br />
                         <br />
-                        <b>2. Reúne la Información Necesaria</b><br />
-                        Asegúrate de tener a mano todos los documentos e información que necesitas, como:
-                        Datos personales (nombre, dirección, número de teléfono, etc.)
-                        Información específica relacionada con el propósito del formulario (por ejemplo, detalles de empleo, historial médico, etc.)
+                        <b>3️⃣ Paso 3: Acciones Adicionales</b><br />
+                        Al lado opuesto del buscador encontrarás dos botones útiles:<br />
+                        📤 <b>Exportar a Excel:</b><br />
+                        Genera un archivo Excel con los datos visibles en la tabla.<br />
+                        ➕ <b>Crear Nueva Empresa:</b><br />
+                        Te lleva a un formulario para registrar un nuevo convenio.
+                   <br />
                         <br />
-                        <br />
-                        <b>3. Completa los Campos Requeridos</b><br />
-                        Campos Obligatorios: Identifica cuáles son los campos obligatorios (generalmente marcados con un asterisco *) y asegúrate de completarlos.
-                        Campos Opcionales: Si hay campos opcionales, completa solo los que consideres relevantes.
-                        <br />
-                        <br />
-                        <b>4. Confirma la Información</b><br />
-                        Asegúrate de que todos los datos ingresados son correctos y actualizados. Una revisión final puede evitar errores que podrían complicar el proceso.
-                        <br />
-                        <br />
-                        <b>5. Envía el Formulario</b><br />
-                        Asegúrate de seguir el proceso de envío indicado (hacer clic en "Agregar").
-                        <br />
-                        <br />
-                        ¡Siguiendo estos pasos, estarás listo para diligenciar tu formulario sin problemas! Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
