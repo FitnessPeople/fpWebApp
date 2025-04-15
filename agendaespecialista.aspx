@@ -205,7 +205,10 @@
                                                     <a class="close-link">
                                                         <i class="fa fa-times"></i>
                                                     </a>--%>
+                                                    <span class="label label-success pull-right" style="color: #000;">Cita atendida</span>
+                                                    <span class="label label-danger pull-right" style="color: #000;">Cita cancelada</span>
                                                     <span class="label label-warning pull-right" style="color: #000;">Cita asignada</span>
+                                                    <span class="label label-primary pull-right" style="color: #000;">Cita disponible</span>
                                                 </div>
                                             </div>
                                             <div class="ibox-content">

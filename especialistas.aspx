@@ -149,10 +149,10 @@
                                             <tr>
                                                 <%--<td><%# Eval("idEspecialista") %></td>--%>
                                                 <td style="white-space: nowrap;"><%# Eval("DocumentoEmpleado") %></td>
-                                                <td><%# Eval("NombreEmpleado") %> <%# Eval("ApellidoEmpleado") %></td>
+                                                <td><%# Eval("NombreEmpleado") %></td>
                                                 <td style="white-space: nowrap;"><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoEmpleado") %>" target="_blank"><%# Eval("TelefonoEmpleado") %></a></td>
                                                 <td style="white-space: nowrap;"><i class="fa fa-envelope m-r-xs font-bold"></i><%# Eval("EmailEmpleado") %></td>
-                                                <td style="white-space: nowrap;"><i class="fa fa-user-tie m-r-xs font-bold"></i><%# Eval("Profesion") %></td>
+                                                <td style="white-space: nowrap;"><i class="fa fa-user-tie m-r-xs font-bold"></i><%# Eval("NombreCargo") %></td>
                                                 <td style="white-space: nowrap;"><i class="fa fa-cake m-r-xs font-bold"></i><span class="text-<%# Eval("badge") %> font-bold"><%# Eval("FechaNacEmpleado", "{0:dd MMM yyyy}") %> <%# Eval("edad") %></span></td>
                                                 <td><span class="badge badge-<%# Eval("badge2") %>"><%# Eval("Estado") %></span></td>
                                                 <td>

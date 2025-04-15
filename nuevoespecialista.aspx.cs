@@ -27,20 +27,21 @@ namespace fpWebApp
                     }
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
-                        DateTime dt14 = DateTime.Now.AddYears(-14);
-                        DateTime dt100 = DateTime.Now.AddYears(-100);
-                        txbFechaNac.Attributes.Add("min", dt100.Year.ToString() + "-0" + dt100.Month.ToString() + "-" + String.Format("{0:dd}", dt100));
-                        txbFechaNac.Attributes.Add("max", dt14.Year.ToString() + "-0" + dt14.Month.ToString() + "-" + String.Format("{0:dd}", dt14));
-                        txbDocumento.Attributes.Add("type", "number");
-                        txbTelefono.Attributes.Add("type", "number");
-                        txbFechaNac.Attributes.Add("type", "date");
-                        CargarTipoDocumento();
-                        CargarCiudad();
-                        CargarEstadoCivil();
-                        CargarEps();
-                        CargarProfesiones();
-                        CargarSedes();
-                        CargarGeneros();
+                        //DateTime dt14 = DateTime.Now.AddYears(-14);
+                        //DateTime dt100 = DateTime.Now.AddYears(-100);
+                        //txbFechaNac.Attributes.Add("min", dt100.Year.ToString() + "-0" + dt100.Month.ToString() + "-" + String.Format("{0:dd}", dt100));
+                        //txbFechaNac.Attributes.Add("max", dt14.Year.ToString() + "-0" + dt14.Month.ToString() + "-" + String.Format("{0:dd}", dt14));
+                        //txbDocumento.Attributes.Add("type", "number");
+                        //txbTelefono.Attributes.Add("type", "number");
+                        //txbFechaNac.Attributes.Add("type", "date");
+                        //CargarTipoDocumento();
+                        //CargarCiudad();
+                        //CargarEstadoCivil();
+                        //CargarEps();
+                        //CargarProfesiones();
+                        //CargarSedes();
+                        //CargarGeneros();
+                        Response.Redirect("nuevoempleado");
                     }
                     else
                     {

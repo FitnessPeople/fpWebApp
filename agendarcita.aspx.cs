@@ -105,7 +105,7 @@ namespace fpWebApp
                 {
                     _strEventos += "{\r\n";
                     _strEventos += "id: '" + dt.Rows[i]["idDisponibilidad"].ToString() + "',\r\n";
-                    _strEventos += "title: '" + dt.Rows[i]["NombreEspecialista"].ToString() + " " + dt.Rows[i]["ApellidoEspecialista"].ToString() + "',\r\n";
+                    _strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
                     _strEventos += "start: '" + dt.Rows[i]["FechaHoraIni"].ToString() + "',\r\n";
                     _strEventos += "end: '" + dt.Rows[i]["FechaHoraFin"].ToString() + "',\r\n";
                     //_strEventos += "className: 'bg-primary',\r\n";
@@ -118,7 +118,7 @@ namespace fpWebApp
                     }
                     else
                     {
-                        _strEventos += "color: '" + dt.Rows[i]["ColorEspecialista"].ToString() + "',\r\n";
+                        _strEventos += "color: '#1ab394',\r\n";
                         _strEventos += "description: 'Agenda disponible.',\r\n";
                         _strEventos += "btnAsignar: 'inline',\r\n";
                     }

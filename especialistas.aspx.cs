@@ -74,19 +74,17 @@ namespace fpWebApp
             string strQuery = "SELECT *, " +
                 "IF(TIMESTAMPDIFF(YEAR, FechaNacEmpleado, CURDATE()) IS NOT NULL, CONCAT('(',TIMESTAMPDIFF(YEAR, FechaNacEmpleado, CURDATE()),' Años)'),'<i class=\"fa fa-circle-question m-r-lg m-l-lg\"></i>') AS edad, " +
                 "IF(TIMESTAMPDIFF(YEAR, FechaNacEmpleado, CURDATE()) < 14,'danger',IF(TIMESTAMPDIFF(YEAR, FechaNacEmpleado, CURDATE()) < 18,'success',IF(TIMESTAMPDIFF(YEAR, FechaNacEmpleado, CURDATE()) < 60,'info','warning'))) badge, " +
-                "IF(EstadoEmpleado='Activo','success','danger') badge2 " +
+                "IF(Estado='Activo','success','danger') badge2 " +
                 "FROM Empleados e " +
                 "LEFT JOIN generos g ON g.idGenero = e.idGenero " +
                 "LEFT JOIN sedes s ON s.idSede = e.idSede " +
                 "LEFT JOIN estadocivil ec ON ec.idEstadoCivil = e.idEstadoCivil " +
-                "LEFT JOIN profesiones p ON p.idProfesion = e.idProfesion " +
-                "LEFT JOIN cargos c ON p.idCargo = c.idCargo " +
                 "LEFT JOIN eps ON eps.idEps = e.idEps " +
                 "LEFT JOIN ciudades ON ciudades.idCiudad = e.idCiudadEmpleado " +
+                "JOIN cargos c ON c.idCargo = e.idCargo AND (c.NombreCargo = 'Fisioterapeuta' OR c.NombreCargo = 'Médico deportólogo' OR c.NombreCargo = 'Nutricionista') " +
                 "WHERE e.DocumentoEmpleado like '%" + strParam + "%' " +
                 "OR e.NombreEmpleado like '%" + strParam + "%' " +
-                "OR e.EmailEmpleado like '%" + strParam + "%' " +
-                "AND c.NombreCargo = 'Nutricionista' ";
+                "OR e.EmailEmpleado like '%" + strParam + "%' ";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
@@ -126,13 +124,13 @@ namespace fpWebApp
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
                     HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "editarespecialista?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Attributes.Add("href", "editarempleado?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEditar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
                     HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "eliminarespecialista?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminar.Attributes.Add("href", "eliminarempleado?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEliminar.Visible = true;
                 }
             }

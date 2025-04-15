@@ -181,9 +181,9 @@
                                                     <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEspecialidad" runat="server"
                                                         OnSelectedIndexChanged="ddlEspecialidad_SelectedIndexChanged"
                                                         AutoPostBack="true">
-                                                        <asp:ListItem Text="Deportólogo" Value="4"></asp:ListItem>
-                                                        <asp:ListItem Text="Fisioterapeuta" Value="5"></asp:ListItem>
-                                                        <asp:ListItem Text="Nutricionista" Value="6"></asp:ListItem>
+                                                        <asp:ListItem Text="Médico deportólogo" Value="29"></asp:ListItem>
+                                                        <asp:ListItem Text="Fisioterapeuta" Value="18"></asp:ListItem>
+                                                        <asp:ListItem Text="Nutricionista" Value="30"></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
                                                 <div class="form-group">
@@ -209,7 +209,10 @@
                                                     <a class="close-link">
                                                         <i class="fa fa-times"></i>
                                                     </a>--%>
+                                                    <span class="label label-success pull-right" style="color: #000;">Cita atendida</span>
+                                                    <span class="label label-danger pull-right" style="color: #000;">Cita cancelada</span>
                                                     <span class="label label-warning pull-right" style="color: #000;">Cita asignada</span>
+                                                    <span class="label label-primary pull-right" style="color: #000;">Cita disponible</span>
                                                 </div>
                                             </div>
                                             <div class="ibox-content">

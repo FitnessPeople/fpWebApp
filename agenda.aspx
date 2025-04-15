@@ -197,7 +197,7 @@
                                                     <div class="form-group">
                                                         <label>Especialista:</label>
                                                         <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEspecialistas" runat="server"
-                                                            DataValueField="idEspecialista" DataTextField="NombreCompletoProfesion"
+                                                            DataValueField="DocumentoEmpleado" DataTextField="NombreCompletoProfesion"
                                                             AppendDataBoundItems="true">
                                                             <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                         </asp:DropDownList>
