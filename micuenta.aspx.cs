@@ -12,7 +12,16 @@ namespace fpWebApp
         {
             ltNombreUsuario.Text = Session["NombreUsuario"].ToString();
             ltCargo.Text = Session["Cargo"].ToString();
-            ltFoto.Text = "<img src=\"img/empleados/" + Session["Foto"].ToString() + "\" class=\"img-circle circle-border m-b-md\" alt=\"profile\">";
+            //ltFoto.Text = "<img src=\"img/empleados/" + Session["Foto"].ToString() + "\" class=\"img-circle circle-border m-b-md\" alt=\"profile\">";
+
+            if (Session["Foto"].ToString() != "")
+            {
+                ltFoto.Text = "<img src=\"img/empleados/" + Session["Foto"].ToString() + "\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\" />";
+            }
+            else
+            {
+                ltFoto.Text = "<img src=\"img/empleados/nofoto.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\" />";
+            }
         }
     }
 }

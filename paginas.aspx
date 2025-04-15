@@ -168,6 +168,13 @@
                                                         CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label>Nombre del ASPX:</label>
+                                                    <asp:TextBox ID="txbAspx" name="txbAspx" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="dfvAspx" runat="server" 
+                                                        ErrorMessage="* Campo requerido" ControlToValidate="txbAspx" 
+                                                        CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
+                                                </div>
+                                                <div class="form-group">
                                                     <a href="paginas" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar" 
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" 
@@ -218,7 +225,8 @@
                                             data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados" >
                                             <thead>
                                                 <tr>
-                                                    <th width="50%">Página</th>
+                                                    <th width="25%">Página</th>
+                                                    <th width="25%">ASPX</th>
                                                     <th width="30%">Categoría</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
@@ -228,6 +236,7 @@
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
                                                             <td><%# Eval("Pagina") %></td>
+                                                            <td><%# Eval("NombreAspx") %></td>
                                                             <td><%# Eval("Categoria") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"

@@ -14,7 +14,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Agenda</title>
+    <title>Fitness People | Agenda especialista</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
@@ -151,53 +151,11 @@
 
                             <form runat="server" id="form">
                                 <div class="row animated fadeInDown" id="divContenido" runat="server">
-                                    <div class="col-xxl-2 col-lg-3 col-md-5 col-sm-6 col-xs-12">
+                                    
+                                    <div class="col-xxl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
-                                                <h5>Agendamiento de citas</h5>
-                                                <div class="ibox-tools">
-                                                    <a class="collapse-link">
-                                                        <i class="fa fa-chevron-up"></i>
-                                                    </a>
-                                                    <a class="close-link">
-                                                        <i class="fa fa-times"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <div class="form-group">
-                                                    <label>Sede:</label>
-                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedes" runat="server"
-                                                        OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
-                                                        DataValueField="idSede" DataTextField="NombreSede"
-                                                        AutoPostBack="true" AppendDataBoundItems="true">
-                                                    </asp:DropDownList>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Especialidad:</label>
-                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEspecialidad" runat="server"
-                                                        OnSelectedIndexChanged="ddlEspecialidad_SelectedIndexChanged" 
-                                                        AutoPostBack="true">
-                                                        <asp:ListItem Text="Deportólogo" Value="4"></asp:ListItem>
-                                                        <asp:ListItem Text="Fisioterapeuta" Value="5"></asp:ListItem>
-                                                        <asp:ListItem Text="Nutricionista" Value="6"></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Afiliado</label>
-                                                    <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server" 
-                                                        placeholder="Nombre / Cédula / Email / Celular"></asp:TextBox>
-                                                     <asp:Button ID="btnAfiliado" runat="server" Text="" 
-                                                        style="display:none;" OnClick="btnAfiliado_Click" />
-                                                    <asp:HiddenField ID="hfIdAfiliado" runat="server" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xxl-10 col-lg-9 col-md-7 col-sm-6 col-xs-12">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title">
-                                                <h5>Agenda de <asp:Literal ID="ltEspecialista" runat="server"></asp:Literal> en <asp:Literal ID="ltSede" runat="server"></asp:Literal></h5>
+                                                <h5>Agenda de <asp:Literal ID="ltEspecialista" runat="server"></asp:Literal> </h5>
                                                 <div class="ibox-tools">
                                                     <%--<a class="collapse-link">
                                                         <i class="fa fa-chevron-up"></i>

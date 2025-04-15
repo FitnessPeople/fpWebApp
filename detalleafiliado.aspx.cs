@@ -33,7 +33,16 @@ namespace fpWebApp
                     if (ViewState["Consulta"].ToString() == "1")
                     {
                         divContenido.Visible = true;
-                        string strDocumento = Request.QueryString["search"].ToString();
+                        string strDocumento = "";
+                        if (Request.QueryString.Count > 0)
+                        {
+                            strDocumento = Request.QueryString["search"].ToString();
+                        }
+                        else
+                        {
+                            Response.Redirect("afiliados");
+                        }
+
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             divAcceso.Visible = true;

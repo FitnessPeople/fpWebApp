@@ -62,6 +62,7 @@ namespace fpWebApp
                             if (dt.Rows.Count > 0)
                             {
                                 txbPagina.Text = dt.Rows[0]["Pagina"].ToString();
+                                txbAspx.Text = dt.Rows[0]["NombreAspx"].ToString();
                                 ddlCategorias.SelectedIndex = Convert.ToInt16(ddlCategorias.Items.IndexOf(ddlCategorias.Items.FindByValue(dt.Rows[0]["Categoria"].ToString())));
 
                                 btnAgregar.Text = "Actualizar";
@@ -173,7 +174,7 @@ namespace fpWebApp
 
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarPagina(int.Parse(Request.QueryString["editid"].ToString()), txbPagina.Text.ToString().Trim(), ddlCategorias.SelectedItem.Text.ToString());
+                    string respuesta = cg.ActualizarPagina(int.Parse(Request.QueryString["editid"].ToString()), txbPagina.Text.ToString().Trim(), txbAspx.Text.ToString().Trim(), ddlCategorias.SelectedItem.Text.ToString());
 
                     string strNewData = TraerData();
                     cg.InsertarLog(Session["idusuario"].ToString(), "paginas", "Modifica", "El usuario modificó la página con nombre " + txbPagina.Text.ToString() + " de categoría " + ddlCategorias.SelectedItem.Value.ToString() + ".", strInitData, strNewData);
@@ -191,7 +192,7 @@ namespace fpWebApp
                 {
                     try
                     {
-                        string respuesta = cg.InsertarPagina(txbPagina.Text.ToString().Trim(), ddlCategorias.SelectedItem.Value.ToString());
+                        string respuesta = cg.InsertarPagina(txbPagina.Text.ToString().Trim(), txbAspx.Text.ToString().Trim(), ddlCategorias.SelectedItem.Value.ToString());
 
                         cg.InsertarLog(Session["idusuario"].ToString(), "paginas", "Nuevo", "El usuario creó una nueva página con nombre " + txbPagina.Text.ToString() + " de categoría " + ddlCategorias.SelectedItem.Value.ToString() + ".", "", "");
 

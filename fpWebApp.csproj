@@ -399,6 +399,7 @@
     <Content Include="editarempleado.aspx" />
     <Content Include="editarempresaafiliada.aspx" />
     <Content Include="editarespecialista.aspx" />
+    <Content Include="editarhistoria.aspx" />
     <Content Include="editarproductotienda.aspx" />
     <Content Include="editarusuario.aspx" />
     <Content Include="eliminarafiliado.aspx" />
@@ -1217,6 +1218,13 @@
     </Compile>
     <Compile Include="editarespecialista.aspx.designer.cs">
       <DependentUpon>editarespecialista.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="editarhistoria.aspx.cs">
+      <DependentUpon>editarhistoria.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="editarhistoria.aspx.designer.cs">
+      <DependentUpon>editarhistoria.aspx</DependentUpon>
     </Compile>
     <Compile Include="editarproductotienda.aspx.cs">
       <DependentUpon>editarproductotienda.aspx</DependentUpon>

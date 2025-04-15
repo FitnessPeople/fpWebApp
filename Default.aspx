@@ -32,12 +32,12 @@
             </p>
             <form class="m-t" role="form" id="form1" runat="server">
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-5">
                         <div class="form-group">
                             <asp:TextBox ID="txbEmail" CssClass="form-control" runat="server" placeholder="Usuario" required></asp:TextBox>
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-7">
                         <div class="form-group">
                             <asp:DropDownList ID="ddlDominio" runat="server" CssClass="form-control">
                                 <asp:ListItem Text="@fitnesspeoplecmd.com" Value="@fitnesspeoplecmd.com"></asp:ListItem>
