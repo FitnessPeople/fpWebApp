@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="listacontactoscrm.aspx.cs" Inherits="fpWebApp.listacontactoscrm" EnableEventValidation="false" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="listacontactoscrm.aspx.cs" Inherits="fpWebApp.listacontactoscrm" EnableEventValidation="false"  Culture="es-ES" UICulture="es-ES" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
@@ -316,6 +316,21 @@
                                             <!-- Más contenido aquí si quieres -->
                                    <div class="client-detail">
                                     <div class="full-height-scroll">
+                                        <ul class="list-group clear-list" runat="server"
+                                            visible='<%# (Eval("Estado") != null && Eval("idEstadoCRM").ToString() != "3" && Eval("idEstadoCRM").ToString() != "4") %>'>
+                                            <li class="list-group-item fist-item">
+                                                <i class="fa fa-phone" style="margin-right: 5px; color:green;"></i>
+                                                <span class="pull-right"><%# Eval("FechaProximoCon", "{0:dddd dd MMM yyyy hh:mm tt}") %></span>
+                                                <strong>Por favor, contáctame al:</strong> <%# GetTelefonoHTML(Eval("TelefonoContacto")) %>
+                                            </li>
+                                        </ul>
+
+<%--                                      <ul class="list-group clear-list">
+                                            <li class="list-group-item fist-item">
+                                                <span class="pull-right"><%# Eval("FechaProximoCon", "{0:ddd dd MMM yyyy}") %></span>
+                                                <strong>Por favor, contáctame</strong>
+                                            </li>
+                                      </ul>--%>
 
                                         <strong>Última actividad</strong>
                                         <%# Eval("historialHTML") %>
@@ -323,14 +338,23 @@
                                             <li class="list-group-item fist-item">
                                                 <span class="pull-right"><%# Eval("historialHTML") %></span>
                                         </ul>--%>
-                                        <strong>Notes</strong>
+                                        <hr/>
+                                        <strong>Notas</strong>
                                         <p>
                                             Entreno por las noches
                                             Entreno fines de semana.
                                             He completado 300 asistencias.
                                         </p>
                                         <hr/>
-<%--                                        <strong>Timeline activity</strong>
+                                         <strong>Medio de pago sugerido</strong>
+                                        <p>
+                                            Efectivo
+                                            Tarjeta.
+                                            Pagos en linea (Wompi)
+                                            Transferencia
+                                        </p>
+                                        <hr/>
+                                        <strong>Timeline activity</strong>
                                         <div id="vertical-timeline" class="vertical-container dark-timeline">
                                             <div class="vertical-timeline-block">
                                                 <div class="vertical-timeline-icon gray-bg">
@@ -392,7 +416,7 @@
                                                     <span class="vertical-date small text-muted"> 4:20 pm - 10.05.2014 </span>
                                                 </div>
                                             </div>
-                                        </div>--%>
+                                        </div>
                                     </div>
                                     </div>
 
