@@ -182,20 +182,7 @@ namespace fpWebApp
             //ddlStatusLead.DataSource = dt;
             //ddlStatusLead.DataBind();
         }
-        //protected void rpContactosCRM_ItemDataBound1(object sender, RepeaterItemEventArgs e)
-        //{
-        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-        //    {
-        //        if (ViewState["CrearModificar"]?.ToString() == "1")
-        //        {
-        //            Button btnEditar = (Button)e.Item.FindControl("btnEditar");
-        //            if (btnEditar != null)
-        //            {
-        //                btnEditar.Visible = true;
-        //            }
-        //        }
-        //    }
-        //}
+
 
 
 
