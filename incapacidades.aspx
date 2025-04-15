@@ -54,43 +54,46 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-head-side-mask modal-icon"></i>
-                    <h4 class="modal-title">Guía para registrar Incapacidades Médicas</h4>
+                    <i class="fa fa-head-side-mask modal-icon" style="color: #1C84C6;"></i>
+                    <h4 class="modal-title">Guía para registrar incapacidades médicas</h4>
                     <small class="font-bold">¡Bienvenido! Te explicamos cómo gestionar una incapacidad para un afiliado de manera clara y eficiente.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>1️⃣ Paso 1: Busca al Afiliado</b><br />
+                        <b>Paso 1: Busca al afiliado</b><br />
                         Usa el buscador para encontrar al afiliado:<br />
-                        🔍 Filtra por: 👤 <b>Nombre</b>, 📄 <b>Cédula</b>, ✉️ <b>Correo</b> o 📱 <b>Celular.</b><br />
+                        <i class="fa-solid fa-magnifying-glass"></i> Filtra por: 
+                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre</b>, 
+                        <i class="fa-solid fa-address-card" style="color: #0D6EFD;"></i> <b>Cédula</b>, 
+                        <i class="fa-solid fa-envelope" style="color: #0D6EFD;"></i> <b>Correo</b> o 
+                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i> <b>Celular.</b><br />
                         Selecciona al afiliado correcto.
                     <br />
                         <br />
-                        <b>2️⃣ Paso 2: Completa los datos de la incapacidad</b><br />
-                        📅 <b>Días de incapacidad:</b><br />
-                        Selecciona un valor entre <b>1 y 100 días.</b><br />
-                        🏷️ <b>Tipo de incapacidad:</b><br />
-                        Selecciona una opción del menú (ej: "Enfermedad general", "Accidente laboral").<br />
-                        🗓️ <b>Fecha de inicio:</b><br />
-                        Elige el día en que inicia la incapacidad.<br />
-                        📂 <b>Documento de soporte:</b><br />
-                        Sube el archivo (PDF/imagen) del certificado médico.<br />
-                        Asegúrate de que esté legible y sea válido.<br />
-                        ✍️ <b>Motivo:</b><br />
-                        Describe brevemente la causa (ej: "Fractura de brazo", "Cirugía programada").
+                        <b>Paso 2: Completa los datos de la incapacidad</b><br />
+                        Días de incapacidad:<br />
+                        <i class="fa-solid fa-calendar-day" style="color: #0D6EFD;"></i> Selecciona un valor entre <b>1 y 100 días.</b><br />
+                        Tipo de incapacidad:<br />
+                        <i class="fa-solid fa-tag" style="color: #0D6EFD;"></i> Selecciona una opción del menú (ej: "Enfermedad general", "Accidente laboral").<br />
+                        Fecha de inicio:<br />
+                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i> Elige el día en que inicia la incapacidad.<br />
+                        Documento de soporte:<br />
+                        <i class="fa-solid fa-folder-open" style="color: #0D6EFD;"></i> Sube el archivo (PDF/imagen) del certificado médico.<br />
+                        <i class="fa-solid fa-check"></i> Asegúrate de que esté legible y sea válido.<br />
+                        Motivo:<br />
+                        <i class="fa-solid fa-pencil" style="color: #0D6EFD;"></i> Describe brevemente la causa (ej: "Fractura de brazo", "Cirugía programada").
                     <br />
                         <br />
-                        ⚠️ <b>Importante:</b><br />
+                        <i class="fa-solid fa-triangle-exclamation" style="color: #FFC107;"></i> <b>Importante:</b><br />
                         Antes de finalizar, verifica en la <b>sección inferior</b> que:<br />
-                        ✔ Los datos del afiliado sean correctos.<br />
-                        ✔ La fecha y días coincidan con el certificado médico.<br />
-                        ✔ El documento esté cargado correctamente.
+                        <i class="fa-solid fa-check"></i> Los datos del afiliado sean correctos.<br />
+                        <i class="fa-solid fa-check"></i> La fecha y días coincidan con el certificado médico.<br />
+                        <i class="fa-solid fa-check"></i> El documento esté cargado correctamente.
                     <br />
                         <br />
-                        <b>3️⃣ Paso 3: Confirma o Cancela</b><br />
-                        🔄 <b>Solicitar Incapacidad:</b> Envía la solicitud al sistema.<br />
-                        El sistema pedirá confirmación antes de proceder.<br />
-                        ↩️ <b>Cancelar:</b> Si necesitas volver atrás sin guardar modificaciones.
+                        <b>Paso 3: Confirma o cancela</b><br />
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Solicitar Incapacidad:</b> Envía la solicitud al sistema.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar modificaciones.
                    <br />
                         <br />
                         <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.

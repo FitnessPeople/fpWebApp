@@ -51,34 +51,34 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-building modal-icon"></i>
+                    <i class="fa fa-building modal-icon" style="color: #1C84C6;"></i>
                     <h4 class="modal-title">Guía para visualizar empresas con convenio</h4>
                     <small class="font-bold">¡Bienvenido! Te explicamos cómo gestionar el listado de forma rápida y sencilla.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>1️⃣ Paso 1: Busca y Filtra Empresas</b><br />
+                        <b>Paso 1: Busca y filtra empresas</b><br />
                         Usa el buscador para encontrar empresas específicas. Puedes filtrar por:<br />
-                        📄 <b>Documento (CC, TI, etc.).<br />
-                        🏷️ Nombre Comercial.<br />
-                        📱 Celular o Correo.<br />
-                        📅 Fecha de Convenio.<br />
-                        🟢 Estado (Activo/Inactivo).<br />
-                        ℹ️ Info (datos adicionales).</b><br />
-                        Tip: ¡Combina filtros para resultados más exactos!
+                        <i class="fa-solid fa-address-card" style="color: #0D6EFD;"></i> <b>Documento (CC, TI, etc.).<br />
+                        <i class="fa-solid fa-tag" style="color: #0D6EFD;"></i> Nombre Comercial.<br />
+                        <i class="fa-solid fa-phone" style="color: #0D6EFD;"></i> Celular o Correo.<br />
+                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i> Fecha de Convenio.<br />
+                        <i class="fa-solid fa-circle" style="color: #0D6EFD;"></i> Estado (Activo/Inactivo).<br />
+                        <i class="fa-solid fa-circle-info" style="color: #0D6EFD;"></i> Info (datos adicionales).</b><br />
+                        <i class="fa-solid fa-star" style="color: #FECE32;"></i> Tip: ¡Combina filtros para resultados más exactos!
                     <br />
                         <br />
-                        <b>2️⃣ Paso 2: Revisa la Tabla de Resultados</b><br />
+                        <b>Paso 2: Revisa la tabla de resultados</b><br />
                         La tabla muestra toda la información de las empresas.<br />
-                        ✏️ <b>Editar:</b> Haz clic para modificar datos.<br />
-                        🗑️ <b>Eliminar:</b> Elimina el convenio (sistema pedirá confirmación).
+                        <i class="fa fa-edit" style="color: #1AB394;"></i> <b>Editar:</b> Haz clic para modificar datos.<br />
+                        <i class="fa fa-trash" style="color: #DC3545;"></i> <b>Eliminar:</b> Elimina el convenio (sistema pedirá confirmación).
                     <br />
                         <br />
-                        <b>3️⃣ Paso 3: Acciones Adicionales</b><br />
+                        <b>Paso 3: Acciones adicionales</b><br />
                         Al lado opuesto del buscador encontrarás dos botones útiles:<br />
-                        📤 <b>Exportar a Excel:</b><br />
+                        <i class="fa-solid fa-file-export" style="color: #212529;"></i> <b>Exportar a Excel:</b> 
                         Genera un archivo Excel con los datos visibles en la tabla.<br />
-                        ➕ <b>Crear Nueva Empresa:</b><br />
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Crear Nueva Empresa:</b> 
                         Te lleva a un formulario para registrar un nuevo convenio.
                    <br />
                         <br />

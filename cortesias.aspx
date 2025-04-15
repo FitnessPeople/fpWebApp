@@ -45,35 +45,39 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-gift modal-icon"></i>
-                    <h4 class="modal-title">Guía para realizar Cortesías</h4>
+                    <i class="fa fa-gift modal-icon" style="color: #1C84C6;"></i>
+                    <h4 class="modal-title">Guía para realizar cortesías</h4>
                     <small class="font-bold">¡Bienvenido! Te explicamos cómo asignar días de cortesía a un afiliado de forma sencilla.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>1️⃣ Paso 1: Busca al Afiliado</b><br />
+                        <b>Paso 1: Busca al afiliado</b><br />
                         Usa el <b>buscador</b> para encontrar al afiliado:<br />
-                        🔍 Filtra por: 👤 <b>Nombre</b>, 📄 <b>Cédula</b>, ✉️ <b>Correo</b> o 📱 <b>Celular.</b><br />
+                        <i class="fa-solid fa-magnifying-glass"></i> Filtra por: 
+                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre</b>, 
+                        <i class="fa-solid fa-address-card" style="color: #0D6EFD;"></i> <b>Cédula</b>, 
+                        <i class="fa-solid fa-envelope" style="color: #0D6EFD;"></i> <b>Correo</b> o 
+                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i> <b>Celular.</b><br />
                         Selecciona al afiliado correcto de la lista.
                     <br />
                         <br />
-                        <b>2️⃣ Paso 2: Configura la Cortesía</b><br />
-                        <b>Selecciona los días de cortesía:</b><br />
-                        🎁 Opciones: <b>7, 15, 30 o 60 días.</b><br />
-                        <b>Escribe el motivo:</b><br />
-                        ✍️ Describe brevemente la razón (ej: "Compensación por falla técnica", "Promoción especial").
+                        <b>Paso 2: Configura la cortesía</b><br />
+                        Selecciona los días de cortesía:<br />
+                        <i class="fa fa-gift"></i> Opciones: <b>7, 15, 30 o 60 días.</b><br />
+                        Escribe el motivo:<br />
+                        <i class="fa-solid fa-pencil"></i> Describe brevemente la razón (ej: "Compensación por falla técnica", "Promoción especial").
                     <br />
                         <br />
-                        ⚠️ <b>Importante:</b><br />
+                        <i class="fa-solid fa-triangle-exclamation" style="color: #FFC107;"></i> <b>Importante</b><br />
                         Antes de finalizar, verifica en la <b>sección inferior</b> que:<br />
-                        ✔ Los datos del afiliado sean correctos.<br />
-                        ✔ Los días seleccionados coincidan con lo planeado.<br />
-                        ✔ El motivo esté claro y completo.
+                        <i class="fa-solid fa-check"></i> Los datos del afiliado sean correctos.<br />
+                        <i class="fa-solid fa-check"></i> Los días seleccionados coincidan con lo planeado.<br />
+                        <i class="fa-solid fa-check"></i> El motivo esté claro y completo.
                     <br />
                         <br />
-                        <b>3️⃣ Paso 3: Confirma o cancela</b><br />
-                        ✅ <b>Actualizar:</b> Guarda los cambios realizados.<br />
-                        ↩️ <b>Cancelar:</b> Si necesitas volver atrás sin guardar modificaciones.
+                        <b>Paso 3: Confirma o cancela</b><br />
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Actualizar:</b> Guarda los cambios realizados.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar modificaciones.
                    <br />
                         <br />
                         <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
