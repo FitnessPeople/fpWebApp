@@ -54,42 +54,45 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-snowflake modal-icon"></i>
-                    <h4 class="modal-title">Guía para registrar Congelaciones</h4>
+                    <i class="fa fa-snowflake modal-icon" style="color: #1C84C6;"></i>
+                    <h4 class="modal-title">Guía para registrar congelaciones</h4>
                     <small class="font-bold">¡Bienvenido! Te explicamos cómo gestionar una congelación para un afiliado de manera clara y eficiente.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>1️⃣ Paso 1: Busca al Afiliado</b><br />
+                        <b>Paso 1: Busca al afiliado</b><br />
                         Usa el buscador para encontrar al afiliado:<br />
-                        🔍 Filtra por: 👤 <b>Nombre</b>, 📄 <b>Cédula</b>, ✉️ <b>Correo</b> o 📱 <b>Celular.</b><br />
+                        <i class="fa-solid fa-magnifying-glass"></i> Filtra por: 
+                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre</b>, 
+                        <i class="fa-solid fa-address-card" style="color: #0D6EFD;"></i> <b>Cédula</b>, 
+                        <i class="fa-solid fa-envelope" style="color: #0D6EFD;"></i> <b>Correo</b> o 
+                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i> <b>Celular.</b><br />
                         Selecciona al afiliado correcto.
                     <br />
                         <br />
-                        <b>2️⃣ Paso 2: Completa la congelación</b><br />
-                        ❄️ <b>Días de congelación:</b><br />
-                        Selecciona un valor entre <b>1 y 100 días.</b><br />
-                        🏷️ <b>Tipo de congelación:</b><br />
-                        Selecciona la razón (ej: "Viaje", "Lesión temporal", "Razones personales").<br />
-                        🗓️ <b>Fecha de inicio:</b><br />
-                        Indica cuándo comienza la pausa.<br />
-                        📂 <b>Documento de soporte (opcional):</b><br />
-                        Adjunta un comprobante si aplica (ej: certificado médico, reserva de vuelo).<br />
-                        ✍️ <b>Motivo:</b><br />
-                        Describe brevemente la razón (ej: "Recuperación de cirugía", "Vacaciones prolongadas").
+                        <b>Paso 2: Completa la congelación</b><br />
+                        Días de congelación:<br />
+                        <i class="fa-solid fa-snowflake" style="color: #0D6EFD;"></i> Selecciona un valor entre <b>1 y 100 días.</b><br />
+                        Tipo de congelación:<br />
+                        <i class="fa-solid fa-tag" style="color: #0D6EFD;"></i> Selecciona la razón (ej: "Viaje", "Lesión temporal", "Razones personales").<br />
+                        Fecha de inicio:<br />
+                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i> Indica cuándo comienza la pausa.<br />
+                        Documento de soporte (opcional):<br />
+                        <i class="fa-solid fa-folder-open" style="color: #0D6EFD;"></i> Adjunta un comprobante si aplica (ej: certificado médico, reserva de vuelo).<br />
+                        Motivo:<br />
+                        <i class="fa-solid fa-pencil" style="color: #0D6EFD;"></i> Describe brevemente la razón (ej: "Recuperación de cirugía", "Vacaciones prolongadas").
                     <br />
                         <br />
-                        ⚠️ <b>Importante:</b><br />
+                        <i class="fa-solid fa-triangle-exclamation" style="color: #FFC107;"></i> <b>Importante:</b><br />
                         Antes de finalizar, verifica en la <b>sección inferior</b> que:<br />
-                        ✔ Los datos del afiliado sean correctos.<br />
-                        ✔ La fecha y días de congelación sean válidos.<br />
-                        ✔ El documento esté cargado correctamente (si aplica).
+                        <i class="fa-solid fa-check"></i> Los datos del afiliado sean correctos.<br />
+                        <i class="fa-solid fa-check"></i> La fecha y días de congelación sean válidos.<br />
+                        <i class="fa-solid fa-check"></i> El documento esté cargado correctamente (si aplica).
                     <br />
                         <br />
-                        <b>3️⃣ Paso 3: Confirma o Cancela</b><br />
-                        🔄 <b>Solicitar Congelación:</b> Activa la pausa temporal.<br />
-                        El sistema pedirá confirmación antes de proceder.<br />
-                        ↩️ <b>Cancelar:</b> Si necesitas volver atrás sin guardar modificaciones.
+                        <b>Paso 3: Confirma o cancela</b><br />
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Solicitar Congelación:</b> Activa la pausa temporal.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar modificaciones.
                    <br />
                         <br />
                         <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
