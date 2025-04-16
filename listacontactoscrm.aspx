@@ -319,26 +319,22 @@
                                         <ul class="list-group clear-list" runat="server"
                                             visible='<%# (Eval("Estado") != null && Eval("idEstadoCRM").ToString() != "3" && Eval("idEstadoCRM").ToString() != "4") %>'>
                                             <li class="list-group-item fist-item">
-                                                <i class="fa fa-phone" style="margin-right: 5px; color:green;"></i>
-                                                <span class="pull-right"><%# Eval("FechaProximoCon", "{0:dddd dd MMM yyyy hh:mm tt}") %></span>
-                                                <strong>Por favor, contáctame al:</strong> <%# GetTelefonoHTML(Eval("TelefonoContacto")) %>
+                                                <div style="display: flex; flex-direction: column; gap: 5px;">
+                                                    <div style="display: flex; align-items: center; flex-wrap: wrap;">
+                                                        <i class="fa fa-phone" style="margin-right: 5px; color: green;"></i>
+                                                        <strong>Por favor, contáctame al:</strong>
+                                                        <span style="margin-left: 5px;"><%# GetTelefonoHTML(Eval("TelefonoContacto")) %></span>
+                                                    </div>
+                                                    <div style="margin-left: 20px;">
+                                                        <%# Eval("FechaProximoCon", "{0:dddd dd MMM yyyy hh:mm tt}") %>
+                                                    </div>
+                                                </div>
                                             </li>
                                         </ul>
 
-<%--                                      <ul class="list-group clear-list">
-                                            <li class="list-group-item fist-item">
-                                                <span class="pull-right"><%# Eval("FechaProximoCon", "{0:ddd dd MMM yyyy}") %></span>
-                                                <strong>Por favor, contáctame</strong>
-                                            </li>
-                                      </ul>--%>
-
                                         <strong>Última actividad</strong>
-                                        <%# Eval("historialHTML") %>
-<%--                                        <ul class="list-group clear-list">
-                                            <li class="list-group-item fist-item">
-                                                <span class="pull-right"><%# Eval("historialHTML") %></span>
-                                        </ul>--%>
-                                        <hr/>
+                                        <%# Eval("historialHTML") %>                                       
+
                                         <strong>Notas</strong>
                                         <p>
                                             Entreno por las noches
@@ -354,7 +350,7 @@
                                             Transferencia
                                         </p>
                                         <hr/>
-                                        <strong>Timeline activity</strong>
+                                        <strong>Planes anteriores</strong>
                                         <div id="vertical-timeline" class="vertical-container dark-timeline">
                                             <div class="vertical-timeline-block">
                                                 <div class="vertical-timeline-icon gray-bg">
