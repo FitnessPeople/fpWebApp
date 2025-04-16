@@ -190,7 +190,7 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarEstadoCivil(int.Parse(Request.QueryString["editid"].ToString()), txbEstadoCivil.Text.ToString().Trim());
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "estado civil", "Modifica", "El usuario modificó el estado civil con nombre " + txbEstadoCivil.Text.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "estados civiles", "Modifica", "El usuario modificó el estado civil: " + txbEstadoCivil.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -206,7 +206,7 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarEstadoCivil(txbEstadoCivil.Text.ToString().Trim());
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "estado civil", "Nuevo", "El usuario creó un nuevo estado civil con nombre " + txbEstadoCivil.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "estados civiles", "Agrega", "El usuario agregó un nuevo estado civil: " + txbEstadoCivil.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {

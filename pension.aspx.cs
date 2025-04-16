@@ -190,7 +190,7 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarPension(int.Parse(Request.QueryString["editid"].ToString()), txbFondoPension.Text.ToString().Trim());
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "fondos pensiones", "Modifica", "El usuario modificó el fondo de pensión con nombre " + txbFondoPension.Text.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "fondos pensiones", "Modifica", "El usuario modificó el fondo de pensión: " + txbFondoPension.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -206,7 +206,7 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarPension(txbFondoPension.Text.ToString().Trim());
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "fondos pensiones", "Nuevo", "El usuario creó un nuevo fondo de pensión con nombre " + txbFondoPension.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "fondos pensiones", "Agrega", "El usuario agregó un nuevo fondo de pensión: " + txbFondoPension.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {

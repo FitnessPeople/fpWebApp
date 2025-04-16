@@ -195,7 +195,7 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarTipoDocumento(int.Parse(Request.QueryString["editid"].ToString()), txbTipoDoc.Text.ToString().Trim(),txtSiglaDoc.Text.ToString().Trim());
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "tipo documento", "Modifica", "El usuario modificó el tipo de documento con nombre " + txbTipoDoc.Text.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "tipos documento", "Modifica", "El usuario modificó el tipo de documento: " + txbTipoDoc.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -211,7 +211,7 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarTipoDocumento(txbTipoDoc.Text.ToString().Trim(), txtSiglaDoc.Text.ToString().Trim());
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "tipo documento", "Nuevo", "El usuario creó un nuevo tipo de documento con nombre " + txbTipoDoc.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "tipos documento", "Agrega", "El usuario agregó un nuevo tipo de documento: " + txbTipoDoc.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {

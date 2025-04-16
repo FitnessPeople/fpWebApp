@@ -138,7 +138,7 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarPerfil(int.Parse(Request.QueryString["editid"].ToString()), txbPerfil.Text.ToString().Trim());
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "perfiles", "Modifica", "El usuario modificó el perfil con nombre " + txbPerfil.Text.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "perfiles", "Modifica", "El usuario modificó el perfil: " + txbPerfil.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -154,7 +154,7 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarPerfil(txbPerfil.Text.ToString().Trim());
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "perfiles", "Nuevo", "El usuario creó un nuevo perfil con nombre " + txbPerfil.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "perfiles", "Agrega", "El usuario agregó un nuevo perfil: " + txbPerfil.Text.ToString() + ".", "", "");
 
                         DataTable dt = cg.ConsultarUltimoPerfil();
                         int IdPerfil = int.Parse(dt.Rows[0]["idPerfil"].ToString());

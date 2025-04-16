@@ -300,7 +300,7 @@ namespace fpWebApp
 
                             if (mensaje == "OK")
                             {
-                                cg.InsertarLog(Session["idusuario"].ToString(), "Empleados", "Nuevo registro", "El usuario agregó un nuevo empleado con documento " + txbDocumento.Text.ToString() + ".", "", "");
+                                cg.InsertarLog(Session["idusuario"].ToString(), "empleados", "Agrega", "El usuario agregó un nuevo empleado con documento: " + txbDocumento.Text.ToString() + ".", "", "");
 
                                 string script = @"
                                     Swal.fire({

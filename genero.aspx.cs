@@ -191,7 +191,7 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarGenero(int.Parse(Request.QueryString["editid"].ToString()), txbGenero.Text.ToString().Trim());
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "generos", "Modifica", "El usuario modificó el género con nombre " + txbGenero.Text.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "géneros", "Modifica", "El usuario modificó el género: " + txbGenero.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -207,7 +207,7 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarGenero(txbGenero.Text.ToString().Trim());
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "generos", "Nuevo", "El usuario creó un nuevo género con nombre " + txbGenero.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "géneros", "Agrega", "El usuario agregó un nuevo género: " + txbGenero.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {

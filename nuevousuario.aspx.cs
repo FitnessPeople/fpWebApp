@@ -161,7 +161,7 @@ namespace fpWebApp
                         "'" + ddlPerfiles.SelectedItem.Value.ToString() + "', '" + ddlEmpleados.SelectedItem.Value.ToString() + "', " +
                         "1, 'Activo') ";
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "Usuarios", "Nuevo", "El usuario agregó datos del correo " + txbEmail.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "usuarios", "Agrega", "El usuario agregó información del correo: " + txbEmail.Text.ToString() + ".", "", "");
 
                         string mensaje = cg.TraerDatosStr(strQuery);
                     }

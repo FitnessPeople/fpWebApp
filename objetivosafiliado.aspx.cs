@@ -188,7 +188,7 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarObjetivoAfiliado(int.Parse(Request.QueryString["editid"].ToString()), txbObjetivo.Text.ToString().Trim());
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "objetivo afiliado", "Modifica", "El usuario modificó el objetivo del afiliado con nombre " + txbObjetivo.Text.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "objetivos afiliado", "Modifica", "El usuario modificó el objetivo afiliado: " + txbObjetivo.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -204,7 +204,7 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarObjetivoAfiliado(txbObjetivo.Text.ToString().Trim());
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "objetivo afiliado", "Nuevo", "El usuario creó un nuevo objetivo del afiliado con nombre " + txbObjetivo.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "objetivos afiliado", "Agrega", "El usuario agregó un nuevo objetivo de afiliado: " + txbObjetivo.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
