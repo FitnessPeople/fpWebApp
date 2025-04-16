@@ -277,7 +277,6 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="ibox ">
-  <%--                      <asp:Literal ID="Literal1" runat="server" Visible ="false"></asp:Literal>--%>
                         <div class="ibox-content">
                             <div class="tab-content">
                                 <div class="tab-content">
