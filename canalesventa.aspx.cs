@@ -189,7 +189,7 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarCanalVenta(int.Parse(Request.QueryString["editid"].ToString()), txbNombreCanalVenta.Text.ToString().Trim());
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "canales venta", "Modifica", "El usuario modificó el canal de venta con nombre " + txbNombreCanalVenta.Text.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "canales venta", "Modifica", "El usuario modificó el canal de venta: " + txbNombreCanalVenta.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -205,7 +205,7 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarCanalVenta(txbNombreCanalVenta.Text.ToString().Trim());
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "canales venta", "Nuevo", "El usuario creó un nuevo canal de venta con nombre " + txbNombreCanalVenta.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "canales venta", "Agrega", "El usuario agregó un nuevo canal de venta: " + txbNombreCanalVenta.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {

@@ -189,7 +189,7 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarArl(int.Parse(Request.QueryString["editid"].ToString()), txbArl.Text.ToString().Trim());
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "arl", "Modifica", "El usuario modificó el ARL con nombre " + txbArl.Text.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "ARL", "Modifica", "El usuario modificó la ARL: " + txbArl.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -205,7 +205,7 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarArl(txbArl.Text.ToString().Trim());
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "arl", "Nuevo", "El usuario creó un nuevo ARL con nombre " + txbArl.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "arl", "Agregó", "El usuario agregó una nueva ARL: " + txbArl.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {

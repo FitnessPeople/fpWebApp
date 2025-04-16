@@ -176,7 +176,7 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarPagina(int.Parse(Request.QueryString["editid"].ToString()), txbPagina.Text.ToString().Trim(), ddlCategorias.SelectedItem.Text.ToString());
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "paginas", "Modifica", "El usuario modificó la página con nombre " + txbPagina.Text.ToString() + " de categoría " + ddlCategorias.SelectedItem.Value.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "paginas", "Modifica", "El usuario modificó la página: " + txbPagina.Text.ToString() + ".", strInitData, strNewData);
                 }
 
                 if (Request.QueryString["deleteid"] != null)
@@ -193,7 +193,7 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarPagina(txbPagina.Text.ToString().Trim(), ddlCategorias.SelectedItem.Value.ToString());
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "paginas", "Nuevo", "El usuario creó una nueva página con nombre " + txbPagina.Text.ToString() + " de categoría " + ddlCategorias.SelectedItem.Value.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "paginas", "Agrega", "El usuario agregó una nueva página: " + txbPagina.Text.ToString() + ".", "", "");
 
                         DataTable dt = cg.ConsultarUltimaPagina();
                         int IdPagina = int.Parse(dt.Rows[0]["idPagina"].ToString());

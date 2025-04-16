@@ -186,7 +186,7 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarTipoIncapacidad(int.Parse(Request.QueryString["editid"].ToString()), txbTipoIncapacidad.Text.ToString().Trim());
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "tipo incapacidad", "Modifica", "El usuario modificó el tipo de incapacidad con nombre " + txbTipoIncapacidad.Text.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "tipos incapacidad", "Modifica", "El usuario modificó el tipo de incapacidad: " + txbTipoIncapacidad.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -202,7 +202,7 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarTipoIncapacidad(txbTipoIncapacidad.Text.ToString().Trim());
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "tipo incapacidad", "Nuevo", "El usuario creó un nuevo tipo de incapacidad con nombre " + txbTipoIncapacidad.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "tipos incapacidad", "Agrega", "El usuario agregó un nuevo tipo de incapacidad: " + txbTipoIncapacidad.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {

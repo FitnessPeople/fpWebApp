@@ -234,6 +234,8 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
+                string strInitData = TraerData();
+
                 if (Request.QueryString["editid"] != null)
                 {
                     string respuesta = cg.ActualizarPlan(int.Parse(Request.QueryString["editid"].ToString()), 
@@ -246,6 +248,10 @@ namespace fpWebApp
                         double.Parse(txbDiasCongelamiento.Text.ToString()), 
                         txbFechaInicio.Text.ToString(), 
                         txbFechaFinal.Text.ToString());
+
+                    string strNewData = TraerData();
+
+                    cg.InsertarLog(Session["idusuario"].ToString(), "planes", "Modifica", "El usuario modificó el plan: " + txbPlan.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -269,6 +275,8 @@ namespace fpWebApp
                         double.Parse(txbDiasCongelamiento.Text.ToString()),
                         txbFechaInicio.Text.ToString(),
                         txbFechaFinal.Text.ToString());
+
+                        cg.InsertarLog(Session["idusuario"].ToString(), "planes", "Agrega", "El usuario agregó un nuevo plan: " + txbPlan.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -377,6 +385,20 @@ namespace fpWebApp
             }
             //_strData = _strData.Substring(0, _strData.Length - 1);
             dt.Dispose();
+        }
+
+        private string TraerData()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPlanPorId(int.Parse(Request.QueryString["editid"].ToString()));
+
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+            return strData;
         }
     }
 }
