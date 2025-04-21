@@ -1113,6 +1113,7 @@
     </Compile>
     <Compile Include="controles\indicadoresusucrm.ascx.cs">
       <DependentUpon>indicadoresusucrm.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controles\indicadoresusucrm.ascx.designer.cs">
       <DependentUpon>indicadoresusucrm.ascx</DependentUpon>
