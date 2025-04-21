@@ -4,7 +4,7 @@
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
-<%@ Register Src="~/controles/indicadores02.ascx" TagPrefix="uc1" TagName="indicadores02" %>
+<%--<%@ Register Src="~/controles/indicadores02.ascx" TagPrefix="uc1" TagName="indicadores02" %>--%>
 <%@ Register Src="~/controles/grafico01.ascx" TagPrefix="uc1" TagName="grafico01" %>
 
 <!DOCTYPE html>
@@ -82,7 +82,8 @@
                     <div class="full-height-scroll border-left">
                         <div class="element-detail-box">--%>
                             <%--Inicio Contenido!!!!--%>
-                            <uc1:indicadores02 runat="server" ID="indicadores02" />
+                            <asp:PlaceHolder ID="phIndicadores" runat="server"></asp:PlaceHolder>
+                            <%--<uc1:indicadores02 runat="server" ID="indicadores02" />--%>
 
                             <uc1:grafico01 runat="server" ID="grafico01" />
 

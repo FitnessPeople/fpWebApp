@@ -12,7 +12,7 @@ namespace fpWebApp.controles
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ValidarPermisos("Especialistas");
+            ValidarPermisos("Agenda especialista");
             if (ViewState["SinPermiso"].ToString() == "0")
             {
                 CuantosEspecialistasActivos();

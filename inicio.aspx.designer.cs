@@ -33,13 +33,13 @@ namespace fpWebApp
         protected global::fpWebApp.controles.header header1;
 
         /// <summary>
-        /// Control indicadores02.
+        /// Control phIndicadores.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.indicadores02 indicadores02;
+        protected global::System.Web.UI.WebControls.PlaceHolder phIndicadores;
 
         /// <summary>
         /// Control grafico01.
