@@ -238,8 +238,12 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT NombreCesantias AS 'Fondos de Cesantías' 
+	                                   FROM cesantias 
+	                                   ORDER BY NombreCesantias;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarCesantias();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"FondosCesantias_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

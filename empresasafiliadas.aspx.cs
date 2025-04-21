@@ -113,7 +113,35 @@ namespace fpWebApp
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
+            try
+            {
+                string consultaSQL = @"SELECT DocumentoEmpresa AS 'Documento', NombreComercial AS 'Nombre Comercial', 
+                                       CelularEmpresa AS 'Celular', CorreoEmpresa AS 'Correo', 
+                                       DireccionEmpresa AS 'Dirección', NombreCiudad AS 'Ciudad', NombreEstado AS 'Departamento', 
+                                       FechaConvenio AS 'Fecha de Convenio', TipoNegociacion AS 'Tipo de Negociación', 
+                                       DiasCredito AS 'Días de Crédito', NroEmpleados AS 'Nro. de Empleados', 
+                                       EstadoEmpresa AS 'Estado'
+                                       FROM EmpresasAfiliadas ea, ciudades c
+                                       WHERE ea.idCiudadEmpresa = c.idCiudad 
+                                       ORDER BY NombreComercial;";
 
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.TraerDatos(consultaSQL);
+                string nombreArchivo = $"EmpresasAfiliadas{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+
+                if (dt.Rows.Count > 0)
+                {
+                    cg.ExportarExcel(dt, nombreArchivo);
+                }
+                else
+                {
+                    Response.Write("<script>alert('No existen registros para esta consulta');</script>");
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+            }
         }
     }
 }

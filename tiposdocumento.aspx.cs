@@ -243,8 +243,12 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT TipoDocumento AS 'Tipos de Documento', SiglaDocumento AS 'Siglas'
+		                               FROM tiposdocumento 
+		                               ORDER BY TipoDocumento;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultartiposDocumento();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"TiposDocumento_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

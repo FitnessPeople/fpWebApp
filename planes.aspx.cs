@@ -308,8 +308,18 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT NombrePlan AS 'Nombre de Plan', DescripcionPlan AS 'Descripción', PrecioBase AS 'Precio Base', 
+                                       EstadoPlan AS 'Estado', 
+                                       DescuentoMensual AS 'Descuento Mensual %', MesesMaximo AS 'Cantidad de Meses Máximo', 
+                                       DiasCongelamientoMes AS 'Cantidad de Días de Congelamiento', 
+                                       FechaInicial AS 'Fecha de Inicio', FechaFinal AS 'Fecha de Terminación', 
+                                       NombreUsuario AS 'Nombre de Usuario Creador', EmailUsuario AS 'Correo de Usuario Creador'
+                                       FROM Planes p 
+                                       LEFT JOIN Usuarios u ON p.idusuario = u.idUsuario 
+                                       ORDER BY NombrePlan;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarPlanes();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"Planes_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

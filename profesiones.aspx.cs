@@ -244,8 +244,12 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT profesion AS Profesión, area AS Área 
+                                       FROM profesiones 
+                                       ORDER BY profesion;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarProfesiones();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"Profesiones_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

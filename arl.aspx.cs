@@ -237,9 +237,13 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT NombreArl AS 'Nombre de ARL' 
+	                                   FROM arl 
+	                                   ORDER BY NombreArl;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarArls();
-                string nombreArchivo = $"ARLs_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+                DataTable dt = cg.TraerDatos(consultaSQL);
+                string nombreArchivo = $"ARL_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
                 {

@@ -237,8 +237,11 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT NombreCanalVenta AS 'Canales de Venta'		
+		                               FROM canalesventa;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarCanalesVenta();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"CanalesVenta_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

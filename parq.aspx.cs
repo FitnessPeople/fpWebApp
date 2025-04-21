@@ -248,8 +248,12 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT orden AS 'Orden', PreguntaParq AS 'Preguntas ParQ', EstadoParq AS 'Estado' 
+	                                   FROM parq
+	                                   ORDER BY orden;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarPreguntasParq();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"PreguntasParQ_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

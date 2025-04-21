@@ -234,8 +234,12 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT NombreCajaComp AS 'Cajas de Compensación'
+	                                   FROM cajascompensacion 
+	                                   ORDER BY NombreCajaComp;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarCajasComp();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"CajasCompensacion_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

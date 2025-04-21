@@ -237,8 +237,12 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT NombreCargo AS 'Nombre de Cargos'
+		                               FROM cargos
+		                               ORDER BY NombreCargo;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarCargos();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"CargosEmpleados_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
