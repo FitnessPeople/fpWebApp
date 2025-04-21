@@ -5,7 +5,9 @@
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
-<%@ Register Src="~/controles/indicadoresusucmr.ascx" TagPrefix="uc2" TagName="indicadoresusucmr" %>
+<%@ Register Src="~/controles/indicadoresusucrm.ascx" TagPrefix="uc2" TagName="indicadoresusucrm" %>
+
+
 
 
 <!DOCTYPE html>
@@ -244,7 +246,7 @@
                 <div class="row animated fadeInDown">
                     <%--Inicio Contenido!!!!--%>
 
-                    <uc2:indicadoresusucmr runat="server" ID="indicadoresusucmr" />
+                    <uc2:indicadoresusucrm runat="server" ID="indicadoresusucrm" />
 
                     <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
                         <div class="p-xs">

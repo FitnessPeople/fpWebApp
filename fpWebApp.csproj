@@ -258,7 +258,6 @@
     <Content Include="controles\indicadores03.ascx" />
     <Content Include="controles\indicadores04.ascx" />
     <Content Include="controles\indicadoresmedico.ascx" />
-    <Content Include="controles\indicadoresusucmr.ascx" />
     <Content Include="controles\indicadoresusucrm.ascx" />
     <Content Include="controles\navbar.ascx" />
     <Content Include="controles\paginasperfil.ascx" />
@@ -1136,13 +1135,6 @@
     </Compile>
     <Compile Include="controles\indicadoresmedico.ascx.designer.cs">
       <DependentUpon>indicadoresmedico.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="controles\indicadoresusucmr.ascx.cs">
-      <DependentUpon>indicadoresusucmr.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="controles\indicadoresusucmr.ascx.designer.cs">
-      <DependentUpon>indicadoresusucmr.ascx</DependentUpon>
     </Compile>
     <Compile Include="controles\indicadoresusucrm.ascx.cs">
       <DependentUpon>indicadoresusucrm.ascx</DependentUpon>
