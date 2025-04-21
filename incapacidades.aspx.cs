@@ -276,7 +276,7 @@ namespace fpWebApp
                                 "'" + strFilename + "', '" + txbObservaciones.Text.ToString() + "', 'En proceso', Now()) ";
                                 clasesglobales cg = new clasesglobales();
                                 string mensaje = cg.TraerDatosStr(strQuery);
-                                cg.InsertarLog(Session["idusuario"].ToString(), "Incapacidades", "Nuevo registro", "El usuario agregó una incapacidad al afiliado con documento " + ViewState["DocumentoAfiliado"].ToString() + ".", "", "");
+                                cg.InsertarLog(Session["idusuario"].ToString(), "Incapacidades", "Agrega", "El usuario agregó una incapacidad al afiliado con documento " + ViewState["DocumentoAfiliado"].ToString() + ".", "", "");
 
                                 Response.Redirect("afiliados");
                             }

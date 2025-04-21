@@ -33,19 +33,20 @@
         }
     </style>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
 
     <script>
         function changeClass() {
             var element1 = document.querySelector("#reportepagos");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#reportes");
+            //var element2 = document.querySelector("#reportes");
+            var element2 = document.querySelector("#reportepagos");
             element2.classList.remove("collapse");
         }
     </script>
 
-   <script>
+    <script>
        $(document).ready(function () {
            $('.datepicker').datepicker({
                format: 'yyyy-mm-dd',
@@ -53,46 +54,57 @@
                todayHighlight: true
            });
        });
-   </script>
+    </script>
 </head>
 
 <body onload="changeClass()">
-
-    <div class="modal inmodal" id="myModal" tabindex="-1" aria-labelledby="miModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+    <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fas fa-hand-holding-usd"></i>
-                    <h4 class="modal-title">Guía para administrar Reportes</h4>
-                    <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
+                    <i class="fa fa-hand-holding-usd modal-icon" style="color: #1C84C6;"></i>
+                    <h4 class="modal-title">Guía para visualizar pagos realizados</h4>
+                    <small class="font-bold">¡Bienvenido! Te explicamos cómo consultar y filtrar los pagos registrados en el sistema de manera fácil y rápida.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>1. Lee las Instrucciones</b><br />
-                        Antes de comenzar, es importante que leas todas las instrucciones del formulario. Esto te ayudará a entender qué información se requiere y cómo debe ser presentada.
+                        <b>Paso 1: Filtra los pagos</b><br />
+                        Usa el buscador para encontrar pagos específicos.<br />
+                        <i class="fa-solid fa-magnifying-glass"></i> Filtra por: 
+                        <i class="fa-solid fa-hashtag" style="color: #0D6EFD;"></i> <b>ID Pago</b>, 
+                        <i class="fa-solid fa-address-card" style="color: #0D6EFD;"></i> <b>Documento</b>, 
+                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Afiliado</b> o 
+                        <i class="fa-solid fa-sack-dollar" style="color: #0D6EFD;"></i> <b>Valor</b><br />
+                        <i class="fa-solid fa-money-check-dollar" style="color: #0D6EFD;"></i> <b>Tipo de Pago</b>
+                        <i class="fa-solid fa-money-check-dollar" style="color: #0D6EFD;"></i> <b>Referencia</b>
+                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i> <b>Fecha</b>
+                        <i class="fa-solid fa-circle" style="color: #0D6EFD;"></i> <b>Estado </b>
+                        <i class="fa-solid fa-user-group" style="color: #0D6EFD;"></i> <b>Usuario</b>
+                        <i class="fa-solid fa-phone" style="color: #0D6EFD;"></i> <b>Canal</b>
+                        <i class="fa-solid fa-receipt" style="color: #0D6EFD;"></i> <b>Detalle.</b><br />
+                        <i class="fa-solid fa-magnifying-glass"></i> Filtrar por: <b>Tipo de pago</b><br />
+                        En el menú desplegable, selecciona:<br />
+                        <i class="fa-solid fa-money-bill" style="color: #0D6EFD;"></i> <b>Efectivo</b>
+                        <i class="fa-solid fa-money-bill-transfer" style="color: #0D6EFD;"></i> <b>Transferencia</b>
+                        <i class="fa-solid fa-money-check-dollar" style="color: #0D6EFD;"></i> <b>Datáfono</b>
+                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i> <b>Wompi</b><br />
+                        <i class="fa-solid fa-magnifying-glass"></i> Filtrar por: <b>Rango de fechas</b><br />
+                        Usa los calendarios para seleccionar:<br />
+                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i> <b>Desde:</b> Fecha inicial - <b>Hasta:</b> Fecha final
+                    <br />
                         <br />
+                        <b>Paso 2: Revisa los resultados</b><br />
+                        La tabla muestra toda la información de los pagos realizados.
+                    <br />
                         <br />
-                        <b>2. Reúne la Información Necesaria</b><br />
-                        Asegúrate de tener a mano todos los documentos e información que necesitas, como:
-                        Datos personales (nombre, dirección, número de teléfono, etc.)
-                        Información específica relacionada con el propósito del formulario (por ejemplo, detalles de empleo, historial médico, etc.)
+                        <b>Paso 3: Exporta a excel</b><br />
+                        Al lado opuesto del buscador encontrarás un botón útil.<br />
+                        <i class="fa-solid fa-file-export" style="color: #212529;"></i> <b>Exportar a Excel:</b> 
+                        Genera un archivo Excel con los datos visibles en la tabla.
+                    <br />
                         <br />
-                        <br />
-                        <b>3. Completa los Campos Requeridos</b><br />
-                        Campos Obligatorios: Identifica cuáles son los campos obligatorios (generalmente marcados con un asterisco *) y asegúrate de completarlos.
-                        Campos Opcionales: Si hay campos opcionales, completa solo los que consideres relevantes.
-                        <br />
-                        <br />
-                        <b>4. Confirma la Información</b><br />
-                        Asegúrate de que todos los datos ingresados son correctos y actualizados. Una revisión final puede evitar errores que podrían complicar el proceso.
-                        <br />
-                        <br />
-                        <b>5. Envía el Formulario</b><br />
-                        Asegúrate de seguir el proceso de envío indicado (hacer clic en "Agregar").
-                        <br />
-                        <br />
-                        ¡Siguiendo estos pasos, estarás listo para diligenciar tu formulario sin problemas! Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -100,9 +112,6 @@
                 </div>
             </div>
         </div>
-
-
-
     </div>
 
     <div id="wrapper">

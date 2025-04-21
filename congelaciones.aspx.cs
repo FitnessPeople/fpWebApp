@@ -253,7 +253,7 @@ namespace fpWebApp
                                 clasesglobales cg = new clasesglobales();
                                 string mensaje = cg.TraerDatosStr(strQuery);
                                 
-                                cg.InsertarLog(Session["idusuario"].ToString(), "Congelaciones", "Nuevo registro", "El usuario agregó una congelación al afiliado con documento " + ViewState["DocumentoAfiliado"].ToString() + ".", "", "");
+                                cg.InsertarLog(Session["idusuario"].ToString(), "congelaciones", "Agrega", "El usuario agregó una congelación al afiliado: " + ViewState["DocumentoAfiliado"].ToString() + ".", "", "");
 
                                 Response.Redirect("afiliados");
                             }
