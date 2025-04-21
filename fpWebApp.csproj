@@ -934,6 +934,7 @@
     <Content Include="traspasos.aspx" />
     <Content Include="traspasosAfil.aspx" />
     <Content Include="usuarios.aspx" />
+    <Content Include="verhistoriaclinica.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -1643,6 +1644,13 @@
     </Compile>
     <Compile Include="usuarios.aspx.designer.cs">
       <DependentUpon>usuarios.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="verhistoriaclinica.aspx.cs">
+      <DependentUpon>verhistoriaclinica.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="verhistoriaclinica.aspx.designer.cs">
+      <DependentUpon>verhistoriaclinica.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

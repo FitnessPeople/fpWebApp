@@ -86,7 +86,7 @@ namespace fpWebApp
                     {
                         _strEventos += "{\r\n";
                         _strEventos += "id: '" + dt.Rows[i]["idDisponibilidad"].ToString() + "',\r\n";
-                        _strEventos += "title: `" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "\r\nSede: " + dt.Rows[i]["NombreSede"].ToString() + "`,\r\n";
+                        _strEventos += "title: `👤" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "\r\nSede: " + dt.Rows[i]["NombreSede"].ToString() + "`,\r\n";
                         _strEventos += "start: '" + dt.Rows[i]["FechaHoraIni"].ToString() + "',\r\n";
                         _strEventos += "end: '" + dt.Rows[i]["FechaHoraFin"].ToString() + "',\r\n";
                         _strEventos += "color: '#F8AC59',\r\n";
@@ -99,7 +99,7 @@ namespace fpWebApp
                     {
                         _strEventos += "{\r\n";
                         _strEventos += "id: '" + dt.Rows[i]["idDisponibilidad"].ToString() + "',\r\n";
-                        _strEventos += "title: `" + dt.Rows[i]["NombreEmpleado"].ToString() + "\r\nSede: " + dt.Rows[i]["NombreSede"].ToString() + "`,\r\n";
+                        _strEventos += "title: `👨‍⚕️" + dt.Rows[i]["NombreEmpleado"].ToString() + "\r\nSede: " + dt.Rows[i]["NombreSede"].ToString() + "`,\r\n";
                         _strEventos += "start: '" + dt.Rows[i]["FechaHoraIni"].ToString() + "',\r\n";
                         _strEventos += "end: '" + dt.Rows[i]["FechaHoraFin"].ToString() + "',\r\n";
                         _strEventos += "color: '#1ab394',\r\n";
