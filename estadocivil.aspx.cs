@@ -238,8 +238,12 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT EstadoCivil AS 'Estados Civiles'
+	                                   FROM estadocivil 
+	                                   ORDER BY estadocivil;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarEstadosCiviles();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"EstadosCiviles_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

@@ -256,9 +256,14 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT NombreCiudad AS 'Ciudades', NombreEstado AS 'Departamentos'  
+		                               FROM ciudades 
+		                               WHERE CodigoPais = 'Co' 
+		                               ORDER BY NombreCiudad, NombreEstado;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarCiudades();
-                string nombreArchivo = $"Ciudades_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+                DataTable dt = cg.TraerDatos(consultaSQL);
+                string nombreArchivo = $"Ciudades_Departamentos_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
                 {

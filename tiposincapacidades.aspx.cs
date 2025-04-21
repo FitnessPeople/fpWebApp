@@ -234,8 +234,12 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT TipoIncapacidad AS 'Tipos de Incapacidades'
+	                                   FROM tiposincapacidad 
+	                                   ORDER BY TipoIncapacidad;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarTiposIncapacidades();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"TiposIncapacidades_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

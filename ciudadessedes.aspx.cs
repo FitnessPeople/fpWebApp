@@ -241,8 +241,12 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT NombreCiudadSede AS 'Sedes en Ciudades'
+		                               FROM ciudadessedes
+		                               ORDER BY NombreCiudadSede;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarCiudadesSedes();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"CiudadesSedes_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

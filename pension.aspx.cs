@@ -238,9 +238,13 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT NombreFondoPension AS 'Fondos de Pensión'
+	                                   FROM fondospension 
+	                                   ORDER BY NombreFondoPension;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarPensiones();
-                string nombreArchivo = $"FondosPensiones_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+                DataTable dt = cg.TraerDatos(consultaSQL);
+                string nombreArchivo = $"FondosPension_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
                 {

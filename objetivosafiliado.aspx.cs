@@ -236,8 +236,12 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT Objetivo AS 'Objetivos de los Afiliados'
+	                                   FROM objetivosafiliado
+	                                   ORDER BY Objetivo;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarObjetivosAfiliados();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"ObjetivosAfiliados_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

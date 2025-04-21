@@ -226,7 +226,29 @@ namespace fpWebApp
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
+            try
+            {
+                string consultaSQL = @"SELECT NombreCat AS 'Nombre de Categoría'
+	                                   FROM Categorias 
+	                                   ORDER BY NombreCat;";
 
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.TraerDatos(consultaSQL);
+                string nombreArchivo = $"Categorias_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+
+                if (dt.Rows.Count > 0)
+                {
+                    cg.ExportarExcel(dt, nombreArchivo);
+                }
+                else
+                {
+                    Response.Write("<script>alert('No existen registros para esta consulta');</script>");
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+            }
         }
     }
 }

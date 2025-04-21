@@ -238,9 +238,13 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT NombreEps AS 'Nombre de EPS' 
+	                                   FROM eps 
+	                                   ORDER BY NombreEps;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarEpss();
-                string nombreArchivo = $"EPSs_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+                DataTable dt = cg.TraerDatos(consultaSQL);
+                string nombreArchivo = $"EPS_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
                 {

@@ -227,25 +227,61 @@ namespace fpWebApp
             {
                 IWorkbook workbook = new XSSFWorkbook();
                 ISheet sheet = workbook.CreateSheet("Datos");
+
+                // Estilo para encabezados (negrita, centrado y bordes)
+                ICellStyle headerStyle = workbook.CreateCellStyle();
+                headerStyle.Alignment = HorizontalAlignment.Center;
+                headerStyle.VerticalAlignment = VerticalAlignment.Center;
+                headerStyle.BorderTop = BorderStyle.Thin;
+                headerStyle.BorderBottom = BorderStyle.Thin;
+                headerStyle.BorderLeft = BorderStyle.Thin;
+                headerStyle.BorderRight = BorderStyle.Thin;
+                IFont font = workbook.CreateFont();
+                font.IsBold = true;
+                headerStyle.SetFont(font);
+
+                // Estilo para datos (bordes)
+                ICellStyle borderStyle = workbook.CreateCellStyle();
+                borderStyle.BorderTop = BorderStyle.Thin;
+                borderStyle.BorderBottom = BorderStyle.Thin;
+                borderStyle.BorderLeft = BorderStyle.Thin;
+                borderStyle.BorderRight = BorderStyle.Thin;
+
+                // Encabezados
                 IRow headerRow = sheet.CreateRow(0);
+                headerRow.HeightInPoints = 20; // Altura de la fila
                 for (int i = 0; i < dt.Columns.Count; i++)
                 {
                     ICell cell = headerRow.CreateCell(i);
                     cell.SetCellValue(dt.Columns[i].ColumnName);
+                    cell.CellStyle = headerStyle;
                 }
+
+                // Datos
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     IRow row = sheet.CreateRow(i + 1);
                     for (int j = 0; j < dt.Columns.Count; j++)
                     {
                         object value = dt.Rows[i][j];
-                        row.CreateCell(j).SetCellValue(value != DBNull.Value ? value.ToString() : "");
+                        ICell cell = row.CreateCell(j);
+                        cell.SetCellValue(value != DBNull.Value ? value.ToString() : "");
+
+                        // Aplicar bordes solo si hay contenido
+                        if (value != DBNull.Value && !string.IsNullOrEmpty(value.ToString()))
+                        {
+                            cell.CellStyle = borderStyle;
+                        }
                     }
                 }
+
+                // Autoajustar columnas
                 for (int i = 0; i < dt.Columns.Count; i++)
                 {
                     sheet.AutoSizeColumn(i);
                 }
+
+                // Descargar el archivo
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
                     workbook.Write(memoryStream);

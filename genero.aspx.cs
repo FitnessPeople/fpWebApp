@@ -239,8 +239,12 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT Genero AS 'Géneros'
+	                                   FROM generos 
+	                                   ORDER BY Genero;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarGeneros();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"Generos_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
