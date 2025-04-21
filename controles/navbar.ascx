@@ -88,7 +88,8 @@
             <li>
                 <a href="#"><i class="fa fa-users-rectangle"></i><span class="nav-label">CRM</span><span class="fa arrow"></span></a>
                 <ul id="crm" class="nav nav-second-level collapse">
-                    <li id="nuevocontactocrm"><a href="nuevocontactocrm">Nuevo contacto</a></li>
+                    <li id="nuevocontactocrm" class="old"><a href="nuevocontactocrm"><i class="fas fa-user-plus"></i>Nuevo Contacto</a></li>
+                    <li id="listacontactoscrm" class="old"><a href="listacontactoscrm"><i class="fa fa-desktop"></i>Contactos / Empresas</a></li>
                     <li><a href="#">Efectividad en actividades</a></li>
                     <li><a href="#">Efectividad en gestion</a></li>
                     <li><a href="#">Traspasos de agenda</a></li>

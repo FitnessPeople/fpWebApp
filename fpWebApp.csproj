@@ -259,6 +259,7 @@
     <Content Include="controles\indicadores04.ascx" />
     <Content Include="controles\indicadoresmedico.ascx" />
     <Content Include="controles\indicadoresusucmr.ascx" />
+    <Content Include="controles\indicadoresusucrm.ascx" />
     <Content Include="controles\navbar.ascx" />
     <Content Include="controles\paginasperfil.ascx" />
     <Content Include="controles\rightsidebar.ascx" />
@@ -885,6 +886,7 @@
     <Content Include="js\plugins\wompi\wompi.js" />
     <Content Include="js\plugins\wow\wow.min.js" />
     <Content Include="landing.html" />
+    <Content Include="listacontactoscrm.aspx" />
     <Content Include="logactividades.aspx" />
     <Content Include="logout.aspx" />
     <Content Include="micuenta.aspx" />
@@ -1142,6 +1144,13 @@
     <Compile Include="controles\indicadoresusucmr.ascx.designer.cs">
       <DependentUpon>indicadoresusucmr.ascx</DependentUpon>
     </Compile>
+    <Compile Include="controles\indicadoresusucrm.ascx.cs">
+      <DependentUpon>indicadoresusucrm.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadoresusucrm.ascx.designer.cs">
+      <DependentUpon>indicadoresusucrm.ascx</DependentUpon>
+    </Compile>
     <Compile Include="controles\navbar.ascx.cs">
       <DependentUpon>navbar.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1375,6 +1384,13 @@
     </Compile>
     <Compile Include="inicio.aspx.designer.cs">
       <DependentUpon>inicio.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="listacontactoscrm.aspx.cs">
+      <DependentUpon>listacontactoscrm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="listacontactoscrm.aspx.designer.cs">
+      <DependentUpon>listacontactoscrm.aspx</DependentUpon>
     </Compile>
     <Compile Include="logactividades.aspx.cs">
       <DependentUpon>logactividades.aspx</DependentUpon>

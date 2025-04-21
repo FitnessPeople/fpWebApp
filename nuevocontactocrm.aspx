@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="nuevocontactocrm.aspx.cs" Inherits="fpWebApp.nuevocontactocrm" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="nuevocontactocrm.aspx.cs" Inherits="fpWebApp.nuevocontactocrm" ValidateRequest="false" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
@@ -131,7 +131,6 @@
                 fechaPrim !== "" &&
                 fechaProx !== "" &&
                 valor !== "" &&
-                empresa !== "0" &&
                 status !== "0";
 
             if (camposCompletos) {
@@ -536,14 +535,15 @@
             </div>
             <uc1:rightsidebar runat="server" ID="rightsidebar" />
         </div>
+    </div>
 
-        <script>
+ <script>
             $(document).ready(function () {
                 $("#btnEditar").on("click", function () {
                     $("#EditionModal").modal("show"); // Abre la modal al hacer clic en el botón
                 });
             });
-        </script>
+ </script>
 
         <%--    formato de fecha--%>
 
@@ -613,12 +613,6 @@
     $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
 </script>
 
-
-
 </body>
-
-
-
-
 
 </html>

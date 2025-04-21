@@ -1,25 +1,16 @@
-﻿using DocumentFormat.OpenXml.Math;
-using MySql.Data.MySqlClient;
-using Newtonsoft.Json;
-using NPOI.SS.Formula.Functions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Web.Configuration;
-using System.Web.Script.Services;
-using System.Web.Services;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-
 
 namespace fpWebApp
 {
-    public partial class nuevocontactocrm : System.Web.UI.Page
+    public partial class listacontactoscrm : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -42,7 +33,7 @@ namespace fpWebApp
                         //No tiene acceso a esta página
                         divMensaje.Visible = true;
                         paginasperfil.Visible = true;
-                        divContenido.Visible = false;
+                        //divContenido.Visible = false;
                     }
                     else
                     {
@@ -58,14 +49,33 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-                            txbFechaPrim.Attributes.Add("type", "date");
-                            txbFechaPrim.Attributes.Add("min", DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd").ToString());
-                            txbFechaPrim.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-                            txbFechaProx.Attributes.Add("type", "date");
-                            txbFechaProx.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-                            txbCorreoContacto.Attributes.Add("type", "email");
 
-                            ListaEmpresasCRM();
+                            int idContacto = 0;
+                            decimal valorT = 0;
+
+                            // Verificar si viene en querystring
+                            if (Request.QueryString["idContacto"] != null)
+                            {
+                                int.TryParse(Request.QueryString["idContacto"], out idContacto);
+                            }
+                            else
+                            {
+
+                                DataTable dtContactos = cg.ConsultarContactosCRM(out valorT);
+
+                                //if (respuesta && dtContactos.Rows.Count > 0)
+                                //{
+                                idContacto = Convert.ToInt32(dtContactos.Rows[0]["IdContacto"]);
+                                //}
+                            }
+                            rpContactosCRM.ItemDataBound += rpContactosCRM_ItemDataBound;
+                            // Cargar el contacto seleccionado o el primero por defecto
+                            CargarDatosContacto(idContacto);
+                            // CargarHistotialCRN(idContacto);
+
+
+                            // También puedes cargar otras listas como lo hacías
+                            ConsultarEmpresasCRM();
                             ListaEstadosCRM();
                             ListaContactos();
                         }
@@ -77,7 +87,7 @@ namespace fpWebApp
                     Response.End();
                     Response.Redirect("logout.aspx");
                 }
-                ScriptManager.RegisterStartupScript(this, GetType(), "updateDDL", "changeBadge(document.getElementById('" + ddlStatusLead.ClientID + "'));", true);
+                //ScriptManager.RegisterStartupScript(this, GetType(), "updateDDL", "changeBadge(document.getElementById('" + ddlStatusLead.ClientID + "'));", true);
                 ScriptManager.RegisterStartupScript(this, GetType(), "activarBoton", "setTimeout(validarBotonActualizar, 100);", true);
             }
         }
@@ -114,11 +124,11 @@ namespace fpWebApp
             rpContactosCRM.DataSource = dt;
             rpContactosCRM.DataBind();
 
-            ltValorTotal.Text = valorTotal.ToString("C0");
+            //ltValorTotal.Text = valorTotal.ToString("C0");
             dt.Dispose();
         }
 
-        private void ListaEmpresasCRM()
+        private void ConsultarEmpresasCRM()
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarEmpresasCRM();
@@ -137,17 +147,26 @@ namespace fpWebApp
             ddlStatusLead.DataBind();
             dt.Dispose();
         }
-        protected void rpContactosCRM_ItemDataBound1(object sender, RepeaterItemEventArgs e)
+
+        protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
+            clasesglobales cg = new clasesglobales();
+            bool salida = false;
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                if (ViewState["CrearModificar"]?.ToString() == "1")
+                DataRowView drv = (DataRowView)e.Item.DataItem;
+                int idContacto = Convert.ToInt32(drv["IdContacto"]);
+
+                // Lógica para obtener historial por contacto
+                DataTable historial = cg.ConsultarHistorialPorContactoCMR(idContacto, out salida); // tu función personalizada
+
+                // Buscar el repeater hijo
+                Repeater rptHistorial = (Repeater)e.Item.FindControl("rptHistorial");
+
+                if (historial != null && rptHistorial != null)
                 {
-                    Button btnEditar = (Button)e.Item.FindControl("btnEditar");
-                    if (btnEditar != null)
-                    {
-                        btnEditar.Visible = true;
-                    }
+                    rptHistorial.DataSource = historial;
+                    rptHistorial.DataBind();
                 }
             }
         }
@@ -158,7 +177,11 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out respuesta);
             Session["contactoId"] = idContacto;
+            rptContenido.DataSource = dt;
+            rptContenido.DataBind();
 
+            //Literal1.Visible = true;
+            //ltHistorialCon.Text = dt.Rows[0]["historialHTML"].ToString();
             if (respuesta)
             {
 
@@ -167,6 +190,7 @@ namespace fpWebApp
                     DataRow row = dt.Rows[0];
 
                     txbNombreContacto.Value = row["NombreContacto"].ToString();
+                    txbNombreContacto.Disabled = true;
                     string telefono = Convert.ToString(row["TelefonoContacto"]);
                     if (!string.IsNullOrEmpty(telefono) && telefono.Length == 10)
                     {
@@ -187,7 +211,7 @@ namespace fpWebApp
                     txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
                     int ValorPropuesta = Convert.ToInt32(dt.Rows[0]["ValorPropuesta"]);
                     txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
-                    //txaObservaciones.Value = row["observaciones"].ToString();
+                    txaObservaciones.Value = row["observaciones"].ToString().Trim();
                 }
             }
             else
@@ -217,7 +241,7 @@ namespace fpWebApp
                 txbCorreoContacto.Value.ToString().Trim(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
                 Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
                 txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
-                txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
+                txaObservaciones.Value.ToString(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
 
                 if (salida)
                 {
@@ -365,7 +389,7 @@ namespace fpWebApp
                             Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), txbCorreoContacto.Value.ToString().Trim(),
                             Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()),
                             txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
-                            txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
+                            txaObservaciones.Value.ToString(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
 
                     if (salida)
                     {
@@ -380,7 +404,7 @@ namespace fpWebApp
                                 showConfirmButton: false,
                                 timerProgressBar: true
                             }).then(() => {
-                                window.location.href = 'nuevocontactocrm';
+                                window.location.href = 'listacontactoscrm';
                             });
                         ";
 
@@ -433,24 +457,24 @@ namespace fpWebApp
             Session["Contacto"] = dt.Rows[0]["NombreContacto"].ToString();
 
 
-            if (idContacto > 0)
-            {
-                Session["contactoId"] = idContacto;
+            //if (idContacto > 0)
+            //{
+            //    Session["contactoId"] = idContacto;
 
-                string nombreContacto = Session["Contacto"].ToString().Trim();
-                ltEliminar.Text = $@"
-                <div style='color: #b30000; font-weight: bold; '>
-                    ⚠ ¿Está seguro de que desea eliminar el contacto <span style='text-decoration: underline;'>{nombreContacto}</span>?
-                </div>";
+            //    string nombreContacto = Session["Contacto"].ToString().Trim();
+            //    ltEliminar.Text = $@"
+            //    <div style='color: #b30000; font-weight: bold; '>
+            //        ⚠ ¿Está seguro de que desea eliminar el contacto <span style='text-decoration: underline;'>{nombreContacto}</span>?
+            //    </div>";
 
-                upEliminar.Update();
-                ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#Modaleliminar').modal('show');", true);
-            }
+            //    upEliminar.Update();
+            //    ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#Modaleliminar').modal('show');", true);
+            //}
         }
 
         protected void btnAccionEliminar_Click(object sender, EventArgs e)
         {
-            ltEliminar.Text = string.Empty;
+            //ltEliminar.Text = string.Empty;
             bool respuesta = false;
             bool _respuesta = false;
             string mensaje = string.Empty;
@@ -524,6 +548,7 @@ namespace fpWebApp
                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
             }
         }
+
 
     }
 }
