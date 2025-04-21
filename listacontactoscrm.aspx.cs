@@ -71,11 +71,11 @@ namespace fpWebApp
                             rpContactosCRM.ItemDataBound += rpContactosCRM_ItemDataBound;
                             // Cargar el contacto seleccionado o el primero por defecto
                             CargarDatosContacto(idContacto);
-                            CargarHistotialCRN(idContacto);
+                           // CargarHistotialCRN(idContacto);
 
 
                             // También puedes cargar otras listas como lo hacías
-                            ListaEmpresasCRM();
+                            ConsultarEmpresasCRM();
                             ListaEstadosCRM();
                             ListaContactos();
                         }
@@ -128,13 +128,13 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void ListaEmpresasCRM()
+        private void ConsultarEmpresasCRM()
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarEmpresasCRM();
 
-            //ddlEmpresa.DataSource = dt;
-            //ddlEmpresa.DataBind();
+            ddlEmpresa.DataSource = dt;
+            ddlEmpresa.DataBind();
             dt.Dispose();
         }
 
@@ -143,48 +143,10 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarEstadossCRM();
 
-            //ddlStatusLead.DataSource = dt;
-            //ddlStatusLead.DataBind();
+            ddlStatusLead.DataSource = dt;
+            ddlStatusLead.DataBind();
             dt.Dispose();
         }
-
-        private void CargarHistotialCRN(int idContacto)
-        {
-            bool salida = false;
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarHistorialPorContactoCMR(idContacto, out salida);
-
-            DataTable dtFiltrado = dt.Clone(); // Crea tabla con misma estructura
-
-            List<string> clavesUnicas = new List<string>();
-
-            foreach (DataRow row in dt.Rows)
-            {
-                string clave = row["idEstadoCRM"].ToString() + "|" +
-                               row["Observaciones"].ToString() + "|" +
-                               Convert.ToDateTime(row["FechaActualiza"]).ToString("yyyy-MM-dd HH:mm:ss");
-
-                if (!clavesUnicas.Contains(clave))
-                {
-                    clavesUnicas.Add(clave);
-                    dtFiltrado.ImportRow(row); // Agrega la fila filtrada
-                }
-            }
-
-            // Finalmente ordenas
-            DataView dv = dtFiltrado.DefaultView;
-            dv.Sort = "FechaActualiza DESC";
-
-            DataTable dtOrdenado = dv.ToTable();
-            
-      
-
-            //ddlStatusLead.DataSource = dt;
-            //ddlStatusLead.DataBind();
-        }
-
-
-
 
         protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
@@ -225,36 +187,37 @@ namespace fpWebApp
 
                 if (dt.Rows.Count > 0)
                 {
-                    //    DataRow row = dt.Rows[0];
+                    DataRow row = dt.Rows[0];
 
-                    //    txbNombreContacto.Value = row["NombreContacto"].ToString();
-                    //    string telefono = Convert.ToString(row["TelefonoContacto"]);
-                    //    if (!string.IsNullOrEmpty(telefono) && telefono.Length == 10)
-                    //    {
-                    //        txbTelefonoContacto.Value = $"{telefono.Substring(0, 3)} {telefono.Substring(3, 3)} {telefono.Substring(6, 4)}";
-                    //    }
-                    //    else
-                    //    {
-                    //        txbTelefonoContacto.Value = row["TelefonoContacto"].ToString();
-                    //    }
-                    //    txbCorreoContacto.Value = row["EmailContacto"].ToString();
-                    //    if (row["idEmpresaCRM"].ToString() != "")
-                    //        ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaCRM"].ToString())));
-                    //    else
-                    //        ddlEmpresa.SelectedItem.Value = "0";
+                    txbNombreContacto.Value = row["NombreContacto"].ToString();
+                    txbNombreContacto.Disabled = true;
+                    string telefono = Convert.ToString(row["TelefonoContacto"]);
+                    if (!string.IsNullOrEmpty(telefono) && telefono.Length == 10)
+                    {
+                        txbTelefonoContacto.Value = $"{telefono.Substring(0, 3)} {telefono.Substring(3, 3)} {telefono.Substring(6, 4)}";
+                    }
+                    else
+                    {
+                        txbTelefonoContacto.Value = row["TelefonoContacto"].ToString();
+                    }
+                    txbCorreoContacto.Value = row["EmailContacto"].ToString();
+                    if (row["idEmpresaCRM"].ToString() != "")
+                        ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaCRM"].ToString())));
+                    else
+                        ddlEmpresa.SelectedItem.Value = "0";
 
-                    //    ddlStatusLead.SelectedIndex = Convert.ToInt32(ddlStatusLead.Items.IndexOf(ddlStatusLead.Items.FindByValue(dt.Rows[0]["idEstadoCRM"].ToString())));
-                    //    txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
-                    //    txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
-                    //    int ValorPropuesta = Convert.ToInt32(dt.Rows[0]["ValorPropuesta"]);
-                    //    txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
-                    //    //txaObservaciones.Value = row["observaciones"].ToString();
+                    ddlStatusLead.SelectedIndex = Convert.ToInt32(ddlStatusLead.Items.IndexOf(ddlStatusLead.Items.FindByValue(dt.Rows[0]["idEstadoCRM"].ToString())));
+                    txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
+                    txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
+                    int ValorPropuesta = Convert.ToInt32(dt.Rows[0]["ValorPropuesta"]);
+                    txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
+                    txaObservaciones.Value = row["observaciones"].ToString().Trim();
                 }
             }
             else
             {
-                //DataRow row = dt.Rows[0];
-                //txbNombreContacto.Value = row["Error"].ToString(); ;
+                DataRow row = dt.Rows[0];
+                txbNombreContacto.Value = row["Error"].ToString(); ;
             }
         }
 
@@ -266,70 +229,70 @@ namespace fpWebApp
             string mensajeValidacion = string.Empty;
             string respuesta = string.Empty;
 
-            //if (ddlEmpresa.SelectedItem.Value != "")
-            //    ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
-            //else
-            //    ddlEmpresa.SelectedItem.Value = "0";
+            if (ddlEmpresa.SelectedItem.Value != "")
+                ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
+            else
+                ddlEmpresa.SelectedItem.Value = "0";
 
-            //clasesglobales cg = new clasesglobales();
-            //try
-            //{
-            //    respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
-            //    txbCorreoContacto.Value.ToString().Trim(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
-            //    Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
-            //    txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
-            //    txaObservaciones.Value.ToString(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
+                txbCorreoContacto.Value.ToString().Trim(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
+                Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
+                txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
+                txaObservaciones.Value.ToString(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
 
-            //    if (salida)
-            //    {
-            //        string script = @"
-            //            $('#ModalContacto').modal('hide');
-            //            $('.modal-backdrop').remove();
-            //            Swal.fire({
-            //                title: 'El contacto se creó de forma exitosa',
-            //                text: '" + mensaje.Replace("'", "\\'") + @"',
-            //                icon: 'success',
-            //                timer: 3000, // 3 segundos
-            //                showConfirmButton: false,
-            //                timerProgressBar: true
-            //            }).then(() => {
-            //                window.location.href = 'nuevocontactocrm';
-            //            });
-            //        ";
+                if (salida)
+                {
+                    string script = @"
+                        $('#ModalContacto').modal('hide');
+                        $('.modal-backdrop').remove();
+                        Swal.fire({
+                            title: 'El contacto se creó de forma exitosa',
+                            text: '" + mensaje.Replace("'", "\\'") + @"',
+                            icon: 'success',
+                            timer: 3000, // 3 segundos
+                            showConfirmButton: false,
+                            timerProgressBar: true
+                        }).then(() => {
+                            window.location.href = 'nuevocontactocrm';
+                        });
+                    ";
 
-            //        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-            //    }
-            //    else
-            //    {
-            //        string script = @"
-            //                $('#ModalContacto').modal('hide');
-            //                $('.modal-backdrop').remove();
-            //                Swal.fire({
-            //                    title: 'Error',
-            //                    text: '" + mensaje.Replace("'", "\\'") + @"',
-            //                    icon: 'error'
-            //                }).then((result) => {
-            //                    if (result.isConfirmed) {
-            //                        $('#ModalContacto').modal('show');
-            //                    }
-            //                });
-            //            ";
-            //        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    string script = @"
-            //        $('#ModalContacto').modal('hide');
-            //        $('.modal-backdrop').remove();
-            //        Swal.fire({
-            //            title: 'Error',
-            //            text: 'Ha ocurrido un error inesperado.',
-            //            icon: 'error'
-            //        });
-            //    ";
-            //    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-            //}
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                }
+                else
+                {
+                    string script = @"
+                            $('#ModalContacto').modal('hide');
+                            $('.modal-backdrop').remove();
+                            Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $('#ModalContacto').modal('show');
+                                }
+                            });
+                        ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                string script = @"
+                    $('#ModalContacto').modal('hide');
+                    $('.modal-backdrop').remove();
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Ha ocurrido un error inesperado.',
+                        icon: 'error'
+                    });
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+            }
         }
 
         public string GetTelefonoHTML(object telefonoObj)
@@ -359,24 +322,24 @@ namespace fpWebApp
 
         protected void btnEditar_Click(object sender, EventArgs e)
         {
-            //btnActualizar.Visible = true;
-            //btnAgregar.Visible = false;
-            //Button btnEditar = (Button)sender;
-            //int idContacto = Convert.ToInt32(btnEditar.CommandArgument);
+            btnActualizar.Visible = true;
+            btnAgregar.Visible = false;
+            Button btnEditar = (Button)sender;
+            int idContacto = Convert.ToInt32(btnEditar.CommandArgument);
 
-            //if (idContacto > 0)
-            //{
-            //    CargarDatosContacto(idContacto);
-            //    upModal.Update();
-            //    ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#ModalContacto').modal('show');", true);
-            //}
+            if (idContacto > 0)
+            {
+                CargarDatosContacto(idContacto);
+                upModal.Update();
+                ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#ModalContacto').modal('show');", true);
+            }
         }
 
         private void MostrarModalEditar(int idContacto)
         {
-            //CargarDatosContacto(idContacto);
-            //upModal.Update();
-            //ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#ModalContacto').modal('show');", true);
+            CargarDatosContacto(idContacto);
+            upModal.Update();
+            ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#ModalContacto').modal('show');", true);
         }
 
         protected void btnActualizar_Click(object sender, EventArgs e)
@@ -386,99 +349,99 @@ namespace fpWebApp
             string respuesta = string.Empty;
             string mensajeValidacion = string.Empty;
 
-            //if (ddlEmpresa.SelectedItem.Value != "")
-            //    ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
-            //else
-            //    ddlEmpresa.SelectedItem.Value = "0";
+            if (ddlEmpresa.SelectedItem.Value != "")
+                ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
+            else
+                ddlEmpresa.SelectedItem.Value = "0";
 
-            //clasesglobales cg = new clasesglobales();
-            //try
-            //{
-            //    // Obtener y limpiar valores
-            //    string nombre = txbNombreContacto.Value?.ToString().Trim();
-            //    string telefono = Regex.Replace(txbTelefonoContacto.Value?.ToString().Trim(), @"\D", "");
-            //    string correo = txbCorreoContacto.Value?.ToString().Trim();
-            //    string fechaPrim = txbFechaPrim?.Value?.ToString().Trim();
-            //    string fechaProx = txbFechaProx?.Value?.ToString().Trim();
-            //    string valorPropuestaTexto = Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "");
-            //    string empresa = ddlEmpresa.SelectedItem?.Value;
-            //    string statusLead = ddlStatusLead.SelectedItem?.Value;
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                // Obtener y limpiar valores
+                string nombre = txbNombreContacto.Value?.ToString().Trim();
+                string telefono = Regex.Replace(txbTelefonoContacto.Value?.ToString().Trim(), @"\D", "");
+                string correo = txbCorreoContacto.Value?.ToString().Trim();
+                string fechaPrim = txbFechaPrim?.Value?.ToString().Trim();
+                string fechaProx = txbFechaProx?.Value?.ToString().Trim();
+                string valorPropuestaTexto = Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "");
+                string empresa = ddlEmpresa.SelectedItem?.Value;
+                string statusLead = ddlStatusLead.SelectedItem?.Value;
 
-            //    // Validar campos requeridos
-            //    if (string.IsNullOrWhiteSpace(nombre) ||
-            //        string.IsNullOrWhiteSpace(telefono) ||
-            //        string.IsNullOrWhiteSpace(correo) ||
-            //        string.IsNullOrWhiteSpace(empresa) ||
-            //        string.IsNullOrWhiteSpace(statusLead) ||
-            //        string.IsNullOrWhiteSpace(fechaPrim) ||
-            //        string.IsNullOrWhiteSpace(fechaProx) ||
-            //        string.IsNullOrWhiteSpace(valorPropuestaTexto))
-            //    {
-            //        mensajeValidacion = "Todos los campos son obligatorios.";
+                // Validar campos requeridos
+                if (string.IsNullOrWhiteSpace(nombre) ||
+                    string.IsNullOrWhiteSpace(telefono) ||
+                    string.IsNullOrWhiteSpace(correo) ||
+                    string.IsNullOrWhiteSpace(empresa) ||
+                    string.IsNullOrWhiteSpace(statusLead) ||
+                    string.IsNullOrWhiteSpace(fechaPrim) ||
+                    string.IsNullOrWhiteSpace(fechaProx) ||
+                    string.IsNullOrWhiteSpace(valorPropuestaTexto))
+                {
+                    mensajeValidacion = "Todos los campos son obligatorios.";
 
-            //        ltMensajeVal.Text = "<div class='alert alert-danger'>Todos los campos son obligatorios.</div>";
-            //        MostrarModalEditar(Convert.ToInt32(Session["contactoId"]));
-            //        return;
-            //    }
-            //    else
-            //    {
-            //        respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.ToString().Trim(),
-            //                Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), txbCorreoContacto.Value.ToString().Trim(),
-            //                Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()),
-            //                txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
-            //                txaObservaciones.Value.ToString(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
+                    ltMensajeVal.Text = "<div class='alert alert-danger'>Todos los campos son obligatorios.</div>";
+                    MostrarModalEditar(Convert.ToInt32(Session["contactoId"]));
+                    return;
+                }
+                else
+                {
+                    respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.ToString().Trim(),
+                            Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), txbCorreoContacto.Value.ToString().Trim(),
+                            Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()),
+                            txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
+                            txaObservaciones.Value.ToString(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
 
-            //        if (salida)
-            //        {
-            //            string script = @"
-            //                $('#ModalContacto').modal('hide');
-            //                $('.modal-backdrop').remove();
-            //                Swal.fire({
-            //                    title: 'El contacto se actualizó de forma exitosa',
-            //                    text: '" + mensaje.Replace("'", "\\'") + @"',
-            //                    icon: 'success',
-            //                    timer: 3000, // 3 segundos
-            //                    showConfirmButton: false,
-            //                    timerProgressBar: true
-            //                }).then(() => {
-            //                    window.location.href = 'nuevocontactocrm';
-            //                });
-            //            ";
+                    if (salida)
+                    {
+                        string script = @"
+                            $('#ModalContacto').modal('hide');
+                            $('.modal-backdrop').remove();
+                            Swal.fire({
+                                title: 'El contacto se actualizó de forma exitosa',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'success',
+                                timer: 3000, // 3 segundos
+                                showConfirmButton: false,
+                                timerProgressBar: true
+                            }).then(() => {
+                                window.location.href = 'listacontactoscrm';
+                            });
+                        ";
 
-            //            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-            //        }
-            //        else
-            //        {
-            //            string script = @"
-            //                $('#ModalContacto').modal('hide');
-            //                $('.modal-backdrop').remove();
-            //                Swal.fire({
-            //                    title: 'Error',
-            //                    text: '" + mensaje.Replace("'", "\\'") + @"',
-            //                    icon: 'error'
-            //                }).then((result) => {
-            //                    if (result.isConfirmed) {
-            //                        $('#ModalContacto').modal('show');
-            //                    }
-            //                });
-            //            ";
-            //            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    string script = @"
-            //        $('#ModalContacto').modal('hide');
-            //        $('.modal-backdrop').remove();
-            //        Swal.fire({
-            //            title: 'Error',
-            //            text: 'Ha ocurrido un error inesperado.',
-            //            icon: 'error'
-            //        });
-            //    ";
-            //    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-            //}
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                    }
+                    else
+                    {
+                        string script = @"
+                            $('#ModalContacto').modal('hide');
+                            $('.modal-backdrop').remove();
+                            Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $('#ModalContacto').modal('show');
+                                }
+                            });
+                        ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string script = @"
+                    $('#ModalContacto').modal('hide');
+                    $('.modal-backdrop').remove();
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Ha ocurrido un error inesperado.',
+                        icon: 'error'
+                    });
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+            }
 
         }
 
