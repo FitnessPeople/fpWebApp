@@ -68,14 +68,14 @@
                         <i class="fa-solid fa-envelope" style="color: #0D6EFD;"></i> <b>Correo</b> o 
                         <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i> <b>Celular.</b><br />
                         Además, selecciona una <i class="fa-solid fa-map-pin" style="color: #DC3545;"></i> Sede en el menú desplegable para filtrar por ubicación.<br />
-                        Tip: ¡Combina filtros para resultados más precisos!
+                        <i class="fa-solid fa-star" style="color: #FECE32;"></i> Tip: ¡Combina filtros para resultados más precisos!
                     <br />
                         <br />
                         <b>Paso 2: Revisa la tabla de resultados</b><br />
                         La tabla muestra toda la información clave de cada afiliado.<br />
                         En la columna "Acciones" encontrarás estas opciones:<br />
                         <i class="fa fa-edit" style="color: #1AB394;"></i> <b>Editar:</b> Modifica los datos del afiliado.<br />
-                        <i class="fa fa-trash" style="color: #DC3545;"></i> <b>Eliminar:</b> Da de baja al afiliado (sistema pedirá confirmación).<br />
+                        <i class="fa fa-trash" style="color: #DC3545;"></i> <b>Eliminar:</b> Da de baja al afiliado.<br />
                         <i class="fa fa-ticket" style="color: #23C6C8;"></i> <b>Asignar Plan:</b> Selecciona o cambia su plan actual.<br />
                         <i class="fa fa-right-left" style="color: #F8AC59;"></i> <b>Traspaso:</b> Transfiere el afiliado a otra sede o plan.<br />
                         <i class="fa fa-gift" style="color: #0D6EFD;"></i> <b>Cortesía:</b> Asigna beneficios especiales.<br />

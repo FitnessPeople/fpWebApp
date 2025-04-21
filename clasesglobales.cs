@@ -266,12 +266,7 @@ namespace fpWebApp
                         object value = dt.Rows[i][j];
                         ICell cell = row.CreateCell(j);
                         cell.SetCellValue(value != DBNull.Value ? value.ToString() : "");
-
-                        // Aplicar bordes solo si hay contenido
-                        if (value != DBNull.Value && !string.IsNullOrEmpty(value.ToString()))
-                        {
-                            cell.CellStyle = borderStyle;
-                        }
+                        cell.CellStyle = borderStyle;
                     }
                 }
 

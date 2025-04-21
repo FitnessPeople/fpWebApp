@@ -41,36 +41,31 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-person-chalkboard modal-icon"></i>
-                    <h4 class="modal-title">Guía para crear un nuevo usuario</h4>
-                    <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
+                    <i class="fa fa-user-plus modal-icon" style="color: #1C84C6;"></i>
+                    <h4 class="modal-title">Guía para crear un usuario</h4>
+                    <small class="font-bold">¡Bienvenido! Sigue estos pasos para completar el registro sin errores.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>1. Lee las Instrucciones</b><br />
-                        Antes de comenzar, es importante que leas todas las instrucciones del formulario. Esto te ayudará a entender qué información se requiere y cómo debe ser presentada.
+                        <b>Paso 1: Prepara la información</b><br />
+                        Asegúrate de tener estos datos del usuario a mano:<br />
+                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre(s) y Apellido(s).</b><br />
+                        <i class="fa-solid fa-phone" style="color: #0D6EFD;"></i> <b>Email.</b><br />
+                        <i class="fa-solid fa-user-tie" style="color: #0D6EFD;"></i> <b>Cargo, Pefil y Empleado.</b><br />
+                        <i class="fa-solid fa-lock" style="color: #0D6EFD;"></i> <b>Contraseña.</b>
                     <br />
                         <br />
-                        <b>2. Reúne la Información Necesaria</b><br />
-                        Asegúrate de tener a mano todos los documentos e información que necesitas, como:
-                    Datos personales (nombre, dirección, número de teléfono, etc.)
-                    Información específica relacionada con el propósito del formulario (por ejemplo, detalles de empleo, historial médico, etc.)
+                        <b>Paso 2: Completa el formulario</b><br />
+                        <i class="fa-solid fa-pencil"></i> Llena todos los campos obligatorios (generalmente marcados con *).<br />
+                        <i class="fa-solid fa-magnifying-glass"></i> Verifica que los datos estén correctos y actualizados.
                     <br />
                         <br />
-                        <b>3. Completa los Campos Requeridos</b><br />
-                        Campos Obligatorios: Identifica cuáles son los campos obligatorios (generalmente marcados con un asterisco *) y asegúrate de completarlos.
-                    Campos Opcionales: Si hay campos opcionales, completa solo los que consideres relevantes.
+                        <b>Paso 3: Confirma o cancela</b><br />
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Agregar:</b> Guarda la información y finaliza el registro.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
                     <br />
                         <br />
-                        <b>4. Confirma la Información</b><br />
-                        Asegúrate de que todos los datos ingresados son correctos y actualizados. Una revisión final puede evitar errores que podrían complicar el proceso.
-                    <br />
-                        <br />
-                        <b>5. Envía el Formulario</b><br />
-                        Asegúrate de seguir el proceso de envío indicado (hacer clic en "Agregar").
-                    <br />
-                        <br />
-                        ¡Siguiendo estos pasos, estarás listo para diligenciar tu formulario sin problemas! Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">

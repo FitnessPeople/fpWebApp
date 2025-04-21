@@ -51,36 +51,35 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-person-chalkboard modal-icon"></i>
-                    <h4 class="modal-title">Guía para administrar perfiles</h4>
-                    <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
+                    <i class="fa fa-user-shield modal-icon" style="color: #1C84C6;"></i>
+                    <h4 class="modal-title">Guía para visualizar perfiles</h4>
+                    <small class="font-bold">¡Bienvenido! Te explicamos cómo gestionar los perfiles de manera clara y eficiente.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>1. Lee las Instrucciones</b><br />
-                        Antes de comenzar, es importante que leas todas las instrucciones del formulario. Esto te ayudará a entender qué información se requiere y cómo debe ser presentada.
+                        <b>Paso 1: Crea uno nuevo</b><br />
+                        Usa el campo que está a la <b>izquierda</b> para digitar el nombre que quieres registrar.<br />
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Agregar:</b> Guarda la información y finaliza el registro.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
+                    <br />
                         <br />
+                        <b>Paso 2: Visualiza</b><br />
+                        Justo debajo se encuentran todos los diferentes perfiles que se han creado.
+                    <br />
                         <br />
-                        <b>2. Reúne la Información Necesaria</b><br />
-                        Asegúrate de tener a mano todos los documentos e información que necesitas, como:
-                        Datos personales (nombre, dirección, número de teléfono, etc.)
-                        Información específica relacionada con el propósito del formulario (por ejemplo, detalles de empleo, historial médico, etc.)
+                        <b>Paso 3: Gestiona perfiles</b><br />
+                        En la columna <b>Acciones</b> encontrarás estas opciones:<br />
+                        <i class="fa fa-edit" style="color: #1AB394;"></i> <b>Editar:</b> Modifica los datos necesarios.<br />
+                        <i class="fa fa-trash" style="color: #DC3545;"></i> <b>Eliminar:</b> Borra lo que creas innecesario.
+                     <br />
                         <br />
+                        <b>Paso 4: Gestiona permisos</b><br />
+                        Usa la tabla que está a la <b>derecha</b> para gestionar lo que desees.<br />
+                        Selecciona el perfil.<br />
+                        Da click en <i class="fa-solid fa-thumbs-up" style="color: #1AB394;"></i> para modificar sus permisos.
+                    <br />
                         <br />
-                        <b>3. Completa los Campos Requeridos</b><br />
-                        Campos Obligatorios: Identifica cuáles son los campos obligatorios (generalmente marcados con un asterisco *) y asegúrate de completarlos.
-                        Campos Opcionales: Si hay campos opcionales, completa solo los que consideres relevantes.
-                        <br />
-                        <br />
-                        <b>4. Confirma la Información</b><br />
-                        Asegúrate de que todos los datos ingresados son correctos y actualizados. Una revisión final puede evitar errores que podrían complicar el proceso.
-                        <br />
-                        <br />
-                        <b>5. Envía el Formulario</b><br />
-                        Asegúrate de seguir el proceso de envío indicado (hacer clic en "Agregar").
-                        <br />
-                        <br />
-                        ¡Siguiendo estos pasos, estarás listo para diligenciar tu formulario sin problemas! Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
