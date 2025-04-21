@@ -1,11 +1,13 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="nuevocontactocrm.aspx.cs" Inherits="fpWebApp.nuevocontactocrm" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="nuevocontactocrm.aspx.cs" Inherits="fpWebApp.nuevocontactocrm" ValidateRequest="false" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
-<%@ Register Src="~/controles/indicadoresusucmr.ascx" TagPrefix="uc2" TagName="indicadoresusucmr" %>
+<%@ Register Src="~/controles/indicadoresusucrm.ascx" TagPrefix="uc2" TagName="indicadoresusucrm" %>
+
+
 
 
 <!DOCTYPE html>
@@ -131,7 +133,6 @@
                 fechaPrim !== "" &&
                 fechaProx !== "" &&
                 valor !== "" &&
-                empresa !== "0" &&
                 status !== "0";
 
             if (camposCompletos) {
@@ -245,7 +246,7 @@
                 <div class="row animated fadeInDown">
                     <%--Inicio Contenido!!!!--%>
 
-                    <uc2:indicadoresusucmr runat="server" ID="indicadoresusucmr" />
+                    <uc2:indicadoresusucrm runat="server" ID="indicadoresusucrm" />
 
                     <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
                         <div class="p-xs">
@@ -536,14 +537,15 @@
             </div>
             <uc1:rightsidebar runat="server" ID="rightsidebar" />
         </div>
+    </div>
 
-        <script>
+ <script>
             $(document).ready(function () {
                 $("#btnEditar").on("click", function () {
                     $("#EditionModal").modal("show"); // Abre la modal al hacer clic en el botón
                 });
             });
-        </script>
+ </script>
 
         <%--    formato de fecha--%>
 
@@ -613,12 +615,6 @@
     $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
 </script>
 
-
-
 </body>
-
-
-
-
 
 </html>
