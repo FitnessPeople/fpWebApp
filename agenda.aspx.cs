@@ -417,14 +417,24 @@ namespace fpWebApp
                                 }
                                 else
                                 {
-                                    ltMensaje.Text = "Ya esta ocupado este especialista en otra sede.";
+                                    ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                        "<div class=\"alert alert-danger alert-dismissable\">" +
+                                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                        "Ya esta ocupado este especialista en otra sede." +
+                                        "</div></div>";
+                                    //ltMensaje.Text = "Ya esta ocupado este especialista en otra sede.";
                                     dtFechaIniCita = dtFechaFinCitaDia;
                                 }
                                 dt1.Dispose();
                             }
                             else
                             {
-                                ltMensaje.Text = "Ya esta ocupado este horario en la sede.";
+                                ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                    "Ya esta ocupado este horario en la sede." +
+                                    "</div></div>";
+                                //ltMensaje.Text = "Ya esta ocupado este horario en la sede.";
                                 dtFechaIniCita = dtFechaFinCitaDia;
                             }
                             dt.Dispose();
@@ -437,7 +447,12 @@ namespace fpWebApp
                 }
                 else
                 {
-                    ltMensaje.Text = "Hora de inicio debe ser menor a hora final";
+                    ltMensaje.Text = "<div class=\"ibox-content\">" +
+                        "<div class=\"alert alert-danger alert-dismissable\">" +
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        "Hora de inicio debe ser menor a hora final." +
+                        "</div></div>";
+                    //ltMensaje.Text = "Hora de inicio debe ser menor a hora final";
                 }
             }
             //Response.Redirect("agenda");
