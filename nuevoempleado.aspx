@@ -26,11 +26,8 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
-    <!-- Sweet Alert -->
-    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
-
-    <!-- Sweet alert -->
-    <script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         function formatCurrency(input) {
@@ -106,7 +103,7 @@
     <div id="wrapper">
 
         <uc1:navbar runat="server" ID="navbar1" />
-
+        
         <div id="page-wrapper" class="gray-bg">
             <div class="row border-bottom">
                 <uc1:header runat="server" ID="header1" />
@@ -383,7 +380,7 @@
                                                             <label>ARL</label>
                                                             <asp:DropDownList ID="ddlArl" runat="server" AppendDataBoundItems="true"
                                                                 DataTextField="NombreArl" DataValueField="idArl" CssClass="form-control input-sm">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:ListItem Text="Ninguno" Value="0"></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
@@ -392,7 +389,7 @@
                                                             <label>Caja de compensación</label>
                                                             <asp:DropDownList ID="ddlCajaComp" runat="server" AppendDataBoundItems="true"
                                                                 DataTextField="NombreCajaComp" DataValueField="idCajaComp" CssClass="form-control input-sm">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:ListItem Text="Ninguno" Value="0"></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
@@ -404,7 +401,7 @@
                                                             <label>Cesantías</label>
                                                             <asp:DropDownList ID="ddlCesantias" runat="server" AppendDataBoundItems="true"
                                                                 DataTextField="NombreCesantias" DataValueField="idCesantias" CssClass="form-control input-sm">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:ListItem Text="Ninguno" Value="0"></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
@@ -546,6 +543,18 @@
                     required: true
                 },
                 ddlCanalVenta: {
+                    required: true
+                },
+                ddlempresasFP: {
+                    required: true
+                },
+                ddlCargo: {
+                    required: true
+                },
+                ddlEstadoCivil: {
+                    required: true
+                },
+                ddlGenero: {
                     required: true
                 },
             },

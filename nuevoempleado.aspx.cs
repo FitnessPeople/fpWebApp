@@ -305,7 +305,7 @@ namespace fpWebApp
                                 string script = @"
                                     Swal.fire({
                                         title: 'El empleado se creo de forma exitosa',
-                                        text: 'Texto.',
+                                        text: '',
                                         icon: 'success',
                                         timer: 3000, // 3 segundos
                                         showConfirmButton: false,

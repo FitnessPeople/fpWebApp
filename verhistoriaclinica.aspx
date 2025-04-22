@@ -172,7 +172,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-lg-5">
+                        <div class="col-lg-4">
                             <div class="ibox float-e-margins">
                                 <div class="ibox-title">
                                     <h5>Historias clínicas</h5>
@@ -197,7 +197,7 @@
                                                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%# Eval("idHistoria") %>">Historia Clínica #<%# Eval("idHistoria") %></a>
                                                             </h5>
                                                         </div>
-                                                        <div id="collapse<%# Eval("idHistoria") %>" class="panel-collapse collapse in">
+                                                        <div id="collapse<%# Eval("idHistoria") %>" class="panel-collapse collapse <%# Eval("clase") %>">
                                                             <div class="panel-body">
 
                                                                 <ul class="sortable-list connectList agile-list">
@@ -364,7 +364,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-7">
+                        <div class="col-lg-8">
                             <div class="ibox float-e-margins" runat="server" id="divContenido">
                                 <div class="ibox-title">
                                     <h5>Formulario para la creación de una nueva historia clínica</h5>
@@ -641,7 +641,7 @@
                                                     <asp:Button ID="btnAgregar" runat="server"
                                                         CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
                                                         Text="Siguiente" Visible="false"
-                                                        ValidationGroup="agregar" />
+                                                        ValidationGroup="agregar" OnClick="btnAgregar_Click" />
                                                 </div>
                                             </div>
                                         </form>

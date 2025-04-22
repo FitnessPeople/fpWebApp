@@ -57,7 +57,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-user-doctor"></i><span class="nav-label">Médico</span><span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-user-doctor"></i><span class="nav-label">Asistencial</span><span class="fa arrow"></span></a>
                 <ul id="medico" class="nav nav-second-level collapse">
                     <li id="agenda" class="old"><a href="agenda"><i class="fa fa-calendar-days"></i>Administrar agenda</a></li>
                     <li id="agendarcita" class="old"><a href="agendarcita"><i class="fa fa-calendar-days"></i>Agendar cita</a></li>

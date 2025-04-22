@@ -147,7 +147,7 @@
                                                     <asp:DropDownList ID="ddlCategorias" runat="server" CssClass="form-control input-sm">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                         <asp:ListItem Text="Afiliados" Value="Afiliados"></asp:ListItem>
-                                                        <asp:ListItem Text="Médico" Value="Médico"></asp:ListItem>
+                                                        <asp:ListItem Text="Asistencial" Value="Asistencial"></asp:ListItem>
                                                         <asp:ListItem Text="Reportes" Value="Reportes"></asp:ListItem>
                                                         <asp:ListItem Text="CRM" Value="CRM"></asp:ListItem>
                                                         <asp:ListItem Text="Contabilidad" Value="Contabilidad"></asp:ListItem>

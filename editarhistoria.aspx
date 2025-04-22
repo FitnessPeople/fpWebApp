@@ -148,7 +148,7 @@
                                                             <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server" 
                                                                 placeholder="Nombre / Cédula / Email / Celular"></asp:TextBox>
                                                              <asp:Button ID="btnAfiliado" runat="server" Text="" 
-                                                                style="display:none;" OnClick="btnAfiliado_Click" />
+                                                                style="display:none;" />
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-3">
@@ -422,7 +422,7 @@
                                                         onclick="window.location.href='historiasclinicas'"><strong>Cancelar</strong></button>
                                                     <asp:Button ID="btnAgregar" runat="server" 
                                                         CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" 
-                                                        Text="Agregar" Visible="false" OnClick="btnAgregar_Click" 
+                                                        Text="Agregar" Visible="false"  
                                                         ValidationGroup="agregar" />
                                                 </div>
                                             </div>
