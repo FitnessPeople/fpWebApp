@@ -115,10 +115,14 @@ namespace fpWebApp
                 "IF(Diabetes=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS diabetico, " +
                 "IF(Colesterol=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(Colesterol=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS colesterado, " +
                 "IF(Trigliceridos=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(Trigliceridos=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS triglicerado, " +
-                "IF(HTA=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(HTA=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS hipertenso " +
+                "IF(HTA=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(HTA=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS hipertenso, " +
+                "(@rownum := @rownum + 1) as nro_fila, " +
+                "IF(@rownum=1,'in','') AS clase " +
                 "FROM HistoriasClinicas hc " +
                 "LEFT JOIN ObjetivosAfiliado oa ON hc.idObjetivoIngreso = oa.idObjetivo " +
-                "WHERE idAfiliado = " + idAfiliado;
+                "CROSS JOIN (SELECT @rownum := 0) r " +
+                "WHERE idAfiliado = " + idAfiliado + " " +
+                "ORDER BY FechaHora DESC ";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
@@ -126,6 +130,8 @@ namespace fpWebApp
             {
                 rpHistorias.DataSource = dt;
                 rpHistorias.DataBind();
+
+                LlenarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
             }
             else
             {
@@ -136,6 +142,30 @@ namespace fpWebApp
                     "</div></div>";
                 //ltMensaje.Text = "Afiliado sin historias clínicas.";
             }
+
+            dt.Dispose();
+        }
+
+        private void LlenarHistoriasClinicas(string idAfiliado)
+        {
+            string strQuery = "SELECT * " +
+                "FROM HistoriasClinicas hc " +
+                "LEFT JOIN ObjetivosAfiliado oa ON hc.idObjetivoIngreso = oa.idObjetivo " +
+                "WHERE idAfiliado = " + idAfiliado + " " +
+                "ORDER BY FechaHora DESC " +
+                "LIMIT 1";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            txbMedicinaPrepagada.Text = dt.Rows[0]["MedicinaPrepagada"].ToString();
+
+            txbDescripcionObjetivo.Text = dt.Rows[0]["DescripcionObjetivoIngreso"].ToString();
+
+            //Antecedentes
+            txbAnteFamiliares.Text = dt.Rows[0]["AnteFamiliar"].ToString();
+            txbAntePatologico.Text = dt.Rows[0]["AntePatologico"].ToString();
+            txbAnteQuirurgico.Text = dt.Rows[0]["AnteQuirurgico"].ToString();
+            txbAnteTraumatologico.Text = dt.Rows[0]["AnteTraumatologico"].ToString();
 
             dt.Dispose();
         }
@@ -176,6 +206,11 @@ namespace fpWebApp
             }
 
             dt.Dispose();
+        }
+
+        protected void btnAgregar_Click(object sender, EventArgs e)
+        {
+            //Inserta datos en la tabla HistoriasClinicas
         }
     }
 }

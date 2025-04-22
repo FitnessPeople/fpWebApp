@@ -81,15 +81,15 @@ namespace fpWebApp
         {
             if (Request.QueryString.Count > 0)
             {
-                string strQuery = "SELECT * FROM HistoriasClinicas WHERE idHistoria = " + Request.QueryString["idHistoriaClinica"].ToString();
+                string strQuery = "SELECT * FROM HistoriasClinicas WHERE idHistoria = " + Request.QueryString["editId"].ToString();
                 clasesglobales cg1 = new clasesglobales();
                 DataTable dt = cg1.TraerDatos(strQuery);
                 if (dt.Rows.Count > 0)
                 {
-                    txbFum.Text = dt.Rows[0]["FUM"].ToString();
+                    txbFum.Text = dt.Rows[0]["AnteFUM"].ToString();
                     txbCigarrillos.Text = dt.Rows[0]["Cigarrillos"].ToString();
                     txbBebidas.Text = dt.Rows[0]["Bebidas"].ToString();
-                    ddlObjetivo.SelectedValue = dt.Rows[0]["idObjetivo"].ToString();
+                    ddlObjetivo.SelectedValue = dt.Rows[0]["idObjetivoIngreso"].ToString();
                 }
                 dt.Dispose();
             }
