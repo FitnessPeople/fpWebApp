@@ -318,7 +318,7 @@ namespace fpWebApp
                 if (mensaje == "OK")
                 {
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Modifica", "El usuario modificó datos al afiliado con documento " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Modifica", "El usuario modificó datos del afiliado con documento: " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
 
                     //Consulta si existe el afiliado en Armatura y lo actualiza
                     string url = "https://aone.armaturacolombia.co/api/person/get/" + txbDocumento.Text.ToString() + "?access_token=D2BCF6E6BD09DECAA1266D9F684FFE3F5310AD447D107A29974F71E1989AABDB";
