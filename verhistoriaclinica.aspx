@@ -122,6 +122,55 @@
                     </div>
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
+
+                    <div class="row m-b-xs m-t-xs">
+                        <div class="col-md-6">
+
+                            <div class="profile-image">
+                                <asp:Literal ID="ltFoto" runat="server"></asp:Literal>
+                            </div>
+                            <div class="profile-info">
+                                <div class="">
+                                    <div>
+                                        <h2 class="no-margins">
+                                            <asp:Literal ID="ltNombre" runat="server"></asp:Literal>
+                                            <asp:Literal ID="ltApellido" runat="server"></asp:Literal>
+                                        </h2>
+                                        <h4>
+                                            <asp:Literal ID="ltEmail" runat="server"></asp:Literal></h4>
+                                        <small>
+                                            <asp:Literal ID="ltDireccion" runat="server"></asp:Literal>,
+                        <asp:Literal ID="ltCiudad" runat="server"></asp:Literal></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table small m-b-xs">
+                                <tbody>
+                                    <tr>
+                                        <td><strong><i class="fab fa-whatsapp"></i></strong>
+                                            <asp:Literal ID="ltCelular" runat="server"></asp:Literal></td>
+                                        <td><strong><i class="fa fa-shield"></i></strong> Estado: 
+                        <asp:Literal ID="ltEstado" runat="server"></asp:Literal></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong><i class="fa fa-building"></i></strong> Sede:
+                        <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
+                                        <td><strong><i class="fa fa-venus-mars"></i></strong> Género:
+                                            <asp:Literal ID="ltGenero" runat="server"></asp:Literal></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong><i class="fa fa-cake"></i></strong>
+                                            <asp:Literal ID="ltCumple" runat="server"></asp:Literal></td>
+                                        <td><strong><i class="fa fa-house-medical"></i></strong> EPS:
+                                            <asp:Literal ID="ltEPS" runat="server"></asp:Literal></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-lg-5">
                             <div class="ibox float-e-margins">
@@ -131,145 +180,185 @@
                                         <a class="collapse-link">
                                             <i class="fa fa-chevron-up"></i>
                                         </a>
+                                        <a class="fullscreen-link">
+                                            <i class="fa fa-expand"></i>
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="ibox-content">
                                     <div class="panel-body">
                                         <div class="panel-group" id="accordion">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <h5 class="panel-title">
-                                                        <span class="label label-warning-light pull-right"><i class="fa fa-calendar-day"></i> 19 Enero 2025</span>
-                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Historia Clínica #005</a>
-                                                    </h5>
-                                                </div>
-                                                <div id="collapseOne" class="panel-collapse collapse in">
-                                                    <div class="panel-body">
+                                            <asp:Repeater ID="rpHistorias" runat="server">
+                                                <ItemTemplate>
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <h5 class="panel-title">
+                                                                <span class="label label-warning-light pull-right"><i class="fa fa-calendar-day"></i> <%# Eval("FechaHora", "{0:dd MMM yyyy}") %></span>
+                                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%# Eval("idHistoria") %>">Historia Clínica #<%# Eval("idHistoria") %></a>
+                                                            </h5>
+                                                        </div>
+                                                        <div id="collapse<%# Eval("idHistoria") %>" class="panel-collapse collapse in">
+                                                            <div class="panel-body">
 
-                                                        <ul class="sortable-list connectList agile-list">
+                                                                <ul class="sortable-list connectList agile-list">
 
-                                                            <h4><i class="fa fa-clock-rotate-left"></i> ANTECEDENTES</h4>
+                                                                    <li class="warning-element"><b>Medicina prepagada</b>
+                                                                        <div class="agile-detail">
+                                                                            <%# Eval("MedicinaPrepagada") %>
+                                                                        </div>
+                                                                    </li>
 
-                                                            <li class="success-element"><span class="font-bold">Familiares</span>
-                                                                <div class="agile-detail">
-                                                                    Simply dummy text of the printing and typesetting industry.
-                                                                </div>
-                                                            </li>
-                                                            <li class="success-element"><span class="font-bold">Patológicos</span>
-                                                                <div class="agile-detail">
-                                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                                                </div>
-                                                            </li>
-                                                            <li class="success-element">Quirúrgicos
-                                                                <div class="agile-detail">
-                                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                                                </div>
-                                                            </li>
-                                                            <li class="success-element">Traumatológicos
-                                                                <div class="agile-detail">
-                                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                                                </div>
-                                                            </li>
-                                                            <li class="success-element">Farmacológico
-                                                                <div class="agile-detail">
-                                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                                                </div>
-                                                            </li>
-                                                            <li class="success-element">Actividad física
-                                                                <div class="agile-detail">
-                                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                                                </div>
-                                                            </li>
-                                                            <li class="success-element">Toxicológicos alérgicos
-                                                                <div class="agile-detail">
-                                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                                                </div>
-                                                            </li>
-                                                            <li class="success-element">Hospitalarios
-                                                                <div class="agile-detail">
-                                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                                                </div>
-                                                            </li>
-                                                            <li class="success-element">Gineco-obstétricos
-                                                                <div class="agile-detail">
-                                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                                                </div>
-                                                            </li>
-                                                            <li class="success-element">F.U.M.
-                                                                <div class="agile-detail">
-                                                                    <i class="fa fa-clock-o"></i>16.11.2015
-                                                                </div>
-                                                            </li>
-                                                            <li class="danger-element">All the Lorem Ipsum generators
-                                                                <div class="agile-detail">
-                                                                    <a href="#" class="pull-right btn btn-xs btn-primary">Done</a>
-                                                                    <i class="fa fa-clock-o"></i>06.10.2015
-                                   
-                                                                </div>
-                                                            </li>
-                                                            <li class="warning-element" id="task5">Which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
-                                   
-                                                                <div class="agile-detail">
-                                                                    <a href="#" class="pull-right btn btn-xs btn-white">Tag</a>
-                                                                    <i class="fa fa-clock-o"></i>09.12.2015
-                                   
-                                                                </div>
-                                                            </li>
-                                                            <li class="warning-element" id="task6">Packages and web page editors now use Lorem Ipsum as
-                                   
-                                                                <div class="agile-detail">
-                                                                    <a href="#" class="pull-right btn btn-xs btn-primary">Done</a>
-                                                                    <i class="fa fa-clock-o"></i>08.04.2015
-                                   
-                                                                </div>
-                                                            </li>
-                                                            <li class="success-element" id="task7">Many desktop publishing packages and web page editors now use Lorem Ipsum as their default.
-                                   
-                                                                <div class="agile-detail">
-                                                                    <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                                                    <i class="fa fa-clock-o"></i>05.04.2015
-                                   
-                                                                </div>
-                                                            </li>
-                                                            <li class="info-element" id="task8">Sometimes by accident, sometimes on purpose (injected humour and the like).
-                                   
-                                                                <div class="agile-detail">
-                                                                    <a href="#" class="pull-right btn btn-xs btn-white">Mark</a>
-                                                                    <i class="fa fa-clock-o"></i>16.11.2015
-                                   
-                                                                </div>
-                                                            </li>
-                                                        </ul>
+                                                                    <li class="warning-element"><b>Objetivo del ingreso</b>
+                                                                        <div class="agile-detail">
+                                                                            <%# Eval("Objetivo") %>
+                                                                        </div>
+                                                                    </li>
 
+                                                                    <li class="warning-element"><b>Detalle objetivo del ingreso</b>
+                                                                        <div class="agile-detail">
+                                                                            <%# Eval("DescripcionObjetivoIngreso") %>
+                                                                        </div>
+                                                                    </li>
+
+                                                                    <br />
+                                                                    <h4><i class="fa fa-clock-rotate-left text-success"></i> ANTECEDENTES</h4>
+
+                                                                    <li class="info-element"><b>Familiares</b>
+                                                                        <div class="agile-detail">
+                                                                            <%# Eval("AnteFamiliar") %>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li class="info-element"><b>Patológicos</b>
+                                                                        <div class="agile-detail">
+                                                                            <%# Eval("AntePatologico") %>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li class="info-element"><b>Quirúrgicos</b>
+                                                                        <div class="agile-detail">
+                                                                            <%# Eval("AnteQuirurgico") %>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li class="info-element"><b>Traumatológicos</b>
+                                                                        <div class="agile-detail">
+                                                                            <%# Eval("AnteTraumatologico") %>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li class="info-element"><b>Farmacológico</b>
+                                                                        <div class="agile-detail">
+                                                                            <%# Eval("AnteFarmacologico") %>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li class="info-element"><b>Actividad física</b>
+                                                                        <div class="agile-detail">
+                                                                            <%# Eval("AnteActividadFisica") %>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li class="info-element"><b>Toxicológicos alérgicos</b>
+                                                                        <div class="agile-detail">
+                                                                            <%# Eval("AnteFamiliar") %>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li class="info-element"><b>Hospitalarios</b>
+                                                                        <div class="agile-detail">
+                                                                            <%# Eval("AnteHospitalario") %>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li class="info-element"><b>Gineco-obstétricos</b>
+                                                                        <div class="agile-detail">
+                                                                            <%# Eval("AnteGineco") %>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li class="info-element"><b>F.U.M.</b>
+                                                                        <div class="agile-detail">
+                                                                            <%# Eval("AnteFUM") %>
+                                                                        </div>
+                                                                    </li>
+
+                                                                    <br />
+                                                                    <h4><i class="fa fa-heart-circle-exclamation text-navy"></i> FACTORES DE RIESGO CARDIOVASCULAR</h4>
+
+                                                                    <div class="row">
+                                                                        <div class="col-lg-6">
+                                                                            <li class="success-element"><b>Fuma?</b>
+                                                                                <div class="agile-detail">
+                                                                                    <%# Eval("fuma") %>
+                                                                                </div>
+                                                                            </li>
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <li class="success-element"><b>Cigarrillos x día</b>
+                                                                                <div class="agile-detail">
+                                                                                    <%# Eval("Cigarrillos") %>
+                                                                                </div>
+                                                                            </li>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <div class="col-lg-6">
+                                                                            <li class="success-element"><b>Toma?</b>
+                                                                                <div class="agile-detail">
+                                                                                    <%# Eval("toma") %>
+                                                                                </div>
+                                                                            </li>
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <li class="success-element"><b>Bebidas x mes</b>
+                                                                                <div class="agile-detail">
+                                                                                    <%# Eval("Bebidas") %>
+                                                                                </div>
+                                                                            </li>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <div class="col-lg-6">
+                                                                            <li class="success-element"><b>Sedentarismo</b>
+                                                                                <div class="agile-detail">
+                                                                                    <%# Eval("sedentario") %>
+                                                                                </div>
+                                                                            </li>
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <li class="success-element"><b>Diabetes</b>
+                                                                                <div class="agile-detail">
+                                                                                    <%# Eval("diabetico") %>
+                                                                                </div>
+                                                                            </li>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <div class="col-lg-6">
+                                                                            <li class="success-element"><b>Colesterol</b>
+                                                                                <div class="agile-detail">
+                                                                                    <%# Eval("colesterado") %>
+                                                                                </div>
+                                                                            </li>
+                                                                        </div>
+                                                                        <div class="col-lg-6">
+                                                                            <li class="success-element"><b>Triglicéridos</b>
+                                                                                <div class="agile-detail">
+                                                                                    <%# Eval("triglicerado") %>
+                                                                                </div>
+                                                                            </li>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <li class="success-element"><b>H.T.A.</b>
+                                                                        <div class="agile-detail">
+                                                                            <%# Eval("hipertenso") %>
+                                                                        </div>
+                                                                    </li>
+                                                                    
+                                                                </ul>
+
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <h4 class="panel-title">
-                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Historia Clínica 12 Octubre 2024</a>
-                                                    </h4>
-                                                </div>
-                                                <div id="collapseTwo" class="panel-collapse collapse">
-                                                    <div class="panel-body">
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                           
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <h4 class="panel-title">
-                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Historia Clínica 25 Marzo 2024</a>
-                                                    </h4>
-                                                </div>
-                                                <div id="collapseThree" class="panel-collapse collapse">
-                                                    <div class="panel-body">
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                           
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                </ItemTemplate>
+                                            </asp:Repeater>
+                                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                         </div>
                                     </div>
                                 </div>
@@ -283,6 +372,9 @@
                                         <a class="collapse-link">
                                             <i class="fa fa-chevron-up"></i>
                                         </a>
+                                        <a class="fullscreen-link">
+                                            <i class="fa fa-expand"></i>
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="ibox-content">
@@ -291,9 +383,7 @@
                                         <form role="form" id="form" runat="server">
                                             <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
                                             <div class="col-sm-12">
-                                                <%--<asp:UpdatePanel ID="upBusqueda" runat="server" UpdateMode="Always" ChildrenAsTriggers="true">
-                                                    <ContentTemplate>--%>
-                                                <div class="row">
+                                                <%--<div class="row">
                                                     <div class="col-sm-3">
                                                         <div class="form-group">
                                                             <label>Afiliado</label>
@@ -323,12 +413,8 @@
                                                             <asp:HiddenField ID="hfIdAfiliado" runat="server" />
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <%--</ContentTemplate>
-                                                    <Triggers>
-                                                      <asp:AsyncPostBackTrigger ControlID="txbBuscar" EventName="TextChanged" />
-                                                   </Triggers>
-                                                </asp:UpdatePanel>--%>
+                                                </div>--%>
+
                                                 <div class="row">
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
@@ -347,7 +433,7 @@
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label>Descripción objetivo del ingreso</label>
+                                                            <label>Detalle objetivo del ingreso</label>
                                                             <asp:TextBox ID="txbDescripcionObjetivo" CssClass="form-control" runat="server"
                                                                 TextMode="MultiLine"></asp:TextBox>
                                                         </div>
@@ -356,7 +442,7 @@
                                             </div>
 
                                             <div class="col-sm-12">
-                                                <div class="widget style1 lazur-bg">
+                                                <div class="widget style1 bg-success">
                                                     <div class="row vertical-align">
                                                         <div class="col-xs-3">
                                                             <i class="fa fa-clock-rotate-left fa-2x"></i>
@@ -388,7 +474,7 @@
                                                             <asp:TextBox ID="txbAnteQuirurgico" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                         </div>
                                                     </div>
-                                               
+
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Traumatológicos </label>
@@ -407,7 +493,7 @@
                                                             <asp:TextBox ID="txbAnteActividadFisica" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                         </div>
                                                     </div>
-                                                
+
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Toxicológicos alérgicos</label>
@@ -420,7 +506,7 @@
                                                             <asp:TextBox ID="txbAnteHospitalario" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                         </div>
                                                     </div>
-                                                
+
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Gineco-obstétricos</label>
@@ -433,7 +519,7 @@
                                                             <asp:TextBox ID="txbFum" CssClass="form-control input-sm" runat="server" name="txbFum"></asp:TextBox>
                                                         </div>
                                                     </div>
-                                                 </div>
+                                                </div>
                                             </div>
 
                                             <div class="col-sm-12">
@@ -593,43 +679,6 @@
     <!-- Jasny -->
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
-    <script>
-        $("#form").validate({
-            rules: {
-                txbAfiliado: {
-                    required: true,
-                    minlength: 3
-                },
-            }
-        });
-    </script>
-
-    <script type="text/javascript">  
-        $(document).ready(function () {
-            $("#txbAfiliado").autocomplete({
-                source: function (request, response) {
-                    $.getJSON("/obtenerafiliados?search=" + request.term, function (data) {
-                        response($.map(data, function (item) {
-                            return {
-                                label: item.nombre + " " + item.apellido + " - " + item.id + ", " + item.correo,
-                                value: item.id + " - " + item.nombre + " " + item.apellido,
-                            };
-                        }));
-                    });
-                },
-                select: function (event, ui) {
-                    if (ui.item) {
-                        console.log(ui.item.value);
-                        document.getElementById("txbAfiliado").value = ui.item.value;
-                        var btn = document.getElementById("btnAfiliado");
-                        btn.click();
-                    }
-                },
-                minLength: 3,
-                delay: 100,
-            });
-        });
-    </script>
 
 </body>
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Ajax.Utilities;
+using NPOI.OpenXmlFormats.Wordprocessing;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Web;
@@ -26,6 +28,12 @@ namespace fpWebApp
                     {
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
+                            if (Request.QueryString.Count > 0)
+                            {
+                                MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
+                                CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
+                            }
+
                             txbFum.Attributes.Add("type", "date");
                             txbCigarrillos.Attributes.Add("type", "number");
                             txbBebidas.Attributes.Add("type", "number");
@@ -51,6 +59,100 @@ namespace fpWebApp
             ddlObjetivo.DataBind();
 
             dt.Dispose();
+        }
+
+        private void MostrarDatosAfiliado(string idAfiliado)
+        {
+            string strQuery = "SELECT *, " +
+                "IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS label, " +
+                "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) IS NOT NULL, TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()),'') AS edad " +
+                "FROM Afiliados a " +
+                "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +
+                "LEFT JOIN ciudades c ON c.idCiudad = a.idCiudadAfiliado " +
+                "LEFT JOIN generos g ON g.idGenero = a.idGenero " +
+                "LEFT JOIN eps ON eps.idEps = a.idEps " +
+                "WHERE idAfiliado = '" + idAfiliado + "' ";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            //ViewState["DocumentoAfiliado"] = dt.Rows[0]["DocumentoAfiliado"].ToString();
+            ltNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
+            ltApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
+            ltEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
+            ltCelular.Text = dt.Rows[0]["CelularAfiliado"].ToString();
+            ltSede.Text = dt.Rows[0]["NombreSede"].ToString();
+            ltDireccion.Text = dt.Rows[0]["DireccionAfiliado"].ToString();
+            ltCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
+            ltCumple.Text = String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"])) + " (" + dt.Rows[0]["edad"].ToString() + " años)";
+            ltGenero.Text = dt.Rows[0]["Genero"].ToString();
+            ltEPS.Text = dt.Rows[0]["NombreEps"].ToString();
+            ltEstado.Text = "<span class=\"label label-" + dt.Rows[0]["label"].ToString() + "\">" + dt.Rows[0]["EstadoAfiliado"].ToString() + "</span>";
+            //ltFoto.Text = "<img src=\"img/afiliados/nofoto.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+
+            if (dt.Rows[0]["FotoAfiliado"].ToString() != "")
+            {
+                ltFoto.Text = "<img src=\"img/afiliados/" + dt.Rows[0]["FotoAfiliado"].ToString() + "\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+            }
+            else
+            {
+                if (dt.Rows[0]["idGenero"].ToString() == "1" || dt.Rows[0]["idGenero"].ToString() == "3")
+                {
+                    ltFoto.Text = "<img src=\"img/afiliados/avatar_male.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+                }
+                if (dt.Rows[0]["idGenero"].ToString() == "2")
+                {
+                    ltFoto.Text = "<img src=\"img/afiliados/avatar_female.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+                }
+            }
+        }
+
+        private void CargarHistoriasClinicas(string idAfiliado)
+        {
+            string strQuery = "SELECT *, " +
+                "IF(Tabaquismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS fuma, " +
+                "IF(Alcoholismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS toma, " +
+                "IF(Sedentarismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS sedentario, " +
+                "IF(Diabetes=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS diabetico, " +
+                "IF(Colesterol=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(Colesterol=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS colesterado, " +
+                "IF(Trigliceridos=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(Trigliceridos=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS triglicerado, " +
+                "IF(HTA=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(HTA=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS hipertenso " +
+                "FROM HistoriasClinicas hc " +
+                "LEFT JOIN ObjetivosAfiliado oa ON hc.idObjetivoIngreso = oa.idObjetivo " +
+                "WHERE idAfiliado = " + idAfiliado;
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            if (dt.Rows.Count > 0)
+            {
+                rpHistorias.DataSource = dt;
+                rpHistorias.DataBind();
+            }
+            else
+            {
+                ltMensaje.Text = "<div class=\"ibox-content\">" +
+                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                    "Afiliado sin historias clínicas." +
+                    "</div></div>";
+                //ltMensaje.Text = "Afiliado sin historias clínicas.";
+            }
+
+            dt.Dispose();
+        }
+
+        public class HtmlTemplate : ITemplate
+        {
+            private string _html;
+
+            public HtmlTemplate(string html)
+            {
+                _html = html;
+            }
+
+            public void InstantiateIn(Control container)
+            {
+                container.Controls.Add(new LiteralControl(_html));
+            }
         }
 
         private void ValidarPermisos(string strPagina)
