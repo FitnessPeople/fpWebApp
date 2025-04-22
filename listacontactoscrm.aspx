@@ -587,9 +587,9 @@
                                                                             </div>
                                                                         </li>
                                                                     </ul>
-
-                                                                    <strong>Última actividad</strong>
-                                                                    <%# Eval("historialHTML") %>
+                                                                    <hr />
+<%--                                                                    <strong>Última actividad</strong>
+                                                                    <%# Eval("historialHTML") %>--%>
 
                                                                     <strong>Notas</strong>
                                                                     <p>
@@ -597,17 +597,18 @@
                                                                         Entreno fines de semana.
                                                                         He completado 300 asistencias.
                                                                     </p>
-                                                                    <hr />
-                                                                    <strong>Medio de pago sugerido</strong>
+                                                                    
+<%--                                                                    <strong>Medio de pago sugerido</strong>
                                                                     <p>
                                                                         Efectivo
                                                                         Tarjeta.
                                                                         Pagos en linea (Wompi)
                                                                         Transferencia
-                                                                    </p>
+                                                                    </p>--%>
                                                                     <hr />
-                                                                    <strong>Planes anteriores</strong>
-                                                                    <div id="vertical-timeline" class="vertical-container dark-timeline">
+                                                                    <strong>Historial de actividades</strong>
+                                                                    <%# Eval("historialHTML2") %>
+<%--                                                                    <div id="vertical-timeline" class="vertical-container dark-timeline">
                                                                         <div class="vertical-timeline-block">
                                                                             <div class="vertical-timeline-icon gray-bg">
                                                                                 <i class="fa fa-coffee"></i>
@@ -619,62 +620,8 @@
                                                                                 <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="vertical-timeline-block">
-                                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                                <i class="fa fa-briefcase"></i>
-                                                                            </div>
-                                                                            <div class="vertical-timeline-content">
-                                                                                <p>
-                                                                                    Many desktop publishing packages and web page editors now use Lorem.
-                                                                                </p>
-                                                                                <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="vertical-timeline-block">
-                                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                                <i class="fa fa-bolt"></i>
-                                                                            </div>
-                                                                            <div class="vertical-timeline-content">
-                                                                                <p>
-                                                                                    There are many variations of passages of Lorem Ipsum available.
-                                                                                </p>
-                                                                                <span class="vertical-date small text-muted">06:10 pm - 11.03.2014 </span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="vertical-timeline-block">
-                                                                            <div class="vertical-timeline-icon navy-bg">
-                                                                                <i class="fa fa-warning"></i>
-                                                                            </div>
-                                                                            <div class="vertical-timeline-content">
-                                                                                <p>
-                                                                                    The generated Lorem Ipsum is therefore.
-                                                                                </p>
-                                                                                <span class="vertical-date small text-muted">02:50 pm - 03.10.2014 </span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="vertical-timeline-block">
-                                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                                <i class="fa fa-coffee"></i>
-                                                                            </div>
-                                                                            <div class="vertical-timeline-content">
-                                                                                <p>
-                                                                                    Conference on the sales results for the previous year.
-                                                                                </p>
-                                                                                <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="vertical-timeline-block">
-                                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                                <i class="fa fa-briefcase"></i>
-                                                                            </div>
-                                                                            <div class="vertical-timeline-content">
-                                                                                <p>
-                                                                                    Many desktop publishing packages and web page editors now use Lorem.
-                                                                                </p>
-                                                                                <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
+
+                                                                    </div>--%>
                                                                 </div>
                                                             </div>
 

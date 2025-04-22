@@ -135,6 +135,8 @@ namespace fpWebApp
 
             ddlEmpresa.DataSource = dt;
             ddlEmpresa.DataBind();
+            rpEmpresaCRM.DataSource = dt;
+            rpEmpresaCRM.DataBind();
             dt.Dispose();
         }
 
