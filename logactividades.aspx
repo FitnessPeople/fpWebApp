@@ -46,17 +46,29 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-person-chalkboard modal-icon"></i>
-                    <h4 class="modal-title">Guía para consultar el flujo de actividades</h4>
-                    <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
+                    <i class="fa fa-location-crosshairs modal-icon" style="color: #1C84C6;"></i>
+                    <h4 class="modal-title">Guía para visualizar el flujo de actividades</h4>
+                    <small class="font-bold">¡Bienvenido! Te explicamos cómo gestionar el flujo de actividades de los usuarios de forma rápida y sencilla.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>1. Lee las Instrucciones</b><br />
-                        Antes de comenzar, es importante que leas todas las instrucciones del formulario. Esto te ayudará a entender qué información se requiere y cómo debe ser presentada.
+                        <b>Paso 1: Busca y filtra</b><br />
+                        Usa el buscador para encontrar a los usuarios.<br />
+                        <i class="fa-solid fa-magnifying-glass"></i> Filtra por: 
+                        <i class="fa-solid fa-location-crosshairs" style="color: #0D6EFD;"></i> <b>Nombre de Usuario</b>
+                    <br />
                         <br />
+                        <b>Paso 2: Revisa la tabla de resultados</b><br />
+                        La tabla muestra todo el registro de actividades realizadas por los usuarios.
+                    <br />
                         <br />
-                        ¡Siguiendo estos pasos, estarás listo para diligenciar tu formulario sin problemas! Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <b>Paso 3: Acción adicional</b><br />
+                        Al lado opuesto del buscador encontrarás un botón útil:<br />
+                        <i class="fa-solid fa-square-caret-down" style="color: #212529;"></i> <b>Expandir:</b> 
+                        Permite visualizar de mejor manera las interacciones de los usuarios con el aplicativo.
+                   <br />
+                        <br />
+                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">

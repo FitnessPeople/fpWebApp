@@ -197,7 +197,7 @@ namespace fpWebApp
                 string strNewData = TraerData();
 
                 
-                cg.InsertarLog(Session["idusuario"].ToString(), "EmpresasAfiliadas", "Modifica", "El usuario modificó datos a la empresa afiliada con documento " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
+                cg.InsertarLog(Session["idusuario"].ToString(), "empresas afiliadas", "Modifica", "El usuario modificó datos a la empresa afiliada con documento: " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
             }
             catch (OdbcException ex)
             {

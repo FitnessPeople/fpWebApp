@@ -122,7 +122,7 @@ namespace fpWebApp
                 "'" + ddlTipoNegociacion.SelectedItem.Value.ToString() + "', '" + ddlDiasCredito.SelectedItem.Value.ToString() + "', " +
                 "'" + strFilename + "', 'Activo') ";
                 string mensaje = cg.TraerDatosStr(strQuery);
-                cg.InsertarLog(Session["idusuario"].ToString(), "EmpresasAfiliadas", "Nuevo", "El usuario creó una nueva empresa convenio con documento " + txbDocumento.Text.ToString() + ".", "", "");
+                cg.InsertarLog(Session["idusuario"].ToString(), "empresas afiliadas", "Nuevo", "El usuario creó una nueva empresa convenio con documento: " + txbDocumento.Text.ToString() + ".", "", "");
             }
             catch (OdbcException ex)
             {

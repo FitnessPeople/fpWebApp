@@ -136,7 +136,7 @@ namespace fpWebApp
                                     "'" + txbObservaciones.Text.ToString() + "', " + Session["idUsuario"].ToString() + ", 'En proceso') ";
                                     clasesglobales cg = new clasesglobales();
                                     string mensaje = cg.TraerDatosStr(strQuery);
-                                    cg.InsertarLog(Session["idusuario"].ToString(), "TraspasoPlanes", "Nuevo registro", "El usuario agregó un traspaso del afiliado con documento " + ViewState["DocumentoAfiliadoOrigen"].ToString() + " al afiliado con documento " + ViewState["DocumentoAfiliadoDestino"].ToString() + ".", "", "");
+                                    cg.InsertarLog(Session["idusuario"].ToString(), "traspasos planes", "Agrega", "El usuario agregó un traspaso del afiliado con documento: " + ViewState["DocumentoAfiliadoOrigen"].ToString() + " al afiliado con documento: " + ViewState["DocumentoAfiliadoDestino"].ToString() + ".", "", "");
 
                                     Response.Redirect("afiliados");
                                 }
