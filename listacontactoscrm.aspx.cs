@@ -17,7 +17,7 @@ namespace fpWebApp
 
             if (!IsPostBack)
             {
-                ListaContactos();
+                //ListaContactos();
                 if (ViewState["AbrirModal"] != null && (bool)ViewState["AbrirModal"] == true)
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "abrirModal", "$('#ModalContacto').modal('show');", true);
@@ -52,6 +52,12 @@ namespace fpWebApp
 
                             int idContacto = 0;
                             decimal valorT = 0;
+                            txbFechaPrim.Attributes.Add("type", "date");
+                            txbFechaPrim.Attributes.Add("min", DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd").ToString());
+                            txbFechaPrim.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+                            txbFechaProx.Attributes.Add("type", "date");
+                            txbFechaProx.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+                            txbCorreoContacto.Attributes.Add("type", "email");
 
                             // Verificar si viene en querystring
                             if (Request.QueryString["idContacto"] != null)
@@ -193,6 +199,12 @@ namespace fpWebApp
 
                     txbNombreContacto.Value = row["NombreContacto"].ToString();
                     txbNombreContacto.Disabled = true;
+                    txbTelefonoContacto.Disabled = true;
+                    ddlEmpresa.Enabled = false;
+                    txbFechaPrim.Disabled = true;
+                    txbCorreoContacto.Disabled = true;
+                    txbValorPropuesta.Enabled = false;
+                    ArchivoPropuesta.Disabled = true;
                     string telefono = Convert.ToString(row["TelefonoContacto"]);
                     if (!string.IsNullOrEmpty(telefono) && telefono.Length == 10)
                     {
@@ -213,7 +225,7 @@ namespace fpWebApp
                     txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
                     int ValorPropuesta = Convert.ToInt32(dt.Rows[0]["ValorPropuesta"]);
                     txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
-                    txaObservaciones.Value = row["observaciones"].ToString().Trim();
+                    //txaObservaciones.Value = row["observaciones"].ToString().Trim();
                 }
             }
             else
