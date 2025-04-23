@@ -416,6 +416,10 @@
     <Content Include="freepassAfil.aspx" />
     <Content Include="genero.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="histclinutricion01.aspx" />
+    <Content Include="histclinutricion02.aspx" />
+    <Content Include="histclinutricion03.aspx" />
+    <Content Include="histclinutricion04.aspx" />
     <Content Include="historiasclinicas.aspx" />
     <Content Include="ILLink\ILLink.Descriptors.LibraryBuild.xml" />
     <Content Include="img\a1.jpg" />
@@ -1321,6 +1325,34 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="histclinutricion01.aspx.cs">
+      <DependentUpon>histclinutricion01.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="histclinutricion01.aspx.designer.cs">
+      <DependentUpon>histclinutricion01.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="histclinutricion02.aspx.cs">
+      <DependentUpon>histclinutricion02.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="histclinutricion02.aspx.designer.cs">
+      <DependentUpon>histclinutricion02.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="histclinutricion03.aspx.cs">
+      <DependentUpon>histclinutricion03.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="histclinutricion03.aspx.designer.cs">
+      <DependentUpon>histclinutricion03.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="histclinutricion04.aspx.cs">
+      <DependentUpon>histclinutricion04.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="histclinutricion04.aspx.designer.cs">
+      <DependentUpon>histclinutricion04.aspx</DependentUpon>
     </Compile>
     <Compile Include="historiasclinicas.aspx.cs">
       <DependentUpon>historiasclinicas.aspx</DependentUpon>

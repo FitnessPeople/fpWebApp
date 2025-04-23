@@ -64,7 +64,7 @@
                     <h2><i class="fa fa-user-doctor text-success m-r-sm"></i>Especialistas</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>Médico</li>
+                        <li>Asistencial</li>
                         <li class="active"><strong>Especialistas</strong></li>
                     </ol>
                 </div>

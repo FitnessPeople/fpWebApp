@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="verhistoriaclinica.aspx.cs" Inherits="fpWebApp.verhistoriaclinica" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="histclinutricion03.aspx.cs" Inherits="fpWebApp.histclinutricion03" %>
 
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
@@ -21,10 +21,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/smoothness/jquery-ui.css">
 
-    <link href="css/plugins/dropzone/basic.css" rel="stylesheet" />
-    <link href="css/plugins/dropzone/dropzone.css" rel="stylesheet" />
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet" />
     <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet" />
+
+    <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
 
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
@@ -96,7 +96,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-notes-medical text-success m-r-sm"></i>Nueva historia clínica</h2>
+                    <h2><i class="fa fa-notes-medical text-success m-r-sm"></i>Historia clínica - Detalle nutricional</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Asistencial</li>
@@ -367,7 +367,7 @@
                         <div class="col-lg-8">
                             <div class="ibox float-e-margins" runat="server" id="divContenido">
                                 <div class="ibox-title">
-                                    <h5>Formulario para la creación de una nueva historia clínica</h5>
+                                    <h5>Formulario para agregar detalles nutricionales</h5>
                                     <div class="ibox-tools">
                                         <a class="collapse-link">
                                             <i class="fa fa-chevron-up"></i>
@@ -382,42 +382,15 @@
                                     <div class="row">
                                         <form role="form" id="form" runat="server">
                                             <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-                                            <div class="col-sm-12">
-                                                
-                                                <div class="row">
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Medicina prepagada</label>
-                                                            <asp:TextBox ID="txbMedicinaPrepagada" CssClass="form-control" runat="server"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Objetivo del ingreso</label>
-                                                            <asp:DropDownList ID="ddlObjetivo" runat="server" AppendDataBoundItems="true"
-                                                                DataTextField="Objetivo" DataValueField="idObjetivo" CssClass="form-control m-b">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Detalle objetivo del ingreso</label>
-                                                            <asp:TextBox ID="txbDescripcionObjetivo" CssClass="form-control" runat="server"
-                                                                TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
 
                                             <div class="col-sm-12">
                                                 <div class="widget style1 bg-success">
                                                     <div class="row vertical-align">
                                                         <div class="col-xs-3">
-                                                            <i class="fa fa-clock-rotate-left fa-2x"></i>
+                                                            <i class="fa fa-burger fa-2x"></i>
                                                         </div>
                                                         <div class="col-xs-9 text-right">
-                                                            <h3 class="font-bold">Antecedentes</h3>
+                                                            <h3 class="font-bold">Frecuencia de consumo</h3>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -425,187 +398,146 @@
 
                                             <div class="col-sm-12">
                                                 <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Familiares</label>
-                                                            <asp:TextBox ID="txbAnteFamiliares" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Patológicos</label>
-                                                            <asp:TextBox ID="txbAntePatologico" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Quirúrgicos</label>
-                                                            <asp:TextBox ID="txbAnteQuirurgico" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
 
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label>Traumatológicos </label>
-                                                            <asp:TextBox ID="txbAnteTraumatologico" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Farmacológico</label>
-                                                            <asp:TextBox ID="txbAnteFarmacologico" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Actividad física</label>
-                                                            <asp:TextBox ID="txbAnteActividadFisica" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Toxicológicos alérgicos</label>
-                                                            <asp:TextBox ID="txbAnteToxicologico" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Hospitalarios</label>
-                                                            <asp:TextBox ID="txbAnteHospitalario" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Gineco-obstétricos</label>
-                                                            <asp:TextBox ID="txbAnteGinecoObstetricio" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>F.U.M.</label>
-                                                            <asp:TextBox ID="txbFum" CssClass="form-control input-sm" runat="server" name="txbFum"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-12">
-                                                <div class="widget style1 navy-bg">
-                                                    <div class="row vertical-align">
-                                                        <div class="col-xs-3">
-                                                            <i class="fa fa-heart-circle-exclamation fa-2x"></i>
-                                                        </div>
-                                                        <div class="col-xs-9 text-right">
-                                                            <h3 class="font-bold">Factores de Riesgo Cardiovascular</h3>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-6">
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label class="small">Fuma?</label>
-                                                            <asp:RadioButtonList ID="rblFuma" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
-                                                                <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
-                                                            </asp:RadioButtonList>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label class="small">Cigarrilos x día</label>
-                                                            <asp:TextBox ID="txbCigarrillos" CssClass="form-control input-sm" runat="server" Text="0"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-6">
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label class="small">Toma?</label>
-                                                            <asp:RadioButtonList ID="rblToma" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
-                                                                <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
-                                                            </asp:RadioButtonList>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label class="small">Bebidas x mes</label>
-                                                            <asp:TextBox ID="txbBebidas" CssClass="form-control input-sm" runat="server" Text="0"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-4">
-                                                <div class="row">
-                                                    <div class="col-sm-6 b-r">
-                                                        <div class="form-group">
-                                                            <label class="small">Sedentarismo</label>
-                                                            <asp:RadioButtonList ID="rblSedentarismo" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
-                                                                <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
-                                                            </asp:RadioButtonList>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 b-r">
-                                                        <div class="form-group">
-                                                            <label class="small">Diabetes</label>
-                                                            <asp:RadioButtonList ID="rblDiabetes" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
-                                                                <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
-                                                            </asp:RadioButtonList>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-8">
-                                                <div class="row">
-                                                    <div class="col-sm-4 b-r">
-                                                        <div class="form-group">
-                                                            <label class="small">Colesterol</label>
-                                                            <asp:RadioButtonList ID="rblColesterol" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
-                                                                <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;NS/NR" Value="2" style="margin-right: 10px;"></asp:ListItem>
-                                                            </asp:RadioButtonList>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4 b-r">
-                                                        <div class="form-group">
-                                                            <label class="small">Triglicéridos</label>
-                                                            <asp:RadioButtonList ID="rblTrigliceridos" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
-                                                                <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;NS/NR" Value="2" style="margin-right: 10px;"></asp:ListItem>
-                                                            </asp:RadioButtonList>
+                                                            <label>Lacteos </label>
+                                                            <asp:TextBox ID="txbLacteos" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label class="small">H.T.A.</label>
-                                                            <asp:RadioButtonList ID="rblHTA" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
-                                                                <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;NS/NR" Value="2" style="margin-right: 10px;"></asp:ListItem>
-                                                            </asp:RadioButtonList>
+                                                            <label>Azúcares</label>
+                                                            <asp:TextBox ID="txbAzucares" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Gaseosas</label>
+                                                            <asp:TextBox ID="txbGaseosas" CssClass="form-control" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Verduras</label>
+                                                            <asp:TextBox ID="txbVerduras" CssClass="form-control" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Salsamentaria</label>
+                                                            <asp:TextBox ID="txbSalsamentaria" CssClass="form-control" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Agua</label>
+                                                            <asp:TextBox ID="txbAgua" CssClass="form-control" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Frutas</label>
+                                                            <asp:TextBox ID="txbFrutas" CssClass="form-control" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Carnes</label>
+                                                            <asp:TextBox ID="txbCarnes" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Comidas rápidas</label>
+                                                            <asp:TextBox ID="txbComidasRapidas" CssClass="form-control" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Cigarrillos</label>
+                                                            <asp:TextBox ID="txbCigarrillos" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Psicoactivos</label>
+                                                            <asp:TextBox ID="txbPsicoactivos" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Huevos </label>
+                                                            <asp:TextBox ID="txbHuevos" CssClass="form-control" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Vísceras</label>
+                                                            <asp:TextBox ID="txbVisceras" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Sopas</label>
+                                                            <asp:TextBox ID="txbSopas" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Paquetes</label>
+                                                            <asp:TextBox ID="txbPaquetes" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Cereales</label>
+                                                            <asp:TextBox ID="txbCereales" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Raíces</label>
+                                                            <asp:TextBox ID="txbRaices" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Pan</label>
+                                                            <asp:TextBox ID="txbPan" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Grasas</label>
+                                                            <asp:TextBox ID="txbGrasas" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Alcohol</label>
+                                                            <asp:TextBox ID="txbAlcohol" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Bebida hidratante</label>
+                                                            <asp:TextBox ID="txbBebidaHidratante" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
 
                                             <div class="col-sm-12">
                                                 <div>
-                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"
-                                                        onclick="window.location.href='historiasclinicas'">
+                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button">
                                                         <strong>Cancelar</strong></button>
                                                     <asp:Button ID="btnAgregar" runat="server"
                                                         CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
@@ -642,12 +574,20 @@
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
+    <!-- Clock picker -->
+    <script src="js/plugins/clockpicker/clockpicker.js"></script>
+
     <!-- Jquery Validate -->
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
     <!-- Jasny -->
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
+    <script>
+        $(document).ready(function () {
+            $('.clockpicker').clockpicker();
+        });
+    </script>
 
 </body>
 
