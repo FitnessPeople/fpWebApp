@@ -437,6 +437,7 @@
                                                         <div class="table-responsive">
                                                             <table class="table table-striped table-hover">
                                                                 <tbody>
+
                                                                     <asp:Repeater ID="rpContactosCRM" runat="server" OnItemDataBound="rpContactosCRM_ItemDataBound">
                                                                         <ItemTemplate>
                                                                             <tr class="feed-element">
@@ -459,6 +460,7 @@
                                                                             </tr>
                                                                         </ItemTemplate>
                                                                     </asp:Repeater>
+
                                                                 </tbody>
                                                             </table>
                                                         </div>
@@ -470,11 +472,14 @@
                                                     <div class="full-height-scroll">
                                                         <div class="table-responsive">
                                                             <table class="table table-striped table-hover">
+
                                                                 <asp:Repeater ID="rpEmpresaCRM" runat="server">
                                                                     <ItemTemplate>
                                                                         <tbody>
                                                                             <tr>
-                                                                                <td><a data-toggle="tab" href="#company-1" class="client-link"><%# Eval("NombreEmpresaCRM") %></a></td>
+                                                                                <td><a href='listacontactoscrm.aspx?empresaId=<%# Eval("IdEmpresaCRM") %>#tab-2' class="client-link">
+                                                                                    <%# Eval("NombreEmpresaCRM") %>
+                                                                                </a></td>
                                                                                 <td><%# Eval("NombreContacto") %></td>
                                                                                 <td><i class="fa fa-flag"></i><%# Eval("NombreCiudad") %></td>
                                                                                 <td class="client-status"><span class="label label-primary"><%# Eval("EstadoEmpresaCRM") %></span></td>
@@ -482,6 +487,7 @@
                                                                         </tbody>
                                                                     </ItemTemplate>
                                                                 </asp:Repeater>
+
                                                             </table>
                                                         </div>
                                                     </div>
@@ -496,194 +502,109 @@
                                 <div class="ibox ">
                                     <div class="ibox-content">
                                         <div class="tab-content">
-                                           <%-- Detalle contacto--%>
+                                            <%-- Detalle contacto--%>
                                             <div class="tab-content">
-                                                <asp:Repeater ID="rptContenido" runat="server">
-                                                    <ItemTemplate>
-                                                        <div id='<%# Eval("IdContacto") %>' class='tab-pane <%# Eval("IdContacto").ToString() == Session["contactoId"]?.ToString() ? "active" : "" %>'>
-                                                            <div class="row m-b-lg">
-                                                                <div class="col-lg-4 text-center">
-                                                                    <h2><%# Eval("NombreContacto") %></h2>
-                                                                    <div class="m-b-sm">
-                                                                        <img alt="image" class="img-circle" src="img/a3.jpg"
-                                                                            style="width: 62px">
+                                                <asp:Panel ID="pnlContacto" runat="server" Visible="false">
+                                                    <asp:Repeater ID="rptContenido" runat="server">
+                                                        <ItemTemplate>
+                                                            <div id='<%# Eval("IdContacto") %>' class='tab-pane <%# Eval("IdContacto").ToString() == Session["contactoId"]?.ToString() ? "active" : "" %>'>
+                                                                <div class="row m-b-lg">
+                                                                    <div class="col-lg-4 text-center">
+                                                                        <h2><%# Eval("NombreContacto") %></h2>
+                                                                        <div class="m-b-sm">
+                                                                            <img alt="image" class="img-circle" src="img/a3.jpg"
+                                                                                style="width: 62px">
+                                                                        </div>
                                                                     </div>
-                                                                </div>
 
-                                                                <div class="col-lg-8">
-                                                                    <strong>Acerca de mí</strong><br />
-                                                                    <p class="contact-type" style="display: inline-flex; align-items: center; margin-bottom: 10px;">
-                                                                        <i class="fa fa-envelope" style="margin-right: 5px;"></i>
-                                                                        <span><%# Eval("EmailContacto") %></span>
-                                                                    </p>
-                                                                    <p>Soy nuevo, estoy interesado...</p>
-                                                                    <p>Soy afiliado desde...</p>
-                                                                    <p>Mi objetivo es...</p>
+                                                                    <div class="col-lg-8">
+                                                                        <strong>Acerca de mí</strong><br />
+                                                                        <p class="contact-type" style="display: inline-flex; align-items: center; margin-bottom: 10px;">
+                                                                            <i class="fa fa-envelope" style="margin-right: 5px;"></i>
+                                                                            <span><%# Eval("EmailContacto") %></span>
+                                                                        </p>
+                                                                        <p>Soy nuevo, estoy interesado...</p>
+                                                                        <p>Soy afiliado desde...</p>
+                                                                        <p>Mi objetivo es...</p>
 
-                                                                    <!-- Botón alineado a la derecha -->
-                                                                    <div class="d-flex justify-content-end mt-2">
-                                                                        <button type="button" class="btn btn-primary" tooltip="Agregar información"
-                                                                            data-toggle="modal" data-target="#ModalContacto" data-whatever="@fat">
-                                                                            <i class="fa fa-edit"></i>Agregar información
-                                                                        </button>
+                                                                        <!-- Botón alineado a la derecha -->
+                                                                        <div class="d-flex justify-content-end mt-2">
+                                                                            <button type="button" class="btn btn-primary" tooltip="Agregar información"
+                                                                                data-toggle="modal" data-target="#ModalContacto" data-whatever="@fat">
+                                                                                <i class="fa fa-edit"></i>Agregar información
+                                                                            </button>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
 
-                                                            </div>
-                                                            <!-- Contenido de detalle del contacto -->
-                                                            <div class="client-detail">
-                                                                <div class="full-height-scroll">
-                                                                    <ul class="list-group clear-list" runat="server"
-                                                                        visible='<%# (Eval("Estado") != null && Eval("idEstadoCRM").ToString() != "3" && Eval("idEstadoCRM").ToString() != "4") %>'>
-                                                                        <li class="list-group-item fist-item">
-                                                                            <div style="display: flex; flex-direction: column; gap: 5px;">
-                                                                                <div style="display: flex; align-items: center; flex-wrap: wrap;">
-                                                                                    <i class="fa fa-phone" style="margin-right: 5px; color: green;"></i>
-                                                                                    <strong>Por favor, contáctame al:</strong>
-                                                                                    <span style="margin-left: 5px;"><%# GetTelefonoHTML(Eval("TelefonoContacto")) %></span>
+                                                                </div>
+                                                                <!-- Contenido de detalle del contacto -->
+                                                                <div class="client-detail">
+                                                                    <div class="full-height-scroll">
+                                                                        <ul class="list-group clear-list" runat="server"
+                                                                            visible='<%# (Eval("Estado") != null && Eval("idEstadoCRM").ToString() != "3" && Eval("idEstadoCRM").ToString() != "4") %>'>
+                                                                            <li class="list-group-item fist-item">
+                                                                                <div style="display: flex; flex-direction: column; gap: 5px;">
+                                                                                    <div style="display: flex; align-items: center; flex-wrap: wrap;">
+                                                                                        <i class="fa fa-phone" style="margin-right: 5px; color: green;"></i>
+                                                                                        <strong>Por favor, contáctame al:</strong>
+                                                                                        <span style="margin-left: 5px;"><%# GetTelefonoHTML(Eval("TelefonoContacto")) %></span>
+                                                                                    </div>
+                                                                                    <div style="margin-left: 20px;">
+                                                                                        <%# Eval("FechaProximoCon", "{0:dddd dd MMM yyyy hh:mm tt}") %>
+                                                                                    </div>
                                                                                 </div>
-                                                                                <div style="margin-left: 20px;">
-                                                                                    <%# Eval("FechaProximoCon", "{0:dddd dd MMM yyyy hh:mm tt}") %>
-                                                                                </div>
-                                                                            </div>
-                                                                        </li>
-                                                                    </ul>
-                                                                    <hr />
-                                                                    <strong>Notas</strong>
-                                                                    <p>
-                                                                        Entreno por las noches
+                                                                            </li>
+                                                                        </ul>
+                                                                        <hr />
+                                                                        <strong>Notas</strong>
+                                                                        <p>
+                                                                            Entreno por las noches
                                                                         Entreno fines de semana.
                                                                         He completado 300 asistencias.
-                                                                    </p>
+                                                                        </p>
 
-                                                                    <%-- <strong>Medio de pago sugerido</strong>
+                                                                        <%-- <strong>Medio de pago sugerido</strong>
                                                                     <p>
                                                                         Efectivo
                                                                         Tarjeta.
                                                                         Pagos en linea (Wompi)
                                                                         Transferencia
                                                                     </p>--%>
-                                                                    <hr />
-                                                                    <strong>Historial de actividades</strong>
-                                                                    <%# Eval("historialHTML2") %>
+                                                                        <hr />
+                                                                        <strong>Historial de actividades</strong>
+                                                                        <%# Eval("historialHTML2") %>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </ItemTemplate>
+                                                    </asp:Repeater>
+                                                </asp:Panel>
+                                            </div>
+
+                                            <%--Detalle empresa--%>
+                                            <asp:Panel ID="pnlEmpresa" runat="server" Visible="false">
+                                                <asp:Repeater ID="rpContenidoEmpresaCRM" runat="server">
+                                                    <ItemTemplate>
+                                                        <div id='<%# Eval("IdEmpresaCRM") %>' class='tab-pane <%# Eval("IdEmpresaCRM").ToString() == Session["empresaId"]?.ToString() ? "active" : "" %>'>
+                                                            <!-- Aquí va el detalle visual -->
+                                                            <div class="row m-b-lg">
+                                                                <div class="col-lg-4 text-center">
+                                                                    <h2><%# Eval("NombreEmpresaCRM") %></h2>
+                                                                    <div class="m-b-sm">
+                                                                        <img alt="image" class="img-circle" src="img/company.png" style="width: 62px" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-8">
+                                                                    <strong>Ciudad:</strong> <%# Eval("NombreCiudad") %><br />
+                                                                    <strong>País:</strong> <%# Eval("NombrePais") %><br />
+                                                                    <strong>Pagina web:</strong> <%# Eval("PaginaWeb") %><br />
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
-                                            </div>
+                                            </asp:Panel>
 
-                                            <%--Detalle empresa--%>
-                                            <div id="company-1" class="tab-pane">
-                                                <div class="m-b-lg">
-                                                    <h2>Tellus Institute</h2>
-
-                                                    <p>
-                                                        Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero,written in 45 BC. This book is a treatise on.
-                                                    </p>
-                                                    <div>
-                                                        <small>Active project completion with: 48%</small>
-                                                        <div class="progress progress-mini">
-                                                            <div style="width: 48%;" class="progress-bar"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="client-detail">
-                                                    <div class="full-height-scroll">
-
-                                                        <strong>Last activity</strong>
-
-                                                        <ul class="list-group clear-list">
-                                                            <li class="list-group-item fist-item">
-                                                                <span class="pull-right"><span class="label label-primary">NEW</span> </span>
-                                                                The point of using
-                                                            </li>
-                                                            <li class="list-group-item">
-                                                                <span class="pull-right"><span class="label label-warning">WAITING</span></span>
-                                                                Lorem Ipsum is that it has
-                                                            </li>
-                                                            <li class="list-group-item">
-                                                                <span class="pull-right"><span class="label label-danger">BLOCKED</span> </span>
-                                                                If you are going
-                                                            </li>
-                                                        </ul>
-                                                        <strong>Notes</strong>
-                                                        <p>
-                                                            Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
-                                                        </p>
-                                                        <hr />
-                                                        <strong>Timeline activity</strong>
-                                                        <div id="vertical-timeline" class="vertical-container dark-timeline">
-                                                            <div class="vertical-timeline-block">
-                                                                <div class="vertical-timeline-icon gray-bg">
-                                                                    <i class="fa fa-coffee"></i>
-                                                                </div>
-                                                                <div class="vertical-timeline-content">
-                                                                    <p>
-                                                                        Conference on the sales results for the previous year.
-                                                                    </p>
-                                                                    <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="vertical-timeline-block">
-                                                                <div class="vertical-timeline-icon gray-bg">
-                                                                    <i class="fa fa-briefcase"></i>
-                                                                </div>
-                                                                <div class="vertical-timeline-content">
-                                                                    <p>
-                                                                        Many desktop publishing packages and web page editors now use Lorem.
-                                                                    </p>
-                                                                    <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="vertical-timeline-block">
-                                                                <div class="vertical-timeline-icon gray-bg">
-                                                                    <i class="fa fa-bolt"></i>
-                                                                </div>
-                                                                <div class="vertical-timeline-content">
-                                                                    <p>
-                                                                        There are many variations of passages of Lorem Ipsum available.
-                                                                    </p>
-                                                                    <span class="vertical-date small text-muted">06:10 pm - 11.03.2014 </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="vertical-timeline-block">
-                                                                <div class="vertical-timeline-icon navy-bg">
-                                                                    <i class="fa fa-warning"></i>
-                                                                </div>
-                                                                <div class="vertical-timeline-content">
-                                                                    <p>
-                                                                        The generated Lorem Ipsum is therefore.
-                                                                    </p>
-                                                                    <span class="vertical-date small text-muted">02:50 pm - 03.10.2014 </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="vertical-timeline-block">
-                                                                <div class="vertical-timeline-icon gray-bg">
-                                                                    <i class="fa fa-coffee"></i>
-                                                                </div>
-                                                                <div class="vertical-timeline-content">
-                                                                    <p>
-                                                                        Conference on the sales results for the previous year.
-                                                                    </p>
-                                                                    <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="vertical-timeline-block">
-                                                                <div class="vertical-timeline-icon gray-bg">
-                                                                    <i class="fa fa-briefcase"></i>
-                                                                </div>
-                                                                <div class="vertical-timeline-content">
-                                                                    <p>
-                                                                        Many desktop publishing packages and web page editors now use Lorem.
-                                                                    </p>
-                                                                    <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -698,6 +619,7 @@
             <uc1:footer runat="server" ID="footer" />
 
         </div>
+
         <uc1:rightsidebar runat="server" ID="rightsidebar" />
     </div>
 
@@ -760,7 +682,14 @@
 
         $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
     </script>
-
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if (window.location.href.indexOf("empresaId") > -1) {
+                // Activa la pestaña 2 manualmente
+                $('#tab-2-tab').click(); // Reemplaza esto con el ID real del botón o tab que activa "Empresas"
+            }
+        });
+    </script>
 </body>
 
 </html>

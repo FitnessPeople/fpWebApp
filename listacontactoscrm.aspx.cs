@@ -14,77 +14,85 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
             if (!IsPostBack)
             {
-                //ListaContactos();
+                int idContacto = 0;
+                int idEmpresa = 0;
+                bool hayContacto = int.TryParse(Request.QueryString["idContacto"], out idContacto);
+                bool hayEmpresa = int.TryParse(Request.QueryString["empresaId"], out idEmpresa);
+
+                if (hayContacto)
+                {
+                    Session["contactoId"] = idContacto;
+                    Session["empresaId"] = null;
+                    pnlContacto.Visible = true;
+                    pnlEmpresa.Visible = false;
+                    CargarDatosContacto(idContacto);
+                }
+                else if (hayEmpresa)
+                {
+                    Session["empresaId"] = idEmpresa;
+                    Session["contactoId"] = null;
+                    pnlEmpresa.Visible = true;
+                    pnlContacto.Visible = false;
+                    CargarDatosEmpresaCRM(idEmpresa);
+
+                    // Activar tab-2 (Empresas) visualmente con JS
+                    ScriptManager.RegisterStartupScript(this, GetType(), "activarTab", "$('a[href=\"#tab-2\"]').tab('show');", true);
+                }
+
+                // Si no hay ninguno en la URL, puedes mostrar el último contacto por defecto
+                if (!hayContacto && !hayEmpresa)
+                {
+                    clasesglobales cg = new clasesglobales();
+                    decimal valorT = 0;
+                    DataTable dtContactos = cg.ConsultarContactosCRM(out valorT);
+
+                    if (dtContactos.Rows.Count > 0)
+                    {
+                        int ultimoIdContacto = Convert.ToInt32(dtContactos.Rows[0]["IdContacto"]);
+                        Session["contactoId"] = ultimoIdContacto;
+                        Session["empresaId"] = null;
+                        pnlContacto.Visible = true;
+                        pnlEmpresa.Visible = false;
+                        CargarDatosContacto(ultimoIdContacto);
+                    }
+                }
+
+                // Mostrar modal si está seteado
                 if (ViewState["AbrirModal"] != null && (bool)ViewState["AbrirModal"] == true)
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "abrirModal", "$('#ModalContacto').modal('show');", true);
-                    ViewState["AbrirModal"] = null; // Limpiar para que no se repita
+                    ViewState["AbrirModal"] = null;
                 }
 
+                // Validar usuario y permisos
                 if (Session["idUsuario"] != null)
                 {
                     ValidarPermisos("Historias clinicas");
-                    clasesglobales cg = new clasesglobales();
-                    if (ViewState["SinPermiso"].ToString() == "1")
+
+                    if (ViewState["SinPermiso"]?.ToString() == "1")
                     {
-                        //No tiene acceso a esta página
                         divMensaje.Visible = true;
                         paginasperfil.Visible = true;
-                        //divContenido.Visible = false;
                     }
                     else
                     {
-                        //Si tiene acceso a esta página
-
-                        if (ViewState["Consulta"].ToString() == "1")
+                        if (ViewState["CrearModificar"]?.ToString() == "1")
                         {
-                            //lbExportarExcel.Visible = false;
-                        }
-                        if (ViewState["Exportar"].ToString() == "1")
-                        {
-                            //lbExportarExcel.Visible = true;
-                        }
-                        if (ViewState["CrearModificar"].ToString() == "1")
-                        {
-
-                            int idContacto = 0;
-                            decimal valorT = 0;
                             txbFechaPrim.Attributes.Add("type", "date");
-                            txbFechaPrim.Attributes.Add("min", DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd").ToString());
-                            txbFechaPrim.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+                            txbFechaPrim.Attributes.Add("min", DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd"));
+                            txbFechaPrim.Value = DateTime.Now.ToString("yyyy-MM-dd");
                             txbFechaProx.Attributes.Add("type", "date");
-                            txbFechaProx.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+                            txbFechaProx.Value = DateTime.Now.ToString("yyyy-MM-dd");
                             txbCorreoContacto.Attributes.Add("type", "email");
-
-                            // Verificar si viene en querystring
-                            if (Request.QueryString["idContacto"] != null)
-                            {
-                                int.TryParse(Request.QueryString["idContacto"], out idContacto);
-                            }
-                            else
-                            {
-
-                                DataTable dtContactos = cg.ConsultarContactosCRM(out valorT);
-
-                                //if (respuesta && dtContactos.Rows.Count > 0)
-                                //{
-                                idContacto = Convert.ToInt32(dtContactos.Rows[0]["IdContacto"]);
-                                //}
-                            }
-                            rpContactosCRM.ItemDataBound += rpContactosCRM_ItemDataBound;
-                            // Cargar el contacto seleccionado o el primero por defecto
-                            CargarDatosContacto(idContacto);
-                            // CargarHistotialCRN(idContacto);
-
-
-                            // También puedes cargar otras listas como lo hacías
-                            ConsultarEmpresasCRM();
-                            ListaEstadosCRM();
-                            ListaContactos();
                         }
+
+                        rpContactosCRM.ItemDataBound += rpContactosCRM_ItemDataBound;
+
+                        ConsultarEmpresasCRM();
+                        ListaEstadosCRM();
+                        ListaContactos();
                     }
                 }
                 else
@@ -93,9 +101,14 @@ namespace fpWebApp
                     Response.End();
                     Response.Redirect("logout.aspx");
                 }
-                //ScriptManager.RegisterStartupScript(this, GetType(), "updateDDL", "changeBadge(document.getElementById('" + ddlStatusLead.ClientID + "'));", true);
+
+                // Activar validación botón si aplica
                 ScriptManager.RegisterStartupScript(this, GetType(), "activarBoton", "setTimeout(validarBotonActualizar, 100);", true);
             }
+
+            // Forzar visibilidad en caso de PostBack
+            pnlContacto.Visible = Session["contactoId"] != null;
+            pnlEmpresa.Visible = Session["empresaId"] != null && Session["contactoId"] == null;
         }
 
         private void ValidarPermisos(string strPagina)
@@ -133,7 +146,6 @@ namespace fpWebApp
             //ltValorTotal.Text = valorTotal.ToString("C0");
             dt.Dispose();
         }
-
         private void ConsultarEmpresasCRM()
         {
             clasesglobales cg = new clasesglobales();
@@ -145,7 +157,15 @@ namespace fpWebApp
             rpEmpresaCRM.DataBind();
             dt.Dispose();
         }
-
+        private void CargarDatosEmpresaCRM(int idEmpresaCMR)
+        {
+            bool respuesta = false;
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEmpresaCRMPorId(idEmpresaCMR, out respuesta);
+            rpContenidoEmpresaCRM.DataSource = dt;
+            rpContenidoEmpresaCRM.DataBind();
+            dt.Dispose();
+        }
         private void ListaEstadosCRM()
         {
             clasesglobales cg = new clasesglobales();
@@ -179,6 +199,8 @@ namespace fpWebApp
             }
         }
 
+
+
         private void CargarDatosContacto(int idContacto)
         {
             bool respuesta = false;
@@ -188,8 +210,6 @@ namespace fpWebApp
             rptContenido.DataSource = dt;
             rptContenido.DataBind();
 
-            //Literal1.Visible = true;
-            //ltHistorialCon.Text = dt.Rows[0]["historialHTML"].ToString();
             if (respuesta)
             {
 
