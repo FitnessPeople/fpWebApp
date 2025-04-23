@@ -3,6 +3,7 @@ using NPOI.OpenXmlFormats.Wordprocessing;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Odbc;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -28,6 +29,7 @@ namespace fpWebApp
                     {
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
+                            CargarObjetivos();
                             if (Request.QueryString.Count > 0)
                             {
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
@@ -37,7 +39,7 @@ namespace fpWebApp
                             txbFum.Attributes.Add("type", "date");
                             txbCigarrillos.Attributes.Add("type", "number");
                             txbBebidas.Attributes.Add("type", "number");
-                            CargarObjetivos();
+                            
                             btnAgregar.Visible = true;
                         }
                     }
@@ -47,6 +49,29 @@ namespace fpWebApp
                     Response.Redirect("logout.aspx");
                 }
             }
+        }
+
+        private void ValidarPermisos(string strPagina)
+        {
+            ViewState["SinPermiso"] = "1";
+            ViewState["Consulta"] = "0";
+            ViewState["Exportar"] = "0";
+            ViewState["CrearModificar"] = "0";
+            ViewState["Borrar"] = "0";
+
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
+
+            if (dt.Rows.Count > 0)
+            {
+                ViewState["SinPermiso"] = dt.Rows[0]["SinPermiso"].ToString();
+                ViewState["Consulta"] = dt.Rows[0]["Consulta"].ToString();
+                ViewState["Exportar"] = dt.Rows[0]["Exportar"].ToString();
+                ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
+                ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
+            }
+
+            dt.Dispose();
         }
 
         private void CargarObjetivos()
@@ -207,49 +232,67 @@ namespace fpWebApp
             }
         }
 
-        private void ValidarPermisos(string strPagina)
-        {
-            ViewState["SinPermiso"] = "1";
-            ViewState["Consulta"] = "0";
-            ViewState["Exportar"] = "0";
-            ViewState["CrearModificar"] = "0";
-            ViewState["Borrar"] = "0";
-
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
-
-            if (dt.Rows.Count > 0)
-            {
-                ViewState["SinPermiso"] = dt.Rows[0]["SinPermiso"].ToString();
-                ViewState["Consulta"] = dt.Rows[0]["Consulta"].ToString();
-                ViewState["Exportar"] = dt.Rows[0]["Exportar"].ToString();
-                ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
-                ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
-            }
-
-            dt.Dispose();
-        }
-
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             //Inserta datos en la tabla HistoriasClinicas
-
-
-            //Avanzamos según el perfil
-            if (Session["idPerfil"].ToString() == "5") //Medico deportologo
+            try
             {
+                string strQuery = "INSERT INTO HistoriasClinicas " +
+                "(idAfiliado, FechaHora, MedicinaPrepagada, idObjetivoIngreso, DescripcionObjetivoIngreso, AnteFamiliar, AntePatologico, " +
+                "AnteQuirurgico, AnteToxicologico, AnteHospitalario, AnteTraumatologico, AnteFarmacologico, AnteActividadFisica, AnteGineco, " +
+                "AnteFUM, Tabaquismo, Cigarrillos, Alcoholismo, Bebidas, Sedentarismo, Diabetes, Colesterol, Trigliceridos, HTA) " +
+                "VALUES (" + Request.QueryString["idAfiliado"].ToString() + ", CURRENT_TIMESTAMP(), '" + txbMedicinaPrepagada.Text.ToString() + "', " +
+                "" + ddlObjetivo.SelectedItem.Value.ToString() + ", '" + txbDescripcionObjetivo.Text.ToString() + "', " +
+                "'" + txbAnteFamiliares.Text.ToString() + "', '" + txbAntePatologico.Text.ToString() + "', " +
+                "'" + txbAnteQuirurgico.Text.ToString() + "', '" + txbAnteToxicologico.Text.ToString() + "', " +
+                "'" + txbAnteHospitalario.Text.ToString() + "', '" + txbAnteTraumatologico.Text.ToString() + "', " +
+                "'" + txbAnteFarmacologico.Text.ToString() + "', '" + txbAnteActividadFisica.Text.ToString() + "', " +
+                "'" + txbAnteGinecoObstetricio.Text.ToString() + "', '" + txbFum.Text.ToString() + "', " +
+                "" + rblFuma.SelectedItem.Value.ToString() + ", " + txbCigarrillos.Text.ToString() + ", " +
+                "" + rblToma.SelectedItem.Value.ToString() + ", " + txbBebidas.Text.ToString() + ", " +
+                "" + rblSedentarismo.SelectedItem.Value.ToString() + ", " + rblDiabetes.SelectedItem.Value.ToString() + ", " +
+                "" + rblColesterol.SelectedItem.Value.ToString() + ", " + rblTrigliceridos.SelectedItem.Value.ToString() + ", " +
+                "" + rblHTA.SelectedItem.Value.ToString() + ") ";
+                clasesglobales cg = new clasesglobales();
+                string mensaje = cg.TraerDatosStr(strQuery);
 
+                if (mensaje == "OK")
+                {
+                    //Avanzamos según el perfil
+                    if (Session["idPerfil"].ToString() == "5") //Medico deportologo
+                    {
+                        Response.Redirect("histclideporte01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString());
+                    }
+                    if (Session["idPerfil"].ToString() == "8") //Fisioterapeuta
+                    {
+                        Response.Redirect("histclifisio01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString());
+                    }
+                    if (Session["idPerfil"].ToString() == "9") //Nutricionista
+                    {
+                        Response.Redirect("histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString());
+                    }
+                    if (Session["idPerfil"].ToString() == "1") //OJO comentar esta condición
+                    {
+                        Response.Redirect("histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString());
+                    }
+                }
+                else
+                {
+                    ltMensaje.Text = "<div class=\"ibox-content\">" +
+                        "<div class=\"alert alert-danger alert-dismissable\">" +
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        mensaje +
+                        "</div></div>";
+                }
             }
-            if (Session["idPerfil"].ToString() == "8") //Fisioterapeuta
+            catch (OdbcException ex)
             {
-
-            }
-            if (Session["idPerfil"].ToString() == "9") //Nutricionista
-            {
-
+                string mensaje = ex.Message;
             }
 
-            Response.Redirect("histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString());
+            
+
+            //Response.Redirect("histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString());
         }
     }
 }
