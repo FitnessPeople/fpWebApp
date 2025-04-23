@@ -12,12 +12,12 @@ namespace fpWebApp
         {
             if (!IsPostBack)
             {
-                //Session["idUsuario"] = 1;
-                //Session["NombreUsuario"] = "Christian Morales";
-                //Session["idEmpresa"] = 1;
-                //Session["Cargo"] = "WebMaster";
-                //Session["Foto"] = "chrismo.jpg";
-                //Session["idPerfil"] = 1;
+                Session["idUsuario"] = 1;
+                Session["NombreUsuario"] = "Christian Morales";
+                Session["idEmpresa"] = 1;
+                Session["Cargo"] = "WebMaster";
+                Session["Foto"] = "chrismo.jpg";
+                Session["idPerfil"] = 1;
 
                 Control ctrInicio = new Control();
                 if (Session["idUsuario"] != null)

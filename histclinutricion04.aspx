@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="verhistoriaclinica.aspx.cs" Inherits="fpWebApp.verhistoriaclinica" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="histclinutricion04.aspx.cs" Inherits="fpWebApp.histclinutricion04" %>
 
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
@@ -21,10 +21,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/smoothness/jquery-ui.css">
 
-    <link href="css/plugins/dropzone/basic.css" rel="stylesheet" />
-    <link href="css/plugins/dropzone/dropzone.css" rel="stylesheet" />
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet" />
     <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet" />
+
+    <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
 
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
@@ -37,6 +37,71 @@
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#medico");
             element2.classList.remove("collapse");
+        }
+
+        function calculateIMC() {
+
+            var peso = document.getElementById("txbPeso").value;
+            var talla = document.getElementById("txbTalla").value;
+
+            if (peso !== '' && talla !== '') {
+
+                peso = parseFloat(peso);
+                talla = parseFloat(talla);
+
+                var peso_esperado = 0.75 * (talla - 150) + 50;
+
+                talla = talla / 100;
+
+                var tallax2 = talla * talla;
+                var imc = peso / tallax2;
+
+                imc = imc.toFixed(4);
+
+                document.getElementById("txbIMC").value = imc;
+                document.getElementById("txbPesoEsperado").value = peso_esperado;
+            }
+        }
+
+        function calculatePorcGraso() {
+
+            var peso = document.getElementById("txbPeso").value;
+            var tricipital = document.getElementById("txbPliegueTricipital").value;
+            var iliocrestal = document.getElementById("txbPliegueIliocrestal").value;
+            var abdominal = document.getElementById("txbPliegueAbdominal").value;
+            var subescapular = document.getElementById("txbPliegueSubescapular").value;
+            var muslo = document.getElementById("txbPliegueMuslo").value;
+            var pantorrilla = document.getElementById("txbPlieguePantorrilla").value;
+
+            if (tricipital !== '' && iliocrestal !== '' && abdominal !== '' && subescapular !== '' && muslo !== '' && pantorrilla !== '') {
+                var pliegues = (parseFloat(tricipital) + parseFloat(iliocrestal) + parseFloat(abdominal) + parseFloat(subescapular) + parseFloat(muslo) + parseFloat(pantorrilla));
+            }
+
+            var edad = document.getElementById("hfEdad").value;
+            var genero = document.getElementById("hfGenero").value;
+
+            if (genero == '2') {
+                var densidad_corporal = 0.146 * pliegues;
+                var porc_graso = 4.56 + densidad_corporal;
+            }
+
+            if (genero == '1') {
+                var densidad_corporal = 0.097 * pliegues;
+                var porc_graso = 3.64 + densidad_corporal;
+            }
+                
+            var peso_oseo = peso * 0.15;
+            var decimal = porc_graso / 100;
+            var peso_graso = peso * decimal;
+            var porc_muscular = peso - peso_oseo - peso_graso;
+            var peso_magro = peso - peso_graso;
+            var fce = 208.75 - (0.73 * edad);
+
+            document.getElementById("txbPorcGrasa").value = porc_graso;
+            document.getElementById("txbPorcMuscular").value = porc_muscular.toFixed(4);
+            document.getElementById("txbFCETanaka").value = fce;
+
+            console.log(genero);
         }
     </script>
 </head>
@@ -96,7 +161,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-notes-medical text-success m-r-sm"></i>Nueva historia clínica</h2>
+                    <h2><i class="fa fa-notes-medical text-success m-r-sm"></i>Historia clínica - Detalle nutricional</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Asistencial</li>
@@ -158,11 +223,17 @@
                                         <td><strong><i class="fa fa-building"></i></strong> Sede:
                         <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
                                         <td><strong><i class="fa fa-venus-mars"></i></strong> Género:
-                                            <asp:Literal ID="ltGenero" runat="server"></asp:Literal></td>
+                                            <asp:Literal ID="ltGenero" runat="server"></asp:Literal>
+                                            <input id="hfGenero" type="hidden" runat="server" />
+                                            <%--<asp:HiddenField ID="hfGenero" runat="server" />--%>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td><strong><i class="fa fa-cake"></i></strong>
-                                            <asp:Literal ID="ltCumple" runat="server"></asp:Literal></td>
+                                            <asp:Literal ID="ltCumple" runat="server"></asp:Literal>
+                                            <input id="hfEdad" type="hidden" runat="server" />
+                                            <%--<asp:HiddenField ID="hfEdad" runat="server" />--%>
+                                        </td>
                                         <td><strong><i class="fa fa-house-medical"></i></strong> EPS:
                                             <asp:Literal ID="ltEPS" runat="server"></asp:Literal></td>
                                     </tr>
@@ -367,7 +438,7 @@
                         <div class="col-lg-8">
                             <div class="ibox float-e-margins" runat="server" id="divContenido">
                                 <div class="ibox-title">
-                                    <h5>Formulario para la creación de una nueva historia clínica</h5>
+                                    <h5>Formulario para agregar detalles nutricionales</h5>
                                     <div class="ibox-tools">
                                         <a class="collapse-link">
                                             <i class="fa fa-chevron-up"></i>
@@ -382,42 +453,15 @@
                                     <div class="row">
                                         <form role="form" id="form" runat="server">
                                             <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-                                            <div class="col-sm-12">
-                                                
-                                                <div class="row">
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Medicina prepagada</label>
-                                                            <asp:TextBox ID="txbMedicinaPrepagada" CssClass="form-control" runat="server"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Objetivo del ingreso</label>
-                                                            <asp:DropDownList ID="ddlObjetivo" runat="server" AppendDataBoundItems="true"
-                                                                DataTextField="Objetivo" DataValueField="idObjetivo" CssClass="form-control m-b">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Detalle objetivo del ingreso</label>
-                                                            <asp:TextBox ID="txbDescripcionObjetivo" CssClass="form-control" runat="server"
-                                                                TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
 
                                             <div class="col-sm-12">
                                                 <div class="widget style1 bg-success">
                                                     <div class="row vertical-align">
                                                         <div class="col-xs-3">
-                                                            <i class="fa fa-clock-rotate-left fa-2x"></i>
+                                                            <i class="fa fa-person-arrow-up-from-line fa-2x"></i>
                                                         </div>
                                                         <div class="col-xs-9 text-right">
-                                                            <h3 class="font-bold">Antecedentes</h3>
+                                                            <h3 class="font-bold">Antropometría</h3>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -425,187 +469,152 @@
 
                                             <div class="col-sm-12">
                                                 <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Familiares</label>
-                                                            <asp:TextBox ID="txbAnteFamiliares" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Patológicos</label>
-                                                            <asp:TextBox ID="txbAntePatologico" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Quirúrgicos</label>
-                                                            <asp:TextBox ID="txbAnteQuirurgico" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
 
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label>Traumatológicos </label>
-                                                            <asp:TextBox ID="txbAnteTraumatologico" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Farmacológico</label>
-                                                            <asp:TextBox ID="txbAnteFarmacologico" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Actividad física</label>
-                                                            <asp:TextBox ID="txbAnteActividadFisica" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Toxicológicos alérgicos</label>
-                                                            <asp:TextBox ID="txbAnteToxicologico" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Hospitalarios</label>
-                                                            <asp:TextBox ID="txbAnteHospitalario" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Gineco-obstétricos</label>
-                                                            <asp:TextBox ID="txbAnteGinecoObstetricio" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>F.U.M.</label>
-                                                            <asp:TextBox ID="txbFum" CssClass="form-control input-sm" runat="server" name="txbFum"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-12">
-                                                <div class="widget style1 navy-bg">
-                                                    <div class="row vertical-align">
-                                                        <div class="col-xs-3">
-                                                            <i class="fa fa-heart-circle-exclamation fa-2x"></i>
-                                                        </div>
-                                                        <div class="col-xs-9 text-right">
-                                                            <h3 class="font-bold">Factores de Riesgo Cardiovascular</h3>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-6">
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label class="small">Fuma?</label>
-                                                            <asp:RadioButtonList ID="rblFuma" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
-                                                                <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
-                                                            </asp:RadioButtonList>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label class="small">Cigarrilos x día</label>
-                                                            <asp:TextBox ID="txbCigarrillos" CssClass="form-control input-sm" runat="server" Text="0"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-6">
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label class="small">Toma?</label>
-                                                            <asp:RadioButtonList ID="rblToma" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
-                                                                <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
-                                                            </asp:RadioButtonList>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label class="small">Bebidas x mes</label>
-                                                            <asp:TextBox ID="txbBebidas" CssClass="form-control input-sm" runat="server" Text="0"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-4">
-                                                <div class="row">
-                                                    <div class="col-sm-6 b-r">
-                                                        <div class="form-group">
-                                                            <label class="small">Sedentarismo</label>
-                                                            <asp:RadioButtonList ID="rblSedentarismo" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
-                                                                <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
-                                                            </asp:RadioButtonList>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 b-r">
-                                                        <div class="form-group">
-                                                            <label class="small">Diabetes</label>
-                                                            <asp:RadioButtonList ID="rblDiabetes" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
-                                                                <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
-                                                            </asp:RadioButtonList>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-8">
-                                                <div class="row">
-                                                    <div class="col-sm-4 b-r">
-                                                        <div class="form-group">
-                                                            <label class="small">Colesterol</label>
-                                                            <asp:RadioButtonList ID="rblColesterol" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
-                                                                <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;NS/NR" Value="2" style="margin-right: 10px;"></asp:ListItem>
-                                                            </asp:RadioButtonList>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4 b-r">
-                                                        <div class="form-group">
-                                                            <label class="small">Triglicéridos</label>
-                                                            <asp:RadioButtonList ID="rblTrigliceridos" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
-                                                                <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;NS/NR" Value="2" style="margin-right: 10px;"></asp:ListItem>
-                                                            </asp:RadioButtonList>
+                                                            <label>Peso en Kg</label>
+                                                            <asp:TextBox ID="txbPeso" CssClass="form-control" runat="server" onkeyup="calculateIMC(this)"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label class="small">H.T.A.</label>
-                                                            <asp:RadioButtonList ID="rblHTA" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
-                                                                <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;NS/NR" Value="2" style="margin-right: 10px;"></asp:ListItem>
-                                                            </asp:RadioButtonList>
+                                                            <label>Talla en cms</label>
+                                                            <asp:TextBox ID="txbTalla" CssClass="form-control" runat="server" onkeyup="calculateIMC(this)"></asp:TextBox>
                                                         </div>
                                                     </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Indice de Masa Corporal IMC</label>
+                                                            <asp:TextBox ID="txbIMC" CssClass="form-control" runat="server" Enabled="false"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label>Perímetro de Cintura (cms)</label>
+                                                            <asp:TextBox ID="txbPerimCintura" CssClass="form-control" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label>Perímetro de Cadera (cms)</label>
+                                                            <asp:TextBox ID="txbPerimCadera" CssClass="form-control" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label>Perímetro de Abdomen (cms)</label>
+                                                            <asp:TextBox ID="txbPerimAbdomen" CssClass="form-control" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label>Perímetro de Pecho (cms)</label>
+                                                            <asp:TextBox ID="txbPerimPecho" CssClass="form-control" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Perímetro de Muslo (cms)</label>
+                                                            <asp:TextBox ID="txbPerimMuslo" CssClass="form-control" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Perímetro de Pantorrilla (cms)</label>
+                                                            <asp:TextBox ID="txbPerimPantorrilla" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Perímetro de Brazo (cms)</label>
+                                                            <asp:TextBox ID="txbPerimBrazo" CssClass="form-control" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Pliegue Tricipital</label>
+                                                            <asp:TextBox ID="txbPliegueTricipital" CssClass="form-control input-sm" runat="server" onkeyup="calculatePorcGraso(this)"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Pliegue IlioCrestal</label>
+                                                            <asp:TextBox ID="txbPliegueIliocrestal" CssClass="form-control input-sm" runat="server" onkeyup="calculatePorcGraso(this)"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Pliegue Abdominal </label>
+                                                            <asp:TextBox ID="txbPliegueAbdominal" CssClass="form-control" runat="server" onkeyup="calculatePorcGraso(this)"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Pliegue Subescapular</label>
+                                                            <asp:TextBox ID="txbPliegueSubescapular" CssClass="form-control input-sm" runat="server" onkeyup="calculatePorcGraso(this)"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Pliegue Muslo</label>
+                                                            <asp:TextBox ID="txbPliegueMuslo" CssClass="form-control input-sm" runat="server" onkeyup="calculatePorcGraso(this)"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Pliegue Pantorrilla</label>
+                                                            <asp:TextBox ID="txbPlieguePantorrilla" CssClass="form-control input-sm" runat="server" onkeyup="calculatePorcGraso(this)"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Porcentaje Graso (%)</label>
+                                                            <asp:TextBox ID="txbPorcGrasa" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Porcentaje Muscular (%)</label>
+                                                            <asp:TextBox ID="txbPorcMuscular" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>FCE (Tanaka)</label>
+                                                            <asp:TextBox ID="txbFCETanaka" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Peso esperado (Kg)</label>
+                                                            <asp:TextBox ID="txbPesoEsperado" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Peso graso (Kg)</label>
+                                                            <asp:TextBox ID="txbPesoGraso" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Peso magro (Kg)</label>
+                                                            <asp:TextBox ID="txbPesoMagro" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
 
                                             <div class="col-sm-12">
                                                 <div>
-                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"
-                                                        onclick="window.location.href='historiasclinicas'">
+                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button">
                                                         <strong>Cancelar</strong></button>
                                                     <asp:Button ID="btnAgregar" runat="server"
                                                         CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
@@ -642,12 +651,20 @@
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
+    <!-- Clock picker -->
+    <script src="js/plugins/clockpicker/clockpicker.js"></script>
+
     <!-- Jquery Validate -->
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
     <!-- Jasny -->
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
+    <script>
+        $(document).ready(function () {
+            $('.clockpicker').clockpicker();
+        });
+    </script>
 
 </body>
 

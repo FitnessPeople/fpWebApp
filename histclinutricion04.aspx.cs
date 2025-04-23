@@ -1,6 +1,4 @@
-﻿using Microsoft.Ajax.Utilities;
-using NPOI.OpenXmlFormats.Wordprocessing;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Web;
@@ -9,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
-    public partial class verhistoriaclinica : System.Web.UI.Page
+    public partial class histclinutricion04 : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -30,14 +28,22 @@ namespace fpWebApp
                         {
                             if (Request.QueryString.Count > 0)
                             {
+                                txbPeso.Attributes.Add("type", "number");
+                                txbPeso.Attributes.Add("min", "20");
+                                txbTalla.Attributes.Add("type", "number");
+                                txbTalla.Attributes.Add("min", "80");
+                                txbPerimCintura.Attributes.Add("type", "number");
+                                txbPerimCadera.Attributes.Add("type", "number");
+                                txbPerimAbdomen.Attributes.Add("type", "number");
+                                txbPerimPecho.Attributes.Add("type", "number");
+                                txbPerimMuslo.Attributes.Add("type", "number");
+                                txbPerimPantorrilla.Attributes.Add("type", "number");
+                                txbPerimBrazo.Attributes.Add("type", "number");
+
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
                                 CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
                             }
 
-                            txbFum.Attributes.Add("type", "date");
-                            txbCigarrillos.Attributes.Add("type", "number");
-                            txbBebidas.Attributes.Add("type", "number");
-                            CargarObjetivos();
                             btnAgregar.Visible = true;
                         }
                     }
@@ -47,18 +53,6 @@ namespace fpWebApp
                     Response.Redirect("logout.aspx");
                 }
             }
-        }
-
-        private void CargarObjetivos()
-        {
-            string strQuery = "SELECT * FROM ObjetivosAfiliado";
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
-
-            ddlObjetivo.DataSource = dt;
-            ddlObjetivo.DataBind();
-
-            dt.Dispose();
         }
 
         private void MostrarDatosAfiliado(string idAfiliado)
@@ -85,6 +79,8 @@ namespace fpWebApp
             ltCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
             ltCumple.Text = String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"])) + " (" + dt.Rows[0]["edad"].ToString() + " años)";
             ltGenero.Text = dt.Rows[0]["Genero"].ToString();
+            hfGenero.Value = dt.Rows[0]["idGenero"].ToString();
+            hfEdad.Value = dt.Rows[0]["edad"].ToString();
             ltEPS.Text = dt.Rows[0]["NombreEps"].ToString();
             ltEstado.Text = "<span class=\"label label-" + dt.Rows[0]["label"].ToString() + "\">" + dt.Rows[0]["EstadoAfiliado"].ToString() + "</span>";
             //ltFoto.Text = "<img src=\"img/afiliados/nofoto.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
@@ -130,8 +126,6 @@ namespace fpWebApp
             {
                 rpHistorias.DataSource = dt;
                 rpHistorias.DataBind();
-
-                LlenarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
             }
             else
             {
@@ -142,52 +136,6 @@ namespace fpWebApp
                     "</div></div>";
                 //ltMensaje.Text = "Afiliado sin historias clínicas.";
             }
-
-            dt.Dispose();
-        }
-
-        private void LlenarHistoriasClinicas(string idAfiliado)
-        {
-            string strQuery = "SELECT * " +
-                "FROM HistoriasClinicas hc " +
-                "LEFT JOIN ObjetivosAfiliado oa ON hc.idObjetivoIngreso = oa.idObjetivo " +
-                "WHERE idAfiliado = " + idAfiliado + " " +
-                "ORDER BY FechaHora DESC " +
-                "LIMIT 1";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
-            txbMedicinaPrepagada.Text = dt.Rows[0]["MedicinaPrepagada"].ToString();
-            ddlObjetivo.SelectedIndex = Convert.ToInt32(ddlObjetivo.Items.IndexOf(ddlObjetivo.Items.FindByValue(dt.Rows[0]["idObjetivoIngreso"].ToString())));
-            txbDescripcionObjetivo.Text = dt.Rows[0]["DescripcionObjetivoIngreso"].ToString();
-
-            //Antecedentes
-            txbAnteFamiliares.Text = dt.Rows[0]["AnteFamiliar"].ToString();
-            txbAntePatologico.Text = dt.Rows[0]["AntePatologico"].ToString();
-            txbAnteQuirurgico.Text = dt.Rows[0]["AnteQuirurgico"].ToString();
-            txbAnteTraumatologico.Text = dt.Rows[0]["AnteTraumatologico"].ToString();
-            txbAnteFarmacologico.Text = dt.Rows[0]["AnteFarmacologico"].ToString();
-            txbAnteActividadFisica.Text = dt.Rows[0]["AnteActividadFisica"].ToString();
-            txbAnteToxicologico.Text = dt.Rows[0]["AnteToxicologico"].ToString();
-            txbAnteHospitalario.Text = dt.Rows[0]["AnteHospitalario"].ToString();
-            txbAnteGinecoObstetricio.Text = dt.Rows[0]["AnteGineco"].ToString();
-
-            if (dt.Rows[0]["AnteFUM"].ToString() != "")
-            {
-                DateTime dtFecha = Convert.ToDateTime(dt.Rows[0]["AnteFUM"].ToString());
-                txbFum.Text = dtFecha.ToString("yyyy-MM-dd");
-            }
-
-            //Factores de Riesgo Cardiovascular
-            rblFuma.SelectedIndex = Convert.ToInt32(rblFuma.Items.IndexOf(rblFuma.Items.FindByValue(Convert.ToInt16(dt.Rows[0]["Tabaquismo"]).ToString())));
-            txbCigarrillos.Text = dt.Rows[0]["Cigarrillos"].ToString();
-            rblToma.SelectedIndex = Convert.ToInt32(rblToma.Items.IndexOf(rblToma.Items.FindByValue(Convert.ToInt16(dt.Rows[0]["Alcoholismo"]).ToString())));
-            txbBebidas.Text = dt.Rows[0]["Bebidas"].ToString();
-            rblSedentarismo.SelectedIndex = Convert.ToInt32(rblSedentarismo.Items.IndexOf(rblSedentarismo.Items.FindByValue(Convert.ToInt16(dt.Rows[0]["Sedentarismo"]).ToString())));
-            rblDiabetes.SelectedIndex = Convert.ToInt32(rblDiabetes.Items.IndexOf(rblDiabetes.Items.FindByValue(Convert.ToInt16(dt.Rows[0]["Diabetes"]).ToString())));
-            rblColesterol.SelectedIndex = Convert.ToInt32(rblColesterol.Items.IndexOf(rblColesterol.Items.FindByValue(Convert.ToInt16(dt.Rows[0]["Colesterol"]).ToString())));
-            rblTrigliceridos.SelectedIndex = Convert.ToInt32(rblTrigliceridos.Items.IndexOf(rblTrigliceridos.Items.FindByValue(Convert.ToInt16(dt.Rows[0]["Trigliceridos"]).ToString())));
-            rblHTA.SelectedIndex = Convert.ToInt32(rblHTA.Items.IndexOf(rblHTA.Items.FindByValue(Convert.ToInt16(dt.Rows[0]["HTA"]).ToString())));
 
             dt.Dispose();
         }
@@ -232,24 +180,10 @@ namespace fpWebApp
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            //Inserta datos en la tabla HistoriasClinicas
+            //Actualiza datos en la tabla HistoriasAlimentaria
 
 
-            //Avanzamos según el perfil
-            if (Session["idPerfil"].ToString() == "5") //Medico deportologo
-            {
-
-            }
-            if (Session["idPerfil"].ToString() == "8") //Fisioterapeuta
-            {
-
-            }
-            if (Session["idPerfil"].ToString() == "9") //Nutricionista
-            {
-
-            }
-
-            Response.Redirect("histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString());
+            Response.Redirect("historiasclinicas");
         }
     }
 }

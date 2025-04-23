@@ -193,8 +193,8 @@ namespace fpWebApp
 
         private void CargarEmpleado()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.CargarEmpleados(Request.QueryString["editid"].ToString());
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.CargarEmpleados(Request.QueryString["editid"].ToString());
             txbDocumento.Text = dt.Rows[0]["DocumentoEmpleado"].ToString();
 
             if (dt.Rows[0]["idTipoDocumento"].ToString() != "")
@@ -202,7 +202,9 @@ namespace fpWebApp
                 ddlTipoDocumento.SelectedIndex = Convert.ToInt16(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
             }
             else
+            {
                 ddlTipoDocumento.SelectedItem.Value = "0";
+            }
 
             txbNombre.Text = dt.Rows[0]["NombreEmpleado"].ToString();
             ltNombre.Text = dt.Rows[0]["NombreEmpleado"].ToString();
