@@ -193,7 +193,7 @@
                                                     <div class="panel panel-default">
                                                         <div class="panel-heading">
                                                             <h5 class="panel-title">
-                                                                <span class="label label-warning-light pull-right"><i class="fa fa-calendar-day"></i> <%# Eval("FechaHora", "{0:dd MMM yyyy}") %></span>
+                                                                <span class="label label-warning-light pull-right"><i class="fa fa-calendar-day"></i> <%# Eval("FechaHora", "{0:dd MMM yyyy}") %> <i class="fa fa-clock"></i> <%# Eval("FechaHora", "{0:HH:mm}") %></span>
                                                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%# Eval("idHistoria") %>">Historia Clínica #<%# Eval("idHistoria") %></a>
                                                             </h5>
                                                         </div>
@@ -609,8 +609,11 @@
                                                         <strong>Cancelar</strong></button>
                                                     <asp:Button ID="btnAgregar" runat="server"
                                                         CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
-                                                        Text="Siguiente" Visible="false"
+                                                        Text="Guardar y continuar" Visible="false"
                                                         ValidationGroup="agregar" OnClick="btnAgregar_Click" />
+                                                    <asp:Button ID="btnContinuar" runat="server"
+                                                        CssClass="btn btn-sm btn-success m-t-n-xs m-r-md pull-right"
+                                                        Text="Continuar sin guardar" Visible="true" />
                                                 </div>
                                             </div>
                                         </form>
