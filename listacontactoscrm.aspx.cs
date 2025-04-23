@@ -354,6 +354,35 @@ namespace fpWebApp
                    $"<i class='{icono} m-r-xs font-bold' style='color:{color};'></i> {telefonoFormateado}</a>";
         }
 
+        protected string GetEnlaceWeb(object url)
+        {
+            string pagina = url as string;
+            if (!string.IsNullOrEmpty(pagina))
+            {
+                return $"<a href='{pagina}' target='_blank'>Visitar sitio</a>";
+            }
+            return "";
+        }
+
+        protected string FormatearUbicacion(object ciudad, object estado)
+        {
+            string c = ciudad as string ?? "";
+            string e = estado as string ?? "";
+            if (!string.IsNullOrEmpty(c) && !string.IsNullOrEmpty(e))
+                return $"{c} - {e}";
+            else
+                return c + e; // Si uno está vacío, solo muestra el otro
+        }
+
+        protected string FormatearCOP(object valor)
+        {
+            if (valor == null || valor == DBNull.Value) return "";
+
+            decimal monto = Convert.ToDecimal(valor);
+            CultureInfo culturaCol = new CultureInfo("es-CO");
+            return monto.ToString("C0", culturaCol); // C0 = sin decimales
+        }
+
         protected void btnEditar_Click(object sender, EventArgs e)
         {
             btnActualizar.Visible = true;

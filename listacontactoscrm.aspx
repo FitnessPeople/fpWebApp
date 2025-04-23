@@ -147,7 +147,7 @@
         }
     </script>
 
-    <%--    Formatear telefono --%>
+    <%--        Formatear telefono --%>
     <script>
         function formatearTelefono(input) {
             let num = input.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
@@ -165,7 +165,7 @@
         }
     </script>
 
-    <%--    Formatear solo letraas --%>
+    <%--        Formatear solo letraas --%>
     <script>
         function validarSoloLetras(input) {
             // Eliminar cualquier caracter que no sea letra o espacio
@@ -173,7 +173,7 @@
         }
     </script>
 
-    <%--    Formatear solo correo --%>
+    <%--        Formatear solo correo --%>
     <script>
         function validarCorreo(input) {
             const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -185,10 +185,22 @@
         }
     </script>
 
-    <!--    SweetAlert2 CDN -->
+    <!--        SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+   <%--         Filtro de buscar--%>
+    <script type="text/javascript">
+        Sys.Application.add_load(function () {
+            $('#buscador').on('keyup', function () {
+                var valorBusqueda = $(this).val().toLowerCase();
+                $('.table tbody tr').filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(valorBusqueda) > -1);
+                });
+            });
+        });
+    </script>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body onload="changeClass()">
@@ -410,7 +422,7 @@
 
                                         <div style="display: flex; align-items: center;">
                                             <div class="input-group">
-                                                <input type="text" placeholder="Buscar contacto" class="input form-control">
+                                                <input type="text" id="buscador" placeholder="Buscar" class="input form-control">
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-primary">
                                                         <i class="fa fa-search"></i>Search
@@ -418,15 +430,16 @@
                                                 </span>
                                             </div>
 
+
+
                                             <%--                                            <button type="button" class="btn btn-success m-l-md"
                                                 data-toggle="modal" data-target="#ModalContacto" data-whatever="@fat">
                                                 <i class="fa fa-plus"></i> Nuevo
                                             </button>--%>
                                         </div>
-
                                         <div class="clients-list">
                                             <ul class="nav nav-tabs">
-                                                <span class="pull-right small text-muted">1406 Elements</span>
+                                                <span class="pull-right small text-muted"><p id="contadorFilas"></p></span>
                                                 <li class="active"><a data-toggle="tab" href="#tab-1"><i class="fa fa-user"></i>Contactos</a></li>
                                                 <li class=""><a data-toggle="tab" href="#tab-2"><i class="fa fa-briefcase"></i>Empresas</a></li>
                                             </ul>
@@ -435,9 +448,8 @@
                                                 <div id="tab-1" class="tab-pane active">
                                                     <div class="full-height-scroll">
                                                         <div class="table-responsive">
-                                                            <table class="table table-striped table-hover">
+                                                            <table id="tablaContactos" class="table table-striped table-hover">
                                                                 <tbody>
-
                                                                     <asp:Repeater ID="rpContactosCRM" runat="server" OnItemDataBound="rpContactosCRM_ItemDataBound">
                                                                         <ItemTemplate>
                                                                             <tr class="feed-element">
@@ -523,9 +535,8 @@
                                                                             <i class="fa fa-envelope" style="margin-right: 5px;"></i>
                                                                             <span><%# Eval("EmailContacto") %></span>
                                                                         </p>
-                                                                        <p>Soy nuevo, estoy interesado...</p>
-                                                                        <p>Soy afiliado desde...</p>
-                                                                        <p>Mi objetivo es...</p>
+                                                                        <p> <%# Eval("TipoContacto") %></p>                                                                    
+                                                                        <%--<p>Mi objetivo es  <%# Eval("Objetivo") %></p>--%>
 
                                                                         <!-- Botón alineado a la derecha -->
                                                                         <div class="d-flex justify-content-end mt-2">
@@ -559,8 +570,8 @@
                                                                         <strong>Notas</strong>
                                                                         <p>
                                                                             Entreno por las noches
-                                                                        Entreno fines de semana.
-                                                                        He completado 300 asistencias.
+                                                                            Entreno fines de semana.
+                                                                            He completado 300 asistencias.
                                                                         </p>
 
                                                                         <%-- <strong>Medio de pago sugerido</strong>
@@ -586,25 +597,65 @@
                                                 <asp:Repeater ID="rpContenidoEmpresaCRM" runat="server">
                                                     <ItemTemplate>
                                                         <div id='<%# Eval("IdEmpresaCRM") %>' class='tab-pane <%# Eval("IdEmpresaCRM").ToString() == Session["empresaId"]?.ToString() ? "active" : "" %>'>
-                                                            <!-- Aquí va el detalle visual -->
-                                                            <div class="row m-b-lg">
-                                                                <div class="col-lg-4 text-center">
-                                                                    <h2><%# Eval("NombreEmpresaCRM") %></h2>
-                                                                    <div class="m-b-sm">
-                                                                        <img alt="image" class="img-circle" src="img/company.png" style="width: 62px" />
+                                                            <div class="m-b-lg">
+                                                                <h2><%# Eval("NombreEmpresaCRM") %></h2>
+                                                                <%# FormatearUbicacion(Eval("NombreCiudad"), Eval("NombreEstado")) %>
+                                                                <p>
+                                                                    <%# GetEnlaceWeb(Eval("paginaWeb")) %>
+                                                                </p>
+                                                                <div>
+                                                                    <small>Active project completion with: 48%</small>
+                                                                    <div class="progress progress-mini">
+                                                                        <div style="width: 48%;" class="progress-bar"></div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-8">
-                                                                    <strong>Ciudad:</strong> <%# Eval("NombreCiudad") %><br />
-                                                                    <strong>País:</strong> <%# Eval("NombrePais") %><br />
-                                                                    <strong>Pagina web:</strong> <%# Eval("PaginaWeb") %><br />
+                                                            </div>
+                                                            <div class="client-detail">
+                                                                <div class="full-height-scroll">
+
+                                                                    <strong>Contacto</strong>
+
+                                                                    <ul class="list-group clear-list">
+                                                                        <li class="list-group-item fist-item">
+                                                                            <span class="pull-right"><span class="label label-primary">NEW</span> </span>
+                                                                            <%# Eval("NombreContacto") %>
+                                                                        </li>
+                                                                        <li class="list-group-item">
+                                                                            <span class="pull-right"><span class="label label-warning">WAITING</span></span>
+                                                                            <%# Eval("TelefonoContacto") %>
+                                                                        </li>
+                                                                        <li class="list-group-item">
+                                                                            <span class="pull-right"><span class="label label-success">ACCEPTED</span> </span>
+                                                                            Valor Propuesta:<%# FormatearCOP(Eval("ValorPropuesta")) %>
+                                                                        </li>
+                                                                        <li class="list-group-item">
+                                                                            <span class="pull-right"><span class="label label-danger">BLOCKED</span> </span>
+                                                                            Asesor: <%# Eval("NombreUsuario") %>
+                                                                        </li>
+                                                                    </ul>
+                                                                    <hr />
+                                                                    <strong>Observaciones</strong>
+                                                                    <div id="vertical-timeline" class="vertical-container dark-timeline">
+                                                                        <div class="vertical-timeline-block">
+                                                                            <div class="vertical-timeline-icon gray-bg">
+                                                                                <i class="fa fa-coffee"></i>
+                                                                            </div>
+                                                                            <div class="vertical-timeline-content">
+                                                                                <p>
+                                                                                    <%# Eval("ObservacionesEmp") %>
+                                                                                </p>
+                                                                                <span class="vertical-date small text-muted"><%# Eval("FechaCreacion") %> </span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                        </div>
                                                         </div>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
                                             </asp:Panel>
-
                                         </div>
                                     </div>
                                 </div>
@@ -616,7 +667,7 @@
                 </div>
             </div>
 
-            <uc1:footer runat="server" ID="footer" />
+   <%--         <uc1:footer runat="server" ID="footer" />--%>
 
         </div>
 
@@ -690,6 +741,51 @@
             }
         });
     </script>
+    <script type="text/javascript">
+        Sys.Application.add_load(function () {
+            console.log("Script cargado");
+
+            $('#buscador').on('keyup', function () {
+                var valorBusqueda = $(this).val().toLowerCase();
+                console.log("Buscando: " + valorBusqueda); // Esto debería aparecer en consola
+
+                var filas = $('.table tbody tr');
+                console.log("Cantidad de filas: " + filas.length); // ¿Cuántas encuentra?
+
+                filas.filter(function () {
+                    var texto = $(this).text().toLowerCase();
+                    console.log("Fila: " + texto); // Verifica que tenga contenido
+                    $(this).toggle(texto.indexOf(valorBusqueda) > -1);
+                });
+            });
+        });
+    </script>
+        <%--Contador de filas--%>
+    <script type="text/javascript">
+        function actualizarContador() {
+            var visibles = $('#tablaContactos tbody tr:visible').length;
+            $('#contadorFilas').text( visibles +' contactos');
+        }
+
+        Sys.Application.add_load(function () {
+            // Evento al escribir en el buscador
+            $('#buscador').off('keyup').on('keyup', function () {
+                var valorBusqueda = $(this).val().toLowerCase();
+
+                $('#tablaContactos tbody tr').each(function () {
+                    var textoFila = $(this).text().toLowerCase();
+                    var coincide = textoFila.indexOf(valorBusqueda) > -1;
+                    $(this).toggle(coincide);
+                });
+
+                actualizarContador();
+            });
+
+            // Actualiza el contador al cargar
+            actualizarContador();
+        });
+    </script>
+
 </body>
 
 </html>
