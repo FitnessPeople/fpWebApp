@@ -414,7 +414,7 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Gaseosas</label>
-                                                            <asp:TextBox ID="txbGaseosas" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbGaseosa" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
 
