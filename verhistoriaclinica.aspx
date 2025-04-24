@@ -21,12 +21,13 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/smoothness/jquery-ui.css">
 
-    <link href="css/plugins/dropzone/basic.css" rel="stylesheet" />
-    <link href="css/plugins/dropzone/dropzone.css" rel="stylesheet" />
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet" />
     <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet" />
 
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
+
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -613,7 +614,7 @@
                                                         ValidationGroup="agregar" OnClick="btnAgregar_Click" />
                                                     <asp:Button ID="btnContinuar" runat="server"
                                                         CssClass="btn btn-sm btn-success m-t-n-xs m-r-md pull-right"
-                                                        Text="Continuar sin guardar" Visible="true" />
+                                                        Text="Continuar sin guardar" Visible="false" OnClick="btnContinuar_Click" />
                                                 </div>
                                             </div>
                                         </form>
@@ -651,6 +652,86 @@
     <!-- Jasny -->
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
+    <script>
+
+        $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" })
+
+        $("#form").validate({
+            rules: {
+                txbMedicinaPrepagada: {
+                    required: true,
+                },
+                ddlObjetivo: {
+                    required: true,
+                },
+                txbDescripcionObjetivo: {
+                    required: true,
+                },
+                txbAnteFamiliares: {
+                    required: true
+                },
+                txbAntePatologico: {
+                    required: true,
+                },
+                txbAnteQuirurgico: {
+                    required: true,
+                },
+                txbAnteTraumatologico: {
+                    required: true,
+                },
+                txbAnteFarmacologico: {
+                    required: true,
+                },
+                txbAnteActividadFisica: {
+                    required: true,
+                },
+                txbAnteToxicologico: {
+                    required: true,
+                },
+                txbAnteHospitalario: {
+                    required: true,
+                },
+                rblFuma: {
+                    required: true
+                },
+                txbCigarrillos: {
+                    required: true
+                },
+                rblToma: {
+                    required: true
+                },
+                txbBebidas: {
+                    required: true
+                },
+                rblSedentarismo: {
+                    required: true
+                },
+                rblDiabetes: {
+                    required: true
+                },
+                rblColesterol: {
+                    required: true
+                },
+                rblTrigliceridos: {
+                    required: true
+                },
+                rblHTA: {
+                    required: true
+                },
+            },
+            messages: {
+                rblFuma: "*",
+                rblToma: "*",
+                rblSedentarismo: "*",
+                rblDiabetes: "*",
+                rblColesterol: "*",
+                rblTrigliceridos: "*",
+                rblHTA: "*",
+            }
+        });
+
+        $('.chosen-select').chosen({ width: "100%" });
+    </script>
 
 </body>
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Odbc;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -166,10 +167,80 @@ namespace fpWebApp
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            //Actualiza datos en la tabla HistoriasAlimentaria
+            //Actualiza datos en la tabla HistoriaAlimentaria
+            try
+            {
+                string strQuery = "UPDATE HistoriaAlimentaria SET " +
+                    "Desayuno = '" + txbDesayuno.Text.ToString() + "', " +
+                    "Nueves = '" + txbNueves.Text.ToString() + "', " +
+                    "Almuerzo = '" + txbAlmuerzo.Text.ToString() + "', " +
+                    "Onces = '" + txbOnces.Text.ToString() + "', " +
+                    "Cena = '" + txbCena.Text.ToString() + "', " +
+                    "Merienda = '" + txbMerienda.Text.ToString() + "', " +
+                    "DatosBioquimicos = '" + txbDatosBioquimicos.Text.ToString() + "', " +
+                    "Medicamentos = '" + txbMedicamentos.Text.ToString() + "', " +
+                    "Alergias = '" + txbAlergias.Text.ToString() + "', " +
+                    "Proteinas = '" + txbProteinas.Text.ToString() + "', " +
+                    "Carbohidratos = '" + txbCarbohidratos.Text.ToString() + "', " +
+                    "Somatotipo = '" + txbSomatotipo.Text.ToString() + "', " +
+                    "HoraLevanta = '" + txbHoraLevanta.Text.ToString() + "', " +
+                    "HoraDesayuno = '" + txbHoraDesayuno.Text.ToString() + "', " +
+                    "HoraAcuesta = '" + txbHoraAcuesta.Text.ToString() + "' " +
+                    "WHERE idHistoria = " + Request.QueryString["idHistoria"].ToString();
+                clasesglobales cg = new clasesglobales();
+                string mensaje = cg.TraerDatosStr(strQuery);
 
+                if (mensaje == "OK")
+                {
+                    string script = @"
+                    Swal.fire({
+                        title: 'Siguiente paso...',
+                        text: 'Frecuencia de consumo',
+                        icon: 'success',
+                        timer: 2000, // 2 segundos
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    }).then(() => {
+                        window.location.href = 'histclinutricion03?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + Request.QueryString["idHistoria"].ToString() + @"';
+                    });
+                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                    //Response.Redirect("histclinutricion03?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + Request.QueryString["idHistoria"].ToString());
+                }
+                else
+                {
+                    string script = @"
+                        Swal.fire({
+                            title: 'Error',
+                            text: '" + mensaje.Replace("'", "\\'") + @"',
+                            icon: 'error'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                            
+                            }
+                        });
+                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                }
+            }
+            catch (OdbcException ex)
+            {
+                string mensaje = ex.Message;
+                string script = @"
+                    Swal.fire({
+                        title: 'Error',
+                        text: '" + mensaje.Replace("'", "\\'") + @"',
+                        icon: 'error'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                                            
+                        }
+                    });
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+            }
 
-            Response.Redirect("histclinutricion03?idAfiliado=" + Request.QueryString["idAfiliado"].ToString());
+            //Response.Redirect("histclinutricion03?idAfiliado=" + Request.QueryString["idAfiliado"].ToString());
         }
     }
 }
