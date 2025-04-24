@@ -1,4 +1,5 @@
 ﻿using Microsoft.Ajax.Utilities;
+using NPOI.OpenXmlFormats.Spreadsheet;
 using NPOI.OpenXmlFormats.Wordprocessing;
 using System;
 using System.Collections.Generic;
@@ -157,6 +158,7 @@ namespace fpWebApp
                 rpHistorias.DataBind();
 
                 LlenarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
+                btnContinuar.Visible = true;
             }
             else
             {
@@ -256,43 +258,194 @@ namespace fpWebApp
                 clasesglobales cg = new clasesglobales();
                 string mensaje = cg.TraerDatosStr(strQuery);
 
+                strQuery = "SELECT idHistoria FROM HistoriasClinicas WHERE idAfiliado = " + Request.QueryString["idAfiliado"].ToString() + " ORDER BY idHistoria DESC LIMIT 1";
+                DataTable dt = cg.TraerDatos(strQuery);
+                string idHistoria = dt.Rows[0]["idHistoria"].ToString();
+                dt.Dispose();
+
                 if (mensaje == "OK")
                 {
                     //Avanzamos según el perfil
                     if (Session["idPerfil"].ToString() == "5") //Medico deportologo
                     {
-                        Response.Redirect("histclideporte01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString());
+                        string script = @"
+                            Swal.fire({
+                                title: 'La historia clínica se creo de forma exitosa',
+                                text: '',
+                                icon: 'success',
+                                timer: 2000, // 2 segundos
+                                showConfirmButton: false,
+                                timerProgressBar: true
+                            }).then(() => {
+                                window.location.href = 'histclideporte01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + idHistoria + @"';
+                            });
+                            ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                        //Response.Redirect("histclideporte01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + idHistoria);
                     }
                     if (Session["idPerfil"].ToString() == "8") //Fisioterapeuta
                     {
-                        Response.Redirect("histclifisio01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString());
+                        string script = @"
+                            Swal.fire({
+                                title: 'La historia clínica se creo de forma exitosa',
+                                text: '',
+                                icon: 'success',
+                                timer: 2000, // 2 segundos
+                                showConfirmButton: false,
+                                timerProgressBar: true
+                            }).then(() => {
+                                window.location.href = 'histclifisio01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + idHistoria + @"';
+                            });
+                            ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                        //Response.Redirect("histclifisio01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + idHistoria);
                     }
                     if (Session["idPerfil"].ToString() == "9") //Nutricionista
                     {
-                        Response.Redirect("histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString());
+                        string script = @"
+                            Swal.fire({
+                                title: 'La historia clínica se creo de forma exitosa',
+                                text: '',
+                                icon: 'success',
+                                timer: 2000, // 2 segundos
+                                showConfirmButton: false,
+                                timerProgressBar: true
+                            }).then(() => {
+                                window.location.href = 'histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + idHistoria + @"';
+                            });
+                            ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                        //Response.Redirect("histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + idHistoria);
                     }
                     if (Session["idPerfil"].ToString() == "1") //OJO comentar esta condición
                     {
-                        Response.Redirect("histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString());
+                        string script = @"
+                            Swal.fire({
+                                title: 'La historia clínica se creo de forma exitosa',
+                                text: '',
+                                icon: 'success',
+                                timer: 2000, // 2 segundos
+                                showConfirmButton: false,
+                                timerProgressBar: true
+                            }).then(() => {
+                                window.location.href = 'histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + idHistoria + @"';
+                            });
+                            ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                        //Response.Redirect("histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + idHistoria);
                     }
                 }
                 else
                 {
-                    ltMensaje.Text = "<div class=\"ibox-content\">" +
-                        "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        mensaje +
-                        "</div></div>";
+                    string script = @"
+                        Swal.fire({
+                            title: 'Error',
+                            text: '" + mensaje.Replace("'", "\\'") + @"',
+                            icon: 'error'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                            
+                            }
+                        });
+                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
                 }
             }
             catch (OdbcException ex)
             {
                 string mensaje = ex.Message;
+                string script = @"
+                    Swal.fire({
+                        title: 'Error',
+                        text: '" + mensaje.Replace("'", "\\'") + @"',
+                        icon: 'error'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                                            
+                        }
+                    });
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
             }
+        }
 
-            
+        protected void btnContinuar_Click(object sender, EventArgs e)
+        {
+            string strQuery = "SELECT idHistoria FROM HistoriasClinicas WHERE idAfiliado = " + Request.QueryString["idAfiliado"].ToString() + " ORDER BY idHistoria DESC LIMIT 1";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+            string idHistoria = dt.Rows[0]["idHistoria"].ToString();
+            dt.Dispose();
 
-            //Response.Redirect("histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString());
+            //Avanzamos según el perfil
+            if (Session["idPerfil"].ToString() == "5") //Medico deportologo
+            {
+                string script = @"
+                    Swal.fire({
+                        title: 'Siguiente paso...',
+                        text: '',
+                        icon: 'success',
+                        timer: 2000, // 2 segundos
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    }).then(() => {
+                        window.location.href = 'histclideporte01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + idHistoria + @"';
+                    });
+                    ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                //Response.Redirect("histclideporte01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + idHistoria);
+            }
+            if (Session["idPerfil"].ToString() == "8") //Fisioterapeuta
+            {
+                string script = @"
+                    Swal.fire({
+                        title: 'Siguiente paso...',
+                        text: '',
+                        icon: 'success',
+                        timer: 2000, // 2 segundos
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    }).then(() => {
+                        window.location.href = 'histclifisio01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + idHistoria + @"';
+                    });
+                    ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                //Response.Redirect("histclifisio01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + idHistoria);
+            }
+            if (Session["idPerfil"].ToString() == "9") //Nutricionista
+            {
+                string script = @"
+                    Swal.fire({
+                        title: 'Siguiente paso...',
+                        text: 'Historia alimentaria',
+                        icon: 'success',
+                        timer: 2000, // 2 segundos
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    }).then(() => {
+                        window.location.href = 'histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + idHistoria + @"';
+                    });
+                    ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                //Response.Redirect("histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + idHistoria);
+            }
+            if (Session["idPerfil"].ToString() == "1") //OJO comentar esta condición
+            {
+                string script = @"
+                    Swal.fire({
+                        title: 'Siguiente paso...',
+                        text: 'Historia alimentaria',
+                        icon: 'success',
+                        timer: 2000, // 2 segundos
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    }).then(() => {
+                        window.location.href = 'histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + idHistoria + @"';
+                    });
+                    ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                //Response.Redirect("histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + idHistoria);
+            }
         }
     }
 }

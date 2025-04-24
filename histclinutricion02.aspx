@@ -28,6 +28,9 @@
 
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
@@ -481,7 +484,7 @@
                                                         <div class="form-group">
                                                             <label>¿A qué hora se levanta?</label>
                                                             <div class="input-group clockpicker" data-autoclose="true">
-                                                                <asp:TextBox ID="txbHoraLevanta" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txbHoraLevanta" CssClass="form-control input-sm" runat="server">6:00</asp:TextBox>
                                                                 <span class="input-group-addon">
                                                                     <span class="fa fa-clock"></span>
                                                                 </span>
@@ -492,7 +495,7 @@
                                                         <div class="form-group">
                                                             <label>¿A qué hora desayuna?</label>
                                                             <div class="input-group clockpicker" data-autoclose="true">
-                                                                <asp:TextBox ID="txbHoraDesayuno" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txbHoraDesayuno" CssClass="form-control input-sm" runat="server">7:00</asp:TextBox>
                                                                 <span class="input-group-addon">
                                                                     <span class="fa fa-clock"></span>
                                                                 </span>
@@ -503,7 +506,7 @@
                                                         <div class="form-group">
                                                             <label>¿A qué hora se acuesta?</label>
                                                             <div class="input-group clockpicker" data-autoclose="true">
-                                                                <asp:TextBox ID="txbHoraAcuesta" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                                <asp:TextBox ID="txbHoraAcuesta" CssClass="form-control input-sm" runat="server">22:00</asp:TextBox>
                                                                 <span class="input-group-addon">
                                                                     <span class="fa fa-clock"></span>
                                                                 </span>
@@ -567,6 +570,65 @@
         $(document).ready(function () {
             $('.clockpicker').clockpicker();
         });
+
+        $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" })
+
+        $("#form").validate({
+            rules: {
+                txbDesayuno: {
+                    required: true,
+                },
+                txbNueves: {
+                    required: true,
+                },
+                txbAlmuerzo: {
+                    required: true,
+                },
+                txbOnces: {
+                    required: true
+                },
+                txbCena: {
+                    required: true,
+                },
+                txbMerienda: {
+                    required: true,
+                },
+                txbDatosBioquimicos: {
+                    required: true,
+                },
+                txbMedicamentos: {
+                    required: true,
+                },
+                txbAlergias: {
+                    required: true,
+                },
+                txbProteinas: {
+                    required: true,
+                },
+                txbCarbohidratos: {
+                    required: true,
+                },
+                txbSomatotipo: {
+                    required: true
+                },
+                txbHoraLevanta: {
+                    required: true
+                },
+                txbHoraDesayuno: {
+                    required: true
+                },
+                txbHoraAcuesta: {
+                    required: true
+                },
+            },
+            messages: {
+                rblGastritis: "*",
+                rblColon: "*",
+                rblEstrenimiento: "*",
+            }
+        });
+
+        $('.chosen-select').chosen({ width: "100%" });
     </script>
 
 </body>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Odbc;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -166,11 +167,71 @@ namespace fpWebApp
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            //Inserta datos en la tabla HistoriasAlimentaria
+            //Inserta datos en la tabla HistoriaAlimentaria
+            try
+            {
+                string strQuery = "INSERT INTO HistoriaAlimentaria " +
+                "(idHistoria, Gastritis, Colon, Estrenimiento, Cafeina, AlimNoTolerados, Complementos, " +
+                "NutriAnterior, Paraclinicos, Apetito, Masticacion, HabitoIntestinal, SintGastrointestinales, AlimPreferidos) " +
+                "VALUES (" + Request.QueryString["idHistoria"].ToString() + ", " + rblGastritis.SelectedItem.Value.ToString() + ", " +
+                "" + rblColon.SelectedItem.Value.ToString() + ", " + rblEstrenimiento.SelectedItem.Value.ToString() + ", " +
+                "'" + txbCafeina.Text.ToString() + "', '" + txbAlimNoTolerados.Text.ToString() + "', " +
+                "'" + txbComplementos.Text.ToString() + "', '" + txbNutricionAnterior.Text.ToString() + "', " +
+                "'" + txbParaclinicos.Text.ToString() + "', '" + txbApetito.Text.ToString() + "', " +
+                "'" + txbMasticacion.Text.ToString() + "', '" + txbHabitoIntestinal.Text.ToString() + "', " +
+                "'" + txbSintGastrointestinales.Text.ToString() + "', '" + txbAlimPreferidos.Text.ToString() + "') ";
+                clasesglobales cg = new clasesglobales();
+                string mensaje = cg.TraerDatosStr(strQuery);
 
-
-
-            Response.Redirect("histclinutricion02?idAfiliado=" + Request.QueryString["idAfiliado"].ToString());
+                if (mensaje == "OK")
+                {
+                    string script = @"
+                    Swal.fire({
+                        title: 'Siguiente paso...',
+                        text: 'Anamnesis alimentaria',
+                        icon: 'success',
+                        timer: 2000, // 2 segundos
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    }).then(() => {
+                        window.location.href = 'histclinutricion02?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + Request.QueryString["idHistoria"].ToString() + @"';
+                    });
+                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                    //Response.Redirect("histclinutricion02?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + Request.QueryString["idHistoria"].ToString());
+                }
+                else
+                {
+                    string script = @"
+                        Swal.fire({
+                            title: 'Error',
+                            text: '" + mensaje.Replace("'", "\\'") + @"',
+                            icon: 'error'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                            
+                            }
+                        });
+                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                }
+            }
+            catch (OdbcException ex)
+            {
+                string mensaje = ex.Message;
+                string script = @"
+                    Swal.fire({
+                        title: 'Error',
+                        text: '" + mensaje.Replace("'", "\\'") + @"',
+                        icon: 'error'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                                            
+                        }
+                    });
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+            }
         }
     }
 }

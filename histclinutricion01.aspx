@@ -31,6 +31,9 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         function changeClass() {
             var element1 = document.querySelector("#nuevahistoria");
@@ -448,7 +451,7 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Nutrición anterior</label>
-                                                            <asp:TextBox ID="txbAnteToxicologico" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
+                                                            <asp:TextBox ID="txbNutricionAnterior" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
@@ -499,7 +502,7 @@
                                                         <strong>Cancelar</strong></button>
                                                     <asp:Button ID="btnAgregar" runat="server"
                                                         CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
-                                                        Text="Siguiente" Visible="false"
+                                                        Text="Guardar y continuar" Visible="false"
                                                         ValidationGroup="agregar" OnClick="btnAgregar_Click" />
                                                 </div>
                                             </div>
@@ -538,6 +541,61 @@
     <!-- Jasny -->
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
+    <script>
+
+        $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" })
+
+        $("#form").validate({
+            rules: {
+                rblGastritis: {
+                    required: true,
+                },
+                rblColon: {
+                    required: true,
+                },
+                rblEstrenimiento: {
+                    required: true,
+                },
+                txbCafeina: {
+                    required: true
+                },
+                txbAlimNoTolerados: {
+                    required: true,
+                },
+                txbComplementos: {
+                    required: true,
+                },
+                txbNutricionAnterior: {
+                    required: true,
+                },
+                txbParaclinicos: {
+                    required: true,
+                },
+                txbApetito: {
+                    required: true,
+                },
+                txbMasticacion: {
+                    required: true,
+                },
+                txbHabitoIntestinal: {
+                    required: true,
+                },
+                txbSintGastrointestinales: {
+                    required: true
+                },
+                txbAlimPreferidos: {
+                    required: true
+                },
+            },
+            messages: {
+                rblGastritis: "*",
+                rblColon: "*",
+                rblEstrenimiento: "*",
+            }
+        });
+
+        $('.chosen-select').chosen({ width: "100%" });
+    </script>
 
 </body>
 
