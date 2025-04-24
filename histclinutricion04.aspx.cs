@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Odbc;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -53,6 +54,29 @@ namespace fpWebApp
                     Response.Redirect("logout.aspx");
                 }
             }
+        }
+
+        private void ValidarPermisos(string strPagina)
+        {
+            ViewState["SinPermiso"] = "1";
+            ViewState["Consulta"] = "0";
+            ViewState["Exportar"] = "0";
+            ViewState["CrearModificar"] = "0";
+            ViewState["Borrar"] = "0";
+
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
+
+            if (dt.Rows.Count > 0)
+            {
+                ViewState["SinPermiso"] = dt.Rows[0]["SinPermiso"].ToString();
+                ViewState["Consulta"] = dt.Rows[0]["Consulta"].ToString();
+                ViewState["Exportar"] = dt.Rows[0]["Exportar"].ToString();
+                ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
+                ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
+            }
+
+            dt.Dispose();
         }
 
         private void MostrarDatosAfiliado(string idAfiliado)
@@ -155,35 +179,95 @@ namespace fpWebApp
             }
         }
 
-        private void ValidarPermisos(string strPagina)
-        {
-            ViewState["SinPermiso"] = "1";
-            ViewState["Consulta"] = "0";
-            ViewState["Exportar"] = "0";
-            ViewState["CrearModificar"] = "0";
-            ViewState["Borrar"] = "0";
-
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
-
-            if (dt.Rows.Count > 0)
-            {
-                ViewState["SinPermiso"] = dt.Rows[0]["SinPermiso"].ToString();
-                ViewState["Consulta"] = dt.Rows[0]["Consulta"].ToString();
-                ViewState["Exportar"] = dt.Rows[0]["Exportar"].ToString();
-                ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
-                ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
-            }
-
-            dt.Dispose();
-        }
-
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            //Actualiza datos en la tabla HistoriasAlimentaria
+            //Actualiza datos en la tabla HistoriaAlimentaria
+            try
+            {
+                string strQuery = "UPDATE HistoriaAlimentaria SET " +
+                    "Peso = " + txbPeso.Text.ToString() + ", " +
+                    "Talla = " + txbTalla.Text.ToString() + ", " +
+                    "IMC = " + txbIMC.Text.ToString() + ", " +
+                    "PerimCintura = '" + txbPerimCintura.Text.ToString() + "', " +
+                    "PerimCadera = '" + txbPerimCadera.Text.ToString() + "', " +
+                    "PerimAbdomen = '" + txbPerimAbdomen.Text.ToString() + "', " +
+                    "PerimPecho = '" + txbPerimPecho.Text.ToString() + "', " +
+                    "PerimMuslo = '" + txbPerimMuslo.Text.ToString() + "', " +
+                    "PerimPantorrilla = '" + txbPerimPantorrilla.Text.ToString() + "', " +
+                    "PerimBrazo = '" + txbPerimBrazo.Text.ToString() + "', " +
+                    "PliegueTricipital = '" + txbPliegueTricipital.Text.ToString() + "', " +
+                    "PliegueIliocrestal = '" + txbPliegueIliocrestal.Text.ToString() + "', " +
+                    "PliegueAbdominal = '" + txbPliegueAbdominal.Text.ToString() + "', " +
+                    "PliegueMuslo = '" + txbPliegueMuslo.Text.ToString() + "', " +
+                    "PlieguePantorrilla = '" + txbPlieguePantorrilla.Text.ToString() + "', " +
+                    "PorcGrasa = '" + txbPorcGrasa.Text.ToString() + "', " +
+                    "PorcMuscular = '" + txbPorcMuscular.Text.ToString() + "', " +
+                    "FCETanaka = '" + txbFCETanaka.Text.ToString() + "', " +
+                    "PesoEsperado = '" + txbPesoEsperado.Text.ToString() + "', " +
+                    "PesoGraso = '" + txbPesoGraso.Text.ToString() + "', " +
+                    "PesoMagro = '" + txbPesoMagro.Text.ToString() + "', " +
+                    "GastoCalorico = '" + txbGastoCalorico.Text.ToString() + "', " +
+                    "ActividadFisica = '" + txbActividadFisica.Text.ToString() + "', " +
+                    "GastoTotal = '" + txbGastoTotal.Text.ToString() + "', " +
+                    "Diagnostico = '" + txbDiagnostico.Text.ToString() + "', " +
+                    "PlanManejo = '" + txbPlanManejo.Text.ToString() + "', " +
+                    "Recomendaciones = '" + txbRecomendaciones.Text.ToString() + "', " +
+                    "Observaciones = '" + txbObservaciones.Text.ToString() + "' " +
+                    "WHERE idHistoria = " + Request.QueryString["idHistoria"].ToString();
+                clasesglobales cg = new clasesglobales();
+                string mensaje = cg.TraerDatosStr(strQuery);
 
+                if (mensaje == "OK")
+                {
+                    string script = @"
+                    Swal.fire({
+                        title: 'Datos nutricionales guardados con exito',
+                        text: '',
+                        icon: 'success',
+                        timer: 2000, // 2 segundos
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    }).then(() => {
+                        window.location.href = 'historiasclinicas';
+                    });
+                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                    //Response.Redirect("histclinutricion03?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + Request.QueryString["idHistoria"].ToString());
+                }
+                else
+                {
+                    string script = @"
+                        Swal.fire({
+                            title: 'Error',
+                            text: '" + mensaje.Replace("'", "\\'") + @"',
+                            icon: 'error'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                            
+                            }
+                        });
+                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                }
+            }
+            catch (OdbcException ex)
+            {
+                string mensaje = ex.Message;
+                string script = @"
+                    Swal.fire({
+                        title: 'Error',
+                        text: '" + mensaje.Replace("'", "\\'") + @"',
+                        icon: 'error'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                                            
+                        }
+                    });
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+            }
 
-            Response.Redirect("historiasclinicas");
+            //Response.Redirect("historiasclinicas");
         }
     }
 }

@@ -609,6 +609,50 @@
                                                         </div>
                                                     </div>
 
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Gasto calórico</label>
+                                                            <asp:TextBox ID="txbGastoCalorico" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Actividad física</label>
+                                                            <asp:TextBox ID="txbActividadFisica" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Gasto total</label>
+                                                            <asp:TextBox ID="txbGastoTotal" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label>Diagnóstico</label>
+                                                            <asp:TextBox ID="txbDiagnostico" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label>Plan de manejo</label>
+                                                            <asp:TextBox ID="txbPlanManejo" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label>Recomendaciones</label>
+                                                            <asp:TextBox ID="txbRecomendaciones" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label>Observaciones</label>
+                                                            <asp:TextBox ID="txbObservaciones" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
 
