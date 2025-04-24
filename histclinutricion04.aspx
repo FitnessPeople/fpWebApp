@@ -28,6 +28,9 @@
 
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
@@ -489,6 +492,9 @@
                                                         </div>
                                                     </div>
 
+                                                </div>
+                                                <div class="row">
+
                                                     <div class="col-sm-3">
                                                         <div class="form-group">
                                                             <label>Perímetro de Cintura (cms)</label>
@@ -513,6 +519,9 @@
                                                             <asp:TextBox ID="txbPerimPecho" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
+
+                                                </div>
+                                                <div class="row">
 
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
@@ -618,7 +627,15 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Actividad física</label>
-                                                            <asp:TextBox ID="txbActividadFisica" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                            <asp:DropDownList ID="ddlActividadFisica" runat="server" AppendDataBoundItems="true"
+                                                                CssClass="form-control m-b">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:ListItem Text="Sedentario" Value="1.2"></asp:ListItem>
+                                                                <asp:ListItem Text="Leve" Value="1.37"></asp:ListItem>
+                                                                <asp:ListItem Text="Moderada" Value="1.55"></asp:ListItem>
+                                                                <asp:ListItem Text="Activo" Value="1.72"></asp:ListItem>
+                                                                <asp:ListItem Text="Muy activo" Value="1.9"></asp:ListItem>
+                                                            </asp:DropDownList>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
@@ -627,6 +644,9 @@
                                                             <asp:TextBox ID="txbGastoTotal" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
+
+                                                </div>
+                                                <div class="row">
 
                                                     <div class="col-sm-3">
                                                         <div class="form-group">
@@ -705,9 +725,104 @@
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
     <script>
-        $(document).ready(function () {
-            $('.clockpicker').clockpicker();
+        $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" })
+
+        $("#form").validate({
+            rules: {
+                txbPeso: {
+                    required: true,
+                },
+                txbTalla: {
+                    required: true,
+                },
+                txbIMC: {
+                    required: true,
+                },
+                txbPerimCintura: {
+                    required: true
+                },
+                txbPerimCadera: {
+                    required: true,
+                },
+                txbPerimAbdomen: {
+                    required: true,
+                },
+                txbPerimPecho: {
+                    required: true,
+                },
+                txbPerimMuslo: {
+                    required: true,
+                },
+                txbPerimPantorrilla: {
+                    required: true,
+                },
+                txbPerimBrazo: {
+                    required: true,
+                },
+                txbPliegueTricipital: {
+                    required: true,
+                },
+                txbPliegueIliocrestal: {
+                    required: true
+                },
+                txbPliegueAbdominal: {
+                    required: true
+                },
+                txbPliegueSubescapular: {
+                    required: true
+                },
+                txbPliegueMuslo: {
+                    required: true
+                },
+                txbPlieguePantorrilla: {
+                    required: true
+                },
+                txbPorcGrasa: {
+                    required: true
+                },
+                txbPorcMuscular: {
+                    required: true
+                },
+                txbFCETanaka: {
+                    required: true
+                },
+                txbPesoEsperado: {
+                    required: true
+                },
+                txbPesoGraso: {
+                    required: true
+                },
+                txbPesoMagro: {
+                    required: true
+                },
+                txbGastoCalorico: {
+                    required: true
+                },
+                ddlActividadFisica: {
+                    required: true
+                },
+                txbGastoTotal: {
+                    required: true
+                },
+                txbDiagnostico: {
+                    required: true
+                },
+                txbPlanManejo: {
+                    required: true
+                },
+                txbRecomendaciones: {
+                    required: true
+                },
+                txbObservaciones: {
+                    required: true
+                },
+            },
+            messages: {
+                ddlActividadFisica: "*",
+            }
         });
+
+        $('.chosen-select').chosen({ width: "100%" });
     </script>
 
 </body>

@@ -28,6 +28,9 @@
 
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
@@ -584,9 +587,77 @@
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
     <script>
-        $(document).ready(function () {
-            $('.clockpicker').clockpicker();
+        $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" })
+
+        $("#form").validate({
+            rules: {
+                txbLacteos: {
+                    required: true,
+                },
+                txbAzucares: {
+                    required: true,
+                },
+                txbGaseosa: {
+                    required: true,
+                },
+                txbVerduras: {
+                    required: true
+                },
+                txbSalsamentaria: {
+                    required: true,
+                },
+                txbAgua: {
+                    required: true,
+                },
+                txbFrutas: {
+                    required: true,
+                },
+                txbCarnes: {
+                    required: true,
+                },
+                txbComidasRapidas: {
+                    required: true,
+                },
+                txbCigarrillos: {
+                    required: true,
+                },
+                txbPsicoactivos: {
+                    required: true,
+                },
+                txbHuevos: {
+                    required: true
+                },
+                txbVisceras: {
+                    required: true
+                },
+                txbSopas: {
+                    required: true
+                },
+                txbPaquetes: {
+                    required: true
+                },
+                txbCereales: {
+                    required: true
+                },
+                txbRaices: {
+                    required: true
+                },
+                txbPan: {
+                    required: true
+                },
+                txbGrasas: {
+                    required: true
+                },
+                txbAlcohol: {
+                    required: true
+                },
+                txbBebidaHidratante: {
+                    required: true
+                },
+            },
         });
+
+        $('.chosen-select').chosen({ width: "100%" });
     </script>
 
 </body>
