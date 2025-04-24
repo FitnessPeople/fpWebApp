@@ -33,13 +33,32 @@ namespace fpWebApp
                                 txbPeso.Attributes.Add("min", "20");
                                 txbTalla.Attributes.Add("type", "number");
                                 txbTalla.Attributes.Add("min", "80");
+
                                 txbPerimCintura.Attributes.Add("type", "number");
                                 txbPerimCadera.Attributes.Add("type", "number");
                                 txbPerimAbdomen.Attributes.Add("type", "number");
                                 txbPerimPecho.Attributes.Add("type", "number");
+
                                 txbPerimMuslo.Attributes.Add("type", "number");
                                 txbPerimPantorrilla.Attributes.Add("type", "number");
                                 txbPerimBrazo.Attributes.Add("type", "number");
+
+                                txbPliegueTricipital.Attributes.Add("type", "number");
+                                txbPliegueIliocrestal.Attributes.Add("type", "number");
+                                txbPliegueAbdominal.Attributes.Add("type", "number");
+                                txbPliegueSubescapular.Attributes.Add("type", "number");
+                                txbPliegueMuslo.Attributes.Add ("type", "number");
+                                txbPlieguePantorrilla.Attributes.Add("type", "number");
+
+                                txbPorcGrasa.Attributes.Add("type", "number");
+                                txbPorcMuscular.Attributes.Add("type", "number");
+                                txbFCETanaka.Attributes.Add("type", "number");
+                                txbPesoEsperado.Attributes.Add("type", "number");
+                                txbPesoGraso.Attributes.Add("type", "number");
+                                txbPesoMagro.Attributes.Add("type", "number");
+                                txbGastoCalorico.Attributes.Add("type", "number");
+
+                                txbGastoTotal.Attributes.Add("type", "number");
 
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
                                 CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
@@ -207,7 +226,7 @@ namespace fpWebApp
                     "PesoGraso = '" + txbPesoGraso.Text.ToString() + "', " +
                     "PesoMagro = '" + txbPesoMagro.Text.ToString() + "', " +
                     "GastoCalorico = '" + txbGastoCalorico.Text.ToString() + "', " +
-                    "ActividadFisica = '" + txbActividadFisica.Text.ToString() + "', " +
+                    "ActividadFisica = '" + ddlActividadFisica.SelectedItem.Value.ToString() + "', " +
                     "GastoTotal = '" + txbGastoTotal.Text.ToString() + "', " +
                     "Diagnostico = '" + txbDiagnostico.Text.ToString() + "', " +
                     "PlanManejo = '" + txbPlanManejo.Text.ToString() + "', " +
@@ -232,7 +251,6 @@ namespace fpWebApp
                     });
                     ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                    //Response.Redirect("histclinutricion03?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + Request.QueryString["idHistoria"].ToString());
                 }
                 else
                 {
