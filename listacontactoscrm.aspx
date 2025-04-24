@@ -536,7 +536,7 @@
                                                                             <span><%# Eval("EmailContacto") %></span>
                                                                         </p>
                                                                         <p> <%# Eval("TipoContacto") %></p>                                                                    
-                                                                        <%--<p>Mi objetivo es  <%# Eval("Objetivo") %></p>--%>
+                                                                        <p>Mi objetivo es  <%# Eval("Objetivo") %></p>
 
                                                                         <!-- Botón alineado a la derecha -->
                                                                         <div class="d-flex justify-content-end mt-2">
@@ -582,7 +582,7 @@
                                                                         Transferencia
                                                                     </p>--%>
                                                                         <hr />
-                                                                        <strong>Historial de actividades</strong>
+                                                                        <strong>Historial de gestión del asesor</strong>
                                                                         <%# Eval("historialHTML2") %>
                                                                     </div>
                                                                 </div>
@@ -741,26 +741,8 @@
             }
         });
     </script>
-    <script type="text/javascript">
-        Sys.Application.add_load(function () {
-            console.log("Script cargado");
 
-            $('#buscador').on('keyup', function () {
-                var valorBusqueda = $(this).val().toLowerCase();
-                console.log("Buscando: " + valorBusqueda); // Esto debería aparecer en consola
-
-                var filas = $('.table tbody tr');
-                console.log("Cantidad de filas: " + filas.length); // ¿Cuántas encuentra?
-
-                filas.filter(function () {
-                    var texto = $(this).text().toLowerCase();
-                    console.log("Fila: " + texto); // Verifica que tenga contenido
-                    $(this).toggle(texto.indexOf(valorBusqueda) > -1);
-                });
-            });
-        });
-    </script>
-        <%--Contador de filas--%>
+            <%--Contador de filas--%>
     <script type="text/javascript">
         function actualizarContador() {
             var visibles = $('#tablaContactos tbody tr:visible').length;
@@ -785,6 +767,27 @@
             actualizarContador();
         });
     </script>
+
+    <script type="text/javascript">
+        Sys.Application.add_load(function () {
+            console.log("Script cargado");
+
+            $('#buscador').on('keyup', function () {
+                var valorBusqueda = $(this).val().toLowerCase();
+                console.log("Buscando: " + valorBusqueda); // Esto debería aparecer en consola
+
+                var filas = $('.table tbody tr');
+                console.log("Cantidad de filas: " + filas.length); // ¿Cuántas encuentra?
+
+                filas.filter(function () {
+                    var texto = $(this).text().toLowerCase();
+                    console.log("Fila: " + texto); // Verifica que tenga contenido
+                    $(this).toggle(texto.indexOf(valorBusqueda) > -1);
+                });
+            });
+        });
+    </script>
+
 
 </body>
 
