@@ -222,6 +222,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Repeater rpEmpresaCRM;
 
         /// <summary>
+        /// Control pnlContacto.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlContacto;
+
+        /// <summary>
         /// Control rptContenido.
         /// </summary>
         /// <remarks>
@@ -231,13 +240,22 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Repeater rptContenido;
 
         /// <summary>
-        /// Control footer.
+        /// Control pnlEmpresa.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.footer footer;
+        protected global::System.Web.UI.WebControls.Panel pnlEmpresa;
+
+        /// <summary>
+        /// Control rpContenidoEmpresaCRM.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpContenidoEmpresaCRM;
 
         /// <summary>
         /// Control rightsidebar.
