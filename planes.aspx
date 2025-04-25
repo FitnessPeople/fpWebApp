@@ -50,7 +50,7 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-school-flag modal-icon" style="color: #1C84C6;"></i>
+                    <i class="fa fa-ticket modal-icon" style="color: #1C84C6;"></i>
                     <h4 class="modal-title">Guía para visualizar planes</h4>
                     <small class="font-bold">¡Bienvenido! Te explicamos cómo gestionar los planes de manera clara y eficiente.</small>
                 </div>
@@ -59,14 +59,14 @@
                         <b>Paso 1: Crea un nuevo plan</b><br />
                         Usa el formulario que está a la <b>izquierda</b> para digitar la información necesaria del plan.<br />
                         <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Agregar:</b> Guarda la información y finaliza el registro.<br />
-                        <i class="fa-solid fa-chart-simple" style="color: #0D6EFD;"></i> <b>Simular:</b> Recrea en un gráfico el comportamiento que tendrá el plan en una cantidad de tiempo.<br />
+                        <i class="fa-solid fa-chart-simple" style="color: #1A7BB9;"></i> <b>Simular:</b> Recrea en un gráfico el comportamiento que tendrá el plan en una cantidad de tiempo.<br />
                         <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
                     <br />
                         <br />
                         <b>Paso 2: Visualiza las sedes existentes</b><br />
                         Usa el buscador que está a la <b>derecha</b> para encontrar lo que buscas.<br />
                         <i class="fa-solid fa-magnifying-glass"></i> Filtra por 
-                        <i class="fa-solid fa-school-flag" style="color: #0D6EFD;"></i> <b>Nombre</b>,
+                        <i class="fa-solid fa-ticket" style="color: #0D6EFD;"></i> <b>Nombre</b>,
                         <i class="fa-solid fa-note-sticky" style="color: #0D6EFD;"></i> <b>Descripción</b>,
                         <i class="fa-solid fa-money-bill-wave" style="color: #0D6EFD;"></i> <b>Precio</b>,
                         <i class="fa-solid fa-circle-user" style="color: #0D6EFD;"></i> <b>Creado por</b> o
@@ -101,7 +101,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-file-code text-success m-r-sm"></i>Planes</h2>
+                    <h2><i class="fa fa-ticket text-success m-r-sm"></i>Planes</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Sistema</li>

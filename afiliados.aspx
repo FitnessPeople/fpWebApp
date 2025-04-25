@@ -61,35 +61,35 @@
                 <div class="modal-body">
                     <p>
                         <b>Paso 1: Busca y filtra afiliados</b><br />
-                        Usa el buscador para encontrar afiliados específicos.<br />
+                        Usa el buscador para <b>encontrar</b> afiliados específicos.<br />
                         <i class="fa-solid fa-magnifying-glass"></i> Filtra por: 
                         <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre</b>, 
                         <i class="fa-solid fa-address-card" style="color: #0D6EFD;"></i> <b>Cédula</b>, 
                         <i class="fa-solid fa-envelope" style="color: #0D6EFD;"></i> <b>Correo</b> o 
                         <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i> <b>Celular.</b><br />
-                        Además, selecciona una <i class="fa-solid fa-map-pin" style="color: #DC3545;"></i> Sede en el menú desplegable para filtrar por ubicación.<br />
-                        <i class="fa-solid fa-star" style="color: #FECE32;"></i> Tip: ¡Combina filtros para resultados más precisos!
+                        Además, selecciona una <i class="fa-solid fa-map-pin" style="color: #DC3545;"></i> Sede en el menú desplegable para <b>filtrar</b> por ubicación.<br />
+                        <i class="fa-solid fa-star" style="color: #FECE32;"></i> Tip: ¡<b>Combina</b> filtros para resultados más precisos!
                     <br />
                         <br />
                         <b>Paso 2: Revisa la tabla de resultados</b><br />
-                        La tabla muestra toda la información clave de cada afiliado.<br />
-                        En la columna "Acciones" encontrarás estas opciones:<br />
-                        <i class="fa fa-edit" style="color: #1AB394;"></i> <b>Editar:</b> Modifica los datos del afiliado.<br />
-                        <i class="fa fa-trash" style="color: #DC3545;"></i> <b>Eliminar:</b> Da de baja al afiliado.<br />
-                        <i class="fa fa-ticket" style="color: #23C6C8;"></i> <b>Asignar Plan:</b> Selecciona o cambia su plan actual.<br />
-                        <i class="fa fa-right-left" style="color: #F8AC59;"></i> <b>Traspaso:</b> Transfiere el afiliado a otra sede o plan.<br />
-                        <i class="fa fa-gift" style="color: #0D6EFD;"></i> <b>Cortesía:</b> Asigna beneficios especiales.<br />
-                        <i class="fa fa-person-walking" style="color: #0D6EFD;"></i> <b>FreePass:</b> Otorga acceso temporal.<br />
-                        <i class="fa fa-head-side-mask" style="color: #1AB394;"></i> <b>Incapacidad:</b> Registra una incapacidad médica.<br />
-                        <i class="fa fa-snowflake" style="color: #0D6EFD;"></i> <b>Congelación:</b> Pausa temporalmente su membresía.
+                        La tabla muestra toda la <b>información clave</b> de cada afiliado.<br />
+                        En la columna <b>Acciones</b> encontrarás estas opciones:<br />
+                        <i class="fa fa-edit" style="color: #1AB394;"></i> <b>Editar:</b> Modifica los <b>datos</b> del afiliado.<br />
+                        <i class="fa fa-trash" style="color: #DC3545;"></i> <b>Eliminar:</b> Da de <b>baja</b> al afiliado.<br />
+                        <i class="fa fa-ticket" style="color: #23C6C8;"></i> <b>Asignar Plan:</b> Selecciona o <b>cambia</b> su plan actual.<br />
+                        <i class="fa fa-right-left" style="color: #F8AC59;"></i> <b>Traspaso:</b> Transfiere el plan <b>de un afiliado a otro</b>.<br />
+                        <i class="fa fa-gift" style="color: #0D6EFD;"></i> <b>Cortesía:</b> Asigna <b>beneficios</b> especiales.<br />
+                        <i class="fa fa-person-walking" style="color: #0D6EFD;"></i> <b>FreePass:</b> Otorga <b>acceso</b> temporal.<br />
+                        <i class="fa fa-head-side-mask" style="color: #1AB394;"></i> <b>Incapacidad:</b> Registra una incapacidad <b>médica</b>.<br />
+                        <i class="fa fa-snowflake" style="color: #0D6EFD;"></i> <b>Congelación:</b> Pausa <b>temporalmente</b> su membresía.
                     <br />
                         <br />
                         <b>Paso 3: Acciones adicionales</b><br />
-                        Al lado opuesto del buscador encontrarás dos botones útiles:<br />
-                        <i class="fa-solid fa-file-export" style="color: #212529;"></i> <b>Exportar a Excel:</b> 
-                        Genera un archivo Excel con los datos visibles en la tabla.<br />
-                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Crear Nuevo Afiliado:</b> 
-                        Te lleva a un formulario para registrar un nuevo afiliado.
+                        Al lado opuesto del buscador <b>encontrarás</b> dos botones útiles:<br />
+                        <i class="fa-solid fa-file-excel fa-lg" style="color: #23C6C8;"></i> <b>Excel:</b> 
+                        Genera un archivo Excel con los <b>datos</b> visibles en la tabla.<br />
+                        <i class="fa-solid fa-square-plus fa-lg" style="color: #1A7BB9;"></i> <b>Nuevo:</b> 
+                        Te lleva a un formulario para <b>registrar</b> un nuevo afiliado.
                    <br />
                         <br />
                         <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
