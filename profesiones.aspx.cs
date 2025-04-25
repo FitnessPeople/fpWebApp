@@ -176,7 +176,7 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarProfesion(int.Parse(Request.QueryString["editid"].ToString()), txbProfesion.Text.ToString().Trim(), ddlAreas.SelectedItem.Value.ToString());
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "profesiones", "Modifica", "El usuario modificó la profesión con nombre " + txbProfesion.Text.ToString() + " de área " + ddlAreas.SelectedItem.Value.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "profesiones", "Modifica", "El usuario modificó la profesión: " + txbProfesion.Text.ToString() + ".", strInitData, strNewData);
                 }
 
                 if (Request.QueryString["deleteid"] != null)
@@ -193,7 +193,7 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarProfesion(txbProfesion.Text.ToString().Trim(), ddlAreas.SelectedItem.Text.ToString());
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "profesiones", "Nuevo", "El usuario creó una nueva profesión con nombre " + txbProfesion.Text.ToString() + " de área " + ddlAreas.SelectedItem.Value.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "profesiones", "Agrega", "El usuario agregó una nueva profesión: " + txbProfesion.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -244,8 +244,12 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT profesion AS Profesión, area AS Área 
+                                       FROM profesiones 
+                                       ORDER BY profesion;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarProfesiones();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"Profesiones_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

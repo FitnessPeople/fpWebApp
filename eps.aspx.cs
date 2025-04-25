@@ -190,7 +190,7 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarEps(int.Parse(Request.QueryString["editid"].ToString()), txbEps.Text.ToString().Trim());
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "eps", "Modifica", "El usuario modificó la EPS con nombre " + txbEps.Text.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "EPS", "Modifica", "El usuario modificó la EPS: " + txbEps.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -206,7 +206,7 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarEps(txbEps.Text.ToString().Trim());
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "eps", "Nuevo", "El usuario creó una nueva EPS con nombre " + txbEps.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "EPS", "Agrega", "El usuario agregó una nueva EPS: " + txbEps.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -238,9 +238,13 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT NombreEps AS 'Nombre de EPS' 
+	                                   FROM eps 
+	                                   ORDER BY NombreEps;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarEpss();
-                string nombreArchivo = $"EPSs_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+                DataTable dt = cg.TraerDatos(consultaSQL);
+                string nombreArchivo = $"EPS_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
                 {

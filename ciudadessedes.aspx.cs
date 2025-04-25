@@ -193,7 +193,7 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarCiudadSede(int.Parse(Request.QueryString["editid"].ToString()), txbCiudadSede.Text.ToString().Trim());
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "ciudades sedes", "Modifica", "El usuario modificó la ciudad sede con nombre " + txbCiudadSede.Text.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "ciudades sedes", "Modifica", "El usuario modificó la ciudad sede: " + txbCiudadSede.Text.ToString() + ".", strInitData, strNewData);
                 }
 
                 if (Request.QueryString["deleteid"] != null)
@@ -210,7 +210,7 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarCiudadSede(txbCiudadSede.Text.ToString().Trim());
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "ciudades sedes", "Nuevo", "El usuario creó una nueva ciudad sede con nombre " + txbCiudadSede.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "ciudades sedes", "Agrega", "El usuario agregó una nueva ciudad sede: " + txbCiudadSede.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -241,8 +241,12 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT NombreCiudadSede AS 'Sedes en Ciudades'
+		                               FROM ciudadessedes
+		                               ORDER BY NombreCiudadSede;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarCiudadesSedes();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"CiudadesSedes_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

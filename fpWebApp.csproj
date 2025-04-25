@@ -937,6 +937,7 @@
     <Content Include="tiposincapacidades.aspx" />
     <Content Include="traspasos.aspx" />
     <Content Include="traspasosAfil.aspx" />
+    <Content Include="TuProyectoHora.aspx" />
     <Content Include="usuarios.aspx" />
     <Content Include="verhistoriaclinica.aspx" />
     <Content Include="Web.config" />
@@ -1669,6 +1670,13 @@
     </Compile>
     <Compile Include="traspasosAfil.aspx.designer.cs">
       <DependentUpon>traspasosAfil.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TuProyectoHora.aspx.cs">
+      <DependentUpon>TuProyectoHora.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TuProyectoHora.aspx.designer.cs">
+      <DependentUpon>TuProyectoHora.aspx</DependentUpon>
     </Compile>
     <Compile Include="usuarios.aspx.cs">
       <DependentUpon>usuarios.aspx</DependentUpon>

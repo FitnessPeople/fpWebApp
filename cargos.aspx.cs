@@ -189,7 +189,7 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarCargo(int.Parse(Request.QueryString["editid"].ToString()), txbNombreCargo.Text.ToString().Trim());
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "Cargos Empleados", "Modifica", "El usuario modificó datos del cargo de empleados con nombre " + txbNombreCargo.Text.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "cargos empleado", "Modifica", "El usuario modificó datos del cargo de empleado: " + txbNombreCargo.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -205,7 +205,7 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarCargo(txbNombreCargo.Text.ToString().Trim());
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "Cargos Empleados", "Nuevo", "El usuario agregó un nuevo cargo de empleados con nombre " + txbNombreCargo.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "cargos empleado", "Agrega", "El usuario agregó un nuevo cargo de empleado: " + txbNombreCargo.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -237,8 +237,12 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT NombreCargo AS 'Nombre de Cargos'
+		                               FROM cargos
+		                               ORDER BY NombreCargo;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarCargos();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"CargosEmpleados_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

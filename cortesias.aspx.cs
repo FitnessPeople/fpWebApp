@@ -137,7 +137,7 @@ namespace fpWebApp
 
                         clasesglobales cg = new clasesglobales();
                         string mensaje = cg.TraerDatosStr(strQuery);
-                        cg.InsertarLog(Session["idusuario"].ToString(), "Cortesias", "Nuevo registro", "El usuario agregó una cortesia al afiliado con documento " + ViewState["DocumentoAfiliado"].ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "cortesias", "Agrega", "El usuario agregó una cortesia al afiliado con documento: " + ViewState["DocumentoAfiliado"].ToString() + ".", "", "");
 
                         Response.Redirect("afiliados");
                     }

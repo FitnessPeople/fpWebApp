@@ -237,8 +237,15 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT s.NombreSede AS 'Nombre de Sede', s.DireccionSede AS 'Dirección', 
+                                       cs.NombreCiudadSede AS 'Ciudad', s.TelefonoSede AS 'Teléfono', 
+                                       s.HorarioSede AS 'Horarios', s.TipoSede AS 'Tipo de Sede', s.ClaseSede AS 'Clase de Sede'
+                                       FROM Sedes s, CiudadesSedes cs 
+                                       WHERE s.idCiudadSede = cs.idCiudadSede 
+                                       ORDER BY s.NombreSede;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarSedes();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"Sedes_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

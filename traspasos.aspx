@@ -52,33 +52,41 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-right-left modal-icon"></i>
-                    <h4 class="modal-title">Guía para Traspaso de Planes entre Afiliados</h4>
+                    <i class="fa fa-right-left modal-icon" style="color: #1C84C6;"></i>
+                    <h4 class="modal-title">Guía para traspaso de planes entre afiliados</h4>
                     <small class="font-bold">¡Bienvenido! Te explicamos cómo transferir un plan de un afiliado a otro de forma fácil y segura.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>1️⃣ Paso 1: Busca al Afiliado Origen</b><br />
+                        <b>Paso 1: Busca al afiliado origen</b><br />
                         Usa el buscador izquierdo para encontrar al afiliado que cede el plan:<br />
-                        🔍 Filtra por: 👤 <b>Nombre</b>, 📄 <b>Cédula</b>, ✉️ <b>Correo</b> o 📱 <b>Celular.</b><br />
-                        Selecciona al afiliado para ver sus 📋 Planes actuales.
+                        <i class="fa-solid fa-magnifying-glass"></i> Filtra por: 
+                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre</b>, 
+                        <i class="fa-solid fa-address-card" style="color: #0D6EFD;"></i> <b>Cédula</b>, 
+                        <i class="fa-solid fa-envelope" style="color: #0D6EFD;"></i> <b>Correo</b> o 
+                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i> <b>Celular.</b><br />
+                        Selecciona al afiliado para ver sus planes actuales.
                     <br />
                         <br />
-                        <b>2️⃣ Paso 2: Busca al Afiliado Destino</b><br />
+                        <b>Paso 2: Busca al afiliado destino</b><br />
                         Usa el buscador derecho para ubicar al afiliado que recibirá el plan:<br />
-                        🔍 Mismos filtros: 👤 <b>Nombre</b>, 📄 <b>Cédula</b>, ✉️ <b>Correo</b> o 📱 <b>Celular.</b><br />
+                        <i class="fa-solid fa-magnifying-glass"></i> Filtra por: 
+                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre</b>, 
+                        <i class="fa-solid fa-address-card" style="color: #0D6EFD;"></i> <b>Cédula</b>, 
+                        <i class="fa-solid fa-envelope" style="color: #0D6EFD;"></i> <b>Correo</b> o 
+                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i> <b>Celular.</b><br />
                         Verifica que sus datos sean correctos.
                     <br />
                         <br />
-                        <b>3️⃣ Paso 3: Confirma el Traspaso o Cancela</b><br />
-                        🔄 <b>Traspasar: </b> Realiza la acción y finaliza el proceso.<br />
-                        El sistema pedirá confirmación antes de proceder.<br />
-                        ↩️ <b>Cancelar:</b> Si necesitas volver atrás sin guardar modificaciones.
+                        <b>Paso 3: Confirma el traspaso o cancela</b><br />
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Traspasar: </b> Realiza la acción y finaliza el proceso.<br />
+                        <i class="fa-solid fa-check"></i> El sistema pedirá confirmación antes de proceder.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar modificaciones.
                     <br />
                         <br />
-                        ⚠️ <b>Importante:</b><br />
-                        El afiliado origen <b>perderá acceso</b> al plan traspasado.<br />
-                        El afiliado destino <b>debe cumplir</b> con los requisitos del nuevo plan (si aplica).
+                        <i class="fa-solid fa-triangle-exclamation" style="color: #FFC107;"></i> <b>Importante</b><br />
+                        <i class="fa-solid fa-check"></i> El afiliado origen <b>perderá acceso</b> al plan traspasado.<br />
+                        <i class="fa-solid fa-check"></i> El afiliado destino <b>debe cumplir</b> con los requisitos del nuevo plan (si aplica).
                    <br />
                         <br />
                         <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.

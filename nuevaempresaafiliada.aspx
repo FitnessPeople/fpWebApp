@@ -47,42 +47,27 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-building modal-icon"></i>
+                    <i class="fa fa-building modal-icon" style="color: #1C84C6;"></i>
                     <h4 class="modal-title">Guía para registrar una empresa</h4>
                     <small class="font-bold">¡Bienvenido! Sigue estos pasos para completar el registro sin errores.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>1️⃣ Paso 1: Prepara la información</b><br />
+                        <b>Paso 1: Prepara la información</b><br />
                         Antes de empezar, asegúrate de tener estos datos a mano:<br />
-                        📄 <b>Datos básicos:<br />
-                        ✔ Nombre Comercial.<br />
-                        ✔ Documento (NIT, RUC, etc.) + DV (dígito de verificación).<br />
-                        ✔ Razón Social.<br />
-                        ✔ Tipo de Documento.<br />
-
-                        📞 Contacto:<br />
-                        ✔ Teléfono Principal y Secundario.<br />
-                        ✔ Celular.<br />
-                        ✔ Email.<br />
-                        ✔ Dirección y Ciudad.<br />
-
-                        📅 Datos del convenio:<br />
-                        ✔ Fecha de Convenio.<br />
-                        ✔ Número de Empleados.<br />
-                        ✔ Tipo de Negociación.<br />
-                        ✔ Días de Crédito.<br />
-                        ✔ 📂 PDF del Contrato (listo para cargar).</b>
+                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre Comercial, Documento (NIT, RUC, etc.) + DV (dígito de verificación), Razón Social y Tipo de Documento.</b><br />
+                        <i class="fa-solid fa-phone" style="color: #0D6EFD;"></i> <b>Teléfono Principal y Secundario, Celular, Email, Dirección y Ciudad.</b><br />
+                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i> <b>Fecha de Convenio, Número de Empleados, Tipo de Negociación, Días de Crédito y PDF del Contrato.</b>
                     <br />
                         <br />
-                        <b>2️⃣ Paso 2: Completa el formulario</b><br />
-                        🖊️ Llena todos los campos obligatorios (generalmente marcados con *).<br />
-                        🔍 Verifica que los datos estén correctos y actualizados.
+                        <b>Paso 2: Completa el formulario</b><br />
+                        <i class="fa-solid fa-pencil"></i> Llena todos los campos obligatorios (generalmente marcados con *).<br />
+                        <i class="fa-solid fa-magnifying-glass"></i> Verifica que los datos estén correctos y actualizados.
                     <br />
                         <br />
-                        <b>3️⃣ Paso 3: Confirma o cancela</b><br />
-                        ✅ <b>Agregar:</b> Guarda la información y finaliza el registro.<br />
-                        ↩️ <b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
+                        <b>Paso 3: Confirma o cancela</b><br />
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Agregar:</b> Guarda la información y finaliza el registro.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
                    <br />
                         <br />
                         <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.

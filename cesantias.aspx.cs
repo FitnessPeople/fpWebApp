@@ -190,7 +190,7 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarCesantia(int.Parse(Request.QueryString["editid"].ToString()), txbCesantias.Text.ToString().Trim());
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "fondo cesantías", "Modifica", "El usuario modificó el fondo de cesantías con nombre " + txbCesantias.Text.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "fondos cesantías", "Modifica", "El usuario modificó el fondo de cesantías: " + txbCesantias.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -206,7 +206,7 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarCesantia(txbCesantias.Text.ToString().Trim());
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "fondo cesantías", "Nuevo", "El usuario creó un nuevo fondo de cesantías con nombre " + txbCesantias.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "fondos cesantías", "Agrega", "El usuario agregó un nuevo fondo de cesantías: " + txbCesantias.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -238,8 +238,12 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT NombreCesantias AS 'Fondos de Cesantías' 
+	                                   FROM cesantias 
+	                                   ORDER BY NombreCesantias;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarCesantias();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"FondosCesantias_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

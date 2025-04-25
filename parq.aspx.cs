@@ -199,7 +199,7 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarPreguntaParQ(int.Parse(Request.QueryString["editid"].ToString()), txbParQ.Text.ToString().Trim(),rblParQ.SelectedValue.ToString(), int.Parse(txbOrdenParQ.Text.ToString()));
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "ParQ", "Modifica", "El usuario modificó la pregunta ParQ con id " + int.Parse(Request.QueryString["editid"].ToString()) + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "ParQ", "Modifica", "El usuario modificó la pregunta ParQ, con id: " + int.Parse(Request.QueryString["editid"].ToString()) + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -216,7 +216,7 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarPreguntaParQ(txbParQ.Text.ToString().Trim(), out _idParq);
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "ParQ", "Nuevo", "El usuario creó una nueva pregunta ParQ con id " + _idParq + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "ParQ", "Agrega", "El usuario agregó una nueva pregunta ParQ, con id: " + _idParq + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -248,8 +248,12 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT orden AS 'Orden', PreguntaParq AS 'Preguntas ParQ', EstadoParq AS 'Estado' 
+	                                   FROM parq
+	                                   ORDER BY orden;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarPreguntasParq();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"PreguntasParQ_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

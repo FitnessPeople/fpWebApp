@@ -207,7 +207,7 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarCiudad(int.Parse(Request.QueryString["editid"].ToString()), txbCiudad.Text.ToString().Trim(), ddlDepartamentos.SelectedItem.Text.ToString(), ddlDepartamentos.SelectedItem.Value.ToString());
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "ciudades", "Modifica", "El usuario modificó la ciudad con nombre " + txbCiudad.Text.ToString() + " del departamento " + ddlDepartamentos.SelectedItem.Text.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "ciudades", "Modifica", "El usuario modificó la ciudad: " + txbCiudad.Text.ToString() + ".", strInitData, strNewData);
                 }
 
                 if (Request.QueryString["deleteid"] != null)
@@ -224,7 +224,7 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarCiudad(txbCiudad.Text.ToString().Trim(),"",ddlDepartamentos.SelectedItem.Text.ToString(),ddlDepartamentos.SelectedItem.Value.ToString(),"Colombia","Co");
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "ciudades", "Nuevo", "El usuario creó una nueva ciudad con nombre " + txbCiudad.Text.ToString() + " del departamento " + ddlDepartamentos.SelectedItem.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "ciudades", "Agrega", "El usuario agregó una nueva ciudad: " + txbCiudad.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -256,9 +256,14 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT NombreCiudad AS 'Ciudades', NombreEstado AS 'Departamentos'  
+		                               FROM ciudades 
+		                               WHERE CodigoPais = 'Co' 
+		                               ORDER BY NombreCiudad, NombreEstado;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarCiudades();
-                string nombreArchivo = $"Ciudades_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+                DataTable dt = cg.TraerDatos(consultaSQL);
+                string nombreArchivo = $"Ciudades_Departamentos_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
                 {

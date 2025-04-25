@@ -186,7 +186,7 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarCajaComp(int.Parse(Request.QueryString["editid"].ToString()), txbCajaComp.Text.ToString().Trim());
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "caja compensación", "Modifica", "El usuario modificó la caja de compensación con nombre " + txbCajaComp.Text.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "cajas compensación", "Modifica", "El usuario modificó la caja de compensación: " + txbCajaComp.Text.ToString() + ".", strInitData, strNewData);
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -202,7 +202,7 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarCajaComp(txbCajaComp.Text.ToString().Trim());
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "caja compensación", "Nuevo", "El usuario creó una nueva caja de compensación con nombre " + txbCajaComp.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "cajas compensación", "Agrega", "El usuario agregó una nueva caja de compensación: " + txbCajaComp.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -234,8 +234,12 @@ namespace fpWebApp
         {
             try
             {
+                string consultaSQL = @"SELECT NombreCajaComp AS 'Cajas de Compensación'
+	                                   FROM cajascompensacion 
+	                                   ORDER BY NombreCajaComp;";
+
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarCajasComp();
+                DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"CajasCompensacion_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
