@@ -417,7 +417,7 @@
                                         <span class="text-muted small pull-right">Last modification: <i class="fa fa-clock-o"></i>2:10 pm - 12.06.2014</span>
                                         <h2>CRM</h2>
                                         <p>
-                                            All clients need to be verified before you can send email and set a project.
+                                            Gestión de Relación con los Clientes.
                                         </p>
 
                                         <div style="display: flex; align-items: center;">
