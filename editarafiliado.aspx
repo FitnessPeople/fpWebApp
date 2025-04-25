@@ -46,33 +46,36 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-id-card modal-icon"></i>
-                    <h4 class="modal-title">Guía para modificar información</h4>
+                    <i class="fa fa-id-card modal-icon" style="color: #1C84C6;"></i>
+                    <h4 class="modal-title">Guía para modificar información de un afiliado</h4>
                     <small class="font-bold">¡Bienvenido! Sigue estos pasos para actualizar la información de manera rápida y segura.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>1️⃣ Paso 1: Modifica los datos necesarios</b><br />
-                        Actualiza solo los campos que requieran cambios:<br />
-                        👤 <b>Nombre(s), Apellido(s), Tipo y Número de Documento.<br />
-                        📅 Fecha de Nacimiento, Género, Estado Civil.<br />
-                        📞 Teléfono, Email, Dirección, Ciudad.<br />
-                        🤵 Profesión, EPS, Empresa Convenio, Sede, Foto (si aplica).<br />
-                        👥 Nombre, Parentesco y Teléfono de Contacto.</b>
+                        <b>Paso 1: Modifica los datos necesarios</b><br />
+                        Actualiza solo los campos que <b>requieran</b> cambios:<br />
+                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre(s), Apellido(s), Tipo y Número de Documento.</b><br />
+                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i> <b>Fecha de Nacimiento, Género, Estado Civil.</b><br />
+                        <i class="fa-solid fa-phone" style="color: #0D6EFD;"></i> <b>Teléfono, Correo, Dirección, Ciudad.</b><br />
+                        <i class="fa-solid fa-user-tie" style="color: #0D6EFD;"></i> <b>Profesión, EPS, Empresa Convenio, Sede, Foto (si aplica).</b><br />
+                        <i class="fa-solid fa-user-group" style="color: #0D6EFD;"></i> <b>Nombre, Parentesco y Teléfono de Contacto.</b>
                     <br />
                         <br />
-                        <b>2️⃣ Paso 2: Completa el formulario</b><br />
-                        🖊️ Llena todos los campos obligatorios (generalmente marcados con *).<br />
-                        🔍 Verifica que los datos estén correctos y actualizados.
+                        <b>Paso 2: Completa el formulario</b><br />
+                        <i class="fa-solid fa-pencil"></i> Llena todos los <b>campos obligatorios</b> (generalmente marcados con *).<br />
+                        <i class="fa-solid fa-magnifying-glass"></i> Verifica que los datos estén <b>correctos y actualizados</b>.
                     <br />
                         <br />
-                        <b>3️⃣ Paso 3: Confirma o cancela</b><br />
-                        ✅ <b>Actualizar:</b> Guarda los cambios realizados.<br />
-                        ↩️ <b>Cancelar:</b> Si necesitas volver atrás sin guardar modificaciones.
+                        <b>Paso 3: Confirma o cancela</b><br />
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Actualizar:</b> Guarda los <b>cambios</b> realizados.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver <b>atrás</b> sin guardar cambios.
                     <br />
                         <br />
                         <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>

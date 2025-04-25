@@ -70,24 +70,20 @@
                         Selecciona al afiliado correcto.
                     <br />
                         <br />
-                        <b>Paso 2: Completa la congelación</b><br />
-                        Días de congelación:<br />
-                        <i class="fa-solid fa-snowflake" style="color: #0D6EFD;"></i> Selecciona un valor entre <b>1 y 100 días.</b><br />
-                        Tipo de congelación:<br />
-                        <i class="fa-solid fa-tag" style="color: #0D6EFD;"></i> Selecciona la razón (ej: "Viaje", "Lesión temporal", "Razones personales").<br />
-                        Fecha de inicio:<br />
-                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i> Indica cuándo comienza la pausa.<br />
-                        Documento de soporte (opcional):<br />
-                        <i class="fa-solid fa-folder-open" style="color: #0D6EFD;"></i> Adjunta un comprobante si aplica (ej: certificado médico, reserva de vuelo).<br />
-                        Motivo:<br />
-                        <i class="fa-solid fa-pencil" style="color: #0D6EFD;"></i> Describe brevemente la razón (ej: "Recuperación de cirugía", "Vacaciones prolongadas").
+                        <b>Paso 2: Completa los datos de congelación</b><br />
+                        <i class="fa-solid fa-calendar-day" style="color: #0D6EFD;"></i> <b>Arrastra la barra horizontal</b> para seleccionar el número de días de congelación que deseas registrar.<br />
+                        <i class="fa-solid fa-check"></i> Ten en cuenta que este número <b>depende del plan que tengas</b>.<br />
+                        <i class="fa-solid fa-tag" style="color: #0D6EFD;"></i> <b>Selecciona</b> la razón que defina el <b>tipo de congelación</b> (ej: "Viaje", "Lesión temporal", "Razones personales").<br />
+                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i> <b>Indica</b> cuándo comienza la pausa.<br />
+                        <i class="fa-solid fa-folder-open" style="color: #0D6EFD;"></i> <b>Adjunta</b> un comprobante si aplica (ej: certificado médico, reserva de vuelo).<br />
+                        <i class="fa-solid fa-pencil" style="color: #0D6EFD;"></i> <b>Describe</b> brevemente la <b>razón</b> (ej: "Recuperación de cirugía", "Vacaciones prolongadas").
                     <br />
                         <br />
                         <i class="fa-solid fa-triangle-exclamation" style="color: #FFC107;"></i> <b>Importante:</b><br />
                         Antes de finalizar, verifica en la <b>sección inferior</b> que:<br />
-                        <i class="fa-solid fa-check"></i> Los datos del afiliado sean correctos.<br />
-                        <i class="fa-solid fa-check"></i> La fecha y días de congelación sean válidos.<br />
-                        <i class="fa-solid fa-check"></i> El documento esté cargado correctamente (si aplica).
+                        <i class="fa-solid fa-check"></i> Los datos del afiliado sean <b>correctos</b>.<br />
+                        <i class="fa-solid fa-check"></i> La fecha y días de congelación sean <b>válidos</b>.<br />
+                        <i class="fa-solid fa-check"></i> El documento esté <b>cargado</b> correctamente (si aplica).
                     <br />
                         <br />
                         <b>Paso 3: Confirma o cancela</b><br />
