@@ -527,6 +527,7 @@
     <Content Include="imprimirafiliados.aspx" />
     <Content Include="imprimirempleados.aspx" />
     <Content Include="imprimirempresasafiliadas.aspx" />
+    <Content Include="imprimirhistoriaclinica.aspx" />
     <Content Include="imprimirusuarios.aspx" />
     <Content Include="incapacidades.aspx" />
     <Content Include="incapacidadesAfil.aspx" />
@@ -1382,6 +1383,13 @@
     </Compile>
     <Compile Include="imprimirempresasafiliadas.aspx.designer.cs">
       <DependentUpon>imprimirempresasafiliadas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="imprimirhistoriaclinica.aspx.cs">
+      <DependentUpon>imprimirhistoriaclinica.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="imprimirhistoriaclinica.aspx.designer.cs">
+      <DependentUpon>imprimirhistoriaclinica.aspx</DependentUpon>
     </Compile>
     <Compile Include="imprimirusuarios.aspx.cs">
       <DependentUpon>imprimirusuarios.aspx</DependentUpon>

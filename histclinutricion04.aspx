@@ -69,6 +69,8 @@
         function calculatePorcGraso() {
 
             var peso = document.getElementById("txbPeso").value;
+            var talla = document.getElementById("txbTalla").value;
+
             var tricipital = document.getElementById("txbPliegueTricipital").value;
             var iliocrestal = document.getElementById("txbPliegueIliocrestal").value;
             var abdominal = document.getElementById("txbPliegueAbdominal").value;
@@ -83,28 +85,54 @@
             var edad = document.getElementById("hfEdad").value;
             var genero = document.getElementById("hfGenero").value;
 
+            peso = parseFloat(peso);
+            talla = parseFloat(talla);
+
+            talla = talla / 100;
+
+            //Femenino
             if (genero == '2') {
-                var densidad_corporal = 0.146 * pliegues;
-                var porc_graso = 4.56 + densidad_corporal;
+                var densidad_corporal = 0.146 * pliegues; //43.8
+                var porc_graso = 4.56 + densidad_corporal; //48.36
+
+                var gastoCalor = ((10 * peso) + (6.25 * talla) - 5 * edad) + 5; 
+
+                //console.log(gastoCalor);
             }
 
+            //Masculino
             if (genero == '1') {
                 var densidad_corporal = 0.097 * pliegues;
                 var porc_graso = 3.64 + densidad_corporal;
+
+                var gastoCalor = ((10 * peso) + (6.25 * talla) - 5 * edad) + 161;
             }
                 
-            var peso_oseo = peso * 0.15;
-            var decimal = porc_graso / 100;
-            var peso_graso = peso * decimal;
-            var porc_muscular = peso - peso_oseo - peso_graso;
-            var peso_magro = peso - peso_graso;
+            var peso_oseo = peso * 0.15; //11.805
+            var decimal = porc_graso / 100;  //0.4836
+            var peso_graso = peso * decimal;  //38.05932
+            var porc_muscular = peso - peso_oseo - peso_graso; //28.83568
+            var peso_magro = peso - peso_graso; //
             var fce = 208.75 - (0.73 * edad);
 
-            document.getElementById("txbPorcGrasa").value = porc_graso;
-            document.getElementById("txbPorcMuscular").value = porc_muscular.toFixed(4);
-            document.getElementById("txbFCETanaka").value = fce;
+            document.getElementById("txbPorcGrasa").value = porc_graso.toFixed(2);
+            document.getElementById("txbPorcMuscular").value = porc_muscular.toFixed(2);
+            document.getElementById("txbFCETanaka").value = fce.toFixed(2);
 
-            console.log(genero);
+            document.getElementById("txbPesoGraso").value = peso_graso.toFixed(2);
+            document.getElementById("txbPesoMagro").value = peso_magro.toFixed(2);
+
+            document.getElementById("txbGastoCalorico").value = gastoCalor.toFixed(2);
+
+            const dropdown = document.getElementById('ddlActividadFisica');
+
+            dropdown.onchange = function (event) {
+                const actividadFisica = parseFloat(event.target.value);
+                var gastoTotal = (actividadFisica * gastoCalor);
+                document.getElementById("txbGastoTotal").value = gastoTotal.toFixed(2);
+            };
+
+            //console.log(genero);
         }
     </script>
 </head>
@@ -488,7 +516,7 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Indice de Masa Corporal IMC</label>
-                                                            <asp:TextBox ID="txbIMC" CssClass="form-control" runat="server" Enabled="false"></asp:TextBox>
+                                                            <asp:TextBox ID="txbIMC" CssClass="form-control" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
 
@@ -556,7 +584,7 @@
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label>Pliegue Abdominal </label>
+                                                            <label>Pliegue Abdominal</label>
                                                             <asp:TextBox ID="txbPliegueAbdominal" CssClass="form-control" runat="server" onkeyup="calculatePorcGraso(this)"></asp:TextBox>
                                                         </div>
                                                     </div>
@@ -583,38 +611,38 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Porcentaje Graso (%)</label>
-                                                            <asp:TextBox ID="txbPorcGrasa" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>
+                                                            <asp:TextBox ID="txbPorcGrasa" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Porcentaje Muscular (%)</label>
-                                                            <asp:TextBox ID="txbPorcMuscular" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>
+                                                            <asp:TextBox ID="txbPorcMuscular" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>FCE (Tanaka)</label>
-                                                            <asp:TextBox ID="txbFCETanaka" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>
+                                                            <asp:TextBox ID="txbFCETanaka" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Peso esperado (Kg)</label>
-                                                            <asp:TextBox ID="txbPesoEsperado" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>
+                                                            <asp:TextBox ID="txbPesoEsperado" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Peso graso (Kg)</label>
-                                                            <asp:TextBox ID="txbPesoGraso" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>
+                                                            <asp:TextBox ID="txbPesoGraso" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Peso magro (Kg)</label>
-                                                            <asp:TextBox ID="txbPesoMagro" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>
+                                                            <asp:TextBox ID="txbPesoMagro" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
 
@@ -648,28 +676,28 @@
                                                 </div>
                                                 <div class="row">
 
-                                                    <div class="col-sm-3">
+                                                    <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Diagnóstico</label>
-                                                            <asp:TextBox ID="txbDiagnostico" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbDiagnostico" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-3">
+                                                    <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Plan de manejo</label>
-                                                            <asp:TextBox ID="txbPlanManejo" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbPlanManejo" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-3">
+                                                    <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Recomendaciones</label>
-                                                            <asp:TextBox ID="txbRecomendaciones" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbRecomendaciones" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-3">
+                                                    <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Observaciones</label>
-                                                            <asp:TextBox ID="txbObservaciones" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbObservaciones" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                         </div>
                                                     </div>
 
@@ -725,8 +753,6 @@
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
     <script>
-        $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" })
-
         $("#form").validate({
             rules: {
                 txbPeso: {
@@ -817,12 +843,10 @@
                     required: true
                 },
             },
-            messages: {
-                ddlActividadFisica: "*",
-            }
+            //messages: {
+            //    ddlActividadFisica: "*",
+            //}
         });
-
-        $('.chosen-select').chosen({ width: "100%" });
     </script>
 
 </body>

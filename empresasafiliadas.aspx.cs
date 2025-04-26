@@ -116,14 +116,14 @@ namespace fpWebApp
             try
             {
                 string consultaSQL = @"SELECT DocumentoEmpresa AS 'Documento', NombreComercial AS 'Nombre Comercial', 
-                                       CelularEmpresa AS 'Celular', CorreoEmpresa AS 'Correo', 
-                                       DireccionEmpresa AS 'Dirección', NombreCiudad AS 'Ciudad', NombreEstado AS 'Departamento', 
-                                       FechaConvenio AS 'Fecha de Convenio', TipoNegociacion AS 'Tipo de Negociación', 
-                                       DiasCredito AS 'Días de Crédito', NroEmpleados AS 'Nro. de Empleados', 
-                                       EstadoEmpresa AS 'Estado'
-                                       FROM EmpresasAfiliadas ea, ciudades c
-                                       WHERE ea.idCiudadEmpresa = c.idCiudad 
-                                       ORDER BY NombreComercial;";
+                    CelularEmpresa AS 'Celular', CorreoEmpresa AS 'Correo', 
+                    DireccionEmpresa AS 'Dirección', NombreCiudad AS 'Ciudad', NombreEstado AS 'Departamento', 
+                    FechaConvenio AS 'Fecha de Convenio', TipoNegociacion AS 'Tipo de Negociación', 
+                    DiasCredito AS 'Días de Crédito', NroEmpleados AS 'Nro. de Empleados', 
+                    EstadoEmpresa AS 'Estado'
+                    FROM EmpresasAfiliadas ea, ciudades c
+                    WHERE ea.idCiudadEmpresa = c.idCiudad 
+                    ORDER BY NombreComercial;";
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(consultaSQL);

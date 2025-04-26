@@ -81,6 +81,7 @@ namespace fpWebApp
         {
             string strQuery = "SELECT *, " +
                 "IF(g.idGenero=1,'<i class=\"fa fa-mars\"></i>',IF(g.idGenero=2,'<i class=\"fa fa-venus\"></i>','<i class=\"fa fa-venus-mars\"></i>')) AS iconGenero, " +
+                "IF(TIMESTAMPDIFF(YEAR, a.FechaNacAfiliado, CURDATE()) IS NOT NULL, TIMESTAMPDIFF(YEAR, a.FechaNacAfiliado, CURDATE()),'') AS edad, " +
                 "IF(Tabaquismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS fuma, " +
                 "IF(Alcoholismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS toma, " +
                 "IF(Sedentarismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS sedentario, " +
@@ -119,6 +120,12 @@ namespace fpWebApp
                     HtmlButton btnEliminar = (HtmlButton)e.Item.FindControl("btnEliminar");
                     btnEliminar.Attributes.Add("onClick", "window.location.href='eliminarhistoria?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
                     btnEliminar.Visible = true;
+                }
+                if (ViewState["Exportar"].ToString() == "1")
+                {
+                    HtmlButton btnImprimir = (HtmlButton)e.Item.FindControl("btnImprimir");
+                    btnImprimir.Attributes.Add("onClick", "window.location.href='imprimirhistoriaclinica?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnImprimir.Visible = true;
                 }
             }
         }
