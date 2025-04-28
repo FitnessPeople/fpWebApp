@@ -386,7 +386,7 @@
                                                 <div class="form-group">
                                                     <i class="fas fa-pen text-info"></i>
                                                     <label for="message-text" class="col-form-label">Contexto de la negociación:</label>
-                                                    <textarea id="txaObservaciones" runat="server" rows="3"
+                                                    <textarea id="txaObservaciones" runat="server" rows="3" cols="0"
                                                         cssclass="form-control input-sm" class="form-control">
                                                     </textarea>
                                                 </div>
