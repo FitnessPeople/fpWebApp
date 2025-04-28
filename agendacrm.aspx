@@ -98,6 +98,12 @@
                     <h4 class="h4"><span class="event-icon weight-400 mr-3"></span><span class="event-title"></span></h4>
                     <div class="event-body"></div>
                     <div class="event-description"></div>
+                    <div class="form-group">
+                        <label for="ddlStatusLead">Estatus Lead:</label>
+                        <select id="ddlStatusLead" class="form-control">
+                            <%= strOptionsStatus %>
+                        </select>
+                    </div>
                     <div class="event-id text-hide" id="event-id"></div>
                     <div class="event-allday text-hide" id="event-allday"></div>
                 </div>
@@ -436,6 +442,8 @@
                     const formatter2 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
                     const formattedTime2 = formatter2.format(fechafinal);
 
+
+
                     //console.log(formattedTime);
                     jQuery('.event-id').html(event.id);
                     jQuery('.event-icon').html("<i class='fa fa-" + event.icon + "'></i>");
@@ -452,6 +460,36 @@
                     //jQuery('.event-estado').html(event.estado);
                     //jQuery('.event-allday').html(event.todoeldia);
                     //jQuery('.eventUrl').attr('href', event.url);
+                    // Opciones de Estatus Lead
+                    //const estatusLeadOptions = [
+                    //    { value: '1', text: 'Nuevo' },
+                    //    { value: '2', text: 'En Proceso' },
+                    //    { value: '3', text: 'Cerrado' },
+                    //    { value: '4', text: 'No Interesado' },
+                    //];
+
+                    //// Llenar el select
+                    //var ddl = document.getElementById('ddlStatusLead');
+                    //ddl.innerHTML = ''; // Limpiar opciones anteriores
+
+
+
+                    //estatusLeadOptions.forEach(function (opcion) {
+                    //    var option = document.createElement('option');
+                    //    option.value = opcion.value;
+                    //    option.text = opcion.text;
+                    //    ddl.appendChild(option);
+                    //});
+
+<%--                    jQuery('.event-body').html(`
+                    <label for="ddlStatusLead">Status Lead</label>
+                    <select id="ddlStatusLead" class="form-control">
+                            <%= strOptionsStatus %>
+                        </select>
+                        <br />
+                        <i class='fa fa-calendar-day'></i> ${formatteddiaini} ${formattedmesini} ${fechainicial.getFullYear()}<br />
+                        <i class='fa fa-clock'></i> ${formattedTime1} - ${formattedTime2}
+                    `);--%>
                     jQuery('#modal-view-event').modal();
                 },
             });

@@ -34,6 +34,7 @@ namespace fpWebApp
                     }
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
+                        CargarEstadosLead();
                         CargarAgenda();
                         CargarDatosContacto(6);
 
@@ -74,6 +75,44 @@ namespace fpWebApp
 
             dt.Dispose();
         }
+
+        public string strOptionsStatus = string.Empty;
+        private void CargarEstadosLead()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEstadossCRM();
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    strOptionsStatus += $"<option value='{dr["idEstadoCRM"]}'>{dr["NombreEstadoCRM"]}</option>";
+                }
+            }
+
+            dt.Dispose();
+        }
+
+        private string EstadosCRM_Json = "";
+
+        private void ListaEstadosCRM()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEstadossCRM();
+
+            var lista = new List<object>();
+            foreach (DataRow dr in dt.Rows)
+            {
+                lista.Add(new { id = dr["idEstadoCRM"], nombre = dr["NombreEstadoCRM"] });
+            }
+            EstadosCRM_Json = Newtonsoft.Json.JsonConvert.SerializeObject(lista);
+
+            ddlStatusLead.DataSource = dt;
+            ddlStatusLead.DataBind();
+
+            dt.Dispose();
+        }
+
 
         private void CargarDatosContacto(int idContacto)
         {
@@ -147,6 +186,7 @@ namespace fpWebApp
                     _strEventos += "title: '" + dt.Rows[i]["NombreContacto"].ToString() + "',\r\n";
                     _strEventos += "start: '" + dt.Rows[i]["FechaProximoCon1"].ToString() + "',\r\n";
                     _strEventos += "end: '" + dt.Rows[i]["FechaProximoCon1"].ToString() + "',\r\n";
+                    _strEventos += "idEstadoCRM: '" + dt.Rows[i]["idEstadoCRM"].ToString() + "',\r\n";
                     //_strEventos += "className: 'bg-primary',\r\n";
 
                     if (dt.Rows[i]["idContacto"].ToString() != "")
