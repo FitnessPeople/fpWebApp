@@ -90,7 +90,7 @@ namespace fpWebApp
                         _strEventos += "start: '" + dt.Rows[i]["FechaHoraIni"].ToString() + "',\r\n";
                         _strEventos += "end: '" + dt.Rows[i]["FechaHoraFin"].ToString() + "',\r\n";
                         _strEventos += "color: '#F8AC59',\r\n";
-                        _strEventos += "url: 'historiasclinicas?id=" + dt.Rows[i]["DocumentoAfiliado"].ToString() + "',\r\n";
+                        _strEventos += "url: 'verhistoriaclinica?idAfiliado=" + dt.Rows[i]["idAfiliado"].ToString() + "',\r\n";
                         //_strEventos += "btnAsignar: 'none',\r\n";
                         _strEventos += "allDay: false,\r\n";
                         _strEventos += "},\r\n";

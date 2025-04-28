@@ -112,7 +112,8 @@ namespace fpWebApp
                     btnEditar.Visible = true;
 
                     HtmlButton btnAgregar = (HtmlButton)e.Item.FindControl("btnAgregar");
-                    btnAgregar.Attributes.Add("onClick", "window.location.href='agregarcontrol?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    //btnAgregar.Attributes.Add("onClick", "window.location.href='agregarcontrol?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnAgregar.Attributes.Add("onClick", "window.location.href='verhistoriaclinica?idAfiliado=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
                     btnAgregar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
@@ -124,7 +125,7 @@ namespace fpWebApp
                 if (ViewState["Exportar"].ToString() == "1")
                 {
                     HtmlButton btnImprimir = (HtmlButton)e.Item.FindControl("btnImprimir");
-                    btnImprimir.Attributes.Add("onClick", "window.location.href='imprimirhistoriaclinica?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnImprimir.Attributes.Add("onClick", "window.open('imprimirhistoriaclinica?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "','_blank')");
                     btnImprimir.Visible = true;
                 }
             }

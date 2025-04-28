@@ -5814,8 +5814,9 @@ namespace fpWebApp
             return dt;
         }
 
-        public string ActualizarEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado,
-            string emailEmpleado, string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato,
+        public string ActualizarEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, 
+            string telEmpleado, string telEmpleadoCorp, string emailEmpleado, string emailEmpleadoCorp, 
+            string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato, 
             string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
             int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo)
         {
@@ -5836,6 +5837,8 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_nombre_empleado", nombreEmpleado);
                         cmd.Parameters.AddWithValue("@p_tel_empleado", telEmpleado);
                         cmd.Parameters.AddWithValue("@p_email_empleado", emailEmpleado);
+                        cmd.Parameters.AddWithValue("@p_tel_empleado_corp", telEmpleadoCorp);
+                        cmd.Parameters.AddWithValue("@p_email_empleado_corp", emailEmpleadoCorp);
                         cmd.Parameters.AddWithValue("@p_dir_empleado", dirEmpleado);
                         cmd.Parameters.AddWithValue("@p_id_ciu_empleado", idCiudadEmpleado);
                         cmd.Parameters.AddWithValue("@p_fecha_nac_empleado", fechaNacEmpleado);

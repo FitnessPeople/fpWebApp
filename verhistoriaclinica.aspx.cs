@@ -328,7 +328,7 @@ namespace fpWebApp
                                 showConfirmButton: false,
                                 timerProgressBar: true
                             }).then(() => {
-                                window.location.href = 'histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + idHistoria + @"';
+                                window.location.href = 'histclideporte01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + idHistoria + @"';
                             });
                             ";
                         ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
@@ -440,7 +440,7 @@ namespace fpWebApp
                         showConfirmButton: false,
                         timerProgressBar: true
                     }).then(() => {
-                        window.location.href = 'histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + idHistoria + @"';
+                        window.location.href = 'histclideporte01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + idHistoria + @"';
                     });
                     ";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);

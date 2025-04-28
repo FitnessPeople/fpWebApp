@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://tempuri.org/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="Version">
+        <s:complexType />
+      </s:element>
+      <s:element name="VersionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VersionResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DatosCompra">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Cod_Unico" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="id_transaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Data" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sobreescribir" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DatosCompraResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DatosCompraResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DatosAnulacionJSON">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Cod_Unico" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="id_transaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Data" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sobreescribir" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DatosAnulacionJSONResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DatosAnulacionJSONResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DatosCompraJSON">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Cod_Unico" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="id_transaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Data" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sobreescribir" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DatosCompraJSONResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DatosCompraJSONResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DatosAnulacion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Cod_Unico" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="id_transaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Data" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sobreescribir" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DatosAnulacionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DatosAnulacionResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Token">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Cod_unico" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="usuario" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clave" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TokenResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TokenResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Respuesta">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Cod_unico" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="id_transaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RespuestaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RespuestaResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RespuestaJSON">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Cod_unico" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="id_transaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RespuestaJSONResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RespuestaJSONResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BorrarTransaccion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Cod_unico" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="id_transaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BorrarTransaccionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BorrarTransaccionResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BorrarTransaccionJSON">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Cod_unico" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="id_transaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="BorrarTransaccionJSONResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BorrarTransaccionJSONResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="VersionSoapIn">
+    <wsdl:part name="parameters" element="tns:Version" />
+  </wsdl:message>
+  <wsdl:message name="VersionSoapOut">
+    <wsdl:part name="parameters" element="tns:VersionResponse" />
+  </wsdl:message>
+  <wsdl:message name="DatosCompraSoapIn">
+    <wsdl:part name="parameters" element="tns:DatosCompra" />
+  </wsdl:message>
+  <wsdl:message name="DatosCompraSoapOut">
+    <wsdl:part name="parameters" element="tns:DatosCompraResponse" />
+  </wsdl:message>
+  <wsdl:message name="DatosAnulacionJSONSoapIn">
+    <wsdl:part name="parameters" element="tns:DatosAnulacionJSON" />
+  </wsdl:message>
+  <wsdl:message name="DatosAnulacionJSONSoapOut">
+    <wsdl:part name="parameters" element="tns:DatosAnulacionJSONResponse" />
+  </wsdl:message>
+  <wsdl:message name="DatosCompraJSONSoapIn">
+    <wsdl:part name="parameters" element="tns:DatosCompraJSON" />
+  </wsdl:message>
+  <wsdl:message name="DatosCompraJSONSoapOut">
+    <wsdl:part name="parameters" element="tns:DatosCompraJSONResponse" />
+  </wsdl:message>
+  <wsdl:message name="DatosAnulacionSoapIn">
+    <wsdl:part name="parameters" element="tns:DatosAnulacion" />
+  </wsdl:message>
+  <wsdl:message name="DatosAnulacionSoapOut">
+    <wsdl:part name="parameters" element="tns:DatosAnulacionResponse" />
+  </wsdl:message>
+  <wsdl:message name="TokenSoapIn">
+    <wsdl:part name="parameters" element="tns:Token" />
+  </wsdl:message>
+  <wsdl:message name="TokenSoapOut">
+    <wsdl:part name="parameters" element="tns:TokenResponse" />
+  </wsdl:message>
+  <wsdl:message name="RespuestaSoapIn">
+    <wsdl:part name="parameters" element="tns:Respuesta" />
+  </wsdl:message>
+  <wsdl:message name="RespuestaSoapOut">
+    <wsdl:part name="parameters" element="tns:RespuestaResponse" />
+  </wsdl:message>
+  <wsdl:message name="RespuestaJSONSoapIn">
+    <wsdl:part name="parameters" element="tns:RespuestaJSON" />
+  </wsdl:message>
+  <wsdl:message name="RespuestaJSONSoapOut">
+    <wsdl:part name="parameters" element="tns:RespuestaJSONResponse" />
+  </wsdl:message>
+  <wsdl:message name="BorrarTransaccionSoapIn">
+    <wsdl:part name="parameters" element="tns:BorrarTransaccion" />
+  </wsdl:message>
+  <wsdl:message name="BorrarTransaccionSoapOut">
+    <wsdl:part name="parameters" element="tns:BorrarTransaccionResponse" />
+  </wsdl:message>
+  <wsdl:message name="BorrarTransaccionJSONSoapIn">
+    <wsdl:part name="parameters" element="tns:BorrarTransaccionJSON" />
+  </wsdl:message>
+  <wsdl:message name="BorrarTransaccionJSONSoapOut">
+    <wsdl:part name="parameters" element="tns:BorrarTransaccionJSONResponse" />
+  </wsdl:message>
+  <wsdl:portType name="SIPServiceSoap">
+    <wsdl:operation name="Version">
+      <wsdl:input message="tns:VersionSoapIn" />
+      <wsdl:output message="tns:VersionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DatosCompra">
+      <wsdl:input message="tns:DatosCompraSoapIn" />
+      <wsdl:output message="tns:DatosCompraSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DatosAnulacionJSON">
+      <wsdl:input message="tns:DatosAnulacionJSONSoapIn" />
+      <wsdl:output message="tns:DatosAnulacionJSONSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DatosCompraJSON">
+      <wsdl:input message="tns:DatosCompraJSONSoapIn" />
+      <wsdl:output message="tns:DatosCompraJSONSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DatosAnulacion">
+      <wsdl:input message="tns:DatosAnulacionSoapIn" />
+      <wsdl:output message="tns:DatosAnulacionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Token">
+      <wsdl:input message="tns:TokenSoapIn" />
+      <wsdl:output message="tns:TokenSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Respuesta">
+      <wsdl:input message="tns:RespuestaSoapIn" />
+      <wsdl:output message="tns:RespuestaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RespuestaJSON">
+      <wsdl:input message="tns:RespuestaJSONSoapIn" />
+      <wsdl:output message="tns:RespuestaJSONSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="BorrarTransaccion">
+      <wsdl:input message="tns:BorrarTransaccionSoapIn" />
+      <wsdl:output message="tns:BorrarTransaccionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="BorrarTransaccionJSON">
+      <wsdl:input message="tns:BorrarTransaccionJSONSoapIn" />
+      <wsdl:output message="tns:BorrarTransaccionJSONSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SIPServiceSoap" type="tns:SIPServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Version">
+      <soap:operation soapAction="http://tempuri.org/Version" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DatosCompra">
+      <soap:operation soapAction="http://tempuri.org/DatosCompra" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DatosAnulacionJSON">
+      <soap:operation soapAction="http://tempuri.org/DatosAnulacionJSON" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DatosCompraJSON">
+      <soap:operation soapAction="http://tempuri.org/DatosCompraJSON" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DatosAnulacion">
+      <soap:operation soapAction="http://tempuri.org/DatosAnulacion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Token">
+      <soap:operation soapAction="http://tempuri.org/Token" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Respuesta">
+      <soap:operation soapAction="http://tempuri.org/Respuesta" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RespuestaJSON">
+      <soap:operation soapAction="http://tempuri.org/RespuestaJSON" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BorrarTransaccion">
+      <soap:operation soapAction="http://tempuri.org/BorrarTransaccion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BorrarTransaccionJSON">
+      <soap:operation soapAction="http://tempuri.org/BorrarTransaccionJSON" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SIPServiceSoap12" type="tns:SIPServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Version">
+      <soap12:operation soapAction="http://tempuri.org/Version" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DatosCompra">
+      <soap12:operation soapAction="http://tempuri.org/DatosCompra" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DatosAnulacionJSON">
+      <soap12:operation soapAction="http://tempuri.org/DatosAnulacionJSON" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DatosCompraJSON">
+      <soap12:operation soapAction="http://tempuri.org/DatosCompraJSON" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DatosAnulacion">
+      <soap12:operation soapAction="http://tempuri.org/DatosAnulacion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Token">
+      <soap12:operation soapAction="http://tempuri.org/Token" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Respuesta">
+      <soap12:operation soapAction="http://tempuri.org/Respuesta" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RespuestaJSON">
+      <soap12:operation soapAction="http://tempuri.org/RespuestaJSON" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BorrarTransaccion">
+      <soap12:operation soapAction="http://tempuri.org/BorrarTransaccion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BorrarTransaccionJSON">
+      <soap12:operation soapAction="http://tempuri.org/BorrarTransaccionJSON" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SIPService">
+    <wsdl:port name="SIPServiceSoap" binding="tns:SIPServiceSoap">
+      <soap:address location="https://sipserviceclientetestv52.azurewebsites.net/sipservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="SIPServiceSoap12" binding="tns:SIPServiceSoap12">
+      <soap12:address location="https://sipserviceclientetestv52.azurewebsites.net/sipservice.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

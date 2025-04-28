@@ -354,7 +354,7 @@ namespace fpWebApp
                             // Consulta si se cruza la cita en la sede con la fecha y hora de otra disponible
                             string strQuery = "SELECT * FROM DisponibilidadEspecialistas " +
                                 "WHERE (idSede = " + ddlSedesCita.SelectedItem.Value.ToString() + " " +
-                                "OR idEspecialista  = " + ddlEspecialistas.SelectedItem.Value.ToString() + ") " +
+                                "OR DocumentoEmpleado = '" + ddlEspecialistas.SelectedItem.Value.ToString() + "') " +
                                 "AND (('" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal) " +
                                 "OR ('" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal))";
                             clasesglobales cg = new clasesglobales();
@@ -368,7 +368,7 @@ namespace fpWebApp
                                 //    "AND (('" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal) " +
                                 //    "OR ('" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal))";
                                 strQuery = "SELECT * FROM DisponibilidadEspecialistas " +
-                                    "WHERE idEspecialista = " + ddlEspecialistas.SelectedItem.Value.ToString() + " " +
+                                    "WHERE DocumentoEmpleado = '" + ddlEspecialistas.SelectedItem.Value.ToString() + "' " +
                                     "AND idSede != " + ddlSedes.SelectedItem.Value.ToString() + " " +
                                     "AND TIMESTAMPDIFF(MINUTE, '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', FechaHoraInicio) <= 60 " +
                                     "AND '" + dtFechaIniCita.ToString("yyyy-MM-dd") + "' = DATE(FechaHoraInicio) ";
@@ -392,8 +392,8 @@ namespace fpWebApp
                                                     if (Convert.ToInt16(dtFechaIniCita.DayOfWeek) == Convert.ToInt16(item.Value.ToString()))
                                                     {
                                                         strQuery = "INSERT INTO DisponibilidadEspecialistas " +
-                                                            "(idEspecialista, idSede, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
-                                                            "VALUES (" + ddlEspecialistas.SelectedItem.Value.ToString() + ", " + ddlSedesCita.SelectedItem.Value.ToString() + ", " +
+                                                            "(DocumentoEmpleado, idSede, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
+                                                            "VALUES ('" + ddlEspecialistas.SelectedItem.Value.ToString() + "', " + ddlSedesCita.SelectedItem.Value.ToString() + ", " +
                                                             "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
                                                             "" + Session["idusuario"].ToString() + ") ";
                                                         
@@ -405,8 +405,8 @@ namespace fpWebApp
                                         else
                                         {
                                             strQuery = "INSERT INTO DisponibilidadEspecialistas " +
-                                                "(idEspecialista, idSede, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
-                                                "VALUES (" + ddlEspecialistas.SelectedItem.Value.ToString() + ", " + ddlSedesCita.SelectedItem.Value.ToString() + ", " +
+                                                "(DocumentoEmpleado, idSede, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
+                                                "VALUES ('" + ddlEspecialistas.SelectedItem.Value.ToString() + "', " + ddlSedesCita.SelectedItem.Value.ToString() + ", " +
                                                 "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
                                                 "" + Session["idusuario"].ToString() + ") ";
 

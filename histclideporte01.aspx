@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="histclinutricion04.aspx.cs" Inherits="fpWebApp.histclinutricion04" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="histclideporte01.aspx.cs" Inherits="fpWebApp.histclideporte01" %>
 
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
@@ -21,18 +21,18 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/smoothness/jquery-ui.css">
 
+    <link href="css/plugins/dropzone/basic.css" rel="stylesheet" />
+    <link href="css/plugins/dropzone/dropzone.css" rel="stylesheet" />
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet" />
     <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet" />
 
-    <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
-
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
-
-    <!-- SweetAlert2 CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
+
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         function changeClass() {
@@ -94,20 +94,14 @@
             if (genero == '2') {
                 var densidad_corporal = 0.146 * pliegues; //43.8
                 var porc_graso = 4.56 + densidad_corporal; //48.36
-
-                var gastoCalor = ((10 * peso) + (6.25 * talla) - 5 * edad) + 5; 
-
-                //console.log(gastoCalor);
             }
 
             //Masculino
             if (genero == '1') {
                 var densidad_corporal = 0.097 * pliegues;
                 var porc_graso = 3.64 + densidad_corporal;
-
-                var gastoCalor = ((10 * peso) + (6.25 * talla) - 5 * edad) + 161;
             }
-                
+
             var peso_oseo = peso * 0.15; //11.805
             var decimal = porc_graso / 100;  //0.4836
             var peso_graso = peso * decimal;  //38.05932
@@ -121,18 +115,6 @@
 
             document.getElementById("txbPesoGraso").value = peso_graso.toFixed(2);
             document.getElementById("txbPesoMagro").value = peso_magro.toFixed(2);
-
-            document.getElementById("txbGastoCalorico").value = gastoCalor.toFixed(2);
-
-            const dropdown = document.getElementById('ddlActividadFisica');
-
-            dropdown.onchange = function (event) {
-                const actividadFisica = parseFloat(event.target.value);
-                var gastoTotal = (actividadFisica * gastoCalor);
-                document.getElementById("txbGastoTotal").value = gastoTotal.toFixed(2);
-            };
-
-            //console.log(genero);
         }
     </script>
 </head>
@@ -192,7 +174,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-notes-medical text-success m-r-sm"></i>Historia clínica - Detalle nutricional</h2>
+                    <h2><i class="fa fa-notes-medical text-success m-r-sm"></i>Historia clínica - Detalle Médico del deporte</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Asistencial</li>
@@ -254,17 +236,11 @@
                                         <td><strong><i class="fa fa-building"></i></strong> Sede:
                         <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
                                         <td><strong><i class="fa fa-venus-mars"></i></strong> Género:
-                                            <asp:Literal ID="ltGenero" runat="server"></asp:Literal>
-                                            <input id="hfGenero" type="hidden" runat="server" />
-                                            <%--<asp:HiddenField ID="hfGenero" runat="server" />--%>
-                                        </td>
+                                            <asp:Literal ID="ltGenero" runat="server"></asp:Literal></td>
                                     </tr>
                                     <tr>
                                         <td><strong><i class="fa fa-cake"></i></strong>
-                                            <asp:Literal ID="ltCumple" runat="server"></asp:Literal>
-                                            <input id="hfEdad" type="hidden" runat="server" />
-                                            <%--<asp:HiddenField ID="hfEdad" runat="server" />--%>
-                                        </td>
+                                            <asp:Literal ID="ltCumple" runat="server"></asp:Literal></td>
                                         <td><strong><i class="fa fa-house-medical"></i></strong> EPS:
                                             <asp:Literal ID="ltEPS" runat="server"></asp:Literal></td>
                                     </tr>
@@ -469,7 +445,7 @@
                         <div class="col-lg-8">
                             <div class="ibox float-e-margins" runat="server" id="divContenido">
                                 <div class="ibox-title">
-                                    <h5>Formulario para agregar detalles nutricionales</h5>
+                                    <h5>Formulario para agregar detalles del médico del deporte</h5>
                                     <div class="ibox-tools">
                                         <a class="collapse-link">
                                             <i class="fa fa-chevron-up"></i>
@@ -484,6 +460,56 @@
                                     <div class="row">
                                         <form role="form" id="form" runat="server">
                                             <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+
+                                            <div class="col-sm-12">
+                                                <div class="widget style1 bg-success">
+                                                    <div class="row vertical-align">
+                                                        <div class="col-xs-3">
+                                                            <i class="fa fa-heart fa-2x"></i>
+                                                        </div>
+                                                        <div class="col-xs-9 text-right">
+                                                            <h3 class="font-bold">Riesgo cardiovascular y signos vitales</h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12">
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label class="small">Clasificación de riesgo cardiovascular (AHA)</label>
+                                                            <asp:DropDownList ID="ddlClasificacionRiesgo" runat="server" CssClass="form-control input-sm">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:ListItem Text="A1" Value="66"></asp:ListItem>
+                                                                <asp:ListItem Text="A2" Value="67"></asp:ListItem>
+                                                                <asp:ListItem Text="A3" Value="68"></asp:ListItem>
+                                                                <asp:ListItem Text="B" Value="69"></asp:ListItem>
+                                                                <asp:ListItem Text="C" Value="70"></asp:ListItem>
+                                                                <asp:ListItem Text="D" Value="71"></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label>FC Reposo (PPM)</label>
+                                                            <asp:TextBox ID="txbFCReposo" CssClass="form-control" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label>TA Reposo (MMHG)</label>
+                                                            <asp:TextBox ID="txbTAReposo" CssClass="form-control" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label>FC Max (PPM)</label>
+                                                            <asp:TextBox ID="txbFCMax" CssClass="form-control" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                             <div class="col-sm-12">
                                                 <div class="widget style1 bg-success">
@@ -646,33 +672,6 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Gasto calórico</label>
-                                                            <asp:TextBox ID="txbGastoCalorico" CssClass="form-control input-sm" runat="server"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Actividad física</label>
-                                                            <asp:DropDownList ID="ddlActividadFisica" runat="server" AppendDataBoundItems="true"
-                                                                CssClass="form-control m-b">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                <asp:ListItem Text="Sedentario" Value="1.2"></asp:ListItem>
-                                                                <asp:ListItem Text="Leve" Value="1.37"></asp:ListItem>
-                                                                <asp:ListItem Text="Moderada" Value="1.55"></asp:ListItem>
-                                                                <asp:ListItem Text="Activo" Value="1.72"></asp:ListItem>
-                                                                <asp:ListItem Text="Muy activo" Value="1.9"></asp:ListItem>
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Gasto total</label>
-                                                            <asp:TextBox ID="txbGastoTotal" CssClass="form-control input-sm" runat="server"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-
                                                 </div>
                                                 <div class="row">
 
@@ -710,7 +709,7 @@
                                                         <strong>Cancelar</strong></button>
                                                     <asp:Button ID="btnAgregar" runat="server"
                                                         CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
-                                                        Text="Siguiente" Visible="false"
+                                                        Text="Guardar y continuar" Visible="false"
                                                         ValidationGroup="agregar" OnClick="btnAgregar_Click" />
                                                 </div>
                                             </div>
@@ -742,9 +741,6 @@
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
-
-    <!-- Clock picker -->
-    <script src="js/plugins/clockpicker/clockpicker.js"></script>
 
     <!-- Jquery Validate -->
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
@@ -821,15 +817,6 @@
                 txbPesoMagro: {
                     required: true
                 },
-                txbGastoCalorico: {
-                    required: true
-                },
-                ddlActividadFisica: {
-                    required: true
-                },
-                txbGastoTotal: {
-                    required: true
-                },
                 txbDiagnostico: {
                     required: true
                 },
@@ -851,8 +838,6 @@
                 txbPesoEsperado: "*",
                 txbPesoGraso: "*",
                 txbPesoMagro: "*",
-                txbGastoCalorico: "*",
-                txbGastoTotal: "*",
             }
         });
     </script>

@@ -158,8 +158,7 @@
                                                     <div>
                                                         <h2 class="no-margins">
                                                             <asp:Literal ID="ltNombre" runat="server"></asp:Literal></h2>
-                                                        <h4>
-<%--                                                            <asp:Literal ID="ltCargo" runat="server"></asp:Literal></h4>--%>
+                                                            <%--<h4><asp:Literal ID="ltCargo" runat="server"></asp:Literal></h4>--%>
                                                         <small><asp:Literal ID="ltCiudad" runat="server"></asp:Literal>, 
                                                             <asp:Literal ID="ltTelefono" runat="server"></asp:Literal>.</small>
                                                     </div>
@@ -227,14 +226,29 @@
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
-                                                                    <label>Teléfono</label>
+                                                                    <label>Teléfono personal</label>
                                                                     <asp:TextBox ID="txbTelefono" CssClass="form-control input-sm" runat="server" placeholder="Teléfono"></asp:TextBox>
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
-                                                                    <label>Email</label>
-                                                                    <asp:TextBox ID="txbEmail" CssClass="form-control input-sm" runat="server" placeholder="Email" required></asp:TextBox>
+                                                                    <label>Email personal</label>
+                                                                    <asp:TextBox ID="txbEmail" CssClass="form-control input-sm" runat="server" placeholder="Email"></asp:TextBox>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Teléfono corporativo</label>
+                                                                    <asp:TextBox ID="txbTelefonoCorp" CssClass="form-control input-sm" runat="server" placeholder="Teléfono corp"></asp:TextBox>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Email corporativo</label>
+                                                                    <asp:TextBox ID="txbEmailCorp" CssClass="form-control input-sm" runat="server" placeholder="Email corp"></asp:TextBox>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -457,7 +471,7 @@
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <label>Empresa FP</label>
-                                                                    <asp:DropDownList ID="ddlempresasFP" runat="server" AppendDataBoundItems="true"
+                                                                    <asp:DropDownList ID="ddlEmpresasFP" runat="server" AppendDataBoundItems="true"
                                                                         DataTextField="NombreEmpresaFP" DataValueField="idEmpresaFP" CssClass="form-control input-sm">
                                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                     </asp:DropDownList>
