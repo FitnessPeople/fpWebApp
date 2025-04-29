@@ -39,9 +39,7 @@ namespace fpWebApp
                     {
                         ListaEstadosCRM();
                         CargarAgenda();
-                        CargarDatosContacto(6);
-
-                        //CargarSedes();
+                        CargarDatosContacto(6);                        
                     }
                     if (ViewState["Borrar"].ToString() == "1")
                     {
@@ -119,8 +117,8 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out respuesta);
             Session["contactoId"] = idContacto;
-            //rptContenido.DataSource = dt;
-            //rptContenido.DataBind();
+            rptContenido.DataSource = dt;
+            rptContenido.DataBind();
 
             if (respuesta)
             {

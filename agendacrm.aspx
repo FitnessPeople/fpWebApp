@@ -37,6 +37,54 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
+    <style>
+        .modal-body {
+            max-height: 70vh; /* Usa un 70% del alto de la ventana */
+            overflow-y: auto;
+        }
+    </style>
+    <style>
+        #contenedorAdicional {
+            margin-top: 10px;
+        }
+
+        .client-detail {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
+        .modal-body textarea,
+        .modal-body select {
+            margin-top: 10px;
+        }
+
+        .modal-body hr {
+            margin: 10px 0;
+        }
+    </style>
+
+    <style>
+        .client-detail {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
+        .full-height-scroll {
+            max-height: none !important;
+            overflow: visible !important;
+        }
+
+        .tab-pane.active {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
+        #datosEvento {
+            margin-top: 10px;
+        }
+    </style>
+
+
     <script>
         function changeClass() {
             var element1 = document.querySelector("#agendacrm");
@@ -91,23 +139,95 @@
             </div>
         </div>
     </div>
+
     <div id="modal-view-event" class="modal modal-top fade calendar-modal">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
-                    <h4 class="h4"><span class="event-icon weight-400 mr-3"></span><span class="event-title"></span></h4>
-                    <div class="event-body"></div>
-                    <div class="event-description"></div>
-                    <div class="event-id text-hide" id="event-id"></div>
-                    <div class="event-allday text-hide" id="event-allday"></div>
+                    <h4 class="h4">
+                        <span class="event-icon weight-400 mr-3"></span>
+                        <span class="event-title"></span>
+                    </h4>
+
+                    <div class="tab-content">
+                        <asp:Repeater ID="rptContenido" runat="server">
+                            <ItemTemplate>
+                                <div id='<%# Eval("IdContacto") %>' class='tab-pane <%# Eval("IdContacto").ToString() == Session["contactoId"]?.ToString() ? "active" : "" %>' style="margin-bottom: 0; padding-bottom: 0;">
+                                    <div class="row m-b-lg clearfix">
+                                        <div class="col-lg-4 text-center">
+                                            <h2><%# Eval("NombreContacto") %></h2>
+                                            <div class="m-b-sm">
+                                                <img alt="image" class="img-circle" src="img/a3.jpg" style="width: 62px">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <strong>Acerca de mí</strong><br />
+                                            <p class="contact-type" style="margin-bottom: 10px;">
+                                                <i class="fa fa-envelope"></i><span><%# Eval("EmailContacto") %></span>
+                                            </p>
+                                            <p><%# Eval("TipoContacto") %></p>
+                                            <p>Mi objetivo es <%# Eval("Objetivo") %></p>
+                                        </div>
+                                    </div>
+
+                              <%--      <div class="client-detail" style="margin-bottom: 0; padding-bottom: 0;">--%>
+                                       <%-- <div class="full-height-scroll" style="max-height: none; overflow: visible;">--%>
+                                            <ul class="list-group clear-list" runat="server"
+                                                visible='<%# (Eval("Estado") != null && Eval("idEstadoCRM").ToString() != "3" && Eval("idEstadoCRM").ToString() != "4") %>'>
+                                                <li class="list-group-item fist-item">
+                                                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                                                        <div style="display: flex; align-items: center; flex-wrap: wrap;">
+                                                            <i class="fa fa-phone" style="margin-right: 5px; color: green;"></i>
+                                                            <strong>Por favor, contáctame al:</strong>
+                                                            <span style="margin-left: 5px;"></span>
+                                                        </div>
+                                                        <div style="margin-left: 20px;">
+                                                            <%# Eval("FechaProximoCon", "{0:dddd dd MMM yyyy hh:mm tt}") %>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <hr />
+                                            <strong>Notas</strong>
+                                            <p>Entreno por las noches, fines de semana. He completado 300 asistencias.</p>
+                                            <hr />
+                                            <strong>Historial de gestión del asesor</strong>
+                                            <%# Eval("historialHTML2") %>
+                                      <%--  </div>--%>
+                               <%--     </div>--%>
+                                </div>
+                            </ItemTemplate>
+                        </asp:Repeater>
+
+                    </div>
+
+                    <!-- Aquí se insertan dinámicamente el dropdown y textarea -->
+                    <div id="contenedorAdicional"></div>
+                    <div id="datosEvento" style="margin-top: 10px;"></div>
                 </div>
+
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href='asignarcita.aspx?id=' + document.getElementById('event-id').innerHTML + '&idAfil=' + document.getElementById('hfIdAfiliado').value" id="btnAsignar"><i class='fa fa-calendar-plus m-r-sm'></i>Asignar</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal"
+                        onclick="window.location.href='asignarcita.aspx?id=' + document.getElementById('event-id').innerHTML + '&idAfil=' + document.getElementById('hfIdAfiliado').value"
+                        id="btnAsignar">
+                        <i class='fa fa-calendar-plus m-r-sm'></i>Asignar
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">
+                        <i class='fa fa-times m-r-sm'></i>Cerrar
+                    </button>
                 </div>
+
+                <!-- Ocultos -->
+                <div class="event-id text-hide" id="event-id"></div>
+                <div class="event-allday text-hide" id="event-allday"></div>
             </div>
         </div>
     </div>
+
+
+    </div>
+
+
     <div id="wrapper">
 
         <uc1:navbar runat="server" ID="navbar" />
@@ -153,7 +273,7 @@
                             <ContentTemplate>--%>
                         <div class="row animated fadeInDown" id="divContenido" runat="server">
 
-                             <%-- Zona del calendario--%>
+                            <%-- Zona del calendario--%>
                             <div class="col-xxl-10 col-lg-9 col-md-7 col-sm-6 col-xs-12">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
@@ -181,92 +301,6 @@
                                     <div class="ibox-content">
 
                                         <div class="tab-content">
-                                            <div id="contact-1" class="tab-pane active">
-                                                <div class="row m-b-lg">
-                                                    <div class="col-lg-4 text-center">
-                                                        <h2>Nicki Smith</h2>
-
-                                                        <div class="m-b-sm">
-                                                            <img alt="image" class="img-circle" src="img/a2.jpg"
-                                                                style="width: 62px">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-8">
-                                                        <strong>About me
-                                                        </strong>
-
-                                                        <p>
-                                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                        tempor incididunt ut labore et dolore magna aliqua.
-                                                        </p>
-                                                        <button type="button" class="btn btn-primary btn-sm btn-block">
-                                                            <i
-                                                                class="fa fa-envelope"></i>Send Message
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div class="client-detail">
-                                                    <div class="full-height-scroll">
-
-                                                        <strong>Last activity</strong>
-
-                                                        <ul class="list-group clear-list">
-                                                            <li class="list-group-item fist-item">
-                                                                <span class="pull-right">09:00 pm </span>
-                                                                Please contact me
-                                                            </li>
-                                                            <li class="list-group-item">
-                                                                <span class="pull-right">10:16 am </span>
-                                                                Sign a contract
-                                                            </li>
-                                                            <li class="list-group-item">
-                                                                <span class="pull-right">08:22 pm </span>
-                                                                Open new shop
-                                                            </li>
-                                                            <li class="list-group-item">
-                                                                <span class="pull-right">11:06 pm </span>
-                                                                Call back to Sylvia
-                                                            </li>
-                                                            <li class="list-group-item">
-                                                                <span class="pull-right">12:00 am </span>
-                                                                Write a letter to Sandra
-                                                            </li>
-                                                        </ul>
-                                                        <strong>Notes</strong>
-                                                        <p>
-                                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                    tempor incididunt ut labore et dolore magna aliqua.
-                                                        </p>
-                                                        <hr />
-                                                        <strong>Timeline activity</strong>
-                                                        <div id="vertical-timeline" class="vertical-container dark-timeline">
-                                                            <div class="vertical-timeline-block">
-                                                                <div class="vertical-timeline-icon gray-bg">
-                                                                    <i class="fa fa-coffee"></i>
-                                                                </div>
-                                                                <div class="vertical-timeline-content">
-                                                                    <p>
-                                                                        Conference on the sales results for the previous year.
-                                                                    </p>
-                                                                    <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="vertical-timeline-block">
-                                                                <div class="vertical-timeline-icon gray-bg">
-                                                                    <i class="fa fa-briefcase"></i>
-                                                                </div>
-                                                                <div class="vertical-timeline-content">
-                                                                    <p>
-                                                                        Many desktop publishing packages and web page editors now use Lorem.
-                                                                    </p>
-                                                                    <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -312,7 +346,7 @@
     <!-- Jquery Validate -->
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
-    <script>
+    <%--    <script>
         $("#form").validate({
             rules: {
                 txbAfiliado: {
@@ -321,7 +355,7 @@
                 },
             }
         });
-    </script>
+    </script>--%>
 
     <script type="text/javascript">  
         $(document).ready(function () {
@@ -415,24 +449,8 @@
                 },
                 <%=strEventos%>
                 eventClick: function (event, jsEvent, view) {
-                    const fechainicial = new Date(event.start);
-                    fechainicial.setHours(fechainicial.getHours() + 5);
+                    // ...
 
-                    const formatter1 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
-                    const formattedTime1 = formatter1.format(fechainicial);
-
-                    const formatterdia = new Intl.DateTimeFormat('en-US', { day: '2-digit' });
-                    const formatteddiaini = formatterdia.format(fechainicial);
-
-                    const formattermes = new Intl.DateTimeFormat('es-US', { month: 'long' });
-                    const formattedmesini = formattermes.format(fechainicial)[0].toUpperCase() + formattermes.format(fechainicial).substring(1);
-
-                    const fechafinal = new Date(event.end);
-                    fechafinal.setHours(fechafinal.getHours() + 5);
-                    const formatter2 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
-                    const formattedTime2 = formatter2.format(fechafinal);
-
-                    // Construimos el dropdown
                     var selectHtml = "<label for='ddlStatusLead'>Estatus Lead</label><select id='ddlStatusLead' class='form-control'>";
                     estadosLead.forEach(function (estado) {
                         var selected = (estado.id == event.idEstadoCRM) ? "selected" : "";
@@ -443,24 +461,39 @@
                     var textareaHtml = "<label for='txtContexto'>Contexto de la negociación</label>" +
                         "<textarea id='txtContexto' class='form-control' rows='3'></textarea><br />";
 
-                    // Asignamos otros valores del evento
+                    const fechainicial = new Date(event.start);
+                    fechainicial.setHours(fechainicial.getHours() + 5);
+                    const fechafinal = new Date(event.end);
+                    fechafinal.setHours(fechafinal.getHours() + 5);
+
+                    const formatter1 = new Intl.DateTimeFormat('es-CO', { hour: '2-digit', minute: '2-digit' });
+                    const formatterdia = new Intl.DateTimeFormat('es-CO', { day: '2-digit' });
+                    const formattermes = new Intl.DateTimeFormat('es-CO', { month: 'long' });
+
+                    const formatteddiaini = formatterdia.format(fechainicial);
+                    const formattedmesini = formattermes.format(fechainicial)[0].toUpperCase() + formattermes.format(fechainicial).substring(1);
+                    const formattedTime1 = formatter1.format(fechainicial);
+                    const formattedTime2 = formatter1.format(fechafinal);
+
                     jQuery('.event-id').html(event.id);
                     jQuery('.event-icon').html("<i class='fa fa-" + event.icon + "'></i>");
                     jQuery('.event-title').html('Contacto: ' + event.title);
-                    jQuery('.event-description').html(event.description);
-                    jQuery('.event-body').html(
-                        selectHtml +
-                        textareaHtml +
-                        "<i class='fa fa-calendar-day'></i> " + formatteddiaini + " " + formattedmesini + " " + fechainicial.getFullYear() +
-                        "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />"
-                    );
-                    // Mostrar u ocultar botón
-                    var btn = document.getElementById("btnAsignar");
-                    btn.style.display = event.btnAsignar;
 
-                    // Mostrar modal
+                    // Insertar contenido en #contenedorAdicional
+                    const contenedor = document.getElementById('contenedorAdicional');
+                    if (contenedor) {
+                        contenedor.innerHTML =
+                            "<hr />" +
+                            "<i class='fa fa-calendar-day'></i> " + formatteddiaini + " " + formattedmesini + " " + fechainicial.getFullYear() +
+                            "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />" +
+                            selectHtml +
+                            textareaHtml;
+                    }
+
+                    document.getElementById("btnAsignar").style.display = event.btnAsignar;
                     jQuery('#modal-view-event').modal();
-                },
+                }
+                ,
             });
         });
 
