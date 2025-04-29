@@ -98,18 +98,10 @@
                     <h4 class="h4"><span class="event-icon weight-400 mr-3"></span><span class="event-title"></span></h4>
                     <div class="event-body"></div>
                     <div class="event-description"></div>
-                    <div class="form-group">
-                        <label for="ddlStatusLead">Estatus Lead:</label>
-                        <select id="ddlStatusLead" class="form-control">
-                            <%= strOptionsStatus %>
-                        </select>
-                    </div>
                     <div class="event-id text-hide" id="event-id"></div>
                     <div class="event-allday text-hide" id="event-allday"></div>
                 </div>
                 <div class="modal-footer">
-                    <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
-                    <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
                     <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href='asignarcita.aspx?id=' + document.getElementById('event-id').innerHTML + '&idAfil=' + document.getElementById('hfIdAfiliado').value" id="btnAsignar"><i class='fa fa-calendar-plus m-r-sm'></i>Asignar</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>
                 </div>
@@ -160,6 +152,25 @@
                         <asp:UpdatePanel ID="upAgendarCita" runat="server">
                             <ContentTemplate>--%>
                         <div class="row animated fadeInDown" id="divContenido" runat="server">
+
+                             <%-- Zona del calendario--%>
+                            <div class="col-xxl-10 col-lg-9 col-md-7 col-sm-6 col-xs-12">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Agenda
+                                            <asp:Literal ID="ltSede" runat="server"></asp:Literal></h5>
+                                        <div class="ibox-tools">
+                                            <span class='badge badge-info'>Primer Contacto </span>
+                                            <span class='badge badge-warning'>Propuesta en gestión </span>
+                                            <span class='badge badge-primary'>Negociación aceptada </span>
+                                            <span class='badge badge-danger'>Negociación rechazada </span>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div id="calendar"></div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <%-- zona de detalle del afuliado bienvenido--%>
                             <div class="col-xxl-2 col-lg-3 col-md-5 col-sm-6 col-xs-12">
@@ -261,30 +272,6 @@
                                 </div>
                             </div>
 
-
-                            <%-- Zona del calendario--%>
-                            <div class="col-xxl-10 col-lg-9 col-md-7 col-sm-6 col-xs-12">
-                                <div class="ibox float-e-margins">
-                                    <div class="ibox-title">
-                                        <h5>Agenda
-                                            <asp:Literal ID="ltSede" runat="server"></asp:Literal></h5>
-                                        <div class="ibox-tools">
-                                            <span class='badge badge-info'>Primer Contacto </span>
-                                            <span class='badge badge-warning'>Propuesta en gestión </span>
-                                            <span class='badge badge-primary'>Negociación aceptada </span>
-                                            <span class='badge badge-danger'>Negociación rechazada </span>
-                                        </div>
-                                    </div>
-                                    <div class="ibox-content">
-                                        <div id="calendar"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-
-
                         </div>
                         <%--</ContentTemplate>
                         </asp:UpdatePanel>--%>
@@ -363,8 +350,11 @@
         });
     </script>
 
-    <script>
+    <script type="text/javascript">
+        var estadosLead = <%= EstadosCRM_Json %>;
+    </script>
 
+    <script>
         $(document).ready(function () {
 
             /* initialize the calendar
@@ -442,54 +432,33 @@
                     const formatter2 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
                     const formattedTime2 = formatter2.format(fechafinal);
 
+                    // Construimos el dropdown
+                    var selectHtml = "<label for='ddlStatusLead'>Estatus Lead</label><select id='ddlStatusLead' class='form-control'>";
+                    estadosLead.forEach(function (estado) {
+                        var selected = (estado.id == event.idEstadoCRM) ? "selected" : "";
+                        selectHtml += "<option value='" + estado.id + "' " + selected + ">" + estado.nombre + "</option>";
+                    });
+                    selectHtml += "</select><br />";
 
+                    var textareaHtml = "<label for='txtContexto'>Contexto de la negociación</label>" +
+                        "<textarea id='txtContexto' class='form-control' rows='3'></textarea><br />";
 
-                    //console.log(formattedTime);
+                    // Asignamos otros valores del evento
                     jQuery('.event-id').html(event.id);
                     jQuery('.event-icon').html("<i class='fa fa-" + event.icon + "'></i>");
                     jQuery('.event-title').html('Contacto: ' + event.title);
-                    jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + " " + formattedmesini + " " + fechainicial.getFullYear() + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />");
                     jQuery('.event-description').html(event.description);
+                    jQuery('.event-body').html(
+                        selectHtml +
+                        textareaHtml +
+                        "<i class='fa fa-calendar-day'></i> " + formatteddiaini + " " + formattedmesini + " " + fechainicial.getFullYear() +
+                        "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />"
+                    );
+                    // Mostrar u ocultar botón
                     var btn = document.getElementById("btnAsignar");
                     btn.style.display = event.btnAsignar;
-                    //jQuery('.event-iconPago').html("<i class='fa fa-" + event.iconPago + "'></i>");
-                    //jQuery('.event-pago').html(event.pago);
-                    //jQuery('.event-cliente').html(event.cliente);
-                    //jQuery('.event-ubicacion').html(event.ubicacion);
-                    //jQuery('.event-telefono').html('<a href=\"https://wa.me/57' + event.telefono + '\" target=\"_blank\">' + event.telefono + '</a>');
-                    //jQuery('.event-estado').html(event.estado);
-                    //jQuery('.event-allday').html(event.todoeldia);
-                    //jQuery('.eventUrl').attr('href', event.url);
-                    // Opciones de Estatus Lead
-                    //const estatusLeadOptions = [
-                    //    { value: '1', text: 'Nuevo' },
-                    //    { value: '2', text: 'En Proceso' },
-                    //    { value: '3', text: 'Cerrado' },
-                    //    { value: '4', text: 'No Interesado' },
-                    //];
 
-                    //// Llenar el select
-                    //var ddl = document.getElementById('ddlStatusLead');
-                    //ddl.innerHTML = ''; // Limpiar opciones anteriores
-
-
-
-                    //estatusLeadOptions.forEach(function (opcion) {
-                    //    var option = document.createElement('option');
-                    //    option.value = opcion.value;
-                    //    option.text = opcion.text;
-                    //    ddl.appendChild(option);
-                    //});
-
-<%--                    jQuery('.event-body').html(`
-                    <label for="ddlStatusLead">Status Lead</label>
-                    <select id="ddlStatusLead" class="form-control">
-                            <%= strOptionsStatus %>
-                        </select>
-                        <br />
-                        <i class='fa fa-calendar-day'></i> ${formatteddiaini} ${formattedmesini} ${fechainicial.getFullYear()}<br />
-                        <i class='fa fa-clock'></i> ${formattedTime1} - ${formattedTime2}
-                    `);--%>
+                    // Mostrar modal
                     jQuery('#modal-view-event').modal();
                 },
             });

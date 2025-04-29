@@ -6,12 +6,15 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Newtonsoft.Json;  
+
 
 namespace fpWebApp
 {
     public partial class agendacrm : System.Web.UI.Page
     {
         private string _strEventos;
+        public string EstadosCRM_Json { get; set; }
         protected string strEventos { get { return this._strEventos; } }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -34,7 +37,7 @@ namespace fpWebApp
                     }
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
-                        CargarEstadosLead();
+                        ListaEstadosCRM();
                         CargarAgenda();
                         CargarDatosContacto(6);
 
@@ -76,24 +79,22 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        public string strOptionsStatus = string.Empty;
-        private void CargarEstadosLead()
-        {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEstadossCRM();
+        //public string strOptionsStatus = string.Empty;
+        //private void CargarEstadosLead()
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarEstadossCRM();
 
-            if (dt.Rows.Count > 0)
-            {
-                foreach (DataRow dr in dt.Rows)
-                {
-                    strOptionsStatus += $"<option value='{dr["idEstadoCRM"]}'>{dr["NombreEstadoCRM"]}</option>";
-                }
-            }
+        //    if (dt.Rows.Count > 0)
+        //    {
+        //        foreach (DataRow dr in dt.Rows)
+        //        {
+        //            strOptionsStatus += $"<option value='{dr["idEstadoCRM"]}'>{dr["NombreEstadoCRM"]}</option>";
+        //        }
+        //    }
 
-            dt.Dispose();
-        }
-
-        private string EstadosCRM_Json = "";
+        //    dt.Dispose();
+        //}
 
         private void ListaEstadosCRM()
         {
@@ -103,12 +104,10 @@ namespace fpWebApp
             var lista = new List<object>();
             foreach (DataRow dr in dt.Rows)
             {
-                lista.Add(new { id = dr["idEstadoCRM"], nombre = dr["NombreEstadoCRM"] });
+                lista.Add(new { id = dr["idEstadoCRM"].ToString(), nombre = dr["NombreEstadoCRM"].ToString() });
             }
-            EstadosCRM_Json = Newtonsoft.Json.JsonConvert.SerializeObject(lista);
 
-            ddlStatusLead.DataSource = dt;
-            ddlStatusLead.DataBind();
+            EstadosCRM_Json = JsonConvert.SerializeObject(lista);
 
             dt.Dispose();
         }
@@ -192,7 +191,7 @@ namespace fpWebApp
                     if (dt.Rows[i]["idContacto"].ToString() != "")
                     {
                         _strEventos += "color: '#F8AC59',\r\n";
-                        _strEventos += "description: 'Cita asignada: " + dt.Rows[i]["NombreContacto"].ToString() + " (" + dt.Rows[i]["TelefonoContacto"].ToString() + ")',\r\n";
+                        //_strEventos += "description: 'Cita asignada: " + dt.Rows[i]["NombreContacto"].ToString() + " (" + dt.Rows[i]["TelefonoContacto"].ToString() + ")',\r\n";
                         _strEventos += "btnAsignar: 'none',\r\n";
                     }
                     else
