@@ -328,7 +328,7 @@ namespace fpWebApp
                                 showConfirmButton: false,
                                 timerProgressBar: true
                             }).then(() => {
-                                window.location.href = 'histclideporte01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + idHistoria + @"';
+                                window.location.href = 'histclifisio01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + idHistoria + @"';
                             });
                             ";
                         ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
@@ -383,7 +383,7 @@ namespace fpWebApp
                 string script = @"
                     Swal.fire({
                         title: 'Siguiente paso...',
-                        text: '',
+                        text: 'Riesgo cardiovascular y signos vitales',
                         icon: 'success',
                         timer: 2000, // 2 segundos
                         showConfirmButton: false,
@@ -440,7 +440,7 @@ namespace fpWebApp
                         showConfirmButton: false,
                         timerProgressBar: true
                     }).then(() => {
-                        window.location.href = 'histclideporte01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + idHistoria + @"';
+                        window.location.href = 'histclifisio01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + idHistoria + @"';
                     });
                     ";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);

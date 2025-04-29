@@ -432,32 +432,32 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Consumo de cafeína </label>
-                                                            <asp:TextBox ID="txbCafeina" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
+                                                            <asp:TextBox ID="txbCafeina" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Alimentos no tolerados</label>
-                                                            <asp:TextBox ID="txbAlimNoTolerados" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
+                                                            <asp:TextBox ID="txbAlimNoTolerados" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Consumo de complementos o suplementos nutricionales</label>
-                                                            <asp:TextBox ID="txbComplementos" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
+                                                            <asp:TextBox ID="txbComplementos" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Nutrición anterior</label>
-                                                            <asp:TextBox ID="txbNutricionAnterior" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
+                                                            <asp:TextBox ID="txbNutricionAnterior" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Paraclínicos</label>
-                                                            <asp:TextBox ID="txbParaclinicos" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
+                                                            <asp:TextBox ID="txbParaclinicos" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                         </div>
                                                     </div>
 

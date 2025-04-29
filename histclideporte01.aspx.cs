@@ -29,35 +29,6 @@ namespace fpWebApp
                         {
                             if (Request.QueryString.Count > 0)
                             {
-                                txbIMC.Attributes.Add("readonly", "readonly");
-                                txbPorcGrasa.Attributes.Add("readonly", "readonly");
-                                txbPorcMuscular.Attributes.Add("readonly", "readonly");
-                                txbFCETanaka.Attributes.Add("readonly", "readonly");
-                                txbPesoEsperado.Attributes.Add("readonly", "readonly");
-                                txbPesoGraso.Attributes.Add("readonly", "readonly");
-                                txbPesoMagro.Attributes.Add("readonly", "readonly");
-
-                                txbPeso.Attributes.Add("type", "number");
-                                txbPeso.Attributes.Add("min", "20");
-                                txbTalla.Attributes.Add("type", "number");
-                                txbTalla.Attributes.Add("min", "80");
-
-                                txbPerimCintura.Attributes.Add("type", "number");
-                                txbPerimCadera.Attributes.Add("type", "number");
-                                txbPerimAbdomen.Attributes.Add("type", "number");
-                                txbPerimPecho.Attributes.Add("type", "number");
-
-                                txbPerimMuslo.Attributes.Add("type", "number");
-                                txbPerimPantorrilla.Attributes.Add("type", "number");
-                                txbPerimBrazo.Attributes.Add("type", "number");
-
-                                txbPliegueTricipital.Attributes.Add("type", "number");
-                                txbPliegueIliocrestal.Attributes.Add("type", "number");
-                                txbPliegueAbdominal.Attributes.Add("type", "number");
-                                txbPliegueSubescapular.Attributes.Add("type", "number");
-                                txbPliegueMuslo.Attributes.Add("type", "number");
-                                txbPlieguePantorrilla.Attributes.Add("type", "number");
-
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
                                 CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
                             }
@@ -120,6 +91,8 @@ namespace fpWebApp
             ltCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
             ltCumple.Text = String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"])) + " (" + dt.Rows[0]["edad"].ToString() + " años)";
             ltGenero.Text = dt.Rows[0]["Genero"].ToString();
+            hfGenero.Value = dt.Rows[0]["idGenero"].ToString();
+            hfEdad.Value = dt.Rows[0]["edad"].ToString();
             ltEPS.Text = dt.Rows[0]["NombreEps"].ToString();
             ltEstado.Text = "<span class=\"label label-" + dt.Rows[0]["label"].ToString() + "\">" + dt.Rows[0]["EstadoAfiliado"].ToString() + "</span>";
             //ltFoto.Text = "<img src=\"img/afiliados/nofoto.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
@@ -200,8 +173,12 @@ namespace fpWebApp
             try
             {
                 string strQuery = "INSERT INTO HistoriaDeportiva " +
-                "(idHistoria, ) " +
-                "VALUES (" + Request.QueryString["idHistoria"].ToString() + ") ";
+                "(idHistoria, AHA, FCReposo, TAReposo, FCMax) " +
+                "VALUES (" + Request.QueryString["idHistoria"].ToString() + ", " +
+                "'" + ddlClasificacionRiesgo.SelectedItem.Value.ToString() + "', " +
+                "'" + txbFCReposo.Text.ToString() + "', " +
+                "'" + txbTAReposo.Text.ToString() + "', " +
+                "'" + txbFCMax.Text.ToString() + "') ";
                 clasesglobales cg = new clasesglobales();
                 string mensaje = cg.TraerDatosStr(strQuery);
 
@@ -209,14 +186,14 @@ namespace fpWebApp
                 {
                     string script = @"
                     Swal.fire({
-                        title: 'Datos medicos deportivos guardados con exito',
-                        text: '',
+                        title: 'Siguiente paso...',
+                        text: 'Antropometría',
                         icon: 'success',
                         timer: 2000, // 2 segundos
                         showConfirmButton: false,
                         timerProgressBar: true
                     }).then(() => {
-                        window.location.href = 'historiasclinicas';
+                        window.location.href = 'histclideporte02?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + Request.QueryString["idHistoria"].ToString() + @"';
                     });
                     ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);

@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Vml;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Odbc;
@@ -9,7 +8,7 @@ using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
-    public partial class histclinutricion04 : System.Web.UI.Page
+    public partial class histclideporte02 : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -37,8 +36,6 @@ namespace fpWebApp
                                 txbPesoEsperado.Attributes.Add("readonly", "readonly");
                                 txbPesoGraso.Attributes.Add("readonly", "readonly");
                                 txbPesoMagro.Attributes.Add("readonly", "readonly");
-                                txbGastoCalorico.Attributes.Add("readonly", "readonly");
-                                txbGastoTotal.Attributes.Add("readonly", "readonly");
 
                                 txbPeso.Attributes.Add("type", "number");
                                 txbPeso.Attributes.Add("min", "20");
@@ -58,7 +55,7 @@ namespace fpWebApp
                                 txbPliegueIliocrestal.Attributes.Add("type", "number");
                                 txbPliegueAbdominal.Attributes.Add("type", "number");
                                 txbPliegueSubescapular.Attributes.Add("type", "number");
-                                txbPliegueMuslo.Attributes.Add ("type", "number");
+                                txbPliegueMuslo.Attributes.Add("type", "number");
                                 txbPlieguePantorrilla.Attributes.Add("type", "number");
 
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
@@ -201,10 +198,10 @@ namespace fpWebApp
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            //Actualiza datos en la tabla HistoriaAlimentaria
+            //Actualiza datos en la tabla HistoriaDeportiva
             try
             {
-                string strQuery = "UPDATE HistoriaAlimentaria SET " +
+                string strQuery = "UPDATE HistoriaDeportiva SET " +
                     "Peso = " + txbPeso.Text.ToString() + ", " +
                     "Talla = " + txbTalla.Text.ToString() + ", " +
                     "IMC = " + txbIMC.Text.ToString() + ", " +
@@ -226,14 +223,7 @@ namespace fpWebApp
                     "FCETanaka = '" + txbFCETanaka.Text.ToString() + "', " +
                     "PesoEsperado = '" + txbPesoEsperado.Text.ToString() + "', " +
                     "PesoGraso = '" + txbPesoGraso.Text.ToString() + "', " +
-                    "PesoMagro = '" + txbPesoMagro.Text.ToString() + "', " +
-                    "GastoCalorico = '" + txbGastoCalorico.Text.ToString() + "', " +
-                    "ActividadFisica = '" + ddlActividadFisica.SelectedItem.Value.ToString() + "', " +
-                    "GastoTotal = '" + txbGastoTotal.Text.ToString() + "', " +
-                    "Diagnostico = '" + txbDiagnostico.Text.ToString() + "', " +
-                    "PlanManejo = '" + txbPlanManejo.Text.ToString() + "', " +
-                    "Recomendaciones = '" + txbRecomendaciones.Text.ToString() + "', " +
-                    "Observaciones = '" + txbObservaciones.Text.ToString() + "' " +
+                    "PesoMagro = '" + txbPesoMagro.Text.ToString() + "' " +
                     "WHERE idHistoria = " + Request.QueryString["idHistoria"].ToString();
                 clasesglobales cg = new clasesglobales();
                 string mensaje = cg.TraerDatosStr(strQuery);
@@ -242,17 +232,18 @@ namespace fpWebApp
                 {
                     string script = @"
                     Swal.fire({
-                        title: 'Datos nutricionales guardados con exito',
-                        text: '',
+                        title: 'Siguiente paso...',
+                        text: 'Flexibilidad',
                         icon: 'success',
                         timer: 2000, // 2 segundos
                         showConfirmButton: false,
                         timerProgressBar: true
                     }).then(() => {
-                        window.location.href = 'historiasclinicas';
+                        window.location.href = 'histclideporte03?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + Request.QueryString["idHistoria"].ToString() + @"';
                     });
                     ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                    //Response.Redirect("histclinutricion02?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + Request.QueryString["idHistoria"].ToString());
                 }
                 else
                 {
@@ -286,8 +277,6 @@ namespace fpWebApp
                 ";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
             }
-
-            //Response.Redirect("historiasclinicas");
         }
     }
 }

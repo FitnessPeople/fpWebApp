@@ -11,7 +11,7 @@ namespace fpWebApp
 {
 
 
-    public partial class histclideporte01
+    public partial class histclideporte04
     {
 
         /// <summary>
@@ -213,49 +213,31 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlForm form;
 
         /// <summary>
-        /// Control ScriptManager1.
+        /// Control ddlOrigenEnfermedad.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.ScriptManager ScriptManager1;
+        protected global::System.Web.UI.WebControls.DropDownList ddlOrigenEnfermedad;
 
         /// <summary>
-        /// Control ddlClasificacionRiesgo.
+        /// Control txbTratamiento.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlClasificacionRiesgo;
+        protected global::System.Web.UI.WebControls.TextBox txbTratamiento;
 
         /// <summary>
-        /// Control txbFCReposo.
+        /// Control txbObservaciones.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbFCReposo;
-
-        /// <summary>
-        /// Control txbTAReposo.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbTAReposo;
-
-        /// <summary>
-        /// Control txbFCMax.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbFCMax;
+        protected global::System.Web.UI.WebControls.TextBox txbObservaciones;
 
         /// <summary>
         /// Control btnAgregar.

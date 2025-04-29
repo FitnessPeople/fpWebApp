@@ -41,81 +41,6 @@
             var element2 = document.querySelector("#medico");
             element2.classList.remove("collapse");
         }
-
-        function calculateIMC() {
-
-            var peso = document.getElementById("txbPeso").value;
-            var talla = document.getElementById("txbTalla").value;
-
-            if (peso !== '' && talla !== '') {
-
-                peso = parseFloat(peso);
-                talla = parseFloat(talla);
-
-                var peso_esperado = 0.75 * (talla - 150) + 50;
-
-                talla = talla / 100;
-
-                var tallax2 = talla * talla;
-                var imc = peso / tallax2;
-
-                imc = imc.toFixed(4);
-
-                document.getElementById("txbIMC").value = imc;
-                document.getElementById("txbPesoEsperado").value = peso_esperado;
-            }
-        }
-
-        function calculatePorcGraso() {
-
-            var peso = document.getElementById("txbPeso").value;
-            var talla = document.getElementById("txbTalla").value;
-
-            var tricipital = document.getElementById("txbPliegueTricipital").value;
-            var iliocrestal = document.getElementById("txbPliegueIliocrestal").value;
-            var abdominal = document.getElementById("txbPliegueAbdominal").value;
-            var subescapular = document.getElementById("txbPliegueSubescapular").value;
-            var muslo = document.getElementById("txbPliegueMuslo").value;
-            var pantorrilla = document.getElementById("txbPlieguePantorrilla").value;
-
-            if (tricipital !== '' && iliocrestal !== '' && abdominal !== '' && subescapular !== '' && muslo !== '' && pantorrilla !== '') {
-                var pliegues = (parseFloat(tricipital) + parseFloat(iliocrestal) + parseFloat(abdominal) + parseFloat(subescapular) + parseFloat(muslo) + parseFloat(pantorrilla));
-            }
-
-            var edad = document.getElementById("hfEdad").value;
-            var genero = document.getElementById("hfGenero").value;
-
-            peso = parseFloat(peso);
-            talla = parseFloat(talla);
-
-            talla = talla / 100;
-
-            //Femenino
-            if (genero == '2') {
-                var densidad_corporal = 0.146 * pliegues; //43.8
-                var porc_graso = 4.56 + densidad_corporal; //48.36
-            }
-
-            //Masculino
-            if (genero == '1') {
-                var densidad_corporal = 0.097 * pliegues;
-                var porc_graso = 3.64 + densidad_corporal;
-            }
-
-            var peso_oseo = peso * 0.15; //11.805
-            var decimal = porc_graso / 100;  //0.4836
-            var peso_graso = peso * decimal;  //38.05932
-            var porc_muscular = peso - peso_oseo - peso_graso; //28.83568
-            var peso_magro = peso - peso_graso; //
-            var fce = 208.75 - (0.73 * edad);
-
-            document.getElementById("txbPorcGrasa").value = porc_graso.toFixed(2);
-            document.getElementById("txbPorcMuscular").value = porc_muscular.toFixed(2);
-            document.getElementById("txbFCETanaka").value = fce.toFixed(2);
-
-            document.getElementById("txbPesoGraso").value = peso_graso.toFixed(2);
-            document.getElementById("txbPesoMagro").value = peso_magro.toFixed(2);
-        }
     </script>
 </head>
 
@@ -236,11 +161,15 @@
                                         <td><strong><i class="fa fa-building"></i></strong> Sede:
                         <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
                                         <td><strong><i class="fa fa-venus-mars"></i></strong> Género:
-                                            <asp:Literal ID="ltGenero" runat="server"></asp:Literal></td>
+                                            <asp:Literal ID="ltGenero" runat="server"></asp:Literal>
+                                            <input id="hfGenero" type="hidden" runat="server" />
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td><strong><i class="fa fa-cake"></i></strong>
-                                            <asp:Literal ID="ltCumple" runat="server"></asp:Literal></td>
+                                            <asp:Literal ID="ltCumple" runat="server"></asp:Literal>
+                                            <input id="hfEdad" type="hidden" runat="server" />
+                                        </td>
                                         <td><strong><i class="fa fa-house-medical"></i></strong> EPS:
                                             <asp:Literal ID="ltEPS" runat="server"></asp:Literal></td>
                                     </tr>
@@ -465,7 +394,7 @@
                                                 <div class="widget style1 bg-success">
                                                     <div class="row vertical-align">
                                                         <div class="col-xs-3">
-                                                            <i class="fa fa-heart fa-2x"></i>
+                                                            <i class="fa fa-heart-pulse fa-2x"></i>
                                                         </div>
                                                         <div class="col-xs-9 text-right">
                                                             <h3 class="font-bold">Riesgo cardiovascular y signos vitales</h3>
@@ -476,9 +405,9 @@
 
                                             <div class="col-sm-12">
                                                 <div class="row">
-                                                    <div class="col-sm-3">
+                                                    <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label class="small">Clasificación de riesgo cardiovascular (AHA)</label>
+                                                            <label>Clasificación de riesgo cardiovascular (AHA)</label>
                                                             <asp:DropDownList ID="ddlClasificacionRiesgo" runat="server" CssClass="form-control input-sm">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                 <asp:ListItem Text="A1" Value="66"></asp:ListItem>
@@ -490,216 +419,24 @@
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-3">
+                                                    <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>FC Reposo (PPM)</label>
-                                                            <asp:TextBox ID="txbFCReposo" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbFCReposo" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-3">
+                                                    <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>TA Reposo (MMHG)</label>
-                                                            <asp:TextBox ID="txbTAReposo" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbTAReposo" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-3">
+                                                    <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>FC Max (PPM)</label>
-                                                            <asp:TextBox ID="txbFCMax" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbFCMax" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-12">
-                                                <div class="widget style1 bg-success">
-                                                    <div class="row vertical-align">
-                                                        <div class="col-xs-3">
-                                                            <i class="fa fa-person-arrow-up-from-line fa-2x"></i>
-                                                        </div>
-                                                        <div class="col-xs-9 text-right">
-                                                            <h3 class="font-bold">Antropometría</h3>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-12">
-                                                <div class="row">
-
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Peso en Kg</label>
-                                                            <asp:TextBox ID="txbPeso" CssClass="form-control" runat="server" onkeyup="calculateIMC(this)"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Talla en cms</label>
-                                                            <asp:TextBox ID="txbTalla" CssClass="form-control" runat="server" onkeyup="calculateIMC(this)"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Indice de Masa Corporal IMC</label>
-                                                            <asp:TextBox ID="txbIMC" CssClass="form-control" runat="server"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                                <div class="row">
-
-                                                    <div class="col-sm-3">
-                                                        <div class="form-group">
-                                                            <label>Perímetro de Cintura (cms)</label>
-                                                            <asp:TextBox ID="txbPerimCintura" CssClass="form-control" runat="server"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <div class="form-group">
-                                                            <label>Perímetro de Cadera (cms)</label>
-                                                            <asp:TextBox ID="txbPerimCadera" CssClass="form-control" runat="server"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <div class="form-group">
-                                                            <label>Perímetro de Abdomen (cms)</label>
-                                                            <asp:TextBox ID="txbPerimAbdomen" CssClass="form-control" runat="server"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <div class="form-group">
-                                                            <label>Perímetro de Pecho (cms)</label>
-                                                            <asp:TextBox ID="txbPerimPecho" CssClass="form-control" runat="server"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                                <div class="row">
-
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Perímetro de Muslo (cms)</label>
-                                                            <asp:TextBox ID="txbPerimMuslo" CssClass="form-control" runat="server"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Perímetro de Pantorrilla (cms)</label>
-                                                            <asp:TextBox ID="txbPerimPantorrilla" CssClass="form-control input-sm" runat="server"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Perímetro de Brazo (cms)</label>
-                                                            <asp:TextBox ID="txbPerimBrazo" CssClass="form-control" runat="server"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Pliegue Tricipital</label>
-                                                            <asp:TextBox ID="txbPliegueTricipital" CssClass="form-control input-sm" runat="server" onkeyup="calculatePorcGraso(this)"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Pliegue IlioCrestal</label>
-                                                            <asp:TextBox ID="txbPliegueIliocrestal" CssClass="form-control input-sm" runat="server" onkeyup="calculatePorcGraso(this)"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Pliegue Abdominal</label>
-                                                            <asp:TextBox ID="txbPliegueAbdominal" CssClass="form-control" runat="server" onkeyup="calculatePorcGraso(this)"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Pliegue Subescapular</label>
-                                                            <asp:TextBox ID="txbPliegueSubescapular" CssClass="form-control input-sm" runat="server" onkeyup="calculatePorcGraso(this)"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Pliegue Muslo</label>
-                                                            <asp:TextBox ID="txbPliegueMuslo" CssClass="form-control input-sm" runat="server" onkeyup="calculatePorcGraso(this)"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Pliegue Pantorrilla</label>
-                                                            <asp:TextBox ID="txbPlieguePantorrilla" CssClass="form-control input-sm" runat="server" onkeyup="calculatePorcGraso(this)"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Porcentaje Graso (%)</label>
-                                                            <asp:TextBox ID="txbPorcGrasa" CssClass="form-control input-sm" runat="server"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Porcentaje Muscular (%)</label>
-                                                            <asp:TextBox ID="txbPorcMuscular" CssClass="form-control input-sm" runat="server"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>FCE (Tanaka)</label>
-                                                            <asp:TextBox ID="txbFCETanaka" CssClass="form-control input-sm" runat="server"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Peso esperado (Kg)</label>
-                                                            <asp:TextBox ID="txbPesoEsperado" CssClass="form-control input-sm" runat="server"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Peso graso (Kg)</label>
-                                                            <asp:TextBox ID="txbPesoGraso" CssClass="form-control input-sm" runat="server"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Peso magro (Kg)</label>
-                                                            <asp:TextBox ID="txbPesoMagro" CssClass="form-control input-sm" runat="server"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                                <div class="row">
-
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Diagnóstico</label>
-                                                            <asp:TextBox ID="txbDiagnostico" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Plan de manejo</label>
-                                                            <asp:TextBox ID="txbPlanManejo" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Recomendaciones</label>
-                                                            <asp:TextBox ID="txbRecomendaciones" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Observaciones</label>
-                                                            <asp:TextBox ID="txbObservaciones" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-
                                                 </div>
                                             </div>
 
@@ -751,94 +488,19 @@
     <script>
         $("#form").validate({
             rules: {
-                txbPeso: {
+                ddlClasificacionRiesgo: {
                     required: true,
                 },
-                txbTalla: {
+                txbFCReposo: {
                     required: true,
                 },
-                txbIMC: {
+                txbTAReposo: {
                     required: true,
                 },
-                txbPerimCintura: {
-                    required: true
-                },
-                txbPerimCadera: {
+                txbFCMax: {
                     required: true,
-                },
-                txbPerimAbdomen: {
-                    required: true,
-                },
-                txbPerimPecho: {
-                    required: true,
-                },
-                txbPerimMuslo: {
-                    required: true,
-                },
-                txbPerimPantorrilla: {
-                    required: true,
-                },
-                txbPerimBrazo: {
-                    required: true,
-                },
-                txbPliegueTricipital: {
-                    required: true,
-                },
-                txbPliegueIliocrestal: {
-                    required: true
-                },
-                txbPliegueAbdominal: {
-                    required: true
-                },
-                txbPliegueSubescapular: {
-                    required: true
-                },
-                txbPliegueMuslo: {
-                    required: true
-                },
-                txbPlieguePantorrilla: {
-                    required: true
-                },
-                txbPorcGrasa: {
-                    required: true
-                },
-                txbPorcMuscular: {
-                    required: true
-                },
-                txbFCETanaka: {
-                    required: true
-                },
-                txbPesoEsperado: {
-                    required: true
-                },
-                txbPesoGraso: {
-                    required: true
-                },
-                txbPesoMagro: {
-                    required: true
-                },
-                txbDiagnostico: {
-                    required: true
-                },
-                txbPlanManejo: {
-                    required: true
-                },
-                txbRecomendaciones: {
-                    required: true
-                },
-                txbObservaciones: {
-                    required: true
                 },
             },
-            messages: {
-                txbIMC: "*",
-                txbPorcGrasa: "*",
-                txbPorcMuscular: "*",
-                txbFCETanaka: "*",
-                txbPesoEsperado: "*",
-                txbPesoGraso: "*",
-                txbPesoMagro: "*",
-            }
         });
     </script>
 

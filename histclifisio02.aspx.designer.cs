@@ -11,7 +11,7 @@ namespace fpWebApp
 {
 
 
-    public partial class verhistoriaclinica
+    public partial class histclifisio02
     {
 
         /// <summary>
@@ -141,6 +141,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltGenero;
 
         /// <summary>
+        /// Control hfGenero.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden hfGenero;
+
+        /// <summary>
         /// Control ltCumple.
         /// </summary>
         /// <remarks>
@@ -148,6 +157,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltCumple;
+
+        /// <summary>
+        /// Control hfEdad.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden hfEdad;
 
         /// <summary>
         /// Control ltEPS.
@@ -195,238 +213,202 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlForm form;
 
         /// <summary>
-        /// Control ScriptManager1.
+        /// Control txbPeso.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.ScriptManager ScriptManager1;
+        protected global::System.Web.UI.WebControls.TextBox txbPeso;
 
         /// <summary>
-        /// Control txbMedicinaPrepagada.
+        /// Control txbTalla.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbMedicinaPrepagada;
+        protected global::System.Web.UI.WebControls.TextBox txbTalla;
 
         /// <summary>
-        /// Control ddlObjetivo.
+        /// Control txbIMC.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlObjetivo;
+        protected global::System.Web.UI.WebControls.TextBox txbIMC;
 
         /// <summary>
-        /// Control txbDescripcionObjetivo.
+        /// Control txbPerimCintura.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbDescripcionObjetivo;
+        protected global::System.Web.UI.WebControls.TextBox txbPerimCintura;
 
         /// <summary>
-        /// Control txbRemision.
+        /// Control txbPerimCadera.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbRemision;
+        protected global::System.Web.UI.WebControls.TextBox txbPerimCadera;
 
         /// <summary>
-        /// Control ddlTipoConsulta.
+        /// Control txbPerimAbdomen.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlTipoConsulta;
+        protected global::System.Web.UI.WebControls.TextBox txbPerimAbdomen;
 
         /// <summary>
-        /// Control txbMotivoConsulta.
+        /// Control txbPerimPecho.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbMotivoConsulta;
+        protected global::System.Web.UI.WebControls.TextBox txbPerimPecho;
 
         /// <summary>
-        /// Control txbAnteFamiliares.
+        /// Control txbPerimMuslo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbAnteFamiliares;
+        protected global::System.Web.UI.WebControls.TextBox txbPerimMuslo;
 
         /// <summary>
-        /// Control txbAntePatologico.
+        /// Control txbPerimPantorrilla.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbAntePatologico;
+        protected global::System.Web.UI.WebControls.TextBox txbPerimPantorrilla;
 
         /// <summary>
-        /// Control txbAnteQuirurgico.
+        /// Control txbPerimBrazo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbAnteQuirurgico;
+        protected global::System.Web.UI.WebControls.TextBox txbPerimBrazo;
 
         /// <summary>
-        /// Control txbAnteTraumatologico.
+        /// Control txbPliegueTricipital.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbAnteTraumatologico;
+        protected global::System.Web.UI.WebControls.TextBox txbPliegueTricipital;
 
         /// <summary>
-        /// Control txbAnteFarmacologico.
+        /// Control txbPliegueIliocrestal.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbAnteFarmacologico;
+        protected global::System.Web.UI.WebControls.TextBox txbPliegueIliocrestal;
 
         /// <summary>
-        /// Control txbAnteActividadFisica.
+        /// Control txbPliegueAbdominal.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbAnteActividadFisica;
+        protected global::System.Web.UI.WebControls.TextBox txbPliegueAbdominal;
 
         /// <summary>
-        /// Control txbAnteToxicologico.
+        /// Control txbPliegueSubescapular.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbAnteToxicologico;
+        protected global::System.Web.UI.WebControls.TextBox txbPliegueSubescapular;
 
         /// <summary>
-        /// Control txbAnteHospitalario.
+        /// Control txbPliegueMuslo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbAnteHospitalario;
+        protected global::System.Web.UI.WebControls.TextBox txbPliegueMuslo;
 
         /// <summary>
-        /// Control txbAnteGinecoObstetricio.
+        /// Control txbPlieguePantorrilla.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbAnteGinecoObstetricio;
+        protected global::System.Web.UI.WebControls.TextBox txbPlieguePantorrilla;
 
         /// <summary>
-        /// Control txbFum.
+        /// Control txbPorcGrasa.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbFum;
+        protected global::System.Web.UI.WebControls.TextBox txbPorcGrasa;
 
         /// <summary>
-        /// Control rblFuma.
+        /// Control txbPorcMuscular.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblFuma;
+        protected global::System.Web.UI.WebControls.TextBox txbPorcMuscular;
 
         /// <summary>
-        /// Control txbCigarrillos.
+        /// Control txbFCETanaka.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbCigarrillos;
+        protected global::System.Web.UI.WebControls.TextBox txbFCETanaka;
 
         /// <summary>
-        /// Control rblToma.
+        /// Control txbPesoEsperado.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblToma;
+        protected global::System.Web.UI.WebControls.TextBox txbPesoEsperado;
 
         /// <summary>
-        /// Control txbBebidas.
+        /// Control txbPesoGraso.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbBebidas;
+        protected global::System.Web.UI.WebControls.TextBox txbPesoGraso;
 
         /// <summary>
-        /// Control rblSedentarismo.
+        /// Control txbPesoMagro.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblSedentarismo;
-
-        /// <summary>
-        /// Control rblDiabetes.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblDiabetes;
-
-        /// <summary>
-        /// Control rblColesterol.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblColesterol;
-
-        /// <summary>
-        /// Control rblTrigliceridos.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblTrigliceridos;
-
-        /// <summary>
-        /// Control rblHTA.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblHTA;
+        protected global::System.Web.UI.WebControls.TextBox txbPesoMagro;
 
         /// <summary>
         /// Control btnAgregar.
@@ -436,15 +418,6 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAgregar;
-
-        /// <summary>
-        /// Control btnContinuar.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnContinuar;
 
         /// <summary>
         /// Control footer1.
