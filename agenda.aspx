@@ -22,8 +22,8 @@
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
-    <link href="css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet" />
-    <link href="css/plugins/fullcalendar/fullcalendar.print.css" rel='stylesheet' media='print' />
+    <%--<link href="css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet" />
+    <link href="css/plugins/fullcalendar/fullcalendar.print.css" rel='stylesheet' media='print' />--%>
 
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
 
@@ -293,6 +293,9 @@
                                                     <a class="close-link">
                                                         <i class="fa fa-times"></i>
                                                     </a>--%>
+                                                    <a class="fullscreen-link" onclick="calendar.updateSize();">
+                                                        <i class="fa fa-expand"></i>
+                                                    </a>
                                                     <span class="label label-success pull-right" style="color: #000;">Cita atendida</span>
                                                     <span class="label label-danger pull-right" style="color: #000;">Cita cancelada</span>
                                                     <span class="label label-warning pull-right" style="color: #000;">Cita asignada</span>
@@ -313,7 +316,7 @@
                                                     </div>
                                                 </div>
                                                 <hr />
-                                                <div id="calendar"></div>
+                                                <div id="calendar1"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -344,7 +347,8 @@
     <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
 
     <!-- Full Calendar -->
-    <script src="js/plugins/fullcalendar/fullcalendar.min.js"></script>
+    <%--<script src="js/plugins/fullcalendar/fullcalendar.min.js"></script>--%>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
 
     <!-- Date range picker -->
     <script src="js/plugins/daterangepicker/daterangepicker.js"></script>
@@ -528,6 +532,116 @@
                     jQuery('#modal-view-event').modal();
                 },
             });
+        });
+
+    </script>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar1');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                eventClick: function (info) {
+                    info.jsEvent.preventDefault();
+
+                    const fechainicial = new Date(info.event.start);
+                    fechainicial.setHours(fechainicial.getHours() + 5);
+
+                    const formatter1 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
+                    const formattedTime1 = formatter1.format(fechainicial);
+
+                    const formatterdia = new Intl.DateTimeFormat('en-US', { day: '2-digit' });
+                    const formatteddiaini = formatterdia.format(fechainicial);
+
+                    const formattermes = new Intl.DateTimeFormat('es-US', { month: 'long' });
+                    const formattedmesini = formattermes.format(fechainicial)[0].toUpperCase() + formattermes.format(fechainicial).substring(1);
+
+                    const fechafinal = new Date(info.event.end);
+                    fechafinal.setHours(fechafinal.getHours() + 5);
+                    const formatter2 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
+                    const formattedTime2 = formatter2.format(fechafinal);
+
+                    console.log(info.event.id);
+
+                    if (info.event.id) {
+                        //console.log(info.event.title);
+                        jQuery('.event-id').html(info.event.id);
+                        jQuery('.event-icon').html("<i class='fa fa-" + info.event.icon + "'></i>");
+                        jQuery('.event-title').html(info.event.title);
+                        jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />");
+                        jQuery('.event-description').html(info.event.description);
+                        var btn = document.getElementById("btnEliminar");
+                        btn.style.display = info.event.btnEliminar;
+                        jQuery('#modal-view-event').modal();   
+                    }
+                },
+                height: 700,
+                initialView: 'dayGridMonth',
+                firstDay: 1,
+                allDayText: 'Todo\r\nel día',
+                moreLinkContent: function (args) {
+                    return '+' + args.num + ' eventos más';
+                },
+                slotMinTime: '06:00',
+                slotMaxTime: '22:00',
+                //weekends: false,
+                //hiddenDays: [0],
+                //slotDuration: '00:25:00',
+                //slotLabelInterval: '00:30',
+                slotLabelFormat: {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    omitZeroMinute: false,
+                    meridiem: 'short'
+                },
+                locale: 'es',
+                buttonText: {
+                    prev: '',
+                    next: '',
+                    prevYear: 'Año anterior',
+                    nextYear: 'Año siguiente',
+                    year: 'Año',
+                    today: 'Hoy',
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Día',
+                    list: 'Lista',
+                    listWeek: 'Lista',
+                },
+                businessHours: true,
+                businessHours: [ // specify an array instead
+                    {
+                        daysOfWeek: [1, 2, 3, 4, 5], // Lunes, martes, miercoles, jueves y viernes
+                        startTime: '06:00',
+                        endTime: '21:00'
+                    },
+                    {
+                        daysOfWeek: [6], // Sabado
+                        startTime: '7:00',
+                        endTime: '18:00'
+                    }
+                ],
+                dayMaxEventRows: true, // for all non-TimeGrid views
+                views: {
+                    timeGrid: {
+                        dayMaxEventRows: 6 // adjust to 6 only for timeGridWeek/timeGridDay
+                    },
+                },
+                eventTimeFormat: { // like '14:30'
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                },
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+                <%=strEventos%>
+            });
+
+            calendar.render();
         });
 
     </script>
