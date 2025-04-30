@@ -165,36 +165,36 @@
                                             <p class="contact-type" style="margin-bottom: 10px;">
                                                 <i class="fa fa-envelope"></i><span><%# Eval("EmailContacto") %></span>
                                             </p>
-                                            <p><%# Eval("TipoContacto") %></p>
+                                            <p><%# Eval("IconoTipoAfiliado") %>  <%# Eval("NombreTipoAfiliado") %></p>
                                             <p>Mi objetivo es <%# Eval("Objetivo") %></p>
                                         </div>
                                     </div>
 
-                              <%--      <div class="client-detail" style="margin-bottom: 0; padding-bottom: 0;">--%>
-                                       <%-- <div class="full-height-scroll" style="max-height: none; overflow: visible;">--%>
-                                            <ul class="list-group clear-list" runat="server"
-                                                visible='<%# (Eval("Estado") != null && Eval("idEstadoCRM").ToString() != "3" && Eval("idEstadoCRM").ToString() != "4") %>'>
-                                                <li class="list-group-item fist-item">
-                                                    <div style="display: flex; flex-direction: column; gap: 5px;">
-                                                        <div style="display: flex; align-items: center; flex-wrap: wrap;">
-                                                            <i class="fa fa-phone" style="margin-right: 5px; color: green;"></i>
-                                                            <strong>Por favor, contáctame al:</strong>
-                                                            <span style="margin-left: 5px;"></span>
-                                                        </div>
-                                                        <div style="margin-left: 20px;">
-                                                            <%# Eval("FechaProximoCon", "{0:dddd dd MMM yyyy hh:mm tt}") %>
-                                                        </div>
+                                    <%--      <div class="client-detail" style="margin-bottom: 0; padding-bottom: 0;">--%>
+                                    <div class="full-height-scroll" style="max-height: none; overflow: visible;">
+                                        <ul class="list-group clear-list" runat="server"
+                                            visible='<%# (Eval("NombreEstadoCRM") != null && Eval("idEstadoCRM").ToString() != "3" && Eval("idEstadoCRM").ToString() != "4") %>'>
+                                            <li class="list-group-item fist-item">
+                                                <div style="display: flex; flex-direction: column; gap: 5px;">
+                                                    <div style="display: flex; align-items: center; flex-wrap: wrap;">
+                                                        <i class="fa fa-phone" style="margin-right: 5px; color: green;"></i>
+                                                        <strong>Por favor, contáctame al:</strong>
+                                                        <span style="margin-left: 5px;"></span>
                                                     </div>
-                                                </li>
-                                            </ul>
-                                            <hr />
-                                            <strong>Notas</strong>
-                                            <p>Entreno por las noches, fines de semana. He completado 300 asistencias.</p>
-                                            <hr />
-                                            <strong>Historial de gestión del asesor</strong>
-                                            <%# Eval("historialHTML2") %>
-                                      <%--  </div>--%>
-                               <%--     </div>--%>
+                                                    <div style="margin-left: 20px;">
+                                                        <%# Eval("FechaProximoCon", "{0:dddd dd MMM yyyy hh:mm tt}") %>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <hr />
+                                        <strong>Notas</strong>
+                                        <p>Entreno por las noches, fines de semana. He completado 300 asistencias.</p>
+                                        <hr />
+                                        <strong>Historial de gestión del asesor</strong>
+                                        <%# Eval("historialHTML2") %>
+                                    </div>
+                                    <%--     </div>--%>
                                 </div>
                             </ItemTemplate>
                         </asp:Repeater>
@@ -296,11 +296,13 @@
                             <div class="col-xxl-2 col-lg-3 col-md-5 col-sm-6 col-xs-12">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Próximo a contactar</h5>
+                                        <h5>Planes para afiliado</h5>
                                     </div>
                                     <div class="ibox-content">
 
                                         <div class="tab-content">
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -345,17 +347,6 @@
 
     <!-- Jquery Validate -->
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
-
-    <%--    <script>
-        $("#form").validate({
-            rules: {
-                txbAfiliado: {
-                    required: true,
-                    minlength: 3
-                },
-            }
-        });
-    </script>--%>
 
     <script type="text/javascript">  
         $(document).ready(function () {

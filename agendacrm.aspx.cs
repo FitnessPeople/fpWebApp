@@ -39,7 +39,7 @@ namespace fpWebApp
                     {
                         ListaEstadosCRM();
                         CargarAgenda();
-                        CargarDatosContacto(6);                        
+                        CargarDatosContacto(7);                        
                     }
                     if (ViewState["Borrar"].ToString() == "1")
                     {
@@ -77,22 +77,6 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        //public string strOptionsStatus = string.Empty;
-        //private void CargarEstadosLead()
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.ConsultarEstadossCRM();
-
-        //    if (dt.Rows.Count > 0)
-        //    {
-        //        foreach (DataRow dr in dt.Rows)
-        //        {
-        //            strOptionsStatus += $"<option value='{dr["idEstadoCRM"]}'>{dr["NombreEstadoCRM"]}</option>";
-        //        }
-        //    }
-
-        //    dt.Dispose();
-        //}
 
         private void ListaEstadosCRM()
         {
@@ -119,50 +103,6 @@ namespace fpWebApp
             Session["contactoId"] = idContacto;
             rptContenido.DataSource = dt;
             rptContenido.DataBind();
-
-            if (respuesta)
-            {
-
-                if (dt.Rows.Count > 0)
-                {
-                    DataRow row = dt.Rows[0];
-
-                    //txbNombreContacto.Value = row["NombreContacto"].ToString();
-                    //txbNombreContacto.Disabled = true;
-                    //txbTelefonoContacto.Disabled = true;
-                    //ddlEmpresa.Enabled = false;
-                    //txbFechaPrim.Disabled = true;
-                    //txbCorreoContacto.Disabled = true;
-                    //txbValorPropuesta.Enabled = false;
-                    //ArchivoPropuesta.Disabled = true;
-                    //string telefono = Convert.ToString(row["TelefonoContacto"]);
-                    //if (!string.IsNullOrEmpty(telefono) && telefono.Length == 10)
-                    //{
-                    //    txbTelefonoContacto.Value = $"{telefono.Substring(0, 3)} {telefono.Substring(3, 3)} {telefono.Substring(6, 4)}";
-                    //}
-                    //else
-                    //{
-                    //    txbTelefonoContacto.Value = row["TelefonoContacto"].ToString();
-                    //}
-                    //txbCorreoContacto.Value = row["EmailContacto"].ToString();
-                    //if (row["idEmpresaCRM"].ToString() != "")
-                    //    ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaCRM"].ToString())));
-                    //else
-                    //    ddlEmpresa.SelectedItem.Value = "0";
-
-                    //ddlStatusLead.SelectedIndex = Convert.ToInt32(ddlStatusLead.Items.IndexOf(ddlStatusLead.Items.FindByValue(dt.Rows[0]["idEstadoCRM"].ToString())));
-                    //txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
-                    //txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
-                    //int ValorPropuesta = Convert.ToInt32(dt.Rows[0]["ValorPropuesta"]);
-                    //txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
-                    ////txaObservaciones.Value = row["observaciones"].ToString().Trim();
-                }
-            }
-            else
-            {
-                DataRow row = dt.Rows[0];
-                //txbNombreContacto.Value = row["Error"].ToString(); ;
-            }
         }
 
 
@@ -184,17 +124,15 @@ namespace fpWebApp
                     _strEventos += "start: '" + dt.Rows[i]["FechaProximoCon1"].ToString() + "',\r\n";
                     _strEventos += "end: '" + dt.Rows[i]["FechaProximoCon1"].ToString() + "',\r\n";
                     _strEventos += "idEstadoCRM: '" + dt.Rows[i]["idEstadoCRM"].ToString() + "',\r\n";
-                    //_strEventos += "className: 'bg-primary',\r\n";
 
                     if (dt.Rows[i]["idContacto"].ToString() != "")
                     {
-                        _strEventos += "color: '#F8AC59',\r\n";
-                        //_strEventos += "description: 'Cita asignada: " + dt.Rows[i]["NombreContacto"].ToString() + " (" + dt.Rows[i]["TelefonoContacto"].ToString() + ")',\r\n";
+                        _strEventos += "color: '" + dt.Rows[i]["ColorHexaCRM"].ToString() + "',\r\n";
                         _strEventos += "btnAsignar: 'none',\r\n";
                     }
                     else
                     {
-                        _strEventos += "color: '#1ab394',\r\n";
+                        _strEventos += "color: '##198754',\r\n";
                         _strEventos += "description: 'Agenda disponible.',\r\n";
                         _strEventos += "btnAsignar: 'inline',\r\n";
                     }
@@ -363,28 +301,10 @@ namespace fpWebApp
             return eventos;
         }
 
-        protected void ddlEspecialidad_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            CargarAgenda();
-        }
-
-        //protected void btnAfiliado_Click(object sender, EventArgs e)
+        //protected void ddlEspecialidad_SelectedIndexChanged(object sender, EventArgs e)
         //{
-        //    string[] strDocumento = txbAfiliado.Text.ToString().Split('-');
-        //    string strQuery = "SELECT * FROM Afiliados a " +
-        //        "LEFT JOIN Sedes s ON a.idSede = s.idSede " +
-        //        "WHERE DocumentoAfiliado = '" + strDocumento[0].Trim() + "' ";
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.TraerDatos(strQuery);
-
-        //    if (dt.Rows.Count > 0)
-        //    {
-        //        hfIdAfiliado.Value = dt.Rows[0]["idAfiliado"].ToString();
-        //    }
-        //    dt.Dispose();
-
         //    CargarAgenda();
-        //    //btnAsignar.Visible = true;
         //}
+
     }
 }

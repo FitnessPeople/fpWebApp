@@ -535,7 +535,7 @@
                                                                             <i class="fa fa-envelope" style="margin-right: 5px;"></i>
                                                                             <span><%# Eval("EmailContacto") %></span>
                                                                         </p>
-                                                                        <p> <%# Eval("TipoContacto") %></p>                                                                    
+                                                                        <p> <%# Eval("NombreTipoAfiliado") %></p>                                                                    
                                                                         <p>Mi objetivo es  <%# Eval("Objetivo") %></p>
 
                                                                         <!-- Botón alineado a la derecha -->
@@ -552,7 +552,7 @@
                                                                 <div class="client-detail">
                                                                     <div class="full-height-scroll">
                                                                         <ul class="list-group clear-list" runat="server"
-                                                                            visible='<%# (Eval("Estado") != null && Eval("idEstadoCRM").ToString() != "3" && Eval("idEstadoCRM").ToString() != "4") %>'>
+                                                                            visible='<%# (Eval("NombreEstadoCRM") != null && Eval("idEstadoCRM").ToString() != "3" && Eval("idEstadoCRM").ToString() != "4") %>'>
                                                                             <li class="list-group-item fist-item">
                                                                                 <div style="display: flex; flex-direction: column; gap: 5px;">
                                                                                     <div style="display: flex; align-items: center; flex-wrap: wrap;">
