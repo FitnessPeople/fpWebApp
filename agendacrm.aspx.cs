@@ -20,6 +20,21 @@ namespace fpWebApp
         {
             if (!IsPostBack)
             {
+                //string eventTarget = Request["__EVENTTARGET"];
+                //string eventArgument = Request["__EVENTARGUMENT"];
+                //string contaco = "0";
+
+                //if (eventTarget == "MostrarDetalleContacto")
+                //{
+                //    int idContacto;
+                //    if (int.TryParse(eventArgument, out idContacto))
+                //    {
+                //        Session["contactoId"] = idContacto;
+                //        //CargarDatosContacto(idContacto);
+                //    }
+                //}
+
+
                 if (Session["idUsuario"] != null)
                 {
                     ValidarPermisos("Agendar cita");
@@ -39,7 +54,7 @@ namespace fpWebApp
                     {
                         ListaEstadosCRM();
                         CargarAgenda();
-                        CargarDatosContacto(7);                        
+                        CargarDatosContacto(3);                        
                     }
                     if (ViewState["Borrar"].ToString() == "1")
                     {
@@ -52,6 +67,12 @@ namespace fpWebApp
                     Response.Redirect("logout");
                 }
             }
+        }
+        protected void btnVerDetalle_Click(object sender, EventArgs e)
+        {
+            string id = Request["__EVENTARGUMENT"];
+            int idContacto = int.Parse(id);
+            // Cargar detalles
         }
 
         private void ValidarPermisos(string strPagina)
@@ -99,8 +120,8 @@ namespace fpWebApp
         {
             bool respuesta = false;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out respuesta);
-            Session["contactoId"] = idContacto;
+            DataTable dt = cg.ConsultarContactosCRMPorId( idContacto, out respuesta);
+           
             rptContenido.DataSource = dt;
             rptContenido.DataBind();
         }

@@ -140,89 +140,7 @@
         </div>
     </div>
 
-    <div id="modal-view-event" class="modal modal-top fade calendar-modal">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <h4 class="h4">
-                        <span class="event-icon weight-400 mr-3"></span>
-                        <span class="event-title"></span>
-                    </h4>
 
-                    <div class="tab-content">
-                        <asp:Repeater ID="rptContenido" runat="server">
-                            <ItemTemplate>
-                                <div id='<%# Eval("IdContacto") %>' class='tab-pane <%# Eval("IdContacto").ToString() == Session["contactoId"]?.ToString() ? "active" : "" %>' style="margin-bottom: 0; padding-bottom: 0;">
-                                    <div class="row m-b-lg clearfix">
-                                        <div class="col-lg-4 text-center">
-                                            <h2><%# Eval("NombreContacto") %></h2>
-                                            <div class="m-b-sm">
-                                                <img alt="image" class="img-circle" src="img/a3.jpg" style="width: 62px">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-8">
-                                            <strong>Acerca de mí</strong><br />
-                                            <p class="contact-type" style="margin-bottom: 10px;">
-                                                <i class="fa fa-envelope"></i><span><%# Eval("EmailContacto") %></span>
-                                            </p>
-                                            <p><%# Eval("IconoTipoAfiliado") %>  <%# Eval("NombreTipoAfiliado") %></p>
-                                            <p>Mi objetivo es <%# Eval("Objetivo") %></p>
-                                        </div>
-                                    </div>
-
-                                    <%--      <div class="client-detail" style="margin-bottom: 0; padding-bottom: 0;">--%>
-                                    <div class="full-height-scroll" style="max-height: none; overflow: visible;">
-                                        <ul class="list-group clear-list" runat="server"
-                                            visible='<%# (Eval("NombreEstadoCRM") != null && Eval("idEstadoCRM").ToString() != "3" && Eval("idEstadoCRM").ToString() != "4") %>'>
-                                            <li class="list-group-item fist-item">
-                                                <div style="display: flex; flex-direction: column; gap: 5px;">
-                                                    <div style="display: flex; align-items: center; flex-wrap: wrap;">
-                                                        <i class="fa fa-phone" style="margin-right: 5px; color: green;"></i>
-                                                        <strong>Por favor, contáctame al:</strong>
-                                                        <span style="margin-left: 5px;"></span>
-                                                    </div>
-                                                    <div style="margin-left: 20px;">
-                                                        <%# Eval("FechaProximoCon", "{0:dddd dd MMM yyyy hh:mm tt}") %>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <hr />
-                                        <strong>Notas</strong>
-                                        <p>Entreno por las noches, fines de semana. He completado 300 asistencias.</p>
-                                        <hr />
-                                        <strong>Historial de gestión del asesor</strong>
-                                        <%# Eval("historialHTML2") %>
-                                    </div>
-                                    <%--     </div>--%>
-                                </div>
-                            </ItemTemplate>
-                        </asp:Repeater>
-
-                    </div>
-
-                    <!-- Aquí se insertan dinámicamente el dropdown y textarea -->
-                    <div id="contenedorAdicional"></div>
-                    <div id="datosEvento" style="margin-top: 10px;"></div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" data-dismiss="modal"
-                        onclick="window.location.href='asignarcita.aspx?id=' + document.getElementById('event-id').innerHTML + '&idAfil=' + document.getElementById('hfIdAfiliado').value"
-                        id="btnAsignar">
-                        <i class='fa fa-calendar-plus m-r-sm'></i>Asignar
-                    </button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">
-                        <i class='fa fa-times m-r-sm'></i>Cerrar
-                    </button>
-                </div>
-
-                <!-- Ocultos -->
-                <div class="event-id text-hide" id="event-id"></div>
-                <div class="event-allday text-hide" id="event-allday"></div>
-            </div>
-        </div>
-    </div>
 
 
     </div>
@@ -268,9 +186,99 @@
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
                     <form runat="server" id="form">
-                        <%--<asp:ScriptManager ID="sm1" runat="server"></asp:ScriptManager>
+
+                        <asp:HiddenField ID="hdnIdContacto" runat="server" />
+                        <asp:Button ID="btnVerDetalle" runat="server" OnClick="btnVerDetalle_Click" Style="display:none" />
+
+                        <asp:ScriptManager ID="sm1" runat="server"></asp:ScriptManager>
                         <asp:UpdatePanel ID="upAgendarCita" runat="server">
-                            <ContentTemplate>--%>
+                            <ContentTemplate>
+
+                        <div id="modal-view-event" class="modal modal-top fade calendar-modal">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <h4 class="h4">
+                                            <span class="event-icon weight-400 mr-3"></span>
+                                            <span class="event-title"></span>
+                                        </h4>
+
+                                        <div class="tab-content">
+                                            <asp:Repeater ID="rptContenido" runat="server">
+                                                <ItemTemplate>
+                                                    <div id='<%# Eval("IdContacto") %>' class='tab-pane <%# Eval("IdContacto").ToString() == Session["contactoId"]?.ToString() ? "active" : "" %>' style="margin-bottom: 0; padding-bottom: 0;">
+                                                        <div class="row m-b-lg clearfix">
+                                                            <div class="col-lg-4 text-center">
+                                                                <h2><%# Eval("NombreContacto") %></h2>
+                                                                <div class="m-b-sm">
+                                                                    <img alt="image" class="img-circle" src="img/a3.jpg" style="width: 62px">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                <strong>Acerca de mí</strong><br />
+                                                                <p class="contact-type" style="margin-bottom: 10px;">
+                                                                    <i class="fa fa-envelope"></i><span><%# Eval("EmailContacto") %></span>
+                                                                </p>
+                                                                <p><%# Eval("IconoTipoAfiliado") %>  <%# Eval("NombreTipoAfiliado") %></p>
+                                                                <p>Mi objetivo es <%# Eval("Objetivo") %></p>
+                                                            </div>
+                                                        </div>
+
+                                                        <%--      <div class="client-detail" style="margin-bottom: 0; padding-bottom: 0;">--%>
+                                                        <div class="full-height-scroll" style="max-height: none; overflow: visible;">
+                                                            <ul class="list-group clear-list" runat="server"
+                                                                visible='<%# (Eval("NombreEstadoCRM") != null && Eval("idEstadoCRM").ToString() != "3" && Eval("idEstadoCRM").ToString() != "4") %>'>
+                                                                <li class="list-group-item fist-item">
+                                                                    <div style="display: flex; flex-direction: column; gap: 5px;">
+                                                                        <div style="display: flex; align-items: center; flex-wrap: wrap;">
+                                                                            <i class="fa fa-phone" style="margin-right: 5px; color: green;"></i>
+                                                                            <strong>Por favor, contáctame al:</strong>
+                                                                            <span style="margin-left: 5px;"></span>
+                                                                        </div>
+                                                                        <div style="margin-left: 20px;">
+                                                                            <%# Eval("FechaProximoCon", "{0:dddd dd MMM yyyy hh:mm tt}") %>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                            <hr />
+                                                            <strong>Notas</strong>
+                                                            <p>Entreno por las noches, fines de semana. He completado 300 asistencias.</p>
+                                                            <hr />
+                                                            <strong>Historial de gestión del asesor</strong>
+                                                            <%# Eval("historialHTML2") %>
+                                                        </div>
+                                                        <%--     </div>--%>
+                                                    </div>
+                                                </ItemTemplate>
+                                            </asp:Repeater>
+
+                                        </div>
+
+                                        <!-- Aquí se insertan dinámicamente el dropdown y textarea -->
+                                        <div id="contenedorAdicional"></div>
+                                        <div id="datosEvento" style="margin-top: 10px;"></div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-warning" data-dismiss="modal"
+                                            onclick="window.location.href='asignarcita.aspx?id=' + document.getElementById('event-id').innerHTML + '&idAfil=' + document.getElementById('hfIdAfiliado').value"
+                                            id="btnAsignar">
+                                            <i class='fa fa-calendar-plus m-r-sm'></i>Asignar
+                                        </button>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                            <i class='fa fa-times m-r-sm'></i>Cerrar
+                                        </button>
+                                    </div>
+
+                                    <!-- Ocultos -->
+                                    <div class="event-id text-hide" id="event-id"></div>
+                                    <div class="event-allday text-hide" id="event-allday"></div>
+                                </div>
+                            </div>
+                        </div>
+
+
                         <div class="row animated fadeInDown" id="divContenido" runat="server">
 
                             <%-- Zona del calendario--%>
@@ -301,16 +309,14 @@
                                     <div class="ibox-content">
 
                                         <div class="tab-content">
-
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                         </div>
-                        <%--</ContentTemplate>
-                        </asp:UpdatePanel>--%>
+                        </ContentTemplate>
+                        </asp:UpdatePanel>
                     </form>
                     <%--Fin Contenido!!!!--%>
                 </div>
@@ -441,6 +447,8 @@
                 <%=strEventos%>
                 eventClick: function (event, jsEvent, view) {
                     // ...
+                    jQuery('.event-id').html(event.id);
+                    jQuery('.event-title').html('Contacto: ' + event.title);
 
                     var selectHtml = "<label for='ddlStatusLead'>Estatus Lead</label><select id='ddlStatusLead' class='form-control'>";
                     estadosLead.forEach(function (estado) {
@@ -482,6 +490,9 @@
                     }
 
                     document.getElementById("btnAsignar").style.display = event.btnAsignar;
+                    __doPostBack('<%= btnVerDetalle.ClientID %>', event.id);
+
+                    //__doPostBack('MostrarDetalleContacto', event.id);
                     jQuery('#modal-view-event').modal();
                 }
                 ,
