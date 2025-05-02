@@ -98,7 +98,7 @@ namespace fpWebApp
 
                     _strEventos += "{\r\n";
                     _strEventos += "id: '" + dt.Rows[i]["idDisponibilidad"].ToString() + "',\r\n";
-                    _strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
+                    //_strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
                     //_strEventos += "start: '" + dt.Rows[i]["FechaHoraIni"].ToString() + "',\r\n";
                     _strEventos += "start: '" + strFechaHoraIni + "',\r\n";
                     //_strEventos += "end: '" + dt.Rows[i]["FechaHoraFin"].ToString() + "',\r\n";
@@ -107,21 +107,35 @@ namespace fpWebApp
 
                     if (dt.Rows[i]["idAfiliado"].ToString() != "")
                     {
-                        _strEventos += "color: '#F8AC59',\r\n";
-                        _strEventos += "description: 'Cita asignada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                        _strEventos += "btnEliminar: 'none',\r\n";
+                        if (dt.Rows[i]["Cancelada"].ToString() != "0")
+                        {
+                            _strEventos += "color: '#ed5565',\r\n"; //danger
+                            _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                            _strEventos += "description: 'Cita cancelada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                            _strEventos += "icon: 'id-card',\r\n";
+                            _strEventos += "btnEliminar: 'none',\r\n";
+                        }
+                        else
+                        {
+                            _strEventos += "color: '#F8AC59',\r\n"; //warning
+                            _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                            _strEventos += "description: 'Cita asignada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                            _strEventos += "icon: 'id-card',\r\n";
+                            _strEventos += "btnEliminar: 'none',\r\n";
+                        }
                     }
                     else
                     {
+                        _strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
                         _strEventos += "color: '#1ab394',\r\n";
                         _strEventos += "description: 'Cita disponible.',\r\n";
+                        _strEventos += "icon: 'user-doctor',\r\n";
                         _strEventos += "btnEliminar: 'inline',\r\n";
                     }
 
                     //_strEventos += "color: '#DBADFF',\r\n";
                     //_strEventos += "todoeldia: 0,\r\n";
                     _strEventos += "allDay: false,\r\n";
-                    _strEventos += "holiday: false,\r\n";
                     _strEventos += "},\r\n";
                 }
             }

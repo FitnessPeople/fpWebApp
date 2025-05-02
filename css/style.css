@@ -1435,6 +1435,9 @@ button.dim:active:before {
     font-weight: 800;
     border-color: #000;
 }
+.fc-daygrid-event {
+    font-size: 0.75em;
+}
 .ui-calendar .fc-event-time,
 .ui-calendar .fc-event-title {
   color: #fff;

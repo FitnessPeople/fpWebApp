@@ -93,7 +93,20 @@ namespace fpWebApp
                     {
                         _strEventos += "{\r\n";
                         _strEventos += "id: '" + dt.Rows[i]["idDisponibilidad"].ToString() + "',\r\n";
-                        _strEventos += "title: `👤" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "\r\nSede: " + dt.Rows[i]["NombreSede"].ToString() + "`,\r\n";
+
+                        if(dt.Rows[i]["Genero"].ToString() == "Masculino")
+                        {
+                            _strEventos += "title: `👨 " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "\r\nSede: " + dt.Rows[i]["NombreSede"].ToString() + "`,\r\n";
+                        }
+                        if (dt.Rows[i]["Genero"].ToString() == "Femenino")
+                        {
+                            _strEventos += "title: `👩‍🦰 " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "\r\nSede: " + dt.Rows[i]["NombreSede"].ToString() + "`,\r\n";
+                        }
+                        if (dt.Rows[i]["Genero"].ToString() == "Otro")
+                        {
+                            _strEventos += "title: `🤷‍♀️ " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "\r\nSede: " + dt.Rows[i]["NombreSede"].ToString() + "`,\r\n";
+                        }
+
                         _strEventos += "start: '" + strFechaHoraIni + "',\r\n";
                         _strEventos += "end: '" + strFechaHoraFin + "',\r\n";
                         _strEventos += "color: '#F8AC59',\r\n";
@@ -106,7 +119,8 @@ namespace fpWebApp
                     {
                         _strEventos += "{\r\n";
                         _strEventos += "id: '" + dt.Rows[i]["idDisponibilidad"].ToString() + "',\r\n";
-                        _strEventos += "title: `👨‍⚕️" + dt.Rows[i]["NombreEmpleado"].ToString() + "\r\nSede: " + dt.Rows[i]["NombreSede"].ToString() + "`,\r\n";
+                        //_strEventos += "title: `👨‍⚕️" + dt.Rows[i]["NombreEmpleado"].ToString() + "\r\nSede: " + dt.Rows[i]["NombreSede"].ToString() + "`,\r\n";
+                        _strEventos += "title: `👨‍⚕ Disponible \r\nSede: " + dt.Rows[i]["NombreSede"].ToString() + "`,\r\n";
                         _strEventos += "start: '" + strFechaHoraIni + "',\r\n";
                         _strEventos += "end: '" + strFechaHoraFin + "',\r\n";
                         _strEventos += "color: '#1ab394',\r\n";

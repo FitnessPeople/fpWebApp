@@ -22,9 +22,6 @@
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
-    <%--<link href="css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet" />
-    <link href="css/plugins/fullcalendar/fullcalendar.print.css" rel='stylesheet' media='print' />--%>
-
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
 
     <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
@@ -94,7 +91,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
-                    <h4 class="h4"><span class="event-icon weight-400 mr-3"></span><span class="event-title"></span></h4>
+                    <h4 class="h4"><span class="event-icon mr-3 fa-2x"></span> <span class="event-title"></span></h4>
                     <div class="event-body"></div>
                     <div class="event-description"></div>
                     <div class="event-id text-hide" id="event-id"></div>
@@ -151,35 +148,8 @@
 
                             <form runat="server" id="form">
                                 <div class="row animated fadeInDown" id="divContenido" runat="server">
-                                    <div class="col-xxl-3 col-lg-4 col-md-5 col-sm-6 col-xs-12">
-                                        <%--<div class="ibox float-e-margins">
-                                            <div class="ibox-title">
-                                                <h5>Agenda por sede</h5>
-                                                <div class="ibox-tools">
-                                                    <a class="collapse-link">
-                                                        <i class="fa fa-chevron-up"></i>
-                                                    </a>
-                                                    <a class="close-link">
-                                                        <i class="fa fa-times"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <div class="form-horizontal">
-                                                    <div class="form-group m-b-n-sm">
-                                                        <label class="col-sm-2 col-sm-2 control-label">Sede</label>
-                                                        <div class="col-sm-10">
-                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedes" runat="server"
-                                                                OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
-                                                                DataValueField="idSede" DataTextField="NombreSede"
-                                                                AutoPostBack="true" AppendDataBoundItems="true">
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>--%>
-
+                                    <%--<div class="col-xxl-3 col-lg-4 col-md-5 col-sm-6 col-xs-12">--%>
+                                    <div class="col-sm-12">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <h5>Agregar disponibilidad</h5>
@@ -193,45 +163,45 @@
                                                 </div>
                                             </div>
                                             <div class="ibox-content" id="divCrear" runat="server" visible="false">
-                                                <%--<div class="row">--%>
-                                                    <div class="form-group">
+                                                    
+                                                <div class="row">
+                                                    <div class="col-sm-6">
                                                         <label>Especialista:</label>
-                                                        <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEspecialistas" runat="server"
-                                                            DataValueField="DocumentoEmpleado" DataTextField="NombreCompletoProfesion"
-                                                            AppendDataBoundItems="true">
-                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                        </asp:DropDownList>
+                                                        <div class="form-group">        
+                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEspecialistas" runat="server"
+                                                                DataValueField="DocumentoEmpleado" DataTextField="NombreCompletoProfesion"
+                                                                AppendDataBoundItems="true">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
                                                     </div>
-                                                    <%--<div class="form-horizontal">--%>
-                                                    <div class="form-group">
-                                                        <%--<label class="col-sm-2 control-label">Sede:</label>--%>
+                                                    <div class="col-sm-6">
                                                         <label>Sede:</label>
-                                                        <%--<div class="col-sm-10">--%>
-                                                        <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedesCita" runat="server"
-                                                            DataValueField="idSede" DataTextField="NombreSede" AppendDataBoundItems="true">
-                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                        </asp:DropDownList>
-                                                        <%--</div>--%>
+                                                        <div class="form-group">
+                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedesCita" runat="server"
+                                                                DataValueField="idSede" DataTextField="NombreSede" AppendDataBoundItems="true">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
                                                     </div>
-                                                    <%--</div>--%>
+                                                </div>
+
                                                     <div class="row">
-                                                        <div class="col-sm-6">
+                                                        <div class="col-sm-3">
                                                             <label>Fecha Inicial:</label>
                                                             <div class="form-group">
                                                                 <input type="text" class="form-control input-sm" id="txbFechaIni" name="txbFechaIni" runat="server">
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-6">
+                                                        <div class="col-sm-3">
                                                             <label>Fecha Final:</label>
                                                             <div class="form-group">
                                                                 <%--<span class="input-group-addon"><i class="fa fa-calendar-day"></i></span>--%>
                                                                 <input type="text" class="form-control input-sm" id="txbFechaFin" name="txbFechaFin" runat="server">
                                                             </div>
                                                         </div>
-                                                    </div>
                                                     
-                                                    <div class="row">
-                                                        <div class="col-sm-6 m-b-md">
+                                                        <div class="col-sm-3 m-b-md">
                                                             <label>Hora inicio:</label>
                                                             <div class="input-group clockpicker" data-autoclose="true">
                                                                 <input type="text" class="form-control input-sm" value="08:00" id="txbHoraIni" name="txbHoraIni" runat="server">
@@ -240,7 +210,7 @@
                                                                 </span>
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-6">
+                                                        <div class="col-sm-3">
                                                             <label>Hora final:</label>
                                                             <div class="input-group clockpicker" data-autoclose="true">
                                                                 <input type="text" class="form-control input-sm" value="12:00" id="txbHoraFin" name="txbHoraFin" runat="server">
@@ -252,8 +222,8 @@
                                                     </div>
                                                     <div class="form-horizontal">
                                                         <div class="form-group m-b-mb">
-                                                            <label class="col-sm-4">Duración cita:</label>
-                                                            <div class="col-sm-8">
+                                                            <label class="col-sm-3">Duración cita:</label>
+                                                            <div class="col-sm-3">
                                                                 <asp:DropDownList CssClass="form-control input-sm required" ID="ddlDuracion" runat="server"
                                                                     AppendDataBoundItems="true">
                                                                     <asp:ListItem Text="30 minutos" Value="30"></asp:ListItem>
@@ -261,28 +231,29 @@
                                                                     <asp:ListItem Text="45 minutos" Value="45"></asp:ListItem>
                                                                 </asp:DropDownList>
                                                             </div>
+                                                            <div class="col-sm-3">
+                                                                <label>Repetir:</label>
+                                                                <asp:CheckBoxList ID="cbDiasRepite" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="form-control input-sm">
+                                                                    <asp:ListItem Text="&nbsp;Lun" Value="1" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                                    <asp:ListItem Text="&nbsp;Mar" Value="2" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                                    <asp:ListItem Text="&nbsp;Mié" Value="3" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                                    <asp:ListItem Text="&nbsp;Jue" Value="4" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                                    <asp:ListItem Text="&nbsp;Vie" Value="5" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                                    <asp:ListItem Text="&nbsp;Sáb" Value="6" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                                </asp:CheckBoxList>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                                <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md m-b-lg pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label>Repetir:</label>
-                                                        <asp:CheckBoxList ID="cbDiasRepite" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="form-control input-sm">
-                                                            <asp:ListItem Text="&nbsp;Lun" Value="1" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                            <asp:ListItem Text="&nbsp;Mar" Value="2" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                            <asp:ListItem Text="&nbsp;Mié" Value="3" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                            <asp:ListItem Text="&nbsp;Jue" Value="4" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                            <asp:ListItem Text="&nbsp;Vie" Value="5" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                            <asp:ListItem Text="&nbsp;Sáb" Value="6" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                        </asp:CheckBoxList>
-                                                    </div>
-                                                    <div class="row">
-                                                        <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                                                        <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md m-b-lg pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
-                                                    </div>
-                                                <%--</div>--%>
+                                                    
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xxl-9 col-lg-8 col-md-7 col-sm-6 col-xs-12">
+                                    <%--<div class="col-xxl-9 col-lg-8 col-md-7 col-sm-6 col-xs-12">--%>
+                                    <div class="col-sm-12">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <h5>Agenda <asp:Literal ID="ltSede" runat="server"></asp:Literal></h5>
@@ -293,9 +264,6 @@
                                                     <a class="close-link">
                                                         <i class="fa fa-times"></i>
                                                     </a>--%>
-                                                    <a class="fullscreen-link" onclick="calendar.updateSize();">
-                                                        <i class="fa fa-expand"></i>
-                                                    </a>
                                                     <span class="label label-success pull-right" style="color: #000;">Cita atendida</span>
                                                     <span class="label label-danger pull-right" style="color: #000;">Cita cancelada</span>
                                                     <span class="label label-warning pull-right" style="color: #000;">Cita asignada</span>
@@ -316,7 +284,7 @@
                                                     </div>
                                                 </div>
                                                 <hr />
-                                                <div id="calendar1"></div>
+                                                <div id="calendar"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -438,100 +406,6 @@
 
             $('.clockpicker').clockpicker();
 
-            /* initialize the calendar
-             -----------------------------------------------------------------*/
-            var date = new Date();
-            var d = date.getDate();
-            var m = date.getMonth();
-            var y = date.getFullYear();
-
-            $('#calendar').fullCalendar({
-                firstDay: 1,
-                timeFormat: 'H:mm',
-                defaultView: 'month',
-                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb'],
-                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'],
-                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                header: {
-                    left: 'prev, next, today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay,listWeek'
-                },
-                businessHours: true,
-                businessHours: [ // specify an array instead
-                    {
-                        dow: [1, 2, 3, 4, 5], // Lunes, martes, miercoles, jueves y viernes
-                        start: '06:00',
-                        end: '21:00'
-                    },
-                    {
-                        dow: [6], // Sabado
-                        start: '7:00',
-                        end: '18:00'
-                    }
-                ],
-                editable: false,
-                droppable: false, // this allows things to be dropped onto the calendar
-                drop: function () {
-                    // is the "remove after drop" checkbox checked?
-                    if ($('#drop-remove').is(':checked')) {
-                        // if so, remove the element from the "Draggable Events" list
-                        $(this).remove();
-                    }
-                },
-                allDayText: 'Todo\r\nel día',
-                buttonText: {
-                    prev: '',
-                    next: '',
-                    prevYear: 'Año anterior',
-                    nextYear: 'Año siguiente',
-                    year: 'Año',
-                    today: 'Hoy',
-                    month: 'Mes',
-                    week: 'Semana',
-                    day: 'Dia',
-                    list: 'Lista',
-                    listWeek: 'Lista',
-                },
-                <%=strEventos%>
-                eventClick: function (event, jsEvent, view) {
-                    const fechainicial = new Date(event.start);
-                    fechainicial.setHours(fechainicial.getHours() + 5);
-
-                    const formatter1 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
-                    const formattedTime1 = formatter1.format(fechainicial);
-
-                    const formatterdia = new Intl.DateTimeFormat('en-US', { day: '2-digit' });
-                    const formatteddiaini = formatterdia.format(fechainicial);
-
-                    const formattermes = new Intl.DateTimeFormat('es-US', { month: 'long' });
-                    const formattedmesini = formattermes.format(fechainicial)[0].toUpperCase() + formattermes.format(fechainicial).substring(1);
-
-                    const fechafinal = new Date(event.end);
-                    fechafinal.setHours(fechafinal.getHours() + 5);
-                    const formatter2 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
-                    const formattedTime2 = formatter2.format(fechafinal);
-
-                    //console.log(formattedTime);
-                    jQuery('.event-id').html(event.id);
-                    jQuery('.event-icon').html("<i class='fa fa-" + event.icon + "'></i>");
-                    jQuery('.event-title').html(event.title);
-                    jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />");
-                    jQuery('.event-description').html(event.description);
-                    var btn = document.getElementById("btnEliminar");
-                    btn.style.display = event.btnEliminar;
-                    //jQuery('.event-iconPago').html("<i class='fa fa-" + event.iconPago + "'></i>");
-                    //jQuery('.event-pago').html(event.pago);
-                    //jQuery('.event-cliente').html(event.cliente);
-                    //jQuery('.event-ubicacion').html(event.ubicacion);
-                    //jQuery('.event-telefono').html('<a href=\"https://wa.me/57' + event.telefono + '\" target=\"_blank\">' + event.telefono + '</a>');
-                    //jQuery('.event-estado').html(event.estado);
-                    //jQuery('.event-allday').html(event.todoeldia);
-                    //jQuery('.eventUrl').attr('href', event.url);
-                    jQuery('#modal-view-event').modal();
-                },
-            });
         });
 
     </script>
@@ -539,7 +413,7 @@
     <script>
 
         document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('calendar1');
+            var calendarEl = document.getElementById('calendar');
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 eventClick: function (info) {
@@ -562,17 +436,15 @@
                     const formatter2 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
                     const formattedTime2 = formatter2.format(fechafinal);
 
-                    console.log(info.event.id);
-
                     if (info.event.id) {
-                        //console.log(info.event.title);
+                        console.log(info.event.extendedProps);
                         jQuery('.event-id').html(info.event.id);
-                        jQuery('.event-icon').html("<i class='fa fa-" + info.event.icon + "'></i>");
+                        jQuery('.event-icon').html("<i class='fa fa-" + info.event.extendedProps.icon + "'></i>");
                         jQuery('.event-title').html(info.event.title);
                         jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />");
-                        jQuery('.event-description').html(info.event.description);
+                        jQuery('.event-description').html(info.event.extendedProps.description);
                         var btn = document.getElementById("btnEliminar");
-                        btn.style.display = info.event.btnEliminar;
+                        btn.style.display = info.event.extendedProps.btnEliminar;
                         jQuery('#modal-view-event').modal();   
                     }
                 },
