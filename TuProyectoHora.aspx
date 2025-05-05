@@ -31,9 +31,7 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <h2>Obtener la hora actual desde el servidor</h2>
-            <button type="button" id="btnObtenerHora" class="btn btn-primary">Obtener Hora</button>
-            <p id="lblHora" style="margin-top: 10px; font-size: 18px;"></p>
+            <asp:Button ID="btnCrearCliente" runat="server" Text="Crear Cliente" OnClick="btnCrearCliente_Click" />
         </div>
     </form>
 </body>
