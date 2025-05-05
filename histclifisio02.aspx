@@ -449,7 +449,7 @@
                         <div class="col-lg-8">
                             <div class="ibox float-e-margins" runat="server" id="divContenido">
                                 <div class="ibox-title">
-                                    <h5>Formulario para agregar detalles del médico del deporte</h5>
+                                    <h5>Formulario para agregar detalle fisioterapéutico</h5>
                                     <div class="ibox-tools">
                                         <a class="collapse-link">
                                             <i class="fa fa-chevron-up"></i>

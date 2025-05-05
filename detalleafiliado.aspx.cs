@@ -361,30 +361,30 @@ namespace fpWebApp
                 JObject jsonData = JObject.Parse(prettyJson);
 
                 List<pagoswompidet> listaPagos = new List<pagoswompidet>
-                            {
-                                new pagoswompidet
-                                {
-                                    Id = jsonData["data"]["id"]?.ToString(),
-                                    FechaCreacion = jsonData["data"]["created_at"]?.ToString(),
-                                    FechaFinalizacion = jsonData["data"]["finalized_at"]?.ToString(),
-                                    Valor = ((jsonData["data"]["amount_in_cents"]?.Value<int>() ?? 0) / 100).ToString("N0"),
-                                    Moneda = jsonData["data"]["currency"]?.ToString(),
-                                    MetodoPago = jsonData["data"]["payment_method_type"]?.ToString(),
-                                    Estado = jsonData["data"]["status"]?.ToString(),
-                                    Referencia = jsonData["data"]["reference"]?.ToString(),
-                                    NombreTarjeta = jsonData["data"]["payment_method"]["extra"]["name"]?.ToString(),
-                                    UltimosDigitos = jsonData["data"]["payment_method"]["extra"]["last_four"]?.ToString(),
-                                    MarcaTarjeta = jsonData["data"]["payment_method"]["extra"]["brand"]?.ToString(),
-                                    TipoTarjeta = jsonData["data"]["payment_method"]["extra"]["card_type"]?.ToString(),
-                                    NombreComercio = jsonData["data"]["merchant"]["name"]?.ToString(),
-                                    ContactoComercio = jsonData["data"]["merchant"]["contact_name"]?.ToString(),
-                                    TelefonoComercio = jsonData["data"]["merchant"]["phone_number"]?.ToString(),
-                                    URLRedireccion = jsonData["data"]["redirect_url"]?.ToString(),
-                                    PaymentLinkId = jsonData["data"]["payment_link_id"]?.ToString(),
-                                    PublicKeyComercio = jsonData["data"]["merchant"]["public_key"]?.ToString(),
-                                    EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString(),
-                                    Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
-                            };
+                    {
+                        new pagoswompidet
+                        {
+                            Id = jsonData["data"]["id"]?.ToString(),
+                            FechaCreacion = jsonData["data"]["created_at"]?.ToString(),
+                            FechaFinalizacion = jsonData["data"]["finalized_at"]?.ToString(),
+                            Valor = ((jsonData["data"]["amount_in_cents"]?.Value<int>() ?? 0) / 100).ToString("N0"),
+                            Moneda = jsonData["data"]["currency"]?.ToString(),
+                            MetodoPago = jsonData["data"]["payment_method_type"]?.ToString(),
+                            Estado = jsonData["data"]["status"]?.ToString(),
+                            Referencia = jsonData["data"]["reference"]?.ToString(),
+                            NombreTarjeta = jsonData["data"]["payment_method"]["extra"]["name"]?.ToString(),
+                            UltimosDigitos = jsonData["data"]["payment_method"]["extra"]["last_four"]?.ToString(),
+                            MarcaTarjeta = jsonData["data"]["payment_method"]["extra"]["brand"]?.ToString(),
+                            TipoTarjeta = jsonData["data"]["payment_method"]["extra"]["card_type"]?.ToString(),
+                            NombreComercio = jsonData["data"]["merchant"]["name"]?.ToString(),
+                            ContactoComercio = jsonData["data"]["merchant"]["contact_name"]?.ToString(),
+                            TelefonoComercio = jsonData["data"]["merchant"]["phone_number"]?.ToString(),
+                            URLRedireccion = jsonData["data"]["redirect_url"]?.ToString(),
+                            PaymentLinkId = jsonData["data"]["payment_link_id"]?.ToString(),
+                            PublicKeyComercio = jsonData["data"]["merchant"]["public_key"]?.ToString(),
+                            EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString(),
+                            Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
+                    };
 
                 StringBuilder sb = new StringBuilder();
 

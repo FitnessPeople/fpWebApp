@@ -434,7 +434,7 @@ namespace fpWebApp
                 string script = @"
                     Swal.fire({
                         title: 'Siguiente paso...',
-                        text: 'Historia alimentaria',
+                        text: '',
                         icon: 'success',
                         timer: 2000, // 2 segundos
                         showConfirmButton: false,

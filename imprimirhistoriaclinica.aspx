@@ -397,6 +397,20 @@
                             <td><%# Eval("Observaciones") %></td>
                         </tr>
                     </table>
+
+                    <h3 class="text-info"><i class="fa fa-person-arrow-up-from-line"></i> Historia Fisioterapéutica</h3>
+                    <table class="table table-bordered table-striped" style="margin-bottom: 0px;">
+                        <tr>
+                            <th width="33%">FC Reposo</th>
+                            <th width="33%">TA Repoos</th>
+                            <th width="34%">FC Max</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("FCReposo") %> Kg</td>
+                            <td><%# Eval("TAReposo") %> cms</td>
+                            <td><%# Eval("FCMax") %></td>
+                        </tr>
+                    </table>
                 </ItemTemplate>
             </asp:Repeater>
         </div>

@@ -449,7 +449,7 @@
                         <div class="col-lg-8">
                             <div class="ibox float-e-margins" runat="server" id="divContenido">
                                 <div class="ibox-title">
-                                    <h5>Formulario para agregar detalles del médico del deporte</h5>
+                                    <h5>Formulario para agregar detalle fisioterapéutico</h5>
                                     <div class="ibox-tools">
                                         <a class="collapse-link">
                                             <i class="fa fa-chevron-up"></i>
@@ -483,57 +483,57 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Cabeza Adelantada</label>
-                                                            <asp:TextBox ID="txbPeso" CssClass="form-control input-sm" runat="server" onkeyup="calculateIMC(this)"></asp:TextBox>
+                                                            <asp:TextBox ID="txbCabezaAdelantada" CssClass="form-control input-sm" runat="server" onkeyup="calculateIMC(this)"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Hombros Desalineados</label>
-                                                            <asp:TextBox ID="txbTalla" CssClass="form-control input-sm" runat="server" onkeyup="calculateIMC(this)"></asp:TextBox>
+                                                            <asp:TextBox ID="txbHombrosDesalineados" CssClass="form-control input-sm" runat="server" onkeyup="calculateIMC(this)"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Hipercifosis Dorsal</label>
-                                                            <asp:TextBox ID="txbIMC" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbHipercifosisDorsal" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Escoliosis</label>
-                                                            <asp:TextBox ID="TextBox1" CssClass="form-control input-sm" runat="server" onkeyup="calculateIMC(this)"></asp:TextBox>
+                                                            <asp:TextBox ID="txbEscoliosis" CssClass="form-control input-sm" runat="server" onkeyup="calculateIMC(this)"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Dismetrias (MMII)</label>
-                                                            <asp:TextBox ID="TextBox2" CssClass="form-control input-sm" runat="server" onkeyup="calculateIMC(this)"></asp:TextBox>
+                                                            <asp:TextBox ID="txbDismetrias" CssClass="form-control input-sm" runat="server" onkeyup="calculateIMC(this)"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Genu Valgus</label>
-                                                            <asp:TextBox ID="TextBox3" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbGenuValgus" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Genu Varus</label>
-                                                            <asp:TextBox ID="TextBox4" CssClass="form-control input-sm" runat="server" onkeyup="calculateIMC(this)"></asp:TextBox>
+                                                            <asp:TextBox ID="txbGenuVarus" CssClass="form-control input-sm" runat="server" onkeyup="calculateIMC(this)"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Genu Recurbatum</label>
-                                                            <asp:TextBox ID="TextBox5" CssClass="form-control input-sm" runat="server" onkeyup="calculateIMC(this)"></asp:TextBox>
+                                                            <asp:TextBox ID="txbGenuRecurbatum" CssClass="form-control input-sm" runat="server" onkeyup="calculateIMC(this)"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Genu Antecurbatum</label>
-                                                            <asp:TextBox ID="TextBox6" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbGenuAntecurbatum" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
 
@@ -542,13 +542,13 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Pie Plano</label>
-                                                            <asp:TextBox ID="txbPerimCintura" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbPiePlano" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Pie Cavus</label>
-                                                            <asp:TextBox ID="txbPerimCadera" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbPieCavus" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -557,19 +557,23 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Apto</label>
-                                                            <asp:TextBox ID="txbPerimMuslo" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                            <asp:DropDownList ID="ddlApto" runat="server" CssClass="form-control input-sm">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:ListItem Text="Si" Value="1"></asp:ListItem>
+                                                                <asp:ListItem Text="No" Value="0"></asp:ListItem>
+                                                            </asp:DropDownList>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Restricciones</label>
-                                                            <asp:TextBox ID="txbPerimPantorrilla" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbRestricciones" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Diagnostico </label>
-                                                            <asp:TextBox ID="txbPerimBrazo" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbDiagnostico" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -594,6 +598,7 @@
                                                             <label>CIE10</label>
                                                             <asp:DropDownList ID="ddlCie10" runat="server" CssClass="form-control input-sm">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:ListItem Text="Hipo" Value="1"></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
@@ -648,79 +653,58 @@
     <script>
         $("#form").validate({
             rules: {
-                txbPeso: {
+                txbCabezaAdelantada: {
                     required: true,
                 },
-                txbTalla: {
+                txbHombrosDesalineados: {
                     required: true,
                 },
-                txbIMC: {
+                txbHipercifosisDorsal: {
                     required: true,
                 },
-                txbPerimCintura: {
+                txbEscoliosis: {
                     required: true
                 },
-                txbPerimCadera: {
+                txbDismetrias: {
                     required: true,
                 },
-                txbPerimAbdomen: {
+                txbGenuValgus: {
                     required: true,
                 },
-                txbPerimPecho: {
+                txbGenuVarus: {
                     required: true,
                 },
-                txbPerimMuslo: {
+                txbGenuRecurbatum: {
                     required: true,
                 },
-                txbPerimPantorrilla: {
+                txbGenuAntecurbatum: {
                     required: true,
                 },
-                txbPerimBrazo: {
+                txbPiePlano: {
                     required: true,
                 },
-                txbPliegueTricipital: {
+                txbPieCavus: {
                     required: true,
                 },
-                txbPliegueIliocrestal: {
+                ddlApto: {
                     required: true
                 },
-                txbPliegueAbdominal: {
+                txbRestricciones: {
                     required: true
                 },
-                txbPliegueSubescapular: {
+                txbDiagnostico: {
                     required: true
                 },
-                txbPliegueMuslo: {
+                txbObservaciones: {
                     required: true
                 },
-                txbPlieguePantorrilla: {
+                txbRecomendaciones: {
                     required: true
                 },
-                txbPorcGrasa: {
-                    required: true
-                },
-                txbPorcMuscular: {
-                    required: true
-                },
-                txbFCETanaka: {
-                    required: true
-                },
-                txbPesoEsperado: {
-                    required: true
-                },
-                txbPesoGraso: {
+                ddlCie10: {
                     required: true
                 },
             },
-            messages: {
-                txbIMC: "*",
-                txbPorcGrasa: "*",
-                txbPorcMuscular: "*",
-                txbFCETanaka: "*",
-                txbPesoEsperado: "*",
-                txbPesoGraso: "*",
-                txbPesoMagro: "*",
-            }
         });
     </script>
 

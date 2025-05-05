@@ -29,6 +29,10 @@ namespace fpWebApp
                         {
                             if (Request.QueryString.Count > 0)
                             {
+                                txbFCReposo.Attributes.Add("type", "number");
+                                txbTAReposo.Attributes.Add("type", "number");
+                                txbFCMax.Attributes.Add("type", "number");
+
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
                                 CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
                             }
@@ -192,7 +196,7 @@ namespace fpWebApp
                         showConfirmButton: false,
                         timerProgressBar: true
                     }).then(() => {
-                        window.location.href = 'histclideporte02?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + Request.QueryString["idHistoria"].ToString() + @"';
+                        window.location.href = 'histclifisio02?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + Request.QueryString["idHistoria"].ToString() + @"';
                     });
                     ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);

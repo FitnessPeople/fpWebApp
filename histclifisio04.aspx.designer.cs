@@ -213,130 +213,130 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlForm form;
 
         /// <summary>
-        /// Control txbPeso.
+        /// Control txbCabezaAdelantada.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbPeso;
+        protected global::System.Web.UI.WebControls.TextBox txbCabezaAdelantada;
 
         /// <summary>
-        /// Control txbTalla.
+        /// Control txbHombrosDesalineados.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbTalla;
+        protected global::System.Web.UI.WebControls.TextBox txbHombrosDesalineados;
 
         /// <summary>
-        /// Control txbIMC.
+        /// Control txbHipercifosisDorsal.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbIMC;
+        protected global::System.Web.UI.WebControls.TextBox txbHipercifosisDorsal;
 
         /// <summary>
-        /// Control TextBox1.
+        /// Control txbEscoliosis.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        protected global::System.Web.UI.WebControls.TextBox txbEscoliosis;
 
         /// <summary>
-        /// Control TextBox2.
+        /// Control txbDismetrias.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox2;
+        protected global::System.Web.UI.WebControls.TextBox txbDismetrias;
 
         /// <summary>
-        /// Control TextBox3.
+        /// Control txbGenuValgus.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox3;
+        protected global::System.Web.UI.WebControls.TextBox txbGenuValgus;
 
         /// <summary>
-        /// Control TextBox4.
+        /// Control txbGenuVarus.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox4;
+        protected global::System.Web.UI.WebControls.TextBox txbGenuVarus;
 
         /// <summary>
-        /// Control TextBox5.
+        /// Control txbGenuRecurbatum.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox5;
+        protected global::System.Web.UI.WebControls.TextBox txbGenuRecurbatum;
 
         /// <summary>
-        /// Control TextBox6.
+        /// Control txbGenuAntecurbatum.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox6;
+        protected global::System.Web.UI.WebControls.TextBox txbGenuAntecurbatum;
 
         /// <summary>
-        /// Control txbPerimCintura.
+        /// Control txbPiePlano.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbPerimCintura;
+        protected global::System.Web.UI.WebControls.TextBox txbPiePlano;
 
         /// <summary>
-        /// Control txbPerimCadera.
+        /// Control txbPieCavus.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbPerimCadera;
+        protected global::System.Web.UI.WebControls.TextBox txbPieCavus;
 
         /// <summary>
-        /// Control txbPerimMuslo.
+        /// Control ddlApto.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbPerimMuslo;
+        protected global::System.Web.UI.WebControls.DropDownList ddlApto;
 
         /// <summary>
-        /// Control txbPerimPantorrilla.
+        /// Control txbRestricciones.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbPerimPantorrilla;
+        protected global::System.Web.UI.WebControls.TextBox txbRestricciones;
 
         /// <summary>
-        /// Control txbPerimBrazo.
+        /// Control txbDiagnostico.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbPerimBrazo;
+        protected global::System.Web.UI.WebControls.TextBox txbDiagnostico;
 
         /// <summary>
         /// Control txbRecomendaciones.

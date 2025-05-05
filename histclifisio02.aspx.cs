@@ -233,13 +233,13 @@ namespace fpWebApp
                     string script = @"
                     Swal.fire({
                         title: 'Siguiente paso...',
-                        text: 'Flexibilidad',
+                        text: 'Flexibilidad, Pruebas de Fuerza y de Resistencia Cardiovascular',
                         icon: 'success',
                         timer: 2000, // 2 segundos
                         showConfirmButton: false,
                         timerProgressBar: true
                     }).then(() => {
-                        window.location.href = 'histclideporte03?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + Request.QueryString["idHistoria"].ToString() + @"';
+                        window.location.href = 'histclifisio03?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + Request.QueryString["idHistoria"].ToString() + @"';
                     });
                     ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
