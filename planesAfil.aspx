@@ -540,11 +540,6 @@
                                                 </div>
                                                 <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                             </ContentTemplate>
-                                            <Triggers>
-                                                <%--<asp:AsyncPostBackTrigger ControlID="lkVerificarPago" EventName="Click" />--%>
-                                                <%--<asp:AsyncPostBackTrigger ControlID="btnPremium" EventName="Click" />
-                                                <asp:AsyncPostBackTrigger ControlID="btnRegalo1" EventName="Click" />--%>
-                                            </Triggers>
                                         </asp:UpdatePanel>
 
                                         <div>

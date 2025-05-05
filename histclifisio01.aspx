@@ -428,8 +428,8 @@
 
                                             <div class="col-sm-12">
                                                 <div>
-                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button">
-                                                        <strong>Cancelar</strong></button>
+                                                    <asp:Button CssClass="btn btn-sm btn-danger pull-right m-t-n-xs" ID="btnCancelar" 
+                                                        runat="server" OnClick="btnCancelar_Click" Text="Cancelar" formnovalidate/>
                                                     <asp:Button ID="btnAgregar" runat="server"
                                                         CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
                                                         Text="Guardar y continuar" Visible="false"

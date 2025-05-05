@@ -91,7 +91,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
-                    <h4 class="h4"><span class="event-icon mr-3 fa-2x"></span> <span class="event-title"></span></h4>
+                    <h4 class="h4"><span class="event-icon mr-3 fa-2x"></span><span class="event-title"></span></h4>
                     <div class="event-body"></div>
                     <div class="event-description"></div>
                     <div class="event-id text-hide" id="event-id"></div>
@@ -128,169 +128,187 @@
                 <div class="col-sm-2">
                 </div>
                 <%--Fin Breadcrumb!!!--%>
-
             </div>
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row animated fadeInDown">
-                            <%--Inicio Contenido!!!!--%>
+                    <%--Inicio Contenido!!!!--%>
 
-                            <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
-                                <div class="p-xs">
-                                    <div class="pull-left m-r-md">
-                                        <i class="fa fa-triangle-exclamation text-danger mid-icon"></i>
-                                    </div>
-                                    <h2>Acceso Denegado</h2>
-                                    <span>Lamentablemente, no tienes permiso para acceder a esta página. Por favor, verifica que estás usando una cuenta con los permisos adecuados o contacta a nuestro soporte técnico para más información. Si crees que esto es un error, no dudes en ponerte en contacto con nosotros para resolver cualquier problema. Gracias por tu comprensión.</span>
-                                </div>
+                    <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
+                        <div class="p-xs">
+                            <div class="pull-left m-r-md">
+                                <i class="fa fa-triangle-exclamation text-danger mid-icon"></i>
                             </div>
+                            <h2>Acceso Denegado</h2>
+                            <span>Lamentablemente, no tienes permiso para acceder a esta página. Por favor, verifica que estás usando una cuenta con los permisos adecuados o contacta a nuestro soporte técnico para más información. Si crees que esto es un error, no dudes en ponerte en contacto con nosotros para resolver cualquier problema. Gracias por tu comprensión.</span>
+                        </div>
+                    </div>
 
-                            <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
+                    <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                            <form runat="server" id="form">
-                                <div class="row animated fadeInDown" id="divContenido" runat="server">
-                                    <%--<div class="col-xxl-3 col-lg-4 col-md-5 col-sm-6 col-xs-12">--%>
-                                    <div class="col-sm-12">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title">
-                                                <h5>Agregar disponibilidad</h5>
-                                                <div class="ibox-tools">
-                                                    <a class="collapse-link">
-                                                        <i class="fa fa-chevron-up"></i>
-                                                    </a>
-                                                    <a class="close-link">
-                                                        <i class="fa fa-times"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="ibox-content" id="divCrear" runat="server" visible="false">
-                                                    
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <label>Especialista:</label>
-                                                        <div class="form-group">        
-                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEspecialistas" runat="server"
-                                                                DataValueField="DocumentoEmpleado" DataTextField="NombreCompletoProfesion"
-                                                                AppendDataBoundItems="true">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <label>Sede:</label>
-                                                        <div class="form-group">
-                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedesCita" runat="server"
-                                                                DataValueField="idSede" DataTextField="NombreSede" AppendDataBoundItems="true">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <label>Fecha Inicial:</label>
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control input-sm" id="txbFechaIni" name="txbFechaIni" runat="server">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <label>Fecha Final:</label>
-                                                            <div class="form-group">
-                                                                <%--<span class="input-group-addon"><i class="fa fa-calendar-day"></i></span>--%>
-                                                                <input type="text" class="form-control input-sm" id="txbFechaFin" name="txbFechaFin" runat="server">
-                                                            </div>
-                                                        </div>
-                                                    
-                                                        <div class="col-sm-3 m-b-md">
-                                                            <label>Hora inicio:</label>
-                                                            <div class="input-group clockpicker" data-autoclose="true">
-                                                                <input type="text" class="form-control input-sm" value="08:00" id="txbHoraIni" name="txbHoraIni" runat="server">
-                                                                <span class="input-group-addon">
-                                                                    <span class="fa fa-clock"></span>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <label>Hora final:</label>
-                                                            <div class="input-group clockpicker" data-autoclose="true">
-                                                                <input type="text" class="form-control input-sm" value="12:00" id="txbHoraFin" name="txbHoraFin" runat="server">
-                                                                <span class="input-group-addon">
-                                                                    <span class="fa fa-clock"></span>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-horizontal">
-                                                        <div class="form-group m-b-mb">
-                                                            <label class="col-sm-3">Duración cita:</label>
-                                                            <div class="col-sm-3">
-                                                                <asp:DropDownList CssClass="form-control input-sm required" ID="ddlDuracion" runat="server"
-                                                                    AppendDataBoundItems="true">
-                                                                    <asp:ListItem Text="30 minutos" Value="30"></asp:ListItem>
-                                                                    <asp:ListItem Text="40 minutos" Value="40"></asp:ListItem>
-                                                                    <asp:ListItem Text="45 minutos" Value="45"></asp:ListItem>
-                                                                </asp:DropDownList>
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <label>Repetir:</label>
-                                                                <asp:CheckBoxList ID="cbDiasRepite" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="form-control input-sm">
-                                                                    <asp:ListItem Text="&nbsp;Lun" Value="1" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                    <asp:ListItem Text="&nbsp;Mar" Value="2" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                    <asp:ListItem Text="&nbsp;Mié" Value="3" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                    <asp:ListItem Text="&nbsp;Jue" Value="4" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                    <asp:ListItem Text="&nbsp;Vie" Value="5" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                    <asp:ListItem Text="&nbsp;Sáb" Value="6" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                </asp:CheckBoxList>
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                                                                <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md m-b-lg pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                            </div>
+                    <form runat="server" id="form">
+                        <div class="row animated fadeInDown" id="divContenido" runat="server">
+                            <%--<div class="col-xxl-3 col-lg-4 col-md-5 col-sm-6 col-xs-12">--%>
+                            <div class="col-sm-12">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Agregar disponibilidad</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                            <a class="close-link">
+                                                <i class="fa fa-times"></i>
+                                            </a>
                                         </div>
                                     </div>
-                                    <%--<div class="col-xxl-9 col-lg-8 col-md-7 col-sm-6 col-xs-12">--%>
-                                    <div class="col-sm-12">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title">
-                                                <h5>Agenda <asp:Literal ID="ltSede" runat="server"></asp:Literal></h5>
-                                                <div class="ibox-tools">
-                                                    <%--<a class="collapse-link">
+                                    <div class="ibox-content" id="divCrear" runat="server" visible="false">
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <label>Especialista:</label>
+                                                <div class="form-group">
+                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEspecialistas" runat="server"
+                                                        DataValueField="DocumentoEmpleado" DataTextField="NombreCompletoProfesion"
+                                                        AppendDataBoundItems="true">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label>Sede:</label>
+                                                <div class="form-group">
+                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedesCita" runat="server"
+                                                        DataValueField="idSede" DataTextField="NombreSede" AppendDataBoundItems="true">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <label>Fecha Inicial:</label>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control input-sm" id="txbFechaIni" name="txbFechaIni" runat="server">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label>Fecha Final:</label>
+                                                <div class="form-group">
+                                                    <%--<span class="input-group-addon"><i class="fa fa-calendar-day"></i></span>--%>
+                                                    <input type="text" class="form-control input-sm" id="txbFechaFin" name="txbFechaFin" runat="server">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-3 m-b-md">
+                                                <label>Hora inicio:</label>
+                                                <div class="input-group clockpicker" data-autoclose="true">
+                                                    <input type="text" class="form-control input-sm" value="08:00" id="txbHoraIni" name="txbHoraIni" runat="server">
+                                                    <span class="input-group-addon">
+                                                        <span class="fa fa-clock"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label>Hora final:</label>
+                                                <div class="input-group clockpicker" data-autoclose="true">
+                                                    <input type="text" class="form-control input-sm" value="12:00" id="txbHoraFin" name="txbHoraFin" runat="server">
+                                                    <span class="input-group-addon">
+                                                        <span class="fa fa-clock"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-horizontal">
+                                                    <div class="form-group m-b-mb">
+                                                        <label class="col-sm-4">Duración cita:</label>
+                                                        <div class="col-sm-8">
+                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlDuracion" runat="server"
+                                                                AppendDataBoundItems="true">
+                                                                <asp:ListItem Text="30 minutos" Value="30"></asp:ListItem>
+                                                                <asp:ListItem Text="40 minutos" Value="40"></asp:ListItem>
+                                                                <asp:ListItem Text="45 minutos" Value="45"></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-horizontal">
+                                                    <div class="form-group m-b-mb">
+                                                        <label class="col-sm-2">Repetir:</label>
+                                                        <div class="col-sm-8">
+                                                            <asp:CheckBoxList ID="cbDiasRepite" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="form-control input-sm">
+                                                                <asp:ListItem Text="&nbsp;Lun" Value="1" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                                <asp:ListItem Text="&nbsp;Mar" Value="2" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                                <asp:ListItem Text="&nbsp;Mié" Value="3" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                                <asp:ListItem Text="&nbsp;Jue" Value="4" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                                <asp:ListItem Text="&nbsp;Vie" Value="5" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                                <asp:ListItem Text="&nbsp;Sáb" Value="6" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                            </asp:CheckBoxList>
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                            <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md m-b-lg pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <%--<div class="form-horizontal">
+                                            <div class="form-group m-b-mb">
+                                                
+                                                
+                                            </div>
+                                        </div>--%>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <%--<div class="col-xxl-9 col-lg-8 col-md-7 col-sm-6 col-xs-12">--%>
+                            <div class="col-sm-12">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Agenda
+                                            <asp:Literal ID="ltSede" runat="server"></asp:Literal></h5>
+                                        <div class="ibox-tools">
+                                            <%--<a class="collapse-link">
                                                         <i class="fa fa-chevron-up"></i>
                                                     </a>
                                                     <a class="close-link">
                                                         <i class="fa fa-times"></i>
                                                     </a>--%>
-                                                    <span class="label label-success pull-right" style="color: #000;">Cita atendida</span>
-                                                    <span class="label label-danger pull-right" style="color: #000;">Cita cancelada</span>
-                                                    <span class="label label-warning pull-right" style="color: #000;">Cita asignada</span>
-                                                    <span class="label label-primary pull-right" style="color: #000;">Cita disponible</span>
-                                                </div>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <div class="form-horizontal">
-                                                    <div class="form-group m-b-n-sm">
-                                                        <label class="col-sm-2 col-sm-2 control-label">Sede</label>
-                                                        <div class="col-sm-10">
-                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedes" runat="server"
-                                                                OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
-                                                                DataValueField="idSede" DataTextField="NombreSede"
-                                                                AutoPostBack="true" AppendDataBoundItems="true">
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr />
-                                                <div id="calendar"></div>
-                                            </div>
+                                            <span class="label label-success pull-right" style="color: #000;">Cita atendida</span>
+                                            <span class="label label-danger pull-right" style="color: #000;">Cita cancelada</span>
+                                            <span class="label label-warning pull-right" style="color: #000;">Cita asignada</span>
+                                            <span class="label label-primary pull-right" style="color: #000;">Cita disponible</span>
                                         </div>
                                     </div>
+                                    <div class="ibox-content">
+                                        <div class="form-horizontal">
+                                            <div class="form-group m-b-n-sm">
+                                                <label class="col-sm-2 col-sm-2 control-label">Sede</label>
+                                                <div class="col-sm-10">
+                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedes" runat="server"
+                                                        OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
+                                                        DataValueField="idSede" DataTextField="NombreSede"
+                                                        AutoPostBack="true" AppendDataBoundItems="true">
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div id="calendar"></div>
+                                    </div>
                                 </div>
-                            </form>
-                            <%--Fin Contenido!!!!--%>
+                            </div>
+                        </div>
+                    </form>
+                    <%--Fin Contenido!!!!--%>
                 </div>
             </div>
 
@@ -445,7 +463,7 @@
                         jQuery('.event-description').html(info.event.extendedProps.description);
                         var btn = document.getElementById("btnEliminar");
                         btn.style.display = info.event.extendedProps.btnEliminar;
-                        jQuery('#modal-view-event').modal();   
+                        jQuery('#modal-view-event').modal();
                     }
                 },
                 height: 700,
