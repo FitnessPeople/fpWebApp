@@ -108,7 +108,14 @@ namespace fpWebApp
             }
 
         }
-
+        protected void btnMes_Click(object sender, EventArgs e)
+{
+    Button btn = (Button)sender;
+    string mes = btn.Text;
+    // Aquí haces lo que necesites con el número del mes seleccionado
+    // Por ejemplo:
+    Response.Write("Mes seleccionado: " + mes);
+}
         private void ValidarPermisos(string strPagina)
         {
             ViewState["SinPermiso"] = "1";

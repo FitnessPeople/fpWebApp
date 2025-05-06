@@ -225,156 +225,133 @@
 
                                                     <!-- Columna derecha: zona de planes -->
                                                     <div class="col-md-6">
-                                                        <h6><strong>Planes</strong></h6>
-                                                        <%-- <div id="zonaPlanes">
-                                                            <!-- Aquí puedes agregar contenido dinámico o fijo -->
-                                                            <p>Contenido de planes...</p>
-                                                        </div>--%>
-                                                        <div class="row">
-                                                            <div class="col-sm-3 b-r">
-                                                                <div class="form-group">
-                                                                    <label>Tipo de plan:</label>
-                                                                    <div class="form-group">
-                                                                        <asp:PlaceHolder ID="phPlanes" runat="server"></asp:PlaceHolder>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-9">
-                                                                <div class="form-group">
-                                                                    <label>Meses del plan:</label>
-                                                                    <div class="form-group">
-                                                                        <div class="row">
-                                                                            <div class="col-sm-3 col-xs-3 col-xs-3">
-                                                                                <asp:Button ID="btnMes1" runat="server" Text="1"
-                                                                                    CssClass="btn btn-warning btn-outline btn-block font-bold active"
-                                                                                    OnClick="btnMes1_Click" />
-                                                                            </div>
-                                                                            <div class="col-sm-3 col-xs-3">
-                                                                                <asp:Button ID="btnMes2" runat="server" Text="2"
-                                                                                    CssClass="btn btn-warning btn-outline btn-block font-bold"
-                                                                                    OnClick="btnMes2_Click" />
-                                                                            </div>
-                                                                            <div class="col-sm-3 col-xs-3">
-                                                                                <asp:Button ID="btnMes3" runat="server" Text="3"
-                                                                                    CssClass="btn btn-info btn-outline btn-block font-bold"
-                                                                                    OnClick="btnMes3_Click" />
-                                                                            </div>
-                                                                            <div class="col-sm-3 col-xs-3">
-                                                                                <asp:Button ID="btnMes4" runat="server" Text="4"
-                                                                                    CssClass="btn btn-danger btn-outline btn-block font-bold"
-                                                                                    OnClick="btnMes4_Click" />
-                                                                            </div>
-                                                                            <div class="col-sm-3 col-xs-3">
-                                                                                <asp:Button ID="btnMes5" runat="server" Text="5"
-                                                                                    CssClass="btn btn-warning btn-outline btn-block font-bold"
-                                                                                    OnClick="btnMes5_Click" />
-                                                                            </div>
-                                                                            <div class="col-sm-3 col-xs-3">
-                                                                                <asp:Button ID="btnMes6" runat="server" Text="6"
-                                                                                    CssClass="btn btn-info btn-outline btn-block font-bold"
-                                                                                    OnClick="btnMes6_Click" />
-                                                                            </div>
-                                                                            <div class="col-sm-3 col-xs-3">
-                                                                                <asp:Button ID="btnMes7" runat="server" Text="7"
-                                                                                    CssClass="btn btn-warning btn-outline btn-block font-bold"
-                                                                                    OnClick="btnMes7_Click" />
-                                                                            </div>
-                                                                            <div class="col-sm-3 col-xs-3">
-                                                                                <asp:Button ID="btnMes8" runat="server" Text="8"
-                                                                                    CssClass="btn btn-danger btn-outline btn-block font-bold"
-                                                                                    OnClick="btnMes8_Click" />
-                                                                            </div>
-                                                                            <div class="col-sm-3 col-xs-3">
-                                                                                <asp:Button ID="btnMes9" runat="server" Text="9"
-                                                                                    CssClass="btn btn-info btn-outline btn-block font-bold"
-                                                                                    OnClick="btnMes9_Click" />
-                                                                            </div>
-                                                                            <div class="col-sm-3 col-xs-3">
-                                                                                <asp:Button ID="btnMes10" runat="server" Text="10"
-                                                                                    CssClass="btn btn-warning btn-outline btn-block font-bold"
-                                                                                    OnClick="btnMes10_Click" />
-                                                                            </div>
-                                                                            <div class="col-sm-3 col-xs-3">
-                                                                                <asp:Button ID="btnMes11" runat="server" Text="11"
-                                                                                    CssClass="btn btn-warning btn-outline btn-block font-bold"
-                                                                                    OnClick="btnMes11_Click" />
-                                                                            </div>
-                                                                            <div class="col-sm-3 col-xs-3">
-                                                                                <asp:Button ID="btnMes12" runat="server" Text="12"
-                                                                                    CssClass="btn btn-danger btn-outline btn-block font-bold"
-                                                                                    OnClick="btnMes12_Click" />
+                                                    <h6><strong>Planes</strong></h6>
 
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <hr />
-                                                        <div class="row">
-                                                            <div class="col-lg-3">
-                                                                 <div class="widget style1 yellow-bg">                                                               
-                                                                    <div class="row vertical-align">
-                                                                        <div class="col-xs-3">
-                                                                            <i class="fa fa-money-bill-wave fa-3x" style="font-size: 1em"></i>
-                                                                        </div>
-                                                                        <div class="col-xs-9 text-right">
-                                                                            <span>Mes </span>
-                                                                           <h3 class="font-bold text-sm">
-                                                                                <asp:Literal ID="ltPrecioBase" runat="server"></asp:Literal></h3>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="widget style1 bg-danger">
-                                                                    <div class="row vertical-align">
-                                                                        <div class="col-xs-3">
-                                                                            <i class="fa fa-tag fa-3x" style="font-size: 1em"></i>
-                                                                        </div>
-                                                                        <div class="col-xs-9 text-right">
-                                                                            <span>Dcto.
-                                                                        <asp:Literal ID="ltDescuento" runat="server"></asp:Literal></span>
-                                                                            <h3 class="font-bold text-sm">
-                                                                                <asp:Literal ID="ltConDescuento" runat="server"></asp:Literal></h3>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                 <div class="widget style1 bg-success">
-                                                               
-                                                                    <div class="row vertical-align">
-                                                                        <div class="col-xs-3">
-                                                                            <i class="fa fa-cart-shopping fa-3x" style="font-size: 1em"></i>
-                                                                        </div>
-                                                                        <div class="col-xs-9 text-right">
-                                                                            <span>Total </span>
-                                                                           <h3 class="font-bold text-sm">
-                                                                                <asp:Literal ID="ltPrecioFinal" runat="server"></asp:Literal></h3>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                               
-                                                                    <div class="widget style1 lazur-bg">
-                                                                    <div class="row vertical-align">
-                                                                        <div class="col-xs-3">
-                                                                            <i class="fa fa-hand-holding-dollar fa-3x" style="font-size: 1em"></i>
-                                                                        </div>
-                                                                        <div class="col-xs-9 text-right">
-                                                                            <span>Ahorro </span>
-                                                                           <h3 class="font-bold text-sm">
-                                                                                <asp:Literal ID="ltAhorro" runat="server"></asp:Literal></h3>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <hr />
-
+                                                    <div class="mb-3">
+                                                        <label>Tipo de plan:</label>
+                                                        <asp:PlaceHolder ID="phPlanes" runat="server"></asp:PlaceHolder>
                                                     </div>
+
+<div class="mb-3">
+    <label>Meses del plan:</label>
+<%--    <div class="container-fluid">--%>
+        <div class="row">
+            <div class="col-3 mb-2">
+                <asp:Button ID="btnMes1" runat="server" Text="1" CssClass="btn btn-warning btn-block font-bold" OnClick="btnMes1_Click" />
+            </div>
+            <div class="col-3 mb-2">
+                <asp:Button ID="btnMes2" runat="server" Text="2" CssClass="btn btn-warning btn-block font-bold" OnClick="btnMes2_Click" />
+            </div>
+            <div class="col-3 mb-2">
+                <asp:Button ID="btnMes3" runat="server" Text="3" CssClass="btn btn-info btn-block font-bold" OnClick="btnMes3_Click" />
+            </div>
+            <div class="col-3 mb-2">
+                <asp:Button ID="btnMes4" runat="server" Text="4" CssClass="btn btn-danger btn-block font-bold" OnClick="btnMes4_Click" />
+            </div>
+            <div class="col-3 mb-2">
+                <asp:Button ID="btnMes5" runat="server" Text="5" CssClass="btn btn-warning btn-block font-bold" OnClick="btnMes5_Click" />
+            </div>
+            <div class="col-3 mb-2">
+                <asp:Button ID="btnMes6" runat="server" Text="6" CssClass="btn btn-info btn-block font-bold" OnClick="btnMes6_Click" />
+            </div>
+            <div class="col-3 mb-2">
+                <asp:Button ID="btnMes7" runat="server" Text="7" CssClass="btn btn-warning btn-block font-bold" OnClick="btnMes7_Click" />
+            </div>
+            <div class="col-3 mb-2">
+                <asp:Button ID="btnMes8" runat="server" Text="8" CssClass="btn btn-danger btn-block font-bold" OnClick="btnMes8_Click" />
+            </div>
+            <div class="col-3 mb-2">
+                <asp:Button ID="btnMes9" runat="server" Text="9" CssClass="btn btn-info btn-block font-bold" OnClick="btnMes9_Click" />
+            </div>
+            <div class="col-3 mb-2">
+                <asp:Button ID="btnMes10" runat="server" Text="10" CssClass="btn btn-warning btn-block font-bold" OnClick="btnMes10_Click" />
+            </div>
+            <div class="col-3 mb-2">
+                <asp:Button ID="btnMes11" runat="server" Text="11" CssClass="btn btn-warning btn-block font-bold" OnClick="btnMes11_Click" />
+            </div>
+            <div class="col-3 mb-2">
+                <asp:Button ID="btnMes12" runat="server" Text="12" CssClass="btn btn-danger btn-block font-bold" OnClick="btnMes12_Click" />
+            </div>
+        </div>
+  <%--  </div>--%>
+</div>
+
+
+
+
+
+                                                    <hr />
+
+                                                    <%-- Widgets apilados --%>
+                                                    <div class="row">
+                                                        <div class="col-12 mb-3">
+                                                            <div class="widget style1 yellow-bg">
+                                                                <div class="row vertical-align">
+                                                                    <div class="col-3">
+                                                                        <i class="fa fa-money-bill-wave fa-3x" style="font-size: 1em"></i>
+                                                                    </div>
+                                                                    <div class="col-9 text-right">
+                                                                        <span>Mes</span>
+                                                                        <h3 class="font-bold text-sm">
+                                                                            <asp:Literal ID="ltPrecioBase" runat="server"></asp:Literal>
+                                                                        </h3>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 mb-3">
+                                                            <div class="widget style1 bg-danger">
+                                                                <div class="row vertical-align">
+                                                                    <div class="col-3">
+                                                                        <i class="fa fa-tag fa-3x" style="font-size: 1em"></i>
+                                                                    </div>
+                                                                    <div class="col-9 text-right">
+                                                                        <span>Dcto. <asp:Literal ID="ltDescuento" runat="server"></asp:Literal></span>
+                                                                        <h3 class="font-bold text-sm">
+                                                                            <asp:Literal ID="ltConDescuento" runat="server"></asp:Literal>
+                                                                        </h3>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 mb-3">
+                                                            <div class="widget style1 bg-success">
+                                                                <div class="row vertical-align">
+                                                                    <div class="col-3">
+                                                                        <i class="fa fa-cart-shopping fa-3x" style="font-size: 1em"></i>
+                                                                    </div>
+                                                                    <div class="col-9 text-right">
+                                                                        <span>Total</span>
+                                                                        <h3 class="font-bold text-sm">
+                                                                            <asp:Literal ID="ltPrecioFinal" runat="server"></asp:Literal>
+                                                                        </h3>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 mb-3">
+                                                            <div class="widget style1 lazur-bg">
+                                                                <div class="row vertical-align">
+                                                                    <div class="col-3">
+                                                                        <i class="fa fa-hand-holding-dollar fa-3x" style="font-size: 1em"></i>
+                                                                    </div>
+                                                                    <div class="col-9 text-right">
+                                                                        <span>Ahorro</span>
+                                                                        <h3 class="font-bold text-sm">
+                                                                            <asp:Literal ID="ltAhorro" runat="server"></asp:Literal>
+                                                                        </h3>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <hr />
+                                                </div>
+
                                                 </div>
                                             </div>
 
