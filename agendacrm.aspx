@@ -189,10 +189,9 @@
 
                         <asp:HiddenField ID="hdnIdContacto" runat="server" />
 
-                        <asp:ScriptManager ID="sm1" runat="server"></asp:ScriptManager>
-                        <asp:UpdatePanel ID="upAgendarCita" runat="server">
+                        <asp:ScriptManager ID="sm1" runat="server" ></asp:ScriptManager>
+                        <asp:UpdatePanel ID="upAsesorCRM" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
-
                                 <div id="modal-view-event" class="modal modal-top fade calendar-modal">
                                     <div class="modal-dialog modal-dialog-centered modal-lg">
                                         <div class="modal-content">
@@ -590,59 +589,11 @@
         });
 
     </script>
-    <%--        <script>
-
-            function copyToClipboard() {
-                // Get the text field
-                var copyText = document.getElementById("hdEnlaceWompi");
-
-                // Select the text field
-                copyText.select();
-                //copyText.setSelectionRange(0, 99999); // For mobile devices
-
-                // Copy the text inside the text field
-                navigator.clipboard.writeText(copyText.value);
-            }
-
-            var ddlRegalos = document.getElementById("ddlRegalos");
-            var check15 = document.getElementById("check15");
-            ddlRegalos.setAttribute("disabled", true);
-            check15.setAttribute("checked", false);
-
-            $("#ionrange_1").ionRangeSlider({
-                grid: true,
-                values: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
-                onChange: function (data) {
-                    // fired on every range slider update
-                    console.dir(data.fromNumber);
-                    if (data.fromNumber >= 6) {
-                        console.log(data.fromNumber);
-                        ddlRegalos.removeAttribute('disabled');
-                        check15.setAttribute("checked", true);
-                    }
-                    else {
-                        ddlRegalos.setAttribute("disabled", true);
-                        check15.setAttribute("checked", false);
-                    }
-                },
-            });
-
-            $(document).ready(function () {
-                $('.i-checks').iCheck({
-                    checkboxClass: 'icheckbox_square-green',
-                    radioClass: 'iradio_square-green',
-                });
-            });
-
-            $("#form").validate({
-                rules: {
-                    txbFechaInicio: {
-                        required: true,
-                    },
-                }
-            });
-
-        </script>--%>
+<script>
+    $('#modal-view-event').on('hidden.bs.modal', function () {
+        location.reload();
+    });
+</script>
 </body>
 
 </html>

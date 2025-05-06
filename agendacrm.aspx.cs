@@ -7,7 +7,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Newtonsoft.Json;  
+using Newtonsoft.Json;
 
 
 namespace fpWebApp
@@ -42,7 +42,7 @@ namespace fpWebApp
                         ListaEstadosCRM();
                         CargarAgenda();
                         CargarDatosContacto(0);
-                        
+
 
                         //txbFechaInicio.Attributes.Add("type", "date");
 
@@ -88,7 +88,7 @@ namespace fpWebApp
                         //btnMes1.Attributes.Add("style", "padding: 6px 9px;");
 
                         //CargarPlanesAfiliado();
-                       // MesesDisabled();
+                        // MesesDisabled();
 
                         //string strData = listarDetalle();
                         //ltDetalleWompi.Text = strData;
@@ -109,13 +109,13 @@ namespace fpWebApp
 
         }
         protected void btnMes_Click(object sender, EventArgs e)
-{
-    Button btn = (Button)sender;
-    string mes = btn.Text;
-    // Aquí haces lo que necesites con el número del mes seleccionado
-    // Por ejemplo:
-    Response.Write("Mes seleccionado: " + mes);
-}
+        {
+            Button btn = (Button)sender;
+            string mes = btn.Text;
+            // Aquí haces lo que necesites con el número del mes seleccionado
+            // Por ejemplo:
+            Response.Write("Mes seleccionado: " + mes);
+        }
         private void ValidarPermisos(string strPagina)
         {
             ViewState["SinPermiso"] = "1";
@@ -138,8 +138,6 @@ namespace fpWebApp
 
             dt.Dispose();
         }
-
-
         private void ListaEstadosCRM()
         {
             clasesglobales cg = new clasesglobales();
@@ -155,19 +153,15 @@ namespace fpWebApp
 
             dt.Dispose();
         }
-
-
         private void CargarDatosContacto(int idContacto)
         {
             bool respuesta = false;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarContactosCRMPorId( idContacto, out respuesta);
-           
+            DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out respuesta);
+
             rptContenido.DataSource = dt;
             rptContenido.DataBind();
         }
-
-
 
         private void CargarAgenda()
         {
@@ -425,6 +419,13 @@ namespace fpWebApp
             //ltNombrePlan.Text = "<b>Plan " + ViewState["nombrePlan"].ToString() + "</b>";
 
             MesesEnabled();
+            ScriptManager.RegisterStartupScript(upAsesorCRM, upAsesorCRM.GetType(), "abrirModal", @"
+    $('.modal').modal('hide'); // Oculta cualquier otra modal
+    setTimeout(function() {
+        $('#modal-view-event').modal('show');
+    }, 300);", true);
+
+
         }
 
         private void MesesEnabled()
@@ -504,6 +505,13 @@ namespace fpWebApp
             //ActivarCortesia("1");
             //ActivarRegalo("0");
             //LimpiarFormulario();
+            ScriptManager.RegisterStartupScript(upAsesorCRM, upAsesorCRM.GetType(), "abrirModal", @"
+    $('.modal').modal('hide'); // Oculta cualquier otra modal
+    setTimeout(function() {
+        $('#modal-view-event').modal('show');
+    }, 300);", true);
+
+
         }
 
         protected void btnMes2_Click(object sender, EventArgs e)
@@ -513,6 +521,13 @@ namespace fpWebApp
             //ActivarCortesia("1");
             //ActivarRegalo("0");
             //LimpiarFormulario();
+            ScriptManager.RegisterStartupScript(upAsesorCRM, upAsesorCRM.GetType(), "abrirModal", @"
+    $('.modal').modal('hide'); // Oculta cualquier otra modal
+    setTimeout(function() {
+        $('#modal-view-event').modal('show');
+    }, 300);", true);
+
+
         }
 
         protected void btnMes3_Click(object sender, EventArgs e)
@@ -522,6 +537,13 @@ namespace fpWebApp
             //ActivarCortesia("2");
             //ActivarRegalo("0");
             //LimpiarFormulario();
+            ScriptManager.RegisterStartupScript(upAsesorCRM, upAsesorCRM.GetType(), "abrirModal", @"
+    $('.modal').modal('hide'); // Oculta cualquier otra modal
+    setTimeout(function() {
+        $('#modal-view-event').modal('show');
+    }, 300);", true);
+
+
         }
 
         protected void btnMes4_Click(object sender, EventArgs e)
@@ -531,6 +553,13 @@ namespace fpWebApp
             //ActivarCortesia("3");
             //ActivarRegalo("1");
             //LimpiarFormulario();
+            ScriptManager.RegisterStartupScript(upAsesorCRM, upAsesorCRM.GetType(), "abrirModal", @"
+    $('.modal').modal('hide'); // Oculta cualquier otra modal
+    setTimeout(function() {
+        $('#modal-view-event').modal('show');
+    }, 300);", true);
+
+
         }
 
         protected void btnMes5_Click(object sender, EventArgs e)
@@ -540,6 +569,13 @@ namespace fpWebApp
             //ActivarCortesia("3");
             //ActivarRegalo("1");
             //LimpiarFormulario();
+            ScriptManager.RegisterStartupScript(upAsesorCRM, upAsesorCRM.GetType(), "abrirModal", @"
+    $('.modal').modal('hide'); // Oculta cualquier otra modal
+    setTimeout(function() {
+        $('#modal-view-event').modal('show');
+    }, 300);", true);
+
+
         }
 
         protected void btnMes6_Click(object sender, EventArgs e)
@@ -549,6 +585,13 @@ namespace fpWebApp
             //ActivarCortesia("3");
             //ActivarRegalo("1");
             //LimpiarFormulario();
+            ScriptManager.RegisterStartupScript(upAsesorCRM, upAsesorCRM.GetType(), "abrirModal", @"
+    $('.modal').modal('hide'); // Oculta cualquier otra modal
+    setTimeout(function() {
+        $('#modal-view-event').modal('show');
+    }, 300);", true);
+
+
         }
 
         protected void btnMes7_Click(object sender, EventArgs e)
@@ -558,6 +601,13 @@ namespace fpWebApp
             //ActivarCortesia("3");
             //ActivarRegalo("1");
             //LimpiarFormulario();
+            ScriptManager.RegisterStartupScript(upAsesorCRM, upAsesorCRM.GetType(), "abrirModal", @"
+    $('.modal').modal('hide'); // Oculta cualquier otra modal
+    setTimeout(function() {
+        $('#modal-view-event').modal('show');
+    }, 300);", true);
+
+
         }
 
         protected void btnMes8_Click(object sender, EventArgs e)
@@ -567,6 +617,13 @@ namespace fpWebApp
             //ActivarCortesia("3");
             //ActivarRegalo("2");
             //LimpiarFormulario();
+            ScriptManager.RegisterStartupScript(upAsesorCRM, upAsesorCRM.GetType(), "abrirModal", @"
+    $('.modal').modal('hide'); // Oculta cualquier otra modal
+    setTimeout(function() {
+        $('#modal-view-event').modal('show');
+    }, 300);", true);
+
+
         }
 
         protected void btnMes9_Click(object sender, EventArgs e)
@@ -576,6 +633,13 @@ namespace fpWebApp
             //ActivarCortesia("3");
             //ActivarRegalo("2");
             //LimpiarFormulario();
+            ScriptManager.RegisterStartupScript(upAsesorCRM, upAsesorCRM.GetType(), "abrirModal", @"
+    $('.modal').modal('hide'); // Oculta cualquier otra modal
+    setTimeout(function() {
+        $('#modal-view-event').modal('show');
+    }, 300);", true);
+
+
         }
 
         protected void btnMes10_Click(object sender, EventArgs e)
@@ -585,6 +649,13 @@ namespace fpWebApp
             ///ActivarCortesia("4");
             //ActivarRegalo("2");
             //LimpiarFormulario();
+            ScriptManager.RegisterStartupScript(upAsesorCRM, upAsesorCRM.GetType(), "abrirModal", @"
+    $('.modal').modal('hide'); // Oculta cualquier otra modal
+    setTimeout(function() {
+        $('#modal-view-event').modal('show');
+    }, 300);", true);
+
+
         }
 
         protected void btnMes11_Click(object sender, EventArgs e)
@@ -594,6 +665,13 @@ namespace fpWebApp
             //ActivarCortesia("4");
             //ActivarRegalo("2");
             //LimpiarFormulario();
+            ScriptManager.RegisterStartupScript(upAsesorCRM, upAsesorCRM.GetType(), "abrirModal", @"
+    $('.modal').modal('hide'); // Oculta cualquier otra modal
+    setTimeout(function() {
+        $('#modal-view-event').modal('show');
+    }, 300);", true);
+
+
         }
 
         protected void btnMes12_Click(object sender, EventArgs e)
@@ -603,6 +681,11 @@ namespace fpWebApp
             //ActivarCortesia("4");
             //ActivarRegalo("3");
             //LimpiarFormulario();
+            ScriptManager.RegisterStartupScript(upAsesorCRM, upAsesorCRM.GetType(), "abrirModal", @"
+    $('.modal').modal('hide'); // Oculta cualquier otra modal
+    setTimeout(function() {
+        $('#modal-view-event').modal('show');
+    }, 300);", true);
         }
 
         private void CalculoPrecios(string strMes)

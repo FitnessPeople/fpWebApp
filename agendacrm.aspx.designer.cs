@@ -78,13 +78,13 @@ namespace fpWebApp
         protected global::System.Web.UI.ScriptManager sm1;
 
         /// <summary>
-        /// Control upAgendarCita.
+        /// Control upAsesorCRM.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upAgendarCita;
+        protected global::System.Web.UI.UpdatePanel upAsesorCRM;
 
         /// <summary>
         /// Control rptContenido.
