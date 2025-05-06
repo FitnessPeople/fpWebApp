@@ -9,15 +9,14 @@ using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using static fpWebApp.TuProyectoHora;
 
 namespace fpWebApp
 {
-	public partial class TuProyectoHora : System.Web.UI.Page
+	public partial class W_SiigoCliente : System.Web.UI.Page
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-            //string strPrivateKeyProduction = "YjU2NWE3YjktYjlhZS00OTRkLWE3NDgtODc0MGUyYjhmYzNlOjh9QDZyKDdwPkE=";
+            //string Token = "YjU2NWE3YjktYjlhZS00OTRkLWE3NDgtODc0MGUyYjhmYzNlOjh9QDZyKDdwPkE=";
         }
 
         private void CrearCliente()
