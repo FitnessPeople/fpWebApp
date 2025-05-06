@@ -48,7 +48,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                     <i class="fa fa-id-card modal-icon" style="color: #1C84C6;"></i>
-                    <h4 class="modal-title">Guía para eliminar un afiliado</h4>
+                    <h4 class="modal-title">Guía para eliminar al afiliado</h4>
                     <small class="font-bold">¡Bienvenido! Sigue estos pasos para borrar la información de manera segura y verificada.</small>
                 </div>
                 <div class="modal-body">

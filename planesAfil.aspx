@@ -50,34 +50,51 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-person-chalkboard modal-icon"></i>
-                    <h4 class="modal-title">Guía para realizar la asignación de un plan</h4>
-                    <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
+                    <i class="fa fa-ticket modal-icon" style="color: #1C84C6;"></i>
+                    <h4 class="modal-title">Guía para asignar plan</h4>
+                    <small class="font-bold">¡Bienvenido! Te explicamos cómo gestionar los planes de manera clara y eficiente.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>1. Tipo de Plan</b><br />
-                        Antes de comenzar, primero debes elegir el tipo de plan.
+                        <b>Paso 1: Visualiza la información del afiliado</b><br />
+                        <i class="fa-solid fa-magnifying-glass"></i> Revisa los datos: <br />
+                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre, </b>
+                        <i class="fa-solid fa-envelope" style="color: #0D6EFD;"></i> <b>Correo, </b>
+                        <i class="fa-solid fa-city" style="color: #0D6EFD;"></i> <b>Ciudad, </b>
+                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i> <b>Teléfono, </b>
+                        <i class="fa-solid fa-building" style="color: #0D6EFD;"></i> <b>Sede, </b>
+                        <i class="fa-solid fa-cake" style="color: #0D6EFD;"></i> <b>Cumpleaños, </b><br />
+                        <i class="fa-solid fa-shield" style="color: #0D6EFD;"></i> <b>Estado, </b>
+                        <i class="fa-solid fa-calendar-day" style="color: #0D6EFD;"></i> <b>Días asistidos, Congelaciones y</b>
+                        <i class="fa-solid fa-ticket" style="color: #0D6EFD;"></i> <b>Planes registrados</b>,
+                    <br />
                         <br />
+                        <b>Paso 2: Asigna un plan al afiliado</b><br />
+                        <i class="fa-solid fa-ticket" style="color: #21B9BB;"></i> Selecciona el <b>plan</b>.<br />
+                        <i class="fa-solid fa-ticket" style="color: #EC4758;"></i> Selecciona la <b>cantidad de meses</b> a la que se registrará el plan.
+                    <br />
                         <br />
-                        <b>2. Cantidad de meses</b><br />
-                        A continuación elije el(los) mes(es) del plan. A medida que selecciones un mes, se activaran o desactivaran cortesías y regalos.<br />
-                        <em>Se irán actualizando los cambios de precio y ahorros inmediatamente.</em>
+                        <b>Paso 3: Visualiza los precios del plan</b><br />
+                        Puedes ver estos <b>precios</b> en:<br />
+                        <i class="fa-solid fa-money-bill-wave" style="color: #23C6C8;"></i> <b>Valor x mes</b><br />
+                        <i class="fa-solid fa-tag" style="color: #ED5565;"></i> <b>Descuento en % y $</b><br />
+                        <i class="fa-solid fa-cart-shopping" style="color: #F8AC59;"></i> <b>Valor total</b><br />
+                        <i class="fa-solid fa-hand-holding-dollar" style="color: #1C84C6;"></i> <b>Ahorro</b>
+                    <br />
                         <br />
+                        <b>Paso 4: Termina el proceso</b><br />
+                        <i class="fa-solid fa-gift" style="color: #21B9BB;"></i> Selecciona los <b>días de cortesía</b>.<br />
+                        <i class="fa-solid fa-gift" style="color: #EC4758;"></i> Selecciona el <b>regalo</b>.<br />
+                        <i class="fa-solid fa-magnifying-glass"></i> Revisa que los <b>detalles del plan</b> sean los correctos.<br />
+                        <i class="fa-solid fa-money-bill"></i> Completa los campos del <b>método de pago</b>.
+                    <br />
                         <br />
-                        <b>3. Cortesías y regalos</b><br />
-                        Si aplica, agrega cortesías y/o regalos según tu preferencia.
+                        <b>Paso 5: Confirma o cancela</b><br />
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Agregar Plan:</b> Guarda la información y <b>registra</b> el plan al afiliado.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver <b>atrás</b> sin guardar cambios.
+                   <br />
                         <br />
-                        <br />
-                        <b>4. Resumen del plan</b><br />
-                        Asegúrate de que todos los datos ingresados son correctos y actualizados. El resumen muestra toda la información seleccionada.
-                        <br />
-                        <br />
-                        <b>5. Fecha de inicio del plan</b><br />
-                        Asegúrate de poner una fecha inicial para el plan escogido. A continuación da clic en "Agregar Plan"
-                        <br />
-                        <br />
-                        ¡Siguiendo estos pasos, estarás listo para diligenciar tu formulario sin problemas! Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
