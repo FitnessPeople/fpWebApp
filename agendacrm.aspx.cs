@@ -81,7 +81,7 @@ namespace fpWebApp
                         ltDescuento.Text = "";
                         ltPrecioFinal.Text = "$0";
                         ltAhorro.Text = "$0";
-                        ltConDescuento.Text = "$0";
+                        ///ltConDescuento.Text = "$0";
 
                         //ltNombrePlan.Text = "Nombre del plan";
 
@@ -419,7 +419,7 @@ namespace fpWebApp
 
             ltDescuento.Text = "0%";
             ltAhorro.Text = "$0";
-            ltConDescuento.Text = "$0";
+            //ltConDescuento.Text = "$0";
             //ltDescripcion.Text = "<b>Características</b>: " + dt.Rows[0]["DescripcionPlan"].ToString() + "<br />";
 
             //ltNombrePlan.Text = "<b>Plan " + ViewState["nombrePlan"].ToString() + "</b>";
@@ -623,7 +623,7 @@ namespace fpWebApp
             //ltAhorro.Text = String.Format("{0:C0}", intAhorro);
             ltAhorro.Text = "$" + String.Format("{0:N0}", dobAhorro);
             //ltConDescuento.Text = String.Format("{0:C0}", intConDescuento);
-            ltConDescuento.Text = "$" + String.Format("{0:N0}", dobConDescuento);
+            //ltConDescuento.Text = "$" + String.Format("{0:N0}", dobConDescuento);
 
             //ltObservaciones.Text = "Valor sin descuento: $" + string.Format("{0:N0}", intPrecioBase) + "<br /><br />";
             //ltObservaciones.Text += "<b>Meses</b>: " + intMeses.ToString() + ".<br />";
