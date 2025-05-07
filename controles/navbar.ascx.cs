@@ -28,6 +28,7 @@ namespace fpWebApp.controles
                 totalAfiliados();
                 totalEmpleados();
                 totalUsuarios();
+                totalInscritos();
             }
             else
             {
@@ -64,6 +65,17 @@ namespace fpWebApp.controles
             DataTable dt = cg.TraerDatos(strQuery);
 
             ltTotalUsuarios.Text = dt.Rows[0]["cuantos"].ToString();
+
+            dt.Dispose();
+        }
+
+        private void totalInscritos()
+        {
+            string strQuery = "SELECT COUNT(*) AS cuantos FROM GymPass";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            ltTotalInscritos.Text = dt.Rows[0]["cuantos"].ToString();
 
             dt.Dispose();
         }
