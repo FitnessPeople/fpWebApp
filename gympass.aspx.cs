@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
 using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
+//using System.Web.UI.WebControls;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 
 namespace fpWebApp
 {
-    public partial class empleados : System.Web.UI.Page
+    public partial class gympass : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -45,10 +43,10 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-                            btnAgregar.Visible = true;
+                            //btnAgregar.Visible = true;
                         }
                     }
-                    listaEmpleados();
+                    listaInscritos();
                     //ActualizarEstadoxFechaFinal();
                     //indicadores01.Visible = false;
                 }
@@ -57,29 +55,6 @@ namespace fpWebApp
                     Response.Redirect("logout.aspx");
                 }
             }
-        }
-
-        private void ActualizarEstadoxFechaFinal()
-        {
-            try
-            {
-                clasesglobales cg = new clasesglobales();
-                string mensaje = cg.ActualizarEstadoEmpleadoPorFechaFinal();
-            }
-            catch (OdbcException ex)
-            {
-                string mensaje = ex.Message;
-            }
-
-        }
-
-        private void listaEmpleados()
-        {         
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEmpleados(); 
-            rpEmpleados.DataSource = dt;
-            rpEmpleados.DataBind();
-            dt.Dispose();
         }
 
         private void ValidarPermisos(string strPagina)
@@ -105,42 +80,48 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        protected void rpEmpleados_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        private void listaInscritos()
         {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                if (ViewState["CrearModificar"].ToString() == "1")
-                {
-                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "editarempleado?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    btnEditar.Visible = true;
-                }
-                if (ViewState["Borrar"].ToString() == "1")
-                {
-                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "eliminarempleado?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    btnEliminar.Visible = true;
-                }
-            }
+            string strQuery = "SELECT * FROM GymPass";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+            rpInscritos.DataSource = dt;
+            rpInscritos.DataBind();
+            dt.Dispose();
         }
+
+        //protected void rpInscritos_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        //{
+        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        //    {
+        //        if (ViewState["CrearModificar"].ToString() == "1")
+        //        {
+        //            HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+        //            btnEditar.Attributes.Add("href", "editarempleado?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+        //            btnEditar.Visible = false;
+        //        }
+        //        if (ViewState["Borrar"].ToString() == "1")
+        //        {
+        //            HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+        //            btnEliminar.Attributes.Add("href", "eliminarempleado?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+        //            btnEliminar.Visible = false;
+        //        }
+        //    }
+        //}
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
             try
             {
-                string consultaSQL = @"SELECT DocumentoEmpleado AS 'Nro. de Documento', NombreEmpleado AS 'Nombre de Empleado', 
-                    TelefonoEmpleado AS 'Celular', EmailEmpleado AS 'Correo', FechaNacEmpleado AS 'Fecha de Nacimiento', 
-                    DireccionEmpleado AS 'Dirección de Residencia', NombreCiudad AS 'Ciudad', NroContrato AS 'Nro. de Contrato', 
-                    TipoContrato AS 'Tipo de Contrato', CargoEmpleado AS 'Cargo de Empleado', 
-                    FechaInicio AS 'Fecha de Inicio', FechaFinal AS 'Fecha de Terminación',
-                    Sueldo, GrupoNomina AS 'Grupos de Nóminas', Estado 
-                    FROM Empleados 
-                    LEFT JOIN ciudades ON ciudades.idCiudad = Empleados.idCiudadEmpleado
-                    ORDER BY NombreEmpleado;";
+                string consultaSQL = @"SELECT idGymPass AS 'ID', Nombres AS 'Nombres', Apellidos AS 'Apellidos', 
+                    Email AS 'Email', Celular AS 'Celular', NroDocumento AS 'Nro de Documento', Ciudad AS 'Ciudad', 
+                    Sede AS 'Sede', FechaAsistencia AS 'Fecha Asistencia', FechaInscripcion AS 'Fecha Inscripción' 
+                    FROM GymPass 
+                    ORDER BY FechaInscripcion DESC;";
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(consultaSQL);
-                string nombreArchivo = $"Empleados_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+                string nombreArchivo = $"Inscritos_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
                 {
@@ -149,11 +130,13 @@ namespace fpWebApp
                 else
                 {
                     Response.Write("<script>alert('No existen registros para esta consulta');</script>");
+                    //Response.Redirect("gympass.aspx?mensaje=No existen registros para esta consulta");
                 }
             }
             catch (Exception ex)
             {
                 Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+                //Response.Redirect("gympass.aspx?mensaje=" + Server.UrlEncode(ex.Message));
             }
         }
     }

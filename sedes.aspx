@@ -76,7 +76,6 @@
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#sistema");
             element2.classList.remove("collapse");
-            console.log(element2);
         }
     </script>
 

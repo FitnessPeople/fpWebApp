@@ -416,6 +416,7 @@
     <Content Include="freepassAfil.aspx" />
     <Content Include="genero.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="gympass.aspx" />
     <Content Include="histclideporte01.aspx" />
     <Content Include="histclideporte02.aspx" />
     <Content Include="histclideporte03.aspx" />
@@ -1335,6 +1336,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="gympass.aspx.cs">
+      <DependentUpon>gympass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="gympass.aspx.designer.cs">
+      <DependentUpon>gympass.aspx</DependentUpon>
     </Compile>
     <Compile Include="histclideporte01.aspx.cs">
       <DependentUpon>histclideporte01.aspx</DependentUpon>
