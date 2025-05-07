@@ -239,6 +239,7 @@
     <Content Include="cajascomp.aspx" />
     <Content Include="calendar.html" />
     <Content Include="calendariofpadmin.aspx" />
+    <Content Include="cambiaestadoembajador.aspx" />
     <Content Include="cambiaestadousuario.aspx" />
     <Content Include="cambiarpermiso.aspx" />
     <Content Include="canalesventa.aspx" />
@@ -406,6 +407,7 @@
     <Content Include="eliminardisponibilidad.aspx" />
     <Content Include="eliminarempleado.aspx" />
     <Content Include="eliminarusuario.aspx" />
+    <Content Include="embajadores.aspx" />
     <Content Include="empleados.aspx" />
     <Content Include="empresasafiliadas.aspx" />
     <Content Include="eps.aspx" />
@@ -1024,6 +1026,13 @@
     <Compile Include="calendariofpadmin.aspx.designer.cs">
       <DependentUpon>calendariofpadmin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="cambiaestadoembajador.aspx.cs">
+      <DependentUpon>cambiaestadoembajador.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="cambiaestadoembajador.aspx.designer.cs">
+      <DependentUpon>cambiaestadoembajador.aspx</DependentUpon>
+    </Compile>
     <Compile Include="cambiaestadousuario.aspx.cs">
       <DependentUpon>cambiaestadousuario.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1284,6 +1293,13 @@
     </Compile>
     <Compile Include="eliminarusuario.aspx.designer.cs">
       <DependentUpon>eliminarusuario.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="embajadores.aspx.cs">
+      <DependentUpon>embajadores.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="embajadores.aspx.designer.cs">
+      <DependentUpon>embajadores.aspx</DependentUpon>
     </Compile>
     <Compile Include="empleados.aspx.cs">
       <DependentUpon>empleados.aspx</DependentUpon>

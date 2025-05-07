@@ -228,11 +228,6 @@ namespace fpWebApp
             }
         }
 
-        protected void rblClaseSede_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
             try

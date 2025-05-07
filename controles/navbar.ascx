@@ -149,6 +149,7 @@
                     <li id="productos" class="old"><a href="productostienda"><i class="fa fa-store"></i>Productos tienda</a></li>
                     <li id="nuevoproducto" class="old"><a href="nuevoproductotienda"><i class="fa fa-tag"></i>Nuevo producto</a></li>
                     <li id="blog" class="old"><a href="blogs"><i class="fab fa-blogger"></i>Blog</a></li>
+                    <li id="embajadores" class="old"><a href="embajadores"><i class="fa fa-person-rays"></i>Embajadores</a></li>
                 </ul>
             </li>
             <li class="special_link">
