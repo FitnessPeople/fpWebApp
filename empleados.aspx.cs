@@ -129,13 +129,16 @@ namespace fpWebApp
             try
             {
                 string consultaSQL = @"SELECT DocumentoEmpleado AS 'Nro. de Documento', NombreEmpleado AS 'Nombre de Empleado', 
-                                       TelefonoEmpleado AS 'Celular', EmailEmpleado AS 'Correo', FechaNacEmpleado AS 'Fecha de Nacimiento', 
-                                       DireccionEmpleado AS 'Dirección de Residencia', NombreCiudad AS 'Ciudad', NroContrato AS 'Nro. de Contrato', 
-                                       TipoContrato AS 'Tipo de Contrato', CargoEmpleado AS 'Cargo de Empleado', 
+                                       TelefonoEmpleado AS 'Celular Personal', TelefonoCorporativo AS 'Celular Corporativo', 
+                                       EmailEmpleado AS 'Correo Personal', EmailCorporativo AS 'Correo Corporativo', 
+                                       FechaNacEmpleado AS 'Fecha de Nacimiento', DireccionEmpleado AS 'Dirección de Residencia', 
+                                       NombreCiudad AS 'Ciudad', NroContrato AS 'Nro. de Contrato', 
+                                       TipoContrato AS 'Tipo de Contrato', cargos.NombreCargo AS 'Cargo de Empleado',
                                        FechaInicio AS 'Fecha de Inicio', FechaFinal AS 'Fecha de Terminación',
                                        Sueldo, GrupoNomina AS 'Grupos de Nóminas', Estado 
-                                       FROM Empleados 
-                                       LEFT JOIN ciudades ON ciudades.idCiudad = Empleados.idCiudadEmpleado
+                                       FROM Empleados e
+                                       LEFT JOIN ciudades ON ciudades.idCiudad = e.idCiudadEmpleado 
+                                       INNER JOIN cargos ON cargos.idCargo = e.idCargo
                                        ORDER BY NombreEmpleado;";
 
                 clasesglobales cg = new clasesglobales();
