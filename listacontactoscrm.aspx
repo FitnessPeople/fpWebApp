@@ -535,7 +535,7 @@
                                                                             <i class="fa fa-envelope" style="margin-right: 5px;"></i>
                                                                             <span><%# Eval("EmailContacto") %></span>
                                                                         </p>
-                                                                        <p> <%# Eval("TipoContacto") %></p>                                                                    
+                                                                        <p> <%# Eval("NombreTipoAfiliado") %></p>                                                                    
                                                                         <p>Mi objetivo es  <%# Eval("Objetivo") %></p>
 
                                                                         <!-- Botón alineado a la derecha -->
