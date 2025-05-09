@@ -151,7 +151,7 @@
                                 </div>
                                 <div class="ibox-content">
 
-                                    <div class="alert alert-danger alert-dismissable" runat="server" id="divMensaje1" visible="false">
+                                    <%--<div class="alert alert-danger alert-dismissable" runat="server" id="divMensaje1" visible="false">
                                         <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
                                         Un empleado con este documento ya existe!<br />
                                         <a class="alert-link" href="#">Intente nuevamente</a>.
@@ -167,7 +167,7 @@
                                         <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
                                         Este teléfono ya existe.<br />
                                         <a class="alert-link" href="#">Intente nuevamente</a>.
-                                    </div>
+                                    </div>--%>
 
                                     <div class="row">
                                         <form role="form" id="form" enctype="multipart/form-data" runat="server">
@@ -197,14 +197,29 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label>Teléfono</label>
+                                                            <label>Teléfono personal</label>
                                                             <asp:TextBox ID="txbTelefono" CssClass="form-control input-sm" runat="server" placeholder="Teléfono"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label>Email</label>
-                                                            <asp:TextBox ID="txbEmail" CssClass="form-control input-sm" runat="server" placeholder="Email" required></asp:TextBox>
+                                                            <label>Email personal</label>
+                                                            <asp:TextBox ID="txbEmail" CssClass="form-control input-sm" runat="server" placeholder="Email"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Teléfono corporativo</label>
+                                                            <asp:TextBox ID="txbTelefonoCorp" CssClass="form-control input-sm" runat="server" placeholder="Teléfono corp"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Email corporativo</label>
+                                                            <asp:TextBox ID="txbEmailCorp" CssClass="form-control input-sm" runat="server" placeholder="Email corp"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                 </div>

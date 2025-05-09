@@ -209,8 +209,10 @@ namespace fpWebApp
             txbNombre.Text = dt.Rows[0]["NombreEmpleado"].ToString();
             ltNombre.Text = dt.Rows[0]["NombreEmpleado"].ToString();
             txbTelefono.Text = dt.Rows[0]["TelefonoEmpleado"].ToString();
+            txbTelefonoCorp.Text = dt.Rows[0]["TelefonoCorporativo"].ToString();
             ltTelefono.Text = dt.Rows[0]["TelefonoEmpleado"].ToString();
             txbEmail.Text = dt.Rows[0]["EmailEmpleado"].ToString();
+            txbEmailCorp.Text = dt.Rows[0]["EmailCorporativo"].ToString();
             txbDireccion.Text = dt.Rows[0]["DireccionEmpleado"].ToString();
             ddlCiudadEmpleado.SelectedIndex = Convert.ToInt32(ddlCiudadEmpleado.Items.IndexOf(ddlCiudadEmpleado.Items.FindByValue(dt.Rows[0]["idCiudadEmpleado"].ToString())));
             DateTime dt14 = DateTime.Now.AddYears(-14);
@@ -229,6 +231,10 @@ namespace fpWebApp
             {
                 imgFoto.Src = "img/empleados/" + dt.Rows[0]["FotoEmpleado"].ToString();
                 ViewState["FotoEmpleado"] = dt.Rows[0]["FotoEmpleado"].ToString();
+            }
+            else
+            {
+                imgFoto.Src = "img/empleados/nofoto.png";
             }
             txbContrato.Text = dt.Rows[0]["NroContrato"].ToString();
             if (dt.Rows[0]["TipoContrato"].ToString() != "")

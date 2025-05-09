@@ -6,6 +6,7 @@ using System.Data.Odbc;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -30,10 +31,12 @@ namespace fpWebApp
                     {
                         txbDocumento.Attributes.Add("type", "number");
                         txbTelefono.Attributes.Add("type", "number");
+                        txbTelefonoCorp.Attributes.Add("type", "number");
                         txbFechaNac.Attributes.Add("type", "date");
                         txbFechaInicio.Attributes.Add("type", "date");
                         txbFechaFinal.Attributes.Add("type", "date");
                         txbEmail.Attributes.Add("type", "email");
+                        txbEmailCorp.Attributes.Add("type", "email");
 
                         DateTime dt14 = DateTime.Now.AddYears(-14);
                         DateTime dt80 = DateTime.Now.AddYears(-80);
@@ -257,22 +260,34 @@ namespace fpWebApp
             // Validar si existe por Cedula, Email y/o Telefono
             if (ExisteDocumento(txbDocumento.Text.ToString().Trim()))
             {
-                divMensaje1.Visible = true;
+                //divMensaje1.Visible = true;
+                string script = @"
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Un empleado con este documento ya existe!',
+                        icon: 'error'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                                            
+                        }
+                    });
+                    ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
             }
             else
             {
-                if (ExisteEmail(txbEmail.Text.ToString().Trim()))
-                {
-                    divMensaje2.Visible = true;
-                }
-                else
-                {
-                    if (ExisteTelefono(txbTelefono.Text.ToString().Trim()))
-                    {
-                        divMensaje3.Visible = true;
-                    }
-                    else
-                    {
+                //if (ExisteEmail(txbEmail.Text.ToString().Trim()))
+                //{
+                //    divMensaje2.Visible = true;
+                //}
+                //else
+                //{
+                    //if (ExisteTelefono(txbTelefono.Text.ToString().Trim()))
+                    //{
+                    //    divMensaje3.Visible = true;
+                    //}
+                    //else
+                    //{
                         string strFilename = "";
                         HttpPostedFile postedFile = Request.Files["fileFoto"];
 
@@ -288,7 +303,8 @@ namespace fpWebApp
                         {
                             clasesglobales cg = new clasesglobales();
                             string mensaje = cg.InsertarNuevoEmpleado(txbDocumento.Text.ToString(), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
-                                txbNombre.Text.ToString(), txbTelefono.Text.ToString(), txbEmail.Text.ToString(), txbDireccion.Text.ToString(),
+                                txbNombre.Text.ToString(), txbTelefono.Text.ToString(), txbTelefonoCorp.Text.ToString(), txbEmail.Text.ToString(), 
+                                txbEmailCorp.Text.ToString(), txbDireccion.Text.ToString(),
                                 Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), txbFechaNac.Text.ToString(), strFilename, txbContrato.Text.ToString(),
                                 ddlTipoContrato.SelectedItem.Value.ToString(), Convert.ToInt32(ddlempresasFP.SelectedItem.Value.ToString()),
                                 Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), txbFechaInicio.Text.ToString(), txbFechaFinal.Text.ToString(),
@@ -347,8 +363,8 @@ namespace fpWebApp
                             ";
                             ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                         }
-                    }
-                }
+                    //}
+                //}
             }
         }
     }
