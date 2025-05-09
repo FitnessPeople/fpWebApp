@@ -67,7 +67,7 @@
                             <a href="inicio">Inicio</a>
                         </li>
                         <li class="active">
-                            <strong>Dashboard</strong>
+                            <strong>Dashboard</strong><asp:Literal runat="server" ID="ltMsg"></asp:Literal>
                         </li>
                     </ol>
                 </div>

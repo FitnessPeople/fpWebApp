@@ -202,8 +202,8 @@
                                                         <td><%# Eval("Apellidos") %></td>
                                                         <td><%# Eval("Email") %></td>
                                                         <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("Celular") %>" target="_blank"><%# Eval("Celular") %></a></td>
-                                                        <td><%# Eval("Ciudad") %></td>
-                                                        <td><%# Eval("Sede") %></td>
+                                                        <td><%# Eval("NombreCiudadSede") %></td>
+                                                        <td><%# Eval("NombreSede") %></td>
                                                         <td><%# Eval("FechaAsistencia", "{0:dd MMM yyyy}") %></td>
                                                         <td><%# Eval("FechaInscripcion", "{0:dd MMM yyyy, HH:mm}") %></td>
                                                         <td>

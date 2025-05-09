@@ -82,7 +82,10 @@ namespace fpWebApp
 
         private void listaInscritos()
         {
-            string strQuery = "SELECT * FROM GymPass";
+            string strQuery = "SELECT * " +
+                "FROM GymPass gp " +
+                "LEFT JOIN Sedes s ON gp.idSede = s.idSede " +
+                "LEFT JOIN CiudadesSedes cs ON s.idCiudadSede = cs.idCiudadSede ";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
             rpInscritos.DataSource = dt;
