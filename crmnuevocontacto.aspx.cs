@@ -45,14 +45,17 @@ namespace fpWebApp
                             btnAgregar.Visible = true;
                         }
                     }
+                    ListaEmpresasCRM();
+                    ListaEstadosCRM();
+                    ListaContactos();
+                    ListaTiposAfiliadosCRM();
+                    //ListaObjetivosfiliadoCRM();
 
-                    listaSedes();
-                    //listaCiudades();
                     ltTitulo.Text = "Contactos";
                     Literal1.Text = "Empresas";
                     if (Request.QueryString.Count > 0)
                     {
-                        rpSedes.Visible = false;
+                        rpContactosCRM.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
@@ -85,13 +88,57 @@ namespace fpWebApp
             }
         }
 
-        private void listaSedes()
+
+        private void ListaContactos()
+        {
+            decimal valorTotal = 0;
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarContactosCRM(out valorTotal);
+
+            rpContactosCRM.DataSource = dt;
+            rpContactosCRM.DataBind();
+
+            //ltValorTotal.Text = valorTotal.ToString("C0");
+            dt.Dispose();
+        }
+        private void ListaEmpresasCRM()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarSedes();
-            rpSedes.DataSource = dt;
-            rpSedes.DataBind();
+            DataTable dt = cg.ConsultarEmpresasCRM();
 
+            ddlEmpresa.DataSource = dt;
+            ddlEmpresa.DataBind();
+            dt.Dispose();
+        }
+
+        private void ListaEstadosCRM()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEstadossCRM();
+
+            ddlStatusLead.DataSource = dt;
+            ddlStatusLead.DataBind();
+            dt.Dispose();
+        }
+
+        private void ListaTiposAfiliadosCRM()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarTipoAfiliadCRM();
+
+            ddlTiposAfiliado.DataSource = dt;
+            ddlTiposAfiliado.DataBind();
+            dt.Dispose();
+        }
+
+
+        private void ListaObjetivosfiliadoCRM()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarObjetivosAfiliados();
+
+            ddlEmpresa.DataSource = dt;
+            ddlEmpresa.DataBind();
             dt.Dispose();
         }
 
@@ -168,27 +215,27 @@ namespace fpWebApp
             }
             else
             {
-            //    if (!ValidarSede(txbSede.Text.ToString()))
-            //    {
-            //        try
-            //        {
-            //            string respuesta = cg.InsertarSede(txbSede.Text.ToString().Trim(), txbDireccion.Text.ToString().Trim(), int.Parse(ddlCiudadSede.SelectedItem.Value.ToString()), txbTelefono.Text.ToString().Trim(), contenidoEditor, "", rblTipoSede.SelectedValue.ToString(), rblClaseSede.SelectedValue.ToString());
-            //            cg.InsertarLog(Session["idusuario"].ToString(), "sedes", "Agrega", "El usuario agregó una nueva sede: " + txbSede.Text.ToString() + ".", "", "");
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            string mensaje = ex.Message;
-            //        }
+                //    if (!ValidarSede(txbSede.Text.ToString()))
+                //    {
+                //        try
+                //        {
+                //            string respuesta = cg.InsertarSede(txbSede.Text.ToString().Trim(), txbDireccion.Text.ToString().Trim(), int.Parse(ddlCiudadSede.SelectedItem.Value.ToString()), txbTelefono.Text.ToString().Trim(), contenidoEditor, "", rblTipoSede.SelectedValue.ToString(), rblClaseSede.SelectedValue.ToString());
+                //            cg.InsertarLog(Session["idusuario"].ToString(), "sedes", "Agrega", "El usuario agregó una nueva sede: " + txbSede.Text.ToString() + ".", "", "");
+                //        }
+                //        catch (Exception ex)
+                //        {
+                //            string mensaje = ex.Message;
+                //        }
 
-            //        Response.Redirect("sedes");
-            //    }
-            //    else
-            //    {
-            //        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-            //            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-            //            "Ya existe una sede con ese nombre." +
-            //            "</div>";
-            //    }
+                //        Response.Redirect("sedes");
+                //    }
+                //    else
+                //    {
+                //        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                //            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                //            "Ya existe una sede con ese nombre." +
+                //            "</div>";
+                //    }
             }
         }
 
@@ -204,25 +251,6 @@ namespace fpWebApp
             }
             dt.Dispose();
             return strData;
-        }
-
-        protected void rpSedes_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                if (ViewState["CrearModificar"].ToString() == "1")
-                {
-                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "sedes?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    btnEditar.Visible = true;
-                }
-                if (ViewState["Borrar"].ToString() == "1")
-                {
-                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "sedes?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    btnEliminar.Visible = true;
-                }
-            }
         }
 
         protected void rblClaseSede_SelectedIndexChanged(object sender, EventArgs e)
@@ -257,6 +285,25 @@ namespace fpWebApp
             catch (Exception ex)
             {
                 Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+            }
+        }
+
+        protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                if (ViewState["CrearModificar"].ToString() == "1")
+                {
+                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("href", "sedes?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Visible = true;
+                }
+                if (ViewState["Borrar"].ToString() == "1")
+                {
+                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                    btnEliminar.Attributes.Add("href", "sedes?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminar.Visible = true;
+                }
             }
         }
     }

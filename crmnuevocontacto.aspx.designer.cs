@@ -132,6 +132,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlStatusLead;
 
         /// <summary>
+        /// Control ddlTiposAfiliado.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlTiposAfiliado;
+
+        /// <summary>
         /// Control txbFechaPrim.
         /// </summary>
         /// <remarks>
@@ -339,13 +348,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.LinkButton lbExportarExcel;
 
         /// <summary>
-        /// Control rpSedes.
+        /// Control rpContactosCRM.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpSedes;
+        protected global::System.Web.UI.WebControls.Repeater rpContactosCRM;
 
         /// <summary>
         /// Control rightsidebar1.
