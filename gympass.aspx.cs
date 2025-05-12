@@ -261,6 +261,16 @@ namespace fpWebApp
                                        LEFT JOIN GymPassAgenda gpa 
                                        ON gpa.idGymPass = g.idGymPass 
                                        ORDER BY FechaInscripcion DESC;";
+                string consultaSQL = @"SELECT CONCAT(TRIM(Nombres), ' ', TRIM(Apellidos)) AS 'Nombre',
+                                       g.Email AS 'Correo', g.Celular AS 'Celular', g.NroDocumento AS 'Nro. de Documento', 
+                                       c.NombreCiudadSede AS 'Ciudad', s.NombreSede AS 'Sede',
+                                       g.FechaAsistencia AS 'Fecha Asistencia', g.FechaInscripcion AS 'Fecha Inscripción' 
+                                       FROM GymPass g
+                                       INNER JOIN sedes s 
+                                       ON s.IdSede = g.idSede 
+                                       INNER JOIN ciudadessedes c 
+                                       ON c.idCiudadSede = s.idCiudadSede 
+                                       ORDER BY FechaInscripcion DESC;";
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(consultaSQL);

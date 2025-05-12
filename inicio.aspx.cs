@@ -23,6 +23,12 @@ namespace fpWebApp
                 Session["Cargo"] = "WebMaster";
                 Session["Foto"] = "chrismo.jpg";
                 Session["idPerfil"] = 1;
+                Session["idUsuario"] = 1;
+                Session["NombreUsuario"] = "Christian Morales";
+                Session["idEmpresa"] = 1;
+                Session["Cargo"] = "WebMaster";
+                Session["Foto"] = "chrismo.jpg";
+                Session["idPerfil"] = 1;
                 Session["usuario"] = "sistemas@fitnesspeoplecmd.com";
                 Session["idSede"] = "11";
 
