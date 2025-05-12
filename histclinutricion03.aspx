@@ -405,45 +405,45 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Lacteos </label>
-                                                            <asp:TextBox ID="txbLacteos" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbLacteos" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Azúcares</label>
-                                                            <asp:TextBox ID="txbAzucares" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbAzucares" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Gaseosas</label>
-                                                            <asp:TextBox ID="txbGaseosa" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbGaseosa" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Verduras</label>
-                                                            <asp:TextBox ID="txbVerduras" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbVerduras" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Salsamentaria</label>
-                                                            <asp:TextBox ID="txbSalsamentaria" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbSalsamentaria" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Agua</label>
-                                                            <asp:TextBox ID="txbAgua" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbAgua" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Frutas</label>
-                                                            <asp:TextBox ID="txbFrutas" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbFrutas" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
@@ -455,7 +455,7 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Comidas rápidas</label>
-                                                            <asp:TextBox ID="txbComidasRapidas" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbComidasRapidas" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
 
@@ -474,7 +474,7 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Huevos </label>
-                                                            <asp:TextBox ID="txbHuevos" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbHuevos" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
 

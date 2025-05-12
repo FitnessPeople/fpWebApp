@@ -405,33 +405,33 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Desayuno</label>
-                                                            <asp:TextBox ID="txbDesayuno" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
+                                                            <asp:TextBox ID="txbDesayuno" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Nueves</label>
-                                                            <asp:TextBox ID="txbNueves" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
+                                                            <asp:TextBox ID="txbNueves" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Almuerzo</label>
-                                                            <asp:TextBox ID="txbAlmuerzo" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
+                                                            <asp:TextBox ID="txbAlmuerzo" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Onces</label>
-                                                            <asp:TextBox ID="txbOnces" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
+                                                            <asp:TextBox ID="txbOnces" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Cena</label>
-                                                            <asp:TextBox ID="txbCena" CssClass="form-control" runat="server" TextMode="MultiLine"></asp:TextBox>
+                                                            <asp:TextBox ID="txbCena" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">

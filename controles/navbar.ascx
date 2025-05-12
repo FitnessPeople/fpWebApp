@@ -113,6 +113,7 @@
                     <li id="nuevousuario" class="old"><a href="nuevousuario"><i class="fas fa-user-plus"></i>Nuevo usuario</a></li>
                     <li id="sedes" class="old"><a href="sedes"><i class="fa fa-school-flag"></i>Sedes</a></li>
                     <li id="planes" class="old"><a href="planes"><i class="fa fa-ticket"></i>Planes</a></li>
+                    <li id="gympass" class="old"><a href="gympass"><i class="fa fa-user-tag"></i>Gym Pass<span class="label label-warning1 pull-right"><asp:Literal ID="ltTotalInscritos" runat="server"></asp:Literal></span></a></li>
                     <li><a href="#">Resolución de facturas</a></li>
                     <li><a href="#">Productos</a></li>
                     <li><a href="#">Unificar afiliados</a></li>
@@ -148,6 +149,7 @@
                     <li id="productos" class="old"><a href="productostienda"><i class="fa fa-store"></i>Productos tienda</a></li>
                     <li id="nuevoproducto" class="old"><a href="nuevoproductotienda"><i class="fa fa-tag"></i>Nuevo producto</a></li>
                     <li id="blog" class="old"><a href="blogs"><i class="fab fa-blogger"></i>Blog</a></li>
+                    <li id="embajadores" class="old"><a href="embajadores"><i class="fa fa-person-rays"></i>Embajadores</a></li>
                 </ul>
             </li>
             <li class="special_link">

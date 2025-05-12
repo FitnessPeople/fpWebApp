@@ -5728,8 +5728,8 @@ namespace fpWebApp
 
 
 
-        public string InsertarNuevoEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado,
-            string emailEmpleado, string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato,
+        public string InsertarNuevoEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado, string telEmpleadoCorp,
+            string emailEmpleado, string emailEmpleadoCorp, string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato,
             string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
             int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo)
         {
@@ -5747,7 +5747,9 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_tipo_doc_empleado", tipoDocumento);
                         cmd.Parameters.AddWithValue("@p_nombre_empleado", nombreEmpleado);
                         cmd.Parameters.AddWithValue("@p_tel_empleado", telEmpleado);
+                        cmd.Parameters.AddWithValue("@p_tel_empleado_corp", telEmpleadoCorp);
                         cmd.Parameters.AddWithValue("@p_email_empleado", emailEmpleado);
+                        cmd.Parameters.AddWithValue("@p_email_empleado_corp", emailEmpleadoCorp);
                         cmd.Parameters.AddWithValue("@p_dir_empleado", dirEmpleado);
                         cmd.Parameters.AddWithValue("@p_id_ciu_empleado", idCiudadEmpleado);
                         cmd.Parameters.AddWithValue("@p_fecha_nac_empleado", fechaNacEmpleado);
@@ -5814,8 +5816,9 @@ namespace fpWebApp
             return dt;
         }
 
-        public string ActualizarEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado,
-            string emailEmpleado, string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato,
+        public string ActualizarEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, 
+            string telEmpleado, string telEmpleadoCorp, string emailEmpleado, string emailEmpleadoCorp, 
+            string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato, 
             string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
             int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo)
         {
@@ -5836,6 +5839,8 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_nombre_empleado", nombreEmpleado);
                         cmd.Parameters.AddWithValue("@p_tel_empleado", telEmpleado);
                         cmd.Parameters.AddWithValue("@p_email_empleado", emailEmpleado);
+                        cmd.Parameters.AddWithValue("@p_tel_empleado_corp", telEmpleadoCorp);
+                        cmd.Parameters.AddWithValue("@p_email_empleado_corp", emailEmpleadoCorp);
                         cmd.Parameters.AddWithValue("@p_dir_empleado", dirEmpleado);
                         cmd.Parameters.AddWithValue("@p_id_ciu_empleado", idCiudadEmpleado);
                         cmd.Parameters.AddWithValue("@p_fecha_nac_empleado", fechaNacEmpleado);
@@ -6285,6 +6290,41 @@ namespace fpWebApp
                 dt = new DataTable();
                 dt.Columns.Add("Error", typeof(string));
                 dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarEmpresaCRMPorId(int idEmpresCRM, out bool respuesta)
+        {
+            DataTable dt = new DataTable();
+            respuesta = false;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_EMPRESA_CRM_POR_ID", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_empresa_CRM", idEmpresCRM);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                        respuesta = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+                respuesta = false;
             }
 
             return dt;

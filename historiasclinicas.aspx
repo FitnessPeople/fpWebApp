@@ -171,6 +171,7 @@
                                                 <th data-breakpoints="xs">Documento</th>
                                                 <th data-breakpoints="xs">Afiliado</th>
                                                 <th data-breakpoints="xs">Género</th>
+                                                <th data-breakpoints="xs">Edad</th>
                                                 <th data-breakpoints="all" data-title="Info"></th>
                                                 <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                             </tr>
@@ -184,6 +185,7 @@
                                                         <td><%# Eval("DocumentoAfiliado") %></td>
                                                         <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
                                                         <td><%# Eval("iconGenero") %> <%# Eval("Genero") %></td>
+                                                        <td><%# Eval("Edad") %> años</td>
                                                         <td>
                                                             <h3 class="text-info">Antecedentes</h3>
                                                             <table class="table table-bordered table-striped">
@@ -204,16 +206,16 @@
                                                                 <tr>
                                                                     <th width="20%"><i class="fa fa-crutch m-r-sm"></i>Traumatológico</th>
                                                                     <th width="20%"><i class="fa fa-capsules m-r-sm"></i>Farmacológico</th>
-                                                                    <th width="20%"><i class="fa fa-droplet m-r-sm"></i>F.U.M.</th>
                                                                     <th width="20%"><i class="fa fa-person-running m-r-sm"></i>Actividad Física</th>
                                                                     <th width="20%"><i class="fa fa-person-pregnant m-r-sm"></i>Gineco-Obstetricia</th>
+                                                                    <th width="20%"><i class="fa fa-droplet m-r-sm"></i>F.U.M.</th>
                                                                 </tr>
                                                                 <tr>
                                                                     <td><%# Eval("AnteTraumatologico") %></td>
                                                                     <td><%# Eval("AnteFarmacologico") %></td>
-                                                                    <td><%# Eval("AnteFUM") %></td>
                                                                     <td><%# Eval("AnteActividadFisica") %></td>
                                                                     <td><%# Eval("AnteGineco") %></td>
+                                                                    <td><%# Eval("AnteFUM", "{0:dd MMM yyyy}") %></td>
                                                                 </tr>
                                                             </table>
                                                             <h3 class="text-info">Factores de Riesgo Cardiovascular</h3>
@@ -243,7 +245,11 @@
                                                             </table>
                                                         </td>
                                                         <td>
-                                                            <button runat="server" id="btnAgregar" class="btn btn-outline btn-success pull-right"
+                                                            <button runat="server" id="btnImprimir" class="btn btn-outline btn-info pull-right"
+                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Imprimir">
+                                                                <i class="fa fa-print"></i>
+                                                            </button>
+                                                            <button runat="server" id="btnAgregar" class="btn btn-outline btn-success pull-right m-r-xs"
                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Agregar control">
                                                                 <i class="fa fa-notes-medical"></i>
                                                             </button>

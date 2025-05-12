@@ -389,14 +389,14 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Medicina prepagada</label>
-                                                            <asp:TextBox ID="txbMedicinaPrepagada" CssClass="form-control" runat="server"></asp:TextBox>
+                                                            <asp:TextBox ID="txbMedicinaPrepagada" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Objetivo del ingreso</label>
                                                             <asp:DropDownList ID="ddlObjetivo" runat="server" AppendDataBoundItems="true"
-                                                                DataTextField="Objetivo" DataValueField="idObjetivo" CssClass="form-control m-b">
+                                                                DataTextField="Objetivo" DataValueField="idObjetivo" CssClass="form-control input-sm m-b">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
@@ -404,8 +404,33 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Detalle objetivo del ingreso</label>
-                                                            <asp:TextBox ID="txbDescripcionObjetivo" CssClass="form-control" runat="server"
+                                                            <asp:TextBox ID="txbDescripcionObjetivo" CssClass="form-control input-sm" runat="server"
                                                                 TextMode="MultiLine"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Remisión</label>
+                                                            <asp:TextBox ID="txbRemision" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Tipo de consulta</label>
+                                                            <asp:DropDownList ID="ddlTipoConsulta" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:ListItem Text="Consulta de control" Value="Consulta de control"></asp:ListItem>
+                                                                <asp:ListItem Text="Primera vez" Value="Primera vez"></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Motivo de consulta</label>
+                                                            <asp:TextBox ID="txbMotivoConsulta" CssClass="form-control input-sm" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -509,7 +534,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label class="small">Fuma?</label>
+                                                            <label>Fuma?</label>
                                                             <asp:RadioButtonList ID="rblFuma" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
                                                                 <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
                                                                 <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
@@ -518,7 +543,7 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label class="small">Cigarrilos x día</label>
+                                                            <label>Cigarrilos x día</label>
                                                             <asp:TextBox ID="txbCigarrillos" CssClass="form-control input-sm" runat="server" Text="0"></asp:TextBox>
                                                         </div>
                                                     </div>
@@ -529,7 +554,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label class="small">Toma?</label>
+                                                            <label>Toma?</label>
                                                             <asp:RadioButtonList ID="rblToma" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
                                                                 <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
                                                                 <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
@@ -538,7 +563,7 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label class="small">Bebidas x mes</label>
+                                                            <label>Bebidas x mes</label>
                                                             <asp:TextBox ID="txbBebidas" CssClass="form-control input-sm" runat="server" Text="0"></asp:TextBox>
                                                         </div>
                                                     </div>
@@ -549,7 +574,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-6 b-r">
                                                         <div class="form-group">
-                                                            <label class="small">Sedentarismo</label>
+                                                            <label>Sedentarismo</label>
                                                             <asp:RadioButtonList ID="rblSedentarismo" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
                                                                 <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
                                                                 <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
@@ -558,7 +583,7 @@
                                                     </div>
                                                     <div class="col-sm-6 b-r">
                                                         <div class="form-group">
-                                                            <label class="small">Diabetes</label>
+                                                            <label>Diabetes</label>
                                                             <asp:RadioButtonList ID="rblDiabetes" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
                                                                 <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
                                                                 <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
@@ -572,7 +597,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-4 b-r">
                                                         <div class="form-group">
-                                                            <label class="small">Colesterol</label>
+                                                            <label>Colesterol</label>
                                                             <asp:RadioButtonList ID="rblColesterol" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
                                                                 <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
                                                                 <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
@@ -582,7 +607,7 @@
                                                     </div>
                                                     <div class="col-sm-4 b-r">
                                                         <div class="form-group">
-                                                            <label class="small">Triglicéridos</label>
+                                                            <label>Triglicéridos</label>
                                                             <asp:RadioButtonList ID="rblTrigliceridos" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
                                                                 <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
                                                                 <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
@@ -592,7 +617,7 @@
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
-                                                            <label class="small">H.T.A.</label>
+                                                            <label>H.T.A.</label>
                                                             <asp:RadioButtonList ID="rblHTA" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
                                                                 <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
                                                                 <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
@@ -601,6 +626,10 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+
+                                            <div class="col-sm-12">
+                                                <div><br /></div>
                                             </div>
 
                                             <div class="col-sm-12">

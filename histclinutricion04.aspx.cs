@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Vml;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Odbc;
@@ -29,6 +30,16 @@ namespace fpWebApp
                         {
                             if (Request.QueryString.Count > 0)
                             {
+                                txbIMC.Attributes.Add("readonly", "readonly");
+                                txbPorcGrasa.Attributes.Add("readonly", "readonly");
+                                txbPorcMuscular.Attributes.Add("readonly", "readonly");
+                                txbFCETanaka.Attributes.Add("readonly", "readonly");
+                                txbPesoEsperado.Attributes.Add("readonly", "readonly");
+                                txbPesoGraso.Attributes.Add("readonly", "readonly");
+                                txbPesoMagro.Attributes.Add("readonly", "readonly");
+                                txbGastoCalorico.Attributes.Add("readonly", "readonly");
+                                txbGastoTotal.Attributes.Add("readonly", "readonly");
+
                                 txbPeso.Attributes.Add("type", "number");
                                 txbPeso.Attributes.Add("min", "20");
                                 txbTalla.Attributes.Add("type", "number");
@@ -49,16 +60,6 @@ namespace fpWebApp
                                 txbPliegueSubescapular.Attributes.Add("type", "number");
                                 txbPliegueMuslo.Attributes.Add ("type", "number");
                                 txbPlieguePantorrilla.Attributes.Add("type", "number");
-
-                                txbPorcGrasa.Attributes.Add("type", "number");
-                                txbPorcMuscular.Attributes.Add("type", "number");
-                                txbFCETanaka.Attributes.Add("type", "number");
-                                txbPesoEsperado.Attributes.Add("type", "number");
-                                txbPesoGraso.Attributes.Add("type", "number");
-                                txbPesoMagro.Attributes.Add("type", "number");
-                                txbGastoCalorico.Attributes.Add("type", "number");
-
-                                txbGastoTotal.Attributes.Add("type", "number");
 
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
                                 CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
@@ -217,6 +218,7 @@ namespace fpWebApp
                     "PliegueTricipital = '" + txbPliegueTricipital.Text.ToString() + "', " +
                     "PliegueIliocrestal = '" + txbPliegueIliocrestal.Text.ToString() + "', " +
                     "PliegueAbdominal = '" + txbPliegueAbdominal.Text.ToString() + "', " +
+                    "PliegueSubescapular = '" + txbPliegueSubescapular.Text.ToString() + "', " +
                     "PliegueMuslo = '" + txbPliegueMuslo.Text.ToString() + "', " +
                     "PlieguePantorrilla = '" + txbPlieguePantorrilla.Text.ToString() + "', " +
                     "PorcGrasa = '" + txbPorcGrasa.Text.ToString() + "', " +

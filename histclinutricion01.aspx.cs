@@ -233,5 +233,27 @@ namespace fpWebApp
                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
             }
         }
+
+        protected void btnCancelar_Click(object sender, EventArgs e)
+        {
+            string script = @"
+                Swal.fire({
+                    title: 'Desea cancelar y salir?',
+                    text: 'La información se guardará hasta este momento.',
+                    type: 'warning',
+                    icon: 'danger',
+                    showCancelButton: true,
+                    cancelButtonText: 'No',
+                    confirmButtonColor: '#DD6B55',
+                    confirmButtonText: 'Si, cancelar!',
+                    closeOnConfirm: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'historiasclinicas';                        
+                    }
+                });
+                ";
+            ScriptManager.RegisterStartupScript(this, GetType(), "CancelarMensajeModal", script, true);
+        }
     }
 }

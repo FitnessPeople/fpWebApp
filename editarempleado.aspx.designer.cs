@@ -177,6 +177,24 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbEmail;
 
         /// <summary>
+        /// Control txbTelefonoCorp.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbTelefonoCorp;
+
+        /// <summary>
+        /// Control txbEmailCorp.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbEmailCorp;
+
+        /// <summary>
         /// Control txbDireccion.
         /// </summary>
         /// <remarks>
@@ -357,13 +375,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlCanalVenta;
 
         /// <summary>
-        /// Control ddlempresasFP.
+        /// Control ddlEmpresasFP.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlempresasFP;
+        protected global::System.Web.UI.WebControls.DropDownList ddlEmpresasFP;
 
         /// <summary>
         /// Control ltMensaje.

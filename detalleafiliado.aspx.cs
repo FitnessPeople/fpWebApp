@@ -361,30 +361,30 @@ namespace fpWebApp
                 JObject jsonData = JObject.Parse(prettyJson);
 
                 List<pagoswompidet> listaPagos = new List<pagoswompidet>
-                            {
-                                new pagoswompidet
-                                {
-                                    Id = jsonData["data"]["id"]?.ToString(),
-                                    FechaCreacion = jsonData["data"]["created_at"]?.ToString(),
-                                    FechaFinalizacion = jsonData["data"]["finalized_at"]?.ToString(),
-                                    Valor = ((jsonData["data"]["amount_in_cents"]?.Value<int>() ?? 0) / 100).ToString("N0"),
-                                    Moneda = jsonData["data"]["currency"]?.ToString(),
-                                    MetodoPago = jsonData["data"]["payment_method_type"]?.ToString(),
-                                    Estado = jsonData["data"]["status"]?.ToString(),
-                                    Referencia = jsonData["data"]["reference"]?.ToString(),
-                                    NombreTarjeta = jsonData["data"]["payment_method"]["extra"]["name"]?.ToString(),
-                                    UltimosDigitos = jsonData["data"]["payment_method"]["extra"]["last_four"]?.ToString(),
-                                    MarcaTarjeta = jsonData["data"]["payment_method"]["extra"]["brand"]?.ToString(),
-                                    TipoTarjeta = jsonData["data"]["payment_method"]["extra"]["card_type"]?.ToString(),
-                                    NombreComercio = jsonData["data"]["merchant"]["name"]?.ToString(),
-                                    ContactoComercio = jsonData["data"]["merchant"]["contact_name"]?.ToString(),
-                                    TelefonoComercio = jsonData["data"]["merchant"]["phone_number"]?.ToString(),
-                                    URLRedireccion = jsonData["data"]["redirect_url"]?.ToString(),
-                                    PaymentLinkId = jsonData["data"]["payment_link_id"]?.ToString(),
-                                    PublicKeyComercio = jsonData["data"]["merchant"]["public_key"]?.ToString(),
-                                    EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString(),
-                                    Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
-                            };
+                    {
+                        new pagoswompidet
+                        {
+                            Id = jsonData["data"]["id"]?.ToString(),
+                            FechaCreacion = jsonData["data"]["created_at"]?.ToString(),
+                            FechaFinalizacion = jsonData["data"]["finalized_at"]?.ToString(),
+                            Valor = ((jsonData["data"]["amount_in_cents"]?.Value<int>() ?? 0) / 100).ToString("N0"),
+                            Moneda = jsonData["data"]["currency"]?.ToString(),
+                            MetodoPago = jsonData["data"]["payment_method_type"]?.ToString(),
+                            Estado = jsonData["data"]["status"]?.ToString(),
+                            Referencia = jsonData["data"]["reference"]?.ToString(),
+                            NombreTarjeta = jsonData["data"]["payment_method"]["extra"]["name"]?.ToString(),
+                            UltimosDigitos = jsonData["data"]["payment_method"]["extra"]["last_four"]?.ToString(),
+                            MarcaTarjeta = jsonData["data"]["payment_method"]["extra"]["brand"]?.ToString(),
+                            TipoTarjeta = jsonData["data"]["payment_method"]["extra"]["card_type"]?.ToString(),
+                            NombreComercio = jsonData["data"]["merchant"]["name"]?.ToString(),
+                            ContactoComercio = jsonData["data"]["merchant"]["contact_name"]?.ToString(),
+                            TelefonoComercio = jsonData["data"]["merchant"]["phone_number"]?.ToString(),
+                            URLRedireccion = jsonData["data"]["redirect_url"]?.ToString(),
+                            PaymentLinkId = jsonData["data"]["payment_link_id"]?.ToString(),
+                            PublicKeyComercio = jsonData["data"]["merchant"]["public_key"]?.ToString(),
+                            EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString(),
+                            Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
+                    };
 
                 StringBuilder sb = new StringBuilder();
 
@@ -430,48 +430,48 @@ namespace fpWebApp
                 "AND ap.EstadoPlan = 'Activo'";
             DataTable dt = cg.TraerDatos(strQuery);
 
-            string strGenero = "";
-            if (dt.Rows[0]["idGenero"].ToString() == "1")
+            if (dt.Rows.Count > 0)
             {
-                strGenero = "M";
+                string strGenero = "";
+                if (dt.Rows[0]["idGenero"].ToString() == "1")
+                {
+                    strGenero = "M";
+                }
+                if (dt.Rows[0]["idGenero"].ToString() == "2")
+                {
+                    strGenero = "F";
+                }
+
+                Persona oPersona = new Persona()
+                {
+                    pin = "" + dt.Rows[0]["DocumentoAfiliado"].ToString() + "",
+                    name = "" + dt.Rows[0]["NombreAfiliado"].ToString() + "",
+                    lastName = "" + dt.Rows[0]["ApellidoAfiliado"].ToString() + "",
+                    gender = strGenero,
+                    personPhoto = "",
+                    certType = "",
+                    certNumber = "",
+                    mobilePhone = "" + dt.Rows[0]["CelularAfiliado"].ToString() + "",
+                    personPwd = "",
+                    birthday = "" + String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"].ToString())) + "",
+                    isSendMail = "false",
+                    email = "" + dt.Rows[0]["EmailAfiliado"].ToString() + "",
+                    deptCode = "01",
+                    ssn = "",
+                    cardNo = "",
+                    supplyCards = "",
+                    carPlate = "",
+                    accStartTime = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaInicioPlan"].ToString())) + " 05:00:00",
+                    accEndTime = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaFinalPlan"].ToString())) + " 23:00:00",
+                    accLevelIds = "402883f08df57ba4018df57cddf70490",
+                    hireDate = ""
+                };
+
+                string contenido = JsonConvert.SerializeObject(oPersona, Formatting.Indented);
+
+                string url = "https://aone.armaturacolombia.co/api/person/add/?access_token=D2BCF6E6BD09DECAA1266D9F684FFE3F5310AD447D107A29974F71E1989AABDB";
+                string rta = EnviarPeticion(url, contenido);
             }
-            if (dt.Rows[0]["idGenero"].ToString() == "2")
-            {
-                strGenero = "F";
-            }
-
-            Persona oPersona = new Persona()
-            {
-                pin = "" + dt.Rows[0]["DocumentoAfiliado"].ToString() + "",
-                name = "" + dt.Rows[0]["NombreAfiliado"].ToString() + "",
-                lastName = "" + dt.Rows[0]["ApellidoAfiliado"].ToString() + "",
-                gender = strGenero,
-                personPhoto = "",
-                certType = "",
-                certNumber = "",
-                mobilePhone = "" + dt.Rows[0]["CelularAfiliado"].ToString() + "",
-                personPwd = "",
-                birthday = "" + String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"].ToString())) + "",
-                isSendMail = "false",
-                email = "" + dt.Rows[0]["EmailAfiliado"].ToString() + "",
-                deptCode = "01",
-                ssn = "",
-                cardNo = "",
-                supplyCards = "",
-                carPlate = "",
-                accStartTime = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaInicioPlan"].ToString())) + " 05:00:00",
-                accEndTime = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaFinalPlan"].ToString())) + " 23:00:00",
-                accLevelIds = "402883f08df57ba4018df57cddf70490",
-                hireDate = ""
-            };
-
-            string contenido = JsonConvert.SerializeObject(oPersona, Formatting.Indented);
-
-            string url = "https://aone.armaturacolombia.co/api/person/add/?access_token=D2BCF6E6BD09DECAA1266D9F684FFE3F5310AD447D107A29974F71E1989AABDB";
-            string rta = EnviarPeticion(url, contenido);
-
-            //ltMensaje.Text = rta;
-
         }
     }
 }

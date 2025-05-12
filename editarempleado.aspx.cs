@@ -167,8 +167,8 @@ namespace fpWebApp
         {
             clasesglobales cg1 = new clasesglobales();
             DataTable dt = cg1.ConsultarEmpresasFP();
-            ddlempresasFP.DataSource = dt;
-            ddlempresasFP.DataBind();
+            ddlEmpresasFP.DataSource = dt;
+            ddlEmpresasFP.DataBind();
             dt.Dispose();
         }
 
@@ -209,8 +209,10 @@ namespace fpWebApp
             txbNombre.Text = dt.Rows[0]["NombreEmpleado"].ToString();
             ltNombre.Text = dt.Rows[0]["NombreEmpleado"].ToString();
             txbTelefono.Text = dt.Rows[0]["TelefonoEmpleado"].ToString();
+            txbTelefonoCorp.Text = dt.Rows[0]["TelefonoCorporativo"].ToString();
             ltTelefono.Text = dt.Rows[0]["TelefonoEmpleado"].ToString();
             txbEmail.Text = dt.Rows[0]["EmailEmpleado"].ToString();
+            txbEmailCorp.Text = dt.Rows[0]["EmailCorporativo"].ToString();
             txbDireccion.Text = dt.Rows[0]["DireccionEmpleado"].ToString();
             ddlCiudadEmpleado.SelectedIndex = Convert.ToInt32(ddlCiudadEmpleado.Items.IndexOf(ddlCiudadEmpleado.Items.FindByValue(dt.Rows[0]["idCiudadEmpleado"].ToString())));
             DateTime dt14 = DateTime.Now.AddYears(-14);
@@ -229,6 +231,10 @@ namespace fpWebApp
             {
                 imgFoto.Src = "img/empleados/" + dt.Rows[0]["FotoEmpleado"].ToString();
                 ViewState["FotoEmpleado"] = dt.Rows[0]["FotoEmpleado"].ToString();
+            }
+            else
+            {
+                imgFoto.Src = "img/empleados/nofoto.png";
             }
             txbContrato.Text = dt.Rows[0]["NroContrato"].ToString();
             if (dt.Rows[0]["TipoContrato"].ToString() != "")
@@ -295,10 +301,10 @@ namespace fpWebApp
 
             if (dt.Rows[0]["idEmpresaFP"].ToString() != "")
             {
-                ddlempresasFP.SelectedIndex = Convert.ToInt16(ddlempresasFP.Items.IndexOf(ddlempresasFP.Items.FindByValue(dt.Rows[0]["idEmpresaFP"].ToString())));
+                ddlEmpresasFP.SelectedIndex = Convert.ToInt16(ddlEmpresasFP.Items.IndexOf(ddlEmpresasFP.Items.FindByValue(dt.Rows[0]["idEmpresaFP"].ToString())));
             }
             else
-                ddlempresasFP.SelectedItem.Value = "0";
+                ddlEmpresasFP.SelectedItem.Value = "0";
 
             if (dt.Rows[0]["idEstadoCivil"].ToString() != "")
             {
@@ -376,9 +382,10 @@ namespace fpWebApp
                 clasesglobales cg = new clasesglobales();
 
                 string mensaje = cg.ActualizarEmpleado(txbDocumento.Text.ToString(), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
-                    txbNombre.Text.ToString(), txbTelefono.Text.ToString(), txbEmail.Text.ToString(), txbDireccion.Text.ToString(),
+                    txbNombre.Text.ToString(), txbTelefono.Text.ToString(), txbTelefonoCorp.Text.ToString(), 
+                    txbEmail.Text.ToString(), txbEmailCorp.Text.ToString(), txbDireccion.Text.ToString(),
                     Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), txbFechaNac.Text.ToString(), strFilename,
-                    txbContrato.Text.ToString(), ddlTipoContrato.SelectedItem.Value.ToString(), Convert.ToInt32(ddlempresasFP.SelectedItem.Value.ToString()),
+                    txbContrato.Text.ToString(), ddlTipoContrato.SelectedItem.Value.ToString(), Convert.ToInt32(ddlEmpresasFP.SelectedItem.Value.ToString()),
                     Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), txbFechaInicio.Text.ToString(), txbFechaFinal.Text.ToString(),
                     Convert.ToInt32(Regex.Replace(txbSueldo.Text, @"[^\d]", "")), ddlGrupo.SelectedItem.Value.ToString(), Convert.ToInt32(ddlEps.SelectedItem.Value.ToString()),
                     Convert.ToInt32(ddlFondoPension.SelectedItem.Value.ToString()), Convert.ToInt32(ddlArl.SelectedItem.Value.ToString()),
@@ -404,7 +411,7 @@ namespace fpWebApp
                             title: 'El empleado se actualizó de forma exitosa',
                             text: 'Texto.',
                             icon: 'success',
-                            timer: 4000, // 4 segundos
+                            timer: 3000, // 3 segundos
                             showConfirmButton: false,
                             timerProgressBar: true
                         }).then(() => {

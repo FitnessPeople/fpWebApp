@@ -1362,7 +1362,7 @@ button.dim:active:before {
   box-sizing: content-box;
 }
 /* FULLCALENDAR */
-.fc-state-default {
+/*.fc-state-default {
   background-color: #ffffff;
   background-image: none;
   background-repeat: repeat-x;
@@ -1415,20 +1415,28 @@ button.dim:active:before {
 .fc-ltr .fc-event-hori.fc-event-end,
 .fc-rtl .fc-event-hori.fc-event-start {
   border-radius: 2px;
-}
+}*/
 .fc-event,
 .fc-agenda .fc-event-time,
 .fc-event a {
-  padding: 4px 6px;
-  background-color: #1ab394;
-  /* background color */
-  border-color: #1ab394;
-  /* border color */
+    padding: 0 1px;
+    background-color: none;
+    border-color: none;
 }
 .fc-event-time,
 .fc-event-title {
-  color: #717171;
+  color: #000;
   padding: 0 1px;
+}
+.fc-daygrid-dot-event .fc-event-title {
+    font-weight: normal;
+}
+.fc-bg-event .fc-event-title {
+    font-weight: 800;
+    border-color: #000;
+}
+.fc-daygrid-event {
+    font-size: 0.75em;
 }
 .ui-calendar .fc-event-time,
 .ui-calendar .fc-event-title {

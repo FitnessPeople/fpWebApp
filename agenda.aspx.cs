@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Odbc;
+using System.Globalization;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -88,24 +89,47 @@ namespace fpWebApp
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
+                    IFormatProvider provider = new CultureInfo("en-US");
+                    DateTime dtIni = Convert.ToDateTime(dt.Rows[i]["FechaHoraIni"].ToString(), provider);
+                    DateTime dtFin = Convert.ToDateTime(dt.Rows[i]["FechaHoraFin"].ToString(), provider);
+
+                    string strFechaHoraIni = String.Format("{0:yyyy-MM-ddTHH:mm:ss}", dtIni);
+                    string strFechaHoraFin = String.Format("{0:yyyy-MM-ddTHH:mm:ss}", dtFin);
+
                     _strEventos += "{\r\n";
                     _strEventos += "id: '" + dt.Rows[i]["idDisponibilidad"].ToString() + "',\r\n";
-                    _strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
-                    //_strEventos += "description: 'Especialista',\r\n";
-                    _strEventos += "start: '" + dt.Rows[i]["FechaHoraIni"].ToString() + "',\r\n";
-                    _strEventos += "end: '" + dt.Rows[i]["FechaHoraFin"].ToString() + "',\r\n";
+                    //_strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
+                    //_strEventos += "start: '" + dt.Rows[i]["FechaHoraIni"].ToString() + "',\r\n";
+                    _strEventos += "start: '" + strFechaHoraIni + "',\r\n";
+                    //_strEventos += "end: '" + dt.Rows[i]["FechaHoraFin"].ToString() + "',\r\n";
+                    _strEventos += "end: '" + strFechaHoraFin + "',\r\n";
                     //_strEventos += "className: 'bg-primary',\r\n";
 
                     if (dt.Rows[i]["idAfiliado"].ToString() != "")
                     {
-                        _strEventos += "color: '#F8AC59',\r\n";
-                        _strEventos += "description: 'Cita asignada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                        _strEventos += "btnEliminar: 'none',\r\n";
+                        if (dt.Rows[i]["Cancelada"].ToString() != "0")
+                        {
+                            _strEventos += "color: '#ed5565',\r\n"; //danger
+                            _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                            _strEventos += "description: 'Cita cancelada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                            _strEventos += "icon: 'id-card',\r\n";
+                            _strEventos += "btnEliminar: 'none',\r\n";
+                        }
+                        else
+                        {
+                            _strEventos += "color: '#F8AC59',\r\n"; //warning
+                            _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                            _strEventos += "description: 'Cita asignada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                            _strEventos += "icon: 'id-card',\r\n";
+                            _strEventos += "btnEliminar: 'none',\r\n";
+                        }
                     }
                     else
                     {
+                        _strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
                         _strEventos += "color: '#1ab394',\r\n";
                         _strEventos += "description: 'Cita disponible.',\r\n";
+                        _strEventos += "icon: 'user-doctor',\r\n";
                         _strEventos += "btnEliminar: 'inline',\r\n";
                     }
 
@@ -124,6 +148,7 @@ namespace fpWebApp
 
         private string AgregarFestivos(string eventos, string anho)
         {
+            //https://www.festivos.com.co/calendario
             _strEventos = eventos;
 
             if (anho == "2025")
@@ -131,137 +156,171 @@ namespace fpWebApp
                 _strEventos += "{\r\n";
                 _strEventos += "start: '2025-01-01',\r\n";
                 _strEventos += "end: '2025-01-01',\r\n";
+                _strEventos += "title: 'Año nuevo',\r\n";
                 _strEventos += "rendering: 'background',\r\n";
                 _strEventos += "color: '#ff9f89',\r\n";
                 _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
 
                 _strEventos += "{\r\n";
                 _strEventos += "start: '2025-01-06',\r\n";
                 _strEventos += "end: '2025-01-06',\r\n";
+                _strEventos += "title: 'Reyes magos',\r\n";
                 _strEventos += "rendering: 'background',\r\n";
                 _strEventos += "color: '#ff9f89',\r\n";
                 _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
 
                 _strEventos += "{\r\n";
                 _strEventos += "start: '2025-03-24',\r\n";
                 _strEventos += "end: '2025-03-24',\r\n";
+                _strEventos += "title: 'Día de San José',\r\n";
                 _strEventos += "rendering: 'background',\r\n";
                 _strEventos += "color: '#ff9f89',\r\n";
                 _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
 
                 _strEventos += "{\r\n";
                 _strEventos += "start: '2025-04-17',\r\n";
                 _strEventos += "end: '2025-04-17',\r\n";
+                _strEventos += "title: 'Jueves Santo',\r\n";
                 _strEventos += "rendering: 'background',\r\n";
                 _strEventos += "color: '#ff9f89',\r\n";
                 _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
 
                 _strEventos += "{\r\n";
                 _strEventos += "start: '2025-04-18',\r\n";
                 _strEventos += "end: '2025-04-18',\r\n";
+                _strEventos += "title: 'Viernes Santo',\r\n";
                 _strEventos += "rendering: 'background',\r\n";
                 _strEventos += "color: '#ff9f89',\r\n";
                 _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
 
                 _strEventos += "{\r\n";
                 _strEventos += "start: '2025-05-01',\r\n";
                 _strEventos += "end: '2025-05-01',\r\n";
+                _strEventos += "title: 'Día del Trabajo',\r\n";
                 _strEventos += "rendering: 'background',\r\n";
                 _strEventos += "color: '#ff9f89',\r\n";
                 _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
 
                 _strEventos += "{\r\n";
                 _strEventos += "start: '2025-06-02',\r\n";
                 _strEventos += "end: '2025-06-02',\r\n";
+                _strEventos += "title: 'Ascensión de Jesús',\r\n";
                 _strEventos += "rendering: 'background',\r\n";
                 _strEventos += "color: '#ff9f89',\r\n";
                 _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
 
                 _strEventos += "{\r\n";
                 _strEventos += "start: '2025-06-23',\r\n";
                 _strEventos += "end: '2025-06-23',\r\n";
+                _strEventos += "title: 'Corpus Christi',\r\n";
                 _strEventos += "rendering: 'background',\r\n";
                 _strEventos += "color: '#ff9f89',\r\n";
                 _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
 
                 _strEventos += "{\r\n";
                 _strEventos += "start: '2025-06-30',\r\n";
-                _strEventos += "end: '2025-06-23',\r\n";
+                _strEventos += "end: '2025-06-30',\r\n";
+                _strEventos += "title: 'Sagrado Corazón de Jesús',\r\n";
                 _strEventos += "rendering: 'background',\r\n";
                 _strEventos += "color: '#ff9f89',\r\n";
                 _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
 
                 _strEventos += "{\r\n";
                 _strEventos += "start: '2025-07-20',\r\n";
                 _strEventos += "end: '2025-07-20',\r\n";
+                _strEventos += "title: 'Día de la Independencia',\r\n";
                 _strEventos += "rendering: 'background',\r\n";
                 _strEventos += "color: '#ff9f89',\r\n";
                 _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
 
                 _strEventos += "{\r\n";
                 _strEventos += "start: '2025-08-07',\r\n";
                 _strEventos += "end: '2025-08-07',\r\n";
+                _strEventos += "title: 'Batalla de Boyacá',\r\n";
                 _strEventos += "rendering: 'background',\r\n";
                 _strEventos += "color: '#ff9f89',\r\n";
                 _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
 
                 _strEventos += "{\r\n";
                 _strEventos += "start: '2025-08-18',\r\n";
                 _strEventos += "end: '2025-08-18',\r\n";
+                _strEventos += "title: 'Asunción de la virgen',\r\n";
                 _strEventos += "rendering: 'background',\r\n";
                 _strEventos += "color: '#ff9f89',\r\n";
                 _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
 
                 _strEventos += "{\r\n";
                 _strEventos += "start: '2025-10-13',\r\n";
                 _strEventos += "end: '2025-10-13',\r\n";
+                _strEventos += "title: 'Día de la raza',\r\n";
                 _strEventos += "rendering: 'background',\r\n";
                 _strEventos += "color: '#ff9f89',\r\n";
                 _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
 
                 _strEventos += "{\r\n";
                 _strEventos += "start: '2025-11-03',\r\n";
                 _strEventos += "end: '2025-11-03',\r\n";
+                _strEventos += "title: 'Todos los santos',\r\n";
                 _strEventos += "rendering: 'background',\r\n";
                 _strEventos += "color: '#ff9f89',\r\n";
                 _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
 
                 _strEventos += "{\r\n";
                 _strEventos += "start: '2025-11-17',\r\n";
                 _strEventos += "end: '2025-11-17',\r\n";
+                _strEventos += "title: 'Independencia de Cartagena',\r\n";
                 _strEventos += "rendering: 'background',\r\n";
                 _strEventos += "color: '#ff9f89',\r\n";
                 _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
 
                 _strEventos += "{\r\n";
                 _strEventos += "start: '2025-12-08',\r\n";
                 _strEventos += "end: '2025-12-08',\r\n";
+                _strEventos += "title: 'Inmaculada concepción',\r\n";
                 _strEventos += "rendering: 'background',\r\n";
                 _strEventos += "color: '#ff9f89',\r\n";
                 _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
 
                 _strEventos += "{\r\n";
                 _strEventos += "start: '2025-12-25',\r\n";
                 _strEventos += "end: '2025-12-25',\r\n";
+                _strEventos += "title: 'Navidad',\r\n";
                 _strEventos += "rendering: 'background',\r\n";
                 _strEventos += "color: '#ff9f89',\r\n";
                 _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
 
                 _strEventos += "],\r\n";
@@ -354,7 +413,7 @@ namespace fpWebApp
                             // Consulta si se cruza la cita en la sede con la fecha y hora de otra disponible
                             string strQuery = "SELECT * FROM DisponibilidadEspecialistas " +
                                 "WHERE (idSede = " + ddlSedesCita.SelectedItem.Value.ToString() + " " +
-                                "OR idEspecialista  = " + ddlEspecialistas.SelectedItem.Value.ToString() + ") " +
+                                "OR DocumentoEmpleado = '" + ddlEspecialistas.SelectedItem.Value.ToString() + "') " +
                                 "AND (('" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal) " +
                                 "OR ('" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal))";
                             clasesglobales cg = new clasesglobales();
@@ -368,7 +427,7 @@ namespace fpWebApp
                                 //    "AND (('" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal) " +
                                 //    "OR ('" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal))";
                                 strQuery = "SELECT * FROM DisponibilidadEspecialistas " +
-                                    "WHERE idEspecialista = " + ddlEspecialistas.SelectedItem.Value.ToString() + " " +
+                                    "WHERE DocumentoEmpleado = '" + ddlEspecialistas.SelectedItem.Value.ToString() + "' " +
                                     "AND idSede != " + ddlSedes.SelectedItem.Value.ToString() + " " +
                                     "AND TIMESTAMPDIFF(MINUTE, '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', FechaHoraInicio) <= 60 " +
                                     "AND '" + dtFechaIniCita.ToString("yyyy-MM-dd") + "' = DATE(FechaHoraInicio) ";
@@ -392,8 +451,8 @@ namespace fpWebApp
                                                     if (Convert.ToInt16(dtFechaIniCita.DayOfWeek) == Convert.ToInt16(item.Value.ToString()))
                                                     {
                                                         strQuery = "INSERT INTO DisponibilidadEspecialistas " +
-                                                            "(idEspecialista, idSede, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
-                                                            "VALUES (" + ddlEspecialistas.SelectedItem.Value.ToString() + ", " + ddlSedesCita.SelectedItem.Value.ToString() + ", " +
+                                                            "(DocumentoEmpleado, idSede, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
+                                                            "VALUES ('" + ddlEspecialistas.SelectedItem.Value.ToString() + "', " + ddlSedesCita.SelectedItem.Value.ToString() + ", " +
                                                             "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
                                                             "" + Session["idusuario"].ToString() + ") ";
                                                         
@@ -405,8 +464,8 @@ namespace fpWebApp
                                         else
                                         {
                                             strQuery = "INSERT INTO DisponibilidadEspecialistas " +
-                                                "(idEspecialista, idSede, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
-                                                "VALUES (" + ddlEspecialistas.SelectedItem.Value.ToString() + ", " + ddlSedesCita.SelectedItem.Value.ToString() + ", " +
+                                                "(DocumentoEmpleado, idSede, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
+                                                "VALUES ('" + ddlEspecialistas.SelectedItem.Value.ToString() + "', " + ddlSedesCita.SelectedItem.Value.ToString() + ", " +
                                                 "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
                                                 "" + Session["idusuario"].ToString() + ") ";
 
