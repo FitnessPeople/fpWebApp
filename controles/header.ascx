@@ -23,10 +23,10 @@
                             <img alt="image" class="img-circle" src="img/a7.jpg">
                         </a>
                         <div>
-                            <small class="pull-right">46h ago</small>
-                            <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>.
+                            <small class="pull-right text-warning">Hace 40 min</small>
+                            Tienes un nuevo mensaje de <strong>Silvia Pardo</strong>.
                             <br>
-                            <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
+                            <small class="text-muted">Asunto: No enviaron comprobantes</small>
                         </div>
                     </div>
                 </li>
@@ -37,10 +37,10 @@
                             <img alt="image" class="img-circle" src="img/a4.jpg">
                         </a>
                         <div>
-                            <small class="pull-right text-navy">5h ago</small>
-                            <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>.
+                            <small class="pull-right text-navy">Hace 5 horas</small>
+                            Tienes un nuevo mensaje de <strong>Mónica Suarez</strong>.
                             <br>
-                            <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
+                            <small class="text-muted">Asunto: Agregar los elementos a la tienda</small>
                         </div>
                     </div>
                 </li>
@@ -51,10 +51,10 @@
                             <img alt="image" class="img-circle" src="img/profile.jpg">
                         </a>
                         <div>
-                            <small class="pull-right">23h ago</small>
-                            <strong>Monica Smith</strong> love <strong>Kim Smith</strong>.
+                            <small class="pull-right">Hace 2 días</small>
+                            Tienes un nuevo mensaje de <strong>Yerson Suarez</strong>.
                             <br>
-                            <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
+                            <small class="text-muted">Asunto: Enviar informes de ventas</small>
                         </div>
                     </div>
                 </li>
@@ -76,8 +76,8 @@
                 <li>
                     <a href="#">
                         <div>
-                            <i class="fa fa-envelope fa-fw m-r-sm"></i>You have 16 messages
-                    <span class="pull-right text-muted small">4 minutes ago</span>
+                            <i class="fa fa-envelope fa-fw m-r-sm"></i>Tienes 16 nuevos mensajes
+                    <span class="pull-right text-muted small">2 minutos</span>
                         </div>
                     </a>
                 </li>
@@ -85,8 +85,8 @@
                 <li>
                     <a href="#">
                         <div>
-                            <i class="fab fa-twitter fa-fw m-r-sm"></i>3 New Followers
-                    <span class="pull-right text-muted small">12 minutes ago</span>
+                            <i class="fa fa-users fa-fw m-r-sm"></i>3 nuevos amigos
+                    <span class="pull-right text-muted small">15 minutos</span>
                         </div>
                     </a>
                 </li>
@@ -94,8 +94,8 @@
                 <li>
                     <a href="#">
                         <div>
-                            <i class="fa fa-upload fa-fw m-r-sm"></i>Server Rebooted
-                    <span class="pull-right text-muted small">4 minutes ago</span>
+                            <i class="fa fa-upload fa-fw m-r-sm"></i>Reinicio del sistema
+                    <span class="pull-right text-muted small">10 horas</span>
                         </div>
                     </a>
                 </li>

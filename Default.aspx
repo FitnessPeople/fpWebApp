@@ -48,9 +48,17 @@
                     </div>
                 </div>
                 
-                <div class="form-group">
+                <%--<div class="form-group">
                     <asp:TextBox ID="txbPassword" CssClass="form-control" runat="server" placeholder="Password" required TextMode="Password"></asp:TextBox>
-                </div>
+                </div>--%>
+                <div class="form-group">
+                    <div class="input-group">
+					    <asp:TextBox ID="txbPassword" CssClass="form-control" runat="server" placeholder="Password" required TextMode="Password"></asp:TextBox>
+					    <span class="input-group-btn">
+						    <button type="button" class="btn btn-default"><i class="fa fa-eye" id="togglePassword"></i></button>
+					    </span>
+                    </div>
+				</div>
                 <asp:Button ID="btnIngresar" runat="server" CssClass="btn btn-warning1 block full-width m-b font-bold" Text="INGRESAR" OnClick="btnIngresar_Click" />
 
                 <div class="alert alert-danger alert-dismissable" runat="server" id="divMensaje" visible="false">
@@ -75,6 +83,23 @@
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
     <script>
+        const icon = document.getElementById('togglePassword');
+        let password = document.getElementById('txbPassword');
+
+        /* Event fired when <i> is clicked */
+        icon.addEventListener('click', function () {
+            if (password.type === "password") {
+                password.type = "text";
+                icon.classList.add("fa-eye-slash");
+                icon.classList.remove("fa-eye");
+            }
+            else {
+                password.type = "password";
+                icon.classList.add("fa-eye");
+                icon.classList.remove("fa-eye-slash");
+            }
+        });
+
         $(document).ready(function () {
 
             $("#form").validate({

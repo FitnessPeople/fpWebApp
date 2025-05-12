@@ -38,13 +38,13 @@ namespace fpWebApp
 
                     // ************  POSGRESSQL TEST  ************
 
-                    clasesglobales cg = new clasesglobales();
-                    DataTable dt = cg.TraerDatosArmatura("SELECT * FROM acc_timezone");
+                    //clasesglobales cg = new clasesglobales();
+                    //DataTable dt = cg.TraerDatosArmatura("SELECT * FROM acc_timezone");
 
-                    if (dt.Rows.Count > 0)
-                    {
-                        ltMsg.Text = dt.Rows[0]["acc_timeseg"].ToString();
-                    }
+                    //if (dt.Rows.Count > 0)
+                    //{
+                    //    ltMsg.Text = dt.Rows[0]["acc_timeseg"].ToString();
+                    //}
                 }
                 else
                 {

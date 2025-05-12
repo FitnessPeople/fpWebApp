@@ -220,7 +220,7 @@
                                                 <td><i class="fa fa-envelope m-r-xs font-bold"></i><%# Eval("CorreoEmpresa") %></td>
                                                 <td><%# Eval("FechaConvenio", "{0:dd MMM yyyy}") %></td>
                                                 <td><span class="badge badge-<%# Eval("badge") %>"><%# Eval("EstadoEmpresa") %></span></td>
-                                                <td class="table-bordered">
+                                                <td>
                                                     <table class="table table-bordered">
                                                         <tr>
                                                             <th width="50%" colspan="2"><i class="fa fa-map-location-dot m-r-xs"></i>Dirección</th>

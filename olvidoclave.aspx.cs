@@ -25,8 +25,7 @@ namespace fpWebApp
             if (dt.Rows.Count > 0)
             {
                 string strMensaje = "Ha solicitado la recuperación de su clave.\r\n";
-                strMensaje += "Por favor, dirijase al siguiente enlace para restaurarla:\r\n";
-                //strMensaje += "https://fpadmin.fitnesspeoplecolombia.com/recuperacionclave\r\n";
+                strMensaje += "Por favor, diríjase al siguiente enlace para restaurarla:\r\n";
                 //strMensaje += "<a href=\"recuperacionclave?u=" + usuario + "&p=" + dt.Rows[0]["ClaveUsuario"].ToString() + "\">Enlace</a>\r\n";
                 strMensaje += "https://fpadmin.fitnesspeoplecolombia.com/recuperacionclave?u=" + usuario + "&p=" + dt.Rows[0]["ClaveUsuario"].ToString() + "\r\n\r\n";
                 strMensaje += "Att. Sistemas Fitness People.\r\n";
