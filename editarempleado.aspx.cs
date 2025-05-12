@@ -257,36 +257,26 @@ namespace fpWebApp
             {
                 ddlEps.SelectedIndex = Convert.ToInt16(ddlEps.Items.IndexOf(ddlEps.Items.FindByValue(dt.Rows[0]["idEps"].ToString())));
             }
-            else
-                ddlEps.SelectedItem.Value = "0";
 
             if (dt.Rows[0]["idFondoPension"].ToString() != "")
             {
                 ddlFondoPension.SelectedIndex = Convert.ToInt16(ddlFondoPension.Items.IndexOf(ddlFondoPension.Items.FindByValue(dt.Rows[0]["idFondoPension"].ToString())));
             }
-            else
-                ddlFondoPension.SelectedItem.Value = "0";
 
             if (dt.Rows[0]["idArl"].ToString() != "")
             {
                 ddlArl.SelectedIndex = Convert.ToInt16(ddlArl.Items.IndexOf(ddlArl.Items.FindByValue(dt.Rows[0]["idArl"].ToString())));
             }
-            else
-                ddlArl.SelectedItem.Value = "0";
 
             if (dt.Rows[0]["idCajaComp"].ToString() != "")
             {
                 ddlCajaComp.SelectedIndex = Convert.ToInt16(ddlCajaComp.Items.IndexOf(ddlCajaComp.Items.FindByValue(dt.Rows[0]["idCajaComp"].ToString())));
             }
-            else
-                ddlCajaComp.SelectedItem.Value = "0";
 
             if (dt.Rows[0]["idCesantias"].ToString() != "")
             {
                 ddlCesantias.SelectedIndex = Convert.ToInt16(ddlCesantias.Items.IndexOf(ddlCesantias.Items.FindByValue(dt.Rows[0]["idCesantias"].ToString())));
             }
-            else
-                ddlCesantias.SelectedItem.Value = "0";
 
             rblEstado.Items.FindByValue(dt.Rows[0]["Estado"].ToString()).Selected = true;
 
@@ -294,8 +284,6 @@ namespace fpWebApp
             {
                 ddlCanalVenta.SelectedIndex = Convert.ToInt16(ddlCanalVenta.Items.IndexOf(ddlCanalVenta.Items.FindByValue(dt.Rows[0]["idCanalVenta"].ToString())));
             }
-            else
-                ddlCanalVenta.SelectedItem.Value = "0";
 
             rblEstado.Items.FindByValue(dt.Rows[0]["Estado"].ToString()).Selected = true;
 
@@ -303,29 +291,21 @@ namespace fpWebApp
             {
                 ddlEmpresasFP.SelectedIndex = Convert.ToInt16(ddlEmpresasFP.Items.IndexOf(ddlEmpresasFP.Items.FindByValue(dt.Rows[0]["idEmpresaFP"].ToString())));
             }
-            else
-                ddlEmpresasFP.SelectedItem.Value = "0";
 
             if (dt.Rows[0]["idEstadoCivil"].ToString() != "")
             {
                 ddlEstadoCivil.SelectedIndex = Convert.ToInt16(ddlEstadoCivil.Items.IndexOf(ddlEstadoCivil.Items.FindByValue(dt.Rows[0]["idEstadoCivil"].ToString())));
             }
-            else
-                ddlEstadoCivil.SelectedItem.Value = "0";
 
             if (dt.Rows[0]["idGenero"].ToString() != "")
             {
                 ddlGenero.SelectedIndex = Convert.ToInt16(ddlGenero.Items.IndexOf(ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString())));
             }
-            else
-                ddlGenero.SelectedItem.Value = "0";
 
             if (dt.Rows[0]["idCargo"].ToString() != "")
             {
                 ddlCargo.SelectedIndex = Convert.ToInt32(ddlCargo.Items.IndexOf(ddlCargo.Items.FindByValue(dt.Rows[0]["idCargo"].ToString())));
             }
-            else
-                ddlCargo.SelectedItem.Value = "0";
 
             dt.Dispose();
         }

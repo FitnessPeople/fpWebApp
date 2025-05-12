@@ -18,6 +18,7 @@ using System.Globalization;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.Security.Cryptography;
+using Npgsql;
 
 namespace fpWebApp
 {
@@ -147,6 +148,35 @@ namespace fpWebApp
                 respuesta = "ERROR: " + ex.Message;
             }
             return respuesta;
+        }
+
+        public DataTable TraerDatosArmatura(string strQuery)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["PSIPlatformBoot"].ConnectionString;
+                using (var conn = new NpgsqlConnection(connString))
+                {
+                    conn.Open();
+
+                    using (var cmd = new NpgsqlCommand(strQuery, conn))
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                            dt.Load(reader);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
         }
 
         public string InsertarLog(string idUsuario, string tabla, string accion, string descripcion, string datosAnteriores, string datosNuevos)
