@@ -107,6 +107,45 @@
         </div>
     </div>
 
+    <div id="modal-view-event" class="modal modal-top fade calendar-modal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h4 class="h4"><span class="event-icon mr-3 fa-2x"></span><span class="event-title"></span>Registrar Fecha y Hora</h4>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Fecha:</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm" id="txbFechaIni" name="txbFechaIni" runat="server">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 m-b-md">
+                            <label>Hora inicio:</label>
+                            <div class="input-group clockpicker" data-autoclose="true">
+                                <input type="text" class="form-control input-sm" value="08:00" id="txbHoraIni" name="txbHoraIni" runat="server">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-clock"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="event-body"></div>
+                    <div class="event-description"></div>
+                    <div class="event-id text-hide" id="event-id"></div>
+                    <div class="event-allday text-hide" id="event-allday"></div>
+                </div>
+                <%--<div class="modal-footer">--%>
+                    <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
+                    <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
+                    <%--<button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>
+                </div>--%>
+            </div>
+        </div>
+    </div>
+
+
     <div id="wrapper">
 
         <uc1:navbar runat="server" ID="navbar1" />
@@ -183,6 +222,55 @@
                                     </div>
                                 </div>
 
+                                    <table class="footable table table-striped" data-paging-size="10" 
+                                        data-filter-min="3" data-filter-placeholder="Buscar" 
+                                        data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" 
+                                        data-paging-limit="10" data-filtering="true" 
+                                        data-filter-container="#filter-form-container" data-filter-delay="300" 
+                                        data-filter-dropdown-title="Buscar en:" data-filter-position="left" 
+                                        data-empty="Sin resultados">
+                                        <thead>
+                                            <tr>
+                                                <th data-sortable="false" data-breakpoints="xs">Documento</th>
+                                                <th data-breakpoints="xs">Nombre</th>
+                                                <th data-breakpoints="xs">Apellidos</th>
+                                                <th data-breakpoints="xs">Email</th>
+                                                <th data-breakpoints="xs">Celular</th>
+                                                <th data-breakpoints="xs">Ciudad</th>
+                                                <th data-breakpoints="xs">Sede</th>
+                                                <th data-type="date" data-breakpoints="xs">Fecha asistencia</th>
+                                                <th data-type="date" data-breakpoints="xs">Fecha inscripción</th>
+                                                <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <asp:Repeater ID="rpInscritos" runat="server">
+                                                <ItemTemplate>
+                                                    <tr>
+                                                        <td><%# Eval("NroDocumento") %></td>
+                                                        <td><%# Eval("Nombres") %></td>
+                                                        <td><%# Eval("Apellidos") %></td>
+                                                        <td><%# Eval("Email") %></td>
+                                                        <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("Celular") %>" target="_blank"><%# Eval("Celular") %></a></td>
+                                                        <td><%# Eval("NombreCiudadSede") %></td>
+                                                        <td><%# Eval("NombreSede") %></td>
+                                                        <td><%# Eval("FechaAsistencia", "{0:dd MMM yyyy}") %></td>
+                                                        <td><%# Eval("FechaInscripcion", "{0:dd MMM yyyy, HH:mm}") %></td>
+                                                        <td>
+                                                            <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                            <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
+                                                            <a runat="server" id="btnAgendar" href="#" class="btn btn-outline btn-success pull-right m-r-xs"
+                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="true"><i class="fa fa-calendar-day"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                </ItemTemplate>
+                                            </asp:Repeater>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                                 <table class="footable table table-striped" data-paging-size="10"
                                     data-filter-min="3" data-filter-placeholder="Buscar"
                                     data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
@@ -373,6 +461,16 @@
     <!-- Page-Level Scripts -->
     <script>
         $('.footable').footable();
+    </script>
+
+    <%--Modal para Agendar Gym Pass--%>
+    <script>
+
+        document.addEventListener('click', function () {
+
+            jQuery('#modal-view-event').modal();
+ 
+        });
     </script>
 
     <%--Modal para Agendar Gym Pass--%>
