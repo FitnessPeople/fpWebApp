@@ -53,6 +53,12 @@
         .clockpicker-popover {
             z-index: 9999 !important;
         }
+    </style>
+
+    <style>
+        .clockpicker-popover {
+            z-index: 9999 !important;
+        }
 
         .float-e-margins .btn {
             margin-bottom: 0;
@@ -119,13 +125,13 @@
                         <div class="col-sm-6">
                             <label>Nro. de Documento</label>
                             <div class="form-group">
-                                <input type="text" class="form-control input-sm" id="info-doc" name="txbNroDocumento" readonly>
+                                <input type="text" class="form-control input-sm" id="info-doc" name="txbNroDocumento" readonly ClientIDMode="Static">
                             </div>
                         </div>
                         <div class="col-sm-6 m-b-md">
                             <label>Nombre</label>
                             <div class="form-groupp">
-                                <input type="text" class="form-control input-sm" id="info-nombre" name="txbNombres" readonly>
+                                <input type="text" class="form-control input-sm" id="info-nombre" name="txbNombres" readonly ClientIDMode="Static">
                             </div>
                         </div>
                     </div>
@@ -149,6 +155,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Agendar</button>
                     <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
                     <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
                     <%--<button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
@@ -494,6 +501,18 @@
                 // Muestra el modal con Bootstrap 3
                 $('#modal-agendar-info').modal('show');
             });
+
+            $('#data_1 .input-group.date').datepicker({
+                language: "es",
+                daysOfWeekDisabled: "0",
+                todayBtn: "linked",
+                todayHighlight: true,
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+            });
+
+            $('.clockpicker').clockpicker();
         });
     </script>
 
