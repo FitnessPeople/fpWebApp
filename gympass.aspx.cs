@@ -150,5 +150,16 @@ namespace fpWebApp
                 //Response.Redirect("gympass.aspx?mensaje=" + Server.UrlEncode(ex.Message));
             }
         }
+
+        protected void btnAgendarGymPass_Click(object sender, EventArgs e)
+        {
+            //txbFechaAgenda.Value
+            string nroDocumento = infoDoc.Value;
+            string fechaAgenda = txbFechaAgenda.Value;
+            string horaAgenda = txbHoraAgenda.Value;
+
+            string mensaje = "Guardado: " + nroDocumento + " - " + fechaAgenda + " - " + horaAgenda;
+            ScriptManager.RegisterStartupScript(this, GetType(), "msg", $"console.log('{mensaje}');", true);
+        }
     }
 }
