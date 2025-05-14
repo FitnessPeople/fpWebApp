@@ -107,40 +107,53 @@
         </div>
     </div>
 
-    <div id="modal-view-event" class="modal modal-top fade calendar-modal">
+    <div class="modal fade" id="modal-agendar-info" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="modalLabel">Agendar Gym Pass</h4>
+                </div>
                 <div class="modal-body">
-                    <h4 class="h4"><span class="event-icon mr-3 fa-2x"></span><span class="event-title"></span>Registrar Fecha y Hora</h4>
                     <div class="row">
                         <div class="col-sm-6">
-                            <label>Fecha:</label>
+                            <label>Nro. de Documento</label>
                             <div class="form-group">
-                                <input type="text" class="form-control input-sm" id="txbFechaIni" name="txbFechaIni" runat="server">
+                                <input type="text" class="form-control input-sm" id="info-doc" name="txbNroDocumento" readonly>
                             </div>
                         </div>
                         <div class="col-sm-6 m-b-md">
-                            <label>Hora inicio:</label>
+                            <label>Nombre</label>
+                            <div class="form-groupp">
+                                <input type="text" class="form-control input-sm" id="info-nombre" name="txbNombres" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Fecha</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control input-sm" id="txbFechaAgenda" name="txbFechaAgenda" runat="server">
+                            </div>
+                        </div>
+                        <div class="col-sm-6 m-b-md">
+                            <label>Hora</label>
                             <div class="input-group clockpicker" data-autoclose="true">
-                                <input type="text" class="form-control input-sm" value="08:00" id="txbHoraIni" name="txbHoraIni" runat="server">
+                                <input type="text" class="form-control input-sm" value="08:00" id="txbHoraAgenda" name="txbHoraAgenda" runat="server">
                                 <span class="input-group-addon">
                                     <span class="fa fa-clock"></span>
                                 </span>
                             </div>
                         </div>
                     </div>
-
-                    <div class="event-body"></div>
-                    <div class="event-description"></div>
-                    <div class="event-id text-hide" id="event-id"></div>
-                    <div class="event-allday text-hide" id="event-allday"></div>
                 </div>
-                <%--<div class="modal-footer">--%>
+                <div class="modal-footer">
                     <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
                     <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
                     <%--<button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>
-                </div>--%>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>--%>
+                </div>
             </div>
         </div>
     </div>
@@ -465,11 +478,22 @@
 
     <%--Modal para Agendar Gym Pass--%>
     <script>
+        $(document).ready(function () {
+            // Delegación para manejar clics incluso si los botones se generan dinámicamente
+            $('table').on('click', 'a[id*="btnAgendar"]', function (e) {
+                e.preventDefault();
 
-        document.addEventListener('click', function () {
+                // Encuentra la fila donde se hizo clic
+                var row = $(this).closest('tr');
+                var cells = row.find('td');
 
-            jQuery('#modal-view-event').modal();
- 
+                // Extrae el texto de cada celda y lo coloca en el modal
+                $('#info-doc').val(cells.eq(0).text().trim());
+                $('#info-nombre').val(cells.eq(1).text().trim());
+
+                // Muestra el modal con Bootstrap 3
+                $('#modal-agendar-info').modal('show');
+            });
         });
     </script>
 
