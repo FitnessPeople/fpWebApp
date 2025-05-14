@@ -193,6 +193,7 @@
                 <div class="row animated fadeInDown">
                     <%--Inicio Contenido!!!!--%>
 
+                    <uc1:indicadores01 runat="server" ID="indicadores01" />
                     <uc1:indicadoresgympass runat="server" ID="indicadoresgympass" />
 
                     <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
@@ -242,6 +243,109 @@
                                     </div>
                                 </div>
 
+                                <table class="footable table table-striped" data-paging-size="10"
+                                    data-filter-min="3" data-filter-placeholder="Buscar"
+                                    data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
+                                    data-paging-limit="10" data-filtering="true"
+                                    data-filter-container="#filter-form-container" data-filter-delay="300"
+                                    data-filter-dropdown-title="Buscar en:" data-filter-position="left"
+                                    data-empty="Sin resultados">
+                                    <thead>
+                                        <tr>
+                                            <th data-sortable="false" data-breakpoints="xs">Documento</th>
+                                            <th data-breakpoints="xs">Nombre</th>
+                                            <th data-breakpoints="xs">Apellidos</th>
+                                            <th data-breakpoints="xs">Email</th>
+                                            <th data-breakpoints="xs">Celular</th>
+                                            <th data-breakpoints="xs">Ciudad</th>
+                                            <th data-breakpoints="xs">Sede</th>
+                                            <th data-type="date" data-breakpoints="xs">Fecha asistencia</th>
+                                            <th data-type="date" data-breakpoints="xs">Fecha inscripción</th>
+                                            <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <asp:Repeater ID="rpInscritos" runat="server">
+                                            <ItemTemplate>
+                                                <tr>
+                                                    <td><%# Eval("NroDocumento") %></td>
+                                                    <td><%# Eval("Nombres") %></td>
+                                                    <td><%# Eval("Apellidos") %></td>
+                                                    <td><%# Eval("Email") %></td>
+                                                    <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("Celular") %>" target="_blank"><%# Eval("Celular") %></a></td>
+                                                    <td><%# Eval("NombreCiudadSede") %></td>
+                                                    <td><%# Eval("NombreSede") %></td>
+                                                    <td><%# Eval("FechaAsistencia", "{0:dd MMM yyyy}") %></td>
+                                                    <td><%# Eval("FechaInscripcion", "{0:dd MMM yyyy, HH:mm}") %></td>
+                                                    <td>
+                                                        <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                        <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
+                                                        <a runat="server" id="btnAgendar" href="#" class="btn btn-outline btn-success pull-right m-r-xs"
+                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="true"><i class="fa fa-calendar-day"></i></a>
+                                                    </td>
+                                                </tr>
+                                            </ItemTemplate>
+                                        </asp:Repeater>
+                                    </tbody>
+                                </table>
+
+                                <div class="modal fade" id="modal-agendar-info" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title" id="modalLabel">Agendar Gym Pass</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <label>Nro. de Documento</label>
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control input-sm" id="infoDoc" name="txbNroDocumento" runat="server" readonly clientidmode="Static">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 m-b-md">
+                                                        <label>Nombre</label>
+                                                        <div class="form-groupp">
+                                                            <input type="text" class="form-control input-sm" id="infoNombre" name="txbNombres" runat="server" readonly clientidmode="Static">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <label>Fecha</label>
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control input-sm" id="txbFechaAgenda" name="txbFechaAgenda" runat="server">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 m-b-md">
+                                                        <label>Hora</label>
+                                                        <div class="input-group clockpicker" data-autoclose="true">
+                                                            <input type="text" class="form-control input-sm" value="08:00" id="txbHoraAgenda" name="txbHoraAgenda" runat="server">
+                                                            <span class="input-group-addon">
+                                                                <span class="fa fa-clock"></span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <asp:Button ID="btnAgendarGymPass" runat="server" Text="Agendar" OnClick="btnAgendarGymPass_Click" />
+                                                <button type="submit" class="btn btn-primary">Agendar</button>
+                                                <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
+                                                <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
+                                                <%--<button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>--%>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                                     <table class="footable table table-striped" data-paging-size="10" 
                                         data-filter-min="3" data-filter-placeholder="Buscar" 
                                         data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" 
@@ -370,6 +474,7 @@
                                                     </div>
                                                 </div>
 
+                    <%--Fin Contenido!!!!--%>
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <label>Fecha</label>
@@ -495,8 +600,8 @@
                 var cells = row.find('td');
 
                 // Extrae el texto de cada celda y lo coloca en el modal
-                $('#info-doc').val(cells.eq(0).text().trim());
-                $('#info-nombre').val(cells.eq(1).text().trim());
+                $('#infoDoc').val(cells.eq(0).text().trim());
+                $('#infoNombre').val(cells.eq(1).text().trim());
 
                 // Muestra el modal con Bootstrap 3
                 $('#modal-agendar-info').modal('show');
