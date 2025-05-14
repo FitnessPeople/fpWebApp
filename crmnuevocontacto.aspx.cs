@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using DocumentFormat.OpenXml.Presentation;
 
 namespace fpWebApp
 {
@@ -224,27 +227,76 @@ namespace fpWebApp
             }
             else
             {
-                //    if (!ValidarSede(txbSede.Text.ToString()))
-                //    {
-                //        try
-                //        {
-                //            string respuesta = cg.InsertarSede(txbSede.Text.ToString().Trim(), txbDireccion.Text.ToString().Trim(), int.Parse(ddlCiudadSede.SelectedItem.Value.ToString()), txbTelefono.Text.ToString().Trim(), contenidoEditor, "", rblTipoSede.SelectedValue.ToString(), rblClaseSede.SelectedValue.ToString());
-                //            cg.InsertarLog(Session["idusuario"].ToString(), "sedes", "Agrega", "El usuario agregó una nueva sede: " + txbSede.Text.ToString() + ".", "", "");
-                //        }
-                //        catch (Exception ex)
-                //        {
-                //            string mensaje = ex.Message;
-                //        }
+                //if (!ValidarSede(txbSede.Text.ToString()))
+                //{
+                bool salida = false;
+                //ViewState["AbrirModal"] = true;
+                string mensaje = string.Empty;
+                string mensajeValidacion = string.Empty;
+                string respuesta = string.Empty;
+                try
+                {
+                    respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
+                    txbCorreoContacto.Value.ToString().Trim(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
+                    txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
+                    txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
+                    if (salida)
+                    {
+                        string script = @"
+                        Swal.fire({
+                            title: 'El contacto se creó de forma exitosa',
+                            text: '" + mensaje.Replace("'", "\\'") + @"',
+                            icon: 'success',
+                            timer: 3000, // 3 segundos
+                            showConfirmButton: false,
+                            timerProgressBar: true
+                        }).then(() => {
+                            window.location.href = 'crmnuevocontacto';
+                        });
+                    ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                    }
+                    else
+                    {
+                        string script = @"
+                            $('#ModalContacto').modal('hide');
+                            $('.modal-backdrop').remove();
+                            Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $('#ModalContacto').modal('show');
+                                }
+                            });
+                        ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    mensaje = ex.Message.ToString();
+                    string script = @"
+                    Swal.fire({
+                        title: 'Error',
+                        text: '"+ mensaje.Replace("'", "\\'") + @"',
+                        icon: 'error'
+                    });
+                ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                }
 
-                //        Response.Redirect("sedes");
-                //    }
-                //    else
-                //    {
-                //        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                //            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                //            "Ya existe una sede con ese nombre." +
-                //            "</div>";
-                //    }
+                //Response.Redirect("crmnuevocontacto");
+                //}
+                //else
+                //{
+                //    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                //        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                //        "Ya existe una sede con ese nombre." +
+                //        "</div>";
+                //}
             }
         }
 

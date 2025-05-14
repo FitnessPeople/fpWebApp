@@ -20,10 +20,18 @@
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
+        <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <!-- CSS de Quill -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <!-- JS de Quill -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+
 
     <%-- Editor de tecto--%>
 <%--    <script>
@@ -130,8 +138,58 @@
         }
     </script>
 
-    <!--    SweetAlert2 CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <%--        Validar botón Agregar --%>
+    <script>
+        function validarFormulario() {
+            const nombre = document.getElementById('txbNombreContacto').value.trim();
+            const telefono = document.getElementById('txbTelefonoContacto').value.trim();
+            const correo = document.getElementById('txbCorreoContacto').value.trim();
+            const fechaPrim = document.getElementById('txbFechaPrim').value.trim();
+            const fechaProx = document.getElementById('txbFechaProx').value.trim();
+            const valor = document.getElementById('txbValorPropuesta').value.trim();
+            const status = document.getElementById('ddlStatusLead').value;
+
+            const boton = document.getElementById('<%= btnAgregar.ClientID %>');
+
+            const camposCompletos =
+                nombre !== "" &&
+                telefono !== "" &&
+                correo !== "" &&
+                fechaPrim !== "" &&
+                fechaProx !== "" &&
+                valor !== "" &&
+                status !== "0";
+
+            if (camposCompletos) {
+                boton.disabled = false;
+                boton.classList.remove('btn-secondary');
+                boton.classList.add('btn-primary');
+            } else {
+                boton.disabled = true;
+                boton.classList.remove('btn-primary');
+                boton.classList.add('btn-secondary');
+            }
+        }
+
+        // Asignar eventos a cada campo
+        document.addEventListener("DOMContentLoaded", function () {
+            const campos = [
+                'txbNombreContacto', 'txbTelefonoContacto', 'txbCorreoContacto',
+                'txbFechaPrim', 'txbFechaProx', 'txbValorPropuesta',
+                , 'ddlStatusLead'
+            ];
+
+            campos.forEach(id => {
+                const campo = document.getElementById(id);
+                if (campo) {
+                    campo.addEventListener('input', validarFormulario);
+                    campo.addEventListener('change', validarFormulario);
+                }
+            });
+
+            validarFormulario(); // Ejecutar al cargar
+        });
+    </script>
 
     <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
 
@@ -445,7 +503,7 @@
                                             <a href="crmnuevocontacto" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                             <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
                                                 CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar"
-                                                OnClick="btnAgregar_Click" OnClientClick="guardarContenidoEditor()" />
+                                                OnClick="btnAgregar_Click" />
                                         </div>
                                         <br />
                                         <br />
