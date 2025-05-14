@@ -15,22 +15,22 @@ namespace fpWebApp
     {
 
         /// <summary>
-        /// Control txbFechaIni.
+        /// Control txbFechaAgenda.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbFechaIni;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbFechaAgenda;
 
         /// <summary>
-        /// Control txbHoraIni.
+        /// Control txbHoraAgenda.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbHoraIni;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbHoraAgenda;
 
         /// <summary>
         /// Control navbar1.
