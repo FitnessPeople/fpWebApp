@@ -43,6 +43,9 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
+                            DateTime dtHoy = DateTime.Now;
+                            txbFechaAgenda.Attributes.Add("type", "date");
+                            txbFechaAgenda.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
                             //btnAgregar.Visible = true;
                         }
                     }
