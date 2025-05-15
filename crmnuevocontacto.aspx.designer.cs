@@ -33,6 +33,15 @@ namespace fpWebApp
         protected global::fpWebApp.controles.header header1;
 
         /// <summary>
+        /// Control indicadoresusucrm.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::fpWebApp.controles.indicadoresusucrm indicadoresusucrm;
+
+        /// <summary>
         /// Control divMensaje.
         /// </summary>
         /// <remarks>
