@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Odbc;
 using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using NPOI.OpenXmlFormats.Spreadsheet;
+
 //using System.Web.UI.WebControls;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -153,13 +156,44 @@ namespace fpWebApp
 
         protected void btnAgendarGymPass_Click(object sender, EventArgs e)
         {
-            //txbFechaAgenda.Value
-            string nroDocumento = infoDoc.Value;
-            string fechaAgenda = txbFechaAgenda.Value;
-            string horaAgenda = txbHoraAgenda.Value;
+            DateTime dtFechaAgenda = Convert.ToDateTime(txbFechaAgenda.Value.ToString() + " " + txbHoraAgenda.Value.ToString());
 
-            string mensaje = "Guardado: " + nroDocumento + " - " + fechaAgenda + " - " + horaAgenda;
-            ScriptManager.RegisterStartupScript(this, GetType(), "msg", $"console.log('{mensaje}');", true);
+            try
+            {
+                //Text2
+                //string sede = txb
+                //string sede = txb.Value.ToString();
+                ////dtFechaAgenda = dtFechaAgenda.AddMinutes(120);
+                //clasesglobales cg = new clasesglobales();
+                //DataTable dtSede = cg.ConsultarSedePorNombre(infoSede.ToString());
+                //// Buscar id de la sede
+                //string infoSede 
+                clasesglobales cg = new clasesglobales();
+                DataTable dtSede = cg.ConsultarSedePorNombre(infoSede.Value.ToString());
+
+                //DataTable dtAfiliado = cg.ConsultarAfili
+
+                //if (dtSede.Rows.Count > 0)
+                //{
+                //    int idSede = Convert.ToInt32(dtSede.Rows[0]["idSede"]);
+
+                //    string strQuery = @"INSERT INTO AgendaGymPass +
+                //                       (idSede, idAfiliado, FechaHora, idUsuarioCrea)  +
+                //                       VALUES (" + idSede + ", " +
+                //                  "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
+                //                  "" + Session["idusuario"].ToString() + ") ";
+                //}
+
+
+
+                
+
+                //string mensaje = cg.TraerDatosStr(strQuery);
+            }
+            catch (OdbcException ex)
+            {
+                string mensaje = ex.Message;
+            }
         }
     }
 }
