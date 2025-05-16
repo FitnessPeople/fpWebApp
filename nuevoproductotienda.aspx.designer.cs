@@ -123,22 +123,22 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbPrecio;
 
         /// <summary>
-        /// Control cbTalla.
+        /// Control rblTalla.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList cbTalla;
+        protected global::System.Web.UI.WebControls.RadioButtonList rblTalla;
 
         /// <summary>
-        /// Control cbColor.
+        /// Control rblColor.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList cbColor;
+        protected global::System.Web.UI.WebControls.RadioButtonList rblColor;
 
         /// <summary>
         /// Control txbDetalle.
