@@ -312,6 +312,12 @@
                                                             <input type="text" class="form-control input-sm" id="infoNombre" name="txbNombres" runat="server" readonly clientidmode="Static">
                                                         </div>
                                                     </div>
+                                                    <div class="col-sm-6 m-b-md" >
+                                                        <label>Sede</label>
+                                                        <div class="form-groupp" style="display: none">
+                                                            <input type="text" class="form-control input-sm" id="infoSede" name="txbSede" runat="server" readonly clientidmode="Static">
+                                                        </div>
+                                                    </div>
                                                 </div>
 
                                                 <div class="row">
@@ -333,8 +339,8 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <asp:Button ID="btnAgendarGymPass" runat="server" Text="Agendar" OnClick="btnAgendarGymPass_Click" />
-                                                <button type="submit" class="btn btn-primary">Agendar</button>
+                                                <asp:Button ID="btnAgendarGymPass" class="btn btn-success" runat="server" Text="Agendar" OnClick="btnAgendarGymPass_Click" />
+                                                <%--<button type="submit" class="btn btn-primary">Agendar</button>--%>
                                                 <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
                                                 <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
                                                 <%--<button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
@@ -602,6 +608,7 @@
                 // Extrae el texto de cada celda y lo coloca en el modal
                 $('#infoDoc').val(cells.eq(0).text().trim());
                 $('#infoNombre').val(cells.eq(1).text().trim());
+                $('#infoSede').val(cells.eq(6).text().trim());
 
                 // Muestra el modal con Bootstrap 3
                 $('#modal-agendar-info').modal('show');
