@@ -181,21 +181,21 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Talla:</label>
-                                                    <asp:CheckBoxList ID="cbTalla" runat="server" RepeatDirection="Horizontal">
-                                                        <asp:ListItem Text="S&nbsp;&nbsp;&nbsp;&nbsp;" Value="S"></asp:ListItem>
-                                                        <asp:ListItem Text="M&nbsp;&nbsp;&nbsp;&nbsp;" Value="M"></asp:ListItem>
-                                                        <asp:ListItem Text="L&nbsp;&nbsp;&nbsp;&nbsp;" Value="L"></asp:ListItem>
-                                                        <asp:ListItem Text="XL&nbsp;&nbsp;&nbsp;&nbsp;" Value="XL"></asp:ListItem>
-                                                    </asp:CheckBoxList>
+                                                    <asp:RadioButtonList ID="rblTalla" runat="server" RepeatDirection="Horizontal">
+                                                        <asp:ListItem Text="&nbsp;S&nbsp;&nbsp;&nbsp;&nbsp;" Value="S"></asp:ListItem>
+                                                        <asp:ListItem Text="&nbsp;M&nbsp;&nbsp;&nbsp;&nbsp;" Value="M"></asp:ListItem>
+                                                        <asp:ListItem Text="&nbsp;L&nbsp;&nbsp;&nbsp;&nbsp;" Value="L"></asp:ListItem>
+                                                        <asp:ListItem Text="&nbsp;XL&nbsp;&nbsp;&nbsp;&nbsp;" Value="XL"></asp:ListItem>
+                                                    </asp:RadioButtonList>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Color:</label>
-                                                    <asp:CheckBoxList ID="cbColor" runat="server" RepeatDirection="Horizontal">
-                                                        <asp:ListItem Text="Blanco&nbsp;&nbsp;&nbsp;&nbsp;" Value="Blanco"></asp:ListItem>
-                                                        <asp:ListItem Text="Negro&nbsp;&nbsp;&nbsp;&nbsp;" Value="Negro"></asp:ListItem>
-                                                    </asp:CheckBoxList>
+                                                    <asp:RadioButtonList ID="rblColor" runat="server" RepeatDirection="Horizontal">
+                                                        <asp:ListItem Text="&nbsp;Blanco&nbsp;&nbsp;&nbsp;&nbsp;" Value="Blanco"></asp:ListItem>
+                                                        <asp:ListItem Text="&nbsp;Negro&nbsp;&nbsp;&nbsp;&nbsp;" Value="Negro"></asp:ListItem>
+                                                    </asp:RadioButtonList>
                                                 </div>
                                             </div>
                                         </div>
