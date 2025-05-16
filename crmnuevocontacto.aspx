@@ -25,6 +25,8 @@
     <!-- Sweet Alert -->
     <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 
+    <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
+
     <!-- Sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -32,6 +34,7 @@
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <!-- JS de Quill -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    
 
 
 
@@ -298,7 +301,7 @@
 
                     <form role="form" id="form" runat="server">
                         <div class="row" id="divContenido" runat="server">
-                            <div class="col-lg-4">
+                            <div class="col-lg-5">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5>
@@ -316,7 +319,7 @@
                                                     <i class="fa fa-user-tie text-info"></i>
                                                     <label for="nombreContacto" class="col-form-label">Nombre completo:</label>
                                                     <input type="text" runat="server" class="form-control" id="txbNombreContacto"
-                                                        placeholder="Nombre" spellcheck="false" autocomplete="off"
+                                                        spellcheck="false" autocomplete="off"
                                                         oninput="validarSoloLetras(this)" />
                                                 </div>
                                             </div>
@@ -383,16 +386,15 @@
                                             </div>
                                             <div class="col-sm-3">
                                                 <div class="form-group">
-                                                    <i class="fas fa-angle-right text-info"></i>
-                                                    <label for="txbFechaProx" class="col-form-label">Próxima cita</label>
+                                                    <i class="fas fa-angle-right"></i>
+                                                    <label for="txbFechaProx" class="col-form-label">Llamada</label>
                                                     <input type="text" runat="server" id="txbFechaProx" class="form-control input-sm datepicker" />
                                                 </div>
                                             </div>
 
                                             <div class="col-sm-3">
-                                                <div class="form-group">
-                                                    <i class="fas fa-angle-right text-info"></i>
-                                                    <label for="txbHoraIni" class="col-form-label">Hora inicio:</label>
+                                                <div class="form-group">                                                  
+                                                    <label for="txbHoraIni" class="col-form-label">Hora:</label>
                                                     <div class="input-group clockpicker" data-autoclose="true">
                                                         <input type="text" class="form-control input-sm" value="08:00" id="txbHoraIni" name="txbHoraIni" runat="server" />
                                                         <span class="input-group-addon">
@@ -401,9 +403,8 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
                                         </div>
+
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
@@ -550,7 +551,7 @@
                                                         <i class="fa fa-user-tie text-info"></i>
                                                         <label for="nombreContacto" class="col-form-label">Nombre completo:</label>
                                                         <input type="text" runat="server" class="form-control" id="Text1"
-                                                            placeholder="Nombre" spellcheck="false" autocomplete="off"
+                                                            spellcheck="false" autocomplete="off"
                                                             oninput="validarSoloLetras(this)" />
                                                     </div>
                                                 </div>
@@ -664,7 +665,7 @@
                                 </div>
 
                             </div>
-                            <div class="col-lg-8">
+                            <div class="col-lg-7">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5>Lista de Contactos</h5>
@@ -758,9 +759,14 @@
     <script src="js/plugins/pace/pace.min.js"></script>
 
     <!-- Page-Level Scripts -->
+    <script src="js/plugins/clockpicker/clockpicker.js"></script>
+
     <script>
         $('.footable').footable();
+        $('.clockpicker').clockpicker();
     </script>
+
+    
 
 </body>
 

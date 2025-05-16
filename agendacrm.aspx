@@ -38,6 +38,11 @@
     <link href="css/style.css" rel="stylesheet" />
 
     <style>
+    .fc-event, .fc-event-title {
+        color: white !important;
+    }
+</style>
+    <style>
         .modal-body {
             max-height: 70vh; /* Usa un 70% del alto de la ventana */
             overflow-y: auto;

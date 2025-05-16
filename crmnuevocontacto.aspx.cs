@@ -107,6 +107,12 @@ namespace fpWebApp
                                     int ValorPropuesta = Convert.ToInt32(dt.Rows[0]["ValorPropuesta"]);
                                     txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
                                     //txaObservaciones.Value = row["observaciones"].ToString();
+                                    ddlObjetivos.SelectedIndex = Convert.ToInt32(ddlObjetivos.Items.IndexOf(ddlObjetivos.Items.FindByValue(dt.Rows[0]["idObjetivo"].ToString())));
+                                    ddlTipoPago.SelectedIndex = ddlTipoPago.Items.IndexOf(ddlTipoPago.Items.FindByValue(dt.Rows[0]["TipoPago"].ToString()));
+                                    ddlTiposAfiliado.SelectedIndex = Convert.ToInt32(ddlTiposAfiliado.Items.IndexOf(ddlTiposAfiliado.Items.FindByValue(dt.Rows[0]["idTipoAfiliado"].ToString())));
+                                    ddlCanalesMarketing.SelectedIndex = Convert.ToInt32(ddlCanalesMarketing.Items.IndexOf(ddlCanalesMarketing.Items.FindByValue(dt.Rows[0]["idCanalMarketing"].ToString())));
+                                    ddlPlanes.SelectedIndex = Convert.ToInt32(ddlPlanes.Items.IndexOf(ddlPlanes.Items.FindByValue(dt.Rows[0]["idPlan"].ToString())));
+
                                 }
                             }
                             else
@@ -293,6 +299,7 @@ namespace fpWebApp
                         string canalMarketing = ddlCanalesMarketing.SelectedItem?.Value;
                         string plan = ddlPlanes.SelectedItem?.Value;
 
+
                         // Validar campos requeridos
                         if (string.IsNullOrWhiteSpace(nombre) ||
                             string.IsNullOrWhiteSpace(telefono) ||
@@ -322,7 +329,9 @@ namespace fpWebApp
                                     Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), txbCorreoContacto.Value.ToString().Trim(),
                                     Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()),
                                     txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
-                                    txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
+                                    txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"] ), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
+                                    ddlTipoPago.SelectedItem.Value.ToString(), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()), 
+                                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), out salida, out mensaje);
 
                             if (salida)
                             {
@@ -381,12 +390,21 @@ namespace fpWebApp
                 string mensaje = string.Empty;
                 string mensajeValidacion = string.Empty;
                 string respuesta = string.Empty;
+
+                // Parseamos la fecha y la hora
+                DateTime fecha = DateTime.Parse(txbFechaProx.Value);   // e.g. "17/05/2025"
+                TimeSpan hora = TimeSpan.Parse(txbHoraIni.Value);      // e.g. "08:00"
+                DateTime fechaHora = fecha.Date + hora;
+
+                // 2. Convertir al formato ISO 8601 que MySQL entiende: yyyy-MM-dd HH:mm:ss
+                string fechaHoraMySQL = fechaHora.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+
                 try
                 {
                     respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
                     txbCorreoContacto.Value.ToString().Trim(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
                     Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
-                    txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
+                    fechaHoraMySQL.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
                     txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
                     ddlTipoPago.SelectedItem.Value.ToString(), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()), 
                     Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), out salida, out mensaje);
@@ -410,15 +428,13 @@ namespace fpWebApp
                     else
                     {
                         string script = @"
-                            $('#ModalContacto').modal('hide');
-                            $('.modal-backdrop').remove();
                             Swal.fire({
                                 title: 'Error',
                                 text: '" + mensaje.Replace("'", "\\'") + @"',
                                 icon: 'error'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    $('#ModalContacto').modal('show');
+                                  window.location.href = 'crmnuevocontacto';
                                 }
                             });
                         ";
