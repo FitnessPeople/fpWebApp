@@ -22,7 +22,7 @@
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
-        <!-- Sweet Alert -->
+    <!-- Sweet Alert -->
     <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 
     <!-- Sweet alert -->
@@ -36,7 +36,7 @@
 
 
     <%-- Editor de tecto--%>
-<%--    <script>
+    <%--    <script>
         var quill;
         document.addEventListener("DOMContentLoaded", function () {
             quill = new Quill("#editor", {
@@ -381,13 +381,28 @@
                                                     <input type="text" runat="server" id="txbFechaPrim" class="form-control input-sm datepicker" />
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <i class="fas fa-angle-right text-info"></i>
-                                                    <label for="txbFechaProx" class="col-form-label">Próximo contacto:</label>
+                                                    <label for="txbFechaProx" class="col-form-label">Próxima cita</label>
                                                     <input type="text" runat="server" id="txbFechaProx" class="form-control input-sm datepicker" />
                                                 </div>
                                             </div>
+
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <i class="fas fa-angle-right text-info"></i>
+                                                    <label for="txbHoraIni" class="col-form-label">Hora inicio:</label>
+                                                    <div class="input-group clockpicker" data-autoclose="true">
+                                                        <input type="text" class="form-control input-sm" value="08:00" id="txbHoraIni" name="txbHoraIni" runat="server" />
+                                                        <span class="input-group-addon">
+                                                            <span class="fa fa-clock"></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-6">
@@ -415,31 +430,31 @@
                                                 </div>
                                             </div>
                                         </div>
-                                         <asp:ScriptManager ID="ScriptManager1" runat="server" />
+                                        <asp:ScriptManager ID="ScriptManager1" runat="server" />
                                         <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                                             <ContentTemplate>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <i class="fas fa-flag text-info"></i>
-                                                    <label for="StatusLead" class="col-form-label">Canal de marketing:</label>
-                                                    <asp:DropDownList ID="ddlCanalesMarketing" DataTextField="NombreCanalMarketing" DataValueField="idCanalMarketing"
-                                                        runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
-                                                    </asp:DropDownList>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <i class="fas fa-flag text-info"></i>
-                                                    <label for="StatusLead" class="col-form-label">Planes:</label>
-                                                    <asp:DropDownList ID="ddlPlanes" DataTextField="NombrePlan" DataValueField="idPlan"
-                                                        runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm" OnSelectedIndexChanged="ddlPlanes_SelectedIndexChanged" AutoPostBack="true">
-                                                        <asp:ListItem Text="Seleccione" Value="0"></asp:ListItem>
-                                                    </asp:DropDownList>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <i class="fas fa-flag text-info"></i>
+                                                            <label for="StatusLead" class="col-form-label">Canal de marketing:</label>
+                                                            <asp:DropDownList ID="ddlCanalesMarketing" DataTextField="NombreCanalMarketing" DataValueField="idCanalMarketing"
+                                                                runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <i class="fas fa-flag text-info"></i>
+                                                            <label for="StatusLead" class="col-form-label">Planes:</label>
+                                                            <asp:DropDownList ID="ddlPlanes" DataTextField="NombrePlan" DataValueField="idPlan"
+                                                                runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm" OnSelectedIndexChanged="ddlPlanes_SelectedIndexChanged" AutoPostBack="true">
+                                                                <asp:ListItem Text="Seleccione" Value="0"></asp:ListItem>
+                                                            </asp:DropDownList>
 
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
 
 
                                                 <div class="row">
@@ -486,15 +501,15 @@
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
 
-                                           <div class="form-group">
+                                        <div class="form-group">
                                             <i class="fas fa-pen text-info"></i>
                                             <label for="message-text" class="col-form-label">Contexto de la negociación:</label>
-                                            <textarea id="txaObservaciones" runat="server" rows="3" 
+                                            <textarea id="txaObservaciones" runat="server" rows="3"
                                                 cssclass="form-control input-sm" class="form-control"></textarea>
 
 
                                         </div>
-<%--                                        <div class="form-group">
+                                        <%--                                        <div class="form-group">
                                             <label>Contexto de la negociación:</label>
                                             <div id="editor" cssclass="form-control input-sm"></div>
                                             <asp:HiddenField ID="hiddenEditor" runat="server" />

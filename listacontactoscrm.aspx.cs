@@ -269,64 +269,64 @@ namespace fpWebApp
                 ddlEmpresa.SelectedItem.Value = "0";
 
             clasesglobales cg = new clasesglobales();
-            try
-            {
-                respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
-                txbCorreoContacto.Value.ToString().Trim(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
-                Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
-                txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
-                txaObservaciones.Value.ToString(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
+            //try
+            //{
+            //    respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
+            //    txbCorreoContacto.Value.ToString().Trim(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
+            //    Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
+            //    txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
+            //    txaObservaciones.Value.ToString(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
 
-                if (salida)
-                {
-                    string script = @"
-                        $('#ModalContacto').modal('hide');
-                        $('.modal-backdrop').remove();
-                        Swal.fire({
-                            title: 'El contacto se creó de forma exitosa',
-                            text: '" + mensaje.Replace("'", "\\'") + @"',
-                            icon: 'success',
-                            timer: 3000, // 3 segundos
-                            showConfirmButton: false,
-                            timerProgressBar: true
-                        }).then(() => {
-                            window.location.href = 'nuevocontactocrm';
-                        });
-                    ";
+            //    if (salida)
+            //    {
+            //        string script = @"
+            //            $('#ModalContacto').modal('hide');
+            //            $('.modal-backdrop').remove();
+            //            Swal.fire({
+            //                title: 'El contacto se creó de forma exitosa',
+            //                text: '" + mensaje.Replace("'", "\\'") + @"',
+            //                icon: 'success',
+            //                timer: 3000, // 3 segundos
+            //                showConfirmButton: false,
+            //                timerProgressBar: true
+            //            }).then(() => {
+            //                window.location.href = 'nuevocontactocrm';
+            //            });
+            //        ";
 
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                }
-                else
-                {
-                    string script = @"
-                            $('#ModalContacto').modal('hide');
-                            $('.modal-backdrop').remove();
-                            Swal.fire({
-                                title: 'Error',
-                                text: '" + mensaje.Replace("'", "\\'") + @"',
-                                icon: 'error'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    $('#ModalContacto').modal('show');
-                                }
-                            });
-                        ";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-                }
-            }
-            catch (Exception ex)
-            {
-                string script = @"
-                    $('#ModalContacto').modal('hide');
-                    $('.modal-backdrop').remove();
-                    Swal.fire({
-                        title: 'Error',
-                        text: '" + ex.Message.Replace("'", "\\'") + @"',
-                        icon: 'error'
-                    });
-                ";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-            }
+            //        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+            //    }
+            //    else
+            //    {
+            //        string script = @"
+            //                $('#ModalContacto').modal('hide');
+            //                $('.modal-backdrop').remove();
+            //                Swal.fire({
+            //                    title: 'Error',
+            //                    text: '" + mensaje.Replace("'", "\\'") + @"',
+            //                    icon: 'error'
+            //                }).then((result) => {
+            //                    if (result.isConfirmed) {
+            //                        $('#ModalContacto').modal('show');
+            //                    }
+            //                });
+            //            ";
+            //        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    string script = @"
+            //        $('#ModalContacto').modal('hide');
+            //        $('.modal-backdrop').remove();
+            //        Swal.fire({
+            //            title: 'Error',
+            //            text: '" + ex.Message.Replace("'", "\\'") + @"',
+            //            icon: 'error'
+            //        });
+            //    ";
+            //    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+            //}
         }
 
         public string GetTelefonoHTML(object telefonoObj)

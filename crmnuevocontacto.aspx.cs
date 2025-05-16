@@ -287,6 +287,11 @@ namespace fpWebApp
                         string valorPropuestaTexto = Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "");
                         string empresa = ddlEmpresa.SelectedItem?.Value;
                         string statusLead = ddlStatusLead.SelectedItem?.Value;
+                        string objetivo = ddlObjetivos.SelectedItem?.Value;
+                        string tipoPago = ddlTipoPago.SelectedItem?.Value;
+                        string tipoAfiliado = ddlTiposAfiliado.SelectedItem?.Value;
+                        string canalMarketing = ddlCanalesMarketing.SelectedItem?.Value;
+                        string plan = ddlPlanes.SelectedItem?.Value;
 
                         // Validar campos requeridos
                         if (string.IsNullOrWhiteSpace(nombre) ||
@@ -296,7 +301,14 @@ namespace fpWebApp
                             string.IsNullOrWhiteSpace(statusLead) ||
                             string.IsNullOrWhiteSpace(fechaPrim) ||
                             string.IsNullOrWhiteSpace(fechaProx) ||
-                            string.IsNullOrWhiteSpace(valorPropuestaTexto))
+                            string.IsNullOrWhiteSpace(valorPropuestaTexto) ||
+                            string.IsNullOrWhiteSpace(statusLead) ||
+                            string.IsNullOrWhiteSpace(objetivo) ||
+                            string.IsNullOrWhiteSpace(tipoPago) ||
+                            string.IsNullOrWhiteSpace(tipoAfiliado) ||
+                            string.IsNullOrWhiteSpace(canalMarketing) ||
+                            string.IsNullOrWhiteSpace(plan)
+                            )
                         {
                             mensajeValidacion = "Todos los campos son obligatorios.";
 
@@ -375,7 +387,10 @@ namespace fpWebApp
                     txbCorreoContacto.Value.ToString().Trim(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
                     Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
                     txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
-                    txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), out salida, out mensaje);
+                    txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
+                    ddlTipoPago.SelectedItem.Value.ToString(), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()), 
+                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), out salida, out mensaje);
+
                     if (salida)
                     {
                         string script = @"

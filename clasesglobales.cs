@@ -6392,7 +6392,7 @@ namespace fpWebApp
 
         public string InsertarContactoCRM(string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
             int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
-            int idUsuario, out bool respuesta, out string mensaje)
+            int idUsuario, int idObjetivo, string tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan,   out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -6416,6 +6416,11 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_archivo_propuesta", archivoPropuesta);
                         cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_id_objetivo", idObjetivo);
+                        cmd.Parameters.AddWithValue("@p_tipo_pago", tipoPago);
+                        cmd.Parameters.AddWithValue("@p_id_tipo_afiliado", idTipoAfiliado);
+                        cmd.Parameters.AddWithValue("@p_id_canal_marketing", idCanalMarketing);
+                        cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
 
                         // Parámetro de salida
                         MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
