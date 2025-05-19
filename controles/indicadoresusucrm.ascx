@@ -13,7 +13,7 @@
     <div class="col-lg-3">
         <div class='widget style1 lazur-bg'>
             <div class="row">
-                <div class="col-xs-4 text-center">
+                <div class="col-xs-4">
                 <i class="fa-solid fa-hand-point-up fa-5x"></i>
                 </div>
                 <div class="col-xs-8 text-right">

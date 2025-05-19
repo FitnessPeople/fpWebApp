@@ -6392,7 +6392,7 @@ namespace fpWebApp
 
         public string InsertarContactoCRM(string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
             int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
-            int idUsuario, int idObjetivo, string tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan,   out bool respuesta, out string mensaje)
+            int idUsuario, int idObjetivo, string tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan,  out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -6421,6 +6421,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_id_tipo_afiliado", idTipoAfiliado);
                         cmd.Parameters.AddWithValue("@p_id_canal_marketing", idCanalMarketing);
                         cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
+                        cmd.Parameters.AddWithValue("@p_meses_plan", mesesPlan);
 
                         // Parámetro de salida
                         MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
@@ -6446,7 +6447,7 @@ namespace fpWebApp
 
         public string ActualizarContactoCRM(int idContactoCMR, string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
         int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
-        int idUsuario, int idObjetivo, string tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, out bool respuesta, out string mensaje)
+        int idUsuario, int idObjetivo, string tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -6476,6 +6477,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_id_tipo_afiliado", idTipoAfiliado);
                         cmd.Parameters.AddWithValue("@p_id_canal_marketing", idCanalMarketing);
                         cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
+                        cmd.Parameters.AddWithValue("@p_meses_plan", mesesPlan);
 
                         cmd.ExecuteNonQuery();
                         respuesta = true;

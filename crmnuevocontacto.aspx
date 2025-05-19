@@ -320,7 +320,7 @@
                                                     <label for="nombreContacto" class="col-form-label">Nombre completo:</label>
                                                     <input type="text" runat="server" class="form-control" id="txbNombreContacto"
                                                         spellcheck="false" autocomplete="off"
-                                                        oninput="validarSoloLetras(this)" />
+                                                        oninput="validarSoloLetras(this)" style="text-transform: uppercase;" />
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -340,7 +340,7 @@
                                                     <label for="correoContacto" class="col-form-label">Correo electrónico:</label>
                                                     <input type="text" runat="server" class="form-control" id="txbCorreoContacto"
                                                         spellcheck="false" placeholder="ej: cliente@ejemplo.com" autocomplete="off"
-                                                        oninput="validarCorreo(this)">
+                                                        oninput="validarCorreo(this)" style="text-transform: lowercase;">
                                                     <asp:Literal ID="ltError" runat="server" Visible="false"></asp:Literal>
                                                 </div>
                                             </div>
