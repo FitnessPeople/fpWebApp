@@ -239,19 +239,13 @@
                                                     <div class="col-sm-6">
                                                         <label>Nro. de Documento</label>
                                                         <div class="form-group">
-                                                            <input type="text" class="form-control input-sm" id="infoDoc" name="txbNroDocumento" runat="server" readonly clientidmode="Static">
+                                                            <input type="text" class="form-control input-sm" id="infoDoc" name="txbNroDocumento" runat="server" readonly /> 
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6 m-b-md">
                                                         <label>Nombre</label>
                                                         <div class="form-groupp">
-                                                            <input type="text" class="form-control input-sm" id="infoNombre" name="txbNombres" runat="server" readonly clientidmode="Static">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 m-b-md" >
-                                                        <label>Sede</label>
-                                                        <div class="form-groupp" style="display: none">
-                                                            <input type="text" class="form-control input-sm" id="infoSede" name="txbSede" runat="server" readonly clientidmode="Static">
+                                                            <input type="text" class="form-control input-sm" id="infoNombre" name="txbNombres" runat="server" readonly />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -260,13 +254,13 @@
                                                     <div class="col-sm-6">
                                                         <label>Fecha</label>
                                                         <div class="form-group">
-                                                            <input type="text" class="form-control input-sm" id="txbFechaAgenda" name="txbFechaAgenda" runat="server">
+                                                            <input type="text" class="form-control input-sm" id="txbFechaAgenda" name="txbFechaAgenda" runat="server" />
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6 m-b-md">
                                                         <label>Hora</label>
                                                         <div class="input-group clockpicker" data-autoclose="true">
-                                                            <input type="text" class="form-control input-sm" value="08:00" id="txbHoraAgenda" name="txbHoraAgenda" runat="server">
+                                                            <input type="text" class="form-control input-sm" value="08:00" id="txbHoraAgenda" name="txbHoraAgenda" runat="server" />
                                                             <span class="input-group-addon">
                                                                 <span class="fa fa-clock"></span>
                                                             </span>
