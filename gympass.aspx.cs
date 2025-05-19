@@ -6,6 +6,7 @@ using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 using NPOI.OpenXmlFormats.Spreadsheet;
 
 using System.Web.UI.WebControls;
@@ -52,6 +53,8 @@ namespace fpWebApp
                             DateTime dtHoy = DateTime.Now;
                             txbFechaAgenda.Attributes.Add("type", "date");
                             txbFechaAgenda.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
+
+                            
                             DateTime dtHoy = DateTime.Now;
                             txbFechaAgenda.Attributes.Add("type", "date");
                             txbFechaAgenda.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
@@ -59,6 +62,7 @@ namespace fpWebApp
                             //btnAgregar.Visible = true;
                         }
                     }
+                    rpInscritos.ItemDataBound += rpInscritos_ItemDataBound;
 
                     rpInscritos.ItemDataBound += rpInscritos_ItemDataBound;
                     listaInscritos();
@@ -122,6 +126,33 @@ namespace fpWebApp
         //        }
         //    }
         //}
+
+        protected void rpInscritos_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                // 1. Obtén el documento del usuario en esta fila
+                string nroDocumento = DataBinder.Eval(e.Item.DataItem, "NroDocumento").ToString();
+
+                // 2. Consulta si ya tiene GymPass
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarGymPassAgendaYGymPassPorId(nroDocumento);
+
+                // 3. Accede al control dentro de la fila
+                HtmlAnchor btnAgendar = (HtmlAnchor)e.Item.FindControl("btnAgendar");
+
+                // 4. Deshabilita u oculta el botón si ya tiene GymPass
+                if (dt.Rows.Count > 0)
+                {
+                    btnAgendar.Attributes.Add("disabled", "disabled");
+                    btnAgendar.Attributes.Add("style", "pointer-events:none;opacity:0.5;");
+                    // O si prefieres ocultarlo completamente:
+                    // btnAgendar.Visible = false;
+                }
+
+                dt.Dispose();
+            }
+        }
 
         protected void rpInscritos_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
@@ -304,35 +335,20 @@ namespace fpWebApp
 
             try
             {
-                //Text2
-                //string sede = txb
-                //string sede = txb.Value.ToString();
-                ////dtFechaAgenda = dtFechaAgenda.AddMinutes(120);
-                //clasesglobales cg = new clasesglobales();
-                //DataTable dtSede = cg.ConsultarSedePorNombre(infoSede.ToString());
-                //// Buscar id de la sede
-                //string infoSede 
                 clasesglobales cg = new clasesglobales();
-                DataTable dtSede = cg.ConsultarSedePorNombre(infoSede.Value.ToString());
+                DataTable dt = cg.ConsultarGymPassPorDocumento(infoDoc.Value.ToString());
 
-                //DataTable dtAfiliado = cg.ConsultarAfili
+                if (dt.Rows.Count > 0)
+                {
+                    string id = dt.Rows[0]["idGymPass"].ToString();
 
-                //if (dtSede.Rows.Count > 0)
-                //{
-                //    int idSede = Convert.ToInt32(dtSede.Rows[0]["idSede"]);
+                    string strQuery = @"INSERT INTO GymPassAgenda (idGymPass, FechaHora, idUsuarioCrea) " + 
+                                       "VALUES (" + id + ", '" + dtFechaAgenda.ToString("yyyy-MM-dd H:mm:ss") + "', " + Session["idusuario"].ToString() + ")";
 
-                //    string strQuery = @"INSERT INTO AgendaGymPass +
-                //                       (idSede, idAfiliado, FechaHora, idUsuarioCrea)  +
-                //                       VALUES (" + idSede + ", " +
-                //                  "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
-                //                  "" + Session["idusuario"].ToString() + ") ";
-                //}
+                    string mensaje = cg.TraerDatosStr(strQuery);
+                }
 
-
-
-                
-
-                //string mensaje = cg.TraerDatosStr(strQuery);
+                dt.Dispose();
             }
             catch (OdbcException ex)
             {
