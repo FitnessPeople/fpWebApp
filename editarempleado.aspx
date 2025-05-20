@@ -151,7 +151,7 @@
                                     <div class="row m-b-lg m-t-lg">
                                         <div class="col-md-9">
                                             <div class="profile-image">
-                                                <img class="img-circle circle-border m-b-md" alt="profile" runat="server" id="imgFoto" />
+                                                <img src="1" class="img-circle circle-border m-b-md" alt="profile" runat="server" id="imgFoto" />
                                             </div>
                                             <div class="profile-info">
                                                 <div class="">

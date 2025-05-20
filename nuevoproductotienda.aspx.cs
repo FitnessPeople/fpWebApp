@@ -71,7 +71,7 @@ namespace fpWebApp
 
         private void CargarCategorias()
         {
-            string strQuery = "SELECT idCategoria, NombreCat FROM Categorias ";
+            string strQuery = "SELECT idCategoria, NombreCat FROM CategoriasTienda ";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
