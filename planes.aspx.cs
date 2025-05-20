@@ -66,8 +66,8 @@ namespace fpWebApp
                         txbFechaInicio.Attributes.Add("type", "date");
                         txbFechaFinal.Attributes.Add("type", "date");
 
-                        txbFechaInicio.Attributes.Add("value","01/05/2025");
-                        txbFechaFinal.Attributes.Add("value", "31/05/2025");
+                        txbFechaInicio.Attributes.Add("value","2025-05-01");
+                        txbFechaFinal.Attributes.Add("value", "2025-05-31");
 
                         if (Request.QueryString.Count > 0)
                         {
@@ -85,8 +85,10 @@ namespace fpWebApp
                                     txbDiasCongelamiento.Text = dt.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',','.');
                                     txbDescuentoMensual.Text = dt.Rows[0]["DescuentoMensual"].ToString();
                                     txbMesesMaximo.Text = dt.Rows[0]["MesesMaximo"].ToString();
-                                    txbFechaInicio.Text = dt.Rows[0]["FechaInicial"].ToString();
-                                    txbFechaFinal.Text = dt.Rows[0]["FechaFinal"].ToString();
+                                    txbFechaInicio.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
+                                    txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
+                                    rblColor.SelectedIndex = Convert.ToInt32(rblColor.Items.IndexOf(rblColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
+                                    cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                     btnAgregar.Text = "Actualizar";
                                     ltTitulo.Text = "Actualizar Plan";
                                 }
@@ -113,8 +115,10 @@ namespace fpWebApp
                                         txbDescuentoMensual.Text = dt.Rows[0]["DescuentoMensual"].ToString();
                                         txbMesesMaximo.Text = dt.Rows[0]["MesesMaximo"].ToString();
                                         txbDiasCongelamiento.Text = dt1.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
-                                        txbFechaInicio.Text = dt1.Rows[0]["FechaInicial"].ToString();
-                                        txbFechaFinal.Text = dt1.Rows[0]["FechaFinal"].ToString();
+                                        txbFechaInicio.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
+                                        txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
+                                        rblColor.SelectedIndex = Convert.ToInt32(rblColor.Items.IndexOf(rblColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
+                                        cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                         txbPlan.Enabled = false;
                                         txbDescripcion.Enabled = false;
                                         txbPrecio.Enabled = false;
@@ -123,6 +127,8 @@ namespace fpWebApp
                                         txbDiasCongelamiento.Enabled = false;
                                         txbFechaInicio.Enabled = false;
                                         txbFechaFinal.Enabled = false;
+                                        rblColor.Enabled = false;
+                                        cbPermanente.Enabled = false;
                                         btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                         btnAgregar.Enabled = false;
                                         ltTitulo.Text = "Borrar Plan";
@@ -142,8 +148,10 @@ namespace fpWebApp
                                         txbDescuentoMensual.Text = dt.Rows[0]["DescuentoMensual"].ToString();
                                         txbMesesMaximo.Text = dt.Rows[0]["MesesMaximo"].ToString();
                                         txbDiasCongelamiento.Text = dt1.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
-                                        txbFechaInicio.Text = dt1.Rows[0]["FechaInicial"].ToString();
-                                        txbFechaFinal.Text = dt1.Rows[0]["FechaFinal"].ToString();
+                                        txbFechaInicio.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
+                                        txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
+                                        rblColor.SelectedIndex = Convert.ToInt32(rblColor.Items.IndexOf(rblColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
+                                        cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                         txbPlan.Enabled = false;
                                         txbDescripcion.Enabled = false;
                                         txbPrecio.Enabled = false;
@@ -152,6 +160,8 @@ namespace fpWebApp
                                         txbDiasCongelamiento.Enabled = false;
                                         txbFechaInicio.Enabled = false;
                                         txbFechaFinal.Enabled = false;
+                                        rblColor.Enabled = false;
+                                        cbPermanente.Enabled = false;
                                         btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                         ltTitulo.Text = "Borrar Plan";
                                     }
@@ -363,8 +373,8 @@ namespace fpWebApp
                     _strData += "{\r\n";
                     _strData += "label: \"" + dt.Rows[i]["NombrePlan"].ToString() + "\",\r\n";
                     _strData += "backgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",0)',\r\n";
-                    _strData += "borderColor: '" + dt.Rows[i]["ColorPlan"].ToString() + "',\r\n";
-                    _strData += "pointBackgroundColor: '" + dt.Rows[i]["ColorPlan"].ToString() + "',\r\n";
+                    //_strData += "borderColor: '" + dt.Rows[i]["ColorPlan"].ToString() + "',\r\n";
+                    _strData += "pointBackgroundColor: '" + dt.Rows[i]["NombreColorPlan"].ToString() + "',\r\n";
                     _strData += "pointBorderColor: \"#fff\",\r\n";
                     _strData += "data: [";
 
