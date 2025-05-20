@@ -112,6 +112,8 @@
                 <div class="modal-footer">
                     <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
                     <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>
                     <button type="button" class="btn btn-success" data-dismiss="modal" onclick="window.location.href = 'asistenciaagendagympass.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnAsistencia" visible="false"><i class="fa fa-calendar-check m-r-sm"></i>Asistió</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="window.location.href = 'noasistenciaagendagympass.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnNoAsistencia" visible="false"><i class="fa fa-calendar-xmark m-r-sm"></i>No Asistió</button>
                     <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'cancelaragendagympass.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnCancelar" visible="false"><i class="fa fa-calendar-minus m-r-sm"></i>Cancelar</button>
@@ -161,12 +163,24 @@
 
                     <form runat="server" id="form">
                         <div class="row animated fadeInDown" id="divContenido" runat="server">
+                            <%--<div class="col-xxl-9 col-lg-8 col-md-7 col-sm-6 col-xs-12">--%>
                             <div class="col-sm-12">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
+                                        <h5>Agenda
                                         <h5 style="margin-bottom: 0;">Agenda
                                             <asp:Literal ID="ltSede" runat="server"></asp:Literal></h5>
                                         <div class="ibox-tools">
+                                            <%--<a class="collapse-link">
+                                                        <i class="fa fa-chevron-up"></i>
+                                                    </a>
+                                                    <a class="close-link">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>--%>
+                                            <span class="label label-success pull-right" style="color: #000;">Cita atendida</span>
+                                            <span class="label label-danger pull-right" style="color: #000;">Cita cancelada</span>
+                                            <span class="label label-warning pull-right" style="color: #000;">Cita asignada</span>
+                                            <span class="label label-primary pull-right" style="color: #000;">Cita disponible</span>
                                             <span style="padding: 1rem; font-size: 1.2rem; color: #fff; font-weight: bold;" class="label label-warning pull-right">Cancelado</span>
                                             <span style="padding: 1rem; font-size: 1.2rem; color: #fff; font-weight: bold;" class="label label-danger pull-right">No Asistió</span>
                                             <span style="padding: 1rem; font-size: 1.2rem; color: #fff; font-weight: bold;" class="label label-success pull-right">Asistió</span>
@@ -175,12 +189,18 @@
                                     </div>
                                     <div class="ibox-content">
                                         <div class="form-horizontal">
+                                            <div class="form-group m-b-n-sm">
+                                                <label class="col-sm-2 col-sm-2 control-label">Sede</label>
+                                                <div class="col-sm-10">
+                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedes" runat="server"
                                             <div style="display: flex; flex-direction: row; justify-content: space-between;">
                                                 <div id="divFiltroSede" runat="server" style="display: flex; align-items: center; gap: 5rem;">
                                                     <label class="control-label text-center" style="padding: 0; margin: 0;">Sede</label>
                                                     <asp:DropDownList CssClass="form-control required" ID="ddlSedes" runat="server"
-                                                                      OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
-                                                                      DataValueField="idSede" DataTextField="NombreSede"
+                                                        OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
+                                                        DataValueField="idSede" DataTextField="NombreSede"
+                                                        AutoPostBack="true" AppendDataBoundItems="true">
+                                                    </asp:DropDownList>
                                                                       AutoPostBack="true" AppendDataBoundItems="true" />
                                                 </div>
 
@@ -251,6 +271,77 @@
 
     <script>
 
+        //$("#form").validate({
+        //    rules: {
+        //        ddlEspecialistas: {
+        //            required: true,
+        //        },
+        //        ddlSedesCita: {
+        //            required: true,
+        //        },
+        //        txbFechaIni: {
+        //            required: true
+        //        },
+        //        txbFechaFin: {
+        //            required: true
+        //        },
+        //        txbHoraIni: {
+        //            required: true,
+        //        },
+        //        txbHoraFin: {
+        //            required: true,
+        //        },
+        //        txbDuracion: {
+        //            required: true,
+        //        },
+        //    }
+        //});
+
+        !(function (a) {
+            a.fn.datepicker.dates.es = {
+                days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+                daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+                today: "Hoy",
+                monthsTitle: "Meses",
+                clear: "Borrar",
+                weekStart: 1,
+                format: "yyyy-mm-dd",
+            };
+        })(jQuery);
+
+        $(document).ready(function () {
+
+            $('#data_1 .input-group.date').datepicker({
+                language: "es",
+                daysOfWeekDisabled: "0",
+                todayBtn: "linked",
+                todayHighlight: true,
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+            });
+
+            $('#data_2 .input-group.date').datepicker({
+                language: "es",
+                daysOfWeekDisabled: "0",
+                todayBtn: "linked",
+                todayHighlight: true,
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+            });
+
+            $('.clockpicker').clockpicker();
+
+        });
+
+    </script>
+
+    <script>
+
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
 
@@ -259,6 +350,7 @@
                     info.jsEvent.preventDefault();
 
                     const fechainicial = new Date(info.event.start);
+                    fechainicial.setHours(fechainicial.getHours() + 5);
 
                     const formatter1 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
                     const formattedTime1 = formatter1.format(fechainicial);
@@ -269,13 +361,21 @@
                     const formattermes = new Intl.DateTimeFormat('es-US', { month: 'long' });
                     const formattedmesini = formattermes.format(fechainicial)[0].toUpperCase() + formattermes.format(fechainicial).substring(1);
 
+                    const fechafinal = new Date(info.event.end);
+                    fechafinal.setHours(fechafinal.getHours() + 5);
+                    const formatter2 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
+                    const formattedTime2 = formatter2.format(fechafinal);
+
                     if (info.event.id) {
                         console.log(info.event.extendedProps);
                         jQuery('.event-id').html(info.event.id);
                         jQuery('.event-icon').html("<i class='fa fa-" + info.event.extendedProps.icon + "'></i>");
                         jQuery('.event-title').html(info.event.title);
+                        jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />");
                         jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + "<br /><br />");
                         jQuery('.event-description').html(info.event.extendedProps.description);
+                        var btn = document.getElementById("btnEliminar");
+                        btn.style.display = info.event.extendedProps.btnEliminar;
                         var btnNoAsistencia = document.getElementById("btnNoAsistencia");
                         var btnAsistencia = document.getElementById("btnAsistencia");
                         var btnCancelar = document.getElementById("btnCancelar");
@@ -340,6 +440,7 @@
                 eventTimeFormat: { // like '14:30'
                     hour: '2-digit',
                     minute: '2-digit',
+                    hour12: false
                     hour12: true
                 },
                 headerToolbar: {
@@ -347,6 +448,7 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                 },
+                
                 <%=strEventos%>
             });
 

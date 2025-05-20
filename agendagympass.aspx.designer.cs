@@ -15,12 +15,14 @@ namespace fpWebApp
     {
 
         /// <summary>
+        /// Control btnEliminar.
         /// Control btnAsistencia.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton btnEliminar;
         protected global::System.Web.UI.HtmlControls.HtmlButton btnAsistencia;
 
         /// <summary>

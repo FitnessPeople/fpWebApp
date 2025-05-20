@@ -28,6 +28,7 @@ namespace fpWebApp
                     }
                     if (ViewState["Consulta"].ToString() == "1")
                     {
+                        CargarSedes();
 
                     }
                     if (ViewState["CrearModificar"].ToString() == "1")
@@ -45,10 +46,12 @@ namespace fpWebApp
                     }
                     if (ViewState["Borrar"].ToString() == "1")
                     {
+                        btnEliminar.Visible = true;
                         btnNoAsistencia.Visible = true;
                         btnAsistencia.Visible = true;
                         btnCancelar.Visible = true;
                     }
+                    //indicadores01.Visible = false;
                 }
                 else
                 {
@@ -85,6 +88,7 @@ namespace fpWebApp
             int idSedeUsuario = Convert.ToInt32(Session["idSede"]);
 
             clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultaCargarAgenda(int.Parse(ddlSedes.SelectedItem.Value.ToString()));
 
             int? idSede;
             string estado = ddlEstados.SelectedValue == "Todos" ? null : ddlEstados.SelectedValue;
@@ -112,14 +116,26 @@ namespace fpWebApp
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     IFormatProvider provider = new CultureInfo("en-US");
+                    DateTime dtIni = Convert.ToDateTime(dt.Rows[i]["FechaHoraIni"].ToString(), provider);
+                    DateTime dtFin = Convert.ToDateTime(dt.Rows[i]["FechaHoraFin"].ToString(), provider);
                     DateTime dtFecha = Convert.ToDateTime(dt.Rows[i]["FechaHora"], provider);
 
+                    string strFechaHoraIni = String.Format("{0:yyyy-MM-ddTHH:mm:ss}", dtIni);
+                    string strFechaHoraFin = String.Format("{0:yyyy-MM-ddTHH:mm:ss}", dtFin);
                     string strFechaHora = String.Format("{0:yyyy-MM-ddTHH:mm:ss}", dtFecha);
 
                     _strEventos += "{\r\n";
+                    _strEventos += "id: '" + dt.Rows[i]["idDisponibilidad"].ToString() + "',\r\n";
+                    //_strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
+                    //_strEventos += "start: '" + dt.Rows[i]["FechaHoraIni"].ToString() + "',\r\n";
+                    _strEventos += "start: '" + strFechaHoraIni + "',\r\n";
+                    //_strEventos += "end: '" + dt.Rows[i]["FechaHoraFin"].ToString() + "',\r\n";
+                    _strEventos += "end: '" + strFechaHoraFin + "',\r\n";
+                    //_strEventos += "className: 'bg-primary',\r\n";
                     _strEventos += "id: '" + dt.Rows[i]["idAgenda"].ToString() + "',\r\n";
                     _strEventos += "start: '" + strFechaHora + "',\r\n";
 
+                    if (dt.Rows[i]["idAfiliado"].ToString() != "")
                     string nombreEstado = dt.Rows[i]["Estado"].ToString();
                     string nombreCompleto = dt.Rows[i]["Nombres"].ToString() + " " + dt.Rows[i]["Apellidos"].ToString();
 
@@ -127,6 +143,7 @@ namespace fpWebApp
 
                     if (nombreEstado == "Cancelado")
                     {
+                        if (dt.Rows[i]["Cancelada"].ToString() != "0")
                         _strEventos += "color: '#F8AC59',\r\n"; // Warning
                         _strEventos += "description: 'El usuario Canceló la cita de Gym Pass.',\r\n";
                         _strEventos += "icon: 'user',\r\n";
@@ -135,16 +152,28 @@ namespace fpWebApp
                         _strEventos += "btnCancelar: 'none',\r\n";
                     } 
                     else if (nombreEstado == "Asistió")
-                    {
+                        {
+                            _strEventos += "color: '#ed5565',\r\n"; //danger
+                            _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                            _strEventos += "description: 'Cita cancelada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                            _strEventos += "icon: 'id-card',\r\n";
+                            _strEventos += "btnEliminar: 'none',\r\n";
                         _strEventos += "color: '#1C84C6',\r\n"; // Success
                         _strEventos += "description: 'El usuario Asistió a la cita de Gym Pass.',\r\n";
                         _strEventos += "icon: 'user',\r\n";
                         _strEventos += "btnAsistencia: 'none',\r\n";
                         _strEventos += "btnNoAsistencia: 'none',\r\n";
                         _strEventos += "btnCancelar: 'none',\r\n";
-                    }
+                        }
+                        else
                     else if (nombreEstado == "No Asistió")
-                    {
+                        {
+                            _strEventos += "color: '#F8AC59',\r\n"; //warning
+                            _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                            _strEventos += "description: 'Cita asignada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                            _strEventos += "icon: 'id-card',\r\n";
+                            _strEventos += "btnEliminar: 'none',\r\n";
+                        }
                         _strEventos += "color: '#DC3545',\r\n"; // Danger
                         _strEventos += "description: 'El usuario No Asistió a la cita de Gym Pass.',\r\n";
                         _strEventos += "icon: 'user',\r\n";
@@ -154,6 +183,11 @@ namespace fpWebApp
                     }
                     else
                     {
+                        _strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
+                        _strEventos += "color: '#1ab394',\r\n";
+                        _strEventos += "description: 'Cita disponible.',\r\n";
+                        _strEventos += "icon: 'user-doctor',\r\n";
+                        _strEventos += "btnEliminar: 'inline',\r\n";
                         _strEventos += "color: '#1ab394',\r\n"; // Primary
                         _strEventos += "description: 'La cita de Gym Pass ha sido Agendada.',\r\n";
                         _strEventos += "icon: 'user',\r\n";
@@ -162,6 +196,8 @@ namespace fpWebApp
                         _strEventos += "btnCancelar: 'inline',\r\n";
                     }
 
+                    //_strEventos += "color: '#DBADFF',\r\n";
+                    //_strEventos += "todoeldia: 0,\r\n";
                     _strEventos += "display: 'block',\r\n";
                     _strEventos += "allDay: false,\r\n";
                     _strEventos += "},\r\n";
@@ -171,6 +207,7 @@ namespace fpWebApp
             dt.Dispose();
 
             AgregarFestivos(_strEventos, "2025");
+
         }
 
         private string AgregarFestivos(string eventos, string anho)
@@ -366,6 +403,7 @@ namespace fpWebApp
             int idSedeUsuario = Convert.ToInt32(Session["idSede"]);
 
             clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultaCargarSedes("Gimnasio");
 
             int? idSede = (idSedeUsuario == 11) ? (int?)null : idSedeUsuario;
 
@@ -376,10 +414,10 @@ namespace fpWebApp
 
             if (dt != null && dt.Rows.Count > 0)
             {
-                ddlSedes.DataSource = dt;
+            ddlSedes.DataSource = dt;
                 ddlSedes.DataValueField = "idSede";
                 ddlSedes.DataTextField = "NombreSede";
-                ddlSedes.DataBind();
+            ddlSedes.DataBind();
             }
 
             dt.Dispose();
@@ -395,10 +433,11 @@ namespace fpWebApp
 
             int? idSedeAnterior = ViewState["FiltroSede"] as int?;
 
+            ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
             if (nuevoIdSede != idSedeAnterior)
             {
-                CargarAgenda();
-            }
+            CargarAgenda();
+        }
         }
 
         private void CargarEstados()
@@ -420,13 +459,16 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
         protected void ddlEstados_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (ddlSedes.SelectedItem.Value.ToString() != "")
             string nuevoEstado = ddlEstados.SelectedValue == "Todos" ? null : ddlEstados.SelectedValue;
             string estadoAnterior = ViewState["FiltroEstado"] as string;
 
             if (nuevoEstado != estadoAnterior)
             {
+                ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
                 CargarAgenda();
             }
         }
