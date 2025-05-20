@@ -66,6 +66,9 @@ namespace fpWebApp
                         txbFechaInicio.Attributes.Add("type", "date");
                         txbFechaFinal.Attributes.Add("type", "date");
 
+                        txbFechaInicio.Attributes.Add("value","01/05/2025");
+                        txbFechaFinal.Attributes.Add("value", "31/05/2025");
+
                         if (Request.QueryString.Count > 0)
                         {
                             rpPlanes.Visible = false;
@@ -231,6 +234,11 @@ namespace fpWebApp
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
+            int intPermanente = 0;
+            if (cbPermanente.Checked)
+            {
+                intPermanente = 1;
+            }
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
@@ -247,7 +255,8 @@ namespace fpWebApp
                         rblColor.SelectedItem.Value.ToString(),
                         double.Parse(txbDiasCongelamiento.Text.ToString()), 
                         txbFechaInicio.Text.ToString(), 
-                        txbFechaFinal.Text.ToString());
+                        txbFechaFinal.Text.ToString(),
+                        intPermanente);
 
                     string strNewData = TraerData();
 
@@ -274,7 +283,8 @@ namespace fpWebApp
                         int.Parse(Session["idusuario"].ToString()),
                         double.Parse(txbDiasCongelamiento.Text.ToString()),
                         txbFechaInicio.Text.ToString(),
-                        txbFechaFinal.Text.ToString());
+                        txbFechaFinal.Text.ToString(), 
+                        intPermanente);
 
                         cg.InsertarLog(Session["idusuario"].ToString(), "planes", "Agrega", "El usuario agregó un nuevo plan: " + txbPlan.Text.ToString() + ".", "", "");
                     }

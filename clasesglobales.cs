@@ -4859,7 +4859,7 @@ namespace fpWebApp
         }
 
         public string InsertarPlan(string nombrePlan, string descripcionPlan, int precio, double descuentoMensual, int mesesMaximo,
-            string color, int idUsuario, double Dias, string fechaInicio, string fechaFinal)
+            string color, int idUsuario, double Dias, string fechaInicio, string fechaFinal, int permanente)
         {
             string respuesta = string.Empty;
             try
@@ -4881,6 +4881,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_dias_congelamiento", Dias);
                         cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicio);
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
+                        cmd.Parameters.AddWithValue("@p_permanente", permanente);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -4896,7 +4897,7 @@ namespace fpWebApp
         }
 
         public string ActualizarPlan(int idPlan, string nombrePlan, string descripcionPlan, int precio, double descuentoMensual, int mesesMaximo,
-            string color, double Dias, string fechaInicio, string fechaFinal)
+            string color, double Dias, string fechaInicio, string fechaFinal, int permanente)
         {
             string respuesta = string.Empty;
             try
@@ -4922,6 +4923,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_dias_congelamiento", Dias);
                         cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicio);
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
+                        cmd.Parameters.AddWithValue("@p_permanente", permanente);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";

@@ -200,24 +200,41 @@
                                                     <label>Color del botón:</label>
                                                     <asp:RadioButtonList ID="rblColor" runat="server" RepeatLayout="Flow"
                                                         CssClass="form-control input-sm" RepeatDirection="Horizontal">
-                                                        <asp:ListItem Value="primary" style="margin-right: 5px; font-size: 10px; color: blue;">Azul</asp:ListItem>
-                                                        <asp:ListItem Value="success" style="margin-right: 5px; font-size: 10px; color: green;">Verde</asp:ListItem>
-                                                        <asp:ListItem Value="info" style="margin-right: 5px; font-size: 10px; color: cyan;">Celeste</asp:ListItem>
-                                                        <asp:ListItem Value="warning" style="margin-right: 5px; font-size: 10px; color: darkgoldenrod;">Amarillo</asp:ListItem>
-                                                        <asp:ListItem Value="danger" style="margin-right: 5px; font-size: 10px; color: red;">Rojo</asp:ListItem>
+                                                        <asp:ListItem Value="primary" style="margin-right: 5px; font-size: 10px; color: blue;">&nbsp;Azul</asp:ListItem>
+                                                        <asp:ListItem Value="success" style="margin-right: 5px; font-size: 10px; color: green;">&nbsp;Verde</asp:ListItem>
+                                                        <asp:ListItem Value="info" style="margin-right: 5px; font-size: 10px; color: cyan;">&nbsp;Celeste</asp:ListItem>
+                                                        <asp:ListItem Value="warning" style="margin-right: 5px; font-size: 10px; color: darkgoldenrod;">&nbsp;Amarillo</asp:ListItem>
+                                                        <asp:ListItem Value="danger" style="margin-right: 5px; font-size: 10px; color: red;">&nbsp;Rojo</asp:ListItem>
                                                     </asp:RadioButtonList>
                                                 </div>
                                                 <div class="row m-b-n-xs">
+                                                    <div class="col-sm-12">
+                                                        <h3>Período del plan</h3>
+                                                    </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Fecha de inicio</label>
                                                             <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                            <asp:RequiredFieldValidator ID="rfvFechaInicio" runat="server" ErrorMessage="* Campo requerido"
+                                                                ControlToValidate="txbFechaInicio" ValidationGroup="agregar"
+                                                                CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Fecha final</label>
                                                             <asp:TextBox ID="txbFechaFinal" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                            <asp:RequiredFieldValidator ID="rfvFechaFinal" runat="server" ErrorMessage="* Campo requerido"
+                                                                ControlToValidate="txbFechaFinal" ValidationGroup="agregar"
+                                                                CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row m-b-n-xs">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <asp:CheckBox runat="server" ID="cbPermanente" Text="&nbsp;Permanente" CssClass="form-control" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -363,24 +380,6 @@
             labels: ["Mes 1", "Mes 2", "Mes 3", "Mes 4", "Mes 5", "Mes 6", "Mes 7", "Mes 8", "Mes 9", "Mes 10", "Mes 11", "Mes 12"],
             datasets: [
                 <%=strData%>
-                //{
-                //    label: "Plan Premium",
-                //    backgroundColor: 'rgba(26,179,148,0.5)',
-                //    borderColor: "rgba(26,179,148,0.7)",
-                //    pointBackgroundColor: "rgba(26,179,148,1)",
-                //    pointBorderColor: "#fff",
-                //    data: [28, 48, 40, 19, 86, 27, 90]
-                //}, {
-                //    label: "Plan Deluxe",
-                //    backgroundColor: 'rgba(220, 220, 220, 0.5)',
-                //    pointBorderColor: "#fff",
-                //    data: [65, 59, 80, 81, 56, 55, 40]
-                //}, {
-                //    label: "Plan San Valentin",
-                //    backgroundColor: 'rgba(120, 20, 250, 0.5)',
-                //    pointBorderColor: "#fff",
-                //    data: [35, 60, 70, 32, 27, 80, 48]
-                //}
             ]
         };
 
