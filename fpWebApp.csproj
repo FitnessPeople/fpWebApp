@@ -255,6 +255,7 @@
     <Content Include="afiliados.aspx" />
     <Content Include="agenda.aspx" />
     <Content Include="agendaespecialista.aspx" />
+    <Content Include="agendagympass.aspx" />
     <Content Include="agendarcita.aspx" />
     <Content Include="arl.aspx" />
     <Content Include="asignarcita.aspx" />
@@ -1000,6 +1001,13 @@
     </Compile>
     <Compile Include="agendaespecialista.aspx.designer.cs">
       <DependentUpon>agendaespecialista.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="agendagympass.aspx.cs">
+      <DependentUpon>agendagympass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="agendagympass.aspx.designer.cs">
+      <DependentUpon>agendagympass.aspx</DependentUpon>
     </Compile>
     <Compile Include="agendarcita.aspx.cs">
       <DependentUpon>agendarcita.aspx</DependentUpon>

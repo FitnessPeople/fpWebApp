@@ -55,8 +55,8 @@ namespace fpWebApp
                             //btnAgregar.Visible = true;
                         }
                     }
-                    rpInscritos.ItemDataBound += rpInscritos_ItemDataBound;
-                    listaInscritos();
+
+                    CargarListaInscritos();
                     //ActualizarEstadoxFechaFinal();
                     //indicadores01.Visible = false;
                 }
@@ -90,7 +90,7 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void listaInscritos()
+        private void CargarListaInscritos()
         {
             string strQuery = "SELECT * " +
                 "FROM GymPass gp " +
@@ -101,6 +101,8 @@ namespace fpWebApp
             rpInscritos.DataSource = dt;
             rpInscritos.DataBind();
             dt.Dispose();
+
+            rpInscritos.ItemDataBound += rpInscritos_ItemDataBound;
         }
 
         //protected void rpInscritos_ItemDataBound(object sender, RepeaterItemEventArgs e)
@@ -129,24 +131,61 @@ namespace fpWebApp
                 // 1. Obtén el documento del usuario en esta fila
                 string nroDocumento = DataBinder.Eval(e.Item.DataItem, "NroDocumento").ToString();
 
-                // 2. Consulta si ya tiene GymPass
+                // 2. Consulta si ya tiene Agenda GymPass
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarGymPassAgendaYGymPassPorId(nroDocumento);
+                DataTable dt = cg.ConsultarGymPassAgendaYGymPassPorDocumento(nroDocumento);
 
                 // 3. Accede al control dentro de la fila
                 HtmlAnchor btnAgendar = (HtmlAnchor)e.Item.FindControl("btnAgendar");
 
-                // 4. Deshabilita u oculta el botón si ya tiene GymPass
-                if (dt.Rows.Count > 0)
+                // 4. Deshabilita u oculta el botón si ya tiene Agenda GymPass
+                if (dt.Rows.Count > 0 && dt.Rows[0]["idAgenda"] != DBNull.Value)
                 {
-                    btnAgendar.Attributes.Add("disabled", "disabled");
-                    btnAgendar.Attributes.Add("style", "pointer-events:none;opacity:0.5;");
-                    // O si prefieres ocultarlo completamente:
-                    // btnAgendar.Visible = false;
+                    btnAgendar.Attributes.Add("class", "btn btn-outline btn-warning pull-right m-r-xs");
+                    btnAgendar.Attributes.Add("style", "padding: 1px 2px 1px 2px; margin-bottom: 0px; pointer-events:none;");
+                    btnAgendar.InnerHtml = "<i class='fa-solid fa-calendar-check'></i>";
                 }
 
                 dt.Dispose();
             }
+        }
+
+        protected void btnAgendarGymPass_Click(object sender, EventArgs e)
+        {
+            DateTime dtFechaAgenda = Convert.ToDateTime(txbFechaAgenda.Value.ToString() + " " + txbHoraAgenda.Value.ToString());
+
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                DataTable dtGymPass = cg.ConsultarGymPassPorDocumento(infoDoc.Value.ToString());
+                DataTable dtAgenda = cg.ConsultarGymPassAgendaYGymPassPorDocumento(infoDoc.Value.ToString());
+
+                if (dtGymPass.Rows.Count > 0 && dtAgenda.Rows[0]["idAgenda"] == DBNull.Value)
+                {
+                    string id = dtGymPass.Rows[0]["idGymPass"].ToString();
+
+                    string strQuery = @"INSERT INTO GymPassAgenda (idGymPass, FechaHora, idUsuarioCrea) " +
+                                       "VALUES (" + id + ", '" + dtFechaAgenda.ToString("yyyy-MM-dd H:mm:ss") + "', " + Session["idusuario"].ToString() + ")";
+
+                    string mensaje = cg.TraerDatosStr(strQuery);
+                }
+
+                dtGymPass.Dispose();
+                dtAgenda.Dispose();
+
+                LimpiarCamposAgenda();
+                CargarListaInscritos();
+            }
+            catch (OdbcException ex)
+            {
+                string mensaje = ex.Message;
+            }
+        }
+
+        private void LimpiarCamposAgenda()
+        {
+            txbFechaAgenda.Value = string.Empty;
+            txbHoraAgenda.Value = "08:00";
         }
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
@@ -182,33 +221,6 @@ namespace fpWebApp
             {
                 Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
                 //Response.Redirect("gympass.aspx?mensaje=" + Server.UrlEncode(ex.Message));
-            }
-        }
-
-        protected void btnAgendarGymPass_Click(object sender, EventArgs e)
-        {
-            DateTime dtFechaAgenda = Convert.ToDateTime(txbFechaAgenda.Value.ToString() + " " + txbHoraAgenda.Value.ToString());
-
-            try
-            {
-                clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarGymPassPorDocumento(infoDoc.Value.ToString());
-
-                if (dt.Rows.Count > 0)
-                {
-                    string id = dt.Rows[0]["idGymPass"].ToString();
-
-                    string strQuery = @"INSERT INTO GymPassAgenda (idGymPass, FechaHora, idUsuarioCrea) " + 
-                                       "VALUES (" + id + ", '" + dtFechaAgenda.ToString("yyyy-MM-dd H:mm:ss") + "', " + Session["idusuario"].ToString() + ")";
-
-                    string mensaje = cg.TraerDatosStr(strQuery);
-                }
-
-                dt.Dispose();
-            }
-            catch (OdbcException ex)
-            {
-                string mensaje = ex.Message;
             }
         }
     }
