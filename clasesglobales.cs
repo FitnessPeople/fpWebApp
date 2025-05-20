@@ -232,12 +232,18 @@ namespace fpWebApp
             objeto_mail.Subject = strAsunto;
             objeto_mail.Body = strMensaje;
 
-            SmtpClient client = new SmtpClient();
-            client.Host = "localhost";
-            client.Port = 25;
-            client.UseDefaultCredentials = false;
+            //SmtpClient client = new SmtpClient();
+            //client.Host = "localhost";
+            //client.Port = 25;
+            //client.UseDefaultCredentials = false;
+            //client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            //client.Credentials = new System.Net.NetworkCredential("afiliaciones@fitnesspeoplecolombia.com", "i18Jo%5b3");
+
+            SmtpClient client = new SmtpClient("smtp.gmail.com", 587); // o 465 con SSL
+            client.EnableSsl = true; // o false si estás usando 465
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.Credentials = new System.Net.NetworkCredential("afiliaciones@fitnesspeoplecolombia.com", "i18Jo%5b3");
+            client.UseDefaultCredentials = false;
+            client.Credentials = new System.Net.NetworkCredential("sistemas@fitnesspeoplecmd.com", "Chrismo76*"); // Reemplaza con tu correo y contraseña de aplicación
 
             try
             {

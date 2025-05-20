@@ -467,8 +467,11 @@
     <Content Include="img\a6.jpg" />
     <Content Include="img\a7.jpg" />
     <Content Include="img\a8.jpg" />
+    <Content Include="img\afiliados\avatar_female.png" />
+    <Content Include="img\afiliados\avatar_male.png" />
     <Content Include="img\afiliados\nofoto.png" />
     <Content Include="img\angular_logo.png" />
+    <Content Include="img\bg_login.png" />
     <Content Include="img\dashboard4_1.jpg" />
     <Content Include="img\dashboard4_2.jpg" />
     <Content Include="img\email_1.jpg" />
@@ -492,6 +495,7 @@
     <Content Include="img\empleados\chrismo.jpg" />
     <Content Include="img\empleados\nofoto.png" />
     <Content Include="img\especialistas\nofoto.png" />
+    <Content Include="img\facial-recognition.png" />
     <Content Include="img\full_height.jpg" />
     <Content Include="img\gallery\1.jpg" />
     <Content Include="img\gallery\10.jpg" />
