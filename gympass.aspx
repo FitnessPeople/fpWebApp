@@ -215,9 +215,9 @@
                                                     <td><%# Eval("FechaInscripcion", "{0:dd MMM yyyy, HH:mm}") %></td>
                                                     <td>
                                                         <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
-                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="true"><i class="fa fa-trash"></i></a>
                                                         <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
+                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="true"><i class="fa fa-edit"></i></a>
                                                         <a runat="server" id="btnAgendar" href="#" class="btn btn-outline btn-success pull-right m-r-xs"
                                                             style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="true"><i class="fa fa-calendar-day"></i></a>
                                                     </td>
@@ -274,7 +274,7 @@
                                                 <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
                                                 <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
                                                 <%--<button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>--%>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>--%>
                                             </div>
                                         </div>
                                     </div>
