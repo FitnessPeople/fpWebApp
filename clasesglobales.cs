@@ -243,7 +243,7 @@ namespace fpWebApp
             client.EnableSsl = true; // o false si estás usando 465
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.UseDefaultCredentials = false;
-            client.Credentials = new System.Net.NetworkCredential("sistemas@fitnesspeoplecmd.com", "Chrismo76*"); // Reemplaza con tu correo y contraseña de aplicación
+            client.Credentials = new System.Net.NetworkCredential("sistemas@fitnesspeoplecmd.com", "rfhw romt jngp pmpo"); // Reemplaza con tu correo y contraseña de aplicación
 
             try
             {
