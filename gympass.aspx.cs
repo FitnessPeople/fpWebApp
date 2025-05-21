@@ -51,12 +51,12 @@ namespace fpWebApp
                             txbFechaAgenda.Attributes.Add("type", "date");
                             txbFechaAgenda.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
 
-                            
                             //btnAgregar.Visible = true;
                         }
                     }
 
-                    CargarListaInscritos();
+                    rpInscritos.ItemDataBound += rpInscritos_ItemDataBound;
+                    listaInscritos();
                     //ActualizarEstadoxFechaFinal();
                     //indicadores01.Visible = false;
                 }
@@ -90,7 +90,7 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void CargarListaInscritos()
+        private void listaInscritos()
         {
             string strQuery = "SELECT * " +
                 "FROM GymPass gp " +
@@ -101,8 +101,6 @@ namespace fpWebApp
             rpInscritos.DataSource = dt;
             rpInscritos.DataBind();
             dt.Dispose();
-
-            rpInscritos.ItemDataBound += rpInscritos_ItemDataBound;
         }
 
         //protected void rpInscritos_ItemDataBound(object sender, RepeaterItemEventArgs e)
@@ -173,8 +171,9 @@ namespace fpWebApp
                 dtGymPass.Dispose();
                 dtAgenda.Dispose();
 
+                rpInscritos.ItemDataBound += rpInscritos_ItemDataBound;
+                listaInscritos();
                 LimpiarCamposAgenda();
-                CargarListaInscritos();
             }
             catch (OdbcException ex)
             {
