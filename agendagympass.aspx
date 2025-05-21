@@ -112,6 +112,8 @@
                 <div class="modal-footer">
                     <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
                     <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-times m-r-sm"></i>Cerrar</button>
                     <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>
                     <button type="button" class="btn btn-success" data-dismiss="modal" onclick="window.location.href = 'asistenciaagendagympass.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnAsistencia" visible="false"><i class="fa fa-calendar-check m-r-sm"></i>Asistió</button>
@@ -177,6 +179,10 @@
                                                     <a class="close-link">
                                                         <i class="fa fa-times"></i>
                                                     </a>--%>
+                                            <span class="label label-danger pull-right" style="color: #000;">Eliminado</span>
+                                            <span class="label label-warning pull-right" style="color: #000;">Cancelado</span>
+                                            <span class="label label-success pull-right" style="color: #000;">Asistió</span>
+                                            <span class="label label-primary pull-right" style="color: #000;">Agendado</span>
                                             <span class="label label-success pull-right" style="color: #000;">Cita atendida</span>
                                             <span class="label label-danger pull-right" style="color: #000;">Cita cancelada</span>
                                             <span class="label label-warning pull-right" style="color: #000;">Cita asignada</span>
@@ -323,7 +329,7 @@
                     info.jsEvent.preventDefault();
 
                     const fechainicial = new Date(info.event.start);
-                    fechainicial.setHours(fechainicial.getHours() + 5);
+                    //fechainicial.setHours(fechainicial.getHours());
 
                     const formatter1 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
                     const formattedTime1 = formatter1.format(fechainicial);
@@ -334,16 +340,12 @@
                     const formattermes = new Intl.DateTimeFormat('es-US', { month: 'long' });
                     const formattedmesini = formattermes.format(fechainicial)[0].toUpperCase() + formattermes.format(fechainicial).substring(1);
 
-                    const fechafinal = new Date(info.event.end);
-                    fechafinal.setHours(fechafinal.getHours() + 5);
-                    const formatter2 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
-                    const formattedTime2 = formatter2.format(fechafinal);
-
                     if (info.event.id) {
                         console.log(info.event.extendedProps);
                         jQuery('.event-id').html(info.event.id);
                         jQuery('.event-icon').html("<i class='fa fa-" + info.event.extendedProps.icon + "'></i>");
                         jQuery('.event-title').html(info.event.title);
+                        jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + "<br /><br />");
                         jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />");
                         jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + "<br /><br />");
                         jQuery('.event-description').html(info.event.extendedProps.description);
