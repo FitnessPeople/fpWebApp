@@ -20,6 +20,7 @@ namespace fpWebApp
                 Session["Cargo"] = "WebMaster";
                 Session["Foto"] = "chrismo.jpg";
                 Session["idPerfil"] = 1;
+                Session["usuario"] = "sistemas@fitnesspeoplecmd.com";
 
                 Control ctrInicio = new Control();
                 if (Session["idUsuario"] != null)

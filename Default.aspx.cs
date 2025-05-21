@@ -52,6 +52,7 @@ namespace fpWebApp
                     Session["Cargo"] = dt.Rows[0]["CargoUsuario"].ToString();
                     Session["Foto"] = dt.Rows[0]["FotoEmpleado"].ToString();
                     Session["idPerfil"] = dt.Rows[0]["idPerfil"].ToString();
+                    Session["usuario"] = dt.Rows[0]["EmailUsuario"].ToString();
                     boolReturnValue = true;
                 }
             }

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Fitness Peple | Login" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="fpWebApp._Default" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="pantallabloqueo.aspx.cs" Inherits="fpWebApp.pantallabloqueo" %>
 
 <!DOCTYPE html>
 <html>
@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Login</title>
+    <title>Fitness People | Pantalla de Bloqueo</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
@@ -25,32 +25,18 @@
                 <h1 class="logo-name">FP+</h1>
 
             </div>
-            <h3 class="text-white"><i class="fa fa-dumbbell m-r-sm"></i>Bienvenido a FP+</h3>
-            <p class="text-white">
-                ¡Nuestra app está lista, reconstruida desde cero!<br />
-                Se avecinan muchas funciones y mejoras.
-            </p>
             <form class="m-t" role="form" id="form1" runat="server">
                 <div class="row">
-                    <div class="col-lg-5">
+                    <div class="col-lg-12">
                         <div class="form-group">
-                            <asp:TextBox ID="txbEmail" CssClass="form-control" runat="server" placeholder="Usuario" required></asp:TextBox>
-                        </div>
-                    </div>
-                    <div class="col-lg-7">
-                        <div class="form-group">
-                            <asp:DropDownList ID="ddlDominio" runat="server" CssClass="form-control">
-                                <asp:ListItem Text="@fitnesspeoplecmd.com" Value="@fitnesspeoplecmd.com"></asp:ListItem>
-                                <asp:ListItem Text="@fitnesspeoplecolombia.com" Value="@fitnesspeoplecolombia.com"></asp:ListItem>
-                                <asp:ListItem Text="Usuario externo" Value=""></asp:ListItem>
-                            </asp:DropDownList>
+                            <div class="m-b-md">
+                                <asp:Literal ID="ltFoto" runat="server"></asp:Literal>
+                            </div>
+                            <h3 style="color: #fff;"><asp:Literal ID="ltUsuario" runat="server"></asp:Literal></h3>
+                            <p style="color: #fff;">Estás en la pantalla de bloqueo. La aplicación principal se cerró y necesitas ingresar tu contraseña para volver a la aplicación.</p>
                         </div>
                     </div>
                 </div>
-                
-                <%--<div class="form-group">
-                    <asp:TextBox ID="txbPassword" CssClass="form-control" runat="server" placeholder="Password" required TextMode="Password"></asp:TextBox>
-                </div>--%>
                 <div class="form-group">
                     <div class="input-group">
 					    <asp:TextBox ID="txbPassword" CssClass="form-control" runat="server" placeholder="Password" required TextMode="Password"></asp:TextBox>
@@ -59,16 +45,12 @@
 					    </span>
                     </div>
 				</div>
-                <asp:Button ID="btnIngresar" runat="server" CssClass="btn btn-warning1 block full-width m-b font-bold" Text="INGRESAR" OnClick="btnIngresar_Click" />
+                <asp:Button ID="btnDesbloquear" runat="server" CssClass="btn btn-warning1 block full-width m-b font-bold" Text="DESBLOQUEAR" OnClick="btnDesbloquear_Click" />
 
                 <div class="alert alert-danger alert-dismissable" runat="server" id="divMensaje" visible="false">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
                     <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                 </div>
-
-                <p><a href="olvidoclave"><small style="color: #fff; text-decoration: underline;">Olvidaste la contraseña?</small></a></p>
-                <%--<p class="text-muted text-center text-white"><small>No tienes una cuenta?</small></p>--%>
-                <a class="btn btn-warning1 block full-width m-b font-bold" href="soporte">No tengo cuenta</a>
 
             </form>
             <p class="m-t text-white"><small>Fitness People &copy; <asp:Label ID="lblAnho" runat="server" /></small> </p>
