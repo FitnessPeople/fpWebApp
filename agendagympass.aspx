@@ -236,33 +236,6 @@
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
     <script>
-
-        //$("#form").validate({
-        //    rules: {
-        //        ddlEspecialistas: {
-        //            required: true,
-        //        },
-        //        ddlSedesCita: {
-        //            required: true,
-        //        },
-        //        txbFechaIni: {
-        //            required: true
-        //        },
-        //        txbFechaFin: {
-        //            required: true
-        //        },
-        //        txbHoraIni: {
-        //            required: true,
-        //        },
-        //        txbHoraFin: {
-        //            required: true,
-        //        },
-        //        txbDuracion: {
-        //            required: true,
-        //        },
-        //    }
-        //});
-
         !(function (a) {
             a.fn.datepicker.dates.es = {
                 days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
@@ -406,7 +379,7 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                 },
-                
+                <%=strEventos%>
             });
 
             calendar.render();
