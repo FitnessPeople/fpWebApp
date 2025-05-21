@@ -12,28 +12,21 @@ namespace fpWebApp.controles
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["idUsuario"] != null)
+            ltNombreUsuario.Text = Session["NombreUsuario"].ToString();
+            ltCargo.Text = Session["Cargo"].ToString();
+            if (Session["Foto"].ToString() != "")
             {
-                ltNombreUsuario.Text = Session["NombreUsuario"].ToString();
-                ltCargo.Text = Session["Cargo"].ToString();
-                if (Session["Foto"].ToString() != "")
-                {
-                    ltFoto.Text = "<img alt=\"image\" class=\"img-circle circle-border\" width=\"48px\" src=\"img/empleados/" + Session["Foto"].ToString() + "\" />";
-                }
-                else
-                {
-                    ltFoto.Text = "<img alt=\"image\" class=\"img-circle img-md\" src=\"img/empleados/nofoto.png\" />";
-                }
-
-                totalAfiliados();
-                totalEmpleados();
-                totalUsuarios();
-                totalInscritos();
+                ltFoto.Text = "<img alt=\"image\" class=\"img-circle circle-border\" width=\"48px\" src=\"img/empleados/" + Session["Foto"].ToString() + "\" />";
             }
             else
             {
-                Response.Redirect("logout");
+                ltFoto.Text = "<img alt=\"image\" class=\"img-circle img-md\" src=\"img/empleados/nofoto.png\" />";
             }
+
+            totalAfiliados();
+            totalEmpleados();
+            totalUsuarios();
+            totalInscritos();
         }
 
         private void totalAfiliados()

@@ -283,6 +283,7 @@
     <Content Include="controles\indicadores02.ascx" />
     <Content Include="controles\indicadores03.ascx" />
     <Content Include="controles\indicadores04.ascx" />
+    <Content Include="controles\indicadores05.ascx" />
     <Content Include="controles\indicadoresmedico.ascx" />
     <Content Include="controles\indicadoresusucrm.ascx" />
     <Content Include="controles\navbar.ascx" />
@@ -950,12 +951,14 @@
     <Content Include="obtenerciudades.aspx" />
     <Content Include="olvidoclave.aspx" />
     <Content Include="paginas.aspx" />
+    <Content Include="pantallabloqueo.aspx" />
     <Content Include="parq.aspx" />
     <Content Include="pension.aspx" />
     <Content Include="perfiles.aspx" />
     <Content Include="planes.aspx" />
     <Content Include="planesAfil.aspx" />
     <Content Include="plantilla.aspx" />
+    <Content Include="procedimientosalmacenados.aspx" />
     <Content Include="productostienda.aspx" />
     <Content Include="profesiones.aspx" />
     <Content Include="recuperacionclave.aspx" />
@@ -975,6 +978,7 @@
     <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebServices.js" />
     <Content Include="sedes.aspx" />
     <Content Include="soporte.aspx" />
+    <Content Include="tablasbd.aspx" />
     <Content Include="tiposdocumento.aspx" />
     <Content Include="tiposincapacidades.aspx" />
     <Content Include="traspasos.aspx" />
@@ -1190,6 +1194,13 @@
     </Compile>
     <Compile Include="controles\indicadores04.ascx.designer.cs">
       <DependentUpon>indicadores04.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="controles\indicadores05.ascx.cs">
+      <DependentUpon>indicadores05.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadores05.ascx.designer.cs">
+      <DependentUpon>indicadores05.ascx</DependentUpon>
     </Compile>
     <Compile Include="controles\indicadoresmedico.ascx.cs">
       <DependentUpon>indicadoresmedico.ascx</DependentUpon>
@@ -1684,6 +1695,13 @@
     <Compile Include="paginas.aspx.designer.cs">
       <DependentUpon>paginas.aspx</DependentUpon>
     </Compile>
+    <Compile Include="pantallabloqueo.aspx.cs">
+      <DependentUpon>pantallabloqueo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pantallabloqueo.aspx.designer.cs">
+      <DependentUpon>pantallabloqueo.aspx</DependentUpon>
+    </Compile>
     <Compile Include="parq.aspx.cs">
       <DependentUpon>parq.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1725,6 +1743,13 @@
     </Compile>
     <Compile Include="plantilla.aspx.designer.cs">
       <DependentUpon>plantilla.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="procedimientosalmacenados.aspx.cs">
+      <DependentUpon>procedimientosalmacenados.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="procedimientosalmacenados.aspx.designer.cs">
+      <DependentUpon>procedimientosalmacenados.aspx</DependentUpon>
     </Compile>
     <Compile Include="productostienda.aspx.cs">
       <DependentUpon>productostienda.aspx</DependentUpon>
@@ -1782,6 +1807,13 @@
     </Compile>
     <Compile Include="soporte.aspx.designer.cs">
       <DependentUpon>soporte.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="tablasbd.aspx.cs">
+      <DependentUpon>tablasbd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="tablasbd.aspx.designer.cs">
+      <DependentUpon>tablasbd.aspx</DependentUpon>
     </Compile>
     <Compile Include="tiposdocumento.aspx.cs">
       <DependentUpon>tiposdocumento.aspx</DependentUpon>

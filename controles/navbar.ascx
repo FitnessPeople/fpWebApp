@@ -142,6 +142,8 @@
                     <li id="parq" class="old"><a href="parq"><i class="fa fa-person-circle-question"></i>ParQ</a></li>
                     <li id="tiposincapacidades" class="old"><a href="tiposincapacidades"><i class="fa fa-hospital-user"></i>Tipos de incapacidad</a></li>
                     <li id="canalesventa" class="old"><a href="canalesventa"><i class="fa-solid fa-list-ul"></i>Canales de venta</a></li>
+                    <li id="tablasbd" class="old"><a href="tablasbd"><i class="fa-solid fa-table"></i>Tablas BD</a></li>
+                    <li id="procedimientosalmacenados" class="old"><a href="procedimientosalmacenados"><i class="fa-solid fa-database"></i>Procedimientos almacenados</a></li>
                 </ul>
             </li>
             <li>

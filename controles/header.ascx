@@ -143,4 +143,23 @@
         }
     }
     typeWriter();
+
+    const url = window.location.pathname.replace("/","");
+    console.log(url);
+
+    let teclasPresionadas = {}; // Objeto para guardar las teclas presionadas
+
+    // Evento keydown
+    document.addEventListener('keydown', (event) => {
+        teclasPresionadas[event.key] = true; // Guardar que la tecla está presionada
+        if (teclasPresionadas['Control'] && event.key === 'l') { // Detectar Ctrl+C
+            console.log('Ctrl+l detectado');
+            window.location.href = "pantallabloqueo?page=" + url;
+        }
+    });
+
+    // Evento keyup
+    document.addEventListener('keyup', (event) => {
+        delete teclasPresionadas[event.key]; // Eliminar la tecla del registro
+    });
 </script>
