@@ -73,7 +73,8 @@ namespace fpWebApp
         private void CargarAgenda()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultaCargarAgenda(int.Parse(ddlSedes.SelectedItem.Value.ToString()));
+            int sede = int.Parse(ddlSedes.SelectedItem.Value.ToString());
+            DataTable dt = cg.ConsultarGymPassAgendaYGymPassPorSede(int.Parse(ddlSedes.SelectedItem.Value.ToString()));
 
             _strEventos = "events: [\r\n";
 
@@ -82,48 +83,54 @@ namespace fpWebApp
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     IFormatProvider provider = new CultureInfo("en-US");
-                    DateTime dtIni = Convert.ToDateTime(dt.Rows[i]["FechaHoraIni"].ToString(), provider);
-                    DateTime dtFin = Convert.ToDateTime(dt.Rows[i]["FechaHoraFin"].ToString(), provider);
+                    DateTime dtFecha = Convert.ToDateTime(dt.Rows[i]["FechaHora"], provider);
+                    //DateTime dtFin = Convert.ToDateTime(dt.Rows[i]["FechaHoraFin"].ToString(), provider);
 
-                    string strFechaHoraIni = String.Format("{0:yyyy-MM-ddTHH:mm:ss}", dtIni);
-                    string strFechaHoraFin = String.Format("{0:yyyy-MM-ddTHH:mm:ss}", dtFin);
+                    string strFechaHora = String.Format("{0:yyyy-MM-ddTHH:mm:ss}", dtFecha);
+                    //string strFechaHoraFin = String.Format("{0:yyyy-MM-ddTHH:mm:ss}", dtFin);
 
                     _strEventos += "{\r\n";
-                    _strEventos += "id: '" + dt.Rows[i]["idDisponibilidad"].ToString() + "',\r\n";
+                    _strEventos += "id: '" + dt.Rows[i]["idAgenda"].ToString() + "',\r\n";
                     //_strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
                     //_strEventos += "start: '" + dt.Rows[i]["FechaHoraIni"].ToString() + "',\r\n";
-                    _strEventos += "start: '" + strFechaHoraIni + "',\r\n";
+                    _strEventos += "start: '" + strFechaHora + "',\r\n";
                     //_strEventos += "end: '" + dt.Rows[i]["FechaHoraFin"].ToString() + "',\r\n";
-                    _strEventos += "end: '" + strFechaHoraFin + "',\r\n";
+                    //_strEventos += "end: '" + strFechaHoraFin + "',\r\n";
                     //_strEventos += "className: 'bg-primary',\r\n";
 
-                    if (dt.Rows[i]["idAfiliado"].ToString() != "")
+                    if (dt.Rows[i]["idAgenda"].ToString() != "")
                     {
-                        if (dt.Rows[i]["Cancelada"].ToString() != "0")
-                        {
-                            _strEventos += "color: '#ed5565',\r\n"; //danger
-                            _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                            _strEventos += "description: 'Cita cancelada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                            _strEventos += "icon: 'id-card',\r\n";
-                            _strEventos += "btnEliminar: 'none',\r\n";
-                        }
-                        else
-                        {
-                            _strEventos += "color: '#F8AC59',\r\n"; //warning
-                            _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                            _strEventos += "description: 'Cita asignada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                            _strEventos += "icon: 'id-card',\r\n";
-                            _strEventos += "btnEliminar: 'none',\r\n";
-                        }
-                    }
-                    else
-                    {
-                        _strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
+                        _strEventos += "title: '" + dt.Rows[i]["Nombres"].ToString() + " " + dt.Rows[i]["Apellidos"].ToString() + "',\r\n";
                         _strEventos += "color: '#1ab394',\r\n";
-                        _strEventos += "description: 'Cita disponible.',\r\n";
-                        _strEventos += "icon: 'user-doctor',\r\n";
+                        _strEventos += "description: 'Gym Pass Agendado.',\r\n";
+                        _strEventos += "icon: 'user',\r\n";
                         _strEventos += "btnEliminar: 'inline',\r\n";
+
+                        //if (dt.Rows[i]["Cancelada"].ToString() != "0")
+                        //{
+                        //    _strEventos += "color: '#ed5565',\r\n"; //danger
+                        //    _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                        //    _strEventos += "description: 'Cita cancelada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                        //    _strEventos += "icon: 'id-card',\r\n";
+                        //    _strEventos += "btnEliminar: 'none',\r\n";
+                        //}
+                        //else
+                        //{
+                        //    _strEventos += "color: '#F8AC59',\r\n"; //warning
+                        //    _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                        //    _strEventos += "description: 'Cita asignada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                        //    _strEventos += "icon: 'id-card',\r\n";
+                        //    _strEventos += "btnEliminar: 'none',\r\n";
+                        //}
                     }
+                    //else
+                    //{
+                    //    _strEventos += "title: '" + dt.Rows[i]["Nombres"].ToString() + " " + dt.Rows[i]["Apellidos"].ToString() + "',\r\n";
+                    //    _strEventos += "color: '#1ab394',\r\n";
+                    //    _strEventos += "description: 'Cita Asignada.',\r\n";
+                    //    _strEventos += "icon: 'user',\r\n";
+                    //    //_strEventos += "btnEliminar: 'inline',\r\n";
+                    //}
 
                     //_strEventos += "color: '#DBADFF',\r\n";
                     //_strEventos += "todoeldia: 0,\r\n";
