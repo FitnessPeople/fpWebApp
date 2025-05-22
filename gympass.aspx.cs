@@ -135,13 +135,16 @@ namespace fpWebApp
 
                 // 3. Accede al control dentro de la fila
                 HtmlAnchor btnAgendar = (HtmlAnchor)e.Item.FindControl("btnAgendar");
+                HtmlAnchor btnEliminarAgenda = (HtmlAnchor)e.Item.FindControl("btnEliminarAgenda");
 
                 // 4. Deshabilita u oculta el botón si ya tiene Agenda GymPass
                 if (dt.Rows.Count > 0 && dt.Rows[0]["idAgenda"] != DBNull.Value)
                 {
-                    btnAgendar.Attributes.Add("class", "btn btn-outline btn-warning pull-right m-r-xs");
-                    btnAgendar.Attributes.Add("style", "padding: 1px 2px 1px 2px; margin-bottom: 0px; pointer-events:none;");
-                    btnAgendar.InnerHtml = "<i class='fa-solid fa-calendar-check'></i>";
+                    btnAgendar.Visible = false;
+                    btnEliminarAgenda.Visible = true;
+                    //btnAgendar.Attributes.Add("class", "btn btn-outline btn-warning pull-right m-r-xs");
+                    //btnAgendar.Attributes.Add("style", "padding: 1px 2px 1px 2px; margin-bottom: 0px; pointer-events:none;");
+                    //btnAgendar.InnerHtml = "<i class='fa-solid fa-calendar-check'></i>";
                 }
 
                 dt.Dispose();
@@ -185,6 +188,35 @@ namespace fpWebApp
         {
             txbFechaAgenda.Value = string.Empty;
             txbHoraAgenda.Value = "08:00";
+        }
+
+        protected void btnEliminarAgendaGymPass_Click(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                DataTable dtAgenda = cg.ConsultarGymPassAgendaYGymPassPorDocumento(infoDocEli.Value.ToString());
+
+                if (dtAgenda.Rows.Count > 0)
+                {
+                    string id = dtAgenda.Rows[0]["idAgenda"].ToString();
+
+                    string strQuery = @"DELETE FROM GymPassAgenda " +
+                                       "WHERE idAgenda = " + int.Parse(id);
+
+                    string mensaje = cg.TraerDatosStr(strQuery);
+                }
+
+                dtAgenda.Dispose();
+
+                rpInscritos.ItemDataBound += rpInscritos_ItemDataBound;
+                listaInscritos();
+
+            }
+            catch (OdbcException ex)
+            {
+                string mensaje = ex.Message;
+            }
         }
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)

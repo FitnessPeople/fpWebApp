@@ -28,7 +28,7 @@ namespace fpWebApp
                         try
                         {
                             string strQuery = "UPDATE gympassagenda " +
-                                              "SET Cancelada = 1 " +
+                                              "SET Cancelada = 1, Asistencia = 0 " +
                                               "WHERE idAgenda = " + Request.QueryString["id"].ToString();
                             clasesglobales cg = new clasesglobales();
                             string mensaje = cg.TraerDatosStr(strQuery);

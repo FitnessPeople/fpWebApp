@@ -150,6 +150,33 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Button btnAgendarGymPass;
 
         /// <summary>
+        /// Control infoDocEli.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText infoDocEli;
+
+        /// <summary>
+        /// Control infoNombreEli.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText infoNombreEli;
+
+        /// <summary>
+        /// Control btnEliminarAgendaGymPass.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnEliminarAgendaGymPass;
+
+        /// <summary>
         /// Control footer1.
         /// </summary>
         /// <remarks>
