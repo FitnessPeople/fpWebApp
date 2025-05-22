@@ -116,7 +116,14 @@
                                             <div class="col-sm-12">
                                                 <label>Descripción:</label>
                                                 <div class="form-group">
-                                                    <textarea class="form-control input-sm" id="txbDescripcion" name="txbDescripcion" runat="server" rows="5" />
+                                                    
+                                                    <asp:TextBox ID="txbDescripcion" runat="server" CssClass="form-control input-sm" TextMode="MultiLine"
+                                                        placeholder="Descripción"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="rfvDescripcion" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="txbDescripcion" ValidationGroup="agregar"
+                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                    
+                                                    <%--<textarea class="form-control input-sm" id="txbDescripcion" name="txbDescripcion" runat="server" rows="5" />--%>
                                                 </div>
                                             </div>
                                         </div>
@@ -161,6 +168,19 @@
 
                                     </div>
                                 </div>
+
+                                <div class="widget style1 bg-danger">
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <i class="fa fa-calendar-day fa-5x"></i>
+                                        </div>
+                                        <div class="col-xs-8 text-right">
+                                            <span> Días hasta el Día Zero </span>
+                                            <h2 class="font-bold"><asp:Literal ID="ltDias" runat="server"></asp:Literal></h2>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="col-xxl-10 col-lg-9 col-md-7 col-sm-6 col-xs-12">
                             <%--<div class="col-sm-12">--%>
@@ -302,7 +322,7 @@
                     info.jsEvent.preventDefault();
 
                     const fechainicial = new Date(info.event.start);
-                    fechainicial.setHours(fechainicial.getHours() + 5);
+                    //fechainicial.setHours(fechainicial.getHours() + 5);
 
                     const formatter1 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
                     const formattedTime1 = formatter1.format(fechainicial);
@@ -314,7 +334,7 @@
                     const formattedmesini = formattermes.format(fechainicial)[0].toUpperCase() + formattermes.format(fechainicial).substring(1);
 
                     const fechafinal = new Date(info.event.end);
-                    fechafinal.setHours(fechafinal.getHours() + 5);
+                    //fechafinal.setHours(fechafinal.getHours() + 5);
                     const formatter2 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
                     const formattedTime2 = formatter2.format(fechafinal);
 

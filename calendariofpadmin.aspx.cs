@@ -39,7 +39,11 @@ namespace fpWebApp
                         txbFechaIni.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
                         divCrear.Visible = true;
                         CargarCalendario();
-                    }
+                        DateTime fechaActual = DateTime.Now;
+                        DateTime fechaDestino = new DateTime(2025, 7, 19);
+                        TimeSpan diferencia = fechaDestino - fechaActual;
+                        ltDias.Text = Convert.ToInt32(diferencia.TotalDays).ToString();
+;                    }
                     if (ViewState["Borrar"].ToString() == "1")
                     {
                         //btnEliminar.Visible = true;
@@ -90,8 +94,8 @@ namespace fpWebApp
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     IFormatProvider provider = new CultureInfo("en-US");
-                    DateTime dtIni = Convert.ToDateTime(dt.Rows[i]["FechaHoraInicio"].ToString(), provider);
-                    DateTime dtFin = Convert.ToDateTime(dt.Rows[i]["FechaHoraFinal"].ToString(), provider);
+                    DateTime dtIni = Convert.ToDateTime(dt.Rows[i]["FechaHoraInicio"].ToString());
+                    DateTime dtFin = Convert.ToDateTime(dt.Rows[i]["FechaHoraFinal"].ToString());
 
                     string strFechaHoraIni = String.Format("{0:yyyy-MM-ddTHH:mm:ss}", dtIni);
                     //string strFechaHoraIni = String.Format("{0:yyyy-MM-dd}", dtIni);
@@ -228,6 +232,16 @@ namespace fpWebApp
                 _strEventos += "},\r\n";
 
                 _strEventos += "{\r\n";
+                _strEventos += "start: '2025-07-19',\r\n";
+                _strEventos += "end: '2025-07-19',\r\n";
+                _strEventos += "title: 'Día Zero',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#FF0000',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
+                _strEventos += "},\r\n";
+
+                _strEventos += "{\r\n";
                 _strEventos += "start: '2025-07-20',\r\n";
                 _strEventos += "end: '2025-07-20',\r\n";
                 _strEventos += "title: 'Día de la Independencia',\r\n";
@@ -322,12 +336,13 @@ namespace fpWebApp
         {
             DateTime dtFechaIni = Convert.ToDateTime(txbFechaIni.Value.ToString());
             DateTime dtFechaIniCita = Convert.ToDateTime(dtFechaIni.ToString("yyyy-MM-dd") + " " + txbHoraIni.Value.ToString());
+            DateTime dtFechaFinCita = dtFechaIniCita.AddHours(1);
 
             string strQuery = "INSERT INTO AvancesFP " +
                 "(idUsuario, FechaHoraInicio, FechaHoraFinal, Descripcion, Tipo) " +
                 "VALUES (" + Session["idUsuario"].ToString() + ", '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
-                "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
-                "'" + txbDescripcion.Value.ToString() + "', '" + ddlTipo.SelectedItem.Value.ToString() + "') ";
+                "'" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
+                "'" + txbDescripcion.Text.ToString() + "', '" + ddlTipo.SelectedItem.Value.ToString() + "') ";
             
             clasesglobales cg = new clasesglobales();
             string mensaje = cg.TraerDatosStr(strQuery);
