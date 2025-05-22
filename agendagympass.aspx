@@ -109,9 +109,13 @@
                     <div class="event-idSede text-hide" id="event-idSede"></div>
                     <div class="event-allday text-hide" id="event-allday"></div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" style="display:flex; justify-content:space-between;">
                     <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
                     <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="window.location.href = 'asistenciaagendagympass.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnAsistencia" visible="false"><i class="fa fa-trash m-r-sm"></i>Asistencia</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'cancelaragendagympass.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnCancelar" visible="false"><i class="fa fa-trash m-r-sm"></i>Cancelar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class="fa fa-trash m-r-sm"></i>Eliminar</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal"><i class="fa fa-times m-r-sm"></i>Cerrar</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
                     <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-times m-r-sm"></i>Cerrar</button>
                     <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
@@ -179,9 +183,9 @@
                                                     <a class="close-link">
                                                         <i class="fa fa-times"></i>
                                                     </a>--%>
-                                            <span class="label label-danger pull-right" style="color: #000;">Eliminado</span>
+                                            <%--<span class="label label-danger pull-right" style="color: #000;">Eliminado</span>--%>
                                             <span class="label label-warning pull-right" style="color: #000;">Cancelado</span>
-                                            <span class="label label-success pull-right" style="color: #000;">Asistió</span>
+                                            <span class="label label-success pull-right" style="color: #000;">Asistencia</span>
                                             <span class="label label-primary pull-right" style="color: #000;">Agendado</span>
                                             <span class="label label-success pull-right" style="color: #000;">Cita atendida</span>
                                             <span class="label label-danger pull-right" style="color: #000;">Cita cancelada</span>
@@ -349,6 +353,12 @@
                         jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />");
                         jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + "<br /><br />");
                         jQuery('.event-description').html(info.event.extendedProps.description);
+                        var btnAsistencia = document.getElementById("btnAsistencia");
+                        var btnCancelar = document.getElementById("btnCancelar");
+                        var btnEliminar = document.getElementById("btnEliminar");
+                        btnAsistencia.style.display = info.event.extendedProps.btnAsistencia;
+                        btnCancelar.style.display = info.event.extendedProps.btnCancelar;
+                        btnEliminar.style.display = info.event.extendedProps.btnEliminar;
                         var btn = document.getElementById("btnEliminar");
                         btn.style.display = info.event.extendedProps.btnEliminar;
                         var btnNoAsistencia = document.getElementById("btnNoAsistencia");

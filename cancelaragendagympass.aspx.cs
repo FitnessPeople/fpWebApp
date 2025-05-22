@@ -17,6 +17,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
+                    ValidarPermisos("Cancelar Agenda Gym Pass");
                     ValidarPermisos("Agenda Gym Pass");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
@@ -27,6 +28,8 @@ namespace fpWebApp
                     {
                         try
                         {
+                            string strQuery = "UPDATE gympassagenda " +
+                                              "SET Cancelada = 1 " +
                             string strQuery = "UPDATE GymPassAgenda " +
                                               "SET Estado = 'Cancelado' " +
                                               "WHERE idAgenda = " + Request.QueryString["id"].ToString();

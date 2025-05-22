@@ -46,6 +46,8 @@ namespace fpWebApp
                     }
                     if (ViewState["Borrar"].ToString() == "1")
                     {
+                        btnAsistencia.Visible = true;
+                        btnCancelar.Visible = true;
                         btnEliminar.Visible = true;
                         btnNoAsistencia.Visible = true;
                         btnAsistencia.Visible = true;
@@ -149,6 +151,35 @@ namespace fpWebApp
 
                     if (nombreEstado == "Cancelado")
                     {
+                        if (dt.Rows[i]["Cancelada"].ToString() != "0")
+                        {
+                            _strEventos += "title: '" + dt.Rows[i]["Nombres"].ToString() + " " + dt.Rows[i]["Apellidos"].ToString() + "',\r\n";
+                            _strEventos += "color: '#F8AC59',\r\n"; // Warning
+                            _strEventos += "description: 'Gym Pass Cancelado.',\r\n";
+                            _strEventos += "icon: 'user',\r\n";
+                            _strEventos += "btnAsistencia: 'inline',\r\n";
+                            _strEventos += "btnCancelar: 'inline',\r\n";
+                            _strEventos += "btnEliminar: 'inline',\r\n";
+                        } else if (dt.Rows[i]["Asistencia"].ToString() != "0")
+                        {
+                            _strEventos += "title: '" + dt.Rows[i]["Nombres"].ToString() + " " + dt.Rows[i]["Apellidos"].ToString() + "',\r\n";
+                            _strEventos += "color: '#1C84C6',\r\n"; // Success
+                            _strEventos += "description: 'Gym Pass Asistencia.',\r\n";
+                            _strEventos += "icon: 'user',\r\n";
+                            _strEventos += "btnAsistencia: 'inline',\r\n";
+                            _strEventos += "btnCancelar: 'inline',\r\n";
+                            _strEventos += "btnEliminar: 'inline',\r\n";
+                        }
+                        else
+                        {
+                            _strEventos += "title: '" + dt.Rows[i]["Nombres"].ToString() + " " + dt.Rows[i]["Apellidos"].ToString() + "',\r\n";
+                            _strEventos += "color: '#1ab394',\r\n"; // Primary
+                            _strEventos += "description: 'Gym Pass Agendado.',\r\n";
+                            _strEventos += "icon: 'user',\r\n";
+                            _strEventos += "btnAsistencia: 'inline',\r\n";
+                            _strEventos += "btnCancelar: 'inline',\r\n";
+                            _strEventos += "btnEliminar: 'inline',\r\n";
+                        }
                         _strEventos += "title: '" + dt.Rows[i]["Nombres"].ToString() + " " + dt.Rows[i]["Apellidos"].ToString() + "',\r\n";
                         if (dt.Rows[i]["Cancelada"].ToString() != "0")
                         _strEventos += "color: '#F8AC59',\r\n"; // Warning
@@ -219,14 +250,6 @@ namespace fpWebApp
                         _strEventos += "btnNoAsistencia: 'inline',\r\n";
                         _strEventos += "btnCancelar: 'inline',\r\n";
                     }
-                    //else
-                    //{
-                    //    _strEventos += "title: '" + dt.Rows[i]["Nombres"].ToString() + " " + dt.Rows[i]["Apellidos"].ToString() + "',\r\n";
-                    //    _strEventos += "color: '#1ab394',\r\n";
-                    //    _strEventos += "description: 'Cita Asignada.',\r\n";
-                    //    _strEventos += "icon: 'user',\r\n";
-                    //    //_strEventos += "btnEliminar: 'inline',\r\n";
-                    //}
 
                     //_strEventos += "color: '#DBADFF',\r\n";
                     //_strEventos += "todoeldia: 0,\r\n";
