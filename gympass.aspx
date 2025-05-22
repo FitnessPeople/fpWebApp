@@ -53,6 +53,10 @@
         .clockpicker-popover {
             z-index: 9999 !important;
         }
+
+        .float-e-margins .btn {
+            margin-bottom: 0;
+        }
     </style>
 
     <style>
@@ -284,6 +288,8 @@
                                                             style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="true"><i class="fa fa-edit"></i></a>
                                                         <a runat="server" id="btnAgendar" href="#" class="btn btn-outline btn-success pull-right m-r-xs"
                                                             style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="true"><i class="fa fa-calendar-day"></i></a>
+                                                        <a runat="server" id="btnEliminarAgenda" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                           style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-calendar-check"></i></a>
                                                     </td>
                                                 </tr>
                                             </ItemTemplate>
@@ -333,12 +339,48 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <asp:Button ID="btnAgendarGymPass" class="btn btn-success" runat="server" Text="Agendar" OnClick="btnAgendarGymPass_Click" />
+                                                <asp:Button ID="btnAgendarGymPass" class="btn btn-success m-b-none" runat="server" Text="Agendar" OnClick="btnAgendarGymPass_Click" />
                                                 <%--<button type="submit" class="btn btn-primary">Agendar</button>--%>
                                                 <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
                                                 <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
-                                                <%--<button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>--%>
+                                                <%--<button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>--%>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="modal fade" id="modal-eliminar-agenda" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title" id="modalLabel">Eliminar Agenda Gym Pass</h4>
+                                                <p>¿Deseas eliminar la Agenda Gym Pass de...?</p>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <label>Nro. de Documento</label>
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control input-sm" id="infoDocEli" name="txbNroDocumento" runat="server" readonly /> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 m-b-md">
+                                                        <label>Nombre</label>
+                                                        <div class="form-groupp">
+                                                            <input type="text" class="form-control input-sm" id="infoNombreEli" name="txbNombres" runat="server" readonly />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <asp:Button ID="btnEliminarAgendaGymPass" class="btn btn-danger" runat="server" Text="Aceptar" OnClick="btnEliminarAgendaGymPass_Click" />
+                                                <%--<button type="submit" class="btn btn-primary">Agendar</button>--%>
+                                                <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
+                                                <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
+                                                <%--<button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>--%>
+                                                <button type="button" class="btn btn-success" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cancelar</button>
                                             </div>
                                         </div>
                                     </div>

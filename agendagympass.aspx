@@ -109,7 +109,7 @@
                     <div class="event-idSede text-hide" id="event-idSede"></div>
                     <div class="event-allday text-hide" id="event-allday"></div>
                 </div>
-                <div class="modal-footer" style="display:flex; justify-content:space-between;">
+                <div class="modal-footer">
                     <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
                     <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
                     <button type="button" class="btn btn-success" data-dismiss="modal" onclick="window.location.href = 'asistenciaagendagympass.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnAsistencia" visible="false"><i class="fa fa-trash m-r-sm"></i>Asistencia</button>
@@ -353,6 +353,7 @@
                         jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />");
                         jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + "<br /><br />");
                         jQuery('.event-description').html(info.event.extendedProps.description);
+                        /*jQuery('.event-idSede').html(info.event.extendedProps.idSede);*/
                         var btnAsistencia = document.getElementById("btnAsistencia");
                         var btnCancelar = document.getElementById("btnCancelar");
                         var btnEliminar = document.getElementById("btnEliminar");

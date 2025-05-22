@@ -29,6 +29,7 @@ namespace fpWebApp
                         try
                         {
                             string strQuery = "UPDATE gympassagenda " +
+                                              "SET Cancelada = 1, Asistencia = 0 " +
                                               "SET Cancelada = 1 " +
                             string strQuery = "UPDATE GymPassAgenda " +
                                               "SET Estado = 'Cancelado' " +
