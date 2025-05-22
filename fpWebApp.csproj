@@ -260,6 +260,7 @@
     <Content Include="agendarcita.aspx" />
     <Content Include="arl.aspx" />
     <Content Include="asignarcita.aspx" />
+    <Content Include="asistenciaagendagympass.aspx" />
     <Content Include="autorizaciones.aspx" />
     <Content Include="biodispositivos.aspx" />
     <Content Include="biopersonas.aspx" />
@@ -271,6 +272,7 @@
     <Content Include="cambiaestadousuario.aspx" />
     <Content Include="cambiarpermiso.aspx" />
     <Content Include="canalesventa.aspx" />
+    <Content Include="cancelaragendagympass.aspx" />
     <Content Include="cargos.aspx" />
     <Content Include="categoriastienda.aspx" />
     <Content Include="cesantias.aspx" />
@@ -1050,6 +1052,13 @@
     <Compile Include="asignarcita.aspx.designer.cs">
       <DependentUpon>asignarcita.aspx</DependentUpon>
     </Compile>
+    <Compile Include="asistenciaagendagympass.aspx.cs">
+      <DependentUpon>asistenciaagendagympass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="asistenciaagendagympass.aspx.designer.cs">
+      <DependentUpon>asistenciaagendagympass.aspx</DependentUpon>
+    </Compile>
     <Compile Include="autorizaciones.aspx.cs">
       <DependentUpon>autorizaciones.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1119,6 +1128,13 @@
     </Compile>
     <Compile Include="canalesventa.aspx.designer.cs">
       <DependentUpon>canalesventa.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="cancelaragendagympass.aspx.cs">
+      <DependentUpon>cancelaragendagympass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="cancelaragendagympass.aspx.designer.cs">
+      <DependentUpon>cancelaragendagympass.aspx</DependentUpon>
     </Compile>
     <Compile Include="cargos.aspx.cs">
       <DependentUpon>cargos.aspx</DependentUpon>

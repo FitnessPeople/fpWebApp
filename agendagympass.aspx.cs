@@ -36,6 +36,8 @@ namespace fpWebApp
                     }
                     if (ViewState["Borrar"].ToString() == "1")
                     {
+                        btnAsistencia.Visible = true;
+                        btnCancelar.Visible = true;
                         btnEliminar.Visible = true;
                     }
                     //indicadores01.Visible = false;
@@ -100,37 +102,36 @@ namespace fpWebApp
 
                     if (dt.Rows[i]["idAgenda"].ToString() != "")
                     {
-                        _strEventos += "title: '" + dt.Rows[i]["Nombres"].ToString() + " " + dt.Rows[i]["Apellidos"].ToString() + "',\r\n";
-                        _strEventos += "color: '#1ab394',\r\n";
-                        _strEventos += "description: 'Gym Pass Agendado.',\r\n";
-                        _strEventos += "icon: 'user',\r\n";
-                        _strEventos += "btnEliminar: 'inline',\r\n";
-
-                        //if (dt.Rows[i]["Cancelada"].ToString() != "0")
-                        //{
-                        //    _strEventos += "color: '#ed5565',\r\n"; //danger
-                        //    _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                        //    _strEventos += "description: 'Cita cancelada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                        //    _strEventos += "icon: 'id-card',\r\n";
-                        //    _strEventos += "btnEliminar: 'none',\r\n";
-                        //}
-                        //else
-                        //{
-                        //    _strEventos += "color: '#F8AC59',\r\n"; //warning
-                        //    _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                        //    _strEventos += "description: 'Cita asignada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                        //    _strEventos += "icon: 'id-card',\r\n";
-                        //    _strEventos += "btnEliminar: 'none',\r\n";
-                        //}
+                        if (dt.Rows[i]["Cancelada"].ToString() != "0")
+                        {
+                            _strEventos += "title: '" + dt.Rows[i]["Nombres"].ToString() + " " + dt.Rows[i]["Apellidos"].ToString() + "',\r\n";
+                            _strEventos += "color: '#F8AC59',\r\n"; // Warning
+                            _strEventos += "description: 'Gym Pass Cancelado.',\r\n";
+                            _strEventos += "icon: 'user',\r\n";
+                            _strEventos += "btnAsistencia: 'inline',\r\n";
+                            _strEventos += "btnCancelar: 'inline',\r\n";
+                            _strEventos += "btnEliminar: 'inline',\r\n";
+                        } else if (dt.Rows[i]["Asistencia"].ToString() != "0")
+                        {
+                            _strEventos += "title: '" + dt.Rows[i]["Nombres"].ToString() + " " + dt.Rows[i]["Apellidos"].ToString() + "',\r\n";
+                            _strEventos += "color: '#1C84C6',\r\n"; // Success
+                            _strEventos += "description: 'Gym Pass Asistencia.',\r\n";
+                            _strEventos += "icon: 'user',\r\n";
+                            _strEventos += "btnAsistencia: 'inline',\r\n";
+                            _strEventos += "btnCancelar: 'inline',\r\n";
+                            _strEventos += "btnEliminar: 'inline',\r\n";
+                        }
+                        else
+                        {
+                            _strEventos += "title: '" + dt.Rows[i]["Nombres"].ToString() + " " + dt.Rows[i]["Apellidos"].ToString() + "',\r\n";
+                            _strEventos += "color: '#1ab394',\r\n"; // Primary
+                            _strEventos += "description: 'Gym Pass Agendado.',\r\n";
+                            _strEventos += "icon: 'user',\r\n";
+                            _strEventos += "btnAsistencia: 'inline',\r\n";
+                            _strEventos += "btnCancelar: 'inline',\r\n";
+                            _strEventos += "btnEliminar: 'inline',\r\n";
+                        }
                     }
-                    //else
-                    //{
-                    //    _strEventos += "title: '" + dt.Rows[i]["Nombres"].ToString() + " " + dt.Rows[i]["Apellidos"].ToString() + "',\r\n";
-                    //    _strEventos += "color: '#1ab394',\r\n";
-                    //    _strEventos += "description: 'Cita Asignada.',\r\n";
-                    //    _strEventos += "icon: 'user',\r\n";
-                    //    //_strEventos += "btnEliminar: 'inline',\r\n";
-                    //}
 
                     //_strEventos += "color: '#DBADFF',\r\n";
                     //_strEventos += "todoeldia: 0,\r\n";

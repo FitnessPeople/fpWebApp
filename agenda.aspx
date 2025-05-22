@@ -189,21 +189,21 @@
                                             <div class="col-sm-3">
                                                 <label>Fecha Inicial:</label>
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control input-sm" id="txbFechaIni" name="txbFechaIni" runat="server">
+                                                    <input type="text" class="form-control input-sm" id="txbFechaIni" name="txbFechaIni" runat="server" />
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">
                                                 <label>Fecha Final:</label>
                                                 <div class="form-group">
                                                     <%--<span class="input-group-addon"><i class="fa fa-calendar-day"></i></span>--%>
-                                                    <input type="text" class="form-control input-sm" id="txbFechaFin" name="txbFechaFin" runat="server">
+                                                    <input type="text" class="form-control input-sm" id="txbFechaFin" name="txbFechaFin" runat="server" />
                                                 </div>
                                             </div>
 
                                             <div class="col-sm-3 m-b-md">
                                                 <label>Hora inicio:</label>
                                                 <div class="input-group clockpicker" data-autoclose="true">
-                                                    <input type="text" class="form-control input-sm" value="08:00" id="txbHoraIni" name="txbHoraIni" runat="server">
+                                                    <input type="text" class="form-control input-sm" value="08:00" id="txbHoraIni" name="txbHoraIni" runat="server" />
                                                     <span class="input-group-addon">
                                                         <span class="fa fa-clock"></span>
                                                     </span>
@@ -212,7 +212,7 @@
                                             <div class="col-sm-3">
                                                 <label>Hora final:</label>
                                                 <div class="input-group clockpicker" data-autoclose="true">
-                                                    <input type="text" class="form-control input-sm" value="12:00" id="txbHoraFin" name="txbHoraFin" runat="server">
+                                                    <input type="text" class="form-control input-sm" value="12:00" id="txbHoraFin" name="txbHoraFin" runat="server" />
                                                     <span class="input-group-addon">
                                                         <span class="fa fa-clock"></span>
                                                     </span>
