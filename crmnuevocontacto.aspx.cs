@@ -78,8 +78,8 @@ namespace fpWebApp
                             DataTable dt = cg.ConsultarContactosCRMPorId(int.Parse(Request.QueryString["editid"].ToString()), out respuesta);
                             Session["contactoId"] = int.Parse(Request.QueryString["editid"].ToString());
 
-                           if (respuesta)
-                           {
+                            if (respuesta)
+                            {
 
                                 if (dt.Rows.Count > 0)
                                 {
@@ -259,18 +259,6 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    //string strInitData = TraerData();
-                    //try
-                    //{
-                    //    //string respuesta = cg.ActualizarSede(int.Parse(Request.QueryString["editid"].ToString()), txbSede.Text.ToString().Trim(), txbDireccion.Text.ToString().Trim(), int.Parse(ddlCiudadSede.SelectedItem.Value.ToString()), txbTelefono.Text.ToString().Trim(), contenidoEditor, rblTipoSede.SelectedValue.ToString(), rblClaseSede.SelectedValue.ToString());
-                    //    string strNewData = TraerData();
-
-                    //    //cg.InsertarLog(Session["idusuario"].ToString(), "sedes", "Modifica", "El usuario modificó datos a la sede " + txbSede.Text.ToString() + ".", strInitData, strNewData);
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    string mensaje = ex.Message;
-                    //}
                     bool salida = false;
                     string mensaje = string.Empty;
                     string respuesta = string.Empty;
@@ -329,9 +317,9 @@ namespace fpWebApp
                                     Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), txbCorreoContacto.Value.ToString().Trim().ToLower(),
                                     Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()),
                                     txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
-                                    txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"] ), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
-                                    ddlTipoPago.SelectedItem.Value.ToString(), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()), 
-                                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 
+                                    txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
+                                    ddlTipoPago.SelectedItem.Value.ToString(), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
+                                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()),
                                     Convert.ToInt32(rblMesesPlan.SelectedValue), out salida, out mensaje);
 
                             if (salida)
@@ -381,6 +369,10 @@ namespace fpWebApp
                     }
                     Response.Redirect("crmnuevocontacto");
                 }
+                if (Request.QueryString["deleteid"] != null)
+                {
+
+                }
             }
             else
             {
@@ -393,8 +385,8 @@ namespace fpWebApp
                 string respuesta = string.Empty;
 
                 // Parseamos la fecha y la hora
-                DateTime fecha = DateTime.Parse(txbFechaProx.Value);   
-                TimeSpan hora = TimeSpan.Parse(txbHoraIni.Value);      
+                DateTime fecha = DateTime.Parse(txbFechaProx.Value);
+                TimeSpan hora = TimeSpan.Parse(txbHoraIni.Value);
                 DateTime fechaHora = fecha.Date + hora;
                 string fechaHoraMySQL = fechaHora.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
 
@@ -405,7 +397,7 @@ namespace fpWebApp
                     Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
                     fechaHoraMySQL.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
                     txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
-                    ddlTipoPago.SelectedItem.Value.ToString(), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()), 
+                    ddlTipoPago.SelectedItem.Value.ToString(), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
                     Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), Convert.ToInt32(rblMesesPlan.SelectedValue), out salida, out mensaje);
 
                     if (salida)
@@ -446,7 +438,7 @@ namespace fpWebApp
                     string script = @"
                     Swal.fire({
                         title: 'Error',
-                        text: '"+ mensaje.Replace("'", "\\'") + @"',
+                        text: '" + mensaje.Replace("'", "\\'") + @"',
                         icon: 'error'
                     });
                 ";
@@ -465,25 +457,10 @@ namespace fpWebApp
             }
         }
 
-        private string TraerData()
-        {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarSedePorId(int.Parse(Request.QueryString["editid"].ToString()));
-
-            string strData = "";
-            foreach (DataColumn column in dt.Columns)
-            {
-                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
-            }
-            dt.Dispose();
-            return strData;
-        }
-
         protected void rblClaseSede_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
-
 
 
         protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
@@ -505,7 +482,6 @@ namespace fpWebApp
             }
         }
 
-
         protected void ddlPlanes_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlPlanes.SelectedValue == "0")
@@ -523,9 +499,24 @@ namespace fpWebApp
             {
                 ViewState["precioBase"] = fila[0]["PrecioBase"];
                 ViewState["descuentoMensual"] = fila[0]["DescuentoMensual"];
+
+                // Verificar si el plan es permanente
+                bool esPermanente = Convert.ToBoolean(fila[0]["Permanente"]);
+                if (esPermanente)
+                {
+                    int mesesPlan = Convert.ToInt32(fila[0]["MesesMaximo"]); // Asegúrate que esta columna está en tu tabla
+
+                    // Buscar índice del valor y seleccionarlo
+                    int index = rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(mesesPlan.ToString()));
+                    if (index >= 0)
+                    {
+                        rblMesesPlan.ClearSelection();
+                        rblMesesPlan.SelectedIndex = index;
+                    }
+                }
             }
 
-            // Verificar si ya hay mes seleccionado
+            // Calcular propuesta si ya hay un valor seleccionado en el radio
             if (!string.IsNullOrEmpty(rblMesesPlan.SelectedValue))
             {
                 CalcularPropuesta();
