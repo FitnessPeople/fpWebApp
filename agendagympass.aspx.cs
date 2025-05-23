@@ -38,7 +38,6 @@ namespace fpWebApp
                     {
                         btnAsistencia.Visible = true;
                         btnCancelar.Visible = true;
-                        btnEliminar.Visible = true;
                     }
                     //indicadores01.Visible = false;
                 }
@@ -75,8 +74,7 @@ namespace fpWebApp
         private void CargarAgenda()
         {
             clasesglobales cg = new clasesglobales();
-            int sede = int.Parse(ddlSedes.SelectedItem.Value.ToString());
-            DataTable dt = cg.ConsultarGymPassAgendaYGymPassPorSede(int.Parse(ddlSedes.SelectedItem.Value.ToString()));
+            DataTable dt = cg.ConsultarGymPassAgendaPorSede(int.Parse(ddlSedes.SelectedItem.Value.ToString()));
 
             _strEventos = "events: [\r\n";
 
@@ -102,7 +100,7 @@ namespace fpWebApp
 
                     if (dt.Rows[i]["idAgenda"].ToString() != "")
                     {
-                        if (dt.Rows[i]["Cancelada"].ToString() != "0")
+                        if (dt.Rows[i]["Estado"].ToString() == "Cancelado")
                         {
                             _strEventos += "title: '" + dt.Rows[i]["Nombres"].ToString() + " " + dt.Rows[i]["Apellidos"].ToString() + "',\r\n";
                             _strEventos += "color: '#F8AC59',\r\n"; // Warning
@@ -111,17 +109,16 @@ namespace fpWebApp
                             //_strEventos += "idSede: " + dt.Rows[i]["idSede"] + ",\r\n";
                             _strEventos += "btnAsistencia: 'none',\r\n";
                             _strEventos += "btnCancelar: 'none',\r\n";
-                            _strEventos += "btnEliminar: 'inline',\r\n";
-                        } else if (dt.Rows[i]["Asistencia"].ToString() != "0")
+                        } 
+                        else if (dt.Rows[i]["Estado"].ToString() == "Asistió")
                         {
                             _strEventos += "title: '" + dt.Rows[i]["Nombres"].ToString() + " " + dt.Rows[i]["Apellidos"].ToString() + "',\r\n";
                             _strEventos += "color: '#1C84C6',\r\n"; // Success
-                            _strEventos += "description: 'Gym Pass Asistencia.',\r\n";
+                            _strEventos += "description: 'Gym Pass Asistió.',\r\n";
                             _strEventos += "icon: 'user',\r\n";
                             //_strEventos += "idSede: " + dt.Rows[i]["idSede"] + ",\r\n";
                             _strEventos += "btnAsistencia: 'none',\r\n";
                             _strEventos += "btnCancelar: 'none',\r\n";
-                            _strEventos += "btnEliminar: 'inline',\r\n";
                         }
                         else
                         {
@@ -132,7 +129,6 @@ namespace fpWebApp
                             //_strEventos += "idSede: " + dt.Rows[i]["idSede"] + ",\r\n";
                             _strEventos += "btnAsistencia: 'inline',\r\n";
                             _strEventos += "btnCancelar: 'inline',\r\n";
-                            _strEventos += "btnEliminar: 'inline',\r\n";
                         }
                     }
 

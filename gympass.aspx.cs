@@ -90,14 +90,15 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        private enum Estado
+        {
+            Agendado
+        }
+
         private void listaInscritos()
         {
-            string strQuery = "SELECT * " +
-                "FROM GymPass gp " +
-                "LEFT JOIN Sedes s ON gp.idSede = s.idSede " +
-                "LEFT JOIN CiudadesSedes cs ON s.idCiudadSede = cs.idCiudadSede ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarGymPass();
             rpInscritos.DataSource = dt;
             rpInscritos.DataBind();
             dt.Dispose();
@@ -131,7 +132,7 @@ namespace fpWebApp
 
                 // 2. Consulta si ya tiene Agenda GymPass
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarGymPassAgendaYGymPassPorDocumento(nroDocumento);
+                DataTable dt = cg.ConsultarGymPassAgendaPorDocumento(nroDocumento);
 
                 // 3. Accede al control dentro de la fila
                 HtmlAnchor btnAgendar = (HtmlAnchor)e.Item.FindControl("btnAgendar");
@@ -159,14 +160,14 @@ namespace fpWebApp
             {
                 clasesglobales cg = new clasesglobales();
                 DataTable dtGymPass = cg.ConsultarGymPassPorDocumento(infoDoc.Value.ToString());
-                DataTable dtAgenda = cg.ConsultarGymPassAgendaYGymPassPorDocumento(infoDoc.Value.ToString());
+                DataTable dtAgenda = cg.ConsultarGymPassAgendaPorDocumento(infoDoc.Value.ToString());
 
                 if (dtGymPass.Rows.Count > 0 && dtAgenda.Rows[0]["idAgenda"] == DBNull.Value)
                 {
                     string id = dtGymPass.Rows[0]["idGymPass"].ToString();
 
-                    string strQuery = @"INSERT INTO GymPassAgenda (idGymPass, FechaHora, idUsuarioCrea) " +
-                                       "VALUES (" + id + ", '" + dtFechaAgenda.ToString("yyyy-MM-dd H:mm:ss") + "', " + Session["idusuario"].ToString() + ")";
+                    string strQuery = @"INSERT INTO GymPassAgenda (idGymPass, FechaHora, Estado, idUsuarioCrea) " +
+                                       "VALUES (" + id + ", '" + dtFechaAgenda.ToString("yyyy-MM-dd H:mm:ss") + "', '" + Estado.Agendado + "', " + Session["idusuario"].ToString() + ")";
 
                     string mensaje = cg.TraerDatosStr(strQuery);
                 }
@@ -195,7 +196,7 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dtAgenda = cg.ConsultarGymPassAgendaYGymPassPorDocumento(infoDocEli.Value.ToString());
+                DataTable dtAgenda = cg.ConsultarGymPassAgendaPorDocumento(infoDocEli.Value.ToString());
 
                 if (dtAgenda.Rows.Count > 0)
                 {

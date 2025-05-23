@@ -27,8 +27,8 @@ namespace fpWebApp
                     {
                         try
                         {
-                            string strQuery = "UPDATE gympassagenda " +
-                                              "SET Cancelada = 1, Asistencia = 0 " +
+                            string strQuery = "UPDATE GymPassAgenda " +
+                                              "SET Estado = '" + Estado.Cancelado + "' " +
                                               "WHERE idAgenda = " + Request.QueryString["id"].ToString();
                             clasesglobales cg = new clasesglobales();
                             string mensaje = cg.TraerDatosStr(strQuery);
@@ -65,6 +65,11 @@ namespace fpWebApp
             }
 
             dt.Dispose();
+        }
+
+        private enum Estado
+        {
+            Cancelado
         }
     }
 }
