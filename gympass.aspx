@@ -265,6 +265,8 @@
                                             <th data-breakpoints="xs">Sede</th>
                                             <th data-type="date" data-breakpoints="xs">Fecha asistencia</th>
                                             <th data-type="date" data-breakpoints="xs">Fecha inscripción</th>
+                                            <th data-type="date" data-breakpoints="xs">Fecha agendada</th>
+                                            <th data-breakpoints="xs">Estado</th>
                                             <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                         </tr>
                                     </thead>
@@ -281,6 +283,8 @@
                                                     <td><%# Eval("NombreSede") %></td>
                                                     <td><%# Eval("FechaAsistencia", "{0:dd MMM yyyy}") %></td>
                                                     <td><%# Eval("FechaInscripcion", "{0:dd MMM yyyy, HH:mm}") %></td>
+                                                    <td><%# Eval("FechaHora", "{0:dd MMM yyyy, HH:mm}") %></td>
+                                                    <td><%# Eval("Estado") %></td>
                                                     <td>
                                                         <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                             style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="true"><i class="fa fa-trash"></i></a>
@@ -302,7 +306,7 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <h4 class="modal-title" id="modalLabel">Agendar Gym Pass</h4>
+                                                <h4 class="modal-title" id="modalLabelAgendar">Agendar Gym Pass</h4>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="row">
@@ -355,11 +359,13 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <h4 class="modal-title" id="modalLabel">Eliminar Agenda Gym Pass</h4>
-                                                <p>¿Deseas eliminar la Agenda Gym Pass de...?</p>
+                                                <h4 class="modal-title" id="modalLabelEliminar">Eliminar Agenda Gym Pass</h4>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <p>¿Deseas eliminar la Agenda Gym Pass de...?</p>
+                                                    </div>
                                                     <div class="col-sm-6">
                                                         <label>Nro. de Documento</label>
                                                         <div class="form-group">
