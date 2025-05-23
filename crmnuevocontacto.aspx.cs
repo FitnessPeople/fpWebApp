@@ -105,7 +105,9 @@ namespace fpWebApp
                                     txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
                                     txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
                                     int ValorPropuesta = Convert.ToInt32(dt.Rows[0]["ValorPropuesta"]);
+                                    int ValorMes = Convert.ToInt32(dt.Rows[0]["ValorBase"]);
                                     txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
+                                    txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
                                     //txaObservaciones.Value = row["observaciones"].ToString();
                                     ddlObjetivos.SelectedIndex = Convert.ToInt32(ddlObjetivos.Items.IndexOf(ddlObjetivos.Items.FindByValue(dt.Rows[0]["idObjetivo"].ToString())));
                                     ddlTipoPago.SelectedIndex = ddlTipoPago.Items.IndexOf(ddlTipoPago.Items.FindByValue(dt.Rows[0]["TipoPago"].ToString()));
@@ -113,6 +115,7 @@ namespace fpWebApp
                                     ddlCanalesMarketing.SelectedIndex = Convert.ToInt32(ddlCanalesMarketing.Items.IndexOf(ddlCanalesMarketing.Items.FindByValue(dt.Rows[0]["idCanalMarketing"].ToString())));
                                     ddlPlanes.SelectedIndex = Convert.ToInt32(ddlPlanes.Items.IndexOf(ddlPlanes.Items.FindByValue(dt.Rows[0]["idPlan"].ToString())));
                                     rblMesesPlan.SelectedIndex = Convert.ToInt32(rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(dt.Rows[0]["MesesPlan"].ToString())));
+                                   
                                 }
                             }
                             else
@@ -192,6 +195,8 @@ namespace fpWebApp
                                     txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
                                     int ValorPropuesta = Convert.ToInt32(dt1.Rows[0]["ValorPropuesta"]);
                                     txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
+                                    int ValorMes = Convert.ToInt32(dt.Rows[0]["ValorBase"]);                                   
+                                    txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
                                     //txaObservaciones.Value = row["observaciones"].ToString();
                                     ddlObjetivos.SelectedIndex = Convert.ToInt32(ddlObjetivos.Items.IndexOf(ddlObjetivos.Items.FindByValue(dt1.Rows[0]["idObjetivo"].ToString())));
                                     ddlTipoPago.SelectedIndex = ddlTipoPago.Items.IndexOf(ddlTipoPago.Items.FindByValue(dt1.Rows[0]["TipoPago"].ToString()));
@@ -483,7 +488,7 @@ namespace fpWebApp
                                     icon: '" + tipoIcono + @"'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        location.reload();
+                                        window.location.href = 'crmnuevocontacto';
                                     }
                                 });
                             ";
@@ -648,6 +653,10 @@ namespace fpWebApp
             {
                 ViewState["precioBase"] = fila[0]["PrecioBase"];
                 ViewState["descuentoMensual"] = fila[0]["DescuentoMensual"];
+               
+                int ValorMes = Convert.ToInt32(fila[0]["PrecioBase"]);
+                txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
+                txbValorMes.Enabled = false;
 
                 // Verificar si el plan es permanente
                 bool esPermanente = Convert.ToBoolean(fila[0]["Permanente"]);

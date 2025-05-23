@@ -34,7 +34,7 @@
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <!-- JS de Quill -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-    
+
 
 
 
@@ -144,7 +144,7 @@
     </script>
 
     <%--        Validar botón Agregar --%>
-    <script>
+<%--    <script>
         function validarFormulario() {
             const nombre = document.getElementById('txbNombreContacto').value.trim();
             const telefono = document.getElementById('txbTelefonoContacto').value.trim();
@@ -194,7 +194,7 @@
 
             validarFormulario(); // Ejecutar al cargar
         });
-    </script>
+    </script>--%>
 
     <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
 
@@ -318,19 +318,44 @@
                                                 <div class="form-group">
                                                     <i class="fa fa-user-tie text-info"></i>
                                                     <label for="nombreContacto" class="col-form-label">Nombre completo:</label>
-                                                    <input type="text" runat="server" class="form-control" id="txbNombreContacto"
+                                                    <input type="text" runat="server" id="txbNombreContacto" class="form-control"
+                                                        oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
+                                                    <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txbNombreContacto"
+                                                        ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
+                                                    <%--                                                    <input type="text" runat="server" class="form-control" id="txbNombreContacto"
                                                         spellcheck="false" autocomplete="off"
                                                         oninput="validarSoloLetras(this)" style="text-transform: uppercase;" />
+                                                    <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ErrorMessage="* Campo requerido" CssClass="font-bold text-danger">
+                                                    </asp:RequiredFieldValidator>  --%>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <div class="col-sm-6">
                                                     <i class="fa-solid fa-phone text-info"></i>
+                                                    <label for="txbTelefonoContacto" class="col-form-label">Teléfono:</label>
+
+                                                    <input type="text" runat="server" id="txbTelefonoContacto"
+                                                        class="form-control"
+                                                        placeholder="ej: 310 123 4567"
+                                                        spellcheck="false"
+                                                        autocomplete="off"
+                                                        onkeyup="formatearTelefono(this)"
+                                                        maxlength="14" />
+
+                                                    <asp:RequiredFieldValidator ID="rfvTelefono" runat="server"
+                                                        ControlToValidate="txbTelefonoContacto"
+                                                        ErrorMessage="* Campo requerido"
+                                                        CssClass="text-danger"
+                                                        Display="Dynamic" />
+                                                </div>
+
+                                                <%--                                                <div class="col-sm-6">
+                                                    <i class="fa-solid fa-phone text-info"></i>
                                                     <label for="telefonoContacto" class="col-form-label">Teléfono:</label>
                                                     <input type="text" runat="server" class="form-control" id="txbTelefonoContacto"
                                                         placeholder="ej: 310 123 4567" spellcheck="false" autocomplete="off"
                                                         onkeyup="formatearTelefono(this)" maxlength="14">
-                                                </div>
+                                                </div>--%>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -393,7 +418,7 @@
                                             </div>
 
                                             <div class="col-sm-3">
-                                                <div class="form-group">                                                  
+                                                <div class="form-group">
                                                     <label for="txbHoraIni" class="col-form-label">Hora:</label>
                                                     <div class="input-group clockpicker" data-autoclose="true">
                                                         <input type="text" class="form-control input-sm" value="08:00" id="txbHoraIni" name="txbHoraIni" runat="server" />
@@ -483,12 +508,20 @@
                                                 </div>
                                                 <div style="height: 30px;"></div>
                                                 <div class="row">
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-3">
                                                         <div class="form-group">
                                                             <i class="fa fa-dollar text-info"></i>
                                                             <label for="ValorPropuesta" class="col-form-label">Valor Propuesta:</label>
                                                             <asp:TextBox ID="txbValorPropuesta" CssClass="form-control input-sm" runat="server" placeholder="$0"
                                                                 onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <i class="fa fa-dollar text-info"></i>
+                                                            <label for="ValorMes" class="col-form-label">Valor mes:</label>
+                                                            <asp:TextBox ID="txbValorMes" CssClass="form-control input-sm" runat="server" placeholder="$0"
+                                                                onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off" Style="background-color: #e3ff00;"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
@@ -698,6 +731,7 @@
                                                     <th data-sortable="false" data-breakpoints="xs" style="width: 200px;">Nombre</th>
                                                     <th data-breakpoints="xs">Teléfono</th>
                                                     <th data-breakpoints="xs">Correo</th>
+                                                    <th data-breakpoints="xs">Lead</th>
                                                     <th data-breakpoints="all" data-title="Info"></th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
@@ -709,6 +743,12 @@
                                                             <td><%# Eval("NombreContacto") %></td>
                                                             <td><%# Eval("TelefonoContacto") %></td>
                                                             <td><%# Eval("EmailContacto") %></td>
+                                                            <td>
+                                                                <span title='<%# Eval("NombreEstadoCRM") %>' style='color: <%# Eval("ColorHexaCRM") %>'>
+                                                                    <%# Eval("IconoMinEstadoCRM") %>
+                                                                </span>
+                                                            </td>
+
                                                             <td>
                                                                 <table class="table table-bordered table-striped">
                                                                     <tr>
@@ -767,7 +807,7 @@
         $('.clockpicker').clockpicker();
     </script>
 
-    
+
 
 </body>
 
