@@ -220,7 +220,9 @@
                                                     <td><%# Eval("FechaAsistencia", "{0:dd MMM yyyy}") %></td>
                                                     <td><%# Eval("FechaInscripcion", "{0:dd MMM yyyy, HH:mm}") %></td>
                                                     <td><%# Eval("FechaHora", "{0:dd MMM yyyy, HH:mm}") %></td>
-                                                    <td><%# Eval("Estado") %></td>
+                                                    <td>
+                                                        <asp:Literal ID="litEstado" runat="server"></asp:Literal>
+                                                    </td>
                                                     <td>
                                                         <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                             style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="true"><i class="fa fa-trash"></i></a>

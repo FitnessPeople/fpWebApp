@@ -90,11 +90,6 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private enum Estado
-        {
-            Agendado
-        }
-
         private void listaInscritos()
         {
             clasesglobales cg = new clasesglobales();
@@ -149,6 +144,28 @@ namespace fpWebApp
                 }
 
                 dt.Dispose();
+
+                Literal litEstado = (Literal)e.Item.FindControl("litEstado");
+                string estado = DataBinder.Eval(e.Item.DataItem, "Estado").ToString();
+                string estadoHtml = "";
+
+                switch (estado)
+                {
+                    case "Agendado":
+                        estadoHtml = "<p style='margin-bottom: 0;'><span style='font-size: 1.2rem; color: #fff; font-weight: bold;' class='label label-primary'>Agendando</span></p>";
+                        break;
+                    case "Asistió":
+                        estadoHtml = "<p style='margin-bottom: 0;'><span style='font-size: 1.2rem; color: #fff; font-weight: bold;' class='label label-success'>Asistió</span></p>";
+                        break;
+                    case "Cancelado":
+                        estadoHtml = "<p style='margin-bottom: 0;'><span style='font-size: 1.2rem; color: #fff; font-weight: bold;' class='label label-warning'>Cancelado</span></p>";
+                        break;
+                    default:
+                        estadoHtml = $"<p style='margin-bottom: 0;'><span style='font-size: 1.2rem; color: #fff; font-weight: bold;' class='label label-danger'>{estado}</span></p>";
+                        break;
+                }
+
+                litEstado.Text = estadoHtml;
             }
         }
 
@@ -167,7 +184,7 @@ namespace fpWebApp
                     string id = dtGymPass.Rows[0]["idGymPass"].ToString();
 
                     string strQuery = @"INSERT INTO GymPassAgenda (idGymPass, FechaHora, Estado, idUsuarioCrea) " +
-                                       "VALUES (" + id + ", '" + dtFechaAgenda.ToString("yyyy-MM-dd H:mm:ss") + "', '" + Estado.Agendado + "', " + Session["idusuario"].ToString() + ")";
+                                       "VALUES (" + id + ", '" + dtFechaAgenda.ToString("yyyy-MM-dd H:mm:ss") + "', 'Agendado', " + Session["idusuario"].ToString() + ")";
 
                     string mensaje = cg.TraerDatosStr(strQuery);
                 }
