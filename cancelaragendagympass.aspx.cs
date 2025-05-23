@@ -29,6 +29,7 @@ namespace fpWebApp
                         try
                         {
                             string strQuery = "UPDATE GymPassAgenda " +
+                                              "SET Estado = 'Cancelado' " +
                                               "SET Estado = '" + Estado.Cancelado + "' " +
                             string strQuery = "UPDATE gympassagenda " +
                                               "SET Cancelada = 1, Asistencia = 0 " +
@@ -71,11 +72,6 @@ namespace fpWebApp
             }
 
             dt.Dispose();
-        }
-
-        private enum Estado
-        {
-            Cancelado
         }
     }
 }

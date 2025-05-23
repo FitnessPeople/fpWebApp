@@ -183,6 +183,9 @@
                                                         <i class="fa fa-times"></i>
                                                     </a>--%>
                                             <%--<span class="label label-danger pull-right" style="color: #000;">Eliminado</span>--%>
+                                            <span style="font-size: 1.2rem; color: #1A252F; font-weight: bold;" class="label label-warning pull-right" style="color: #000;">Cancelado</span>
+                                            <span style="font-size: 1.2rem; color: #1A252F; font-weight: bold;" class="label label-success pull-right" style="color: #000;">Asistió</span>
+                                            <span style="font-size: 1.2rem; color: #1A252F; font-weight: bold;" class="label label-primary pull-right">Agendando</span>
                                             <span class="label label-warning pull-right" style="color: #000;">Cancelado</span>
                                             <span class="label label-success pull-right" style="color: #000;">Asistió</span>
                                             <span class="label label-primary pull-right" style="color: #000;">Agendado</span>
@@ -200,7 +203,7 @@
                                         <div class="form-horizontal">
                                             <div class="form-group m-b-n-sm">
                                                 <label class="col-sm-2 col-sm-2 control-label">Sede</label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-6">
                                                     <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedes" runat="server"
                                             <div style="display: flex; flex-direction: row; justify-content: space-between;">
                                                 <div id="divFiltroSede" runat="server" style="display: flex; align-items: center; gap: 5rem;">
@@ -219,6 +222,16 @@
                                                                       OnSelectedIndexChanged="ddlEstados_SelectedIndexChanged"
                                                                       DataValueField="Estados" DataTextField="Estados"
                                                                       AutoPostBack="true" AppendDataBoundItems="true" />
+                                                </div>
+                                                <div class="col-sm-2 pull-right">
+                                                    <button>Por Sedes</button>
+                                                    <%--<asp:Button ID="btnEliminarAgendaGymPass" class="btn btn-danger" runat="server" Text="Aceptar" OnClick="btnEliminarAgendaGymPass_Click" />
+                                                    <asp:Button ID="Button1" class="btn btn-danger" runat="server" Text="Aceptar" OnClick="btnEliminarAgendaGymPass_Click" />--%>
+                                                </div>
+                                                <div class="col-sm-2 pull-right">
+                                                    <button>Todas</button>
+                                                    <%--<asp:Button ID="btnEliminarAgendaGymPass" class="btn btn-danger" runat="server" Text="Aceptar" OnClick="btnEliminarAgendaGymPass_Click" />
+                                                     <asp:Button ID="Button1" class="btn btn-danger" runat="server" Text="Aceptar" OnClick="btnEliminarAgendaGymPass_Click" />--%>
                                                 </div>
                                             </div>
                                         </div>
@@ -424,6 +437,7 @@
                 eventTimeFormat: { // like '14:30'
                     hour: '2-digit',
                     minute: '2-digit',
+                    hour12: true
                     hour12: false
                     hour12: true
                 },
