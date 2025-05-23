@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace fpWebApp
@@ -108,6 +109,60 @@ namespace fpWebApp
             catch (Exception ex)
             {
                 Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+            }
+        }
+
+        protected void rpProcedimientos_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                HtmlButton btnDetalles = (HtmlButton)e.Item.FindControl("btnDetalles");
+                btnDetalles.Attributes.Add("data-toggle", "modal");
+                btnDetalles.Attributes.Add("data-target", "#myModal" + ((DataRowView)e.Item.DataItem).Row[2].ToString());
+                btnDetalles.Visible = true;
+
+                string strQuery = "DESCRIBE " + ((DataRowView)e.Item.DataItem).Row[2].ToString();
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.TraerDatos(strQuery);
+
+                Literal ltModales = (Literal)e.Item.FindControl("ltModales");
+                ltModales.Text += "<div class=\"modal inmodal\" id=\"myModal" + ((DataRowView)e.Item.DataItem).Row[2].ToString() + "\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">";
+                ltModales.Text += "<div class=\"modal-dialog modal-lg\">";
+                ltModales.Text += "<div class=\"modal-content animated bounceInRight\">";
+
+                ltModales.Text += "<div class=\"modal-header\">";
+                ltModales.Text += "<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Cerrar</span></button>";
+                ltModales.Text += "<i class=\"fa fa-id-card modal-icon\" style=\"color: #1C84C6;\"></i>";
+                ltModales.Text += "<h4 class=\"modal-title\">Datos de la tabla " + ((DataRowView)e.Item.DataItem).Row[2].ToString() + "</h4>";
+                ltModales.Text += "</div>";
+
+                ltModales.Text += "<div class=\"modal-body\">";
+
+                ltModales.Text += "<table class=\"table table-striped\">";
+                ltModales.Text += "<tr>";
+                ltModales.Text += "<td class=\"small\"><b>Campo</b>";
+                ltModales.Text += "</td>";
+                ltModales.Text += "<td class=\"small\"><b>Tipo</b>";
+                ltModales.Text += "</td>";
+                ltModales.Text += "</tr>";
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    ltModales.Text += "<tr>";
+                    ltModales.Text += "<td class=\"small\">" + dt.Rows[i]["Field"].ToString();
+                    ltModales.Text += "</td>";
+                    ltModales.Text += "<td class=\"small\">" + dt.Rows[i]["Type"].ToString();
+                    ltModales.Text += "</td>";
+                    ltModales.Text += "</tr>";
+                }
+
+                ltModales.Text += "</table>";
+
+                ltModales.Text += "</div>";
+
+                ltModales.Text += "</div>";
+                ltModales.Text += "</div>";
+                ltModales.Text += "</div>";
             }
         }
     }

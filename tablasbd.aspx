@@ -184,10 +184,11 @@
                                                 <th data-breakpoints="xs sm md" data-type="number">Autoincremental</th>
                                                 <th data-breakpoints="xs sm md">Fecha de creación</th>
                                                 <th data-breakpoints="xs sm md">Fecha de modificación</th>
+                                                <th data-breakpoints="xs sm md">Ver detalles</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <asp:Repeater ID="rpProcedimientos" runat="server">
+                                            <asp:Repeater ID="rpProcedimientos" runat="server" OnItemDataBound="rpProcedimientos_ItemDataBound">
                                                 <ItemTemplate>
                                                     <tr>
                                                         <td><%# Eval("Table_name") %></td>
@@ -195,6 +196,13 @@
                                                         <td><%# Eval("Auto_increment") %></td>
                                                         <td><%# Eval("Create_time", "{0:dd MMM yyyy HH:mm}") %></td>
                                                         <td><%# Eval("Update_time", "{0:dd MMM yyyy HH:mm}") %></td>
+                                                        <td>
+                                                            <button runat="server" id="btnDetalles" class="btn btn-outline btn-primary pull-left m-r-xs"
+                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Detalles">
+                                                            <i class="fa fa-edit"></i>
+                                                            </button>
+                                                            <asp:Literal ID="ltModales" runat="server"></asp:Literal>
+                                                        </td>
                                                     </tr>
                                                 </ItemTemplate>
                                             </asp:Repeater>
