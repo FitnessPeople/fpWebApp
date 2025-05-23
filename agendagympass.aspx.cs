@@ -134,6 +134,7 @@ namespace fpWebApp
 
                     //_strEventos += "color: '#DBADFF',\r\n";
                     //_strEventos += "todoeldia: 0,\r\n";
+                    _strEventos += "display: 'block',\r\n";
                     _strEventos += "allDay: false,\r\n";
                     _strEventos += "},\r\n";
                 }
@@ -142,7 +143,6 @@ namespace fpWebApp
             dt.Dispose();
 
             AgregarFestivos(_strEventos, "2025");
-
         }
 
         private string AgregarFestivos(string eventos, string anho)
