@@ -139,7 +139,91 @@ namespace fpWebApp
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
-                            //Borrar
+                            bool respuesta = false;
+                            clasesglobales cg = new clasesglobales();
+                            DataTable dt = cg.ValidarArlEmpleados(int.Parse(Request.QueryString["deleteid"].ToString()));
+                            if (dt.Rows.Count > 0)
+                            {
+                                ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                    "Esta ARL no se puede borrar, hay empleados asociados a ella." +
+                                    "</div></div>";
+
+                                DataTable dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                
+                                if (dt1.Rows.Count > 0)
+                                {
+                                    txbNombreContacto.Value = dt.Rows[0]["NombreContacto"].ToString();
+                                    txbNombreContacto.Disabled = true;
+                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                                    btnAgregar.Enabled = false;
+                                    ltTitulo.Text = "Borrar Contacto CRM";
+                                }
+                                dt1.Dispose();
+                            }
+                            else
+                            {
+                                //Borrar
+                                DataTable dt1 = new DataTable();
+                                dt1 = cg.ConsultarContactosCRMPorId(int.Parse(Request.QueryString["deleteid"].ToString()), out respuesta);
+                                if (dt1.Rows.Count > 0)
+                                {
+                                    DataRow row = dt1.Rows[0];
+
+                                    txbNombreContacto.Value = row["NombreContacto"].ToString();
+                                    string telefono = Convert.ToString(row["TelefonoContacto"]);
+                                    if (!string.IsNullOrEmpty(telefono) && telefono.Length == 10)
+                                    {
+                                        txbTelefonoContacto.Value = $"{telefono.Substring(0, 3)} {telefono.Substring(3, 3)} {telefono.Substring(6, 4)}";
+                                    }
+                                    else
+                                    {
+                                        txbTelefonoContacto.Value = row["TelefonoContacto"].ToString();
+                                    }
+                                    txbCorreoContacto.Value = row["EmailContacto"].ToString();
+                                    if (row["idEmpresaCRM"].ToString() != "")
+                                        ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt1.Rows[0]["idEmpresaCRM"].ToString())));
+                                    else
+                                        ddlEmpresa.SelectedItem.Value = "0";
+
+                                    ddlStatusLead.SelectedIndex = Convert.ToInt32(ddlStatusLead.Items.IndexOf(ddlStatusLead.Items.FindByValue(dt1.Rows[0]["idEstadoCRM"].ToString())));
+                                    txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
+                                    txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
+                                    int ValorPropuesta = Convert.ToInt32(dt1.Rows[0]["ValorPropuesta"]);
+                                    txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
+                                    //txaObservaciones.Value = row["observaciones"].ToString();
+                                    ddlObjetivos.SelectedIndex = Convert.ToInt32(ddlObjetivos.Items.IndexOf(ddlObjetivos.Items.FindByValue(dt1.Rows[0]["idObjetivo"].ToString())));
+                                    ddlTipoPago.SelectedIndex = ddlTipoPago.Items.IndexOf(ddlTipoPago.Items.FindByValue(dt1.Rows[0]["TipoPago"].ToString()));
+                                    ddlTiposAfiliado.SelectedIndex = Convert.ToInt32(ddlTiposAfiliado.Items.IndexOf(ddlTiposAfiliado.Items.FindByValue(dt1.Rows[0]["idTipoAfiliado"].ToString())));
+                                    ddlCanalesMarketing.SelectedIndex = Convert.ToInt32(ddlCanalesMarketing.Items.IndexOf(ddlCanalesMarketing.Items.FindByValue(dt1.Rows[0]["idCanalMarketing"].ToString())));
+                                    ddlPlanes.SelectedIndex = Convert.ToInt32(ddlPlanes.Items.IndexOf(ddlPlanes.Items.FindByValue(dt1.Rows[0]["idPlan"].ToString())));
+                                    rblMesesPlan.SelectedIndex = Convert.ToInt32(rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(dt1.Rows[0]["MesesPlan"].ToString())));
+
+                                    //Inactivar controles
+                                    txbNombreContacto.Disabled =true;
+                                    txbTelefonoContacto.Disabled = true;
+                                    txbCorreoContacto.Disabled = true;
+                                    txbFechaPrim.Disabled = true;
+                                    txbFechaProx.Disabled = true;
+                                    txbValorPropuesta.Enabled = false;
+                                    ddlEmpresa.Enabled = false;
+                                    ddlStatusLead.Enabled = false;
+                                    ddlTiposAfiliado.Enabled = false;
+                                    txbHoraIni.Disabled = true;
+                                    ddlTipoPago.Enabled = false;
+                                    ddlObjetivos.Enabled = false;
+                                    ddlCanalesMarketing.Enabled = false;
+                                    ddlPlanes.Enabled = false;
+                                    rblMesesPlan.Enabled = false;
+                                    txaObservaciones.Disabled = true;
+                                    ArchivoPropuesta.Disabled = true;
+
+                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                                    ltTitulo.Text = "Borrar contacto CRM";
+                                }
+                                dt1.Dispose();
+                            }
                         }
                     }
                 }
@@ -371,7 +455,72 @@ namespace fpWebApp
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
+                    
+                    bool respuesta = false;
+                    bool _respuesta = false;
+                    string mensaje = string.Empty;
+                    int idContacto = Convert.ToInt32(Request.QueryString["deleteid"].ToString());
+                    int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
+                    string Usuario = Session["NombreUsuario"].ToString();
 
+                    try
+                    {
+                        DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out _respuesta);
+                        Session["contactoId"] = idContacto;
+
+                        if (idContacto > 0)
+                        {
+                            cg.EliminarContactoCRM(idContacto, idUsuario, Usuario, out respuesta, out mensaje);
+
+                            if (respuesta)
+                            {
+                                string tipoMensaje = respuesta ? "Éxito" : "Error";
+                                string tipoIcono = respuesta ? "success" : "error";
+                                string script = @"
+                                Swal.fire({
+                                    title: '" + tipoMensaje + @"',
+                                    text: '" + mensaje + @"',
+                                    icon: '" + tipoIcono + @"'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                });
+                            ";
+
+                                ScriptManager.RegisterStartupScript(this, GetType(), "EliminarYAlerta", script, true);
+                            }
+                            else
+                            {
+                                string script = @"
+                                Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error',
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: true
+                            }).then(() => {
+                                Response.Redirect(Request.RawUrl);
+                            });
+                        ";
+                                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        mensaje = ex.Message;
+                        string script = @"
+                        Swal.fire({
+                        title: 'Error',                       
+                        text: '"" + mensaje.Replace(""'"", ""\\'"") + @""',
+                        icon: 'error'
+                    });
+                ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                    }
                 }
             }
             else
