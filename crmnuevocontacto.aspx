@@ -126,7 +126,6 @@
     <%--    Formatear solo letraas --%>
     <script>
         function validarSoloLetras(input) {
-            // Eliminar cualquier caracter que no sea letra o espacio
             input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
         }
     </script>
@@ -301,7 +300,9 @@
 
                     <form role="form" id="form" runat="server">
                         <div class="row" id="divContenido" runat="server">
+                            <%--Zona lateral izquierda--%>
                             <div class="col-lg-5">
+                                <%-- Zona lateral izquierda superior--%>
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5>
@@ -434,7 +435,7 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <i class="fas fa-flag text-info"></i>
+                                                    <i class="fa-solid fa-coins text-info"></i>
                                                     <label for="TipoPago" class="col-form-label">Métodos de pago:</label>
                                                     <asp:DropDownList ID="ddlTipoPago" runat="server" AppendDataBoundItems="true"
                                                         DataTextField="TipoPago" DataValueField="idTipoDoc" CssClass="form-control input-sm">
@@ -452,7 +453,7 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <i class="fa-brands fa-square-facebook text-info"></i>
+                                                    <i class="fa-solid fa-bullseye text-info"></i>
                                                     <label for="Objetivos" class="col-form-label">Objetivos del cliente:</label>
                                                     <asp:DropDownList ID="ddlObjetivos" DataTextField="Objetivo" DataValueField="idObjetivo"
                                                         runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
@@ -471,7 +472,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <i class="fas fa-flag text-info"></i>
+                                                            <i class="fa-brands fa-square-facebook text-info"></i>
                                                             <label for="Canales" class="col-form-label">Canal de marketing:</label>
                                                             <asp:DropDownList ID="ddlCanalesMarketing" DataTextField="NombreCanalMarketing" DataValueField="idCanalMarketing"
                                                                 runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
@@ -485,7 +486,7 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <i class="fas fa-flag text-info"></i>
+                                                            <i class="fa fa-ticket text-info"></i>
                                                             <label for="Planes" class="col-form-label">Planes:</label>
                                                             <asp:DropDownList ID="ddlPlanes" DataTextField="NombrePlan" DataValueField="idPlan"
                                                                 runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm" OnSelectedIndexChanged="ddlPlanes_SelectedIndexChanged" AutoPostBack="true">
@@ -498,6 +499,7 @@
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <div class="form-group">
+                                                            <i class="fa-regular fa-calendar text-info"></i>
                                                             <label for="Meses" class="col-form-label">Meses del plan:</label>
                                                             <asp:RadioButtonList ID="rblMesesPlan" runat="server"
                                                                 RepeatDirection="Horizontal" CssClass="form-control input-sm"
@@ -577,7 +579,7 @@
                                         <%-- </div>--%>
                                     </div>
                                 </div>
-
+                                <%--Zona lateral izquerda inferior--%>
                                 <div class="ibox float-e-margins">
                                     <div class="ibox collapsed">
                                         <div class="ibox-title">
@@ -664,12 +666,13 @@
                                 </div>
 
 
-
                                 <div class="col-lg-12">
                                 </div>
 
                             </div>
+                            <%--Zona lateral derecha--%>
                             <div class="col-lg-7">
+                                <%-- Zona lateral derecha superior--%>
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5>Lista de Contactos</h5>
@@ -745,6 +748,79 @@
                                         </table>
                                     </div>
                                 </div>
+                                <%-- Zona lateral derecha inferior--%>
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Lista de Empresas</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+
+                                        <div class="row" style="font-size: 12px;" runat="server" id="div1">
+                                            <div class="col-lg-6 form-horizontal">
+<%--                                                <div class="form-group">
+                                                    <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
+                                                </div>--%>
+                                            </div>
+                                        </div>
+
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                            data-filter-min="3" data-filter-placeholder="Buscar"
+                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
+                                            data-paging-limit="10" data-filtering="true"
+                                            data-filter-container="#filter-form-container" data-filter-delay="300"
+                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left"
+                                            data-empty="Sin resultados">
+                                            <thead>
+                                                <tr>
+                                                    <th data-sortable="false" data-breakpoints="xs" style="width: 200px;">Nombre empresa</th>
+                                                    <th data-breakpoints="xs">Ciudad</th>
+                                                    <th data-breakpoints="xs">Página web</th>
+                                                    <th data-breakpoints="xs">Contacto</th>
+                                                    <th data-breakpoints="all" data-title="Info"></th>
+                                                    <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:Repeater ID="rpEmpresasCRM" runat="server" OnItemDataBound="rpEmpresasCRM_ItemDataBound">
+                                                    <ItemTemplate>
+                                                        <tr class="feed-element">
+                                                            <td><%# Eval("NombreEmpresaCRM") %></td>
+                                                            <td><%# Eval("NombreCiudad") %></td>
+                                                            <td><%# Eval("paginaWeb") %></td>
+                                                            <td><%# Eval("idContacto") %></td>
+
+                                                            <td>
+                                                                <table class="table table-bordered table-striped">
+                                                                    <tr>
+                                                                        <%-- <th width="25%"><i class="fa fa-city m-r-xs"></i>Ciudad</th>--%>
+                                                                        <th width="25%"><i class="fa fa-mobile m-r-xs"></i>Archivo propuesta</th>
+                                                                        <th width="50%" class="text-nowrap"><i class="fa fa-clock m-r-xs"></i>Historial</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><%# Eval("ArchivoPropuesta") %></td>
+                                                                        <td><%# Eval("ObservacionesEmp") %></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <td style="display: flex; flex-wrap: nowrap;">
+                                                                <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                                <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </form>
