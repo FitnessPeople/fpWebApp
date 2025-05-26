@@ -147,6 +147,13 @@
                 </ul>
             </li>
             <li>
+                <a href="#"><i class="fa fa-fingerprint"></i><span class="nav-label">Biométricos</span><span class="fa arrow"></span></a>
+                <ul id="biometricos" class="nav nav-second-level collapse">
+                    <li id="biodispositivos" class="old"><a href="biodispositivos"><i class="fa-solid fa-address-card"></i>Dispositivos</a></li>
+                    <li id="biopersonas" class="old"><a href="biopersonas"><i class="fa-solid fa-person"></i>Personas</a></li>
+                </ul>
+            </li>
+            <li>
                 <a href="#"><i class="fa fa-globe"></i><span class="nav-label">Página Web</span><span class="fa arrow"></span></a>
                 <ul id="webpage" class="nav nav-second-level collapse">
                     <li id="categorias" class="old"><a href="categoriastienda"><i class="fa fa-cart-shopping"></i>Categorías tienda</a></li>
