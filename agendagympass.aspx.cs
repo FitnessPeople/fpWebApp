@@ -28,10 +28,15 @@ namespace fpWebApp
                     }
                     if (ViewState["Consulta"].ToString() == "1")
                     {
+
                         CargarSedes();
 
                     }
                     if (ViewState["CrearModificar"].ToString() == "1")
+                    {
+
+                    }
+                    if (ViewState["Consulta"].ToString() == "1" || ViewState["CrearModificar"].ToString() == "1")
                     {
 
                     }
@@ -53,7 +58,6 @@ namespace fpWebApp
                         btnAsistencia.Visible = true;
                         btnCancelar.Visible = true;
                     }
-                    //indicadores01.Visible = false;
                 }
                 else
                 {
@@ -90,7 +94,16 @@ namespace fpWebApp
             int idSedeUsuario = Convert.ToInt32(Session["idSede"]);
 
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarGymPassAgendaPorSede(int.Parse(ddlSedes.SelectedItem.Value.ToString()));
+
+            int? idSede = ddlSedes.SelectedItem.Text == "Todas" || ddlSedes.SelectedItem.Value == "0"
+                ? (int?)null
+                : Convert.ToInt32(ddlSedes.SelectedItem.Value);
+            string estado = ddlEstados.SelectedValue == "Todos" ? null : ddlEstados.SelectedValue;
+
+            ViewState["FiltroSede"] = idSede;
+            ViewState["FiltroEstado"] = estado;
+
+            DataTable dt = cg.ConsultarGymPassAgenda(idSede, estado);
 
             int? idSede;
             string estado = ddlEstados.SelectedValue == "Todos" ? null : ddlEstados.SelectedValue;
@@ -132,8 +145,6 @@ namespace fpWebApp
 
                     _strEventos += "{\r\n";
                     _strEventos += "id: '" + dt.Rows[i]["idAgenda"].ToString() + "',\r\n";
-                    //_strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
-                    //_strEventos += "start: '" + dt.Rows[i]["FechaHoraIni"].ToString() + "',\r\n";
                     _strEventos += "start: '" + strFechaHora + "',\r\n";
                     //_strEventos += "end: '" + dt.Rows[i]["FechaHoraFin"].ToString() + "',\r\n";
                     //_strEventos += "end: '" + strFechaHoraFin + "',\r\n";
@@ -141,6 +152,12 @@ namespace fpWebApp
                     _strEventos += "id: '" + dt.Rows[i]["idAgenda"].ToString() + "',\r\n";
                     _strEventos += "start: '" + strFechaHora + "',\r\n";
 
+                    string nombreEstado = dt.Rows[i]["Estado"].ToString();
+                    string nombreCompleto = dt.Rows[i]["Nombres"].ToString() + " " + dt.Rows[i]["Apellidos"].ToString();
+
+                    _strEventos += $"title: '{nombreCompleto}',\r\n";
+
+                    if (nombreEstado == "Cancelado")
                     if (dt.Rows[i]["idAgenda"].ToString() != "")
                     if (dt.Rows[i]["idAfiliado"].ToString() != "")
                     string nombreEstado = dt.Rows[i]["Estado"].ToString();
@@ -150,6 +167,28 @@ namespace fpWebApp
 
                     if (nombreEstado == "Cancelado")
                     {
+                        _strEventos += "color: '#F8AC59',\r\n"; // Warning
+                        _strEventos += "description: 'El usuario Canceló la cita de Gym Pass.',\r\n";
+                        _strEventos += "icon: 'user',\r\n";
+                        _strEventos += "btnAsistencia: 'none',\r\n";
+                        _strEventos += "btnCancelar: 'none',\r\n";
+                    } 
+                    else if (nombreEstado == "Asistió")
+                    {
+                        _strEventos += "color: '#1C84C6',\r\n"; // Success
+                        _strEventos += "description: 'El usuario Asistió a la cita de Gym Pass.',\r\n";
+                        _strEventos += "icon: 'user',\r\n";
+                        _strEventos += "btnAsistencia: 'none',\r\n";
+                        _strEventos += "btnCancelar: 'none',\r\n";
+                    }
+                    else
+                    {
+                        _strEventos += "color: '#1ab394',\r\n"; // Primary
+                        _strEventos += "description: 'La cita de Gym Pass ha sido Agendada.',\r\n";
+                        _strEventos += "icon: 'user',\r\n";
+                        _strEventos += "btnAsistencia: 'inline',\r\n";
+                        _strEventos += "btnCancelar: 'inline',\r\n";
+                    }
                         if (dt.Rows[i]["Estado"].ToString() == "Cancelado")
                         {
                             _strEventos += "title: '" + dt.Rows[i]["Nombres"].ToString() + " " + dt.Rows[i]["Apellidos"].ToString() + "',\r\n";
@@ -251,8 +290,6 @@ namespace fpWebApp
                         _strEventos += "btnCancelar: 'inline',\r\n";
                     }
 
-                    //_strEventos += "color: '#DBADFF',\r\n";
-                    //_strEventos += "todoeldia: 0,\r\n";
                     _strEventos += "display: 'block',\r\n";
                     _strEventos += "allDay: false,\r\n";
                     _strEventos += "},\r\n";
@@ -468,6 +505,15 @@ namespace fpWebApp
 
             if (dt != null && dt.Rows.Count > 0)
             {
+                ddlSedes.DataSource = dt;
+                ddlSedes.DataValueField = "idSede";
+                ddlSedes.DataTextField = "NombreSede";
+                ddlSedes.DataBind();
+            }
+            ddlSedes.Items.Add(new ListItem("Todas", "0"));
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
             ddlSedes.DataSource = dt;
                 ddlSedes.DataValueField = "idSede";
                 ddlSedes.DataTextField = "NombreSede";
@@ -487,6 +533,30 @@ namespace fpWebApp
 
             int? idSedeAnterior = ViewState["FiltroSede"] as int?;
 
+            if (nuevoIdSede != idSedeAnterior)
+            {
+                CargarAgenda();
+            }
+        }
+
+        private void CargarEstados()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEstadosGymPassAgenda();
+
+            ddlEstados.Items.Clear();
+            ddlEstados.Items.Add(new ListItem("Todos", "Todos"));
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                ddlEstados.DataSource = dt;
+                ddlEstados.DataValueField = "Estados";
+                ddlEstados.DataTextField = "Estados";
+                ddlEstados.DataBind();
+            }
+
+            dt.Dispose();
+        }
             ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
             if (nuevoIdSede != idSedeAnterior)
             {
@@ -513,16 +583,20 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        protected void ddlEstados_SelectedIndexChanged(object sender, EventArgs e)
         protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
         protected void ddlEstados_SelectedIndexChanged(object sender, EventArgs e)
         {
+            string nuevoEstado = ddlEstados.SelectedValue == "Todos" ? null : ddlEstados.SelectedValue;
+            string estadoAnterior = ViewState["FiltroEstado"] as string;
+
+            if (nuevoEstado != estadoAnterior)
             if (ddlSedes.SelectedItem.Value.ToString() != "")
             string nuevoEstado = ddlEstados.SelectedValue == "Todos" ? null : ddlEstados.SelectedValue;
             string estadoAnterior = ViewState["FiltroEstado"] as string;
 
             if (nuevoEstado != estadoAnterior)
             {
-                ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
                 CargarAgenda();
             }
         }
