@@ -165,10 +165,13 @@ namespace fpWebApp
                 switch (estado)
                 {
                     case "Agendado":
-                        estadoHtml = "<p style='margin-bottom: 0;'><span style='font-size: 1.2rem; color: #fff; font-weight: bold;' class='label label-primary'>Agendando</span></p>";
+                        estadoHtml = "<p style='margin-bottom: 0;'><span style='font-size: 1.2rem; color: #fff; font-weight: bold;' class='label label-primary'>Agendado</span></p>";
                         break;
                     case "Asistió":
                         estadoHtml = "<p style='margin-bottom: 0;'><span style='font-size: 1.2rem; color: #fff; font-weight: bold;' class='label label-success'>Asistió</span></p>";
+                        break;
+                    case "No Asistió":
+                        estadoHtml = "<p style='margin-bottom: 0;'><span style='font-size: 1.2rem; color: #fff; font-weight: bold;' class='label label-danger'>No Asistió</span></p>";
                         break;
                     case "Cancelado":
                         estadoHtml = "<p style='margin-bottom: 0;'><span style='font-size: 1.2rem; color: #fff; font-weight: bold;' class='label label-warning'>Cancelado</span></p>";
@@ -386,6 +389,8 @@ namespace fpWebApp
                                        c.NombreCiudadSede AS 'Ciudad', s.NombreSede AS 'Sede',
                                        g.FechaAsistencia AS 'Fecha Asistencia', g.FechaInscripcion AS 'Fecha Inscripción', 
                                        gpa.FechaHora AS 'Fecha Agendada', gpa.Estado AS 'Estado' 
+                                       g.FechaAsistencia AS 'Fecha Asistencia', g.FechaInscripcion AS 'Fecha Inscripción', 
+                                       gpa.FechaHora AS 'Fecha Agendada', gpa.Estado AS 'Estado' 
                                        FROM GymPass g
                                        INNER JOIN sedes s 
                                        ON s.IdSede = g.idSede 
@@ -403,6 +408,8 @@ namespace fpWebApp
                                        ON s.IdSede = g.idSede 
                                        INNER JOIN ciudadessedes c 
                                        ON c.idCiudadSede = s.idCiudadSede 
+                                       LEFT JOIN GymPassAgenda gpa 
+                                       ON gpa.idGymPass = g.idGymPass 
                                        ORDER BY FechaInscripcion DESC;";
 
                 clasesglobales cg = new clasesglobales();

@@ -51,6 +51,7 @@ namespace fpWebApp
                     }
                     if (ViewState["Borrar"].ToString() == "1")
                     {
+                        btnNoAsistencia.Visible = true;
                         btnAsistencia.Visible = true;
                         btnCancelar.Visible = true;
                         btnEliminar.Visible = true;
@@ -171,6 +172,7 @@ namespace fpWebApp
                         _strEventos += "description: 'El usuario Canceló la cita de Gym Pass.',\r\n";
                         _strEventos += "icon: 'user',\r\n";
                         _strEventos += "btnAsistencia: 'none',\r\n";
+                        _strEventos += "btnNoAsistencia: 'none',\r\n";
                         _strEventos += "btnCancelar: 'none',\r\n";
                     } 
                     else if (nombreEstado == "Asistió")
@@ -179,6 +181,16 @@ namespace fpWebApp
                         _strEventos += "description: 'El usuario Asistió a la cita de Gym Pass.',\r\n";
                         _strEventos += "icon: 'user',\r\n";
                         _strEventos += "btnAsistencia: 'none',\r\n";
+                        _strEventos += "btnNoAsistencia: 'none',\r\n";
+                        _strEventos += "btnCancelar: 'none',\r\n";
+                    }
+                    else if (nombreEstado == "No Asistió")
+                    {
+                        _strEventos += "color: '#DC3545',\r\n"; // Danger
+                        _strEventos += "description: 'El usuario No Asistió a la cita de Gym Pass.',\r\n";
+                        _strEventos += "icon: 'user',\r\n";
+                        _strEventos += "btnAsistencia: 'none',\r\n";
+                        _strEventos += "btnNoAsistencia: 'none',\r\n";
                         _strEventos += "btnCancelar: 'none',\r\n";
                     }
                     else
@@ -187,6 +199,7 @@ namespace fpWebApp
                         _strEventos += "description: 'La cita de Gym Pass ha sido Agendada.',\r\n";
                         _strEventos += "icon: 'user',\r\n";
                         _strEventos += "btnAsistencia: 'inline',\r\n";
+                        _strEventos += "btnNoAsistencia: 'inline',\r\n";
                         _strEventos += "btnCancelar: 'inline',\r\n";
                     }
                         if (dt.Rows[i]["Estado"].ToString() == "Cancelado")

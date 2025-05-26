@@ -17,6 +17,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
+                    ValidarPermisos("No Asistencia Agenda Gym Pass");
                     ValidarPermisos("Agenda Gym Pass");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
