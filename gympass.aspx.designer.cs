@@ -33,13 +33,13 @@ namespace fpWebApp
         protected global::fpWebApp.controles.header header1;
 
         /// <summary>
-        /// Control indicadores01.
+        /// Control indicadoresgympass.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.indicadores01 indicadores01;
+        protected global::fpWebApp.controles.indicadoresgympass indicadoresgympass;
 
         /// <summary>
         /// Control divMensaje.

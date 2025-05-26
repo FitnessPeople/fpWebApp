@@ -941,6 +941,7 @@
     <Content Include="logactividades.aspx" />
     <Content Include="logout.aspx" />
     <Content Include="micuenta.aspx" />
+    <Content Include="noasistenciaagendagympass.aspx" />
     <Content Include="nuevaempresaafiliada.aspx" />
     <Content Include="nuevahistoriaclinica.aspx" />
     <Content Include="nuevoafiliado.aspx" />
@@ -1235,13 +1236,6 @@
     </Compile>
     <Compile Include="controles\indicadores04.ascx.designer.cs">
       <DependentUpon>indicadores04.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="controles\indicadores05.ascx.cs">
-      <DependentUpon>indicadores05.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="controles\indicadores05.ascx.designer.cs">
-      <DependentUpon>indicadores05.ascx</DependentUpon>
     </Compile>
     <Compile Include="controles\indicadoresmedico.ascx.cs">
       <DependentUpon>indicadoresmedico.ascx</DependentUpon>
@@ -1631,6 +1625,13 @@
     <Compile Include="micuenta.aspx.designer.cs">
       <DependentUpon>micuenta.aspx</DependentUpon>
     </Compile>
+    <Compile Include="noasistenciaagendagympass.aspx.cs">
+      <DependentUpon>noasistenciaagendagympass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="noasistenciaagendagympass.aspx.designer.cs">
+      <DependentUpon>noasistenciaagendagympass.aspx</DependentUpon>
+    </Compile>
     <Compile Include="nuevaempresaafiliada.aspx.cs">
       <DependentUpon>nuevaempresaafiliada.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1915,11 +1916,15 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Data\" />
     <Folder Include="docs\congelaciones\" />
     <Folder Include="docs\contratos\" />
     <Folder Include="docs\incapacidades\" />
     <Folder Include="docs\traspasos\" />
     <Folder Include="img\contratos\" />
+    <Folder Include="Views\ejemplo\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\bootstrap.css.map" />
@@ -1945,6 +1950,10 @@
     <Content Include="js\plugins\justified-gallery\README.md" />
     <Content Include="js\plugins\topojson\LICENSE" />
     <None Include="packages.config" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

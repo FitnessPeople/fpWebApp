@@ -4,7 +4,7 @@
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
-<%@ Register Src="~/controles/indicadores01.ascx" TagPrefix="uc1" TagName="indicadores01" %>
+<%@ Register Src="~/controles/indicadoresgympass.ascx" TagPrefix="uc1" TagName="indicadoresgympass" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
 
 <!DOCTYPE html>
@@ -119,7 +119,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-user-tie text-success m-r-sm"></i>Gym Pass</h2>
+                    <h2><i class="fa fa-user-tag text-success m-r-sm"></i>Gym Pass</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Sistema</li>
@@ -134,7 +134,7 @@
                 <div class="row animated fadeInDown">
                     <%--Inicio Contenido!!!!--%>
 
-                    <uc1:indicadores01 runat="server" ID="indicadores01" />
+                    <uc1:indicadoresgympass runat="server" ID="indicadoresgympass" />
 
                     <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
                         <div class="p-xs">
@@ -225,9 +225,9 @@
                                                     </td>
                                                     <td>
                                                         <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
-                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="true"><i class="fa fa-trash"></i></a>
+                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
                                                         <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="true"><i class="fa fa-edit"></i></a>
+                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
                                                         <a runat="server" id="btnAgendar" href="#" class="btn btn-outline btn-success pull-right m-r-xs"
                                                             style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="true"><i class="fa fa-calendar-day"></i></a>
                                                         <a runat="server" id="btnEliminarAgenda" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
