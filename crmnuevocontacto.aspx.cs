@@ -63,6 +63,7 @@ namespace fpWebApp
                     CargarPlanes();
                     ListaCanalesMarketingCRM();
                     ListaObjetivosfiliadoCRM();
+                    CargarCiudad();
 
                     ltTitulo.Text = "Nuevo contacto";
                     Literal1.Text = "Empresas";
@@ -338,6 +339,16 @@ namespace fpWebApp
         }
 
 
+        private void CargarCiudad()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCiudadesCol();
+
+            ddlCiudad.DataSource = dt;
+            ddlCiudad.DataBind();
+
+            dt.Dispose();
+        }
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
@@ -725,7 +736,9 @@ namespace fpWebApp
             txbValorPropuesta.Text = $"${total:N0}";
         }
 
+        protected void btnAgregarEmp_Click(object sender, EventArgs e)
+        {
 
-
+        }
     }
 }
