@@ -638,7 +638,7 @@ namespace fpWebApp
 
         protected void ddlPlanes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ddlPlanes.SelectedValue == "0")
+            if (string.IsNullOrEmpty(ddlPlanes.SelectedValue) || ddlPlanes.SelectedValue == "0")
             {
                 txbValorPropuesta.Text = "Por favor selecciona un plan válido.";
                 ViewState["precioBase"] = null;
@@ -657,6 +657,9 @@ namespace fpWebApp
                 int ValorMes = Convert.ToInt32(fila[0]["PrecioBase"]);
                 txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
                 txbValorMes.Enabled = false;
+
+                string observaciones = fila[0]["DescripcionPlan"].ToString();
+                txaObservaciones.InnerText = observaciones;
 
                 // Verificar si el plan es permanente
                 bool esPermanente = Convert.ToBoolean(fila[0]["Permanente"]);
