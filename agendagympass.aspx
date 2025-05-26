@@ -41,6 +41,16 @@
             element2.classList.remove("collapse");
         }
     </script>
+    
+    <style>
+        .ibox-title {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 2rem;
+            align-items: center;
+            height: 5em;
+        }
+    </style>
 </head>
 
 <body onload="changeClass()">
@@ -154,41 +164,31 @@
                             <div class="col-sm-12">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Agenda
+                                        <h5 style="margin-bottom: 0;">Agenda
                                             <asp:Literal ID="ltSede" runat="server"></asp:Literal></h5>
                                         <div class="ibox-tools">
-                                            <%--<a class="collapse-link">
-                                                        <i class="fa fa-chevron-up"></i>
-                                                    </a>
-                                                    <a class="close-link">
-                                                        <i class="fa fa-times"></i>
-                                                    </a>--%>
-                                            <%--<span class="label label-danger pull-right" style="color: #000;">Eliminado</span>--%>
-                                            <span style="font-size: 1.2rem; color: #1A252F; font-weight: bold;" class="label label-warning pull-right" style="color: #000;">Cancelado</span>
-                                            <span style="font-size: 1.2rem; color: #1A252F; font-weight: bold;" class="label label-success pull-right" style="color: #000;">Asistió</span>
-                                            <span style="font-size: 1.2rem; color: #1A252F; font-weight: bold;" class="label label-primary pull-right">Agendando</span>
+                                            <span style="padding: 1rem; font-size: 1.2rem; color: #fff; font-weight: bold;" class="label label-warning pull-right">Cancelado</span>
+                                            <span style="padding: 1rem; font-size: 1.2rem; color: #fff; font-weight: bold;" class="label label-success pull-right">Asistió</span>
+                                            <span style="padding: 1rem; font-size: 1.2rem; color: #fff; font-weight: bold;" class="label label-primary pull-right">Agendando</span>
                                         </div>
                                     </div>
                                     <div class="ibox-content">
                                         <div class="form-horizontal">
-                                            <div class="form-group m-b-n-sm">
-                                                <label class="col-sm-2 col-sm-2 control-label">Sede</label>
-                                                <div class="col-sm-6">
-                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedes" runat="server"
-                                                        OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
-                                                        DataValueField="idSede" DataTextField="NombreSede"
-                                                        AutoPostBack="true" AppendDataBoundItems="true">
-                                                    </asp:DropDownList>
+                                            <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                                                <div style="display: flex; align-items: center; gap: 5rem;">
+                                                    <label class="control-label text-center" style="padding: 0; margin: 0;">Sede</label>
+                                                    <asp:DropDownList CssClass="form-control required" ID="ddlSedes" runat="server"
+                                                                      OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
+                                                                      DataValueField="idSede" DataTextField="NombreSede"
+                                                                      AutoPostBack="true" AppendDataBoundItems="true" />
                                                 </div>
-                                                <div class="col-sm-2 pull-right">
-                                                    <button>Por Sedes</button>
-                                                    <%--<asp:Button ID="btnEliminarAgendaGymPass" class="btn btn-danger" runat="server" Text="Aceptar" OnClick="btnEliminarAgendaGymPass_Click" />
-                                                    <asp:Button ID="Button1" class="btn btn-danger" runat="server" Text="Aceptar" OnClick="btnEliminarAgendaGymPass_Click" />--%>
-                                                </div>
-                                                <div class="col-sm-2 pull-right">
-                                                    <button>Todas</button>
-                                                    <%--<asp:Button ID="btnEliminarAgendaGymPass" class="btn btn-danger" runat="server" Text="Aceptar" OnClick="btnEliminarAgendaGymPass_Click" />
-                                                     <asp:Button ID="Button1" class="btn btn-danger" runat="server" Text="Aceptar" OnClick="btnEliminarAgendaGymPass_Click" />--%>
+
+                                                <div style="display: flex; align-items: center; gap: 5rem;">
+                                                    <label class="control-label text-center" style="padding: 0; margin: 0;">Estado</label>
+                                                    <asp:DropDownList CssClass="form-control required" ID="ddlEstados" runat="server"
+                                                                      OnSelectedIndexChanged="ddlEstados_SelectedIndexChanged"
+                                                                      DataValueField="Estados" DataTextField="Estados"
+                                                                      AutoPostBack="true" AppendDataBoundItems="true" />
                                                 </div>
                                             </div>
                                         </div>
@@ -249,50 +249,6 @@
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
     <script>
-        !(function (a) {
-            a.fn.datepicker.dates.es = {
-                days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
-                daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
-                daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
-                months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-                monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
-                today: "Hoy",
-                monthsTitle: "Meses",
-                clear: "Borrar",
-                weekStart: 1,
-                format: "yyyy-mm-dd",
-            };
-        })(jQuery);
-
-        $(document).ready(function () {
-
-            $('#data_1 .input-group.date').datepicker({
-                language: "es",
-                daysOfWeekDisabled: "0",
-                todayBtn: "linked",
-                todayHighlight: true,
-                keyboardNavigation: false,
-                forceParse: false,
-                autoclose: true,
-            });
-
-            $('#data_2 .input-group.date').datepicker({
-                language: "es",
-                daysOfWeekDisabled: "0",
-                todayBtn: "linked",
-                todayHighlight: true,
-                keyboardNavigation: false,
-                forceParse: false,
-                autoclose: true,
-            });
-
-            $('.clockpicker').clockpicker();
-
-        });
-
-    </script>
-
-    <script>
 
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
@@ -302,7 +258,6 @@
                     info.jsEvent.preventDefault();
 
                     const fechainicial = new Date(info.event.start);
-                    //fechainicial.setHours(fechainicial.getHours());
 
                     const formatter1 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
                     const formattedTime1 = formatter1.format(fechainicial);
@@ -320,7 +275,6 @@
                         jQuery('.event-title').html(info.event.title);
                         jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + "<br /><br />");
                         jQuery('.event-description').html(info.event.extendedProps.description);
-                        /*jQuery('.event-idSede').html(info.event.extendedProps.idSede);*/
                         var btnAsistencia = document.getElementById("btnAsistencia");
                         var btnCancelar = document.getElementById("btnCancelar");
                         btnAsistencia.style.display = info.event.extendedProps.btnAsistencia;
