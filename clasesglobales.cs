@@ -19,6 +19,7 @@ using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.Security.Cryptography;
 using Npgsql;
+using System.Diagnostics;
 
 namespace fpWebApp
 {
@@ -162,10 +163,19 @@ namespace fpWebApp
                     conn.Open();
 
                     using (var cmd = new NpgsqlCommand(strQuery, conn))
-                    using (var reader = cmd.ExecuteReader())
                     {
-                        if (reader.Read())
-                            dt.Load(reader);
+                        NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
+                        DataSet ds = new DataSet();
+                        da.Fill(ds);
+
+                        try
+                        {
+                            dt = ds.Tables[0];
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine("Error: ---> " + ex.Message);
+                        }
                     }
                 }
             }

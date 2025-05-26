@@ -153,6 +153,7 @@
                                                         <asp:ListItem Text="Contabilidad" Value="Contabilidad"></asp:ListItem>
                                                         <asp:ListItem Text="Sistema" Value="Sistema"></asp:ListItem>
                                                         <asp:ListItem Text="Configuración" Value="Configuración"></asp:ListItem>
+                                                        <asp:ListItem Text="Biométricos" Value="Biométricos"></asp:ListItem>
                                                         <asp:ListItem Text="Página Web" Value="Página Web"></asp:ListItem>
                                                     </asp:DropDownList>
                                                     <asp:RequiredFieldValidator ID="rfvCategorias" runat="server" 

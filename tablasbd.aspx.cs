@@ -132,8 +132,8 @@ namespace fpWebApp
 
                 ltModales.Text += "<div class=\"modal-header\">";
                 ltModales.Text += "<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Cerrar</span></button>";
-                ltModales.Text += "<i class=\"fa fa-id-card modal-icon\" style=\"color: #1C84C6;\"></i>";
-                ltModales.Text += "<h4 class=\"modal-title\">Datos de la tabla " + ((DataRowView)e.Item.DataItem).Row[2].ToString() + "</h4>";
+                ltModales.Text += "<i class=\"fa fa-table modal-icon\" style=\"color: #1C84C6;\"></i>";
+                ltModales.Text += "<h4 class=\"modal-title\">Datos de la tabla <span class=\"text-success\">" + ((DataRowView)e.Item.DataItem).Row[2].ToString() + "</span></h4>";
                 ltModales.Text += "</div>";
 
                 ltModales.Text += "<div class=\"modal-body\">";
