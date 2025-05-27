@@ -1237,6 +1237,19 @@
     <Compile Include="controles\indicadores04.ascx.designer.cs">
       <DependentUpon>indicadores04.ascx</DependentUpon>
     </Compile>
+    <Compile Include="controles\indicadores05.ascx.cs">
+      <DependentUpon>indicadores05.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadores05.ascx.designer.cs">
+      <DependentUpon>indicadores05.ascx</DependentUpon>
+    <Compile Include="controles\indicadoresgympass.ascx.cs">
+      <DependentUpon>indicadoresgympass.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadoresgympass.ascx.designer.cs">
+      <DependentUpon>indicadoresgympass.ascx</DependentUpon>
+    </Compile>
     <Compile Include="controles\indicadoresmedico.ascx.cs">
       <DependentUpon>indicadoresmedico.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
