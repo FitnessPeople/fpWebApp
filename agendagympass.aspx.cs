@@ -36,6 +36,9 @@ namespace fpWebApp
                     }
                     if (ViewState["Consulta"].ToString() == "1" || ViewState["CrearModificar"].ToString() == "1")
                     {
+                        int idSedeUsuario = Convert.ToInt32(Session["idSede"]);
+
+                        divFiltroSede.Visible = (idSedeUsuario == 11);
                         CargarSedes();
                         CargarEstados();
                         CargarAgenda();
@@ -79,12 +82,23 @@ namespace fpWebApp
 
         private void CargarAgenda()
         {
+            int idSedeUsuario = Convert.ToInt32(Session["idSede"]);
+
             clasesglobales cg = new clasesglobales();
 
-            int? idSede = ddlSedes.SelectedItem.Text == "Todas" || ddlSedes.SelectedItem.Value == "0"
-                ? (int?)null
-                : Convert.ToInt32(ddlSedes.SelectedItem.Value);
+            int? idSede;
             string estado = ddlEstados.SelectedValue == "Todos" ? null : ddlEstados.SelectedValue;
+
+            if (idSedeUsuario == 11)
+            {
+                idSede = ddlSedes.SelectedItem.Text == "Todas" || ddlSedes.SelectedItem.Value == "0"
+                    ? (int?)null
+                    : Convert.ToInt32(ddlSedes.SelectedItem.Value);
+            }
+            else
+            {
+                idSede = idSedeUsuario;
+            }
 
             ViewState["FiltroSede"] = idSede;
             ViewState["FiltroEstado"] = estado;
@@ -349,8 +363,13 @@ namespace fpWebApp
 
         private void CargarSedes()
         {
+            int idSedeUsuario = Convert.ToInt32(Session["idSede"]);
+
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultaCargarSedes("Gimnasio");
+
+            int? idSede = (idSedeUsuario == 11) ? (int?)null : idSedeUsuario;
+
+            DataTable dt = cg.ConsultaCargarSedesPorId(idSede, "Gimnasio");
 
             ddlSedes.Items.Clear();
             ddlSedes.Items.Add(new ListItem("Todas", "0"));
