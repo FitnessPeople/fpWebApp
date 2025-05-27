@@ -21,24 +21,31 @@ namespace fpWebApp
 
         protected void btnDesbloquear_Click(object sender, EventArgs e)
         {
-            string usuario = Session["usuario"].ToString();
-            string clave = txbPassword.Text.ToString();
-
-            clasesglobales cg = new clasesglobales();
-            string strHashClave = cg.ComputeSha256Hash(clave);
-
-            if (YourValidationFunction(usuario, strHashClave))
+            if (Session["usuario"] != null)
             {
-                cg.InsertarLog(Session["idusuario"].ToString(), "usuarios", "Login", "El usuario inicio sesión.", "", "");
+                string usuario = Session["usuario"].ToString();
+                string clave = txbPassword.Text.ToString();
 
-                if (Request.QueryString.Count > 0)
+                clasesglobales cg = new clasesglobales();
+                string strHashClave = cg.ComputeSha256Hash(clave);
+
+                if (YourValidationFunction(usuario, strHashClave))
                 {
-                    Response.Redirect(Request.QueryString["page"].ToString());
+                    cg.InsertarLog(Session["idusuario"].ToString(), "usuarios", "Login", "El usuario inicio sesión.", "", "");
+
+                    if (Request.QueryString.Count > 0)
+                    {
+                        Response.Redirect(Request.QueryString["page"].ToString());
+                    }
+                    else
+                    {
+                        Response.Redirect("inicio");
+                    }
                 }
-                else
-                {
-                    Response.Redirect("inicio");
-                }
+            }
+            else
+            {
+                Response.Redirect("default");
             }
         }
 
