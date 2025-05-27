@@ -208,7 +208,7 @@
                                     <div class="ibox-content">
                                         <div class="form-horizontal">
                                             <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                                                <div style="display: flex; align-items: center; gap: 5rem;">
+                                                <div id="divFiltroSede" runat="server" style="display: flex; align-items: center; gap: 5rem;">
                                                     <label class="control-label text-center" style="padding: 0; margin: 0;">Sede</label>
                                                     <asp:DropDownList CssClass="form-control required" ID="ddlSedes" runat="server"
                                                                       OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
