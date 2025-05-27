@@ -402,6 +402,15 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlInputText txbNombreEmpresaCRM;
 
         /// <summary>
+        /// Control rfvNombreEmpresa.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvNombreEmpresa;
+
+        /// <summary>
         /// Control txbPaginaWeb.
         /// </summary>
         /// <remarks>
@@ -409,6 +418,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText txbPaginaWeb;
+
+        /// <summary>
+        /// Control fvPaginaWeb.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator fvPaginaWeb;
 
         /// <summary>
         /// Control ddlCiudad.
@@ -420,13 +438,40 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlCiudad;
 
         /// <summary>
-        /// Control ddlEstadoEmpresa.
+        /// Control rfvCiudad.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEstadoEmpresa;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCiudad;
+
+        /// <summary>
+        /// Control ddlContactos.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlContactos;
+
+        /// <summary>
+        /// Control rblEstado.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList rblEstado;
+
+        /// <summary>
+        /// Control rfvEstado.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEstado;
 
         /// <summary>
         /// Control txaObservacionesEmp.
@@ -436,15 +481,6 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTextArea txaObservacionesEmp;
-
-        /// <summary>
-        /// Control RequiredFieldValidator1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
 
         /// <summary>
         /// Control btnAgregarEmp.

@@ -231,6 +231,7 @@ namespace fpWebApp
                                 dt1.Dispose();
                             }
                         }
+
                     }
                 }
                 else
@@ -244,11 +245,13 @@ namespace fpWebApp
         private void ListaContactos()
         {
             decimal valorTotal = 0;
-            clasesglobales cg = new clasesglobales();
+            clasesglobales cg = new clasesglobales();   
             DataTable dt = cg.ConsultarContactosCRM(out valorTotal);
 
             rpContactosCRM.DataSource = dt;
             rpContactosCRM.DataBind();
+            ddlContactos.DataSource = dt;
+            ddlContactos.DataBind();
 
             //ltValorTotal.Text = valorTotal.ToString("C0");
             dt.Dispose();
@@ -734,83 +737,67 @@ namespace fpWebApp
 
             if (Request.QueryString.Count > 0)
             {
-                if (Request.QueryString["editid"] != null)
+                if (Request.QueryString["editidEmp"] != null)
                 {
                     bool salida = false;
                     string mensaje = string.Empty;
                     string respuesta = string.Empty;
                     string mensajeValidacion = string.Empty;
 
-                    if (ddlEmpresa.SelectedItem.Value != "")
-                        ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
+                    if (ddlCiudad.SelectedItem.Value != "")
+                        ddlCiudad.SelectedIndex = Convert.ToInt32(ddlCiudad.Items.IndexOf(ddlCiudad.Items.FindByValue(ddlCiudad.SelectedItem.Value)));
                     else
-                        ddlEmpresa.SelectedItem.Value = "0";
+                        ddlCiudad.SelectedItem.Value = "0";
 
-                    //clasesglobales cg = new clasesglobales();
+                    if (ddlContactos.SelectedItem.Value != "")
+                        ddlContactos.SelectedIndex = Convert.ToInt32(ddlContactos.Items.IndexOf(ddlContactos.Items.FindByValue(ddlContactos.SelectedItem.Value)));
+                    else
+                        ddlContactos.SelectedItem.Value = "0";
+
                     try
                     {
                         // Obtener y limpiar valores
-                        string nombre = txbNombreContacto.Value?.ToString().Trim();
-                        string telefono = Regex.Replace(txbTelefonoContacto.Value?.ToString().Trim(), @"\D", "");
-                        string correo = txbCorreoContacto.Value?.ToString().Trim();
-                        string fechaPrim = txbFechaPrim?.Value?.ToString().Trim();
-                        string fechaProx = txbFechaProx?.Value?.ToString().Trim();
-                        string valorPropuestaTexto = Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "");
-                        string empresa = ddlEmpresa.SelectedItem?.Value;
-                        string statusLead = ddlStatusLead.SelectedItem?.Value;
-                        string objetivo = ddlObjetivos.SelectedItem?.Value;
-                        string tipoPago = ddlTipoPago.SelectedItem?.Value;
-                        string tipoAfiliado = ddlTiposAfiliado.SelectedItem?.Value;
-                        string canalMarketing = ddlCanalesMarketing.SelectedItem?.Value;
-                        string plan = ddlPlanes.SelectedItem?.Value;
+                        string nombreEmp = txbNombreEmpresaCRM.Value?.ToString().Trim();
+                        string paginaWeb = txbPaginaWeb.Value?.ToString().Trim();
+                        string contacto = ddlContactos.SelectedItem?.Value;
+                        string observaciones = txaObservaciones.Value?.ToString().Trim();
+                        string estadoEmp = ddlObjetivos.SelectedItem?.Value;
+                        string ciudad = ddlCiudad.SelectedItem?.Value;
+                        string estado = rblEstado.SelectedItem?.Value;
 
 
                         // Validar campos requeridos
-                        if (string.IsNullOrWhiteSpace(nombre) ||
-                            string.IsNullOrWhiteSpace(telefono) ||
-                            string.IsNullOrWhiteSpace(correo) ||
-                            string.IsNullOrWhiteSpace(empresa) ||
-                            string.IsNullOrWhiteSpace(statusLead) ||
-                            string.IsNullOrWhiteSpace(fechaPrim) ||
-                            string.IsNullOrWhiteSpace(fechaProx) ||
-                            string.IsNullOrWhiteSpace(valorPropuestaTexto) ||
-                            string.IsNullOrWhiteSpace(statusLead) ||
-                            string.IsNullOrWhiteSpace(objetivo) ||
-                            string.IsNullOrWhiteSpace(tipoPago) ||
-                            string.IsNullOrWhiteSpace(tipoAfiliado) ||
-                            string.IsNullOrWhiteSpace(canalMarketing) ||
-                            string.IsNullOrWhiteSpace(plan)
+                        if (string.IsNullOrWhiteSpace(nombreEmp) ||
+                            string.IsNullOrWhiteSpace(paginaWeb) ||
+                            string.IsNullOrWhiteSpace(contacto) ||
+                            string.IsNullOrWhiteSpace(observaciones) ||
+                            string.IsNullOrWhiteSpace(estadoEmp) ||
+                            string.IsNullOrWhiteSpace(ciudad) ||
+                            string.IsNullOrWhiteSpace(estado) 
                             )
                         {
                             mensajeValidacion = "Todos los campos son obligatorios.";
-
-                            //ltMensajeVal.Text = "<div class='alert alert-danger'>Todos los campos son obligatorios.</div>";
-                            //MostrarModalEditar(Convert.ToInt32(Session["contactoId"]));
                             return;
                         }
                         else
                         {
-                            respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.ToString().Trim().ToUpper(),
-                                    Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), txbCorreoContacto.Value.ToString().Trim().ToLower(),
-                                    Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()),
-                                    txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
-                                    txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
-                                    ddlTipoPago.SelectedItem.Value.ToString(), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
-                                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()),
-                                    Convert.ToInt32(rblMesesPlan.SelectedValue), out salida, out mensaje);
+                            respuesta = cg.ActualizarEmpresaCRM(Convert.ToInt32(Request.QueryString["editidEmp"].ToString()), txbNombreEmpresaCRM.ToString().Trim(), 
+                                        txbPaginaWeb.Value.ToString().Trim().ToUpper(), Convert.ToInt32(ddlContactos.SelectedItem.Value.ToString()), 
+                                        Convert.ToInt32(Session["idUsuario"]), txaObservacionesEmp.Value.Trim(),rblEstado.SelectedItem.Value.ToString(), Convert.ToInt32(ddlCiudad.SelectedValue), 
+                                        out salida, out mensaje);
 
                             if (salida)
                             {
                                 string script = @"
                                 Swal.fire({
-                                    title: 'El contacto se actualizó de forma exitosa',
+                                    title: 'La empresa CRM se actualizó de forma exitosa',
                                     text: '" + mensaje.Replace("'", "\\'") + @"',
                                     icon: 'success',
                                     timer: 3000, // 3 segundos
                                     showConfirmButton: false,
                                     timerProgressBar: true
                                 }).then(() => {
-                                    window.location.href = 'nuevocontactocrm';
+                                    window.location.href = 'crmnuevocontacto';
                                 });
                                 ";
 
@@ -846,24 +833,24 @@ namespace fpWebApp
                     }
                     Response.Redirect("crmnuevocontacto");
                 }
-                if (Request.QueryString["deleteid"] != null)
+                if (Request.QueryString["deleteidEmp"] != null)
                 {
 
                     bool respuesta = false;
                     bool _respuesta = false;
                     string mensaje = string.Empty;
-                    int idContacto = Convert.ToInt32(Request.QueryString["deleteid"].ToString());
+                    int idempresaCRM = Convert.ToInt32(Request.QueryString["deleteidEmp"].ToString());
                     int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
                     string Usuario = Session["NombreUsuario"].ToString();
 
                     try
                     {
-                        DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out _respuesta);
-                        Session["contactoId"] = idContacto;
+                        DataTable dt = cg.ConsultarEmpresaCRMPorId(idempresaCRM, out _respuesta);
+                        Session["contactoId"] = idempresaCRM;
 
-                        if (idContacto > 0)
+                        if (idempresaCRM > 0)
                         {
-                            cg.EliminarContactoCRM(idContacto, idUsuario, Usuario, out respuesta, out mensaje);
+                            cg.EliminarEmpresaCRM(idempresaCRM, idUsuario, Usuario, out respuesta, out mensaje);
 
                             if (respuesta)
                             {
@@ -918,35 +905,28 @@ namespace fpWebApp
             }
             else
             {
-                //if (!ValidarSede(txbSede.Text.ToString()))
-                //{
+                if (ddlContactos.SelectedItem.Value != "")
+                    ddlContactos.SelectedIndex = Convert.ToInt32(ddlContactos.Items.IndexOf(ddlContactos.Items.FindByValue(ddlContactos.SelectedItem.Value)));
+                else
+                    ddlContactos.SelectedItem.Value = "0";
+
                 bool salida = false;
-                //ViewState["AbrirModal"] = true;
                 string mensaje = string.Empty;
                 string mensajeValidacion = string.Empty;
                 string respuesta = string.Empty;
-
-                // Parseamos la fecha y la hora
-                DateTime fecha = DateTime.Parse(txbFechaProx.Value);
-                TimeSpan hora = TimeSpan.Parse(txbHoraIni.Value);
-                DateTime fechaHora = fecha.Date + hora;
-                string fechaHoraMySQL = fechaHora.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                string nombreEmp = txbNombreEmpresaCRM.ToString().Trim();
 
                 try
                 {
-                    respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
-                    txbCorreoContacto.Value.ToString().Trim().ToLower(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
-                    fechaHoraMySQL.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
-                    txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
-                    ddlTipoPago.SelectedItem.Value.ToString(), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), Convert.ToInt32(rblMesesPlan.SelectedValue), out salida, out mensaje);
+                    respuesta = cg.InsertarEmpresaCRM(txbNombreEmpresaCRM.Value.ToString().Trim(), txbPaginaWeb.Value.ToString().Trim().ToUpper(),
+                        Convert.ToInt32(ddlContactos.SelectedItem.Value.ToString()), Convert.ToInt32(Session["idUsuario"]), txaObservacionesEmp.Value.Trim(), 
+                        rblEstado.SelectedItem.Value.ToString(), Convert.ToInt32(ddlCiudad.SelectedValue), out salida, out mensaje);
 
                     if (salida)
                     {
                         string script = @"
                         Swal.fire({
-                            title: 'El contacto se creó de forma exitosa',
+                            title: 'la empresa se creó para CRM de forma exitosa ',
                             text: '" + mensaje.Replace("'", "\\'") + @"',
                             icon: 'success',
                             timer: 3000, // 3 segundos
@@ -992,7 +972,23 @@ namespace fpWebApp
 
         protected void rpEmpresasCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                if (ViewState["CrearModificar"].ToString() == "1")
+                {
+                    HtmlAnchor btnEditarEmp = (HtmlAnchor)e.Item.FindControl("btnEditarEmp");
+                    btnEditarEmp.Attributes.Add("href", "crmnuevocontacto?editidEmp=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditarEmp.Visible = true;
+                }
+                if (ViewState["Borrar"].ToString() == "1")
+                {
+                    HtmlAnchor btnEliminarEmp = (HtmlAnchor)e.Item.FindControl("btnEliminarEmp");
+                    btnEliminarEmp.Attributes.Add("href", "crmnuevocontacto?deleteidEmp=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminarEmp.Visible = true;
+                }
+                //ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "cerrarAcordeon", "$('#acordeonZonaLateralIzqSup').collapse('hide');", true);
 
+            }
         }
     }
 }
