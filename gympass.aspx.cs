@@ -205,6 +205,8 @@ namespace fpWebApp
                     string mensaje = cg.TraerDatosStr(strQuery);
                 }
 
+                Response.Redirect("gympass");
+
                 dtGymPass.Dispose();
                 dtAgenda.Dispose();
 
