@@ -31,6 +31,7 @@ namespace fpWebApp
                 Session["idPerfil"] = 1;
                 Session["usuario"] = "sistemas@fitnesspeoplecmd.com";
                 Session["idSede"] = "11";
+                Session["idSede"] = "11";
 
                 DateTime fechaActual = DateTime.Now;
                 DateTime fechaDestino = new DateTime(2025, 7, 19);
