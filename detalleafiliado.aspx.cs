@@ -270,47 +270,6 @@ namespace fpWebApp
 
             dt.Dispose();
         }
-        //Se trasladó a clases Globales
-        //private static string[] EnviarPeticionGet(string url, out bool mensaje)
-        //{
-        //    string[] strConjuntoResultados = new string[2];
-        //    string resultado = "";
-        //    string resultadoj = "";
-
-        //    try
-        //    {
-        //        WebRequest oRequest = WebRequest.Create(url);
-        //        oRequest.Method = "GET";
-        //        oRequest.ContentType = "application/json;charset=UTF-8";
-
-        //        WebResponse oResponse = oRequest.GetResponse();
-        //        using (var oSr = new StreamReader(oResponse.GetResponseStream()))
-        //        {
-        //            resultado = oSr.ReadToEnd().Trim();
-        //            strConjuntoResultados[0] = resultado;
-        //            JObject jsonObj = JObject.Parse(resultado);
-        //            if (jsonObj["message"] != null)
-        //            {
-        //                resultadoj = jsonObj["message"].ToString();
-        //            }
-        //            else
-        //            {
-        //                resultadoj = "";
-        //            }
-        //            strConjuntoResultados[1] = resultadoj;
-        //            mensaje = true;
-        //        }
-
-        //        return strConjuntoResultados;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        string jsonError = JsonConvert.SerializeObject(new { error = "Error al enviar la petición: " + ex.Message });
-        //        mensaje = false;
-        //        strConjuntoResultados[0] = jsonError;
-        //        return strConjuntoResultados;
-        //    }
-        //}
 
         private void CargarPlanesAfiliado(string strIdAfiliado)
         {
