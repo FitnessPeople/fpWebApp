@@ -337,6 +337,8 @@ namespace fpWebApp
                     string mensaje = cg.TraerDatosStr(strQuery);
                 }
 
+                Response.Redirect("gympass");
+
                 dtAgenda.Dispose();
 
                 rpInscritos.ItemDataBound += rpInscritos_ItemDataBound;
