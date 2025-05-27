@@ -432,7 +432,7 @@
                     showMethod: 'slideDown',
                     timeOut: 4000
                 };
-                toastr.success('Hora local: +5 horas', 'Bienvenido a FP+');
+                toastr.error('<%=strDiaZero%> días y contando...', 'DIA ZERO');
             }, 1300);
         });
     </script>
