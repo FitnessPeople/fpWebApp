@@ -10,6 +10,9 @@ namespace fpWebApp
 {
     public partial class inicio : System.Web.UI.Page
     {
+        private string _strDiaZero;
+        protected string strDiaZero { get { return this._strDiaZero; } }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -22,6 +25,11 @@ namespace fpWebApp
                 Session["idPerfil"] = 1;
                 Session["usuario"] = "sistemas@fitnesspeoplecmd.com";
                 Session["idSede"] = "11";
+
+                DateTime fechaActual = DateTime.Now;
+                DateTime fechaDestino = new DateTime(2025, 7, 19);
+                TimeSpan diferencia = fechaDestino - fechaActual;
+                _strDiaZero = Convert.ToInt32(diferencia.TotalDays).ToString();
 
                 Control ctrInicio = new Control();
                 if (Session["idUsuario"] != null)
