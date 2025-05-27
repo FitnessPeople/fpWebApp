@@ -56,19 +56,19 @@
                         Asegúrate de tener estos datos del afiliado a mano:<br />
                         <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre(s), Apellido(s), Tipo y Número de Documento.</b><br />
                         <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i> <b>Fecha de Nacimiento, Género, Estado Civil.</b><br />
-                        <i class="fa-solid fa-phone" style="color: #0D6EFD;"></i> <b>Teléfono, Email, Dirección, Ciudad.</b><br />
+                        <i class="fa-solid fa-phone" style="color: #0D6EFD;"></i> <b>Teléfono, Correo, Dirección, Ciudad.</b><br />
                         <i class="fa-solid fa-user-tie" style="color: #0D6EFD;"></i> <b>Profesión, EPS, Empresa Convenio, Sede, Foto (si aplica).</b><br />
                         <i class="fa-solid fa-user-group" style="color: #0D6EFD;"></i> <b>Nombre, Parentesco y Teléfono de Contacto.</b>
                     <br />
                         <br />
                         <b>Paso 2: Completa el formulario</b><br />
-                        <i class="fa-solid fa-pencil"></i> Llena todos los campos obligatorios (generalmente marcados con *).<br />
-                        <i class="fa-solid fa-magnifying-glass"></i> Verifica que los datos estén correctos y actualizados.
+                        <i class="fa-solid fa-pencil"></i> Llena todos los <b>campos obligatorios</b> (generalmente marcados con *).<br />
+                        <i class="fa-solid fa-magnifying-glass"></i> Verifica que los datos estén <b>correctos</b>.
                     <br />
                         <br />
                         <b>Paso 3: Confirma o cancela</b><br />
-                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Agregar:</b> Guarda la información y finaliza el registro.<br />
-                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Agregar:</b> Guarda la información y <b>finaliza</b> el registro.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver <b>atrás</b> sin guardar cambios.
                     <br />
                         <br />
                         <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.

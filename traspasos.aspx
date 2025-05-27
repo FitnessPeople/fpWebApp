@@ -80,7 +80,6 @@
                         <br />
                         <b>Paso 3: Confirma el traspaso o cancela</b><br />
                         <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Traspasar: </b> Realiza la acción y finaliza el proceso.<br />
-                        <i class="fa-solid fa-check"></i> El sistema pedirá confirmación antes de proceder.<br />
                         <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar modificaciones.
                     <br />
                         <br />

@@ -47,21 +47,31 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-person-chalkboard modal-icon"></i>
-                    <h4 class="modal-title">Guía para eliminar un afiliado</h4>
-                    <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
+                    <i class="fa fa-id-card modal-icon" style="color: #1C84C6;"></i>
+                    <h4 class="modal-title">Guía para eliminar al afiliado</h4>
+                    <small class="font-bold">¡Bienvenido! Sigue estos pasos para borrar la información de manera segura y verificada.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>1. Lee las Instrucciones</b><br />
-                        Antes de comenzar, es importante que leas todas las instrucciones del formulario. Esto te ayudará a entender qué información se requiere y cómo debe ser presentada.
+                        <b>Paso 1: Verifica los datos</b><br />
+                        Antes de eliminar, confirma que es el afiliado <b>correcto</b> revisando:<br />
+                        <i class="fa-solid fa-user-tie" style="color: #0D6EFD;"></i> <b>Foto (si aplica).</b><br />
+                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre(s) y Apellido(s).</b><br />
+                        <i class="fa-solid fa-phone" style="color: #0D6EFD;"></i> <b>Correo, Teléfono y Ciudad.</b><br />
+                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i> <b>Fecha de Nacimiento.</b><br />
+                        <i class="fa-solid fa-ticket" style="color: #0D6EFD;"></i> <b>Planes.</b>
+                    <br />
                         <br />
+                        <b>Paso 2: Confirmación requerida</b><br />
+                        <i class="fa-solid fa-robot" style="color: #4f4f4f;"></i> El sistema hará un <b>pregunta de verificación</b> para confirmar que no eres un robot.
+                    <br />
                         <br />
-                        <b>2. Responda la pregunta de confirmación</b><br />
-                        Responde la pregunta de confirmación con la respuesta correcta.
+                        <b>Paso 3: Confirma o cancela</b><br />
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Eliminar Afiliado:</b> Borra al afiliado del <b>sistema</b>.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver <b>atrás</b> sin guardar cambios.
+                    <br />
                         <br />
-                        <br />
-                        ¡Siguiendo estos pasos, estarás listo para diligenciar tu formulario sin problemas! Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">

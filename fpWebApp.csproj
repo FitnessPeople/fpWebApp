@@ -256,9 +256,11 @@
     <Content Include="agenda.aspx" />
     <Content Include="agendacrm.aspx" />
     <Content Include="agendaespecialista.aspx" />
+    <Content Include="agendagympass.aspx" />
     <Content Include="agendarcita.aspx" />
     <Content Include="arl.aspx" />
     <Content Include="asignarcita.aspx" />
+    <Content Include="asistenciaagendagympass.aspx" />
     <Content Include="autorizaciones.aspx" />
     <Content Include="biodispositivos.aspx" />
     <Content Include="biopersonas.aspx" />
@@ -270,6 +272,7 @@
     <Content Include="cambiaestadousuario.aspx" />
     <Content Include="cambiarpermiso.aspx" />
     <Content Include="canalesventa.aspx" />
+    <Content Include="cancelaragendagympass.aspx" />
     <Content Include="cargos.aspx" />
     <Content Include="categoriastienda.aspx" />
     <Content Include="cesantias.aspx" />
@@ -286,6 +289,7 @@
     <Content Include="controles\indicadores03.ascx" />
     <Content Include="controles\indicadores04.ascx" />
     <Content Include="controles\indicadores05.ascx" />
+    <Content Include="controles\indicadoresgympass.ascx" />
     <Content Include="controles\indicadoresmedico.ascx" />
     <Content Include="controles\indicadoresusucrm.ascx" />
     <Content Include="controles\navbar.ascx" />
@@ -938,6 +942,7 @@
     <Content Include="logactividades.aspx" />
     <Content Include="logout.aspx" />
     <Content Include="micuenta.aspx" />
+    <Content Include="noasistenciaagendagympass.aspx" />
     <Content Include="nuevaempresaafiliada.aspx" />
     <Content Include="nuevahistoriaclinica.aspx" />
     <Content Include="nuevoafiliado.aspx" />
@@ -985,9 +990,10 @@
     <Content Include="tiposincapacidades.aspx" />
     <Content Include="traspasos.aspx" />
     <Content Include="traspasosAfil.aspx" />
-    <Content Include="TuProyectoHora.aspx" />
+    <Content Include="W-SiigoCliente.aspx" />
     <Content Include="usuarios.aspx" />
     <Content Include="verhistoriaclinica.aspx" />
+    <Content Include="W-SiigoFactura.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -1019,6 +1025,13 @@
     <Compile Include="agendaespecialista.aspx.designer.cs">
       <DependentUpon>agendaespecialista.aspx</DependentUpon>
     </Compile>
+    <Compile Include="agendagympass.aspx.cs">
+      <DependentUpon>agendagympass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="agendagympass.aspx.designer.cs">
+      <DependentUpon>agendagympass.aspx</DependentUpon>
+    </Compile>
     <Compile Include="agendarcita.aspx.cs">
       <DependentUpon>agendarcita.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1040,6 +1053,13 @@
     </Compile>
     <Compile Include="asignarcita.aspx.designer.cs">
       <DependentUpon>asignarcita.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="asistenciaagendagympass.aspx.cs">
+      <DependentUpon>asistenciaagendagympass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="asistenciaagendagympass.aspx.designer.cs">
+      <DependentUpon>asistenciaagendagympass.aspx</DependentUpon>
     </Compile>
     <Compile Include="autorizaciones.aspx.cs">
       <DependentUpon>autorizaciones.aspx</DependentUpon>
@@ -1110,6 +1130,13 @@
     </Compile>
     <Compile Include="canalesventa.aspx.designer.cs">
       <DependentUpon>canalesventa.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="cancelaragendagympass.aspx.cs">
+      <DependentUpon>cancelaragendagympass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="cancelaragendagympass.aspx.designer.cs">
+      <DependentUpon>cancelaragendagympass.aspx</DependentUpon>
     </Compile>
     <Compile Include="cargos.aspx.cs">
       <DependentUpon>cargos.aspx</DependentUpon>
@@ -1217,6 +1244,12 @@
     </Compile>
     <Compile Include="controles\indicadores05.ascx.designer.cs">
       <DependentUpon>indicadores05.ascx</DependentUpon>
+    <Compile Include="controles\indicadoresgympass.ascx.cs">
+      <DependentUpon>indicadoresgympass.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadoresgympass.ascx.designer.cs">
+      <DependentUpon>indicadoresgympass.ascx</DependentUpon>
     </Compile>
     <Compile Include="controles\indicadoresmedico.ascx.cs">
       <DependentUpon>indicadoresmedico.ascx</DependentUpon>
@@ -1606,6 +1639,13 @@
     <Compile Include="micuenta.aspx.designer.cs">
       <DependentUpon>micuenta.aspx</DependentUpon>
     </Compile>
+    <Compile Include="noasistenciaagendagympass.aspx.cs">
+      <DependentUpon>noasistenciaagendagympass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="noasistenciaagendagympass.aspx.designer.cs">
+      <DependentUpon>noasistenciaagendagympass.aspx</DependentUpon>
+    </Compile>
     <Compile Include="nuevaempresaafiliada.aspx.cs">
       <DependentUpon>nuevaempresaafiliada.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1859,12 +1899,12 @@
     <Compile Include="traspasosAfil.aspx.designer.cs">
       <DependentUpon>traspasosAfil.aspx</DependentUpon>
     </Compile>
-    <Compile Include="TuProyectoHora.aspx.cs">
-      <DependentUpon>TuProyectoHora.aspx</DependentUpon>
+    <Compile Include="W-SiigoCliente.aspx.cs">
+      <DependentUpon>W-SiigoCliente.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="TuProyectoHora.aspx.designer.cs">
-      <DependentUpon>TuProyectoHora.aspx</DependentUpon>
+    <Compile Include="W-SiigoCliente.aspx.designer.cs">
+      <DependentUpon>W-SiigoCliente.aspx</DependentUpon>
     </Compile>
     <Compile Include="usuarios.aspx.cs">
       <DependentUpon>usuarios.aspx</DependentUpon>
@@ -1880,14 +1920,25 @@
     <Compile Include="verhistoriaclinica.aspx.designer.cs">
       <DependentUpon>verhistoriaclinica.aspx</DependentUpon>
     </Compile>
+    <Compile Include="W-SiigoFactura.aspx.cs">
+      <DependentUpon>W-SiigoFactura.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="W-SiigoFactura.aspx.designer.cs">
+      <DependentUpon>W-SiigoFactura.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Data\" />
     <Folder Include="docs\congelaciones\" />
     <Folder Include="docs\contratos\" />
     <Folder Include="docs\incapacidades\" />
     <Folder Include="docs\traspasos\" />
     <Folder Include="img\contratos\" />
+    <Folder Include="Views\ejemplo\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\bootstrap.css.map" />
@@ -1913,6 +1964,10 @@
     <Content Include="js\plugins\justified-gallery\README.md" />
     <Content Include="js\plugins\topojson\LICENSE" />
     <None Include="packages.config" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

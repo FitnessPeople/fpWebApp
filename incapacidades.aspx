@@ -70,25 +70,22 @@
                         Selecciona al afiliado correcto.
                     <br />
                         <br />
-                        <b>Paso 2: Completa los datos de la incapacidad</b><br />
-                        Días de incapacidad:<br />
-                        <i class="fa-solid fa-calendar-day" style="color: #0D6EFD;"></i> Selecciona un valor entre <b>1 y 100 días.</b><br />
-                        Tipo de incapacidad:<br />
-                        <i class="fa-solid fa-tag" style="color: #0D6EFD;"></i> Selecciona una opción del menú (ej: "Enfermedad general", "Accidente laboral").<br />
-                        Fecha de inicio:<br />
-                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i> Elige el día en que inicia la incapacidad.<br />
-                        Documento de soporte:<br />
-                        <i class="fa-solid fa-folder-open" style="color: #0D6EFD;"></i> Sube el archivo (PDF/imagen) del certificado médico.<br />
-                        <i class="fa-solid fa-check"></i> Asegúrate de que esté legible y sea válido.<br />
+                        <b>Paso 2: Completa los datos de incapacidad</b><br />
+                        <i class="fa-solid fa-calendar-day" style="color: #0D6EFD;"></i> <b>Arrastra la barra horizontal</b> para seleccionar el número de días de incapacidad que deseas registrar.<br />
+                        <i class="fa-solid fa-check"></i> Ten en cuenta que este número <b>depende del plan que tengas</b>.<br />
+                        <i class="fa-solid fa-tag" style="color: #0D6EFD;"></i> <b>Selecciona</b> la razón que defina el <b>tipo de incapacidad</b> (ej: "Enfermedad general", "Accidente laboral").<br />
+                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i> Elige el día en que <b>inicia</b> la incapacidad.<br />
+                        <i class="fa-solid fa-folder-open" style="color: #0D6EFD;"></i> <b>Sube</b> el archivo (PDF/imagen) del <b>certificado médico</b>.<br />
+                        <i class="fa-solid fa-check"></i> Asegúrate de que esté <b>legible</b> y sea <b>válido</b>.<br />
                         Motivo:<br />
-                        <i class="fa-solid fa-pencil" style="color: #0D6EFD;"></i> Describe brevemente la causa (ej: "Fractura de brazo", "Cirugía programada").
+                        <i class="fa-solid fa-pencil" style="color: #0D6EFD;"></i> <b>Describe</b> brevemente la causa (ej: "Fractura de brazo", "Cirugía programada").
                     <br />
                         <br />
                         <i class="fa-solid fa-triangle-exclamation" style="color: #FFC107;"></i> <b>Importante:</b><br />
                         Antes de finalizar, verifica en la <b>sección inferior</b> que:<br />
-                        <i class="fa-solid fa-check"></i> Los datos del afiliado sean correctos.<br />
-                        <i class="fa-solid fa-check"></i> La fecha y días coincidan con el certificado médico.<br />
-                        <i class="fa-solid fa-check"></i> El documento esté cargado correctamente.
+                        <i class="fa-solid fa-check"></i> Los datos del afiliado sean <b>correctos</b>.<br />
+                        <i class="fa-solid fa-check"></i> La fecha y días <b>coincidan</b> con el certificado médico.<br />
+                        <i class="fa-solid fa-check"></i> El documento esté <b>cargado</b> correctamente.
                     <br />
                         <br />
                         <b>Paso 3: Confirma o cancela</b><br />
