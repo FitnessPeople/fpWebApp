@@ -33,7 +33,6 @@ namespace fpWebApp
                     {
                         txbDocumento.Attributes.Add("type", "number");
                         txbTelefono.Attributes.Add("type", "number");
-                        txbFechaNac.Attributes.Add("type", "date");
                         txbTelefonoContacto.Attributes.Add("type", "number");
                         CargarTipoDocumento();
                         CargarCiudad();

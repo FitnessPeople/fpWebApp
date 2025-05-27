@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Npgsql;
 
 namespace fpWebApp
 {
@@ -20,6 +20,7 @@ namespace fpWebApp
                 Session["Cargo"] = "WebMaster";
                 Session["Foto"] = "chrismo.jpg";
                 Session["idPerfil"] = 1;
+                Session["usuario"] = "sistemas@fitnesspeoplecmd.com";
 
                 Control ctrInicio = new Control();
                 if (Session["idUsuario"] != null)
@@ -38,21 +39,13 @@ namespace fpWebApp
 
                     // ************  POSGRESSQL TEST  ************
 
-                    //string connString = ConfigurationManager.ConnectionStrings["PSIPlatformBoot"].ConnectionString;
+                    //clasesglobales cg = new clasesglobales();
+                    //DataTable dt = cg.TraerDatosArmatura("SELECT * FROM acc_timezone");
 
-                    //using (var conn = new NpgsqlConnection(connString))
+                    //if (dt.Rows.Count > 0)
                     //{
-                    //    conn.Open();
-                    //    Console.WriteLine("Conexión exitosa a PostgreSQL 9.6!");
-
-                    //    using (var cmd = new NpgsqlCommand("SELECT version()", conn))
-                    //    using (var reader = cmd.ExecuteReader())
-                    //    {
-                    //        if (reader.Read())
-                    //            ltMsg.Text = reader.GetString(0);
-                    //    }
+                    //    ltMsg.Text = dt.Rows[0]["acc_timeseg"].ToString();
                     //}
-
                 }
                 else
                 {

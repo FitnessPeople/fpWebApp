@@ -88,8 +88,10 @@
             <li>
                 <a href="#"><i class="fa fa-users-rectangle"></i><span class="nav-label">CRM</span><span class="fa arrow"></span></a>
                 <ul id="crm" class="nav nav-second-level collapse">
+                    <li id="crmnuevocontacto" class="old"><a href="crmnuevocontacto"><i class="fas fa-user-plus"></i>Nuevo</a></li>
                     <li id="nuevocontactocrm" class="old"><a href="nuevocontactocrm"><i class="fas fa-user-plus"></i>Nuevo Contacto</a></li>
                     <li id="listacontactoscrm" class="old"><a href="listacontactoscrm"><i class="fa fa-desktop"></i>Contactos / Empresas</a></li>
+                    <li id="agendacrm" class="old"><a href="agendacrm"><i class="fa fa-book"></i>Agenda</a></li>
                     <li><a href="#">Efectividad en actividades</a></li>
                     <li><a href="#">Efectividad en gestion</a></li>
                     <li><a href="#">Traspasos de agenda</a></li>
@@ -141,6 +143,15 @@
                     <li id="parq" class="old"><a href="parq"><i class="fa fa-person-circle-question"></i>ParQ</a></li>
                     <li id="tiposincapacidades" class="old"><a href="tiposincapacidades"><i class="fa fa-hospital-user"></i>Tipos de incapacidad</a></li>
                     <li id="canalesventa" class="old"><a href="canalesventa"><i class="fa-solid fa-list-ul"></i>Canales de venta</a></li>
+                    <li id="tablasbd" class="old"><a href="tablasbd"><i class="fa-solid fa-table"></i>Tablas BD</a></li>
+                    <li id="procedimientosalmacenados" class="old"><a href="procedimientosalmacenados"><i class="fa-solid fa-database"></i>Procedimientos almacenados</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-fingerprint"></i><span class="nav-label">Biométricos</span><span class="fa arrow"></span></a>
+                <ul id="biometricos" class="nav nav-second-level collapse">
+                    <li id="biodispositivos" class="old"><a href="biodispositivos"><i class="fa-solid fa-address-card"></i>Dispositivos</a></li>
+                    <li id="biopersonas" class="old"><a href="biopersonas"><i class="fa-solid fa-person"></i>Personas</a></li>
                 </ul>
             </li>
             <li>

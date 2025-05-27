@@ -81,7 +81,7 @@ namespace fpWebApp
 
         private void CargarCategorias()
         {
-            string strQuery = "SELECT idCategoria, NombreCat FROM Categorias ";
+            string strQuery = "SELECT idCategoria, NombreCat FROM CategoriasTienda ";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
@@ -95,7 +95,7 @@ namespace fpWebApp
         {
             string strQuery = "SELECT * FROM Productos p " +
                 "LEFT JOIN Inventario i ON i.idProducto = p.idProducto " +
-                "LEFT JOIN Categorias c ON p.idCategoria = c.idCategoria " +
+                "LEFT JOIN CategoriasTienda c ON p.idCategoria = c.idCategoria " +
                 "WHERE p.idProducto = " + Request.QueryString["id"].ToString();
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
@@ -108,7 +108,7 @@ namespace fpWebApp
             txbCodigo.Text = dt.Rows[0]["CodigoProd"].ToString();
 
             txbPrecio.Text = dt.Rows[0]["PrecioPublicoProd"].ToString();
-            ltPrecio.Text = string.Format("{0:C0}", dt.Rows[0]["PrecioPublicoProd"]);
+            ltPrecio.Text = "$ " + string.Format("{0:N0}", dt.Rows[0]["PrecioPublicoProd"]);
 
             txbDetalle.Text = dt.Rows[0]["DetalleProd"].ToString();
             ltDetalle.Text = dt.Rows[0]["DetalleProd"].ToString();

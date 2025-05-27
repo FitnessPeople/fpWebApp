@@ -316,7 +316,7 @@ namespace fpWebApp
 
                         cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", txbEmail.Text.ToString(), "Nuevo registro en Fitness People", strMensaje);
 
-                        //Response.Redirect("afiliados");
+                        Response.Redirect("afiliados");
                     }
                 }
             }

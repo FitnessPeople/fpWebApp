@@ -68,7 +68,7 @@ namespace fpWebApp
         {
             string strQuery = "SELECT * FROM Productos p " +
                 "LEFT JOIN Inventario i ON i.idProducto = p.idProducto " +
-                "LEFT JOIN Categorias c ON p.idCategoria = c.idCategoria";
+                "LEFT JOIN CategoriasTienda c ON p.idCategoria = c.idCategoria";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 

@@ -204,6 +204,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbFechaInicio;
 
         /// <summary>
+        /// Control rfvFechaInicio.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvFechaInicio;
+
+        /// <summary>
         /// Control txbFechaFinal.
         /// </summary>
         /// <remarks>
@@ -211,6 +220,24 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbFechaFinal;
+
+        /// <summary>
+        /// Control rfvFechaFinal.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvFechaFinal;
+
+        /// <summary>
+        /// Control cbPermanente.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbPermanente;
 
         /// <summary>
         /// Control btnSimular.

@@ -12,7 +12,7 @@
     <div class="col-lg-3">
         <div class="widget style1 bg-success">
             <div class="row">
-                <div class="col-xs-4 text-center">
+                <div class="col-xs-4">
                     <i class="fa fa-user-tie fa-5x"></i>
                 </div>
                 <div class="col-xs-8 text-right">

@@ -132,10 +132,10 @@
                                                     <img src="img/productos/<%# Eval("Imagen1Prod") %>" class="img-responsive" />
                                                 </div>
                                                 <div class="product-desc" style="padding: 20px;">
-                                                    <span class="product-price" style="background-color: #1ab394;"><%# Eval("PrecioPublicoProd", "{0:C0}") %>
+                                                    <span class="product-price" style="background-color: #1ab394;">$ <%# Eval("PrecioPublicoProd", "{0:N0}") %>
                                                     </span>
                                                     <small class="text-muted"><%# Eval("NombreCat") %></small>
-                                                    <small class="text-muted">(<%# Eval("Stock") %> unidades en stock)</small>
+                                                    <small class="text-muted">(<%# Eval("Stock") %> unidades en inventario)</small>
                                                     <a href="#" class="product-name"><%# Eval("NombreProd") %></a>
 
                                                     <div class="small m-t-xs">

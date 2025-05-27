@@ -185,7 +185,8 @@
                                             <tr>
                                                 <th data-sortable="false" data-breakpoints="xs">Documento</th>
                                                 <th data-breakpoints="xs">Nombre</th>
-                                                <th data-breakpoints="xs sm md">Celular</th>
+                                                <th data-breakpoints="xs sm md">Teléfono Corporativo</th>
+                                                <th data-breakpoints="xs sm md">Correo Corporativo</th>
                                                 <%--<th data-breakpoints="xs sm md">Correo</th>--%>
                                                 <th data-breakpoints="xs sm md">Cargo</th>
                                                 <%--<th data-hide="phone,tablet">Cargo</th>--%>
@@ -202,8 +203,9 @@
                                                         <td><%# Eval("DocumentoEmpleado") %></td>
                                                         <td><%--<img class="img-sm" src="img/empleados/<%# Eval("FotoEmpleado") %>" />--%>
                                                             <%# Eval("NombreEmpleado") %></td>
-                                                        <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoEmpleado") %>" target="_blank"><%# Eval("TelefonoEmpleado") %></a></td>
-                                                        <td><i class="fa fa-user-nurse m-r-xs font-bold"></i><%# Eval("Cargo") %></td>
+                                                        <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoCorporativo") %>" target="_blank"><%# Eval("TelefonoCorporativo") %></a></td>
+                                                        <td><i class="fa fa-envelope m-r-xs font-bold"></i><a href="mailto:<%# Eval("EmailCorporativo") %>" title="Enviar correo"><%# Eval("EmailCorporativo") %></a></td>
+                                                        <td><a href="cargos" title="Ir a Cargos"><i class="fa fa-user-nurse m-r-xs font-bold"></i><%# Eval("Cargo") %></a></td>
                                                         <%--<td><i class="fa fa-user-tie m-r-xs font-bold"></i><%# Eval("CargoEmpleado") %></td>--%>
                                                         <td><%# Eval("icono") %><%# Eval("FechaNacEmpleado", "{0:dd MMM}") %></td>
                                                         <td><span class="badge badge-<%# Eval("label") %>"><%# Eval("Estado") %></span></td>

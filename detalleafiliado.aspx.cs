@@ -1,5 +1,4 @@
-﻿using MySqlX.XDevAPI.Common;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -152,7 +151,9 @@ namespace fpWebApp
             }
             ltDetalle.Text += "</table>";
 
-            int idempresa =2;//2 Armatura tabla integraciones
+
+            // Consulta en Armatura la existencia de los datos biométricos
+            int idempresa = 2; //2 Armatura tabla integraciones
             string parametro = string.Empty;
             DataTable dti = cg.ConsultarUrl(idempresa);
             string urlServicio = dti.Rows[0]["urlTest"].ToString() + parametro;

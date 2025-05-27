@@ -66,6 +66,9 @@ namespace fpWebApp
                         txbFechaInicio.Attributes.Add("type", "date");
                         txbFechaFinal.Attributes.Add("type", "date");
 
+                        txbFechaInicio.Attributes.Add("value","2025-05-01");
+                        txbFechaFinal.Attributes.Add("value", "2025-05-31");
+
                         if (Request.QueryString.Count > 0)
                         {
                             rpPlanes.Visible = false;
@@ -82,8 +85,10 @@ namespace fpWebApp
                                     txbDiasCongelamiento.Text = dt.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',','.');
                                     txbDescuentoMensual.Text = dt.Rows[0]["DescuentoMensual"].ToString();
                                     txbMesesMaximo.Text = dt.Rows[0]["MesesMaximo"].ToString();
-                                    txbFechaInicio.Text = dt.Rows[0]["FechaInicial"].ToString();
-                                    txbFechaFinal.Text = dt.Rows[0]["FechaFinal"].ToString();
+                                    txbFechaInicio.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
+                                    txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
+                                    rblColor.SelectedIndex = Convert.ToInt32(rblColor.Items.IndexOf(rblColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
+                                    cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                     btnAgregar.Text = "Actualizar";
                                     ltTitulo.Text = "Actualizar Plan";
                                 }
@@ -110,8 +115,10 @@ namespace fpWebApp
                                         txbDescuentoMensual.Text = dt.Rows[0]["DescuentoMensual"].ToString();
                                         txbMesesMaximo.Text = dt.Rows[0]["MesesMaximo"].ToString();
                                         txbDiasCongelamiento.Text = dt1.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
-                                        txbFechaInicio.Text = dt1.Rows[0]["FechaInicial"].ToString();
-                                        txbFechaFinal.Text = dt1.Rows[0]["FechaFinal"].ToString();
+                                        txbFechaInicio.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
+                                        txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
+                                        rblColor.SelectedIndex = Convert.ToInt32(rblColor.Items.IndexOf(rblColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
+                                        cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                         txbPlan.Enabled = false;
                                         txbDescripcion.Enabled = false;
                                         txbPrecio.Enabled = false;
@@ -120,6 +127,8 @@ namespace fpWebApp
                                         txbDiasCongelamiento.Enabled = false;
                                         txbFechaInicio.Enabled = false;
                                         txbFechaFinal.Enabled = false;
+                                        rblColor.Enabled = false;
+                                        cbPermanente.Enabled = false;
                                         btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                         btnAgregar.Enabled = false;
                                         ltTitulo.Text = "Borrar Plan";
@@ -139,8 +148,10 @@ namespace fpWebApp
                                         txbDescuentoMensual.Text = dt.Rows[0]["DescuentoMensual"].ToString();
                                         txbMesesMaximo.Text = dt.Rows[0]["MesesMaximo"].ToString();
                                         txbDiasCongelamiento.Text = dt1.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
-                                        txbFechaInicio.Text = dt1.Rows[0]["FechaInicial"].ToString();
-                                        txbFechaFinal.Text = dt1.Rows[0]["FechaFinal"].ToString();
+                                        txbFechaInicio.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
+                                        txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
+                                        rblColor.SelectedIndex = Convert.ToInt32(rblColor.Items.IndexOf(rblColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
+                                        cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                         txbPlan.Enabled = false;
                                         txbDescripcion.Enabled = false;
                                         txbPrecio.Enabled = false;
@@ -149,6 +160,8 @@ namespace fpWebApp
                                         txbDiasCongelamiento.Enabled = false;
                                         txbFechaInicio.Enabled = false;
                                         txbFechaFinal.Enabled = false;
+                                        rblColor.Enabled = false;
+                                        cbPermanente.Enabled = false;
                                         btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                         ltTitulo.Text = "Borrar Plan";
                                     }
@@ -231,6 +244,11 @@ namespace fpWebApp
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
+            int intPermanente = 0;
+            if (cbPermanente.Checked)
+            {
+                intPermanente = 1;
+            }
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
@@ -247,7 +265,8 @@ namespace fpWebApp
                         rblColor.SelectedItem.Value.ToString(),
                         double.Parse(txbDiasCongelamiento.Text.ToString()), 
                         txbFechaInicio.Text.ToString(), 
-                        txbFechaFinal.Text.ToString());
+                        txbFechaFinal.Text.ToString(),
+                        intPermanente);
 
                     string strNewData = TraerData();
 
@@ -274,7 +293,8 @@ namespace fpWebApp
                         int.Parse(Session["idusuario"].ToString()),
                         double.Parse(txbDiasCongelamiento.Text.ToString()),
                         txbFechaInicio.Text.ToString(),
-                        txbFechaFinal.Text.ToString());
+                        txbFechaFinal.Text.ToString(), 
+                        intPermanente);
 
                         cg.InsertarLog(Session["idusuario"].ToString(), "planes", "Agrega", "El usuario agregó un nuevo plan: " + txbPlan.Text.ToString() + ".", "", "");
                     }
@@ -359,7 +379,7 @@ namespace fpWebApp
                     _strData += "data: [";
 
                     intPrecioBase = Convert.ToInt32(dt.Rows[i]["PrecioBase"].ToString());
-                    dobDescuentoMensual = Convert.ToInt32(dt.Rows[i]["DescuentoMensual"].ToString());
+                    dobDescuentoMensual = Convert.ToDouble(dt.Rows[i]["DescuentoMensual"].ToString());
                     for (int j = 0; j < 12; j++)
                     {
                         double dobDescuento = j * dobDescuentoMensual;

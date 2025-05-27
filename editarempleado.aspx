@@ -151,7 +151,7 @@
                                     <div class="row m-b-lg m-t-lg">
                                         <div class="col-md-9">
                                             <div class="profile-image">
-                                                <img class="img-circle circle-border m-b-md" alt="profile" runat="server" id="imgFoto" />
+                                                <img src="1" class="img-circle circle-border m-b-md" alt="profile" runat="server" id="imgFoto" />
                                             </div>
                                             <div class="profile-info">
                                                 <div class="">
@@ -457,6 +457,8 @@
                                                                     </asp:RadioButtonList>
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                         <div class="row">
                                                               <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <label>Canal de ventas</label>
@@ -466,8 +468,6 @@
                                                                     </asp:DropDownList>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <label>Empresa FP</label>
@@ -540,6 +540,16 @@
                     required: true,
                     minlength: 10
                 },
+                txbTelefonoCorp: {
+                    required: true,
+                    minlength: 10
+                },
+                txbEmail: {
+                    required: true,
+                },
+                txbEmailCorp: {
+                    required: true,
+                },
                 txbDireccion: {
                     required: true,
                     minlength: 10
@@ -552,6 +562,12 @@
                 },
                 ddlCargo: {
                     required: true                    
+                },
+                ddlEstadoCivil: {
+                    required: true
+                },
+                ddlGenero: {
+                    required: true
                 },
                 txbContrato: {
                     required: true,
@@ -588,6 +604,9 @@
                     required: true
                 },
                 ddlCesantias: {
+                    required: true
+                },
+                ddlEmpresasFP: {
                     required: true
                 },
             },

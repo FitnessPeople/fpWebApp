@@ -179,6 +179,7 @@
                                         <thead>
                                             <tr>
                                                 <th data-sortable="false" data-breakpoints="xs">Nombre</th>
+                                                <th data-sortable="false" data-breakpoints="xs">Cargo</th>
                                                 <th data-sortable="false" data-breakpoints="xs sm md">Empleado</th>
                                                 <th data-breakpoints="xs sm md">Correo</th>
                                                 <%--<th data-sortable="false" data-breakpoints="xs sm md">Clave</th>--%>
@@ -193,12 +194,13 @@
                                                 <ItemTemplate>
                                                     <tr>
                                                         <td><%# Eval("NombreUsuario") %></td>
-                                                        <td><span class='badge badge-<%# Eval("label") %>'><%# Eval("Empleado") %></span></td>
+                                                        <td><%# Eval("CargoUsuario") %></td>
+                                                        <td><a href="empleados" title="Ir a Empleados"><span class='badge badge-<%# Eval("label") %>'><%# Eval("Empleado") %></span></a></td>
                                                         <td><i class="fa fa-circle-user m-r-xs font-bold"></i><%# Eval("EmailUsuario") %></td>
                                                         <%--<td><i class="fa fa-unlock-keyhole m-r-xs font-bold"></i><%# Eval("ClaveUsuario") %></td>--%>
                                                         <%--<td><%# Eval("CargoUsuario") %></td>--%>
-                                                        <td><i class="fa fa-user-shield m-r-xs font-bold"></i><%# Eval("Perfil") %></td>
-                                                        <td><a runat="server" id="cambiaestado" visible="false"><span class='badge badge-<%# Eval("estatus") %>'><%# Eval("EstadoUsuario") %></span></a></td>
+                                                        <td><a href="perfiles" title="Ir a Perfiles"><i class="fa fa-user-shield m-r-xs font-bold"></i><%# Eval("Perfil") %></a></td>
+                                                        <td><a runat="server" id="cambiaestado" visible="false" title="Cambiar estado"><span class='badge badge-<%# Eval("estatus") %>'><%# Eval("EstadoUsuario") %></span></a></td>
                                                         <td>
                                                             <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>

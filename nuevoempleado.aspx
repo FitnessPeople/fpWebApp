@@ -503,6 +503,16 @@
                     required: true,
                     minlength: 10
                 },
+                txbTelefonoCorp: {
+                    required: true,
+                    minlength: 10
+                },
+                txbEmail: {
+                    required: true,
+                },
+                txbEmailCorp: {
+                    required: true,
+                },
                 txbDireccion: {
                     required: true,
                     minlength: 10

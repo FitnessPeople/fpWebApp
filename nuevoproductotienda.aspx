@@ -178,6 +178,29 @@
                                         </div>
 
                                         <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Talla:</label>
+                                                    <asp:RadioButtonList ID="rblTalla" runat="server" RepeatDirection="Horizontal">
+                                                        <asp:ListItem Text="&nbsp;S&nbsp;&nbsp;&nbsp;&nbsp;" Value="S"></asp:ListItem>
+                                                        <asp:ListItem Text="&nbsp;M&nbsp;&nbsp;&nbsp;&nbsp;" Value="M"></asp:ListItem>
+                                                        <asp:ListItem Text="&nbsp;L&nbsp;&nbsp;&nbsp;&nbsp;" Value="L"></asp:ListItem>
+                                                        <asp:ListItem Text="&nbsp;XL&nbsp;&nbsp;&nbsp;&nbsp;" Value="XL"></asp:ListItem>
+                                                    </asp:RadioButtonList>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Color:</label>
+                                                    <asp:RadioButtonList ID="rblColor" runat="server" RepeatDirection="Horizontal">
+                                                        <asp:ListItem Text="&nbsp;Blanco&nbsp;&nbsp;&nbsp;&nbsp;" Value="Blanco"></asp:ListItem>
+                                                        <asp:ListItem Text="&nbsp;Negro&nbsp;&nbsp;&nbsp;&nbsp;" Value="Negro"></asp:ListItem>
+                                                    </asp:RadioButtonList>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label>Detalle:</label>

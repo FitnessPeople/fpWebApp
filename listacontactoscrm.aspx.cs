@@ -321,7 +321,7 @@ namespace fpWebApp
                     $('.modal-backdrop').remove();
                     Swal.fire({
                         title: 'Error',
-                        text: 'Ha ocurrido un error inesperado.',
+                        text: '" + ex.Message.Replace("'", "\\'") + @"',
                         icon: 'error'
                     });
                 ";
@@ -499,7 +499,7 @@ namespace fpWebApp
                     $('.modal-backdrop').remove();
                     Swal.fire({
                         title: 'Error',
-                        text: 'Ha ocurrido un error inesperado.',
+                        text: '" + ex.Message.Replace("'", "\\'") + @"',
                         icon: 'error'
                     });
                 ";

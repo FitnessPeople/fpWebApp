@@ -18,6 +18,8 @@ using System.Globalization;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.Security.Cryptography;
+using Npgsql;
+using System.Diagnostics;
 
 namespace fpWebApp
 {
@@ -149,6 +151,44 @@ namespace fpWebApp
             return respuesta;
         }
 
+        public DataTable TraerDatosArmatura(string strQuery)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string connString = ConfigurationManager.ConnectionStrings["PSIPlatformBoot"].ConnectionString;
+                using (var conn = new NpgsqlConnection(connString))
+                {
+                    conn.Open();
+
+                    using (var cmd = new NpgsqlCommand(strQuery, conn))
+                    {
+                        NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
+                        DataSet ds = new DataSet();
+                        da.Fill(ds);
+
+                        try
+                        {
+                            dt = ds.Tables[0];
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine("Error: ---> " + ex.Message);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
         public string InsertarLog(string idUsuario, string tabla, string accion, string descripcion, string datosAnteriores, string datosNuevos)
         {
             string respuesta = string.Empty;
@@ -202,12 +242,18 @@ namespace fpWebApp
             objeto_mail.Subject = strAsunto;
             objeto_mail.Body = strMensaje;
 
-            SmtpClient client = new SmtpClient();
-            client.Host = "localhost";
-            client.Port = 25;
-            client.UseDefaultCredentials = false;
+            //SmtpClient client = new SmtpClient();
+            //client.Host = "localhost";
+            //client.Port = 25;
+            //client.UseDefaultCredentials = false;
+            //client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            //client.Credentials = new System.Net.NetworkCredential("afiliaciones@fitnesspeoplecolombia.com", "i18Jo%5b3");
+
+            SmtpClient client = new SmtpClient("smtp.gmail.com", 587); // o 465 con SSL
+            client.EnableSsl = true; // o false si estás usando 465
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.Credentials = new System.Net.NetworkCredential("afiliaciones@fitnesspeoplecolombia.com", "i18Jo%5b3");
+            client.UseDefaultCredentials = false;
+            client.Credentials = new System.Net.NetworkCredential("sistemas@fitnesspeoplecmd.com", "rfhw romt jngp pmpo"); // Reemplaza con tu correo y contraseña de aplicación
 
             try
             {
@@ -4829,7 +4875,7 @@ namespace fpWebApp
         }
 
         public string InsertarPlan(string nombrePlan, string descripcionPlan, int precio, double descuentoMensual, int mesesMaximo,
-            string color, int idUsuario, double Dias, string fechaInicio, string fechaFinal)
+            string color, int idUsuario, double Dias, string fechaInicio, string fechaFinal, int permanente)
         {
             string respuesta = string.Empty;
             try
@@ -4851,6 +4897,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_dias_congelamiento", Dias);
                         cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicio);
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
+                        cmd.Parameters.AddWithValue("@p_permanente", permanente);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -4866,7 +4913,7 @@ namespace fpWebApp
         }
 
         public string ActualizarPlan(int idPlan, string nombrePlan, string descripcionPlan, int precio, double descuentoMensual, int mesesMaximo,
-            string color, double Dias, string fechaInicio, string fechaFinal)
+            string color, double Dias, string fechaInicio, string fechaFinal, int permanente)
         {
             string respuesta = string.Empty;
             try
@@ -4892,6 +4939,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_dias_congelamiento", Dias);
                         cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicio);
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
+                        cmd.Parameters.AddWithValue("@p_permanente", permanente);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -6559,6 +6607,96 @@ namespace fpWebApp
                 dt.Columns.Add("Error", typeof(string));
                 dt.Rows.Add(ex.Message);
                 respuesta = false;
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarAgendaCRM()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CONTACTOS_CRM_POR_PROX_FECHA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarTipoAfiliadCRM()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_TIPO_AFILIADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarCanalesMarketingCRM()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CANALES_MARKETING_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
             }
 
             return dt;
