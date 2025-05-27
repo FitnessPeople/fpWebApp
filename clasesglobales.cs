@@ -5611,7 +5611,7 @@ namespace fpWebApp
 
         #endregion
 
-        #region empleados
+        #region Empleados
 
         public DataTable ConsultarEmpleados()
         {
@@ -6230,7 +6230,7 @@ namespace fpWebApp
 
         #endregion
 
-        #region CMR
+        #region CRM
 
         public DataTable ConsultarContactosCRM(out decimal valorTotal)
         {
