@@ -129,7 +129,7 @@ namespace fpWebApp
                     btnEditar.Visible = true;
 
                     HtmlButton btnPlan = (HtmlButton)e.Item.FindControl("btnPlan");
-                    btnPlan.Attributes.Add("onClick", "window.location.href='planesAfil?id=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnPlan.Attributes.Add("onClick", "window.location.href='planesAfiliado?id=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
                     btnPlan.Visible = true;
 
                     HtmlButton btnTraspaso = (HtmlButton)e.Item.FindControl("btnTraspaso");

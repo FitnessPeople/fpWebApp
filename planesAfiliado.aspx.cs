@@ -19,7 +19,7 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            CargarPlanes();
+            //CargarPlanes();
 
             if (!IsPostBack)
             {
@@ -77,6 +77,7 @@ namespace fpWebApp
 
                         //btnMes1.Attributes.Add("style", "padding: 6px 9px;");
 
+                        ListaPlanes();
                         CargarAfiliado();
                         CargarPlanesAfiliado();
 
@@ -97,33 +98,62 @@ namespace fpWebApp
             }
         }
 
-        private void CargarPlanes()
-        {
-            string strQuery = "SELECT * " +
-                "FROM PlanesModificado " +
-                "WHERE EstadoPlan = 'Activo' " +
-                "AND (FechaInicial IS NULL OR FechaInicial <= CURDATE()) " +
-                "AND (FechaFinal IS NULL OR FechaFinal >= CURDATE())";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+        //private void CargarPlanes()
+        //{
+        //    string strQuery = "SELECT * " +
+        //        "FROM PlanesModificado " +
+        //        "WHERE EstadoPlan = 'Activo' " +
+        //        "AND (FechaInicial IS NULL OR FechaInicial <= CURDATE()) " +
+        //        "AND (FechaFinal IS NULL OR FechaFinal >= CURDATE())";
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.TraerDatos(strQuery);
 
-            if (dt.Rows.Count > 0)
-            {
-                PlaceHolder ph = ((PlaceHolder)this.FindControl("phPlanes"));
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    Button btn = new Button();
-                    btn.Text = dt.Rows[i]["NombrePlan"].ToString();
-                    btn.CssClass = "btn btn-" + dt.Rows[i]["NombreColorPlan"].ToString() + " btn-outline btn-block btn-lg font-bold";
-                    btn.ToolTip = dt.Rows[i]["NombrePlan"].ToString();
-                    btn.Command += new CommandEventHandler(btn_Click);
-                    btn.CommandArgument = dt.Rows[i]["idPlan"].ToString();
-                    btn.ID = dt.Rows[i]["idPlan"].ToString();
-                    ph.Controls.Add(btn);
-                }
-            }
+        //    if (dt.Rows.Count > 0)
+        //    {
+        //        PlaceHolder ph = ((PlaceHolder)this.FindControl("phPlanes"));
+        //        for (int i = 0; i < dt.Rows.Count; i++)
+        //        {
+        //            Button btn = new Button();
+        //            btn.Text = dt.Rows[i]["NombrePlan"].ToString();
+        //            btn.CssClass = "btn btn-" + dt.Rows[i]["NombreColorPlan"].ToString() + " btn-outline btn-block btn-sm font-bold";
+        //            btn.ToolTip = dt.Rows[i]["NombrePlan"].ToString();
+        //            btn.Command += new CommandEventHandler(btn_Click);
+        //            btn.CommandArgument = dt.Rows[i]["idPlan"].ToString();
+        //            btn.ID = dt.Rows[i]["idPlan"].ToString();
+        //            ph.Controls.Add(btn);
+        //        }
+        //    }
+        //    dt.Dispose();
+        //}
+
+        private void ListaPlanes()
+        {
+            clasesglobales cg = new clasesglobales();
+            //DataTable dt = cg.ConsultarPlanes();
+            string strQuery = "SELECT *, IF(pm.EstadoPlan='Activo','primary','danger') AS label " +
+                "FROM PlanesModificado pm ";
+            DataTable dt = cg.TraerDatos(strQuery);
+            rpPlanes.DataSource = dt;
+            rpPlanes.DataBind();
             dt.Dispose();
         }
+
+        //protected void rpPlanes_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        //{
+        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        //    {
+        //        if (ViewState["CrearModificar"].ToString() == "1")
+        //        {
+        //            Button btnSeleccionarPlan = (Button)e.Item.FindControl("btnSeleccionarPlan");
+        //            btnSeleccionarPlan.Text = ((DataRowView)e.Item.DataItem).Row[1].ToString();
+        //            btnSeleccionarPlan.CssClass = "btn btn-" + ((DataRowView)e.Item.DataItem).Row[8].ToString() + " btn-outline";
+        //            btnSeleccionarPlan.Command += new CommandEventHandler(btn_Click);
+        //            btnSeleccionarPlan.CommandArgument = ((DataRowView)e.Item.DataItem).Row[0].ToString();
+        //            btnSeleccionarPlan.ID = ((DataRowView)e.Item.DataItem).Row[0].ToString();
+        //            btnSeleccionarPlan.Visible = true;
+        //        }
+        //    }
+        //}
 
         private void CargarAfiliado()
         {
@@ -220,7 +250,7 @@ namespace fpWebApp
         private string listarDetalle()
         {
             string parametro = string.Empty;
-            string tester = string.Empty;
+            //string tester = string.Empty;
             string mensaje = string.Empty;
             int idempresa = 4;//Wompi
             clasesglobales cg = new clasesglobales();
@@ -395,7 +425,7 @@ namespace fpWebApp
             ltPrecioFinal.Text = "$" + String.Format("{0:N0}", ViewState["precioTotal"]);
 
             CalculoPrecios();
-            ActivarCortesia("0");
+            ActivarCortesia(ViewState["mesesCortesia"].ToString());
 
             //ltDescuento.Text = "0%";
             //ltAhorro.Text = "$0";
@@ -427,7 +457,7 @@ namespace fpWebApp
 
             ltObservaciones.Text = "Valor sin descuento: $" + string.Format("{0:N0}", intPrecioBase) + "<br /><br />";
             ltObservaciones.Text += "<b>Meses</b>: " + intMeses.ToString() + ".<br />";
-            ltObservaciones.Text += "<b>Descuento</b>: " + dobDescuento.ToString() + "%.<br />";
+            ltObservaciones.Text += "<b>Descuento</b>: " + string.Format("{0:N2}", dobDescuento) + "%.<br />";
             ltObservaciones.Text += "<b>Valor del mes con descuento</b>: $" + string.Format("{0:N0}", intConDescuento) + ".<br />";
             ltObservaciones.Text += "<b>Ahorro</b>: $" + string.Format("{0:N0}", dobAhorro) + ".<br />";
             ltObservaciones.Text += "<b>Valor Total</b>: $" + string.Format("{0:N0}", intPrecio) + ".<br />";
@@ -472,41 +502,27 @@ namespace fpWebApp
             switch (strCortesia)
             {
                 case "0":
-                    btn7dias.Enabled = false;
-                    btn15dias.Enabled = false;
+                    btn7dias.Enabled = true;
+                    btn15dias.Enabled = true;
                     btn30dias.Enabled = false;
                     btn60dias.Enabled = false;
                     btn90dias.Enabled = false;
                     break;
                 case "1":
                     btn7dias.Enabled = true;
-                    btn15dias.Enabled = false;
-                    btn30dias.Enabled = false;
+                    btn15dias.Enabled = true;
+                    btn30dias.Enabled = true;
                     btn60dias.Enabled = false;
                     btn90dias.Enabled = false;
                     break;
                 case "2":
                     btn7dias.Enabled = true;
                     btn15dias.Enabled = true;
-                    btn30dias.Enabled = false;
-                    btn60dias.Enabled = false;
-                    btn90dias.Enabled = false;
-                    break;
-                case "3":
-                    btn7dias.Enabled = true;
-                    btn15dias.Enabled = true;
-                    btn30dias.Enabled = true;
-                    btn60dias.Enabled = false;
-                    btn90dias.Enabled = false;
-                    break;
-                case "4":
-                    btn7dias.Enabled = true;
-                    btn15dias.Enabled = true;
                     btn30dias.Enabled = true;
                     btn60dias.Enabled = true;
                     btn90dias.Enabled = false;
                     break;
-                case "5":
+                case "3":
                     btn7dias.Enabled = true;
                     btn15dias.Enabled = true;
                     btn30dias.Enabled = true;
@@ -744,6 +760,74 @@ namespace fpWebApp
                         "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
                         "Elija el tipo de plan." +
                         "</div></div>";
+                }
+            }
+        }
+
+        //protected void btnSeleccionarPlan_Click(object sender, EventArgs e)
+        //{
+        //    string strQuery = "SELECT * " +
+        //        "FROM PlanesModificado " +
+        //        "WHERE idPlan = ";
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.TraerDatos(strQuery);
+
+        //    ViewState["idPlan"] = dt.Rows[0]["idPlan"].ToString();
+        //    ViewState["nombrePlan"] = dt.Rows[0]["NombrePlan"].ToString();
+        //    ViewState["precioTotal"] = Convert.ToInt32(dt.Rows[0]["PrecioTotal"].ToString());
+        //    ViewState["precioBase"] = Convert.ToInt32(dt.Rows[0]["PrecioBase"].ToString());
+        //    ViewState["meses"] = Convert.ToDouble(dt.Rows[0]["Meses"].ToString());
+        //    ViewState["mesesCortesia"] = Convert.ToDouble(dt.Rows[0]["MesesCortesia"].ToString());
+
+        //    ltPrecioBase.Text = "$" + String.Format("{0:N0}", ViewState["precioBase"]);
+        //    ltPrecioFinal.Text = "$" + String.Format("{0:N0}", ViewState["precioTotal"]);
+
+        //    CalculoPrecios();
+        //    ActivarCortesia(ViewState["mesesCortesia"].ToString());
+
+        //    ltDescripcion.Text = "<b>Características</b>: " + dt.Rows[0]["DescripcionPlan"].ToString() + "<br />";
+
+        //    ltNombrePlan.Text = "<b>Plan " + ViewState["nombrePlan"].ToString() + "</b>";
+        //}
+
+        protected void rpPlanes_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if (e.CommandName == "SeleccionarPlan")
+            {
+                int idPlan = Convert.ToInt32(e.CommandArgument.ToString());
+                string strQuery = "SELECT * " +
+                    "FROM PlanesModificado " +
+                    "WHERE idPlan = " + idPlan.ToString();
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.TraerDatos(strQuery);
+
+                ViewState["idPlan"] = dt.Rows[0]["idPlan"].ToString();
+                ViewState["nombrePlan"] = dt.Rows[0]["NombrePlan"].ToString();
+                ViewState["precioTotal"] = Convert.ToInt32(dt.Rows[0]["PrecioTotal"].ToString());
+                ViewState["precioBase"] = Convert.ToInt32(dt.Rows[0]["PrecioBase"].ToString());
+                ViewState["meses"] = Convert.ToDouble(dt.Rows[0]["Meses"].ToString());
+                ViewState["mesesCortesia"] = Convert.ToDouble(dt.Rows[0]["MesesCortesia"].ToString());
+
+                ltPrecioBase.Text = "$" + String.Format("{0:N0}", ViewState["precioBase"]);
+                ltPrecioFinal.Text = "$" + String.Format("{0:N0}", ViewState["precioTotal"]);
+
+                CalculoPrecios();
+                ActivarCortesia(ViewState["mesesCortesia"].ToString());
+
+                ltDescripcion.Text = "<b>Características</b>: " + dt.Rows[0]["DescripcionPlan"].ToString() + "<br />";
+
+                ltNombrePlan.Text = "<b>Plan " + ViewState["nombrePlan"].ToString() + "</b>";
+            }
+        }
+
+        protected void rpPlanes_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                if (ViewState["CrearModificar"].ToString() == "1")
+                {
+                    LinkButton lnkPlan = (LinkButton)e.Item.FindControl("btnSeleccionarPlan");
+                    lnkPlan.Attributes.Add("class", "btn btn-outline btn-" + ((DataRowView)e.Item.DataItem).Row[8].ToString() + " btn-block btn-sm");
                 }
             }
         }
