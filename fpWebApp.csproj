@@ -963,6 +963,7 @@
     <Content Include="perfiles.aspx" />
     <Content Include="planes.aspx" />
     <Content Include="planesAfil.aspx" />
+    <Content Include="planesAfiliado.aspx" />
     <Content Include="plantilla.aspx" />
     <Content Include="procedimientosalmacenados.aspx" />
     <Content Include="productostienda.aspx" />
@@ -1243,6 +1244,8 @@
     </Compile>
     <Compile Include="controles\indicadores05.ascx.designer.cs">
       <DependentUpon>indicadores05.ascx</DependentUpon>
+	  <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="controles\indicadoresgympass.ascx.cs">
       <DependentUpon>indicadoresgympass.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1791,6 +1794,13 @@
     </Compile>
     <Compile Include="planesAfil.aspx.designer.cs">
       <DependentUpon>planesAfil.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="planesAfiliado.aspx.cs">
+      <DependentUpon>planesAfiliado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="planesAfiliado.aspx.designer.cs">
+      <DependentUpon>planesAfiliado.aspx</DependentUpon>
     </Compile>
     <Compile Include="plantilla.aspx.cs">
       <DependentUpon>plantilla.aspx</DependentUpon>
