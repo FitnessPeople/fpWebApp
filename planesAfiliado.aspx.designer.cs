@@ -195,13 +195,13 @@ namespace fpWebApp
         protected global::System.Web.UI.UpdatePanel upPlanes;
 
         /// <summary>
-        /// Control phPlanes.
+        /// Control rpPlanes.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phPlanes;
+        protected global::System.Web.UI.WebControls.Repeater rpPlanes;
 
         /// <summary>
         /// Control btn7dias.
@@ -247,33 +247,6 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btn90dias;
-
-        /// <summary>
-        /// Control btnRegalo1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnRegalo1;
-
-        /// <summary>
-        /// Control btnRegalo2.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnRegalo2;
-
-        /// <summary>
-        /// Control btnRegalo3.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnRegalo3;
 
         /// <summary>
         /// Control ltPrecioBase.
