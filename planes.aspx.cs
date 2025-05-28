@@ -204,7 +204,11 @@ namespace fpWebApp
         private void ListaPlanes()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanes();
+            //DataTable dt = cg.ConsultarPlanes();
+            string strQuery = "SELECT *, IF(pm.EstadoPlan='Activo','primary','danger') AS label " +
+                "FROM PlanesModificado pm " +
+                "LEFT JOIN Usuarios u ON pm.idUsuario = u.idUsuario ";
+            DataTable dt = cg.TraerDatos(strQuery);
             rpPlanes.DataSource = dt;
             rpPlanes.DataBind();
             dt.Dispose();
