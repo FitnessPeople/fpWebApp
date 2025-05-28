@@ -1252,7 +1252,7 @@
     </Compile>
     <Compile Include="controles\indicadores05.ascx.designer.cs">
       <DependentUpon>indicadores05.ascx</DependentUpon>
-	  <SubType>ASPXCodeBehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controles\indicadoresgympass.ascx.cs">
       <DependentUpon>indicadoresgympass.ascx</DependentUpon>

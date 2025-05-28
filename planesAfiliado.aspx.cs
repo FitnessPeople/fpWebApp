@@ -19,6 +19,7 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            CargarPlanes();
             //CargarPlanes();
 
             if (!IsPostBack)
@@ -98,6 +99,7 @@ namespace fpWebApp
             }
         }
 
+        private void CargarPlanes()
         //private void CargarPlanes()
         //{
         //    string strQuery = "SELECT * " +
@@ -128,11 +130,32 @@ namespace fpWebApp
 
         private void ListaPlanes()
         {
+            string strQuery = "SELECT * " +
+                "FROM PlanesModificado " +
+                "WHERE EstadoPlan = 'Activo' " +
+                "AND (FechaInicial IS NULL OR FechaInicial <= CURDATE()) " +
+                "AND (FechaFinal IS NULL OR FechaFinal >= CURDATE())";
             clasesglobales cg = new clasesglobales();
             //DataTable dt = cg.ConsultarPlanes();
             string strQuery = "SELECT *, IF(pm.EstadoPlan='Activo','primary','danger') AS label " +
                 "FROM PlanesModificado pm ";
             DataTable dt = cg.TraerDatos(strQuery);
+
+            if (dt.Rows.Count > 0)
+            {
+                PlaceHolder ph = ((PlaceHolder)this.FindControl("phPlanes"));
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Button btn = new Button();
+                    btn.Text = dt.Rows[i]["NombrePlan"].ToString();
+                    btn.CssClass = "btn btn-" + dt.Rows[i]["NombreColorPlan"].ToString() + " btn-outline btn-block btn-lg font-bold";
+                    btn.ToolTip = dt.Rows[i]["NombrePlan"].ToString();
+                    btn.Command += new CommandEventHandler(btn_Click);
+                    btn.CommandArgument = dt.Rows[i]["idPlan"].ToString();
+                    btn.ID = dt.Rows[i]["idPlan"].ToString();
+                    ph.Controls.Add(btn);
+                }
+            }
             rpPlanes.DataSource = dt;
             rpPlanes.DataBind();
             dt.Dispose();
@@ -250,6 +273,7 @@ namespace fpWebApp
         private string listarDetalle()
         {
             string parametro = string.Empty;
+            string tester = string.Empty;
             //string tester = string.Empty;
             string mensaje = string.Empty;
             int idempresa = 4;//Wompi
@@ -425,6 +449,7 @@ namespace fpWebApp
             ltPrecioFinal.Text = "$" + String.Format("{0:N0}", ViewState["precioTotal"]);
 
             CalculoPrecios();
+            ActivarCortesia("0");
             ActivarCortesia(ViewState["mesesCortesia"].ToString());
 
             //ltDescuento.Text = "0%";
@@ -457,6 +482,7 @@ namespace fpWebApp
 
             ltObservaciones.Text = "Valor sin descuento: $" + string.Format("{0:N0}", intPrecioBase) + "<br /><br />";
             ltObservaciones.Text += "<b>Meses</b>: " + intMeses.ToString() + ".<br />";
+            ltObservaciones.Text += "<b>Descuento</b>: " + dobDescuento.ToString() + "%.<br />";
             ltObservaciones.Text += "<b>Descuento</b>: " + string.Format("{0:N2}", dobDescuento) + "%.<br />";
             ltObservaciones.Text += "<b>Valor del mes con descuento</b>: $" + string.Format("{0:N0}", intConDescuento) + ".<br />";
             ltObservaciones.Text += "<b>Ahorro</b>: $" + string.Format("{0:N0}", dobAhorro) + ".<br />";
@@ -502,12 +528,27 @@ namespace fpWebApp
             switch (strCortesia)
             {
                 case "0":
+                    btn7dias.Enabled = false;
+                    btn15dias.Enabled = false;
+                    btn30dias.Enabled = false;
+                    btn60dias.Enabled = false;
+                    btn90dias.Enabled = false;
+                    break;
+                case "1":
+                    btn7dias.Enabled = true;
+                    btn15dias.Enabled = false;
+                    btn30dias.Enabled = false;
+                    btn60dias.Enabled = false;
+                    btn90dias.Enabled = false;
+                    break;
+                case "2":
                     btn7dias.Enabled = true;
                     btn15dias.Enabled = true;
                     btn30dias.Enabled = false;
                     btn60dias.Enabled = false;
                     btn90dias.Enabled = false;
                     break;
+                case "3":
                 case "1":
                     btn7dias.Enabled = true;
                     btn15dias.Enabled = true;
@@ -515,6 +556,7 @@ namespace fpWebApp
                     btn60dias.Enabled = false;
                     btn90dias.Enabled = false;
                     break;
+                case "4":
                 case "2":
                     btn7dias.Enabled = true;
                     btn15dias.Enabled = true;
@@ -522,6 +564,7 @@ namespace fpWebApp
                     btn60dias.Enabled = true;
                     btn90dias.Enabled = false;
                     break;
+                case "5":
                 case "3":
                     btn7dias.Enabled = true;
                     btn15dias.Enabled = true;
