@@ -330,6 +330,7 @@
                                                                         <tr>
                                                                             <th>Nombre</th>
                                                                             <th data-breakpoints="xs">Descripción</th>
+                                                                            <th data-breakpoints="xs">Vigencia</th>
                                                                             <th data-breakpoints="xs" class="text-right">Precio</th>
                                                                         </tr>
                                                                     </thead>
@@ -342,6 +343,7 @@
                                                                                             CommandName="SeleccionarPlan"><%# Eval("NombrePlan") %></asp:LinkButton>
                                                                                         <%--<asp:Button runat="server" ID="btnSeleccionarPlan" OnClick="btnSeleccionarPlan_Click" CommandArgument="" />--%></td>
                                                                                     <td><i class="fa fa-note-sticky m-r-xs font-bold"></i><%# Eval("DescripcionPlan") %></td>
+                                                                                    <td><span class="pie"><%# Eval("diaspasados") %>/<%# Eval("diastotales") %></span> <%# Eval("Vigencia") %></td>
                                                                                     <td style="text-align: right;">$<%# Eval("PrecioTotal","{0:N0}") %></td>
                                                                                 </tr>
                                                                             </ItemTemplate>
