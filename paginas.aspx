@@ -144,22 +144,9 @@
                                             <div class="col-lg-12">
                                                 <div class="form-group">
                                                     <label>Categoría a la que pertenece la página:</label>
-                                                    <asp:DropDownList ID="ddlCategorias" runat="server" CssClass="form-control input-sm">
-                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                        <asp:ListItem Text="Afiliados" Value="Afiliados"></asp:ListItem>
-                                                        <asp:ListItem Text="Asistencial" Value="Asistencial"></asp:ListItem>
-                                                        <asp:ListItem Text="Reportes" Value="Reportes"></asp:ListItem>
-                                                        <asp:ListItem Text="CRM" Value="CRM"></asp:ListItem>
-                                                        <asp:ListItem Text="Contabilidad" Value="Contabilidad"></asp:ListItem>
-                                                        <asp:ListItem Text="Sistema" Value="Sistema"></asp:ListItem>
-                                                        <asp:ListItem Text="Configuración" Value="Configuración"></asp:ListItem>
-                                                        <asp:ListItem Text="Biométricos" Value="Biométricos"></asp:ListItem>
-                                                        <asp:ListItem Text="Página Web" Value="Página Web"></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                    <asp:RequiredFieldValidator ID="rfvCategorias" runat="server" 
-                                                        ErrorMessage="* Campo requerido" CssClass="text-danger font-bold" 
-                                                        ControlToValidate="ddlCategorias" InitialValue="" 
-                                                        ValidationGroup="agregar"></asp:RequiredFieldValidator>
+                                                    <asp:DropDownList CssClass="form-control required" ID="ddlCategorias" runat="server"
+                                                                      DataValueField="idCategoria" DataTextField="NombreCategoria"
+                                                                      AppendDataBoundItems="true" />
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Nombre de la página:</label>
@@ -238,7 +225,7 @@
                                                         <tr class="feed-element">
                                                             <td><%# Eval("Pagina") %></td>
                                                             <td><%# Eval("NombreAspx") %></td>
-                                                            <td><%# Eval("Categoria") %></td>
+                                                            <td><%# Eval("Nombre") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>

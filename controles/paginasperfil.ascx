@@ -14,7 +14,7 @@
             <div class="col-lg-6 form-horizontal">
                 <%--<form runat="server" id="form1">--%>
                     <div class="input-group">
-                        <input type="text" placeholder="Buscar" class="input form-control input-sm" name="txbBuscar" id="txbBuscar" runat="server">
+                        <input type="text" placeholder="Buscar" class="input form-control input-sm" name="txbBuscar" id="txbBuscar" runat="server" />
                         <span class="input-group-btn">
                             <button type="button" id="btnBuscar" name="btnBuscar" onserverclick="btnBuscar_Click" class="btn btn btn-primary btn-sm" runat="server"> <i class="fa fa-search"></i> Buscar</button>
                         </span>
@@ -44,7 +44,7 @@
                     <asp:Repeater ID="rpPaginas" runat="server">
                         <ItemTemplate>
                             <tr class="feed-element">
-                                <td><a href="<%# Eval("NombreAspx") %>"><%# Eval("Categoria") %> / <%# Eval("Pagina") %></a></td>
+                                <td><a href="<%# Eval("NombreAspx") %>"><%# Eval("idCategoria") %> / <%# Eval("Pagina") %></a></td>
                             </tr>
                         </ItemTemplate>
                     </asp:Repeater>

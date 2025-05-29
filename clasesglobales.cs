@@ -2029,7 +2029,7 @@ namespace fpWebApp
 
         #region Paginas
 
-        public string InsertarPagina(string Pagina, string Aspx, string Categoria)
+        public string InsertarPagina(string Pagina, string Aspx, int idCategoria)
         {
             string respuesta = string.Empty;
             try
@@ -2043,7 +2043,7 @@ namespace fpWebApp
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_pagina", Pagina);
                         cmd.Parameters.AddWithValue("@p_pagina_aspx", Aspx);
-                        cmd.Parameters.AddWithValue("@p_categoria", Categoria);
+                        cmd.Parameters.AddWithValue("@p_id_categoria", idCategoria);
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
                     }
@@ -2087,7 +2087,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public string ActualizarPagina(int idPagina, string nombrePagina, string nombreAspx, string categoria)
+        public string ActualizarPagina(int idPagina, string nombrePagina, string nombreAspx, int idCategoria)
         {
             string respuesta = string.Empty;
             try
@@ -2105,7 +2105,7 @@ namespace fpWebApp
                         // Parámetros de entrada
                         cmd.Parameters.AddWithValue("@p_nombre_pagina", nombrePagina);
                         cmd.Parameters.AddWithValue("@p_pagina_aspx", nombreAspx);
-                        cmd.Parameters.AddWithValue("@p_categoria", categoria);
+                        cmd.Parameters.AddWithValue("@p_id_categoria", idCategoria);
                         cmd.Parameters.AddWithValue("@p_id_pagina", idPagina);
 
                         cmd.ExecuteNonQuery();
@@ -2239,6 +2239,39 @@ namespace fpWebApp
             }
 
             return respuesta;
+        }
+
+        #endregion
+
+        #region Categorias Paginas
+
+        public DataTable ConsultarCategoriasPaginas()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CATEGORIAS_PAGINAS", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+            return dt;
         }
 
         #endregion

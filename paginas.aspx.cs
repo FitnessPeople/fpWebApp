@@ -36,6 +36,7 @@ namespace fpWebApp
                         {
                             divBotonesLista.Visible = true;
                             lbExportarExcel.Visible = false;
+                            CargarCategorias();
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
@@ -45,6 +46,7 @@ namespace fpWebApp
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             btnAgregar.Visible = true;
+                            CargarCategorias();
                         }
                     }
 
@@ -63,7 +65,7 @@ namespace fpWebApp
                             {
                                 txbPagina.Text = dt.Rows[0]["Pagina"].ToString();
                                 txbAspx.Text = dt.Rows[0]["NombreAspx"].ToString();
-                                ddlCategorias.SelectedIndex = Convert.ToInt16(ddlCategorias.Items.IndexOf(ddlCategorias.Items.FindByValue(dt.Rows[0]["Categoria"].ToString())));
+                                ddlCategorias.SelectedIndex = Convert.ToInt16(ddlCategorias.Items.IndexOf(ddlCategorias.Items.FindByValue(dt.Rows[0]["idCategoria"].ToString())));
 
                                 btnAgregar.Text = "Actualizar";
                                 ltTitulo.Text = "Actualizar Página";
@@ -85,7 +87,7 @@ namespace fpWebApp
                             {
                                 txbPagina.Text = dt.Rows[0]["Pagina"].ToString();
                                 txbPagina.Enabled = false;
-                                ddlCategorias.SelectedIndex = Convert.ToInt16(ddlCategorias.Items.IndexOf(ddlCategorias.Items.FindByValue(dt.Rows[0]["Categoria"].ToString())));
+                                ddlCategorias.SelectedIndex = Convert.ToInt16(ddlCategorias.Items.IndexOf(ddlCategorias.Items.FindByValue(dt.Rows[0]["idCategoria"].ToString())));
                                 ddlCategorias.Enabled = false;
                                 btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                 btnAgregar.Enabled = false;
@@ -174,7 +176,7 @@ namespace fpWebApp
 
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarPagina(int.Parse(Request.QueryString["editid"].ToString()), txbPagina.Text.ToString().Trim(), txbAspx.Text.ToString().Trim(), ddlCategorias.SelectedItem.Text.ToString());
+                    string respuesta = cg.ActualizarPagina(int.Parse(Request.QueryString["editid"].ToString()), txbPagina.Text.ToString().Trim(), txbAspx.Text.ToString().Trim(), Convert.ToInt32(ddlCategorias.SelectedItem.Value));
 
                     string strNewData = TraerData();
                     cg.InsertarLog(Session["idusuario"].ToString(), "paginas", "Modifica", "El usuario modificó la página: " + txbPagina.Text.ToString() + ".", strInitData, strNewData);
@@ -192,7 +194,7 @@ namespace fpWebApp
                 {
                     try
                     {
-                        string respuesta = cg.InsertarPagina(txbPagina.Text.ToString().Trim(), txbAspx.Text.ToString().Trim(), ddlCategorias.SelectedItem.Value.ToString());
+                        string respuesta = cg.InsertarPagina(txbPagina.Text.ToString().Trim(), txbAspx.Text.ToString().Trim(), Convert.ToInt32(ddlCategorias.SelectedItem.Value.ToString()));
 
                         cg.InsertarLog(Session["idusuario"].ToString(), "paginas", "Agrega", "El usuario agregó una nueva página: " + txbPagina.Text.ToString() + ".", "", "");
 
@@ -239,6 +241,24 @@ namespace fpWebApp
                     "</div>";
                 }
             }
+        }
+
+        private void CargarCategorias()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCategoriasPaginas();
+
+            ddlCategorias.Items.Clear();
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                ddlCategorias.DataSource = dt;
+                ddlCategorias.DataValueField = "idCategoria";
+                ddlCategorias.DataTextField = "Nombre";
+                ddlCategorias.DataBind();
+            }
+
+            dt.Dispose();
         }
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
