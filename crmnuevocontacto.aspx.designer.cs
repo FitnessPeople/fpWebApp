@@ -78,15 +78,6 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContenido;
 
         /// <summary>
-        /// Control ltTitulo.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltTitulo;
-
-        /// <summary>
         /// Control txbNombreContacto.
         /// </summary>
         /// <remarks>
@@ -384,13 +375,22 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltMensaje;
 
         /// <summary>
-        /// Control Literal1.
+        /// Control divBotonesLista.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal Literal1;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBotonesLista;
+
+        /// <summary>
+        /// Control rpContactosCRM.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpContactosCRM;
 
         /// <summary>
         /// Control txbNombreEmpresaCRM.
@@ -501,31 +501,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal Literal3;
 
         /// <summary>
-        /// Control divBotonesLista.
+        /// Control divBotonesLista1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBotonesLista;
-
-        /// <summary>
-        /// Control rpContactosCRM.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpContactosCRM;
-
-        /// <summary>
-        /// Control div1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div1;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBotonesLista1;
 
         /// <summary>
         /// Control rpEmpresasCRM.

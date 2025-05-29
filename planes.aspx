@@ -307,7 +307,7 @@
                                                         <tr class="feed-element">
                                                             <td><span class="btn btn-<%# Eval("NombreColorPlan") %> btn-outline" style="font-size: 12px;"><%# Eval("NombrePlan") %></span></td>
                                                             <td><i class="fa fa-note-sticky m-r-xs font-bold"></i><%# Eval("DescripcionPlan") %></td>
-                                                            <td style="text-align: right;">$<%# Eval("Precio","{0:N0}") %></td>
+                                                            <td style="text-align: right;">$<%# Eval("PrecioTotal","{0:N0}") %></td>
                                                             <td style="white-space: nowrap;"><i class="fa fa-circle-user m-r-xs font-bold"></i><%# Eval("NombreUsuario") %></td>
                                                             <td><span class="badge badge-<%# Eval("label") %>"><%# Eval("EstadoPlan") %></span></td>
                                                             <td>

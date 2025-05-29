@@ -65,8 +65,8 @@ namespace fpWebApp
                     ListaObjetivosfiliadoCRM();
                     CargarCiudad();
 
-                    ltTitulo.Text = "Nuevo contacto";
-                    Literal1.Text = "Empresas";
+                    //ltTitulo.Text = "Nuevo contacto";
+                    //Literal1.Text = "Empresas";
                     if (Request.QueryString.Count > 0)
                     {
                         rpContactosCRM.Visible = false;
@@ -146,7 +146,7 @@ namespace fpWebApp
                                     txbNombreContacto.Disabled = true;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     btnAgregar.Enabled = false;
-                                    ltTitulo.Text = "Borrar Contacto CRM";
+                                    //ltTitulo.Text = "Borrar Contacto CRM";
                                 }
                                 dt1.Dispose();
                             }
@@ -210,7 +210,7 @@ namespace fpWebApp
                                     ArchivoPropuesta.Disabled = true;
 
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                    ltTitulo.Text = "Borrar contacto CRM";
+                                    //ltTitulo.Text = "Borrar contacto CRM";
                                 }
                                 dt1.Dispose();
                             }
@@ -290,7 +290,7 @@ namespace fpWebApp
                                 txaObservacionesEmp.Disabled = true;
 
                                 btnAgregarEmp.Text = "⚠ Confirmar borrado ❗";
-                                ltTitulo.Text = "Borrar empresa CRM";
+                                //ltTitulo.Text = "Borrar empresa CRM";
                             }
                             dt1.Dispose();
                         }
