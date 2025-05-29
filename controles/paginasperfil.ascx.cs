@@ -21,9 +21,11 @@ namespace fpWebApp.controles
         private void listaPaginas()
         {
             string strQuery = "SELECT * FROM paginas p " +
+                "INNER JOIN CategoriasPaginas cp " +
+                "ON p.idCategoria = cp.idCategoria " + 
                 "INNER JOIN permisos_perfiles pp ON pp.idPagina = p.idPagina " +
                 "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " AND SinPermiso = 0 " +
-                "ORDER BY Categoria, Pagina";
+                "ORDER BY cp.Nombre, p.Pagina";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
