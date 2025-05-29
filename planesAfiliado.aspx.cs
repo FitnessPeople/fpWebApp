@@ -19,8 +19,6 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //CargarPlanes();
-
             if (!IsPostBack)
             {
                 if (Session["idUsuario"] != null)
@@ -66,7 +64,7 @@ namespace fpWebApp
                         txbTransferencia.Attributes.Add("step", "100");
                         txbTransferencia.Text = "0";
 
-                        ViewState.Add("precio", 0);
+                        ViewState.Add("precioTotal", 0);
                         ltPrecioBase.Text = "$0";
                         ltDescuento.Text = "0%";
                         ltPrecioFinal.Text = "$0";
@@ -75,8 +73,7 @@ namespace fpWebApp
 
                         ltNombrePlan.Text = "Nombre del plan";
 
-                        //btnMes1.Attributes.Add("style", "padding: 6px 9px;");
-
+                        ViewState["DiasCortesia"] = 0;
                         ListaPlanes();
                         CargarAfiliado();
                         CargarPlanesAfiliado();
@@ -130,8 +127,12 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             //DataTable dt = cg.ConsultarPlanes();
-            string strQuery = "SELECT *, IF(pm.EstadoPlan='Activo','primary','danger') AS label " +
-                "FROM PlanesModificado pm ";
+            string strQuery = "SELECT *, " +
+                "IF(Permanente=1,'Sin caducidad',CONCAT('Hasta el ', DAY(FechaFinal), ' de ', MONTHNAME(FechaFinal))) AS Vigencia, " +
+                "DATEDIFF(CURDATE(), FechaInicial) diaspasados, " +
+                "DATEDIFF(FechaFinal, CURDATE()) diasporterminar, " +
+                "DATEDIFF(FechaFinal, FechaInicial) diastotales " +
+                "FROM PlanesModificado ";
             DataTable dt = cg.TraerDatos(strQuery);
             rpPlanes.DataSource = dt;
             rpPlanes.DataBind();
@@ -542,6 +543,7 @@ namespace fpWebApp
             btn60dias.CssClass = btn60dias.CssClass.Replace("active", "");
             btn90dias.CssClass = btn90dias.CssClass.Replace("active", "");
             ltCortesias.Text = "<b>Cortesía: </b>7 días adicionales al plan.<br />";
+            ViewState["DiasCortesia"] = 7;
         }
 
         protected void btn15dias_Click(object sender, EventArgs e)
@@ -552,6 +554,7 @@ namespace fpWebApp
             btn60dias.CssClass = btn60dias.CssClass.Replace("active", "");
             btn90dias.CssClass = btn90dias.CssClass.Replace("active", "");
             ltCortesias.Text = "<b>Cortesía: </b>15 días adicionales al plan.<br />";
+            ViewState["DiasCortesia"] = 15;
         }
 
         protected void btn30dias_Click(object sender, EventArgs e)
@@ -562,6 +565,7 @@ namespace fpWebApp
             btn60dias.CssClass = btn60dias.CssClass.Replace("active", "");
             btn90dias.CssClass = btn90dias.CssClass.Replace("active", "");
             ltCortesias.Text = "<b>Cortesía: </b>30 días adicionales al plan.<br />";
+            ViewState["DiasCortesia"] = 30;
         }
 
         protected void btn60dias_Click(object sender, EventArgs e)
@@ -572,6 +576,7 @@ namespace fpWebApp
             btn30dias.CssClass = btn30dias.CssClass.Replace("active", "");
             btn90dias.CssClass = btn90dias.CssClass.Replace("active", "");
             ltCortesias.Text = "<b>Cortesía: </b>60 días adicionales al plan.<br />";
+            ViewState["DiasCortesia"] = 60;
         }
 
         protected void btn90dias_Click(object sender, EventArgs e)
@@ -582,6 +587,7 @@ namespace fpWebApp
             btn30dias.CssClass = btn30dias.CssClass.Replace("active", "");
             btn60dias.CssClass = btn60dias.CssClass.Replace("active", "");
             ltCortesias.Text = "<b>Cortesía: </b>90 días adicionales al plan.<br />";
+            ViewState["DiasCortesia"] = 90;
         }
 
         protected void lbAgregarPlan_Click(object sender, EventArgs e)
@@ -616,7 +622,7 @@ namespace fpWebApp
                         }
                         else
                         {
-                            if (ViewState["precio"].ToString() != txbTotal.Text.ToString())
+                            if (ViewState["precioTotal"].ToString() != txbTotal.Text.ToString())
                             {
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +
                                 "<div class=\"alert alert-danger alert-dismissable\">" +
@@ -630,11 +636,12 @@ namespace fpWebApp
                                 {
                                     DateTime fechainicio = Convert.ToDateTime(txbFechaInicio.Text.ToString());
                                     DateTime fechafinal = fechainicio.AddMonths(Convert.ToInt16(ViewState["meses"].ToString()));
+                                    fechafinal = fechafinal.AddDays(Convert.ToInt16(ViewState["DiasCortesia"].ToString()));
                                     strQuery = "INSERT INTO AfiliadosPlanes " +
                                         "(idAfiliado, idPlan, FechaInicioPlan, FechaFinalPlan, EstadoPlan, Meses, Valor, ObservacionesPlan) " +
                                         "VALUES (" + Request.QueryString["id"].ToString() + ", " + ViewState["idPlan"].ToString() + ", " +
-                                        "'" + txbFechaInicio.Text.ToString() + "', '" + String.Format("{0:yyyy-MM-dd}", fechafinal) + "', 'Inactivo', " +
-                                        "" + ViewState["meses"].ToString() + ", " + ViewState["precio"].ToString() + ",  " +
+                                        "'" + txbFechaInicio.Text.ToString() + "', '" + String.Format("{0:yyyy-MM-dd}", fechafinal) + "', 'Activo', " +
+                                        "" + ViewState["meses"].ToString() + ", " + ViewState["precioTotal"].ToString() + ",  " +
                                         "'" + ViewState["observaciones"].ToString() + "') ";
 
                                     try
@@ -647,7 +654,7 @@ namespace fpWebApp
                                             using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
                                             {
                                                 cmd.CommandType = CommandType.Text;
-                                                //cmd.ExecuteNonQuery();
+                                                cmd.ExecuteNonQuery();
                                             }
                                             mysqlConexion.Close();
                                         }
@@ -696,20 +703,22 @@ namespace fpWebApp
 
                                     if (rblBancos.SelectedItem == null)
                                     {
-                                        strBanco = "(NULL)";
+                                        strBanco = "No aplica";
                                     }
                                     else
                                     {
                                         strBanco = rblBancos.SelectedItem.Value.ToString();
                                     }
 
-                                    strQuery = "INSERT INTO PagosPlanAfiliado (idAfiliadoPlan, Valor, TipoPago, idReferencia, Banco, FechaHoraPago) " +
-                                    "VALUES (" + dt1.Rows[0]["idAfiliadoPlan"].ToString() + ", " +
-                                    "" + txbTotal.Text.ToString() + ", " +
-                                    "'" + strTipoPago + "', " +
-                                    "'" + strReferencia + "', " +
-                                    "'" + strBanco + "', " +
-                                    "NOW()) ";
+                                    strQuery = "INSERT INTO PagosPlanAfiliado (idAfiliadoPlan, Valor, TipoPago, idReferencia, " +
+                                        "Banco, FechaHoraPago, idUsuario, EstadoPago) " +
+                                        "VALUES (" + dt1.Rows[0]["idAfiliadoPlan"].ToString() + ", " +
+                                        "" + txbTotal.Text.ToString() + ", " +
+                                        "'" + strTipoPago + "', " +
+                                        "'" + strReferencia + "', " +
+                                        "'" + strBanco + "', " +
+                                        "NOW(), 'Aprobado' " +
+                                        "" + Session["idUsuario"].ToString() + ") ";
 
                                     try
                                     {
@@ -721,7 +730,7 @@ namespace fpWebApp
                                             using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
                                             {
                                                 cmd.CommandType = CommandType.Text;
-                                                //cmd.ExecuteNonQuery();
+                                                cmd.ExecuteNonQuery();
                                             }
                                             mysqlConexion.Close();
                                         }
