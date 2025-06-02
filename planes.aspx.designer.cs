@@ -150,22 +150,22 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDiasCongelamiento;
 
         /// <summary>
-        /// Control txbDescuentoMensual.
+        /// Control txbPrecioTotal.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbDescuentoMensual;
+        protected global::System.Web.UI.WebControls.TextBox txbPrecioTotal;
 
         /// <summary>
-        /// Control rfvDescuentoMensual.
+        /// Control rfvPrecioTotal.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDescuentoMensual;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPrecioTotal;
 
         /// <summary>
         /// Control txbMesesMaximo.
@@ -184,15 +184,6 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvMesesMaximo;
-
-        /// <summary>
-        /// Control rblColor.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblColor;
 
         /// <summary>
         /// Control txbFechaInicio.

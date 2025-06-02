@@ -58,8 +58,7 @@ namespace fpWebApp
                         txbDiasCongelamiento.Attributes.Add("type", "number");
                         txbDiasCongelamiento.Attributes.Add("step", "0.1");
                         txbDiasCongelamiento.Attributes.Add("max", "10");
-                        txbDescuentoMensual.Attributes.Add("type", "number");
-                        txbDescuentoMensual.Attributes.Add("step", "0.1");
+                        txbPrecioTotal.Attributes.Add("type", "number");
                         txbMesesMaximo.Attributes.Add("type", "number");
                         txbMesesMaximo.Attributes.Add("min", "1");
                         txbMesesMaximo.Attributes.Add("max", "12");
@@ -83,11 +82,11 @@ namespace fpWebApp
                                     txbDescripcion.Text = dt.Rows[0]["DescripcionPlan"].ToString();
                                     txbPrecio.Text = dt.Rows[0]["PrecioBase"].ToString();
                                     txbDiasCongelamiento.Text = dt.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',','.');
-                                    txbDescuentoMensual.Text = dt.Rows[0]["DescuentoMensual"].ToString();
+                                    txbPrecioTotal.Text = dt.Rows[0]["PrecioTotal"].ToString();
                                     txbMesesMaximo.Text = dt.Rows[0]["MesesMaximo"].ToString();
                                     txbFechaInicio.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
                                     txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
-                                    rblColor.SelectedIndex = Convert.ToInt32(rblColor.Items.IndexOf(rblColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
+                                    //rblColor.SelectedIndex = Convert.ToInt32(rblColor.Items.IndexOf(rblColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
                                     cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                     btnAgregar.Text = "Actualizar";
                                     ltTitulo.Text = "Actualizar Plan";
@@ -112,22 +111,22 @@ namespace fpWebApp
                                         txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
                                         txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
                                         txbPrecio.Text = dt1.Rows[0]["PrecioBase"].ToString();
-                                        txbDescuentoMensual.Text = dt.Rows[0]["DescuentoMensual"].ToString();
+                                        txbPrecioTotal.Text = dt.Rows[0]["PrecioTotal"].ToString();
                                         txbMesesMaximo.Text = dt.Rows[0]["MesesMaximo"].ToString();
                                         txbDiasCongelamiento.Text = dt1.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
                                         txbFechaInicio.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
                                         txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
-                                        rblColor.SelectedIndex = Convert.ToInt32(rblColor.Items.IndexOf(rblColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
+                                        //rblColor.SelectedIndex = Convert.ToInt32(rblColor.Items.IndexOf(rblColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
                                         cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                         txbPlan.Enabled = false;
                                         txbDescripcion.Enabled = false;
                                         txbPrecio.Enabled = false;
-                                        txbDescuentoMensual.Enabled = false;
+                                        //txbDescuentoMensual.Enabled = false;
                                         txbMesesMaximo.Enabled = false;
                                         txbDiasCongelamiento.Enabled = false;
                                         txbFechaInicio.Enabled = false;
                                         txbFechaFinal.Enabled = false;
-                                        rblColor.Enabled = false;
+                                        //rblColor.Enabled = false;
                                         cbPermanente.Enabled = false;
                                         btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                         btnAgregar.Enabled = false;
@@ -145,22 +144,22 @@ namespace fpWebApp
                                         txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
                                         txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
                                         txbPrecio.Text = dt1.Rows[0]["PrecioBase"].ToString();
-                                        txbDescuentoMensual.Text = dt.Rows[0]["DescuentoMensual"].ToString();
+                                        txbPrecioTotal.Text = dt.Rows[0]["PrecioTotal"].ToString();
                                         txbMesesMaximo.Text = dt.Rows[0]["MesesMaximo"].ToString();
                                         txbDiasCongelamiento.Text = dt1.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
                                         txbFechaInicio.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
                                         txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
-                                        rblColor.SelectedIndex = Convert.ToInt32(rblColor.Items.IndexOf(rblColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
+                                        //rblColor.SelectedIndex = Convert.ToInt32(rblColor.Items.IndexOf(rblColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
                                         cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                         txbPlan.Enabled = false;
                                         txbDescripcion.Enabled = false;
                                         txbPrecio.Enabled = false;
-                                        txbDescuentoMensual.Enabled = false;
+                                        //txbDescuentoMensual.Enabled = false;
                                         txbMesesMaximo.Enabled = false;
                                         txbDiasCongelamiento.Enabled = false;
                                         txbFechaInicio.Enabled = false;
                                         txbFechaFinal.Enabled = false;
-                                        rblColor.Enabled = false;
+                                        //rblColor.Enabled = false;
                                         cbPermanente.Enabled = false;
                                         btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                         ltTitulo.Text = "Borrar Plan";
@@ -264,9 +263,9 @@ namespace fpWebApp
                         txbPlan.Text.ToString().Trim(), 
                         txbDescripcion.Text.ToString(), 
                         int.Parse(txbPrecio.Text.ToString()),
-                        double.Parse(txbDescuentoMensual.Text.ToString()),
+                        int.Parse(txbPrecioTotal.Text.ToString()),
                         int.Parse(txbMesesMaximo.Text.ToString()),
-                        rblColor.SelectedItem.Value.ToString(),
+                        //rblColor.SelectedItem.Value.ToString(),
                         double.Parse(txbDiasCongelamiento.Text.ToString()), 
                         txbFechaInicio.Text.ToString(), 
                         txbFechaFinal.Text.ToString(),
@@ -291,9 +290,9 @@ namespace fpWebApp
                         string respuesta = cg.InsertarPlan(txbPlan.Text.ToString().Trim(),
                         txbDescripcion.Text.ToString(),
                         int.Parse(txbPrecio.Text.ToString()),
-                        double.Parse(txbDescuentoMensual.Text.ToString()),
+                        int.Parse(txbPrecioTotal.Text.ToString()),
                         int.Parse(txbMesesMaximo.Text.ToString()),
-                        rblColor.SelectedItem.Value.ToString(),
+                        //rblColor.SelectedItem.Value.ToString(),
                         int.Parse(Session["idusuario"].ToString()),
                         double.Parse(txbDiasCongelamiento.Text.ToString()),
                         txbFechaInicio.Text.ToString(),
@@ -333,14 +332,14 @@ namespace fpWebApp
             try
             {
                 string consultaSQL = @"SELECT NombrePlan AS 'Nombre de Plan', DescripcionPlan AS 'Descripción', PrecioBase AS 'Precio Base', 
-                                       EstadoPlan AS 'Estado', 
-                                       DescuentoMensual AS 'Descuento Mensual %', MesesMaximo AS 'Cantidad de Meses Máximo', 
-                                       DiasCongelamientoMes AS 'Cantidad de Días de Congelamiento', 
-                                       FechaInicial AS 'Fecha de Inicio', FechaFinal AS 'Fecha de Terminación', 
-                                       NombreUsuario AS 'Nombre de Usuario Creador', EmailUsuario AS 'Correo de Usuario Creador'
-                                       FROM Planes p 
-                                       LEFT JOIN Usuarios u ON p.idusuario = u.idUsuario 
-                                       ORDER BY NombrePlan;";
+                    EstadoPlan AS 'Estado', 
+                    DescuentoMensual AS 'Descuento Mensual %', MesesMaximo AS 'Cantidad de Meses Máximo', 
+                    DiasCongelamientoMes AS 'Cantidad de Días de Congelamiento', 
+                    FechaInicial AS 'Fecha de Inicio', FechaFinal AS 'Fecha de Terminación', 
+                    NombreUsuario AS 'Nombre de Usuario Creador', EmailUsuario AS 'Correo de Usuario Creador'
+                    FROM PlanesModificado p 
+                    LEFT JOIN Usuarios u ON p.idusuario = u.idUsuario 
+                    ORDER BY NombrePlan;";
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(consultaSQL);
@@ -371,25 +370,32 @@ namespace fpWebApp
             if (dt.Rows.Count > 0)
             {
                 int intPrecioBase;
-                double dobDescuentoMensual;
+                int intPrecioTotal;
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     _strData += "{\r\n";
                     _strData += "label: \"" + dt.Rows[i]["NombrePlan"].ToString() + "\",\r\n";
-                    _strData += "backgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",0)',\r\n";
-                    _strData += "borderColor: '" + dt.Rows[i]["ColorPlan"].ToString() + "',\r\n";
-                    _strData += "pointBackgroundColor: '" + dt.Rows[i]["ColorPlan"].ToString() + "',\r\n";
+                    //_strData += "backgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1)',\r\n";
+                    //_strData += "borderColor: '" + dt.Rows[i]["ColorPlan"].ToString() + "',\r\n";
+                    _strData += "borderColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1)',\r\n";
+                    //_strData += "pointBackgroundColor: '" + dt.Rows[i]["ColorPlan"].ToString() + "',\r\n";
+                    _strData += "pointBackgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1)',\r\n";
                     _strData += "pointBorderColor: \"#fff\",\r\n";
                     _strData += "data: [";
 
                     intPrecioBase = Convert.ToInt32(dt.Rows[i]["PrecioBase"].ToString());
-                    dobDescuentoMensual = Convert.ToDouble(dt.Rows[i]["DescuentoMensual"].ToString());
+                    intPrecioTotal = Convert.ToInt32(dt.Rows[i]["PrecioTotal"].ToString());
                     for (int j = 0; j < 12; j++)
                     {
-                        double dobDescuento = j * dobDescuentoMensual;
-                        double dobTotal = (intPrecioBase - ((intPrecioBase * dobDescuento) / 100)) * (j + 1);
-                        
-                        _strData += dobTotal + ",";
+                        if (j < Convert.ToInt16(dt.Rows[i]["Meses"].ToString()))
+                        {
+                            _strData += intPrecioTotal + ",";
+                        }
+                        else
+                        {
+                            _strData += "0,";
+                        }
+                        //_strData += intPrecioTotal + ",";
                     }
                     _strData = _strData.Substring(0, _strData.Length - 1);
                     _strData += "]\r\n";
@@ -398,20 +404,20 @@ namespace fpWebApp
 
                 _strData += "{\r\n";
                 _strData += "label: \"" + txbPlan.Text.ToString() + "\",\r\n";
-                _strData += "backgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",0)',\r\n";
+                _strData += "backgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1',\r\n";
                 _strData += "borderColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",0.7)',\r\n";
                 _strData += "pointBackgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1)',\r\n";
                 _strData += "pointBorderColor: \"#fff\",\r\n";
                 _strData += "data: [";
 
                 intPrecioBase = Convert.ToInt32(txbPrecio.Text.ToString());
-                dobDescuentoMensual = Convert.ToDouble(txbDescuentoMensual.Text.ToString());
+                intPrecioTotal = Convert.ToInt32(txbPrecioTotal.Text.ToString());
                 for (int j = 0; j < 12; j++)
                 {
-                    double dobDescuento = j * dobDescuentoMensual;
-                    double dobTotal = (intPrecioBase - ((intPrecioBase * dobDescuento) / 100)) * (j + 1);
+                    //double dobDescuento = j * dobDescuentoMensual;
+                    //double dobTotal = (intPrecioBase - ((intPrecioBase * dobDescuento) / 100)) * (j + 1);
 
-                    _strData += dobTotal + ",";
+                    _strData += intPrecioTotal + ",";
                 }
                 _strData = _strData.Substring(0, _strData.Length - 1);
                 _strData += "]\r\n";
