@@ -180,15 +180,15 @@
                                                 </div>
                                                 <div class="row m-b-n-xs">
                                                     <div class="col-sm-5">
-                                                        <label>% Descuento x mes</label>
-                                                        <asp:TextBox ID="txbDescuentoMensual" CssClass="form-control input-sm" runat="server"
+                                                        <label>Precio total</label>
+                                                        <asp:TextBox ID="txbPrecioTotal" CssClass="form-control input-sm" runat="server"
                                                             Text="0"></asp:TextBox>
-                                                        <asp:RequiredFieldValidator ID="rfvDescuentoMensual" runat="server" ErrorMessage="* Campo requerido"
-                                                            ControlToValidate="txbDescuentoMensual" ValidationGroup="agregar"
+                                                        <asp:RequiredFieldValidator ID="rfvPrecioTotal" runat="server" ErrorMessage="* Campo requerido"
+                                                            ControlToValidate="txbPrecioTotal" ValidationGroup="agregar"
                                                             CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                     </div>
                                                     <div class="col-sm-7">
-                                                        <label>Nro. de meses máximo del plan</label>
+                                                        <label>Nro. de meses del plan</label>
                                                         <asp:TextBox ID="txbMesesMaximo" CssClass="form-control input-sm" runat="server"
                                                             Text="1"></asp:TextBox>
                                                         <asp:RequiredFieldValidator ID="rfvMesesMaximo" runat="server" ErrorMessage="* Campo requerido"
@@ -196,7 +196,7 @@
                                                             CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                     </div>
                                                 </div>
-                                                <div class="form-group m-b-md">
+                                                <%--<div class="form-group m-b-md">
                                                     <label>Color del botón:</label>
                                                     <asp:RadioButtonList ID="rblColor" runat="server" RepeatLayout="Flow"
                                                         CssClass="form-control input-sm" RepeatDirection="Horizontal">
@@ -206,7 +206,7 @@
                                                         <asp:ListItem Value="warning" style="margin-right: 5px; font-size: 10px; color: darkgoldenrod;">&nbsp;Amarillo</asp:ListItem>
                                                         <asp:ListItem Value="danger" style="margin-right: 5px; font-size: 10px; color: red;">&nbsp;Rojo</asp:ListItem>
                                                     </asp:RadioButtonList>
-                                                </div>
+                                                </div>--%>
                                                 <div class="row m-b-n-xs">
                                                     <div class="col-sm-12">
                                                         <h3>Período del plan</h3>
