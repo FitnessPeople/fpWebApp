@@ -98,7 +98,7 @@ namespace fpWebApp
         //private void CargarPlanes()
         //{
         //    string strQuery = "SELECT * " +
-        //        "FROM PlanesModificado " +
+        //        "FROM Planes " +
         //        "WHERE EstadoPlan = 'Activo' " +
         //        "AND (FechaInicial IS NULL OR FechaInicial <= CURDATE()) " +
         //        "AND (FechaFinal IS NULL OR FechaFinal >= CURDATE())";
@@ -132,7 +132,7 @@ namespace fpWebApp
                 "DATEDIFF(CURDATE(), FechaInicial) diaspasados, " +
                 "DATEDIFF(FechaFinal, CURDATE()) diasporterminar, " +
                 "DATEDIFF(FechaFinal, FechaInicial) diastotales " +
-                "FROM PlanesModificado ";
+                "FROM Planes ";
             DataTable dt = cg.TraerDatos(strQuery);
             rpPlanes.DataSource = dt;
             rpPlanes.DataBind();
@@ -407,7 +407,7 @@ namespace fpWebApp
         private void btn_Click(object sender, CommandEventArgs e)
         {
             string strQuery = "SELECT * " +
-                "FROM PlanesModificado " +
+                "FROM Planes " +
                 "WHERE idPlan = " + e.CommandArgument;
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
@@ -776,7 +776,7 @@ namespace fpWebApp
         //protected void btnSeleccionarPlan_Click(object sender, EventArgs e)
         //{
         //    string strQuery = "SELECT * " +
-        //        "FROM PlanesModificado " +
+        //        "FROM Planes " +
         //        "WHERE idPlan = ";
         //    clasesglobales cg = new clasesglobales();
         //    DataTable dt = cg.TraerDatos(strQuery);
@@ -805,7 +805,7 @@ namespace fpWebApp
             {
                 int idPlan = Convert.ToInt32(e.CommandArgument.ToString());
                 string strQuery = "SELECT * " +
-                    "FROM PlanesModificado " +
+                    "FROM Planes " +
                     "WHERE idPlan = " + idPlan.ToString();
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(strQuery);
@@ -836,7 +836,7 @@ namespace fpWebApp
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
                     LinkButton lnkPlan = (LinkButton)e.Item.FindControl("btnSeleccionarPlan");
-                    lnkPlan.Attributes.Add("class", "btn btn-outline btn-" + ((DataRowView)e.Item.DataItem).Row[8].ToString() + " btn-block btn-sm");
+                    lnkPlan.Attributes.Add("class", "btn btn-outline btn-" + ((DataRowView)e.Item.DataItem).Row[7].ToString() + " btn-block btn-sm");
                 }
             }
         }

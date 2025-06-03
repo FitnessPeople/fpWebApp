@@ -83,7 +83,7 @@ namespace fpWebApp
                                     txbPrecio.Text = dt.Rows[0]["PrecioBase"].ToString();
                                     txbDiasCongelamiento.Text = dt.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',','.');
                                     txbPrecioTotal.Text = dt.Rows[0]["PrecioTotal"].ToString();
-                                    txbMesesMaximo.Text = dt.Rows[0]["MesesMaximo"].ToString();
+                                    txbMesesMaximo.Text = dt.Rows[0]["Meses"].ToString();
                                     txbFechaInicio.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
                                     txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
                                     //rblColor.SelectedIndex = Convert.ToInt32(rblColor.Items.IndexOf(rblColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
@@ -205,8 +205,9 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             //DataTable dt = cg.ConsultarPlanes();
             string strQuery = "SELECT *, IF(pm.EstadoPlan='Activo','primary','danger') AS label " +
-                "FROM PlanesModificado pm " +
-                "LEFT JOIN Usuarios u ON pm.idUsuario = u.idUsuario ";
+                "FROM Planes pm " +
+                "LEFT JOIN Usuarios u ON pm.idUsuario = u.idUsuario " +
+                "LEFT JOIN ColoresSistema c ON pm.NombreColorPlan = c.NombreColor ";
             DataTable dt = cg.TraerDatos(strQuery);
             rpPlanes.DataSource = dt;
             rpPlanes.DataBind();
@@ -337,7 +338,7 @@ namespace fpWebApp
                     DiasCongelamientoMes AS 'Cantidad de Días de Congelamiento', 
                     FechaInicial AS 'Fecha de Inicio', FechaFinal AS 'Fecha de Terminación', 
                     NombreUsuario AS 'Nombre de Usuario Creador', EmailUsuario AS 'Correo de Usuario Creador'
-                    FROM PlanesModificado p 
+                    FROM Planes p 
                     LEFT JOIN Usuarios u ON p.idusuario = u.idUsuario 
                     ORDER BY NombrePlan;";
 
