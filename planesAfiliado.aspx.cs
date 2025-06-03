@@ -443,24 +443,32 @@ namespace fpWebApp
             double intMeses = Convert.ToInt32(ViewState["meses"]);
             double dobDescuento = (1 - (intPrecio / intMeses) / intPrecioBase) * 100;
             double intConDescuento = (intPrecioBase * intMeses) - intPrecio;
+            double dobPrecioMesDescuento = intPrecio / intMeses;
 
-            double dobAhorro = ((intPrecioBase * dobDescuento) / 100) * intMeses;
-            
+            //double dobAhorro = ((intPrecioBase * dobDescuento)  100) * intMeses;
+
 
             ltPrecioBase.Text = "$" + string.Format("{0:N0}", intPrecioBase);
             ltDescuento.Text = string.Format("{0:N2}", dobDescuento) + "%";
-            
             ltPrecioFinal.Text = "$" + string.Format("{0:N0}", intPrecio);
-            
-            ltAhorro.Text = "$" + string.Format("{0:N0}", (intPrecioBase * intMeses) - intPrecio);
-            
-            ltConDescuento.Text = "$" + string.Format("{0:N0}", intConDescuento);
+            ltAhorro.Text = "$" + string.Format("{0:N0}", intConDescuento);
+            ltConDescuento.Text = "$" + string.Format("{0:N0}", dobPrecioMesDescuento) + " / mes";
+
+            //Ojo poner tipo plan
+            if (ViewState["precioTotal"].ToString() == "99000")
+            {
+                ltTipoPlan.Text = "Debito automático";
+            }
+            else
+            {
+                ltTipoPlan.Text = "Único pago";
+            }
 
             ltObservaciones.Text = "Valor sin descuento: $" + string.Format("{0:N0}", intPrecioBase) + "<br /><br />";
             ltObservaciones.Text += "<b>Meses</b>: " + intMeses.ToString() + ".<br />";
             ltObservaciones.Text += "<b>Descuento</b>: " + string.Format("{0:N2}", dobDescuento) + "%.<br />";
             ltObservaciones.Text += "<b>Valor del mes con descuento</b>: $" + string.Format("{0:N0}", intConDescuento) + ".<br />";
-            ltObservaciones.Text += "<b>Ahorro</b>: $" + string.Format("{0:N0}", dobAhorro) + ".<br />";
+            //ltObservaciones.Text += "<b>Ahorro</b>: $" + string.Format("{0:N0}", dobAhorro) + ".<br />";
             ltObservaciones.Text += "<b>Valor Total</b>: $" + string.Format("{0:N0}", intPrecio) + ".<br />";
 
             ViewState["observaciones"] = ltObservaciones.Text.ToString().Replace("<b>", "").Replace("</b>", "").Replace("<br />", "\r\n");

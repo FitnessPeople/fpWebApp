@@ -145,7 +145,7 @@
     typeWriter();
 
     const url = window.location.pathname.replace("/","");
-    console.log(url);
+    //console.log(url);
 
     let teclasPresionadas = {}; // Objeto para guardar las teclas presionadas
 

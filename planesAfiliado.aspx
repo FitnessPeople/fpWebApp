@@ -217,7 +217,7 @@
                                             <div class="i-checks">
                                                 <small class="label label-primary pull-right"><%# Eval("DiasQueFaltan") %> días disponibles</small>
                                                 <label>
-                                                    Plan Activo: <%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
+                                                    Plan Activo: <%# Eval("NombrePlan") %>
                                                 </label>
                                                 <br />
                                                 <div class="progress progress-striped active">
@@ -342,7 +342,7 @@
                                                                                     <i class="fa fa-money-bill-wave fa-3x" style="font-size: 2.3em"></i>
                                                                                 </div>
                                                                                 <div class="col-xs-9 text-right">
-                                                                                    <span>Valor mes </span>
+                                                                                    <span>Valor mes base</span>
                                                                                     <h2 class="font-bold">
                                                                                         <asp:Literal ID="ltPrecioBase" runat="server"></asp:Literal></h2>
                                                                                 </div>
@@ -356,10 +356,8 @@
                                                                                     <i class="fa fa-tag fa-3x" style="font-size: 2.3em"></i>
                                                                                 </div>
                                                                                 <div class="col-xs-9 text-right">
-                                                                                    <span>Descuento
-                        <asp:Literal ID="ltDescuento" runat="server"></asp:Literal></span>
-                                                                                    <h2 class="font-bold">
-                                                                                        <asp:Literal ID="ltConDescuento" runat="server"></asp:Literal></h2>
+                                                                                    <span>Descuento <asp:Literal ID="ltDescuento" runat="server"></asp:Literal></span>
+                                                                                    <h2 class="font-bold"><asp:Literal ID="ltConDescuento" runat="server"></asp:Literal></h2>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -388,6 +386,20 @@
                                                                                     <span>Ahorro </span>
                                                                                     <h2 class="font-bold">
                                                                                         <asp:Literal ID="ltAhorro" runat="server"></asp:Literal></h2>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-12">
+                                                                        <div class="widget style1 bg-primary">
+                                                                            <div class="row vertical-align">
+                                                                                <div class="col-xs-3">
+                                                                                    <i class="fa fa-credit-card fa-3x" style="font-size: 2.3em"></i>
+                                                                                </div>
+                                                                                <div class="col-xs-9 text-right">
+                                                                                    <span>Tipo de plan </span>
+                                                                                    <h2 class="font-bold">
+                                                                                        <asp:Literal ID="ltTipoPlan" runat="server"></asp:Literal></h2>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -431,7 +443,7 @@
                                                         <div class="form-group">
                                                             <div class="panel panel-default" runat="server" id="div1">
                                                                 <div class="panel-heading">
-                                                                    <i class="fa fa-money-bill"></i>Pago
+                                                                    <i class="fa fa-money-bill"></i> Pago
                                                                     <asp:Literal ID="Literal1" runat="server"></asp:Literal>
                                                                 </div>
                                                                 <div class="panel-body">
@@ -519,11 +531,20 @@
                                                     </div>
                                                 </div>
                                                 <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+
+                                                <div>
+                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"
+                                                        onclick="window.location.href='afiliados'">
+                                                        <strong>Cancelar</strong></button>
+                                                    <asp:LinkButton ID="lbAgregarPlan" runat="server"
+                                                        CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
+                                                        OnClick="lbAgregarPlan_Click">
+                                                        <i class="fa fa-ticket"></i> Agregar plan</asp:LinkButton>
+                                                </div>
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
 
-                                        <div>
-
+                                        <%--<div>
                                             <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"
                                                 onclick="window.location.href='afiliados'">
                                                 <strong>Cancelar</strong></button>
@@ -531,9 +552,9 @@
                                                 CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
                                                 OnClick="lbAgregarPlan_Click">
                                                 <i class="fa fa-ticket"></i> Agregar plan</asp:LinkButton>
-                                            <%--<asp:Button ID="btnAgregarPlan" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
-                                                Text="Agregar Plan" OnClick="btnAgregarPlan_Click" />--%>
-                                        </div>
+                                            <asp:Button ID="btnAgregarPlan" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
+                                                Text="Agregar Plan" OnClick="btnAgregarPlan_Click" />
+                                        </div>--%>
                                     </div>
                                 </form>
                             </div>
