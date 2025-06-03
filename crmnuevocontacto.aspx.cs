@@ -106,9 +106,9 @@ namespace fpWebApp
                                     txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
                                     txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
                                     int ValorPropuesta = Convert.ToInt32(dt.Rows[0]["ValorPropuesta"]);
-                                    int ValorMes = Convert.ToInt32(dt.Rows[0]["ValorBase"]);
+                                    //int ValorMes = Convert.ToInt32(dt.Rows[0]["ValorBase"]);
                                     txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
-                                    txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
+                                    //txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
                                     //txaObservaciones.Value = row["observaciones"].ToString();
                                     ddlObjetivos.SelectedIndex = Convert.ToInt32(ddlObjetivos.Items.IndexOf(ddlObjetivos.Items.FindByValue(dt.Rows[0]["idObjetivo"].ToString())));
                                     ddlTipoPago.SelectedIndex = ddlTipoPago.Items.IndexOf(ddlTipoPago.Items.FindByValue(dt.Rows[0]["TipoPago"].ToString()));
@@ -752,7 +752,7 @@ namespace fpWebApp
             else
             {
                 txbValorPropuesta.Text = "Primero selecciona los meses del plan.";
-            }
+            }            
         }
 
 
@@ -1032,9 +1032,12 @@ namespace fpWebApp
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
-                    HtmlAnchor btnEditarEmp = (HtmlAnchor)e.Item.FindControl("btnEditarEmp");
-                    btnEditarEmp.Attributes.Add("href", "crmnuevocontacto?editidEmp=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    btnEditarEmp.Visible = true;
+                    LinkButton btnEditarEmp = (LinkButton)e.Item.FindControl("btnEditarEmp");
+                    btnEditarEmp.CommandArgument = ((DataRowView)e.Item.DataItem).Row[0].ToString();
+
+                    //HtmlAnchor btnEditarEmp = (HtmlAnchor)e.Item.FindControl("btnEditarEmp");
+                    //btnEditarEmp.Attributes.Add("href", "crmnuevocontacto?editidEmp=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    //btnEditarEmp.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
@@ -1045,6 +1048,11 @@ namespace fpWebApp
                 //ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "cerrarAcordeon", "$('#acordeonZonaLateralIzqSup').collapse('hide');", true);
 
             }
+        }
+
+        protected void btnEditarEmp_Click(object sender, EventArgs e)
+        {
+           
         }
     }
 }

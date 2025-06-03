@@ -35,7 +35,7 @@
     <!-- JS de Quill -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
-    <%--    formato de moneda--%>
+    <%--        formato de moneda--%>
     <script>
         function formatCurrency(input) {
             let value = input.value.replace(/\D/g, '');
@@ -68,7 +68,7 @@
         }
     </script>
 
-    <%--    Formatear telefono --%>
+    <%--        Formatear telefono --%>
     <script>
         function formatearTelefono(input) {
             let num = input.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
@@ -210,9 +210,11 @@
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
                     <form role="form" id="form" runat="server">
+                        <asp:ScriptManager ID="ScriptManager1" runat="server" />
                         <div class="row" id="divContenido" runat="server">
 
                             <div class="col-lg-12">
+
                                 <div class="tabs-container">
                                     <ul class="nav nav-tabs">
                                         <li class="active"><a data-toggle="tab" href="#tab-1"><i class="fas fa-user-plus"></i>Contactos</a></li>
@@ -222,7 +224,9 @@
                                         <div id="tab-1" class="tab-pane active">
                                             <%--Inicia contenido formulario Nuevo contacto--%>
                                             <div class="panel-body">
-                                                <%--Zona lateral izquierda--%>
+                                                <%--                                                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                                                    <ContentTemplate>--%>
+                                                <%--Zona lateral izquierda sup --%>
                                                 <div class="col-lg-5">
                                                     <div class="ibox-content">
                                                         <div class="row">
@@ -377,7 +381,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <asp:ScriptManager ID="ScriptManager1" runat="server" />
+
                                                         <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                                                             <ContentTemplate>
                                                                 <div class="row">
@@ -491,12 +495,12 @@
                                                     </div>
                                                 </div>
 
-                                                <%--Zona lateral derecha--%>
+                                                <%--Zona lateral derecha sup --%>
                                                 <div class="col-lg-7">
                                                     <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
                                                         <div class="col-lg-6 form-horizontal">
                                                             <div class="form-group">
-                                                                <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
+                                                                <div class="form-group" id="filter-form-container1" style="margin-left: 28px;"></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -505,7 +509,7 @@
                                                         data-filter-min="3" data-filter-placeholder="Buscar"
                                                         data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
                                                         data-paging-limit="10" data-filtering="true"
-                                                        data-filter-container="#filter-form-container" data-filter-delay="300"
+                                                        data-filter-container="#filter-form-container1" data-filter-delay="300"
                                                         data-filter-dropdown-title="Buscar en:" data-filter-position="left"
                                                         data-empty="Sin resultados">
                                                         <thead>
@@ -558,167 +562,182 @@
                                                     <%-- </div>--%>
                                                     <%--  </div>--%>
                                                 </div>
+                                                <%--                                                    </ContentTemplate>
+                                                </asp:UpdatePanel>--%>
                                             </div>
                                         </div>
                                         <div id="tab-2" class="tab-pane">
                                             <div class="panel-body">
-                                                <div class="col-lg-5">
-                                                    <div class="ibox-content">
-                                                        <div class="row">
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <i class="fa fa-user-tie text-info"></i>
-                                                                    <label for="nombreEmpresaCRM" class="col-form-label">Nombre empresa:</label>
-                                                                    <input type="text" runat="server" class="form-control" id="txbNombreEmpresaCRM"
-                                                                        spellcheck="false" autocomplete="off"
-                                                                        oninput="validarSoloLetras(this)" style="text-transform: uppercase;" />
-                                                                    <asp:RequiredFieldValidator ID="rfvNombreEmpresa" runat="server" ControlToValidate="txbNombreEmpresaCRM"
-                                                                        ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
+                                                <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+                                                    <ContentTemplate>
+                                                        <%--Zona lateral izquierda inf --%>
+                                                        <div class="col-lg-5">
+                                                            <div class="ibox-content">
+                                                                <div class="row">
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <i class="fa fa-user-tie text-info"></i>
+                                                                            <label for="nombreEmpresaCRM" class="col-form-label">Nombre empresa:</label>
+                                                                            <input type="text" runat="server" class="form-control" id="txbNombreEmpresaCRM"
+                                                                                spellcheck="false" autocomplete="off"
+                                                                                oninput="validarSoloLetras(this)" style="text-transform: uppercase;" />
+                                                                            <asp:RequiredFieldValidator ID="rfvNombreEmpresa" runat="server" ControlToValidate="txbNombreEmpresaCRM"
+                                                                                ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <div class="col-sm-6">
+                                                                            <i class="fa-solid fa-phone text-info"></i>
+                                                                            <label for="paginaWeb" class="col-form-label">Página web:</label>
+                                                                            <input type="text" runat="server" class="form-control" id="txbPaginaWeb"
+                                                                                placeholder="ej: www.fitnesspeoplecolombia.com" spellcheck="false" autocomplete="off"
+                                                                                style="text-transform: lowercase;">
+                                                                            <asp:RequiredFieldValidator ID="fvPaginaWeb" runat="server" ControlToValidate="txbPaginaWeb"
+                                                                                ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" ValidationGroup="agregarE" />
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <div class="col-sm-6">
-                                                                    <i class="fa-solid fa-phone text-info"></i>
-                                                                    <label for="paginaWeb" class="col-form-label">Página web:</label>
-                                                                    <input type="text" runat="server" class="form-control" id="txbPaginaWeb"
-                                                                        placeholder="ej: www.fitnesspeoplecolombia.com" spellcheck="false" autocomplete="off"
-                                                                        style="text-transform: lowercase;">
-                                                                    <asp:RequiredFieldValidator ID="fvPaginaWeb" runat="server" ControlToValidate="txbPaginaWeb"
-                                                                        ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" ValidationGroup="agregarE" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <i class="fa fa-city text-info"></i>
-                                                                    <label>Ciudad:</label>
-                                                                    <asp:DropDownList ID="ddlCiudad" runat="server"
-                                                                        AppendDataBoundItems="true" DataTextField="NombreCiudad"
-                                                                        DataValueField="idCiudad" CssClass="chosen-select form-control input-sm">
-                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                    </asp:DropDownList>
-                                                                    <asp:RequiredFieldValidator ID="rfvCiudad" runat="server" ErrorMessage="* Campo requerido"
-                                                                        ControlToValidate="ddlCiudad" ValidationGroup="agregarE"
-                                                                        CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <i class="fas fa-flag text-info"></i>
-                                                                    <label for="Contacto" class="col-form-label">Contacto:</label>
-                                                                    <asp:DropDownList ID="ddlContactos" DataTextField="NombreContacto" DataValueField="idContacto"
-                                                                        runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
-                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                    </asp:DropDownList>
+                                                                <div class="row">
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <i class="fa fa-city text-info"></i>
+                                                                            <label>Ciudad:</label>
+                                                                            <asp:DropDownList ID="ddlCiudad" runat="server"
+                                                                                AppendDataBoundItems="true" DataTextField="NombreCiudad"
+                                                                                DataValueField="idCiudad" CssClass="chosen-select form-control input-sm">
+                                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                            </asp:DropDownList>
+                                                                            <asp:RequiredFieldValidator ID="rfvCiudad" runat="server" ErrorMessage="* Campo requerido"
+                                                                                ControlToValidate="ddlCiudad" ValidationGroup="agregarE"
+                                                                                CssClass="font-bold text-danger" InitialValue="">
+                                                                            </asp:RequiredFieldValidator>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <i class="fas fa-flag text-info"></i>
+                                                                            <label for="Contacto" class="col-form-label">Contacto:</label>
+                                                                            <asp:DropDownList ID="ddlContactos" DataTextField="NombreContacto" DataValueField="idContacto"
+                                                                                runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
+                                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                            </asp:DropDownList>
 
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-sm-6">
+                                                                <div class="row">
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <label>Estado:</label>
+                                                                            <asp:RadioButtonList ID="rblEstado" runat="server" RepeatDirection="Horizontal"
+                                                                                CssClass="form-control input-sm">
+                                                                                <asp:ListItem Text="&nbsp;Activo&nbsp;&nbsp;&nbsp;&nbsp;" Value="Activo"></asp:ListItem>
+                                                                                <asp:ListItem Text="&nbsp;Inactivo&nbsp;&nbsp;&nbsp;&nbsp;" Value="Inactivo"></asp:ListItem>
+                                                                            </asp:RadioButtonList>
+                                                                            <asp:RequiredFieldValidator ID="rfvEstado" runat="server" ErrorMessage="* Campo requerido"
+                                                                                ControlToValidate="rblEstado" ValidationGroup="agregarE"
+                                                                                CssClass="font-bold text-danger" InitialValue="">
+                                                                            </asp:RequiredFieldValidator>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <i class="fas fa-pen text-info"></i>
+                                                                            <label for="message-text" class="col-form-label">Observaciones:</label>
+                                                                            <textarea id="txaObservacionesEmp" runat="server" rows="3"
+                                                                                cssclass="form-control input-sm" class="form-control"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                                 <div class="form-group">
-                                                                    <label>Estado:</label>
-                                                                    <asp:RadioButtonList ID="rblEstado" runat="server" RepeatDirection="Horizontal"
-                                                                        CssClass="form-control input-sm">
-                                                                        <asp:ListItem Text="&nbsp;Activo&nbsp;&nbsp;&nbsp;&nbsp;" Value="Activo"></asp:ListItem>
-                                                                        <asp:ListItem Text="&nbsp;Inactivo&nbsp;&nbsp;&nbsp;&nbsp;" Value="Inactivo"></asp:ListItem>
-                                                                    </asp:RadioButtonList>
-                                                                    <asp:RequiredFieldValidator ID="rfvEstado" runat="server" ErrorMessage="* Campo requerido"
-                                                                        ControlToValidate="rblEstado" ValidationGroup="agregarE"
-                                                                        CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    <a href="crmnuevocontacto" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                                    <asp:Button ID="btnAgregarEmp" runat="server" Text="Agregar"
+                                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregarE"
+                                                                        OnClick="btnAgregarEmp_Click" />
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-sm-6">
+                                                                <br />
+                                                                <br />
                                                                 <div class="form-group">
-                                                                    <i class="fas fa-pen text-info"></i>
-                                                                    <label for="message-text" class="col-form-label">Observaciones:</label>
-                                                                    <textarea id="txaObservacionesEmp" runat="server" rows="3"
-                                                                        cssclass="form-control input-sm" class="form-control"></textarea>
+                                                                    <asp:Literal ID="Literal3" runat="server"></asp:Literal>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <a href="crmnuevocontacto" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                            <asp:Button ID="btnAgregarEmp" runat="server" Text="Agregar"
-                                                                CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregarE"
-                                                                OnClick="btnAgregarEmp_Click" />
-                                                        </div>
-                                                        <br />
-                                                        <br />
-                                                        <div class="form-group">
-                                                            <asp:Literal ID="Literal3" runat="server"></asp:Literal>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-7">
-                                                    <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista1">
-                                                        <div class="col-lg-6 form-horizontal">
-                                                        </div>
-                                                    </div>
-                                                    <table class="footable table table-striped list-group-item-text" data-paging-size="10"
-                                                        data-filter-min="3" data-filter-placeholder="Buscar"
-                                                        data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
-                                                        data-paging-limit="10" data-filtering="true"
-                                                        data-filter-container="#filter-form-container" data-filter-delay="300"
-                                                        data-filter-dropdown-title="Buscar en:" data-filter-position="left"
-                                                        data-empty="Sin resultados">
-                                                        <thead>
-                                                            <tr>
-                                                                <th data-sortable="false" data-breakpoints="xs" style="width: 200px;">Nombre empresa</th>
-                                                                <th data-breakpoints="xs">Ciudad</th>
-                                                                <th data-breakpoints="xs">Página web</th>
-                                                                <th data-breakpoints="xs">Contacto</th>
-                                                                <th data-breakpoints="all" data-title="Info"></th>
-                                                                <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <asp:Repeater ID="rpEmpresasCRM" runat="server" OnItemDataBound="rpEmpresasCRM_ItemDataBound">
-                                                                <ItemTemplate>
-                                                                    <tr class="feed-element">
-                                                                        <td><%# Eval("NombreEmpresaCRM") %></td>
-                                                                        <td><%# Eval("NombreCiudad") %></td>
-                                                                        <td><%# Eval("paginaWeb") %></td>
-                                                                        <td><%# Eval("idContacto") %></td>
-
-                                                                        <td>
-                                                                            <table class="table table-bordered table-striped">
-                                                                                <tr>
-                                                                                    <th width="25%"><i class="fa fa-mobile m-r-xs"></i>Archivo propuesta</th>
-                                                                                    <th width="50%" class="text-nowrap"><i class="fa fa-clock m-r-xs"></i>Historial</th>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td><%# Eval("ArchivoPropuesta") %></td>
-                                                                                    <td><%# Eval("ObservacionesEmp") %></td>
-                                                                                </tr>
-                                                                            </table>
-                                                                        </td>
-                                                                        <td style="display: flex; flex-wrap: nowrap;">
-                                                                            <a runat="server" id="btnEliminarEmp" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
-                                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
-                                                                            <a runat="server" id="btnEditarEmp" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
-                                                                        </td>
+                                                        <%--Zona lateral derecha inf --%>
+                                                        <div class="col-lg-7">
+                                                            <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista1">
+                                                                <div class="col-lg-6 form-horizontal">
+                                                                    <div class="form-group">
+                                                                        <div class="form-group" id="filter-form-container2" style="margin-left: 28px;"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                                                data-filter-min="3" data-filter-placeholder="Buscar"
+                                                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
+                                                                data-paging-limit="10" data-filtering="true"
+                                                                data-filter-container="#filter-form-container2" data-filter-delay="300"
+                                                                data-filter-dropdown-title="Buscar en:" data-filter-position="left"
+                                                                data-empty="Sin resultados">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th data-sortable="false" data-breakpoints="xs" style="width: 200px;">Nombre empresa</th>
+                                                                        <th data-breakpoints="xs">Ciudad</th>
+                                                                        <th data-breakpoints="xs">Página web</th>
+                                                                        <th data-breakpoints="xs">Contacto</th>
+                                                                        <th data-breakpoints="all" data-title="Info"></th>
+                                                                        <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                                     </tr>
-                                                                </ItemTemplate>
-                                                            </asp:Repeater>
-                                                        </tbody>
-                                                    </table>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <asp:Repeater ID="rpEmpresasCRM" runat="server" OnItemDataBound="rpEmpresasCRM_ItemDataBound">
+                                                                        <ItemTemplate>
+                                                                            <tr class="feed-element">
+                                                                                <td><%# Eval("NombreEmpresaCRM") %></td>
+                                                                                <td><%# Eval("NombreCiudad") %></td>
+                                                                                <td><%# Eval("paginaWeb") %></td>
+                                                                                <td><%# Eval("idContacto") %></td>
+
+                                                                                <td>
+                                                                                    <table class="table table-bordered table-striped">
+                                                                                        <tr>
+                                                                                            <th width="25%"><i class="fa fa-mobile m-r-xs"></i>Archivo propuesta</th>
+                                                                                            <th width="50%" class="text-nowrap"><i class="fa fa-clock m-r-xs"></i>Historial</th>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td><%# Eval("ArchivoPropuesta") %></td>
+                                                                                            <td><%# Eval("ObservacionesEmp") %></td>
+                                                                                        </tr>
+                                                                                    </table>
+                                                                                </td>
+                                                                                <td style="display: flex; flex-wrap: nowrap;">
+                                                                                    <a runat="server" id="btnEliminarEmp" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                                                    <%--                                                                                    <a runat="server" id="btnEditarEmp" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>--%>
+                                                                                    <asp:LinkButton ID="btnEditarEmp" runat="server" CssClass="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                                                    Style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"><i class="fa fa-edit" 
+                                                                                                    OnClick="Button_Click" ClientIDMode="AutoID"><%# Eval("idEmpresaCRM") %>></i>
+                                                                                    </asp:LinkButton>
+                                                                                    <%--                                                                                    <asp:Button ID="btnEditarEmp" runat="server" Text="E" CssClass="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                                        Style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" CausesValidation="false" OnClick="btnEditarEmp_Click" CommandArgument='<%# Eval("idEmpresaCRM") %>' />--%>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </ItemTemplate>
+                                                                    </asp:Repeater>
+                                                                </tbody>
+                                                            </table>
 
 
-                                                </div>
-
+                                                        </div>
+                                                    </ContentTemplate>
+                                                </asp:UpdatePanel>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
+
                             </div>
-
-
                         </div>
                     </form>
                     <%--Fin Contenido!!!!--%>
