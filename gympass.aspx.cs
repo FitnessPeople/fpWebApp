@@ -51,6 +51,7 @@ namespace fpWebApp
                             txbFechaAgenda.Attributes.Add("type", "date");
                             txbFechaAgenda.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
 
+                            CantidadesEstados();
                             //btnAgregar.Visible = true;
                         }
                     }
@@ -242,6 +243,34 @@ namespace fpWebApp
             {
                 string mensaje = ex.Message;
             }
+        }
+
+        private void CantidadesEstados()
+        {
+            string strQueryAgendado = "SELECT COUNT(*) AS Cantidad FROM GymPassAgenda WHERE Estado = 'Agendado'";
+            string strQueryAsistio = "SELECT COUNT(*) AS Cantidad FROM GymPassAgenda WHERE Estado = 'Asistió'";
+            string strQueryNoAsistio = "SELECT COUNT(*) AS Cantidad FROM GymPassAgenda WHERE Estado = 'No Asistió'";
+            string strQueryCancelado = "SELECT COUNT(*) AS Cantidad FROM GymPassAgenda WHERE Estado = 'Cancelado'";
+            clasesglobales cg = new clasesglobales();
+            DataTable dtAgendado = cg.TraerDatos(strQueryAgendado);
+            DataTable dtAsistio = cg.TraerDatos(strQueryAsistio);
+            DataTable dtNoAsistio = cg.TraerDatos(strQueryNoAsistio);
+            DataTable dtCancelado = cg.TraerDatos(strQueryCancelado);
+
+            string cantidadAgendado = dtAgendado.Rows[0]["Cantidad"].ToString();
+            string cantidadAsistio = dtAsistio.Rows[0]["Cantidad"].ToString();
+            string cantidadNoAsistio = dtNoAsistio.Rows[0]["Cantidad"].ToString();
+            string cantidadCancelado = dtCancelado.Rows[0]["Cantidad"].ToString();
+
+            ClientScript.RegisterStartupScript(this.GetType(), "cantidadAge", $"var cantidadAgendado = {cantidadAgendado};", true);
+            ClientScript.RegisterStartupScript(this.GetType(), "cantidadAsis", $"var cantidadAsistio = {cantidadAsistio};", true);
+            ClientScript.RegisterStartupScript(this.GetType(), "cantidadNoAsis", $"var cantidadNoAsistio = {cantidadNoAsistio};", true);
+            ClientScript.RegisterStartupScript(this.GetType(), "cantidadCan", $"var cantidadCancelado = {cantidadCancelado};", true);
+
+            dtAgendado.Dispose();
+            dtAsistio.Dispose();
+            dtNoAsistio.Dispose();
+            dtCancelado.Dispose();
         }
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)

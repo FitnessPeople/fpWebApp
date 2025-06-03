@@ -27,6 +27,9 @@
 
     <!-- Morris -->
     <link href="css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    
+    <!-- c3 Charts -->
+    <link href="css/plugins/c3/c3.min.css" rel="stylesheet">
 
     <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
 
@@ -329,6 +332,51 @@
                                         </div>
                                     </div>
                                 </div>
+                                
+                                <div class="wrapper wrapper-content animated fadeInRight">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="ibox float-e-margins">
+                                                <div class="ibox-title">
+                                                    <h5>Bar Chart Example</h5>
+                                                </div>
+                                                <div class="ibox-content">
+                                                    <div>
+                                                        <canvas id="barChart" height="140"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="ibox float-e-margins">
+                                                <div class="ibox-title">
+                                                    <h5>Pie </h5>
+
+                                                </div>
+                                                <div class="ibox-content">
+                                                    <div>
+                                                        <canvas id="doughnutChart" height="140"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title">
+                                                <h5>Radar Chart Example</h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div>
+                                                    <div id="pie"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -369,6 +417,17 @@
 
     <!-- Clock picker -->
     <script src="js/plugins/clockpicker/clockpicker.js"></script>
+    
+
+    <!-- Gráficas -->
+    <!-- ChartJS-->
+    <script src="js/plugins/chartJs/Chart.min.js"></script>
+    <script src="js/demo/chartjs-demo.js"></script>
+
+    <!-- d3 and c3 charts -->
+    <script src="js/plugins/d3/d3.min.js"></script>
+    <script src="js/plugins/c3/c3.min.js"></script>
+    
 
     <!-- Page-Level Scripts -->
     <script>
@@ -409,26 +468,135 @@
         });
     </script>
 
-<%--Eliminar Agenda Gym Pass--%>
-<script>
-    $(document).ready(function () {
-        // Delegación para manejar clics incluso si los botones se generan dinámicamente
-        $('table').on('click', 'a[id*="btnEliminarAgenda"]', function (e) {
-            e.preventDefault();
+    <%--Eliminar Agenda Gym Pass--%>
+    <script>
+        $(document).ready(function () {
+            // Delegación para manejar clics incluso si los botones se generan dinámicamente
+            $('table').on('click', 'a[id*="btnEliminarAgenda"]', function (e) {
+                e.preventDefault();
 
-            // Encuentra la fila donde se hizo clic
-            var row = $(this).closest('tr');
-            var cells = row.find('td');
+                // Encuentra la fila donde se hizo clic
+                var row = $(this).closest('tr');
+                var cells = row.find('td');
 
-            // Extrae el texto de cada celda y lo coloca en el modal
-            $('#infoDocEli').val(cells.eq(0).text().trim());
-            $('#infoNombreEli').val(cells.eq(1).text().trim());
+                // Extrae el texto de cada celda y lo coloca en el modal
+                $('#infoDocEli').val(cells.eq(0).text().trim());
+                $('#infoNombreEli').val(cells.eq(1).text().trim());
 
-            // Muestra el modal con Bootstrap 3
-            $('#modal-eliminar-agenda').modal('show');
+                // Muestra el modal con Bootstrap 3
+                $('#modal-eliminar-agenda').modal('show');
+            });
         });
-    });
-</script>
+    </script>
+
+    <script>
+
+        $(function () {
+
+            var barData = {
+                labels: ["Agendados", "Asistieron", "No Asistieron", "Cancelados"],
+                datasets: [
+
+                    {
+                        label: "Agendados",
+                        backgroundColor: '#1AB394',
+                        pointBorderColor: "#fff",
+                        data: [cantidadAgendado]
+                    },
+                    {
+                        label: "Asistieron",
+                        backgroundColor: '#1C84C6',
+                        pointBorderColor: "#fff",
+                        data: [cantidadAsistio]
+                    },
+                    {
+                        label: "No Asistieron",
+                        backgroundColor: '#ED5565',
+                        pointBorderColor: "#fff",
+                        data: [cantidadNoAsistio]
+                    },
+                    {
+                        label: "Cancelados",
+                        backgroundColor: '#F8AC59',
+                        pointBorderColor: "#fff",
+                        data: [cantidadCancelado]
+                    }
+
+                    //data: [cantidadAgendado, cantidadAsistio, cantidadNoAsistio, cantidadCancelado],
+                    //backgroundColor: ["#1AB394", "#1C84C6", "#ED5565", "#F8AC59"]
+                ]
+            };
+
+            var barOptions = {
+                responsive: true,
+                tooltips: {
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            var value = tooltipItem.yLabel;
+                            return value + ' personas';
+                        }
+                    }
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            };
+
+
+            var ctx2 = document.getElementById("barChart").getContext("2d");
+            new Chart(ctx2, { type: 'bar', data: barData, options: barOptions });
+
+            var doughnutData = {
+                labels: ["Agendados", "Asistieron", "No Asistieron", "Cancelados"],
+                datasets: [{
+                    data: [cantidadAgendado, cantidadAsistio, cantidadNoAsistio, cantidadCancelado],
+                    backgroundColor: ["#1AB394", "#1C84C6", "#ED5565", "#F8AC59"]
+                }]
+            };
+
+
+            var doughnutOptions = {
+                responsive: true
+            };
+
+
+            var ctx4 = document.getElementById("doughnutChart").getContext("2d");
+            new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+
+        });
+
+    </script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            c3.generate({
+                bindto: '#pie',
+                data: {
+                    columns: [
+                        ['Agendados', cantidadAgendado],
+                        ['Asistieron', cantidadAsistio],
+                        ['No Asistieron', cantidadNoAsistio],
+                        ['Cancelados', cantidadCancelado]
+                    ],
+                    colors: {
+                        Agendados: '#1AB394',
+                        Asistieron: '#1C84C6',
+                        'No Asistieron': '#ED5565',
+                        Cancelados: '#F8AC59'
+                    },
+                    type: 'pie'
+                }
+            });
+
+        });
+
+    </script>
 
 </body>
 
