@@ -266,7 +266,8 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Estado civil:</label>
-                                                    <asp:DropDownList ID="ddlEstadoCivil" runat="server" AppendDataBoundItems="true" DataTextField="EstadoCivil" DataValueField="idEstadoCivil" CssClass="form-control input-sm m-b">
+                                                    <asp:DropDownList ID="ddlEstadoCivil" runat="server" AppendDataBoundItems="true" 
+                                                        DataTextField="EstadoCivil" DataValueField="idEstadoCivil" CssClass="form-control input-sm m-b">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
@@ -274,7 +275,8 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Profesión:</label>
-                                                    <asp:DropDownList ID="ddlProfesiones" runat="server" AppendDataBoundItems="true" DataTextField="Profesion" DataValueField="idProfesion" CssClass="form-control input-sm m-b">
+                                                    <asp:DropDownList ID="ddlProfesiones" runat="server" AppendDataBoundItems="true" 
+                                                        DataTextField="Profesion" DataValueField="idProfesion" CssClass="chosen-select form-control input-sm m-b">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
@@ -285,7 +287,8 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>EPS:</label>
-                                                    <asp:DropDownList ID="ddlEps" runat="server" AppendDataBoundItems="true" DataTextField="NombreEps" DataValueField="idEps" CssClass="form-control input-sm m-b">
+                                                    <asp:DropDownList ID="ddlEps" runat="server" AppendDataBoundItems="true" 
+                                                        DataTextField="NombreEps" DataValueField="idEps" CssClass="form-control input-sm m-b">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
@@ -293,7 +296,8 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Sede:</label>
-                                                    <asp:DropDownList ID="ddlSedes" runat="server" AppendDataBoundItems="true" DataTextField="NombreSede" DataValueField="idSede" CssClass="form-control input-sm m-b">
+                                                    <asp:DropDownList ID="ddlSedes" runat="server" AppendDataBoundItems="true" 
+                                                        DataTextField="NombreSede" DataValueField="idSede" CssClass="form-control input-sm m-b">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
@@ -443,6 +447,7 @@
             },
             messages: {
                 ddlCiudadAfiliado: "*",
+                ddlProfesiones: "*",
             }
         });
 

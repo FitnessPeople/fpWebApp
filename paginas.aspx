@@ -37,7 +37,7 @@
         function changeClass() {
             var element1 = document.querySelector("#paginas");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#configuracion");
+            var element2 = document.querySelector("#gestiontecnica");
             element2.classList.remove("collapse");
         }
     </script>
@@ -102,7 +102,7 @@
                     <h2><i class="fa fa-file-code text-success m-r-sm"></i>Páginas</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>Configuración</li>
+                        <li>Gestión técnica</li>
                         <li class="active"><strong>Páginas</strong></li>
                     </ol>
                 </div>

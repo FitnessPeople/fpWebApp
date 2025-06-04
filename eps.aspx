@@ -39,7 +39,7 @@
         function changeClass() {
             var element1 = document.querySelector("#eps");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#configuracion");
+            var element2 = document.querySelector("#seguridadsocial");
             element2.classList.remove("collapse");
         }
     </script>
@@ -104,7 +104,7 @@
                     <h2><i class="fa fa-house-medical text-success m-r-sm"></i>EPSs</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>Configuración</li>
+                        <li>Seguridad Social</li>
                         <li class="active"><strong>EPSs</strong></li>
                     </ol>
                 </div>
