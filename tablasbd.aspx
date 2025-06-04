@@ -42,7 +42,7 @@
         function changeClass() {
             var element1 = document.querySelector("#tablasbd");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#configuracion");
+            var element2 = document.querySelector("#gestiontecnica");
             element2.classList.remove("collapse");
         }
     </script>
@@ -111,7 +111,7 @@
                     <h2><i class="fa fa-table text-success m-r-sm"></i>Tablas BD</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>Configuración</li>
+                        <li>Gestión técnica</li>
                         <li class="active"><strong>Tablas BD</strong></li>
                     </ol>
                 </div>

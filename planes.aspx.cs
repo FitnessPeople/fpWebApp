@@ -206,8 +206,7 @@ namespace fpWebApp
             //DataTable dt = cg.ConsultarPlanes();
             string strQuery = "SELECT *, IF(pm.EstadoPlan='Activo','primary','danger') AS label " +
                 "FROM Planes pm " +
-                "LEFT JOIN Usuarios u ON pm.idUsuario = u.idUsuario " +
-                "LEFT JOIN ColoresSistema c ON pm.NombreColorPlan = c.NombreColor ";
+                "LEFT JOIN Usuarios u ON pm.idUsuario = u.idUsuario ";
             DataTable dt = cg.TraerDatos(strQuery);
             rpPlanes.DataSource = dt;
             rpPlanes.DataBind();

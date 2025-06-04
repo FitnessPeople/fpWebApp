@@ -27,6 +27,8 @@ namespace fpWebApp
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
                         txbEmail.Attributes.Add("type", "email");
+                        txbClave.Attributes.Add("type", "password");
+
                         CargarPerfiles();
                         CargarEmpleados();
                         CargarDatosUsuario();
@@ -130,12 +132,8 @@ namespace fpWebApp
         {
             try
             {
-                string strQuery = "UPDATE usuarios SET " +
-                "EmailUsuario = '" + txbEmail.Text.ToString() + "', ClaveUsuario = '" + txbClave.Text.ToString() + "', " +
-                "NombreUsuario = '" + txbNombre.Text.ToString() + "', CargoUsuario = '" + txbCargo.Text.ToString() + "', " +
-                "idPerfil = " + ddlPerfiles.SelectedItem.Value.ToString() + ", idEmpleado = '" + ddlEmpleados.SelectedItem.Value.ToString() + "', " +
-                "EstadoUsuario = '" + rblEstado.SelectedItem.Value.ToString() + "' " +
-                "WHERE idUsuario = " + Request.QueryString["editid"].ToString();
+                string strQuery = "DELETE FROM usuarios " +
+                "WHERE idUsuario = " + Request.QueryString["deleteid"].ToString();
                 clasesglobales cg = new clasesglobales();
                 string mensaje = cg.TraerDatosStr(strQuery);
             }

@@ -191,13 +191,13 @@
                                                 </div>
 
                                                 <div class="row">
-                                                    <div class="col-sm-8">
+                                                    <div class="col-sm-7">
                                                         <div class="form-group">
                                                             <label>Dirección:</label>
                                                             <asp:TextBox ID="txbDireccion" CssClass="form-control input-sm" runat="server" placeholder="Dirección"></asp:TextBox>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-4">
+                                                    <div class="col-sm-5">
                                                         <div class="form-group">
                                                             <label>Ciudad:</label>
                                                             <asp:DropDownList ID="ddlCiudadAfiliado" runat="server" 
@@ -263,7 +263,8 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Estado civil:</label>
-                                                            <asp:DropDownList ID="ddlEstadoCivil" runat="server" AppendDataBoundItems="true" DataTextField="EstadoCivil" DataValueField="idEstadoCivil" CssClass="form-control input-sm m-b">
+                                                            <asp:DropDownList ID="ddlEstadoCivil" runat="server" AppendDataBoundItems="true" 
+                                                                DataTextField="EstadoCivil" DataValueField="idEstadoCivil" CssClass="form-control input-sm m-b">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
@@ -271,7 +272,8 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Profesión:</label>
-                                                            <asp:DropDownList ID="ddlProfesiones" runat="server" AppendDataBoundItems="true" DataTextField="Profesion" DataValueField="idProfesion" CssClass="form-control input-sm m-b">
+                                                            <asp:DropDownList ID="ddlProfesiones" runat="server" AppendDataBoundItems="true" 
+                                                                DataTextField="Profesion" DataValueField="idProfesion" CssClass="chosen-select form-control input-sm m-b">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
@@ -282,7 +284,8 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>EPS:</label>
-                                                            <asp:DropDownList ID="ddlEps" runat="server" AppendDataBoundItems="true" DataTextField="NombreEps" DataValueField="idEps" CssClass="form-control input-sm m-b">
+                                                            <asp:DropDownList ID="ddlEps" runat="server" AppendDataBoundItems="true" 
+                                                                DataTextField="NombreEps" DataValueField="idEps" CssClass="form-control input-sm m-b">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
@@ -290,7 +293,8 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Sede:</label>
-                                                            <asp:DropDownList ID="ddlSedes" runat="server" AppendDataBoundItems="true" DataTextField="NombreSede" DataValueField="idSede" CssClass="form-control input-sm m-b">
+                                                            <asp:DropDownList ID="ddlSedes" runat="server" AppendDataBoundItems="true" 
+                                                                DataTextField="NombreSede" DataValueField="idSede" CssClass="form-control input-sm m-b">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
@@ -420,10 +424,6 @@
                 txbFechaNac: {
                     required: true
                 },
-                txbCiudad: {
-                    required: true,
-                    minlength: 4
-                },
                 ddlEstadoCivil: {
                     required: true,
                 },
@@ -447,6 +447,10 @@
                     required: true,
                     minlength: 10
                 },
+            },
+            messages: {
+                ddlCiudadAfiliado: "*",
+                ddlProfesiones: "*",
             }
         });
 
