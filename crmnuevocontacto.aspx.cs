@@ -709,7 +709,7 @@ namespace fpWebApp
             {
                 txbValorPropuesta.Text = "Por favor selecciona un plan válido.";
                 ViewState["precioBase"] = null;
-                ViewState["descuentoMensual"] = null;
+                //ViewState["descuentoMensual"] = null;
                 return;
             }
 
@@ -719,7 +719,7 @@ namespace fpWebApp
             if (fila.Length > 0)
             {
                 ViewState["precioBase"] = fila[0]["PrecioBase"];
-                ViewState["descuentoMensual"] = fila[0]["DescuentoMensual"];
+                //ViewState["descuentoMensual"] = fila[0]["DescuentoMensual"];
 
                 int ValorMes = Convert.ToInt32(fila[0]["PrecioBase"]);
                 txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
@@ -732,7 +732,7 @@ namespace fpWebApp
                 bool esPermanente = Convert.ToBoolean(fila[0]["Permanente"]);
                 if (esPermanente)
                 {
-                    int mesesPlan = Convert.ToInt32(fila[0]["MesesMaximo"]); // Asegúrate que esta columna está en tu tabla
+                    int mesesPlan = Convert.ToInt32(fila[0]["Meses"]); // Asegúrate que esta columna está en tu tabla
 
                     // Buscar índice del valor y seleccionarlo
                     int index = rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(mesesPlan.ToString()));

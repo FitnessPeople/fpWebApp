@@ -544,7 +544,7 @@
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td><%# Eval("ArchivoPropuesta") %></td>
-                                                                                    <td><%# Eval("historialHTML") %></td>
+                                                                                    <%--<td><%# Eval("historialHTML") %></td>--%>
                                                                                 </tr>
                                                                             </table>
                                                                         </td>
