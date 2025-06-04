@@ -27,76 +27,6 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
-    <script>
-        function formatCurrency(input) {
-            let value = input.value.replace(/\D/g, '');
-            if (value === "") {
-                input.value = "";
-                return;
-            }
-            let formattedValue = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(value);
-            input.value = formattedValue;
-        }
-        function keepFormatted(input) {
-            if (input.value.trim() === "") {
-                input.value = "";
-                return;
-            }
-            formatCurrency(input);
-        }
-        function getNumericValue(input) {
-            return input.value.replace(/[^0-9]/g, '');
-        }
-    </script>
-
-<%--        formato de posición en el menú--%>
-    <script>
-        function changeClass() {
-            var element1 = document.querySelector("#crmnuevocontacto");
-            element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#crm");
-            element2.classList.remove("collapse");
-        }
-    </script>
-
-    <%--    Formatear telefono --%>
-    <script>
-        function formatearTelefono(input) {
-            let num = input.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
-
-            // Si el número tiene 10 dígitos, es un celular
-            if (num.length === 10) {
-                input.value = num.substring(0, 3) + '-' + num.substring(3, 6) + '-' + num.substring(6, 10);
-            }
-            // Si el número tiene 7 o más dígitos, es un teléfono fijo
-            else if (num.length > 6) {
-                input.value = '(' + num.substring(0, 3) + ') ' + num.substring(3, 6) + '-' + num.substring(6, 10);
-            } else {
-                input.value = num;
-            }
-        }
-    </script>
-
-    <%--    Formatear solo letraas --%>
-    <script>
-        function validarSoloLetras(input) {
-            // Eliminar cualquier caracter que no sea letra o espacio
-            input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
-        }
-    </script>
-
-    <%--    Formatear solo correo --%>
-    <script>
-        function validarCorreo(input) {
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            if (!emailRegex.test(input.value)) {
-                input.setCustomValidity('Por favor ingrese un correo electrónico válido.');
-            } else {
-                input.setCustomValidity('');
-            }
-        }
-    </script>
-
     <style type="text/css" media="print">
         body {
             visibility: hidden;
@@ -252,7 +182,7 @@
                                                     <div class="col-sm-5">
                                                         <label>Precio total</label>
                                                         <asp:TextBox ID="txbPrecioTotal" CssClass="form-control input-sm" runat="server"
-                                                            Text="0"></asp:TextBox>
+                                                            placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
                                                         <asp:RequiredFieldValidator ID="rfvPrecioTotal" runat="server" ErrorMessage="* Campo requerido"
                                                             ControlToValidate="txbPrecioTotal" ValidationGroup="agregar"
                                                             CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
@@ -263,6 +193,30 @@
                                                             Text="1"></asp:TextBox>
                                                         <asp:RequiredFieldValidator ID="rfvMesesMaximo" runat="server" ErrorMessage="* Campo requerido"
                                                             ControlToValidate="txbMesesMaximo" ValidationGroup="agregar"
+                                                            CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                    </div>
+                                                </div>
+                                                <div class="row m-b-n-xs">
+                                                    <div class="col-sm-6">
+                                                        <label>Meses de cortesía</label>
+                                                        <asp:TextBox ID="txbMesesCortesia" CssClass="form-control input-sm" runat="server"
+                                                            autocomplete="off" Text="0"></asp:TextBox>
+                                                        <asp:RequiredFieldValidator ID="rfvMesesCortesia" runat="server" ErrorMessage="* Campo requerido"
+                                                            ControlToValidate="txbMesesCortesia" ValidationGroup="agregar"
+                                                            CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <label>Color del plan</label>
+                                                        <asp:DropDownList ID="ddlColor" runat="server" CssClass="form-control input-sm">
+                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            <asp:ListItem Value="primary" style="margin-right: 5px; font-size: 10px; color: #1ab394;">&nbsp;primary</asp:ListItem>
+                                                            <asp:ListItem Value="success" style="margin-right: 5px; font-size: 10px; color: #1c84c6;">&nbsp;success</asp:ListItem>
+                                                            <asp:ListItem Value="info" style="margin-right: 5px; font-size: 10px; color: #23c6c8;">&nbsp;info</asp:ListItem>
+                                                            <asp:ListItem Value="warning" style="margin-right: 5px; font-size: 10px; color: #F8AC59;">&nbsp;warning</asp:ListItem>
+                                                            <asp:ListItem Value="danger" style="margin-right: 5px; font-size: 10px; color: #ed5565;">&nbsp;danger</asp:ListItem>
+                                                        </asp:DropDownList>
+                                                        <asp:RequiredFieldValidator ID="rfvColor" runat="server" ErrorMessage="* Campo requerido"
+                                                            ControlToValidate="ddlColor" ValidationGroup="agregar" InitialValue="" 
                                                             CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                     </div>
                                                 </div>

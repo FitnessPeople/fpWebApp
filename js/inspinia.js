@@ -294,57 +294,57 @@ function WinMove() {
         .disableSelection();
 }
 
-//// Formato de moneda
-//function formatCurrency(input) {
-//    let value = input.value.replace(/\D/g, '');
-//    if (value === "") {
-//        input.value = "";
-//        return;
-//    }
-//    let formattedValue = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(value);
-//    input.value = formattedValue;
-//}
-//function keepFormatted(input) {
-//    if (input.value.trim() === "") {
-//        input.value = "";
-//        return;
-//    }
-//    formatCurrency(input);
-//}
-//function getNumericValue(input) {
-//    return input.value.replace(/[^0-9]/g, '');
-//}
+// Formato de moneda
+function formatCurrency(input) {
+    let value = input.value.replace(/\D/g, '');
+    if (value === "") {
+        input.value = "";
+        return;
+    }
+    let formattedValue = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(value);
+    input.value = formattedValue;
+}
+function keepFormatted(input) {
+    if (input.value.trim() === "") {
+        input.value = "";
+        return;
+    }
+    formatCurrency(input);
+}
+function getNumericValue(input) {
+    return input.value.replace(/[^0-9]/g, '');
+}
 
-//// Formatear telefono 
-//function formatearTelefono(input) {
-//    let num = input.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
+// Formatear telefono 
+function formatearTelefono(input) {
+    let num = input.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
 
-//    // Si el número tiene 10 dígitos, es un celular
-//    if (num.length === 10) {
-//        input.value = num.substring(0, 3) + '-' + num.substring(3, 6) + '-' + num.substring(6, 10);
-//    }
-//    // Si el número tiene 7 o más dígitos, es un teléfono fijo
-//    else if (num.length > 6) {
-//        input.value = '(' + num.substring(0, 3) + ') ' + num.substring(3, 6) + '-' + num.substring(6, 10);
-//    } else {
-//        input.value = num;
-//    }
-//}
+    // Si el número tiene 10 dígitos, es un celular
+    if (num.length === 10) {
+        input.value = num.substring(0, 3) + '-' + num.substring(3, 6) + '-' + num.substring(6, 10);
+    }
+    // Si el número tiene 7 o más dígitos, es un teléfono fijo
+    else if (num.length > 6) {
+        input.value = '(' + num.substring(0, 3) + ') ' + num.substring(3, 6) + '-' + num.substring(6, 10);
+    } else {
+        input.value = num;
+    }
+}
 
-//// Formatear solo letras
+// Formatear solo letras
 
-//function validarSoloLetras(input) {
-//    // Eliminar cualquier caracter que no sea letra o espacio
-//    input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
-//}
+function validarSoloLetras(input) {
+    // Eliminar cualquier caracter que no sea letra o espacio
+    input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+}
 
-//// Formatear solo correo
+// Formatear solo correo
 
-//function validarCorreo(input) {
-//    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-//    if (!emailRegex.test(input.value)) {
-//        input.setCustomValidity('Por favor ingrese un correo electrónico válido.');
-//    } else {
-//        input.setCustomValidity('');
-//    }
-//}
+function validarCorreo(input) {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(input.value)) {
+        input.setCustomValidity('Por favor ingrese un correo electrónico válido.');
+    } else {
+        input.setCustomValidity('');
+    }
+}

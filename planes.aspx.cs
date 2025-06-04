@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Odbc;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Optimization;
 using System.Web.UI;
@@ -54,11 +56,9 @@ namespace fpWebApp
                         }
                         ListaPlanes();
                         ltTitulo.Text = "Agregar un plan";
-                        txbPrecio.Attributes.Add("type", "number");
                         txbDiasCongelamiento.Attributes.Add("type", "number");
                         txbDiasCongelamiento.Attributes.Add("step", "0.1");
                         txbDiasCongelamiento.Attributes.Add("max", "10");
-                        txbPrecioTotal.Attributes.Add("type", "number");
                         txbMesesMaximo.Attributes.Add("type", "number");
                         txbMesesMaximo.Attributes.Add("min", "1");
                         txbMesesMaximo.Attributes.Add("max", "12");
@@ -80,9 +80,12 @@ namespace fpWebApp
                                 {
                                     txbPlan.Text = dt.Rows[0]["NombrePlan"].ToString();
                                     txbDescripcion.Text = dt.Rows[0]["DescripcionPlan"].ToString();
-                                    txbPrecio.Text = dt.Rows[0]["PrecioBase"].ToString();
+                                    int intPrecioBase = Convert.ToInt32(dt.Rows[0]["PrecioBase"]);
+                                    txbPrecio.Text = intPrecioBase.ToString("C0", new CultureInfo("es-CO"));
                                     txbDiasCongelamiento.Text = dt.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',','.');
-                                    txbPrecioTotal.Text = dt.Rows[0]["PrecioTotal"].ToString();
+                                    //txbPrecioTotal.Text = dt.Rows[0]["PrecioTotal"].ToString();
+                                    int intPrecioTotal = Convert.ToInt32(dt.Rows[0]["PrecioTotal"]);
+                                    txbPrecioTotal.Text = intPrecioTotal.ToString("C0", new CultureInfo("es-CO"));
                                     txbMesesMaximo.Text = dt.Rows[0]["Meses"].ToString();
                                     txbFechaInicio.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
                                     txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
@@ -177,6 +180,11 @@ namespace fpWebApp
             }
         }
 
+        /// <summary>
+        /// Valida los permisos del usuario en la pagina visitada.
+        /// Contiene un parametro.
+        /// </summary>
+        /// <param name="strPagina"></param>
         private void ValidarPermisos(string strPagina)
         {
             ViewState["SinPermiso"] = "1";
@@ -200,6 +208,9 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        /// <summary>
+        /// Lista todos los planes 
+        /// </summary>
         private void ListaPlanes()
         {
             clasesglobales cg = new clasesglobales();
@@ -232,6 +243,11 @@ namespace fpWebApp
             }
         }
 
+        /// <summary>
+        /// Valida si un plan ya existe con ese mismo nombre
+        /// </summary>
+        /// <param name="strNombre"></param>
+        /// <returns>Devuelve 'true' si existe o 'false' si no existe.</returns>
         private bool ValidarPlan(string strNombre)
         {
             bool bExiste = false;
@@ -245,6 +261,11 @@ namespace fpWebApp
             return bExiste;
         }
 
+        /// <summary>
+        /// Agrega un nuevo plan
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             int intPermanente = 0;
@@ -261,9 +282,9 @@ namespace fpWebApp
                 {
                     string respuesta = cg.ActualizarPlan(int.Parse(Request.QueryString["editid"].ToString()), 
                         txbPlan.Text.ToString().Trim(), 
-                        txbDescripcion.Text.ToString(), 
-                        int.Parse(txbPrecio.Text.ToString()),
-                        int.Parse(txbPrecioTotal.Text.ToString()),
+                        txbDescripcion.Text.ToString(),
+                        Convert.ToInt32(Regex.Replace(txbPrecio.Text, @"[^\d]", "")),
+                        Convert.ToInt32(Regex.Replace(txbPrecioTotal.Text, @"[^\d]", "")),
                         int.Parse(txbMesesMaximo.Text.ToString()),
                         //rblColor.SelectedItem.Value.ToString(),
                         double.Parse(txbDiasCongelamiento.Text.ToString()), 
@@ -289,8 +310,8 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarPlan(txbPlan.Text.ToString().Trim(),
                         txbDescripcion.Text.ToString(),
-                        int.Parse(txbPrecio.Text.ToString()),
-                        int.Parse(txbPrecioTotal.Text.ToString()),
+                        Convert.ToInt32(Regex.Replace(txbPrecio.Text, @"[^\d]", "")),
+                        Convert.ToInt32(Regex.Replace(txbPrecioTotal.Text, @"[^\d]", "")),
                         int.Parse(txbMesesMaximo.Text.ToString()),
                         //rblColor.SelectedItem.Value.ToString(),
                         int.Parse(Session["idusuario"].ToString()),
