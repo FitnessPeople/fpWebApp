@@ -338,7 +338,7 @@
                                         <div class="col-lg-12">
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
-                                                    <h5>Agenda Gym Pass por Sede</h5>
+                                                    <h5>Estado de Agendas por Sede</h5>
                                                 </div>
                                                 <div class="ibox-content">
                                                     <div id="barras"></div>
@@ -350,7 +350,7 @@
                                         <div class="col-lg-6">
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
-                                                    <h5>Pie </h5>
+                                                    <h5>Cantidad de Agendas por Estado</h5>
                                                 </div>
                                                 <div class="ibox-content">
                                                     <div>
@@ -362,7 +362,7 @@
                                         <div class="col-lg-6">
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
-                                                    <h5>Radar Chart Example</h5>
+                                                    <h5>Porcentaje de Agendas por Estado</h5>
                                                 </div>
                                                 <div class="ibox-content">
                                                     <div>
