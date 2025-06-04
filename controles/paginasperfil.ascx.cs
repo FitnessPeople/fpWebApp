@@ -35,10 +35,6 @@ namespace fpWebApp.controles
             dt.Dispose();
         }
 
-        protected void btnBuscar_Click(object sender, EventArgs e)
-        {
-            string strParam = txbBuscar.Value.ToString();
-            //listaAfiliados(strParam);
-        }
+
     }
 }

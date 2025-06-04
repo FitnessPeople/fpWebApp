@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -19,10 +20,6 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //CargarPlanes();
-            CargarPlanes();
-            //CargarPlanes();
-
             if (!IsPostBack)
             {
                 if (Session["idUsuario"] != null)
@@ -128,36 +125,6 @@ namespace fpWebApp
         //}
 
         private void ListaPlanes()
-        private void CargarPlanes()
-        //private void CargarPlanes()
-        //{
-        //    string strQuery = "SELECT * " +
-        //        "FROM PlanesModificado " +
-        //        "WHERE EstadoPlan = 'Activo' " +
-        //        "AND (FechaInicial IS NULL OR FechaInicial <= CURDATE()) " +
-        //        "AND (FechaFinal IS NULL OR FechaFinal >= CURDATE())";
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.TraerDatos(strQuery);
-
-        //    if (dt.Rows.Count > 0)
-        //    {
-        //        PlaceHolder ph = ((PlaceHolder)this.FindControl("phPlanes"));
-        //        for (int i = 0; i < dt.Rows.Count; i++)
-        //        {
-        //            Button btn = new Button();
-        //            btn.Text = dt.Rows[i]["NombrePlan"].ToString();
-        //            btn.CssClass = "btn btn-" + dt.Rows[i]["NombreColorPlan"].ToString() + " btn-outline btn-block btn-sm font-bold";
-        //            btn.ToolTip = dt.Rows[i]["NombrePlan"].ToString();
-        //            btn.Command += new CommandEventHandler(btn_Click);
-        //            btn.CommandArgument = dt.Rows[i]["idPlan"].ToString();
-        //            btn.ID = dt.Rows[i]["idPlan"].ToString();
-        //            ph.Controls.Add(btn);
-        //        }
-        //    }
-        //    dt.Dispose();
-        //}
-
-        private void ListaPlanes()
         {
             clasesglobales cg = new clasesglobales();
             //DataTable dt = cg.ConsultarPlanes();
@@ -168,24 +135,6 @@ namespace fpWebApp
                 "DATEDIFF(FechaFinal, FechaInicial) diastotales " +
                 "FROM Planes ";
             DataTable dt = cg.TraerDatos(strQuery);
-            rpPlanes.DataSource = dt;
-            rpPlanes.DataBind();
-
-            if (dt.Rows.Count > 0)
-            {
-                PlaceHolder ph = ((PlaceHolder)this.FindControl("phPlanes"));
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    Button btn = new Button();
-                    btn.Text = dt.Rows[i]["NombrePlan"].ToString();
-                    btn.CssClass = "btn btn-" + dt.Rows[i]["NombreColorPlan"].ToString() + " btn-outline btn-block btn-lg font-bold";
-                    btn.ToolTip = dt.Rows[i]["NombrePlan"].ToString();
-                    btn.Command += new CommandEventHandler(btn_Click);
-                    btn.CommandArgument = dt.Rows[i]["idPlan"].ToString();
-                    btn.ID = dt.Rows[i]["idPlan"].ToString();
-                    ph.Controls.Add(btn);
-                }
-            }
             rpPlanes.DataSource = dt;
             rpPlanes.DataBind();
             dt.Dispose();
@@ -303,8 +252,6 @@ namespace fpWebApp
         private string listarDetalle()
         {
             string parametro = string.Empty;
-            //string tester = string.Empty;
-            string tester = string.Empty;
             //string tester = string.Empty;
             string mensaje = string.Empty;
             int idempresa = 4;//Wompi
@@ -481,8 +428,6 @@ namespace fpWebApp
 
             CalculoPrecios();
             ActivarCortesia(ViewState["mesesCortesia"].ToString());
-            ActivarCortesia("0");
-            ActivarCortesia(ViewState["mesesCortesia"].ToString());
 
             //ltDescuento.Text = "0%";
             //ltAhorro.Text = "$0";
@@ -522,8 +467,6 @@ namespace fpWebApp
 
             ltObservaciones.Text = "Valor sin descuento: $" + string.Format("{0:N0}", intPrecioBase) + "<br /><br />";
             ltObservaciones.Text += "<b>Meses</b>: " + intMeses.ToString() + ".<br />";
-            ltObservaciones.Text += "<b>Descuento</b>: " + string.Format("{0:N2}", dobDescuento) + "%.<br />";
-            ltObservaciones.Text += "<b>Descuento</b>: " + dobDescuento.ToString() + "%.<br />";
             ltObservaciones.Text += "<b>Descuento</b>: " + string.Format("{0:N2}", dobDescuento) + "%.<br />";
             ltObservaciones.Text += "<b>Valor del mes con descuento</b>: $" + string.Format("{0:N0}", intConDescuento) + ".<br />";
             //ltObservaciones.Text += "<b>Ahorro</b>: $" + string.Format("{0:N0}", dobAhorro) + ".<br />";
@@ -576,8 +519,6 @@ namespace fpWebApp
                     btn90dias.Enabled = false;
                     break;
                 case "1":
-                case "3":
-                case "1":
                     btn7dias.Enabled = true;
                     btn15dias.Enabled = true;
                     btn30dias.Enabled = true;
@@ -585,16 +526,12 @@ namespace fpWebApp
                     btn90dias.Enabled = false;
                     break;
                 case "2":
-                case "4":
-                case "2":
                     btn7dias.Enabled = true;
                     btn15dias.Enabled = true;
                     btn30dias.Enabled = true;
                     btn60dias.Enabled = true;
                     btn90dias.Enabled = false;
                     break;
-                case "3":
-                case "5":
                 case "3":
                     btn7dias.Enabled = true;
                     btn15dias.Enabled = true;

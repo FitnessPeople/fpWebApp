@@ -1,5 +1,4 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="agendagympass.aspx.cs" Inherits="fpWebApp.agendagympass" %>
-
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
@@ -116,14 +115,6 @@
                     <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="window.location.href = 'noasistenciaagendagympass.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnNoAsistencia" visible="false"><i class="fa fa-calendar-xmark m-r-sm"></i>No Asistió</button>
                     <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'cancelaragendagympass.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnCancelar" visible="false"><i class="fa fa-calendar-minus m-r-sm"></i>Cancelar</button>
                     <button type="button" class="btn btn-info" data-dismiss="modal"><i class="fa fa-times m-r-sm"></i>Cerrar</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
-                    <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-times m-r-sm"></i>Cerrar</button>
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>
-                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="window.location.href = 'asistenciaagendagympass.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnAsistencia" visible="false"><i class="fa fa-calendar-check m-r-sm"></i>Asistió</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="window.location.href = 'noasistenciaagendagympass.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnNoAsistencia" visible="false"><i class="fa fa-calendar-xmark m-r-sm"></i>No Asistió</button>
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'cancelaragendagympass.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnCancelar" visible="false"><i class="fa fa-calendar-minus m-r-sm"></i>Cancelar</button>
-                    <button type="button" class="btn btn-info" data-dismiss="modal"><i class="fa fa-times m-r-sm"></i>Cerrar</button>
                 </div>
             </div>
         </div>
@@ -173,32 +164,8 @@
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5 style="margin-bottom: 0;">Agenda
-                                        <h5>Agenda
-                                        <h5 style="margin-bottom: 0;">Agenda
                                             <asp:Literal ID="ltSede" runat="server"></asp:Literal></h5>
                                         <div class="ibox-tools">
-                                            <span style="padding: 1rem; font-size: 1.2rem; color: #fff; font-weight: bold;" class="label label-warning pull-right">Cancelado</span>
-                                            <span style="padding: 1rem; font-size: 1.2rem; color: #fff; font-weight: bold;" class="label label-danger pull-right">No Asistió</span>
-                                            <span style="padding: 1rem; font-size: 1.2rem; color: #fff; font-weight: bold;" class="label label-success pull-right">Asistió</span>
-                                            <span style="padding: 1rem; font-size: 1.2rem; color: #fff; font-weight: bold;" class="label label-primary pull-right">Agendado</span>
-                                            <span style="padding: 1rem; font-size: 1.2rem; color: #fff; font-weight: bold;" class="label label-primary pull-right">Agendando</span>
-                                            <%--<a class="collapse-link">
-                                                        <i class="fa fa-chevron-up"></i>
-                                                    </a>
-                                                    <a class="close-link">
-                                                        <i class="fa fa-times"></i>
-                                                    </a>--%>
-                                            <%--<span class="label label-danger pull-right" style="color: #000;">Eliminado</span>--%>
-                                            <span style="font-size: 1.2rem; color: #1A252F; font-weight: bold;" class="label label-warning pull-right" style="color: #000;">Cancelado</span>
-                                            <span style="font-size: 1.2rem; color: #1A252F; font-weight: bold;" class="label label-success pull-right" style="color: #000;">Asistió</span>
-                                            <span style="font-size: 1.2rem; color: #1A252F; font-weight: bold;" class="label label-primary pull-right">Agendando</span>
-                                            <span class="label label-warning pull-right" style="color: #000;">Cancelado</span>
-                                            <span class="label label-success pull-right" style="color: #000;">Asistió</span>
-                                            <span class="label label-primary pull-right" style="color: #000;">Agendado</span>
-                                            <span class="label label-success pull-right" style="color: #000;">Cita atendida</span>
-                                            <span class="label label-danger pull-right" style="color: #000;">Cita cancelada</span>
-                                            <span class="label label-warning pull-right" style="color: #000;">Cita asignada</span>
-                                            <span class="label label-primary pull-right" style="color: #000;">Cita disponible</span>
                                             <span style="padding: 1rem; font-size: 1.2rem; color: #fff; font-weight: bold;" class="label label-warning pull-right">Cancelado</span>
                                             <span style="padding: 1rem; font-size: 1.2rem; color: #fff; font-weight: bold;" class="label label-danger pull-right">No Asistió</span>
                                             <span style="padding: 1rem; font-size: 1.2rem; color: #fff; font-weight: bold;" class="label label-success pull-right">Asistió</span>
@@ -214,32 +181,6 @@
                                                                       OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
                                                                       DataValueField="idSede" DataTextField="NombreSede"
                                                                       AutoPostBack="true" AppendDataBoundItems="true" />
-                                            <div class="form-group m-b-n-sm">
-                                                <label class="col-sm-2 col-sm-2 control-label">Sede</label>
-                                                <div class="col-sm-6">
-                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedes" runat="server"
-                                            <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                                                <div id="divFiltroSede" runat="server" style="display: flex; align-items: center; gap: 5rem;">
-                                                    <label class="control-label text-center" style="padding: 0; margin: 0;">Sede</label>
-                                                    <asp:DropDownList CssClass="form-control required" ID="ddlSedes" runat="server"
-                                                        OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
-                                                        DataValueField="idSede" DataTextField="NombreSede"
-                                                        AutoPostBack="true" AppendDataBoundItems="true">
-                                                    </asp:DropDownList>
-                                                                      AutoPostBack="true" AppendDataBoundItems="true" />
-                                                </div>
-
-                                                <div style="display: flex; align-items: center; gap: 5rem;">
-                                                    <label class="control-label text-center" style="padding: 0; margin: 0;">Estado</label>
-                                                    <asp:DropDownList CssClass="form-control required" ID="ddlEstados" runat="server"
-                                                                      OnSelectedIndexChanged="ddlEstados_SelectedIndexChanged"
-                                                                      DataValueField="Estados" DataTextField="Estados"
-                                                                      AutoPostBack="true" AppendDataBoundItems="true" />
-                                                </div>
-                                                <div class="col-sm-2 pull-right">
-                                                    <button>Por Sedes</button>
-                                                    <%--<asp:Button ID="btnEliminarAgendaGymPass" class="btn btn-danger" runat="server" Text="Aceptar" OnClick="btnEliminarAgendaGymPass_Click" />
-                                                    <asp:Button ID="Button1" class="btn btn-danger" runat="server" Text="Aceptar" OnClick="btnEliminarAgendaGymPass_Click" />--%>
                                                 </div>
 
                                                 <div style="display: flex; align-items: center; gap: 5rem;">
@@ -333,18 +274,7 @@
                         jQuery('.event-icon').html("<i class='fa fa-" + info.event.extendedProps.icon + "'></i>");
                         jQuery('.event-title').html(info.event.title);
                         jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + "<br /><br />");
-                        jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />");
-                        jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + "<br /><br />");
                         jQuery('.event-description').html(info.event.extendedProps.description);
-                        var btnNoAsistencia = document.getElementById("btnNoAsistencia");
-                        var btnAsistencia = document.getElementById("btnAsistencia");
-                        var btnCancelar = document.getElementById("btnCancelar");
-                        btnNoAsistencia.style.display = info.event.extendedProps.btnNoAsistencia;
-                        btnAsistencia.style.display = info.event.extendedProps.btnAsistencia;
-                        btnCancelar.style.display = info.event.extendedProps.btnCancelar;
-                        btnEliminar.style.display = info.event.extendedProps.btnEliminar;
-                        var btn = document.getElementById("btnEliminar");
-                        btn.style.display = info.event.extendedProps.btnEliminar;
                         var btnNoAsistencia = document.getElementById("btnNoAsistencia");
                         var btnAsistencia = document.getElementById("btnAsistencia");
                         var btnCancelar = document.getElementById("btnCancelar");
@@ -410,16 +340,12 @@
                     hour: '2-digit',
                     minute: '2-digit',
                     hour12: true
-                    hour12: false
-                    hour12: true
                 },
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                 },
-                <%=strEventos%>
-                
                 <%=strEventos%>
             });
 

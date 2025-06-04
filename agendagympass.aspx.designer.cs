@@ -42,35 +42,6 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlButton btnCancelar;
 
         /// <summary>
-        /// Control btnEliminar.
-        /// Control btnAsistencia.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton btnEliminar;
-        protected global::System.Web.UI.HtmlControls.HtmlButton btnAsistencia;
-
-        /// <summary>
-        /// Control btnNoAsistencia.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton btnNoAsistencia;
-
-        /// <summary>
-        /// Control btnCancelar.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton btnCancelar;
-
-        /// <summary>
         /// Control navbar.
         /// </summary>
         /// <remarks>

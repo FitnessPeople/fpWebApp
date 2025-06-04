@@ -942,7 +942,6 @@
     <Content Include="logactividades.aspx" />
     <Content Include="logout.aspx" />
     <Content Include="micuenta.aspx" />
-    <Content Include="noasistenciaagendagympass.aspx" />
     <Content Include="nuevaempresaafiliada.aspx" />
     <Content Include="nuevahistoriaclinica.aspx" />
     <Content Include="nuevoafiliado.aspx" />
@@ -1648,13 +1647,6 @@
     </Compile>
     <Compile Include="micuenta.aspx.designer.cs">
       <DependentUpon>micuenta.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="noasistenciaagendagympass.aspx.cs">
-      <DependentUpon>noasistenciaagendagympass.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="noasistenciaagendagympass.aspx.designer.cs">
-      <DependentUpon>noasistenciaagendagympass.aspx</DependentUpon>
     </Compile>
     <Compile Include="nuevaempresaafiliada.aspx.cs">
       <DependentUpon>nuevaempresaafiliada.aspx</DependentUpon>

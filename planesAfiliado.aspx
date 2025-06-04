@@ -65,24 +65,6 @@
                         <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i><b>Teléfono, </b>
                         <i class="fa-solid fa-building" style="color: #0D6EFD;"></i><b>Sede, </b>
                         <i class="fa-solid fa-cake" style="color: #0D6EFD;"></i><b>Cumpleaños, </b>
-                        <i class="fa-solid fa-magnifying-glass"></i> Revisa los datos: <br />
-                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre, </b>
-                        <i class="fa-solid fa-envelope" style="color: #0D6EFD;"></i> <b>Correo, </b>
-                        <i class="fa-solid fa-city" style="color: #0D6EFD;"></i> <b>Ciudad, </b>
-                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i> <b>Teléfono, </b>
-                        <i class="fa-solid fa-building" style="color: #0D6EFD;"></i> <b>Sede, </b>
-                        <i class="fa-solid fa-cake" style="color: #0D6EFD;"></i> <b>Cumpleaños, </b><br />
-                        <i class="fa-solid fa-shield" style="color: #0D6EFD;"></i> <b>Estado, </b>
-                        <i class="fa-solid fa-calendar-day" style="color: #0D6EFD;"></i> <b>Días asistidos, Congelaciones y</b>
-                        <i class="fa-solid fa-ticket" style="color: #0D6EFD;"></i> <b>Planes registrados</b>,
-                        <i class="fa-solid fa-magnifying-glass"></i>Revisa los datos:
-                    <br />
-                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i><b>Nombre, </b>
-                        <i class="fa-solid fa-envelope" style="color: #0D6EFD;"></i><b>Correo, </b>
-                        <i class="fa-solid fa-city" style="color: #0D6EFD;"></i><b>Ciudad, </b>
-                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i><b>Teléfono, </b>
-                        <i class="fa-solid fa-building" style="color: #0D6EFD;"></i><b>Sede, </b>
-                        <i class="fa-solid fa-cake" style="color: #0D6EFD;"></i><b>Cumpleaños, </b>
                         <br />
                         <i class="fa-solid fa-shield" style="color: #0D6EFD;"></i><b>Estado, </b>
                         <i class="fa-solid fa-calendar-day" style="color: #0D6EFD;"></i><b>Días asistidos, Congelaciones y</b>
@@ -90,10 +72,6 @@
                     <br />
                         <br />
                         <b>Paso 2: Asigna un plan al afiliado</b><br />
-                        <i class="fa-solid fa-ticket" style="color: #21B9BB;"></i>Selecciona el <b>plan</b>.<br />
-                        <i class="fa-solid fa-ticket" style="color: #EC4758;"></i>Selecciona la <b>cantidad de meses</b> a la que se registrará el plan.
-                        <i class="fa-solid fa-ticket" style="color: #21B9BB;"></i> Selecciona el <b>plan</b>.<br />
-                        <i class="fa-solid fa-ticket" style="color: #EC4758;"></i> Selecciona la <b>cantidad de meses</b> a la que se registrará el plan.
                         <i class="fa-solid fa-ticket" style="color: #21B9BB;"></i>Selecciona el <b>plan</b>.<br />
                         <i class="fa-solid fa-ticket" style="color: #EC4758;"></i>Selecciona la <b>cantidad de meses</b> a la que se registrará el plan.
                     <br />
@@ -105,25 +83,8 @@
                         <i class="fa-solid fa-cart-shopping" style="color: #F8AC59;"></i><b>Valor total</b><br />
                         <i class="fa-solid fa-hand-holding-dollar" style="color: #1C84C6;"></i><b>Ahorro</b>
                         <br />
-                        <i class="fa-solid fa-money-bill-wave" style="color: #23C6C8;"></i> <b>Valor x mes</b><br />
-                        <i class="fa-solid fa-tag" style="color: #ED5565;"></i> <b>Descuento en % y $</b><br />
-                        <i class="fa-solid fa-cart-shopping" style="color: #F8AC59;"></i> <b>Valor total</b><br />
-                        <i class="fa-solid fa-hand-holding-dollar" style="color: #1C84C6;"></i> <b>Ahorro</b>
-                        <i class="fa-solid fa-money-bill-wave" style="color: #23C6C8;"></i><b>Valor x mes</b><br />
-                        <i class="fa-solid fa-tag" style="color: #ED5565;"></i><b>Descuento en % y $</b><br />
-                        <i class="fa-solid fa-cart-shopping" style="color: #F8AC59;"></i><b>Valor total</b><br />
-                        <i class="fa-solid fa-hand-holding-dollar" style="color: #1C84C6;"></i><b>Ahorro</b>
-                    <br />
                         <br />
                         <b>Paso 4: Termina el proceso</b><br />
-                        <i class="fa-solid fa-gift" style="color: #21B9BB;"></i>Selecciona los <b>días de cortesía</b>.<br />
-                        <i class="fa-solid fa-gift" style="color: #EC4758;"></i>Selecciona el <b>regalo</b>.<br />
-                        <i class="fa-solid fa-magnifying-glass"></i>Revisa que los <b>detalles del plan</b> sean los correctos.<br />
-                        <i class="fa-solid fa-money-bill"></i>Completa los campos del <b>método de pago</b>.
-                        <i class="fa-solid fa-gift" style="color: #21B9BB;"></i> Selecciona los <b>días de cortesía</b>.<br />
-                        <i class="fa-solid fa-gift" style="color: #EC4758;"></i> Selecciona el <b>regalo</b>.<br />
-                        <i class="fa-solid fa-magnifying-glass"></i> Revisa que los <b>detalles del plan</b> sean los correctos.<br />
-                        <i class="fa-solid fa-money-bill"></i> Completa los campos del <b>método de pago</b>.
                         <i class="fa-solid fa-gift" style="color: #21B9BB;"></i>Selecciona los <b>días de cortesía</b>.<br />
                         <i class="fa-solid fa-gift" style="color: #EC4758;"></i>Selecciona el <b>regalo</b>.<br />
                         <i class="fa-solid fa-magnifying-glass"></i>Revisa que los <b>detalles del plan</b> sean los correctos.<br />
@@ -133,14 +94,8 @@
                         <b>Paso 5: Confirma o cancela</b><br />
                         <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i><b>Agregar Plan:</b> Guarda la información y <b>registra</b> el plan al afiliado.<br />
                         <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i><b>Cancelar:</b> Si necesitas volver <b>atrás</b> sin guardar cambios.
-                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Agregar Plan:</b> Guarda la información y <b>registra</b> el plan al afiliado.<br />
-                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver <b>atrás</b> sin guardar cambios.
-                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i><b>Agregar Plan:</b> Guarda la información y <b>registra</b> el plan al afiliado.<br />
-                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i><b>Cancelar:</b> Si necesitas volver <b>atrás</b> sin guardar cambios.
                    <br />
                         <br />
-                        <i class="fa fa-exclamation-circle mr-2"></i>Si tienes dudas, no dudes en consultar con el administrador del sistema.
-                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
                         <i class="fa fa-exclamation-circle mr-2"></i>Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
@@ -161,9 +116,6 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>
-                        <asp:Literal ID="ltDetalleWompi" runat="server"></asp:Literal></p>
-                    <p><asp:Literal ID="ltDetalleWompi" runat="server"></asp:Literal></p>
                     <p>
                         <asp:Literal ID="ltDetalleWompi" runat="server"></asp:Literal></p>
                 </div>
@@ -242,13 +194,9 @@
                                         <td><strong><i class="fab fa-whatsapp"></i></strong>
                                             <asp:Literal ID="ltCelular" runat="server"></asp:Literal></td>
                                         <td><strong><i class="fa fa-shield"></i></strong>Estado: 
-                                        <td><strong><i class="fa fa-shield"></i></strong> Estado: 
-                                        <td><strong><i class="fa fa-shield"></i></strong>Estado: 
                                             <asp:Literal ID="ltEstado" runat="server"></asp:Literal></td>
                                     </tr>
                                     <tr>
-                                        <td><strong><i class="fa fa-building"></i></strong>Sede:
-                                        <td><strong><i class="fa fa-building"></i></strong> Sede:
                                         <td><strong><i class="fa fa-building"></i></strong>Sede:
                                             <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
                                         <td><strong>54</strong> Días asistidos</td>
@@ -311,11 +259,7 @@
                                             <ContentTemplate>
                                                 <div class="row">
                                                     <div class="col-sm-8 b-r">
-                                                    <div class="col-sm-6 b-r">
-                                                    <div class="col-sm-8 b-r">
                                                         <div class="form-group">
-                                                            <%--<label>Tipo de plan:</label>--%>
-                                                            <label>Tipo de plan:</label>
                                                             <%--<label>Tipo de plan:</label>--%>
                                                             <div class="form-group">
                                                                 <%--<asp:PlaceHolder ID="phPlanes" runat="server"></asp:PlaceHolder>--%>
@@ -352,41 +296,6 @@
                                                                 </table>
                                                             </div>
                                                         </div>
-                                                                <asp:PlaceHolder ID="phPlanes" runat="server"></asp:PlaceHolder>
-                                                            </div>
-                                                                <%--<asp:PlaceHolder ID="phPlanes" runat="server"></asp:PlaceHolder>--%>
-                                                                <table class="footable table table-striped" data-paging-size="10"
-                                                                    data-filter-min="3" data-filter-placeholder="Buscar"
-                                                                    data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
-                                                                    data-paging-limit="10" data-filtering="true"
-                                                                    data-filter-container="#filter-form-container" data-filter-delay="300"
-                                                                    data-filter-dropdown-title="Buscar en:" data-filter-position="left"
-                                                                    data-empty="Sin resultados">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Nombre</th>
-                                                                            <th data-breakpoints="xs">Descripción</th>
-                                                                            <th data-breakpoints="xs" class="text-right">Precio</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <asp:Repeater ID="rpPlanes" runat="server" OnItemCommand="rpPlanes_ItemCommand" OnItemDataBound="rpPlanes_ItemDataBound">
-                                                                            <ItemTemplate>
-                                                                                <tr class="feed-element">
-                                                                                    <td>
-                                                                                        <asp:LinkButton runat="server" ID="btnSeleccionarPlan" CommandArgument='<%# Eval("idPlan") %>' 
-                                                                                            CommandName="SeleccionarPlan"><%# Eval("NombrePlan") %></asp:LinkButton>
-                                                                                        <%--<asp:Button runat="server" ID="btnSeleccionarPlan" OnClick="btnSeleccionarPlan_Click" CommandArgument="" />--%></td>
-                                                                                    <td><i class="fa fa-note-sticky m-r-xs font-bold"></i><%# Eval("DescripcionPlan") %></td>
-                                                                                    <td style="text-align: right;">$<%# Eval("PrecioTotal","{0:N0}") %></td>
-                                                                                </tr>
-                                                                            </ItemTemplate>
-                                                                        </asp:Repeater>
-                                                                    </tbody>
-                                                                </table>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Días de cortesía:</label>
                                                             <div class="form-group">
@@ -433,7 +342,7 @@
                                                                                     <i class="fa fa-money-bill-wave fa-3x" style="font-size: 2.3em"></i>
                                                                                 </div>
                                                                                 <div class="col-xs-9 text-right">
-                                                                                    <span>Valor mes </span>
+                                                                                    <span>Valor mes base</span>
                                                                                     <h2 class="font-bold">
                                                                                         <asp:Literal ID="ltPrecioBase" runat="server"></asp:Literal></h2>
                                                                                 </div>
@@ -447,10 +356,8 @@
                                                                                     <i class="fa fa-tag fa-3x" style="font-size: 2.3em"></i>
                                                                                 </div>
                                                                                 <div class="col-xs-9 text-right">
-                                                                                    <span>Descuento
-                        <asp:Literal ID="ltDescuento" runat="server"></asp:Literal></span>
-                                                                                    <h2 class="font-bold">
-                                                                                        <asp:Literal ID="ltConDescuento" runat="server"></asp:Literal></h2>
+                                                                                    <span>Descuento <asp:Literal ID="ltDescuento" runat="server"></asp:Literal></span>
+                                                                                    <h2 class="font-bold"><asp:Literal ID="ltConDescuento" runat="server"></asp:Literal></h2>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -469,105 +376,6 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-lg-12">
-                                                                        <div class="widget style1 bg-success">
-                                                                            <div class="row vertical-align">
-                                                                                <div class="col-xs-3">
-                                                                                    <i class="fa fa-hand-holding-dollar fa-3x" style="font-size: 2.3em"></i>
-                                                                                </div>
-                                                                                <div class="col-xs-9 text-right">
-                                                                                    <span>Ahorro </span>
-                                                                                    <h2 class="font-bold">
-                                                                                        <asp:Literal ID="ltAhorro" runat="server"></asp:Literal></h2>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                    </div>
-                                                </div>
-                                                <hr />
-                                                    </div>--%>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-lg-3">
-                                                                    <div class="col-lg-12">
-                                                                        <div class="widget style1 lazur-bg">
-                                                                            <div class="row vertical-align">
-                                                                                <div class="col-xs-3">
-                                                                                    <i class="fa fa-money-bill-wave fa-3x" style="font-size: 2.3em"></i>
-                                                                                </div>
-                                                                                <div class="col-xs-9 text-right">
-                                                                                    <span>Valor mes base</span>
-                                                                                    <h2 class="font-bold">
-                                                                                        <asp:Literal ID="ltPrecioBase" runat="server"></asp:Literal></h2>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                        <div class="widget style1 lazur-bg">
-                                                            <div class="row vertical-align">
-                                                                <div class="col-xs-3">
-                                                                    <i class="fa fa-money-bill-wave fa-3x" style="font-size: 2.3em"></i>
-                                                                </div>
-                                                                <div class="col-xs-9 text-right">
-                                                                    <span>Valor mes </span>
-                                                                    <h2 class="font-bold">
-                                                                        <asp:Literal ID="ltPrecioBase" runat="server"></asp:Literal></h2>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-3">
-                                                                    <div class="col-lg-12">
-                                                                        <div class="widget style1 bg-danger">
-                                                                            <div class="row vertical-align">
-                                                                                <div class="col-xs-3">
-                                                                                    <i class="fa fa-tag fa-3x" style="font-size: 2.3em"></i>
-                                                                                </div>
-                                                                                <div class="col-xs-9 text-right">
-                                                                                    <span>Descuento <asp:Literal ID="ltDescuento" runat="server"></asp:Literal></span>
-                                                                                    <h2 class="font-bold"><asp:Literal ID="ltConDescuento" runat="server"></asp:Literal></h2>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                        <div class="widget style1 bg-danger">
-                                                            <div class="row vertical-align">
-                                                                <div class="col-xs-3">
-                                                                    <i class="fa fa-tag fa-3x" style="font-size: 2.3em"></i>
-                                                                </div>
-                                                                <div class="col-xs-9 text-right">
-                                                                    <span>Descuento
-                                                                        <asp:Literal ID="ltDescuento" runat="server"></asp:Literal></span>
-                                                                    <h2 class="font-bold">
-                                                                        <asp:Literal ID="ltConDescuento" runat="server"></asp:Literal></h2>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-3">
-                                                                    <div class="col-lg-12">
-                                                        <div class="widget style1 yellow-bg">
-                                                            <div class="row vertical-align">
-                                                                <div class="col-xs-3">
-                                                                    <i class="fa fa-cart-shopping fa-3x" style="font-size: 2.3em"></i>
-                                                                </div>
-                                                                <div class="col-xs-9 text-right">
-                                                                    <span>Total </span>
-                                                                    <h2 class="font-bold">
-                                                                        <asp:Literal ID="ltPrecioFinal" runat="server"></asp:Literal></h2>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-3">
                                                                     <div class="col-lg-12">
                                                                         <div class="widget style1 bg-success">
                                                                             <div class="row vertical-align">
@@ -601,24 +409,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                        <div class="widget style1 bg-success">
-                                                            <div class="row vertical-align">
-                                                                <div class="col-xs-3">
-                                                                    <i class="fa fa-hand-holding-dollar fa-3x" style="font-size: 2.3em"></i>
-                                                                </div>
-                                                                <div class="col-xs-9 text-right">
-                                                                    <span>Ahorro </span>
-                                                                    <h2 class="font-bold">
-                                                                        <asp:Literal ID="ltAhorro" runat="server"></asp:Literal></h2>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                                 <hr />
 
                                                 <hr />
@@ -638,15 +428,8 @@
                                                                         <asp:Literal ID="ltCortesias" runat="server"></asp:Literal>
                                                                         <asp:Literal ID="ltRegalos" runat="server"></asp:Literal>
                                                                         <asp:Label ID="lbEnlaceWompi" runat="server"></asp:Label>
-                                                                        <asp:Label ID="lbEnlaceWompi" runat="server" ></asp:Label>
-                                                                        <asp:Label ID="lbEnlaceWompi" runat="server"></asp:Label>
                                                                         <asp:HiddenField ID="hdEnlaceWompi" runat="server" />
                                                                         <button class="btn btn-success btn-circle" visible="false" id="btnPortapaleles"
-                                                                            onclick="copyToClipboard()" runat="server" title="Copiar enlace">
-                                                                            <i class="fa fa-copy"></i>
-                                                                        </button>
-                                                                        <button class="btn btn-success btn-circle" visible="false" id="btnPortapaleles" 
-                                                                            onclick="copyToClipboard()" runat="server" title="Copiar enlace"><i class="fa fa-copy"></i></button>
                                                                             onclick="copyToClipboard()" runat="server" title="Copiar enlace">
                                                                             <i class="fa fa-copy"></i>
                                                                         </button>
@@ -661,9 +444,6 @@
                                                             <div class="panel panel-default" runat="server" id="div1">
                                                                 <div class="panel-heading">
                                                                     <i class="fa fa-money-bill"></i> Pago
-                                                                    <i class="fa fa-money-bill"></i>Pago
-                                                                    <i class="fa fa-money-bill"></i> Pago
-                                                                    <i class="fa fa-money-bill"></i>Pago
                                                                     <asp:Literal ID="Literal1" runat="server"></asp:Literal>
                                                                 </div>
                                                                 <div class="panel-body">
@@ -686,10 +466,6 @@
                                                                                 <asp:TextBox ID="txbWompi" CssClass="form-control input-sm"
                                                                                     runat="server" OnTextChanged="txbWompi_TextChanged"
                                                                                     AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
-                                                                                <asp:TextBox ID="txbWompi" CssClass="form-control input-sm" 
-                                                                                    runat="server" OnTextChanged="txbWompi_TextChanged" 
-                                                                                    AutoPostBack="true" style="text-align: right;"></asp:TextBox>
-                                                                                    AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -705,10 +481,6 @@
                                                                                 <asp:TextBox ID="txbDatafono" CssClass="form-control input-sm"
                                                                                     runat="server" OnTextChanged="txbDatafono_TextChanged"
                                                                                     AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
-                                                                                <asp:TextBox ID="txbDatafono" CssClass="form-control input-sm" 
-                                                                                    runat="server" OnTextChanged="txbDatafono_TextChanged" 
-                                                                                    AutoPostBack="true" style="text-align: right;"></asp:TextBox>
-                                                                                    AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -721,10 +493,6 @@
                                                                             <div class="col-lg-4">
                                                                                 <asp:TextBox ID="txbEfectivo" CssClass="form-control input-sm"
                                                                                     runat="server" OnTextChanged="txbEfectivo_TextChanged"
-                                                                                    AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
-                                                                                <asp:TextBox ID="txbEfectivo" CssClass="form-control input-sm" 
-                                                                                    runat="server" OnTextChanged="txbEfectivo_TextChanged" 
-                                                                                    AutoPostBack="true" style="text-align: right;"></asp:TextBox>
                                                                                     AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
@@ -745,10 +513,6 @@
                                                                                 <asp:TextBox ID="txbTransferencia" CssClass="form-control input-sm"
                                                                                     runat="server" OnTextChanged="txbTransferencia_TextChanged"
                                                                                     AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
-                                                                                <asp:TextBox ID="txbTransferencia" CssClass="form-control input-sm" 
-                                                                                    runat="server" OnTextChanged="txbTransferencia_TextChanged" 
-                                                                                    AutoPostBack="true" style="text-align: right;"></asp:TextBox>
-                                                                                    AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -756,14 +520,8 @@
                                                                     <div class="form-group" style="margin-bottom: 5px;">
                                                                         <label class="col-lg-7 control-label">TOTAL
                                                                             <asp:Literal ID="ltValorTotal" runat="server"></asp:Literal>:</label>
-                                                                        <label class="col-lg-7 control-label">TOTAL <asp:Literal ID="ltValorTotal" runat="server"></asp:Literal>:</label>
-                                                                        <label class="col-lg-7 control-label">TOTAL
-                                                                            <asp:Literal ID="ltValorTotal" runat="server"></asp:Literal>:</label>
                                                                         <div class="col-lg-5">
                                                                             <asp:TextBox ID="txbTotal" CssClass="form-control input-sm"
-                                                                                runat="server" ReadOnly Style="text-align: right;"></asp:TextBox>
-                                                                            <asp:TextBox ID="txbTotal" CssClass="form-control input-sm" 
-                                                                                runat="server" ReadOnly style="text-align: right;"></asp:TextBox>
                                                                                 runat="server" ReadOnly Style="text-align: right;"></asp:TextBox>
                                                                         </div>
                                                                     </div>

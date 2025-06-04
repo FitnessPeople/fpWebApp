@@ -196,15 +196,11 @@ namespace fpWebApp
 
         /// <summary>
         /// Control rpPlanes.
-        /// Control phPlanes.
-        /// Control rpPlanes.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpPlanes;
-        protected global::System.Web.UI.WebControls.PlaceHolder phPlanes;
         protected global::System.Web.UI.WebControls.Repeater rpPlanes;
 
         /// <summary>

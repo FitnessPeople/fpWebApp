@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
-    public partial class asistenciaagendagympass : System.Web.UI.Page
+    public partial class noasistenciaagendagympass : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -17,9 +17,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Agenda Gym Pass");
-                    ValidarPermisos("Asistencia Agenda Gym Pass");
-                    ValidarPermisos("Agenda Gym Pass");
+                    ValidarPermisos_("Agenda Gym Pass");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         Response.Redirect("agendagympass");
@@ -30,12 +28,7 @@ namespace fpWebApp
                         try
                         {
                             string strQuery = "UPDATE GymPassAgenda " +
-                                              "SET Estado = 'Asistió' " +
-                                              "SET Estado = '" + Estado.Asistió + "' " +
-                            string strQuery = "UPDATE gympassagenda " +
-                                              "SET Cancelada = 0, Asistencia = 1 " +
-                            string strQuery = "UPDATE GymPassAgenda " +
-                                              "SET Estado = 'Asistió' " +
+                                              "SET Estado = 'No Asistió' " +
                                               "WHERE idAgenda = " + Request.QueryString["id"].ToString();
                             clasesglobales cg = new clasesglobales();
                             string mensaje = cg.TraerDatosStr(strQuery);
@@ -51,7 +44,7 @@ namespace fpWebApp
             }
         }
 
-        private void ValidarPermisos(string strPagina)
+        private void ValidarPermisos_(string strPagina)
         {
             ViewState["SinPermiso"] = "1";
             ViewState["Consulta"] = "0";

@@ -38,11 +38,6 @@ namespace fpWebApp
                 TimeSpan diferencia = fechaDestino - fechaActual;
                 _strDiaZero = Convert.ToInt32(diferencia.TotalDays).ToString();
 
-                DateTime fechaActual = DateTime.Now;
-                DateTime fechaDestino = new DateTime(2025, 7, 19);
-                TimeSpan diferencia = fechaDestino - fechaActual;
-                _strDiaZero = Convert.ToInt32(diferencia.TotalDays).ToString();
-
                 Control ctrInicio = new Control();
                 if (Session["idUsuario"] != null)
                 {

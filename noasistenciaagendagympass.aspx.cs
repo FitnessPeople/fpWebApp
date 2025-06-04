@@ -9,16 +9,14 @@ using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
-	public partial class noasistenciaagendagympass : System.Web.UI.Page
-	{
-		protected void Page_Load(object sender, EventArgs e)
-		{
+    public partial class noasistenciaagendagympass : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
             if (!IsPostBack)
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Agenda Gym Pass");
-                    ValidarPermisos("No Asistencia Agenda Gym Pass");
                     ValidarPermisos("Agenda Gym Pass");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
