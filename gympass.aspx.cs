@@ -1,17 +1,17 @@
-﻿using System;
+﻿using NPOI.OpenXmlFormats.Spreadsheet;
+//using System.Web.UI.WebControls;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Odbc;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using NPOI.OpenXmlFormats.Spreadsheet;
-
-//using System.Web.UI.WebControls;
-using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
 
 namespace fpWebApp
 {
@@ -52,6 +52,7 @@ namespace fpWebApp
                             txbFechaAgenda.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
 
                             CantidadesEstados();
+                            CargarGraficaBarrasPorSede();
                             //btnAgregar.Visible = true;
                         }
                     }
@@ -243,6 +244,82 @@ namespace fpWebApp
             {
                 string mensaje = ex.Message;
             }
+        }
+
+        private void CargarGraficaBarrasPorSede()
+        {
+            string query = @"SELECT CONCAT(s.NombreSede, ' - ', cs.NombreCiudadSede) AS SedeCiudad, gpa.Estado, COUNT(*) AS Cantidad
+                             FROM GymPass gp
+                             INNER JOIN Sedes s ON gp.idSede = s.idSede
+                             INNER JOIN GymPassAgenda gpa ON gpa.idGymPass = gp.idGymPass 
+                             LEFT JOIN CiudadesSedes cs ON s.idCiudadSede = cs.idCiudadSede
+                             GROUP BY SedeCiudad, gpa.Estado";
+
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(query);
+
+            var sedes = dt.AsEnumerable().Select(r => r.Field<string>("SedeCiudad")).Distinct().ToList();
+
+            // Inicializamos estructura
+            var estados = new[] { "Agendado", "Asistió", "No Asistió", "Cancelado" };
+            Dictionary<string, List<int>> estadoDatos = estados.ToDictionary(e => e, e => new List<int>());
+
+            foreach (var sede in sedes)
+            {
+                foreach (var estado in estados)
+                {
+                    var cantidad = dt.AsEnumerable()
+                        .Where(r => r.Field<string>("SedeCiudad") == sede && r.Field<string>("Estado") == estado)
+                        .Select(r => Convert.ToInt32(r["Cantidad"]))
+                        .FirstOrDefault();
+
+                    estadoDatos[estado].Add(cantidad);
+                }
+            }
+
+            // Cálculo del total por sede
+            List<int> totalPorSede = estadoDatos.First().Value
+                .Select((_, i) => estadoDatos.Sum(kvp => kvp.Value[i]))
+                .ToList();
+
+            string totalSerie = $"['Total', {string.Join(",", totalPorSede)}]";
+
+            // Armar arrays para JS
+            string columnasJS = string.Join(",", estadoDatos.Select(kvp =>
+                $"['{kvp.Key}', {string.Join(",", kvp.Value)}]"
+            ));
+
+            string categoriasJS = string.Join(",", sedes.Select(s => $"\"{s}\""));
+
+            //string script = $@"
+            //    var chart = c3.generate({{
+            //        bindto: '#barras',
+            //        data: {{
+            //            columns: [{columnasJS}],
+            //            type: 'bar',
+            //            groups: [['Agendado','Asistió','No Asistió','Cancelado']],
+            //            colors: {{
+            //                Agendado: '#1AB394',
+            //                'Asistió': '#1C84C6',
+            //                'No Asistió': '#ED5565',
+            //                Cancelado: '#F8AC59'
+            //            }}
+            //        }},
+            //        axis: {{
+            //            x: {{
+            //                type: 'category',
+            //                categories: [{categoriasJS}],
+            //                height: 80
+            //            }}
+            //        }}
+            //    }});
+            //";
+
+
+
+            //ClientScript.RegisterStartupScript(this.GetType(), "graficaBarrasSedes", script, true);
+            ClientScript.RegisterStartupScript(this.GetType(), "setVars",
+                $"var columnasJS = [{columnasJS}]; var categoriasJS = [{categoriasJS}];", true);
         }
 
         private void CantidadesEstados()

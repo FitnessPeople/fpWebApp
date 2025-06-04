@@ -335,23 +335,22 @@
                                 
                                 <div class="wrapper wrapper-content animated fadeInRight">
                                     <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-12">
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
-                                                    <h5>Bar Chart Example</h5>
+                                                    <h5>Agenda Gym Pass por Sede</h5>
                                                 </div>
                                                 <div class="ibox-content">
-                                                    <div>
-                                                        <canvas id="barChart" height="140"></canvas>
-                                                    </div>
+                                                    <div id="barras"></div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-lg-6">
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
                                                     <h5>Pie </h5>
-
                                                 </div>
                                                 <div class="ibox-content">
                                                     <div>
@@ -360,18 +359,15 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title">
-                                                <h5>Radar Chart Example</h5>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <div>
-                                                    <div id="pie"></div>
+                                        <div class="col-lg-6">
+                                            <div class="ibox float-e-margins">
+                                                <div class="ibox-title">
+                                                    <h5>Radar Chart Example</h5>
+                                                </div>
+                                                <div class="ibox-content">
+                                                    <div>
+                                                        <div id="pie"></div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -493,63 +489,6 @@
 
         $(function () {
 
-            var barData = {
-                labels: ["Agendados", "Asistieron", "No Asistieron", "Cancelados"],
-                datasets: [
-
-                    {
-                        label: "Agendados",
-                        backgroundColor: '#1AB394',
-                        pointBorderColor: "#fff",
-                        data: [cantidadAgendado]
-                    },
-                    {
-                        label: "Asistieron",
-                        backgroundColor: '#1C84C6',
-                        pointBorderColor: "#fff",
-                        data: [cantidadAsistio]
-                    },
-                    {
-                        label: "No Asistieron",
-                        backgroundColor: '#ED5565',
-                        pointBorderColor: "#fff",
-                        data: [cantidadNoAsistio]
-                    },
-                    {
-                        label: "Cancelados",
-                        backgroundColor: '#F8AC59',
-                        pointBorderColor: "#fff",
-                        data: [cantidadCancelado]
-                    }
-
-                    //data: [cantidadAgendado, cantidadAsistio, cantidadNoAsistio, cantidadCancelado],
-                    //backgroundColor: ["#1AB394", "#1C84C6", "#ED5565", "#F8AC59"]
-                ]
-            };
-
-            var barOptions = {
-                responsive: true,
-                tooltips: {
-                    callbacks: {
-                        label: function (tooltipItem, data) {
-                            var value = tooltipItem.yLabel;
-                            return value + ' personas';
-                        }
-                    }
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            };
-
-
-            var ctx2 = document.getElementById("barChart").getContext("2d");
-            new Chart(ctx2, { type: 'bar', data: barData, options: barOptions });
-
             var doughnutData = {
                 labels: ["Agendados", "Asistieron", "No Asistieron", "Cancelados"],
                 datasets: [{
@@ -574,6 +513,28 @@
     <script>
 
         $(document).ready(function () {
+
+            c3.generate({
+                bindto: '#barras',
+                data: {
+                    columns: columnasJS,
+                    type: 'bar',
+                    groups: [['Agendado', 'Asistió', 'No Asistió', 'Cancelado']],
+                    colors: {
+                        'Agendado': '#1AB394',
+                        'Asistió': '#1C84C6',
+                        'No Asistió': '#ED5565',
+                        'Cancelado': '#F8AC59'
+                    },
+                },
+                axis: {
+                    x: {
+                    type: 'category',
+                    categories: categoriasJS,
+                    height: 60
+                    }
+                }
+            });
 
             c3.generate({
                 bindto: '#pie',
