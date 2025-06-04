@@ -232,7 +232,7 @@ namespace fpWebApp
             {
                 ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    "Un afiliado con este documento ya existe!" +
+                    "¡Error! ¡Un afiliado con este número de documento ya existe!" +
                     "</div>";
             }
             else
@@ -241,7 +241,7 @@ namespace fpWebApp
                 {
                     ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
                         "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Un afiliado con este correo electronico ya existe!" +
+                        "¡Error! ¡Un afiliado con este correo electrónico ya existe!" +
                         "</div>";
                 }
                 else
@@ -250,7 +250,7 @@ namespace fpWebApp
                     {
                         ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
                         "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Un afiliado con este teléfono ya existe!" +
+                        "¡Error! ¡Un afiliado con este número de teléfono ya existe!" +
                         "</div>";
                     }
                     else
