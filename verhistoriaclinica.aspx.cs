@@ -273,7 +273,7 @@ namespace fpWebApp
                                 title: 'La historia clínica se creo de forma exitosa',
                                 text: '',
                                 icon: 'success',
-                                timer: 2000, // 2 segundos
+                                timer: 3000, // 3 segundos
                                 showConfirmButton: false,
                                 timerProgressBar: true
                             }).then(() => {
@@ -290,7 +290,7 @@ namespace fpWebApp
                                 title: 'La historia clínica se creo de forma exitosa',
                                 text: '',
                                 icon: 'success',
-                                timer: 2000, // 2 segundos
+                                timer: 3000, // 3 segundos
                                 showConfirmButton: false,
                                 timerProgressBar: true
                             }).then(() => {
@@ -307,7 +307,7 @@ namespace fpWebApp
                                 title: 'La historia clínica se creo de forma exitosa',
                                 text: '',
                                 icon: 'success',
-                                timer: 2000, // 2 segundos
+                                timer: 3000, // 3 segundos
                                 showConfirmButton: false,
                                 timerProgressBar: true
                             }).then(() => {
@@ -317,23 +317,25 @@ namespace fpWebApp
                         ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
                         //Response.Redirect("histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + idHistoria);
                     }
-                    if (Session["idPerfil"].ToString() == "1") //OJO comentar esta condición
-                    {
-                        string script = @"
-                            Swal.fire({
-                                title: 'La historia clínica se creo de forma exitosa',
-                                text: '',
-                                icon: 'success',
-                                timer: 2000, // 2 segundos
-                                showConfirmButton: false,
-                                timerProgressBar: true
-                            }).then(() => {
-                                window.location.href = 'histclifisio01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + idHistoria + @"';
-                            });
-                            ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                        //Response.Redirect("histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + idHistoria);
-                    }
+                    
+                    //OJO comentar esta condición
+                    //if (Session["idPerfil"].ToString() == "1")
+                    //{
+                    //    string script = @"
+                    //        Swal.fire({
+                    //            title: 'La historia clínica se creo de forma exitosa',
+                    //            text: '',
+                    //            icon: 'success',
+                    //            timer: 3000, // 3 segundos
+                    //            showConfirmButton: false,
+                    //            timerProgressBar: true
+                    //        }).then(() => {
+                    //            window.location.href = 'histclifisio01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + @"&idHistoria=" + idHistoria + @"';
+                    //        });
+                    //        ";
+                    //    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                    //    //Response.Redirect("histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + idHistoria);
+                    //}
                 }
                 else
                 {

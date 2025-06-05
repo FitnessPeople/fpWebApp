@@ -164,9 +164,12 @@
                                 <div class="ibox-content">
                                     <div class="scroll_content">
                                         <p>
-                                            <button id="btnNombreAfiliado" data-button="NOMBRE" onclick="putText('btnNombreAfiliado')" class="btn btn-sm btn-info">Nombre afiliado</button>
-                                            <button id="btnDocumentoAfiliado" data-button="DOCUMENTO" onclick="putText('btnDocumentoAfiliado')" class="btn btn-sm btn-info">Documento afiliado</button>
-                                            <button id="btnDireccionAfiliado" data-button="DIRECCION" onclick="putText('btnDireccionAfiliado')" class="btn btn-sm btn-info">Dirección afiliado</button>
+                                            <button id="btnNombreAfiliado" data-button="NOMBRE" onclick="putText('btnNombreAfiliado')" class="btn btn-sm btn-info">Nombre</button>
+                                            <button id="btnDocumentoAfiliado" data-button="DOCUMENTO" onclick="putText('btnDocumentoAfiliado')" class="btn btn-sm btn-info">Documento</button>
+                                            <button id="btnDireccionAfiliado" data-button="DIRECCION" onclick="putText('btnDireccionAfiliado')" class="btn btn-sm btn-info">Dirección</button>
+                                            <button id="btnCelularAfiliado" data-button="CELULAR" onclick="putText('btnCelularAfiliado')" class="btn btn-sm btn-info">Celular</button>
+                                            <button id="btnFechaNacAfiliado" data-button="FECHANAC" onclick="putText('btnFechaNacAfiliado')" class="btn btn-sm btn-info">Fecha nacimiento</button>
+                                            <button id="btnEmailAfiliado" data-button="EMAIL" onclick="putText('btnEmailAfiliado')" class="btn btn-sm btn-info">Email</button>
                                         </p>
                                     <div class="row">
                                             <div class="col-lg-12">

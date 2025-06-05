@@ -146,6 +146,12 @@ namespace fpWebApp
 
         }
 
+        /// <summary>
+        /// Agrega los festivos del año al calendario
+        /// </summary>
+        /// <param name="eventos"></param>
+        /// <param name="anho"></param>
+        /// <returns></returns>
         private string AgregarFestivos(string eventos, string anho)
         {
             //https://www.festivos.com.co/calendario
@@ -514,7 +520,7 @@ namespace fpWebApp
                     //ltMensaje.Text = "Hora de inicio debe ser menor a hora final";
                 }
             }
-            //Response.Redirect("agenda");
+            Response.Redirect("agenda");
         }
     }
 }

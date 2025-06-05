@@ -168,13 +168,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPrecioTotal;
 
         /// <summary>
-        /// Control txbMesesMaximo.
+        /// Control txbMeses.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbMesesMaximo;
+        protected global::System.Web.UI.WebControls.TextBox txbMeses;
 
         /// <summary>
         /// Control rfvMesesMaximo.

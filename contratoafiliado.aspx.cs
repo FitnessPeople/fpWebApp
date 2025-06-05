@@ -7,10 +7,10 @@ using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
-	public partial class contratoafiliado : System.Web.UI.Page
-	{
-		protected void Page_Load(object sender, EventArgs e)
-		{
+    public partial class contratoafiliado : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
             if (!IsPostBack)
             {
                 if (Session["idUsuario"] != null)
@@ -28,11 +28,11 @@ namespace fpWebApp
                         btnAgregar.Visible = false;
                         if (ViewState["Consulta"].ToString() == "1")
                         {
-                            
+
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
-                            
+
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
@@ -40,9 +40,9 @@ namespace fpWebApp
                         }
                     }
 
-            string strQuery = "SELECT * " +
-                "FROM EmpresasFP " +
-                "WHERE idEmpresaFP = 1 ";
+                    string strQuery = "SELECT * " +
+                        "FROM EmpresasFP " +
+                        "WHERE idEmpresaFP = 1 ";
 
                     clasesglobales cg = new clasesglobales();
                     DataTable dt = cg.TraerDatos(strQuery);
@@ -51,15 +51,18 @@ namespace fpWebApp
                     string contenidoEditor = hiddenEditor.Value;
                     hiddenEditor.Value = dt.Rows[0]["ContratoMayorEdad"].ToString();
 
-            strQuery = "SELECT * " +
-                "FROM Afiliados " +
-                        "WHERE idAfiliado = 1 ";
+                    strQuery = "SELECT * " +
+                        "FROM Afiliados " +
+                        "WHERE idAfiliado = 6062 ";
 
                     DataTable dt1 = cg.TraerDatos(strQuery);
 
-            strTextoContrato = strTextoContrato.Replace("#NOMBRE#", dt1.Rows[0]["NombreAfiliado"].ToString() + " " + dt1.Rows[0]["ApellidoAfiliado"].ToString());
+                    strTextoContrato = strTextoContrato.Replace("#NOMBRE#", dt1.Rows[0]["NombreAfiliado"].ToString() + " " + dt1.Rows[0]["ApellidoAfiliado"].ToString());
                     strTextoContrato = strTextoContrato.Replace("#DOCUMENTO#", dt1.Rows[0]["DocumentoAfiliado"].ToString());
                     strTextoContrato = strTextoContrato.Replace("#DIRECCION#", dt1.Rows[0]["DireccionAfiliado"].ToString());
+                    strTextoContrato = strTextoContrato.Replace("#CELULAR#", dt1.Rows[0]["CelularAfiliado"].ToString());
+                    strTextoContrato = strTextoContrato.Replace("#FECHANAC#", Convert.ToDateTime(dt1.Rows[0]["FechaNacAfiliado"].ToString()).ToString("dd de MMMM de yyyy"));
+                    strTextoContrato = strTextoContrato.Replace("#EMAIL#", dt1.Rows[0]["EmailAfiliado"].ToString());
 
                     ltContrato.Text = strTextoContrato;
                 }

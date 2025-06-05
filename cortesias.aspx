@@ -317,7 +317,7 @@
                 },
                 select: function (event, ui) {
                     if (ui.item) {
-                        console.log(ui.item.value);
+                        //console.log(ui.item.value);
                         document.getElementById("txbAfiliado").value = ui.item.value;
                         var btn = document.getElementById("btnAfiliado");
                         btn.click();
