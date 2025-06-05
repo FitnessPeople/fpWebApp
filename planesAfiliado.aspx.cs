@@ -405,37 +405,37 @@ namespace fpWebApp
             }
         }
 
-        private void btn_Click(object sender, CommandEventArgs e)
-        {
-            string strQuery = "SELECT * " +
-                "FROM Planes " +
-                "WHERE idPlan = " + e.CommandArgument;
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+        //private void btn_Click(object sender, CommandEventArgs e)
+        //{
+        //    string strQuery = "SELECT * " +
+        //        "FROM Planes " +
+        //        "WHERE idPlan = " + e.CommandArgument;
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.TraerDatos(strQuery);
 
-            ViewState["idPlan"] = dt.Rows[0]["idPlan"].ToString();
-            ViewState["nombrePlan"] = dt.Rows[0]["NombrePlan"].ToString();
-            ViewState["precioTotal"] = Convert.ToInt32(dt.Rows[0]["PrecioTotal"].ToString());
-            ViewState["precioBase"] = Convert.ToInt32(dt.Rows[0]["PrecioBase"].ToString());
-            ViewState["meses"] = Convert.ToDouble(dt.Rows[0]["Meses"].ToString());
-            ViewState["mesesCortesia"] = Convert.ToDouble(dt.Rows[0]["MesesCortesia"].ToString());
+        //    ViewState["idPlan"] = dt.Rows[0]["idPlan"].ToString();
+        //    ViewState["nombrePlan"] = dt.Rows[0]["NombrePlan"].ToString();
+        //    ViewState["precioTotal"] = Convert.ToInt32(dt.Rows[0]["PrecioTotal"].ToString());
+        //    ViewState["precioBase"] = Convert.ToInt32(dt.Rows[0]["PrecioBase"].ToString());
+        //    ViewState["meses"] = Convert.ToDouble(dt.Rows[0]["Meses"].ToString());
+        //    ViewState["mesesCortesia"] = Convert.ToDouble(dt.Rows[0]["MesesCortesia"].ToString());
 
-            //divPanelResumen.Attributes.Remove("class");
-            //divPanelResumen.Attributes.Add("class", "panel panel-" + dt.Rows[0]["NombreColorPlan"].ToString());
+        //    //divPanelResumen.Attributes.Remove("class");
+        //    //divPanelResumen.Attributes.Add("class", "panel panel-" + dt.Rows[0]["NombreColorPlan"].ToString());
 
-            ltPrecioBase.Text = "$" + String.Format("{0:N0}", ViewState["precioBase"]);
-            ltPrecioFinal.Text = "$" + String.Format("{0:N0}", ViewState["precioTotal"]);
+        //    ltPrecioBase.Text = "$" + String.Format("{0:N0}", ViewState["precioBase"]);
+        //    ltPrecioFinal.Text = "$" + String.Format("{0:N0}", ViewState["precioTotal"]);
 
-            CalculoPrecios();
-            ActivarCortesia(ViewState["mesesCortesia"].ToString());
+        //    CalculoPrecios();
+        //    ActivarCortesia(ViewState["mesesCortesia"].ToString());
 
-            //ltDescuento.Text = "0%";
-            //ltAhorro.Text = "$0";
-            //ltConDescuento.Text = "$0";
-            ltDescripcion.Text = "<b>Características</b>: " + dt.Rows[0]["DescripcionPlan"].ToString() + "<br />";
+        //    //ltDescuento.Text = "0%";
+        //    //ltAhorro.Text = "$0";
+        //    //ltConDescuento.Text = "$0";
+        //    ltDescripcion.Text = "<b>Características</b>: " + dt.Rows[0]["DescripcionPlan"].ToString() + "<br />";
 
-            ltNombrePlan.Text = "<b>Plan " + ViewState["nombrePlan"].ToString() + "</b>";
-        }
+        //    ltNombrePlan.Text = "<b>Plan " + ViewState["nombrePlan"].ToString() + "</b>";
+        //}
 
         private void CalculoPrecios()
         {

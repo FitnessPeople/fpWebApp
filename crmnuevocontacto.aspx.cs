@@ -1033,7 +1033,50 @@ namespace fpWebApp
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
                     LinkButton btnEditarEmp = (LinkButton)e.Item.FindControl("btnEditarEmp");
-                    btnEditarEmp.CommandArgument = ((DataRowView)e.Item.DataItem).Row[0].ToString();
+
+                   //LinkButton lnkPlan = (LinkButton)e.Item.FindControl("btnSeleccionarPlan");
+                    btnEditarEmp.Attributes.Add("class", "btn btn-outline btn-" + ((DataRowView)e.Item.DataItem).Row[1].ToString() + " btn-block btn-sm");
+                    //btnEditarEmp.CommandArgument = ((DataRowView)e.Item.DataItem).Row[0].ToString();
+
+                    //LinkButton lnkPlan = (LinkButton)e.Item.FindControl("btnSeleccionarPlan");
+                    //lnkPlan.Attributes.Add("class", "btn btn-outline btn-" + ((DataRowView)e.Item.DataItem).Row[7].ToString() + " btn-block btn-sm");
+                    //lnkPlan.Attributes.Add("class", "btn btn-outline btn-" + ((DataRowView)e.Item.DataItem).Row[7].ToString() + " btn-block btn-sm");
+
+
+
+                    //int idEmpresaCRM = Convert.ToInt32(((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    //ViewState["idEmpresaCRM"] = idEmpresaCRM;
+
+
+                    //bool respuesta = false;
+                    //clasesglobales cg = new clasesglobales();
+                    //DataTable dt = cg.ConsultarEmpresaCRMPorId(idEmpresaCRM, out respuesta);
+                    //Session["empresaCRMId"] = idEmpresaCRM;
+                    //btnAgregarEmp.Text = "Actualizar";
+                    //if (respuesta)
+                    //{
+
+                    //    if (dt.Rows.Count > 0)
+                    //    {
+                    //        DataRow row = dt.Rows[0];
+
+                    //        txbNombreEmpresaCRM.Value = row["NombreEmpresaCRM"].ToString();
+                    //        txbPaginaWeb.Value = row["paginaWeb"].ToString();
+                    //        if (row["idEmpresaCRM"].ToString() != "")
+                    //            ddlContactos.SelectedIndex = Convert.ToInt32(ddlContactos.Items.IndexOf(ddlContactos.Items.FindByValue(dt.Rows[0]["idContacto"].ToString())));
+                    //        else
+                    //            ddlContactos.SelectedItem.Value = "0";
+
+                    //        txaObservacionesEmp.Value = row["observacionesEmp"].ToString();
+                    //        rblEstado.SelectedIndex = Convert.ToInt32(rblEstado.Items.IndexOf(rblEstado.Items.FindByValue(dt.Rows[0]["EstadoEmpresaCRM"].ToString())));
+                    //        ddlCiudad.SelectedIndex = Convert.ToInt32(ddlCiudad.Items.IndexOf(ddlCiudad.Items.FindByValue(dt.Rows[0]["idCiudad"].ToString())));
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    DataRow row = dt.Rows[0];
+                    //    txbNombreContacto.Value = row["Error"].ToString(); ;
+                    //}
 
                     //HtmlAnchor btnEditarEmp = (HtmlAnchor)e.Item.FindControl("btnEditarEmp");
                     //btnEditarEmp.Attributes.Add("href", "crmnuevocontacto?editidEmp=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
@@ -1050,9 +1093,14 @@ namespace fpWebApp
             }
         }
 
-        protected void btnEditarEmp_Click(object sender, EventArgs e)
+        protected void rpEmpresasCRM_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-           
+            txbNombreEmpresaCRM.Value = "85";
+            if (e.CommandName == "EditarEmpresa")
+            {
+                int idEmpresaCRM = Convert.ToInt32(e.CommandArgument.ToString());
+            }           
+                
         }
     }
 }

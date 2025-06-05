@@ -689,7 +689,7 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <asp:Repeater ID="rpEmpresasCRM" runat="server" OnItemDataBound="rpEmpresasCRM_ItemDataBound">
+                                                                    <asp:Repeater ID="rpEmpresasCRM" runat="server" OnItemCommand="rpEmpresasCRM_ItemCommand" OnItemDataBound="rpEmpresasCRM_ItemDataBound">
                                                                         <ItemTemplate>
                                                                             <tr class="feed-element">
                                                                                 <td><%# Eval("NombreEmpresaCRM") %></td>
@@ -712,12 +712,14 @@
                                                                                 <td style="display: flex; flex-wrap: nowrap;">
                                                                                     <a runat="server" id="btnEliminarEmp" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
-                                                                                    <%--                                                                                    <a runat="server" id="btnEditarEmp" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>--%>
-                                                                                    <asp:LinkButton ID="btnEditarEmp" runat="server" CssClass="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                                                    Style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"><i class="fa fa-edit" 
-                                                                                                    OnClick="Button_Click" ClientIDMode="AutoID"><%# Eval("idEmpresaCRM") %>></i>
+                                                                                    <asp:LinkButton runat="server" ID="btnEditarEmp" CommandArgument='<%# Eval("idEmpresaCRM") %>'
+                                                                                        CommandName="EditarEmpresa" CssClass="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                                        Style="padding: 1px 2px 1px 2px; margin-bottom: 0px;">                                                                                                                        
+                                                                                        <i class="fa fa-edit"></i>
                                                                                     </asp:LinkButton>
+
+
+
                                                                                     <%--                                                                                    <asp:Button ID="btnEditarEmp" runat="server" Text="E" CssClass="btn btn-outline btn-primary pull-right m-r-xs"
                                                                                         Style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" CausesValidation="false" OnClick="btnEditarEmp_Click" CommandArgument='<%# Eval("idEmpresaCRM") %>' />--%>
                                                                                 </td>
