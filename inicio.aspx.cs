@@ -17,14 +17,23 @@ namespace fpWebApp
         {
             if (!IsPostBack)
             {
-                //Session["idUsuario"] = 1;
-                //Session["NombreUsuario"] = "Christian Morales";
-                //Session["idEmpresa"] = 1;
-                //Session["Cargo"] = "WebMaster";
-                //Session["Foto"] = "chrismo.jpg";
-                //Session["idPerfil"] = 1;
-                //Session["usuario"] = "sistemas@fitnesspeoplecmd.com";
-                //Session["idSede"] = "11";
+                Session["idUsuario"] = 1;
+                Session["NombreUsuario"] = "Christian Morales";
+                Session["idEmpresa"] = 1;
+                Session["Cargo"] = "WebMaster";
+                Session["Foto"] = "chrismo.jpg";
+                Session["idPerfil"] = 1;
+                Session["usuario"] = "sistemas@fitnesspeoplecmd.com";
+                Session["idSede"] = "11";
+
+                if (Request.QueryString["idPerfil"] != null)
+                {
+                    Session["idPerfil"] = Convert.ToInt16(Request.QueryString["idPerfil"].ToString());
+                }
+                if (Request.QueryString["idUsuario"] != null)
+                {
+                    Session["idUsuario"] = Convert.ToInt16(Request.QueryString["idUsuario"].ToString());
+                }
 
                 DateTime fechaActual = DateTime.Now;
                 DateTime fechaDestino = new DateTime(2025, 7, 19);
@@ -45,16 +54,6 @@ namespace fpWebApp
 
                     phIndicadores.Controls.Add(ctrInicio);
 
-
-                    // ************  POSGRESSQL TEST  ************
-
-                    //clasesglobales cg = new clasesglobales();
-                    //DataTable dt = cg.TraerDatosArmatura("SELECT * FROM acc_timezone");
-
-                    //if (dt.Rows.Count > 0)
-                    //{
-                    //    ltMsg.Text = dt.Rows[0]["acc_timeseg"].ToString();
-                    //}
                 }
                 else
                 {

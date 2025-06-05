@@ -14,6 +14,52 @@
         </li>
         <li class="dropdown">
             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                <i class="fa fa-people-arrows"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-messages">
+                <li>
+                    <div class="dropdown-messages-box">
+                        <a href="inicio?idPerfil=1&idUsuario=1">
+                            <div>
+                                Cambiar a perfil <strong>Gerencial</strong>.
+                            </div>
+                        </a>
+                    </div>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <div class="dropdown-messages-box">
+                        <a href="inicio?idPerfil=8&idUsuario=11">
+                            <div>
+                                Cambiar a perfil <strong>Fisioterapeuta</strong>.
+                            </div>
+                        </a>
+                    </div>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <div class="dropdown-messages-box">
+                        <a href="#">
+                            <div>
+                                Cambiar a perfil <strong>Deportologo</strong>.
+                            </div>
+                        </a>
+                    </div>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <div class="dropdown-messages-box">
+                        <a href="#">
+                            <div>
+                                Cambiar a perfil <strong>Nutricionista</strong>.
+                            </div>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                 <i class="fa fa-envelope"></i><span class="label label-warning1">0</span>
             </a>
             <ul class="dropdown-menu dropdown-messages">
