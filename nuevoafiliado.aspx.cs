@@ -225,6 +225,14 @@ namespace fpWebApp
             return rta;
         }
 
+        /// <summary>
+        /// Maneja el evento de clic del botón Agregar para registrar un nuevo afiliado.
+        /// Realiza validaciones para evitar duplicados por número de documento, correo electrónico o número de teléfono.
+        /// Si las validaciones son exitosas, guarda la foto, genera una clave aleatoria, inserta el registro en la base de datos,
+        /// envía un correo de bienvenida y redirige a la página de afiliados.
+        /// </summary>
+        /// <param name="sender">El origen del evento (generalmente el botón).</param>
+        /// <param name="e">Argumentos del evento asociados al clic.</param>
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             // Validar si existe por Cedula, Email y/o Telefono
