@@ -963,7 +963,6 @@
     <Content Include="pension.aspx" />
     <Content Include="perfiles.aspx" />
     <Content Include="planes.aspx" />
-    <Content Include="planesAfil.aspx" />
     <Content Include="planesAfiliado.aspx" />
     <Content Include="plantilla.aspx" />
     <Content Include="procedimientosalmacenados.aspx" />
@@ -1788,13 +1787,6 @@
     </Compile>
     <Compile Include="planes.aspx.designer.cs">
       <DependentUpon>planes.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="planesAfil.aspx.cs">
-      <DependentUpon>planesAfil.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="planesAfil.aspx.designer.cs">
-      <DependentUpon>planesAfil.aspx</DependentUpon>
     </Compile>
     <Compile Include="planesAfiliado.aspx.cs">
       <DependentUpon>planesAfiliado.aspx</DependentUpon>
