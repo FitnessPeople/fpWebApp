@@ -52,8 +52,10 @@ namespace fpWebApp
                     hiddenEditor.Value = dt.Rows[0]["ContratoMayorEdad"].ToString();
 
                     strQuery = "SELECT * " +
-                        "FROM Afiliados " +
-                        "WHERE idAfiliado = 6062 ";
+                        "FROM Afiliados a " +
+                        "LEFT JOIN afiliadosplanes ap ON ap.idAfiliado = a.idAfiliado AND ap.EstadoPlan = 'Activo' " +
+                        "LEFT JOIN eps ON eps.idEps = a.idEps " +
+                        "WHERE a.idAfiliado = 6062 ";
 
                     DataTable dt1 = cg.TraerDatos(strQuery);
 
@@ -61,8 +63,10 @@ namespace fpWebApp
                     strTextoContrato = strTextoContrato.Replace("#DOCUMENTO#", dt1.Rows[0]["DocumentoAfiliado"].ToString());
                     strTextoContrato = strTextoContrato.Replace("#DIRECCION#", dt1.Rows[0]["DireccionAfiliado"].ToString());
                     strTextoContrato = strTextoContrato.Replace("#CELULAR#", dt1.Rows[0]["CelularAfiliado"].ToString());
-                    strTextoContrato = strTextoContrato.Replace("#FECHANAC#", Convert.ToDateTime(dt1.Rows[0]["FechaNacAfiliado"].ToString()).ToString("dd de MMMM de yyyy"));
+                    strTextoContrato = strTextoContrato.Replace("#FECHANAC#", Convert.ToDateTime(dt1.Rows[0]["FechaNacAfiliado"].ToString()).ToString("dd MMMM yyyy"));
                     strTextoContrato = strTextoContrato.Replace("#EMAIL#", dt1.Rows[0]["EmailAfiliado"].ToString());
+                    strTextoContrato = strTextoContrato.Replace("#FECHAINICIOPLAN#", Convert.ToDateTime(dt1.Rows[0]["FechaInicioPlan"].ToString()).ToString("dd MMMM yyyy"));
+                    strTextoContrato = strTextoContrato.Replace("#EPS#", dt1.Rows[0]["NombreEps"].ToString());
 
                     ltContrato.Text = strTextoContrato;
                 }

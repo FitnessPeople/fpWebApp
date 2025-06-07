@@ -376,10 +376,14 @@ namespace fpWebApp
 
         protected void lbDarAcceso_Click(object sender, EventArgs e)
         {
-            PostArmatura(ViewState["DocumentoAfiliado"].ToString());
+            //PostArmatura(ViewState["DocumentoAfiliado"].ToString());
             Response.Redirect("detalleafiliado?search=" + Request.QueryString["search"].ToString());
         }
 
+        /// <summary>
+        /// Agrega y/o actualiza el afiliado en la base de datos de Armatura a través de API
+        /// </summary>
+        /// <param name="strDocumento"></param>
         private void PostArmatura(string strDocumento)
         {
             clasesglobales cg = new clasesglobales();
