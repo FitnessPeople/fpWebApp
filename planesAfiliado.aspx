@@ -193,11 +193,11 @@
                                     <tr>
                                         <td><strong><i class="fab fa-whatsapp"></i></strong>
                                             <asp:Literal ID="ltCelular" runat="server"></asp:Literal></td>
-                                        <td><strong><i class="fa fa-shield"></i></strong>Estado: 
+                                        <td><strong><i class="fa fa-shield"></i></strong> Estado: 
                                             <asp:Literal ID="ltEstado" runat="server"></asp:Literal></td>
                                     </tr>
                                     <tr>
-                                        <td><strong><i class="fa fa-building"></i></strong>Sede:
+                                        <td><strong><i class="fa fa-building"></i></strong> Sede: 
                                             <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
                                         <td><strong>54</strong> Días asistidos</td>
                                     </tr>
@@ -236,8 +236,6 @@
                                 </asp:Repeater>
                             </ul>
                         </div>
-
-
                     </div>
 
                     <div class="ibox float-e-margins" runat="server" id="divContenido">

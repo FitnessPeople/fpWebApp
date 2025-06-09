@@ -78,7 +78,7 @@ namespace fpWebApp
                         CargarAfiliado();
                         CargarPlanesAfiliado();
 
-                        string strData = listarDetalle();
+                        string strData = ListarDetalle();
                         ltDetalleWompi.Text = strData;
                     }
                     else
@@ -156,6 +156,11 @@ namespace fpWebApp
         //    }
         //}
 
+        /// <summary>
+        /// Carga y visualiza la información del afiliado seleccionado según el parámetro "id" en la URL.
+        /// Rellena controles visuales con datos del afiliado como nombre, sede, contacto, foto y estado.
+        /// Guarda valores relevantes en el ViewState para uso posterior.
+        /// </summary>
         private void CargarAfiliado()
         {
             if (Request.QueryString.Count > 0)
@@ -248,7 +253,19 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private string listarDetalle()
+        /// <summary>
+        /// Consulta el listado de pagos realizados a través de Wompi dentro de un rango de fechas específico.
+        /// Obtiene la información desde una API externa, la deserializa y construye una tabla HTML con los resultados.
+        /// </summary>
+        /// <returns>
+        /// Una cadena HTML que representa una tabla con el detalle de los pagos (afiliado, teléfono, fecha, valor, método, estado y referencia),
+        /// o un mensaje de error si la petición falla.
+        /// </returns>
+        /// <remarks>
+        /// Utiliza una URL de prueba definida en la tabla de configuración correspondiente a la empresa con ID 4 (Wompi).
+        /// La petición es enviada mediante el método <c>EnviarPeticionGet</c> de la clase <c>clasesglobales</c>.
+        /// </remarks>
+        private string ListarDetalle()
         {
             string parametro = string.Empty;
             //string tester = string.Empty;
@@ -353,6 +370,17 @@ namespace fpWebApp
             public string phone_number { get; set; }
         }
 
+        /// <summary>
+        /// Evento que se ejecuta cuando se enlaza un elemento al control Repeater <c>rpPlanesAfiliado</c>.
+        /// Muestra un mensaje en el pie de página si no hay planes asociados al afiliado.
+        /// </summary>
+        /// <param name="sender">El Repeater que dispara el evento.</param>
+        /// <param name="e">Argumentos que contienen información sobre el elemento actual del Repeater.</param>
+        /// <remarks>
+        /// Este método verifica si el <c>Repeater</c> está vacío y, si lo está, muestra una etiqueta (Label)
+        /// en el pie de página con el mensaje "Sin registros".
+        /// Es útil para mostrar un mensaje amigable cuando no hay datos para mostrar.
+        /// </remarks>
         protected void rpPlanesAfiliado_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             Repeater rptPlanes = sender as Repeater; // Get the Repeater control object.
@@ -436,6 +464,29 @@ namespace fpWebApp
             ltNombrePlan.Text = "<b>Plan " + ViewState["nombrePlan"].ToString() + "</b>";
         }
 
+        /// <summary>
+        /// Realiza el cálculo de precios y descuentos para un plan seleccionado por el afiliado,
+        /// y actualiza las etiquetas visibles en la página con los resultados del cálculo.
+        /// </summary>
+        /// <remarks>
+        /// Este método toma los valores almacenados en <c>ViewState</c>:
+        /// <list type="bullet">
+        ///   <item><description><c>precioTotal</c>: precio final del plan.</description></item>
+        ///   <item><description><c>precioBase</c>: precio mensual base sin descuento.</description></item>
+        ///   <item><description><c>meses</c>: duración del plan en meses.</description></item>
+        ///   <item><description><c>DocumentoAfiliado</c>: documento del afiliado (para generar enlace de pago).</description></item>
+        /// </list>
+        /// 
+        /// A partir de estos valores, calcula:
+        /// <list type="bullet">
+        ///   <item><description>Descuento aplicado al precio mensual.</description></item>
+        ///   <item><description>Valor total ahorrado.</description></item>
+        ///   <item><description>Valor mensual con descuento.</description></item>
+        /// </list>
+        /// 
+        /// También construye un enlace codificado a Wompi y lo acorta con <c>AcortarURL</c>.
+        /// Finalmente, almacena observaciones limpias en <c>ViewState["observaciones"]</c>.
+        /// </remarks>
         private void CalculoPrecios()
         {
             double intPrecio = Convert.ToInt32(ViewState["precioTotal"]);
@@ -446,7 +497,6 @@ namespace fpWebApp
             double dobPrecioMesDescuento = intPrecio / intMeses;
 
             //double dobAhorro = ((intPrecioBase * dobDescuento)  100) * intMeses;
-
 
             ltPrecioBase.Text = "$" + string.Format("{0:N0}", intPrecioBase);
             ltDescuento.Text = string.Format("{0:N2}", dobDescuento) + "%";
@@ -477,12 +527,24 @@ namespace fpWebApp
             string strDataWompi = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + intPrecio.ToString()));
             //lbEnlaceWompi.Text = "https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi;
             lbEnlaceWompi.Text = "<b>Enlace de pago Wompi:</b> <br />";
-            lbEnlaceWompi.Text += MakeTinyUrl("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
-            hdEnlaceWompi.Value = MakeTinyUrl("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
+            lbEnlaceWompi.Text += AcortarURL("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
+            hdEnlaceWompi.Value = AcortarURL("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
             btnPortapaleles.Visible = true;
         }
 
-        public static string MakeTinyUrl(string url)
+        /// <summary>
+        /// Acorta una URL larga utilizando el servicio de TinyURL.
+        /// </summary>
+        /// <param name="url">La URL original que se desea acortar.</param>
+        /// <returns>
+        /// Una versión acortada de la URL si el proceso es exitoso. 
+        /// Si la URL ya es corta (menos de 30 caracteres) o ocurre un error en la solicitud, se retorna la URL original.
+        /// </returns>
+        /// <remarks>
+        /// Usa una solicitud HTTP al endpoint público de TinyURL para obtener la versión reducida de la URL.
+        /// Si el servicio no está disponible o se produce una excepción, se maneja silenciosamente y se retorna la URL original.
+        /// </remarks>
+        public static string AcortarURL(string url)
         {
             try
             {
@@ -598,6 +660,24 @@ namespace fpWebApp
             ViewState["DiasCortesia"] = 90;
         }
 
+        /// <summary>
+        /// Evento que se dispara al hacer clic en el botón "Agregar Plan".
+        /// Valida si el afiliado está activo, si tiene un plan activo, y si el valor ingresado es correcto.
+        /// Si todo está correcto, registra el plan y el pago correspondiente en la base de datos.
+        /// </summary>
+        /// <param name="sender">Objeto que desencadenó el evento.</param>
+        /// <param name="e">Argumentos del evento.</param>
+        /// <remarks>
+        /// Este método valida múltiples condiciones antes de registrar un nuevo plan para un afiliado:
+        /// - El afiliado debe estar activo.
+        /// - No debe tener otro plan activo.
+        /// - El precio ingresado debe coincidir con el precio calculado.
+        /// - Registra el plan con fecha de inicio y calcula fecha final con base en meses y días de cortesía.
+        /// - Registra también el pago asociado al plan, incluyendo el tipo de pago (Wompi, datáfono, transferencia o efectivo),
+        ///   banco (si aplica), y número de referencia (si aplica).
+        /// 
+        /// En caso de error, se muestra un mensaje al usuario.
+        /// </remarks>
         protected void lbAgregarPlan_Click(object sender, EventArgs e)
         {
             if (ViewState["EstadoAfiliado"].ToString() != "Activo")
@@ -747,7 +827,6 @@ namespace fpWebApp
                                     {
                                         string respuesta = "ERROR: " + ex.Message;
                                     }
-
                                 }
                                 catch (Exception ex)
                                 {
@@ -807,6 +886,25 @@ namespace fpWebApp
         //    ltNombrePlan.Text = "<b>Plan " + ViewState["nombrePlan"].ToString() + "</b>";
         //}
 
+        /// <summary>
+        /// Evento que se ejecuta al interactuar con un ítem del Repeater de planes.
+        /// Procesa el comando "SeleccionarPlan" para cargar los datos del plan seleccionado
+        /// y actualiza los controles y el ViewState con la información del plan.
+        /// </summary>
+        /// <param name="source">El control que generó el evento (normalmente el Repeater).</param>
+        /// <param name="e">Argumentos del comando, que incluyen el nombre y argumento del comando.</param>
+        /// <remarks>
+        /// Cuando se selecciona un plan, este método realiza lo siguiente:
+        /// - Obtiene el ID del plan desde el argumento del comando.
+        /// - Consulta la base de datos para obtener toda la información del plan.
+        /// - Guarda los datos clave del plan en ViewState para uso posterior.
+        /// - Actualiza etiquetas en la interfaz con precio base, precio final, descripción y nombre del plan.
+        /// - Llama al método <see cref="CalculoPrecios"/> para actualizar precios calculados.
+        /// - Activa o desactiva la cortesía según el valor de meses de cortesía.
+        /// 
+        /// Es importante que el método <see cref="CalculoPrecios"/> y <see cref="ActivarCortesia(string)"/>
+        /// estén implementados para manejar correctamente la actualización visual y lógica.
+        /// </remarks>
         protected void rpPlanes_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             if (e.CommandName == "SeleccionarPlan")
@@ -837,6 +935,12 @@ namespace fpWebApp
             }
         }
 
+        /// <summary>
+        /// Evento que se ejecuta cuando se enlaza cada ítem en el Repeater de planes.
+        /// Modifica la clase CSS del botón de selección del plan según el estado definido en el ViewState.
+        /// </summary>
+        /// <param name="sender">El control Repeater que genera el evento.</param>
+        /// <param name="e">Datos del ítem enlazado, contiene el tipo de ítem y el objeto de datos.</param>
         protected void rpPlanes_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
