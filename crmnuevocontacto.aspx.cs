@@ -33,7 +33,7 @@ namespace fpWebApp
                     {
                         //Si tiene acceso a esta página
                         txbFechaPrim.Attributes.Add("type", "date");
-                        txbFechaPrim.Attributes.Add("min", DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd"));
+                        txbFechaPrim.Attributes.Add("min", DateTime.Now.ToString("yyyy-MM-dd"));
                         txbFechaPrim.Value = DateTime.Now.ToString("yyyy-MM-dd");
                         txbFechaProx.Attributes.Add("type", "date");
                         txbFechaProx.Value = DateTime.Now.ToString("yyyy-MM-dd");
