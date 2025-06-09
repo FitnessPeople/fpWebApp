@@ -177,6 +177,24 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvStatusLead;
 
         /// <summary>
+        /// Control ddlColor.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlColor;
+
+        /// <summary>
+        /// Control rfvColor.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvColor;
+
+        /// <summary>
         /// Control ddlTiposAfiliado.
         /// </summary>
         /// <remarks>

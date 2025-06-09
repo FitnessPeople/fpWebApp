@@ -104,6 +104,10 @@
             }
         }
     </script>
+    <!-- Select2 -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
 
     <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
@@ -303,6 +307,22 @@
                                                                     </asp:RequiredFieldValidator>
                                                                 </div>
                                                             </div>
+
+                                                            <div class="col-sm-6">
+                                                                <label>Color del plan</label>
+                                                                <asp:DropDownList ID="ddlColor" runat="server" CssClass="select2_demo_1 form-control input-sm">
+                                                                    <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                    <asp:ListItem Value="primary" data-color="#1ab394" data-icon="fa-stop">&nbsp;Primary</asp:ListItem>
+                                                                    <asp:ListItem Value="success" data-color="#1c84c6" data-icon="fa-stop">&nbsp;Success</asp:ListItem>
+                                                                    <asp:ListItem Value="info" data-color="#23c6c8" data-icon="fa-stop">&nbsp;Info</asp:ListItem>
+                                                                    <asp:ListItem Value="warning" data-color="#F8AC59" data-icon="fa-stop">&nbsp;Warning</asp:ListItem>
+                                                                    <asp:ListItem Value="danger" data-color="#ed5565" data-icon="fa-stop">&nbsp;Danger</asp:ListItem>
+                                                                </asp:DropDownList>
+                                                                <asp:RequiredFieldValidator ID="rfvColor" runat="server" ErrorMessage="* Campo requerido"
+                                                                    ControlToValidate="ddlColor" ValidationGroup="agregar" InitialValue=""
+                                                                    CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                            </div>
+
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <i class="fas fa-industry text-info"></i>
@@ -769,6 +789,18 @@
     <script>
         $('.footable').footable();
         $('.clockpicker').clockpicker();
+        $(".select2_demo_1").select2();
+
+        function formatText(icon) {
+            return $('<span><i class="fa ' + $(icon.element).data('icon') + '" style="color: ' + $(icon.element).data('color') + '"></i> ' + icon.text + '</span>');
+        };
+        $(document).ready(function () {
+            $('#ddlColor').select2({
+                width: '100%',
+                templateSelection: formatText,
+                templateResult: formatText
+            });
+        });
     </script>
     <script>
         $('#acordeonZonaLateralIzqSup').collapse('hide');
