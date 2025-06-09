@@ -105,9 +105,9 @@
         }
     </script>
     <!-- Select2 -->
+      <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
 
 
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
 
     <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
@@ -785,6 +785,7 @@
 
     <!-- Page-Level Scripts -->
     <script src="js/plugins/clockpicker/clockpicker.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
     <script>
         $('.footable').footable();
