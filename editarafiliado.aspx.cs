@@ -186,6 +186,11 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        /// <summary>
+        /// Carga los datos de un afiliado en el formulario cuando se detecta un parámetro "editid" en la URL.
+        /// Recupera la información desde la base de datos y la asigna a los controles del formulario para su edición.
+        /// Si no se encuentra el afiliado o no se proporciona el parámetro, muestra un mensaje de error y oculta el botón de actualización.
+        /// </summary>
         private void CargarAfiliado()
         {
             if (Request.QueryString.Count > 0)
@@ -267,6 +272,14 @@ namespace fpWebApp
             }
         }
 
+        /// <summary>
+        /// Maneja el evento de clic del botón "Actualizar" para modificar los datos de un afiliado existente.
+        /// Actualiza la información en la base de datos, gestiona el reemplazo de la foto si se ha subido una nueva,
+        /// registra los cambios en un log, y si el afiliado existe en Armatura, también actualiza sus datos a través de una API externa.
+        /// Finalmente, redirige a la página de afiliados.
+        /// </summary>
+        /// <param name="sender">El origen del evento (generalmente el botón).</param>
+        /// <param name="e">Argumentos del evento asociados al clic.</param>
         protected void btnActualizar_Click(object sender, EventArgs e)
         {
             string strFilename = "";
@@ -349,6 +362,15 @@ namespace fpWebApp
             Response.Redirect("afiliados");
         }
 
+        /// <summary>
+        /// Consulta si un afiliado existe en el sistema externo Armatura mediante una solicitud HTTP GET.
+        /// Interpreta la respuesta JSON para extraer el mensaje de estado de la operación.
+        /// </summary>
+        /// <param name="url">La URL del servicio web de Armatura, que incluye el documento del afiliado y el token de acceso.</param>
+        /// <returns>
+        /// Un mensaje indicando el estado de la consulta. Si es exitoso, retorna el contenido del campo "message" del JSON.
+        /// En caso de error, retorna un mensaje con la descripción del error.
+        /// </returns>
         private static string ConsultarPersona(string url)
         {
             string resultado = "";
@@ -375,6 +397,11 @@ namespace fpWebApp
             }
         }
 
+        /// <summary>
+        /// Envía la información del afiliado al sistema externo Armatura para registrar o actualizar su perfil.
+        /// Extrae los datos del afiliado y su plan desde la base de datos local, arma un objeto <c>Persona</c> y lo envía en formato JSON.
+        /// </summary>
+        /// <param name="strDocumento">Número de documento del afiliado a sincronizar con Armatura.</param>
         private void PostArmatura(string strDocumento)
         {
             clasesglobales cg = new clasesglobales();
@@ -439,6 +466,16 @@ namespace fpWebApp
             }
         }
 
+        /// <summary>
+        /// Envía una solicitud HTTP POST al servicio especificado con el contenido JSON proporcionado.
+        /// Espera una respuesta en formato JSON y devuelve el valor del campo "message".
+        /// </summary>
+        /// <param name="url">URL del servicio web al cual se enviará la solicitud.</param>
+        /// <param name="contenido">Cadena JSON que representa el cuerpo de la solicitud.</param>
+        /// <returns>
+        /// Devuelve el mensaje contenido en la respuesta JSON bajo la clave "message".
+        /// En caso de error, retorna una cadena con el mensaje de excepción.
+        /// </returns>
         public static string EnviarPeticion(string url, string contenido)
         {
             string result = "";

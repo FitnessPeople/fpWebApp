@@ -142,6 +142,11 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        /// <summary>
+        /// Carga y visualiza la información del afiliado seleccionado según el parámetro "id" en la URL.
+        /// Rellena controles visuales con datos del afiliado como nombre, sede, contacto, foto y estado.
+        /// Guarda valores relevantes en el ViewState para uso posterior.
+        /// </summary>
         private void CargarAfiliado()
         {
             if (Request.QueryString.Count > 0)
@@ -450,9 +455,28 @@ namespace fpWebApp
         }
 
         /// <summary>
-        /// Calcula y muestra los precios finales del plan, incluyendo descuento, ahorro, valor por mes,
-        /// tipo de pago y observaciones. También genera y muestra el enlace de pago Wompi.
+        /// Realiza el cálculo de precios y descuentos para un plan seleccionado por el afiliado,
+        /// y actualiza las etiquetas visibles en la página con los resultados del cálculo.
         /// </summary>
+        /// <remarks>
+        /// Este método toma los valores almacenados en <c>ViewState</c>:
+        /// <list type="bullet">
+        ///   <item><description><c>precioTotal</c>: precio final del plan.</description></item>
+        ///   <item><description><c>precioBase</c>: precio mensual base sin descuento.</description></item>
+        ///   <item><description><c>meses</c>: duración del plan en meses.</description></item>
+        ///   <item><description><c>DocumentoAfiliado</c>: documento del afiliado (para generar enlace de pago).</description></item>
+        /// </list>
+        /// 
+        /// A partir de estos valores, calcula:
+        /// <list type="bullet">
+        ///   <item><description>Descuento aplicado al precio mensual.</description></item>
+        ///   <item><description>Valor total ahorrado.</description></item>
+        ///   <item><description>Valor mensual con descuento.</description></item>
+        /// </list>
+        /// 
+        /// También construye un enlace codificado a Wompi y lo acorta con <c>AcortarURL</c>.
+        /// Finalmente, almacena observaciones limpias en <c>ViewState["observaciones"]</c>.
+        /// </remarks>
         private void CalculoPrecios()
         {
             double intPrecio = Convert.ToInt32(ViewState["precioTotal"]);
@@ -488,8 +512,8 @@ namespace fpWebApp
             ltObservaciones.Text += "<b>Valor Total</b>: $" + string.Format("{0:N0}", intPrecio) + ".<br />";
 
             ViewState["observaciones"] = ltObservaciones.Text.ToString().Replace("<b>", "").Replace("</b>", "").Replace("<br />", "\r\n");
-            ltValorTotal.Text = "($" + string.Format("{0:N0}", intPrecio) + ")";
-            //ltValorTotal.Text = "";
+            //ltValorTotal.Text = "($" + string.Format("{0:N0}", intPrecio) + ")";
+            ltValorTotal.Text = "";
 
             string strDataWompi = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + intPrecio.ToString()));
             //lbEnlaceWompi.Text = "https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi;
@@ -627,24 +651,6 @@ namespace fpWebApp
             ViewState["DiasCortesia"] = 90;
         }
 
-        /// <summary>
-        /// Evento que se dispara al hacer clic en el botón "Agregar Plan".
-        /// Valida si el afiliado está activo, si tiene un plan activo, y si el valor ingresado es correcto.
-        /// Si todo está correcto, registra el plan y el pago correspondiente en la base de datos.
-        /// </summary>
-        /// <param name="sender">Objeto que desencadenó el evento.</param>
-        /// <param name="e">Argumentos del evento.</param>
-        /// <remarks>
-        /// Este método valida múltiples condiciones antes de registrar un nuevo plan para un afiliado:
-        /// - El afiliado debe estar activo.
-        /// - No debe tener otro plan activo.
-        /// - El precio ingresado debe coincidir con el precio calculado.
-        /// - Registra el plan con fecha de inicio y calcula fecha final con base en meses y días de cortesía.
-        /// - Registra también el pago asociado al plan, incluyendo el tipo de pago (Wompi, datáfono, transferencia o efectivo),
-        ///   banco (si aplica), y número de referencia (si aplica).
-        /// 
-        /// En caso de error, se muestra un mensaje al usuario.
-        /// </remarks>
         /// <summary>
         /// Agrega el plan a un usuario. Inserta en la tabla AfiliadosPlanes y en PagosPlanAfiliado
         /// </summary>
@@ -799,8 +805,6 @@ namespace fpWebApp
                                     {
                                         string respuesta = "ERROR: " + ex.Message;
                                     }
-
-                                    Response.Redirect("afiliados");
                                 }
                                 catch (Exception ex)
                                 {
@@ -833,6 +837,7 @@ namespace fpWebApp
                 }
             }
         }
+
 
         /// <summary>
         /// Evento que se ejecuta al interactuar con un ítem del Repeater de planes.

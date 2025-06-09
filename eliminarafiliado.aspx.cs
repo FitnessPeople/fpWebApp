@@ -158,34 +158,38 @@ namespace fpWebApp
             }
         }
 
+        /// <summary>
+        /// Evento que se dispara al hacer clic en el botón "Eliminar".
+        /// Verifica una confirmación escrita por el usuario y, si es válida,
+        /// marca al afiliado como "Inactivo" en la base de datos, registrando el cambio en el log.
+        /// </summary>
+        /// <param name="sender">Origen del evento.</param>
+        /// <param name="e">Argumentos del evento.</param>
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
             if (txbConfirmacion.Text.ToString() != "")
             {
                 if (txbConfirmacion.Text.ToString() == ViewState["respuesta"].ToString())
                 {
-                    string respuesta = string.Empty;
-                    try
-                    {
-                        string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                    int idAfiliado = int.Parse(Request.QueryString["deleteid"].ToString());
 
-                        using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                    if (idAfiliado != 0)
+                    {
+                        string strInitData = TraerData();
+
+                        clasesglobales cg = new clasesglobales();
+                        DataTable dt = cg.ConsultarAfiliadoPorId(idAfiliado);
+
+                        if (dt.Rows[0]["idAfiliado"].ToString() != "")
                         {
-                            mysqlConexion.Open();
+                            string respuesta = cg.EliminarAfiliado(idAfiliado, "Inactivo");
 
-                            using (MySqlCommand cmd = new MySqlCommand("Pa_ELIMINAR_AFILIADO", mysqlConexion))
-                            {
-                                cmd.CommandType = CommandType.StoredProcedure;
-                                cmd.Parameters.AddWithValue("@p_id_afiliado", Request.QueryString["deleteid"].ToString());
+                            string strNewData = TraerData();
+                            cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Elimino", "El usuario eliminó al afiliado con documento: " + dt.Rows[0]["DocumentoAfiliado"].ToString() + ".", strInitData, strNewData);
 
-                                cmd.ExecuteNonQuery();
-                                respuesta = "OK";
-                            }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        respuesta = "ERROR: " + ex.Message;
+
+                        dt.Dispose();
                     }
 
                     Response.Redirect("afiliados");
@@ -207,6 +211,21 @@ namespace fpWebApp
                     "Respuesta necesaria." +
                     "</div></div>";
             }
+        }
+
+        private string TraerData()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarAfiliadoPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
         }
     }
 }

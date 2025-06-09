@@ -156,7 +156,7 @@
                                 <form runat="server" id="form1">
                                     <div class="col-lg-4 form-horizontal">
                                         <div class="input-group">
-                                            <input type="text" placeholder="Nombre / Cédula / Email / Móvil" class="input form-control input-sm" name="txbBuscar" id="txbBuscar" runat="server">
+                                            <input type="text" placeholder="Nombre / Cédula / Email / Móvil" class="input form-control input-sm" name="txbBuscar" id="txbBuscar" runat="server" />
                                             <span class="input-group-btn">
                                                 <button type="button" id="btnBuscar" name="btnBuscar" onserverclick="btnBuscar_Click" class="btn btn btn-primary btn-sm" runat="server"><i class="fa fa-search m-r-sm"></i>Buscar</button>
                                             </span>
