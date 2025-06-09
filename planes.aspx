@@ -26,76 +26,9 @@
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
+    <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
 
-    <script>
-        function formatCurrency(input) {
-            let value = input.value.replace(/\D/g, '');
-            if (value === "") {
-                input.value = "";
-                return;
-            }
-            let formattedValue = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(value);
-            input.value = formattedValue;
-        }
-        function keepFormatted(input) {
-            if (input.value.trim() === "") {
-                input.value = "";
-                return;
-            }
-            formatCurrency(input);
-        }
-        function getNumericValue(input) {
-            return input.value.replace(/[^0-9]/g, '');
-        }
-    </script>
-
-<%--        formato de posición en el menú--%>
-    <script>
-        function changeClass() {
-            var element1 = document.querySelector("#crmnuevocontacto");
-            element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#crm");
-            element2.classList.remove("collapse");
-        }
-    </script>
-
-    <%--    Formatear telefono --%>
-    <script>
-        function formatearTelefono(input) {
-            let num = input.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
-
-            // Si el número tiene 10 dígitos, es un celular
-            if (num.length === 10) {
-                input.value = num.substring(0, 3) + '-' + num.substring(3, 6) + '-' + num.substring(6, 10);
-            }
-            // Si el número tiene 7 o más dígitos, es un teléfono fijo
-            else if (num.length > 6) {
-                input.value = '(' + num.substring(0, 3) + ') ' + num.substring(3, 6) + '-' + num.substring(6, 10);
-            } else {
-                input.value = num;
-            }
-        }
-    </script>
-
-    <%--    Formatear solo letraas --%>
-    <script>
-        function validarSoloLetras(input) {
-            // Eliminar cualquier caracter que no sea letra o espacio
-            input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
-        }
-    </script>
-
-    <%--    Formatear solo correo --%>
-    <script>
-        function validarCorreo(input) {
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            if (!emailRegex.test(input.value)) {
-                input.setCustomValidity('Por favor ingrese un correo electrónico válido.');
-            } else {
-                input.setCustomValidity('');
-            }
-        }
-    </script>
+    <%--<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />--%>
 
     <style type="text/css" media="print">
         body {
@@ -252,17 +185,41 @@
                                                     <div class="col-sm-5">
                                                         <label>Precio total</label>
                                                         <asp:TextBox ID="txbPrecioTotal" CssClass="form-control input-sm" runat="server"
-                                                            Text="0"></asp:TextBox>
+                                                            placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
                                                         <asp:RequiredFieldValidator ID="rfvPrecioTotal" runat="server" ErrorMessage="* Campo requerido"
                                                             ControlToValidate="txbPrecioTotal" ValidationGroup="agregar"
                                                             CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                     </div>
                                                     <div class="col-sm-7">
-                                                        <label>Nro. de meses del plan</label>
-                                                        <asp:TextBox ID="txbMesesMaximo" CssClass="form-control input-sm" runat="server"
+                                                        <label>Meses del plan</label>
+                                                        <asp:TextBox ID="txbMeses" CssClass="form-control input-sm" runat="server"
                                                             Text="1"></asp:TextBox>
                                                         <asp:RequiredFieldValidator ID="rfvMesesMaximo" runat="server" ErrorMessage="* Campo requerido"
-                                                            ControlToValidate="txbMesesMaximo" ValidationGroup="agregar"
+                                                            ControlToValidate="txbMeses" ValidationGroup="agregar"
+                                                            CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                    </div>
+                                                </div>
+                                                <div class="row m-b-n-xs">
+                                                    <div class="col-sm-6">
+                                                        <label>Meses de cortesía</label>
+                                                        <asp:TextBox ID="txbMesesCortesia" CssClass="form-control input-sm" runat="server"
+                                                            autocomplete="off" Text="0"></asp:TextBox>
+                                                        <asp:RequiredFieldValidator ID="rfvMesesCortesia" runat="server" ErrorMessage="* Campo requerido"
+                                                            ControlToValidate="txbMesesCortesia" ValidationGroup="agregar"
+                                                            CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <label>Color del plan</label>
+                                                        <asp:DropDownList ID="ddlColor" runat="server" CssClass="select2_demo_1 form-control input-sm">
+                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            <asp:ListItem Value="primary" data-color="#1ab394" data-icon="fa-stop">&nbsp;Primary</asp:ListItem>
+                                                            <asp:ListItem Value="success" data-color="#1c84c6" data-icon="fa-stop">&nbsp;Success</asp:ListItem>
+                                                            <asp:ListItem Value="info" data-color="#23c6c8" data-icon="fa-stop">&nbsp;Info</asp:ListItem>
+                                                            <asp:ListItem Value="warning" data-color="#F8AC59" data-icon="fa-stop">&nbsp;Warning</asp:ListItem>
+                                                            <asp:ListItem Value="danger" data-color="#ed5565" data-icon="fa-stop">&nbsp;Danger</asp:ListItem>
+                                                        </asp:DropDownList>
+                                                        <asp:RequiredFieldValidator ID="rfvColor" runat="server" ErrorMessage="* Campo requerido"
+                                                            ControlToValidate="ddlColor" ValidationGroup="agregar" InitialValue="" 
                                                             CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                     </div>
                                                 </div>
@@ -443,6 +400,10 @@
     <!-- ChartJS-->
     <script src="js/plugins/chartJs/Chart.min.js"></script>
 
+    <!-- Select2 -->
+    <%--<script src="js/plugins/select2/select2.full.min.js"></script>--%>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
     <!-- Page-Level Scripts -->
     <script>
 
@@ -461,6 +422,18 @@
         new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
 
         $('.footable').footable();
+        $(".select2_demo_1").select2();
+
+        function formatText(icon) {
+            return $('<span><i class="fa ' + $(icon.element).data('icon') + '" style="color: ' + $(icon.element).data('color') + '"></i> ' + icon.text + '</span>');
+        };
+        $(document).ready(function () {
+            $('#ddlColor').select2({
+                width: '100%',
+                templateSelection: formatText,
+                templateResult: formatText
+            });
+        });
     </script>
 
 </body>

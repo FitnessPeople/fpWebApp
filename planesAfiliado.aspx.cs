@@ -1,17 +1,19 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using MySql.Data.MySqlClient;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace fpWebApp
 {
@@ -40,29 +42,29 @@ namespace fpWebApp
                         txbFechaInicio.Attributes.Add("max", dt60.Year.ToString() + "-" + String.Format("{0:MM}", dt60) + "-" + String.Format("{0:dd}", dt60));
                         txbFechaInicio.Text = String.Format("{0:yyyy-MM-dd}", dtHoy);
 
-                        txbWompi.Attributes.Add("type", "number");
-                        txbWompi.Attributes.Add("min", "0");
-                        txbWompi.Attributes.Add("max", "10000000");
-                        txbWompi.Attributes.Add("step", "100");
-                        txbWompi.Text = "0";
+                        //txbWompi.Attributes.Add("type", "number");
+                        //txbWompi.Attributes.Add("min", "0");
+                        //txbWompi.Attributes.Add("max", "10000000");
+                        //txbWompi.Attributes.Add("step", "100");
+                        //txbWompi.Text = "0";
 
-                        txbDatafono.Attributes.Add("type", "number");
-                        txbDatafono.Attributes.Add("min", "0");
-                        txbDatafono.Attributes.Add("max", "10000000");
-                        txbDatafono.Attributes.Add("step", "100");
-                        txbDatafono.Text = "0";
+                        //txbDatafono.Attributes.Add("type", "number");
+                        //txbDatafono.Attributes.Add("min", "0");
+                        //txbDatafono.Attributes.Add("max", "10000000");
+                        //txbDatafono.Attributes.Add("step", "100");
+                        //txbDatafono.Text = "0";
 
-                        txbEfectivo.Attributes.Add("type", "number");
-                        txbEfectivo.Attributes.Add("min", "0");
-                        txbEfectivo.Attributes.Add("max", "10000000");
-                        txbEfectivo.Attributes.Add("step", "100");
-                        txbEfectivo.Text = "0";
+                        //txbEfectivo.Attributes.Add("type", "number");
+                        //txbEfectivo.Attributes.Add("min", "0");
+                        //txbEfectivo.Attributes.Add("max", "10000000");
+                        //txbEfectivo.Attributes.Add("step", "100");
+                        //txbEfectivo.Text = "0";
 
-                        txbTransferencia.Attributes.Add("type", "number");
-                        txbTransferencia.Attributes.Add("min", "0");
-                        txbTransferencia.Attributes.Add("max", "10000000");
-                        txbTransferencia.Attributes.Add("step", "100");
-                        txbTransferencia.Text = "0";
+                        //txbTransferencia.Attributes.Add("type", "number");
+                        //txbTransferencia.Attributes.Add("min", "0");
+                        //txbTransferencia.Attributes.Add("max", "10000000");
+                        //txbTransferencia.Attributes.Add("step", "100");
+                        //txbTransferencia.Text = "0";
 
                         ViewState.Add("precioTotal", 0);
                         ltPrecioBase.Text = "$0";
@@ -132,35 +134,14 @@ namespace fpWebApp
                 "DATEDIFF(CURDATE(), FechaInicial) diaspasados, " +
                 "DATEDIFF(FechaFinal, CURDATE()) diasporterminar, " +
                 "DATEDIFF(FechaFinal, FechaInicial) diastotales " +
-                "FROM Planes ";
+                "FROM Planes " +
+                "WHERE DATEDIFF(FechaFinal, CURDATE()) >= 0 ";
             DataTable dt = cg.TraerDatos(strQuery);
             rpPlanes.DataSource = dt;
             rpPlanes.DataBind();
             dt.Dispose();
         }
 
-        //protected void rpPlanes_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        //{
-        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-        //    {
-        //        if (ViewState["CrearModificar"].ToString() == "1")
-        //        {
-        //            Button btnSeleccionarPlan = (Button)e.Item.FindControl("btnSeleccionarPlan");
-        //            btnSeleccionarPlan.Text = ((DataRowView)e.Item.DataItem).Row[1].ToString();
-        //            btnSeleccionarPlan.CssClass = "btn btn-" + ((DataRowView)e.Item.DataItem).Row[8].ToString() + " btn-outline";
-        //            btnSeleccionarPlan.Command += new CommandEventHandler(btn_Click);
-        //            btnSeleccionarPlan.CommandArgument = ((DataRowView)e.Item.DataItem).Row[0].ToString();
-        //            btnSeleccionarPlan.ID = ((DataRowView)e.Item.DataItem).Row[0].ToString();
-        //            btnSeleccionarPlan.Visible = true;
-        //        }
-        //    }
-        //}
-
-        /// <summary>
-        /// Carga y visualiza la información del afiliado seleccionado según el parámetro "id" en la URL.
-        /// Rellena controles visuales con datos del afiliado como nombre, sede, contacto, foto y estado.
-        /// Guarda valores relevantes en el ViewState para uso posterior.
-        /// </summary>
         private void CargarAfiliado()
         {
             if (Request.QueryString.Count > 0)
@@ -404,7 +385,8 @@ namespace fpWebApp
         {
             if (txbWompi.Text != "" && txbDatafono.Text != "" && txbEfectivo.Text != "" && txbTransferencia.Text != "")
             {
-                txbTotal.Text = Convert.ToString(Convert.ToInt32(txbWompi.Text) + Convert.ToInt32(txbDatafono.Text) + Convert.ToInt32(txbEfectivo.Text) + Convert.ToInt32(txbTransferencia.Text));
+                int intTotal = Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", ""));
+                txbTotal.Text = intTotal.ToString("C0", new CultureInfo("es-CO"));
             }
         }
 
@@ -412,7 +394,8 @@ namespace fpWebApp
         {
             if (txbWompi.Text != "" && txbDatafono.Text != "" && txbEfectivo.Text != "" && txbTransferencia.Text != "")
             {
-                txbTotal.Text = Convert.ToString(Convert.ToInt32(txbWompi.Text) + Convert.ToInt32(txbDatafono.Text) + Convert.ToInt32(txbEfectivo.Text) + Convert.ToInt32(txbTransferencia.Text));
+                int intTotal = Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", ""));
+                txbTotal.Text = intTotal.ToString("C0", new CultureInfo("es-CO"));
             }
         }
 
@@ -420,7 +403,8 @@ namespace fpWebApp
         {
             if (txbWompi.Text != "" && txbDatafono.Text != "" && txbEfectivo.Text != "" && txbTransferencia.Text != "")
             {
-                txbTotal.Text = Convert.ToString(Convert.ToInt32(txbWompi.Text) + Convert.ToInt32(txbDatafono.Text) + Convert.ToInt32(txbEfectivo.Text) + Convert.ToInt32(txbTransferencia.Text));
+                int intTotal = Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", ""));
+                txbTotal.Text = intTotal.ToString("C0", new CultureInfo("es-CO"));
             }
         }
 
@@ -428,7 +412,8 @@ namespace fpWebApp
         {
             if (txbWompi.Text != "" && txbDatafono.Text != "" && txbEfectivo.Text != "" && txbTransferencia.Text != "")
             {
-                txbTotal.Text = Convert.ToString(Convert.ToInt32(txbWompi.Text) + Convert.ToInt32(txbDatafono.Text) + Convert.ToInt32(txbEfectivo.Text) + Convert.ToInt32(txbTransferencia.Text));
+                int intTotal = Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", ""));
+                txbTotal.Text = intTotal.ToString("C0", new CultureInfo("es-CO"));
             }
         }
 
@@ -517,12 +502,13 @@ namespace fpWebApp
             ltObservaciones.Text = "Valor sin descuento: $" + string.Format("{0:N0}", intPrecioBase) + "<br /><br />";
             ltObservaciones.Text += "<b>Meses</b>: " + intMeses.ToString() + ".<br />";
             ltObservaciones.Text += "<b>Descuento</b>: " + string.Format("{0:N2}", dobDescuento) + "%.<br />";
-            ltObservaciones.Text += "<b>Valor del mes con descuento</b>: $" + string.Format("{0:N0}", intConDescuento) + ".<br />";
+            ltObservaciones.Text += "<b>Valor del mes con descuento</b>: $" + string.Format("{0:N0}", dobPrecioMesDescuento) + "<br />";
             //ltObservaciones.Text += "<b>Ahorro</b>: $" + string.Format("{0:N0}", dobAhorro) + ".<br />";
             ltObservaciones.Text += "<b>Valor Total</b>: $" + string.Format("{0:N0}", intPrecio) + ".<br />";
 
             ViewState["observaciones"] = ltObservaciones.Text.ToString().Replace("<b>", "").Replace("</b>", "").Replace("<br />", "\r\n");
-            ltValorTotal.Text = "($" + string.Format("{0:N0}", intPrecio) + ")";
+            //ltValorTotal.Text = "($" + string.Format("{0:N0}", intPrecio) + ")";
+            ltValorTotal.Text = "";
 
             string strDataWompi = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + intPrecio.ToString()));
             //lbEnlaceWompi.Text = "https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi;
@@ -678,6 +664,11 @@ namespace fpWebApp
         /// 
         /// En caso de error, se muestra un mensaje al usuario.
         /// </remarks>
+        /// <summary>
+        /// Agrega el plan a un usuario. Inserta en la tabla AfiliadosPlanes y en PagosPlanAfiliado
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void lbAgregarPlan_Click(object sender, EventArgs e)
         {
             if (ViewState["EstadoAfiliado"].ToString() != "Activo")
@@ -710,7 +701,7 @@ namespace fpWebApp
                         }
                         else
                         {
-                            if (ViewState["precioTotal"].ToString() != txbTotal.Text.ToString())
+                            if (ViewState["precioTotal"].ToString() != Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")).ToString())
                             {
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +
                                 "<div class=\"alert alert-danger alert-dismissable\">" +
@@ -771,20 +762,20 @@ namespace fpWebApp
                                     string strReferencia = string.Empty;
                                     string strBanco = string.Empty;
 
-                                    if (txbWompi.Text.ToString() != "0")
+                                    if (txbWompi.Text.ToString() != "$0")
                                     {
                                         strTipoPago = "Wompi";
                                     }
-                                    if (txbDatafono.Text.ToString() != "0")
+                                    if (txbDatafono.Text.ToString() != "$0")
                                     {
                                         strTipoPago = "Datafono";
                                         strReferencia = txbNroAprobacion.Text.ToString();
                                     }
-                                    if (txbTransferencia.Text.ToString() != "0")
+                                    if (txbTransferencia.Text.ToString() != "$0")
                                     {
                                         strTipoPago = "Transferencia";
                                     }
-                                    if (txbEfectivo.Text.ToString() != "0")
+                                    if (txbEfectivo.Text.ToString() != "$0")
                                     {
                                         strTipoPago = "Efectivo";
                                     }
@@ -799,13 +790,13 @@ namespace fpWebApp
                                     }
 
                                     strQuery = "INSERT INTO PagosPlanAfiliado (idAfiliadoPlan, Valor, TipoPago, idReferencia, " +
-                                        "Banco, FechaHoraPago, idUsuario, EstadoPago) " +
+                                        "Banco, FechaHoraPago, EstadoPago, idUsuario) " +
                                         "VALUES (" + dt1.Rows[0]["idAfiliadoPlan"].ToString() + ", " +
-                                        "" + txbTotal.Text.ToString() + ", " +
+                                        "" + ViewState["precioTotal"].ToString() + ", " +
                                         "'" + strTipoPago + "', " +
                                         "'" + strReferencia + "', " +
                                         "'" + strBanco + "', " +
-                                        "NOW(), 'Aprobado' " +
+                                        "NOW(), 'Aprobado', " +
                                         "" + Session["idUsuario"].ToString() + ") ";
 
                                     try
@@ -827,6 +818,8 @@ namespace fpWebApp
                                     {
                                         string respuesta = "ERROR: " + ex.Message;
                                     }
+
+                                    Response.Redirect("afiliados");
                                 }
                                 catch (Exception ex)
                                 {
@@ -860,51 +853,6 @@ namespace fpWebApp
             }
         }
 
-        //protected void btnSeleccionarPlan_Click(object sender, EventArgs e)
-        //{
-        //    string strQuery = "SELECT * " +
-        //        "FROM Planes " +
-        //        "WHERE idPlan = ";
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.TraerDatos(strQuery);
-
-        //    ViewState["idPlan"] = dt.Rows[0]["idPlan"].ToString();
-        //    ViewState["nombrePlan"] = dt.Rows[0]["NombrePlan"].ToString();
-        //    ViewState["precioTotal"] = Convert.ToInt32(dt.Rows[0]["PrecioTotal"].ToString());
-        //    ViewState["precioBase"] = Convert.ToInt32(dt.Rows[0]["PrecioBase"].ToString());
-        //    ViewState["meses"] = Convert.ToDouble(dt.Rows[0]["Meses"].ToString());
-        //    ViewState["mesesCortesia"] = Convert.ToDouble(dt.Rows[0]["MesesCortesia"].ToString());
-
-        //    ltPrecioBase.Text = "$" + String.Format("{0:N0}", ViewState["precioBase"]);
-        //    ltPrecioFinal.Text = "$" + String.Format("{0:N0}", ViewState["precioTotal"]);
-
-        //    CalculoPrecios();
-        //    ActivarCortesia(ViewState["mesesCortesia"].ToString());
-
-        //    ltDescripcion.Text = "<b>Características</b>: " + dt.Rows[0]["DescripcionPlan"].ToString() + "<br />";
-
-        //    ltNombrePlan.Text = "<b>Plan " + ViewState["nombrePlan"].ToString() + "</b>";
-        //}
-
-        /// <summary>
-        /// Evento que se ejecuta al interactuar con un ítem del Repeater de planes.
-        /// Procesa el comando "SeleccionarPlan" para cargar los datos del plan seleccionado
-        /// y actualiza los controles y el ViewState con la información del plan.
-        /// </summary>
-        /// <param name="source">El control que generó el evento (normalmente el Repeater).</param>
-        /// <param name="e">Argumentos del comando, que incluyen el nombre y argumento del comando.</param>
-        /// <remarks>
-        /// Cuando se selecciona un plan, este método realiza lo siguiente:
-        /// - Obtiene el ID del plan desde el argumento del comando.
-        /// - Consulta la base de datos para obtener toda la información del plan.
-        /// - Guarda los datos clave del plan en ViewState para uso posterior.
-        /// - Actualiza etiquetas en la interfaz con precio base, precio final, descripción y nombre del plan.
-        /// - Llama al método <see cref="CalculoPrecios"/> para actualizar precios calculados.
-        /// - Activa o desactiva la cortesía según el valor de meses de cortesía.
-        /// 
-        /// Es importante que el método <see cref="CalculoPrecios"/> y <see cref="ActivarCortesia(string)"/>
-        /// estén implementados para manejar correctamente la actualización visual y lógica.
-        /// </remarks>
         protected void rpPlanes_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             if (e.CommandName == "SeleccionarPlan")

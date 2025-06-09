@@ -108,6 +108,9 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        /// <summary>
+        /// Lista los permisos que tiene cada página para un perfil específico
+        /// </summary>
         private void ListaPermisosPerfiles()
         {
             clasesglobales cg = new clasesglobales();

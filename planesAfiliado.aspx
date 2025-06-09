@@ -285,7 +285,7 @@
                                                                                             CommandName="SeleccionarPlan"><%# Eval("NombrePlan") %></asp:LinkButton>
                                                                                         <%--<asp:Button runat="server" ID="btnSeleccionarPlan" OnClick="btnSeleccionarPlan_Click" CommandArgument="" />--%></td>
                                                                                     <td><i class="fa fa-note-sticky m-r-xs font-bold"></i><%# Eval("DescripcionPlan") %></td>
-                                                                                    <td><span class="pie"><%# Eval("diaspasados") %>/<%# Eval("diastotales") %></span> <%# Eval("Vigencia") %></td>
+                                                                                    <td><%# Eval("Vigencia") %></td>
                                                                                     <td style="text-align: right;">$<%# Eval("PrecioTotal","{0:N0}") %></td>
                                                                                 </tr>
                                                                             </ItemTemplate>
@@ -462,7 +462,8 @@
                                                                             </div>
                                                                             <div class="col-lg-4">
                                                                                 <asp:TextBox ID="txbWompi" CssClass="form-control input-sm"
-                                                                                    runat="server" OnTextChanged="txbWompi_TextChanged"
+                                                                                    runat="server" OnTextChanged="txbWompi_TextChanged" Text="$0" onclick="this.value=''" 
+                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off" 
                                                                                     AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
@@ -477,7 +478,8 @@
                                                                             </div>
                                                                             <div class="col-lg-4">
                                                                                 <asp:TextBox ID="txbDatafono" CssClass="form-control input-sm"
-                                                                                    runat="server" OnTextChanged="txbDatafono_TextChanged"
+                                                                                    runat="server" OnTextChanged="txbDatafono_TextChanged" Text="$0" onclick="this.value=''"  
+                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off" 
                                                                                     AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
@@ -490,7 +492,8 @@
                                                                             </div>
                                                                             <div class="col-lg-4">
                                                                                 <asp:TextBox ID="txbEfectivo" CssClass="form-control input-sm"
-                                                                                    runat="server" OnTextChanged="txbEfectivo_TextChanged"
+                                                                                    runat="server" OnTextChanged="txbEfectivo_TextChanged" Text="$0" onclick="this.value=''"  
+                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off" 
                                                                                     AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
@@ -509,7 +512,8 @@
                                                                             </div>
                                                                             <div class="col-lg-4">
                                                                                 <asp:TextBox ID="txbTransferencia" CssClass="form-control input-sm"
-                                                                                    runat="server" OnTextChanged="txbTransferencia_TextChanged"
+                                                                                    runat="server" OnTextChanged="txbTransferencia_TextChanged" Text="$0" onclick="this.value=''"  
+                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off" 
                                                                                     AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
@@ -620,23 +624,25 @@
         ddlRegalos.setAttribute("disabled", true);
         check15.setAttribute("checked", false);
 
-        $("#ionrange_1").ionRangeSlider({
-            grid: true,
-            values: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
-            onChange: function (data) {
-                // fired on every range slider update
-                console.dir(data.fromNumber);
-                if (data.fromNumber >= 6) {
-                    console.log(data.fromNumber);
-                    ddlRegalos.removeAttribute('disabled');
-                    check15.setAttribute("checked", true);
-                }
-                else {
-                    ddlRegalos.setAttribute("disabled", true);
-                    check15.setAttribute("checked", false);
-                }
-            },
-        });
+        
+
+        //$("#ionrange_1").ionRangeSlider({
+        //    grid: true,
+        //    values: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+        //    onChange: function (data) {
+        //        // fired on every range slider update
+        //        console.dir(data.fromNumber);
+        //        if (data.fromNumber >= 6) {
+        //            console.log(data.fromNumber);
+        //            ddlRegalos.removeAttribute('disabled');
+        //            check15.setAttribute("checked", true);
+        //        }
+        //        else {
+        //            ddlRegalos.setAttribute("disabled", true);
+        //            check15.setAttribute("checked", false);
+        //        }
+        //    },
+        //});
 
         $(document).ready(function () {
             $('.i-checks').iCheck({

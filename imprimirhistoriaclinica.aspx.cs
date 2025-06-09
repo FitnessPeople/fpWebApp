@@ -27,9 +27,9 @@ namespace fpWebApp
                 "FROM HistoriasClinicas hc " +
                 "LEFT JOIN Afiliados a ON hc.idAfiliado = a.idAfiliado " +
                 "LEFT JOIN Generos g ON a.idGenero = g.idGenero " +
-                "JOIN HistoriaAlimentaria ha on hc.idHistoria = ha.idHistoria " +
-                "JOIN HistoriaDeportiva hd on hc.idHistoria = hd.idHistoria " +
-                "JOIN HistoriaFisioterapeuta hf on hc.idHistoria = hf.idHistoria " +
+                "LEFT JOIN HistoriaAlimentaria ha on hc.idHistoria = ha.idHistoria " +
+                "LEFT JOIN HistoriaDeportiva hd on hc.idHistoria = hd.idHistoria " +
+                "LEFT JOIN HistoriaFisioterapeuta hf on hc.idHistoria = hf.idHistoria " +
                 "WHERE hc.idHistoria = " + Request.QueryString["editid"].ToString();
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
