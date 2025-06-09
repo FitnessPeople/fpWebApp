@@ -39,7 +39,7 @@
         function changeClass() {
             var element1 = document.querySelector("#canalesventa");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#configuracion");
+            var element2 = document.querySelector("#canalesprocesoscomerciales");
             element2.classList.remove("collapse");
         }
     </script>
@@ -104,7 +104,7 @@
                     <h2><i class="fa-solid fa-list-ul text-success m-r-sm"></i> Canales de venta</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>Configuración</li>
+                        <li>Canales y procesos comerciales</li>
                         <li class="active"><strong>Canales de venta</strong></li>
                     </ol>
                 </div>

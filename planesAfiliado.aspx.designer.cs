@@ -11,7 +11,7 @@ namespace fpWebApp
 {
 
 
-    public partial class planesAfil
+    public partial class planesAfiliado
     {
 
         /// <summary>
@@ -195,121 +195,58 @@ namespace fpWebApp
         protected global::System.Web.UI.UpdatePanel upPlanes;
 
         /// <summary>
-        /// Control phPlanes.
+        /// Control rpPlanes.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phPlanes;
+        protected global::System.Web.UI.WebControls.Repeater rpPlanes;
 
         /// <summary>
-        /// Control btnMes1.
+        /// Control btn7dias.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnMes1;
+        protected global::System.Web.UI.WebControls.Button btn7dias;
 
         /// <summary>
-        /// Control btnMes2.
+        /// Control btn15dias.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnMes2;
+        protected global::System.Web.UI.WebControls.Button btn15dias;
 
         /// <summary>
-        /// Control btnMes3.
+        /// Control btn30dias.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnMes3;
+        protected global::System.Web.UI.WebControls.Button btn30dias;
 
         /// <summary>
-        /// Control btnMes4.
+        /// Control btn60dias.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnMes4;
+        protected global::System.Web.UI.WebControls.Button btn60dias;
 
         /// <summary>
-        /// Control btnMes5.
+        /// Control btn90dias.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnMes5;
-
-        /// <summary>
-        /// Control btnMes6.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnMes6;
-
-        /// <summary>
-        /// Control btnMes7.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnMes7;
-
-        /// <summary>
-        /// Control btnMes8.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnMes8;
-
-        /// <summary>
-        /// Control btnMes9.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnMes9;
-
-        /// <summary>
-        /// Control btnMes10.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnMes10;
-
-        /// <summary>
-        /// Control btnMes11.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnMes11;
-
-        /// <summary>
-        /// Control btnMes12.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnMes12;
+        protected global::System.Web.UI.WebControls.Button btn90dias;
 
         /// <summary>
         /// Control ltPrecioBase.
@@ -357,67 +294,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltAhorro;
 
         /// <summary>
-        /// Control btn7dias.
+        /// Control ltTipoPlan.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn7dias;
-
-        /// <summary>
-        /// Control btn15dias.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn15dias;
-
-        /// <summary>
-        /// Control btn30dias.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn30dias;
-
-        /// <summary>
-        /// Control btn60dias.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn60dias;
-
-        /// <summary>
-        /// Control btnRegalo1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnRegalo1;
-
-        /// <summary>
-        /// Control btnRegalo2.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnRegalo2;
-
-        /// <summary>
-        /// Control btnRegalo3.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnRegalo3;
+        protected global::System.Web.UI.WebControls.Literal ltTipoPlan;
 
         /// <summary>
         /// Control divPanelResumen.

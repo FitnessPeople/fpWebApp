@@ -41,7 +41,7 @@
             var element1 = document.querySelector("#reportepagos");
             element1.classList.replace("old", "active");
             //var element2 = document.querySelector("#reportes");
-            var element2 = document.querySelector("#reportepagos");
+            var element2 = document.querySelector("#reportes");
             element2.classList.remove("collapse");
         }
     </script>

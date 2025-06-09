@@ -26,6 +26,9 @@
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
+    <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
+
+    <%--<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />--%>
 
     <style type="text/css" media="print">
         body {
@@ -164,7 +167,7 @@
                                                     <div class="col-sm-5">
                                                         <label>Precio base del mes</label>
                                                         <asp:TextBox ID="txbPrecio" CssClass="form-control input-sm" runat="server"
-                                                            Text="0"></asp:TextBox>
+                                                            placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
                                                         <asp:RequiredFieldValidator ID="rfvPrecio" runat="server" ErrorMessage="* Campo requerido"
                                                             ControlToValidate="txbPrecio" ValidationGroup="agregar"
                                                             CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
@@ -180,23 +183,47 @@
                                                 </div>
                                                 <div class="row m-b-n-xs">
                                                     <div class="col-sm-5">
-                                                        <label>% Descuento x mes</label>
-                                                        <asp:TextBox ID="txbDescuentoMensual" CssClass="form-control input-sm" runat="server"
-                                                            Text="0"></asp:TextBox>
-                                                        <asp:RequiredFieldValidator ID="rfvDescuentoMensual" runat="server" ErrorMessage="* Campo requerido"
-                                                            ControlToValidate="txbDescuentoMensual" ValidationGroup="agregar"
+                                                        <label>Precio total</label>
+                                                        <asp:TextBox ID="txbPrecioTotal" CssClass="form-control input-sm" runat="server"
+                                                            placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
+                                                        <asp:RequiredFieldValidator ID="rfvPrecioTotal" runat="server" ErrorMessage="* Campo requerido"
+                                                            ControlToValidate="txbPrecioTotal" ValidationGroup="agregar"
                                                             CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                     </div>
                                                     <div class="col-sm-7">
-                                                        <label>Nro. de meses máximo del plan</label>
-                                                        <asp:TextBox ID="txbMesesMaximo" CssClass="form-control input-sm" runat="server"
+                                                        <label>Meses del plan</label>
+                                                        <asp:TextBox ID="txbMeses" CssClass="form-control input-sm" runat="server"
                                                             Text="1"></asp:TextBox>
                                                         <asp:RequiredFieldValidator ID="rfvMesesMaximo" runat="server" ErrorMessage="* Campo requerido"
-                                                            ControlToValidate="txbMesesMaximo" ValidationGroup="agregar"
+                                                            ControlToValidate="txbMeses" ValidationGroup="agregar"
                                                             CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                     </div>
                                                 </div>
-                                                <div class="form-group m-b-md">
+                                                <div class="row m-b-n-xs">
+                                                    <div class="col-sm-6">
+                                                        <label>Meses de cortesía</label>
+                                                        <asp:TextBox ID="txbMesesCortesia" CssClass="form-control input-sm" runat="server"
+                                                            autocomplete="off" Text="0"></asp:TextBox>
+                                                        <asp:RequiredFieldValidator ID="rfvMesesCortesia" runat="server" ErrorMessage="* Campo requerido"
+                                                            ControlToValidate="txbMesesCortesia" ValidationGroup="agregar"
+                                                            CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <label>Color del plan</label>
+                                                        <asp:DropDownList ID="ddlColor" runat="server" CssClass="select2_demo_1 form-control input-sm">
+                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            <asp:ListItem Value="primary" data-color="#1ab394" data-icon="fa-stop">&nbsp;Primary</asp:ListItem>
+                                                            <asp:ListItem Value="success" data-color="#1c84c6" data-icon="fa-stop">&nbsp;Success</asp:ListItem>
+                                                            <asp:ListItem Value="info" data-color="#23c6c8" data-icon="fa-stop">&nbsp;Info</asp:ListItem>
+                                                            <asp:ListItem Value="warning" data-color="#F8AC59" data-icon="fa-stop">&nbsp;Warning</asp:ListItem>
+                                                            <asp:ListItem Value="danger" data-color="#ed5565" data-icon="fa-stop">&nbsp;Danger</asp:ListItem>
+                                                        </asp:DropDownList>
+                                                        <asp:RequiredFieldValidator ID="rfvColor" runat="server" ErrorMessage="* Campo requerido"
+                                                            ControlToValidate="ddlColor" ValidationGroup="agregar" InitialValue="" 
+                                                            CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                    </div>
+                                                </div>
+                                                <%--<div class="form-group m-b-md">
                                                     <label>Color del botón:</label>
                                                     <asp:RadioButtonList ID="rblColor" runat="server" RepeatLayout="Flow"
                                                         CssClass="form-control input-sm" RepeatDirection="Horizontal">
@@ -206,7 +233,7 @@
                                                         <asp:ListItem Value="warning" style="margin-right: 5px; font-size: 10px; color: darkgoldenrod;">&nbsp;Amarillo</asp:ListItem>
                                                         <asp:ListItem Value="danger" style="margin-right: 5px; font-size: 10px; color: red;">&nbsp;Rojo</asp:ListItem>
                                                     </asp:RadioButtonList>
-                                                </div>
+                                                </div>--%>
                                                 <div class="row m-b-n-xs">
                                                     <div class="col-sm-12">
                                                         <h3>Período del plan</h3>
@@ -305,9 +332,9 @@
                                                 <asp:Repeater ID="rpPlanes" runat="server" OnItemDataBound="rpPlanes_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
-                                                            <td><span class="btn btn-<%# Eval("NombreColorPlan") %> btn-outline" style="font-size: 12px;"><%# Eval("NombrePlan") %></span></td>
+                                                            <td><span class="btn btn-<%# Eval("NombreColorPlan") %> btn-outline btn-block btn-sm" style="font-size: 12px;"><%# Eval("NombrePlan") %></span></td>
                                                             <td><i class="fa fa-note-sticky m-r-xs font-bold"></i><%# Eval("DescripcionPlan") %></td>
-                                                            <td style="text-align: right;">$<%# Eval("PrecioBase") %></td>
+                                                            <td style="text-align: right;">$<%# Eval("PrecioTotal","{0:N0}") %></td>
                                                             <td style="white-space: nowrap;"><i class="fa fa-circle-user m-r-xs font-bold"></i><%# Eval("NombreUsuario") %></td>
                                                             <td><span class="badge badge-<%# Eval("label") %>"><%# Eval("EstadoPlan") %></span></td>
                                                             <td>
@@ -373,6 +400,10 @@
     <!-- ChartJS-->
     <script src="js/plugins/chartJs/Chart.min.js"></script>
 
+    <!-- Select2 -->
+    <%--<script src="js/plugins/select2/select2.full.min.js"></script>--%>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
     <!-- Page-Level Scripts -->
     <script>
 
@@ -391,6 +422,18 @@
         new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
 
         $('.footable').footable();
+        $(".select2_demo_1").select2();
+
+        function formatText(icon) {
+            return $('<span><i class="fa ' + $(icon.element).data('icon') + '" style="color: ' + $(icon.element).data('color') + '"></i> ' + icon.text + '</span>');
+        };
+        $(document).ready(function () {
+            $('#ddlColor').select2({
+                width: '100%',
+                templateSelection: formatText,
+                templateResult: formatText
+            });
+        });
     </script>
 
 </body>

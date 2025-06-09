@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="planesAfil.aspx.cs" Inherits="fpWebApp.planesAfil" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="planesAfiliado.aspx.cs" Inherits="fpWebApp.planesAfiliado" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
@@ -57,44 +57,46 @@
                 <div class="modal-body">
                     <p>
                         <b>Paso 1: Visualiza la información del afiliado</b><br />
-                        <i class="fa-solid fa-magnifying-glass"></i> Revisa los datos: <br />
-                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre, </b>
-                        <i class="fa-solid fa-envelope" style="color: #0D6EFD;"></i> <b>Correo, </b>
-                        <i class="fa-solid fa-city" style="color: #0D6EFD;"></i> <b>Ciudad, </b>
-                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i> <b>Teléfono, </b>
-                        <i class="fa-solid fa-building" style="color: #0D6EFD;"></i> <b>Sede, </b>
-                        <i class="fa-solid fa-cake" style="color: #0D6EFD;"></i> <b>Cumpleaños, </b><br />
-                        <i class="fa-solid fa-shield" style="color: #0D6EFD;"></i> <b>Estado, </b>
-                        <i class="fa-solid fa-calendar-day" style="color: #0D6EFD;"></i> <b>Días asistidos, Congelaciones y</b>
-                        <i class="fa-solid fa-ticket" style="color: #0D6EFD;"></i> <b>Planes registrados</b>,
+                        <i class="fa-solid fa-magnifying-glass"></i>Revisa los datos:
+                        <br />
+                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i><b>Nombre, </b>
+                        <i class="fa-solid fa-envelope" style="color: #0D6EFD;"></i><b>Correo, </b>
+                        <i class="fa-solid fa-city" style="color: #0D6EFD;"></i><b>Ciudad, </b>
+                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i><b>Teléfono, </b>
+                        <i class="fa-solid fa-building" style="color: #0D6EFD;"></i><b>Sede, </b>
+                        <i class="fa-solid fa-cake" style="color: #0D6EFD;"></i><b>Cumpleaños, </b>
+                        <br />
+                        <i class="fa-solid fa-shield" style="color: #0D6EFD;"></i><b>Estado, </b>
+                        <i class="fa-solid fa-calendar-day" style="color: #0D6EFD;"></i><b>Días asistidos, Congelaciones y</b>
+                        <i class="fa-solid fa-ticket" style="color: #0D6EFD;"></i><b>Planes registrados</b>,
                     <br />
                         <br />
                         <b>Paso 2: Asigna un plan al afiliado</b><br />
-                        <i class="fa-solid fa-ticket" style="color: #21B9BB;"></i> Selecciona el <b>plan</b>.<br />
-                        <i class="fa-solid fa-ticket" style="color: #EC4758;"></i> Selecciona la <b>cantidad de meses</b> a la que se registrará el plan.
+                        <i class="fa-solid fa-ticket" style="color: #21B9BB;"></i>Selecciona el <b>plan</b>.<br />
+                        <i class="fa-solid fa-ticket" style="color: #EC4758;"></i>Selecciona la <b>cantidad de meses</b> a la que se registrará el plan.
                     <br />
                         <br />
                         <b>Paso 3: Visualiza los precios del plan</b><br />
                         Puedes ver estos <b>precios</b> en:<br />
-                        <i class="fa-solid fa-money-bill-wave" style="color: #23C6C8;"></i> <b>Valor x mes</b><br />
-                        <i class="fa-solid fa-tag" style="color: #ED5565;"></i> <b>Descuento en % y $</b><br />
-                        <i class="fa-solid fa-cart-shopping" style="color: #F8AC59;"></i> <b>Valor total</b><br />
-                        <i class="fa-solid fa-hand-holding-dollar" style="color: #1C84C6;"></i> <b>Ahorro</b>
-                    <br />
+                        <i class="fa-solid fa-money-bill-wave" style="color: #23C6C8;"></i><b>Valor x mes</b><br />
+                        <i class="fa-solid fa-tag" style="color: #ED5565;"></i><b>Descuento en % y $</b><br />
+                        <i class="fa-solid fa-cart-shopping" style="color: #F8AC59;"></i><b>Valor total</b><br />
+                        <i class="fa-solid fa-hand-holding-dollar" style="color: #1C84C6;"></i><b>Ahorro</b>
+                        <br />
                         <br />
                         <b>Paso 4: Termina el proceso</b><br />
-                        <i class="fa-solid fa-gift" style="color: #21B9BB;"></i> Selecciona los <b>días de cortesía</b>.<br />
-                        <i class="fa-solid fa-gift" style="color: #EC4758;"></i> Selecciona el <b>regalo</b>.<br />
-                        <i class="fa-solid fa-magnifying-glass"></i> Revisa que los <b>detalles del plan</b> sean los correctos.<br />
-                        <i class="fa-solid fa-money-bill"></i> Completa los campos del <b>método de pago</b>.
+                        <i class="fa-solid fa-gift" style="color: #21B9BB;"></i>Selecciona los <b>días de cortesía</b>.<br />
+                        <i class="fa-solid fa-gift" style="color: #EC4758;"></i>Selecciona el <b>regalo</b>.<br />
+                        <i class="fa-solid fa-magnifying-glass"></i>Revisa que los <b>detalles del plan</b> sean los correctos.<br />
+                        <i class="fa-solid fa-money-bill"></i>Completa los campos del <b>método de pago</b>.
                     <br />
                         <br />
                         <b>Paso 5: Confirma o cancela</b><br />
-                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Agregar Plan:</b> Guarda la información y <b>registra</b> el plan al afiliado.<br />
-                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver <b>atrás</b> sin guardar cambios.
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i><b>Agregar Plan:</b> Guarda la información y <b>registra</b> el plan al afiliado.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i><b>Cancelar:</b> Si necesitas volver <b>atrás</b> sin guardar cambios.
                    <br />
                         <br />
-                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i>Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -114,7 +116,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p><asp:Literal ID="ltDetalleWompi" runat="server"></asp:Literal></p>
+                    <p>
+                        <asp:Literal ID="ltDetalleWompi" runat="server"></asp:Literal></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -190,11 +193,11 @@
                                     <tr>
                                         <td><strong><i class="fab fa-whatsapp"></i></strong>
                                             <asp:Literal ID="ltCelular" runat="server"></asp:Literal></td>
-                                        <td><strong><i class="fa fa-shield"></i></strong> Estado: 
+                                        <td><strong><i class="fa fa-shield"></i></strong>Estado: 
                                             <asp:Literal ID="ltEstado" runat="server"></asp:Literal></td>
                                     </tr>
                                     <tr>
-                                        <td><strong><i class="fa fa-building"></i></strong> Sede:
+                                        <td><strong><i class="fa fa-building"></i></strong>Sede:
                                             <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
                                         <td><strong>54</strong> Días asistidos</td>
                                     </tr>
@@ -214,7 +217,7 @@
                                             <div class="i-checks">
                                                 <small class="label label-primary pull-right"><%# Eval("DiasQueFaltan") %> días disponibles</small>
                                                 <label>
-                                                    Plan Activo: <%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
+                                                    Plan Activo: <%# Eval("NombrePlan") %>
                                                 </label>
                                                 <br />
                                                 <div class="progress progress-striped active">
@@ -255,154 +258,44 @@
                                         <asp:UpdatePanel ID="upPlanes" runat="server" UpdateMode="Always" ChildrenAsTriggers="true">
                                             <ContentTemplate>
                                                 <div class="row">
-                                                    <div class="col-sm-3 b-r">
+                                                    <div class="col-sm-8 b-r">
                                                         <div class="form-group">
-                                                            <label>Tipo de plan:</label>
+                                                            <%--<label>Tipo de plan:</label>--%>
                                                             <div class="form-group">
-                                                                <%--<asp:Button ID="btnDeluxe" runat="server" Text="Deluxe"
-                                                                    CssClass="btn btn-primary btn-outline btn-block btn-lg font-bold"
-                                                                    OnClick="btnDeluxe_Click" />
-                                                                <asp:Button ID="btnPremium" runat="server" Text="Premium"
-                                                                    CssClass="btn btn-danger btn-outline btn-block btn-lg font-bold"
-                                                                    OnClick="btnPremium_Click" />--%>
-                                                                <asp:PlaceHolder ID="phPlanes" runat="server"></asp:PlaceHolder>
+                                                                <%--<asp:PlaceHolder ID="phPlanes" runat="server"></asp:PlaceHolder>--%>
+                                                                <table class="footable table table-striped" data-paging-size="10"
+                                                                    data-filter-min="3" data-filter-placeholder="Buscar"
+                                                                    data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
+                                                                    data-paging-limit="10" data-filtering="true"
+                                                                    data-filter-container="#filter-form-container" data-filter-delay="300"
+                                                                    data-filter-dropdown-title="Buscar en:" data-filter-position="left"
+                                                                    data-empty="Sin resultados">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Nombre</th>
+                                                                            <th data-breakpoints="xs">Descripción</th>
+                                                                            <th data-breakpoints="xs">Vigencia</th>
+                                                                            <th data-breakpoints="xs" class="text-right">Precio</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <asp:Repeater ID="rpPlanes" runat="server" OnItemCommand="rpPlanes_ItemCommand" OnItemDataBound="rpPlanes_ItemDataBound">
+                                                                            <ItemTemplate>
+                                                                                <tr class="feed-element">
+                                                                                    <td>
+                                                                                        <asp:LinkButton runat="server" ID="btnSeleccionarPlan" CommandArgument='<%# Eval("idPlan") %>' 
+                                                                                            CommandName="SeleccionarPlan"><%# Eval("NombrePlan") %></asp:LinkButton>
+                                                                                        <%--<asp:Button runat="server" ID="btnSeleccionarPlan" OnClick="btnSeleccionarPlan_Click" CommandArgument="" />--%></td>
+                                                                                    <td><i class="fa fa-note-sticky m-r-xs font-bold"></i><%# Eval("DescripcionPlan") %></td>
+                                                                                    <td><%# Eval("Vigencia") %></td>
+                                                                                    <td style="text-align: right;">$<%# Eval("PrecioTotal","{0:N0}") %></td>
+                                                                                </tr>
+                                                                            </ItemTemplate>
+                                                                        </asp:Repeater>
+                                                                    </tbody>
+                                                                </table>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-sm-9">
-                                                        <div class="form-group">
-                                                            <label>Meses del plan:</label>
-                                                            <div class="form-group">
-                                                                <div class="row">
-                                                                    <div class="col-sm-3 col-xs-3 col-xs-3">
-                                                                        <asp:Button ID="btnMes1" runat="server" Text="1"
-                                                                            CssClass="btn btn-warning btn-outline btn-block font-bold active"
-                                                                            OnClick="btnMes1_Click" />
-                                                                    </div>
-                                                                    <div class="col-sm-3 col-xs-3">
-                                                                        <asp:Button ID="btnMes2" runat="server" Text="2"
-                                                                            CssClass="btn btn-warning btn-outline btn-block font-bold"
-                                                                            OnClick="btnMes2_Click" />
-                                                                    </div>
-                                                                    <div class="col-sm-3 col-xs-3">
-                                                                        <asp:Button ID="btnMes3" runat="server" Text="3"
-                                                                            CssClass="btn btn-info btn-outline btn-block font-bold"
-                                                                            OnClick="btnMes3_Click" />
-                                                                    </div>
-                                                                    <div class="col-sm-3 col-xs-3">
-                                                                        <asp:Button ID="btnMes4" runat="server" Text="4"
-                                                                            CssClass="btn btn-danger btn-outline btn-block font-bold"
-                                                                            OnClick="btnMes4_Click" />
-                                                                    </div>
-                                                                    <div class="col-sm-3 col-xs-3">
-                                                                        <asp:Button ID="btnMes5" runat="server" Text="5"
-                                                                            CssClass="btn btn-warning btn-outline btn-block font-bold"
-                                                                            OnClick="btnMes5_Click" />
-                                                                    </div>
-                                                                    <div class="col-sm-3 col-xs-3">
-                                                                        <asp:Button ID="btnMes6" runat="server" Text="6"
-                                                                            CssClass="btn btn-info btn-outline btn-block font-bold"
-                                                                            OnClick="btnMes6_Click" />
-                                                                    </div>
-                                                                    <div class="col-sm-3 col-xs-3">
-                                                                        <asp:Button ID="btnMes7" runat="server" Text="7"
-                                                                            CssClass="btn btn-warning btn-outline btn-block font-bold"
-                                                                            OnClick="btnMes7_Click" />
-                                                                    </div>
-                                                                    <div class="col-sm-3 col-xs-3">
-                                                                        <asp:Button ID="btnMes8" runat="server" Text="8"
-                                                                            CssClass="btn btn-danger btn-outline btn-block font-bold"
-                                                                            OnClick="btnMes8_Click" />
-                                                                    </div>
-                                                                    <div class="col-sm-3 col-xs-3">
-                                                                        <asp:Button ID="btnMes9" runat="server" Text="9"
-                                                                            CssClass="btn btn-info btn-outline btn-block font-bold"
-                                                                            OnClick="btnMes9_Click" />
-                                                                    </div>
-                                                                    <div class="col-sm-3 col-xs-3">
-                                                                        <asp:Button ID="btnMes10" runat="server" Text="10"
-                                                                            CssClass="btn btn-warning btn-outline btn-block font-bold"
-                                                                            OnClick="btnMes10_Click" />
-                                                                    </div>
-                                                                    <div class="col-sm-3 col-xs-3">
-                                                                        <asp:Button ID="btnMes11" runat="server" Text="11"
-                                                                            CssClass="btn btn-warning btn-outline btn-block font-bold"
-                                                                            OnClick="btnMes11_Click" />
-                                                                    </div>
-                                                                    <div class="col-sm-3 col-xs-3">
-                                                                        <asp:Button ID="btnMes12" runat="server" Text="12"
-                                                                            CssClass="btn btn-danger btn-outline btn-block font-bold"
-                                                                            OnClick="btnMes12_Click" />
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr />
-                                                <div class="row">
-                                                    <div class="col-lg-3">
-                                                        <div class="widget style1 lazur-bg">
-                                                            <div class="row vertical-align">
-                                                                <div class="col-xs-3">
-                                                                    <i class="fa fa-money-bill-wave fa-3x" style="font-size: 2.3em"></i>
-                                                                </div>
-                                                                <div class="col-xs-9 text-right">
-                                                                    <span>Valor mes </span>
-                                                                    <h2 class="font-bold">
-                                                                        <asp:Literal ID="ltPrecioBase" runat="server"></asp:Literal></h2>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-3">
-                                                        <div class="widget style1 bg-danger">
-                                                            <div class="row vertical-align">
-                                                                <div class="col-xs-3">
-                                                                    <i class="fa fa-tag fa-3x" style="font-size: 2.3em"></i>
-                                                                </div>
-                                                                <div class="col-xs-9 text-right">
-                                                                    <span>Descuento
-                                                                        <asp:Literal ID="ltDescuento" runat="server"></asp:Literal></span>
-                                                                    <h2 class="font-bold">
-                                                                        <asp:Literal ID="ltConDescuento" runat="server"></asp:Literal></h2>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-3">
-                                                        <div class="widget style1 yellow-bg">
-                                                            <div class="row vertical-align">
-                                                                <div class="col-xs-3">
-                                                                    <i class="fa fa-cart-shopping fa-3x" style="font-size: 2.3em"></i>
-                                                                </div>
-                                                                <div class="col-xs-9 text-right">
-                                                                    <span>Total </span>
-                                                                    <h2 class="font-bold">
-                                                                        <asp:Literal ID="ltPrecioFinal" runat="server"></asp:Literal></h2>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-3">
-                                                        <div class="widget style1 bg-success">
-                                                            <div class="row vertical-align">
-                                                                <div class="col-xs-3">
-                                                                    <i class="fa fa-hand-holding-dollar fa-3x" style="font-size: 2.3em"></i>
-                                                                </div>
-                                                                <div class="col-xs-9 text-right">
-                                                                    <span>Ahorro </span>
-                                                                    <h2 class="font-bold">
-                                                                        <asp:Literal ID="ltAhorro" runat="server"></asp:Literal></h2>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr />
-                                                <div class="row">
-                                                    <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Días de cortesía:</label>
                                                             <div class="form-group">
@@ -414,33 +307,113 @@
                                                                     Style="width: 70px; font-size: 30px; height: 70px;" OnClick="btn30dias_Click" Enabled="false" />
                                                                 <asp:Button ID="btn60dias" runat="server" Text="60" CssClass="btn btn-info dim btn-large-dim btn-outline"
                                                                     Style="width: 70px; font-size: 30px; height: 70px;" OnClick="btn60dias_Click" Enabled="false" />
+                                                                <asp:Button ID="btn90dias" runat="server" Text="90" CssClass="btn btn-info dim btn-large-dim btn-outline"
+                                                                    Style="width: 70px; font-size: 30px; height: 70px;" OnClick="btn90dias_Click" Enabled="false" />
 
                                                                 <%--<div class="i-checks"><label for="check15"> <input type="checkbox" id="check15" name="check15"> 15 dias </label></div>--%>
                                                                 <%--<asp:CheckBox ID="check15" runat="server" />--%>
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                    <%--<div class="col-sm-5">
                                                         <div class="form-group">
                                                             <label for="ddlRegalos">Regalos:</label>
-                                                            <%--<asp:DropDownList ID="ddlRegalos" runat="server" AppendDataBoundItems="true" CssClass="form-control m-b">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                <asp:ListItem Text="Camiseta" Value="Camiseta"></asp:ListItem>
-                                                                <asp:ListItem Text="Termo" Value="Termo"></asp:ListItem>
-                                                            </asp:DropDownList>--%>
                                                             <div class="form-group">
-                                                                <asp:LinkButton ID="btnRegalo1" runat="server" OnClick="btnRegalo1_Click"
+                                                                <asp:LinkButton ID="btnRegalo1" runat="server" 
                                                                     CssClass="btn btn-danger dim btn-large-dim btn-outline disabled"
                                                                     Style="width: 70px; font-size: 30px; height: 70px;"><i class="fa fa-bottle-water"></i></asp:LinkButton>
-                                                                <asp:LinkButton ID="btnRegalo2" runat="server" OnClick="btnRegalo2_Click"
+                                                                <asp:LinkButton ID="btnRegalo2" runat="server" 
                                                                     CssClass="btn btn-danger dim btn-large-dim btn-outline disabled"
                                                                     Style="width: 70px; font-size: 30px; height: 70px;"><i class="fa fa-tshirt"></i></asp:LinkButton>
-                                                                <asp:LinkButton ID="btnRegalo3" runat="server" OnClick="btnRegalo3_Click"
+                                                                <asp:LinkButton ID="btnRegalo3" runat="server" 
                                                                     CssClass="btn btn-danger dim btn-large-dim btn-outline disabled"
                                                                     Style="width: 70px; font-size: 30px; height: 70px;"><i class="fa fa-laptop-medical"></i></asp:LinkButton>
                                                             </div>
                                                         </div>
+                                                    </div>--%>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-lg-12">
+                                                                        <div class="widget style1 lazur-bg">
+                                                                            <div class="row vertical-align">
+                                                                                <div class="col-xs-3">
+                                                                                    <i class="fa fa-money-bill-wave fa-3x" style="font-size: 2.3em"></i>
+                                                                                </div>
+                                                                                <div class="col-xs-9 text-right">
+                                                                                    <span>Valor mes base</span>
+                                                                                    <h2 class="font-bold">
+                                                                                        <asp:Literal ID="ltPrecioBase" runat="server"></asp:Literal></h2>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-12">
+                                                                        <div class="widget style1 bg-danger">
+                                                                            <div class="row vertical-align">
+                                                                                <div class="col-xs-3">
+                                                                                    <i class="fa fa-tag fa-3x" style="font-size: 2.3em"></i>
+                                                                                </div>
+                                                                                <div class="col-xs-9 text-right">
+                                                                                    <span>Descuento <asp:Literal ID="ltDescuento" runat="server"></asp:Literal></span>
+                                                                                    <h2 class="font-bold"><asp:Literal ID="ltConDescuento" runat="server"></asp:Literal></h2>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-12">
+                                                                        <div class="widget style1 yellow-bg">
+                                                                            <div class="row vertical-align">
+                                                                                <div class="col-xs-3">
+                                                                                    <i class="fa fa-cart-shopping fa-3x" style="font-size: 2.3em"></i>
+                                                                                </div>
+                                                                                <div class="col-xs-9 text-right">
+                                                                                    <span>Total </span>
+                                                                                    <h2 class="font-bold">
+                                                                                        <asp:Literal ID="ltPrecioFinal" runat="server"></asp:Literal></h2>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-12">
+                                                                        <div class="widget style1 bg-success">
+                                                                            <div class="row vertical-align">
+                                                                                <div class="col-xs-3">
+                                                                                    <i class="fa fa-hand-holding-dollar fa-3x" style="font-size: 2.3em"></i>
+                                                                                </div>
+                                                                                <div class="col-xs-9 text-right">
+                                                                                    <span>Ahorro </span>
+                                                                                    <h2 class="font-bold">
+                                                                                        <asp:Literal ID="ltAhorro" runat="server"></asp:Literal></h2>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-12">
+                                                                        <div class="widget style1 bg-primary">
+                                                                            <div class="row vertical-align">
+                                                                                <div class="col-xs-3">
+                                                                                    <i class="fa fa-credit-card fa-3x" style="font-size: 2.3em"></i>
+                                                                                </div>
+                                                                                <div class="col-xs-9 text-right">
+                                                                                    <span>Tipo de plan </span>
+                                                                                    <h2 class="font-bold">
+                                                                                        <asp:Literal ID="ltTipoPlan" runat="server"></asp:Literal></h2>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
+                                                </div>
+                                                <hr />
 
-                                                    <div class="col-sm-3">
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <div class="panel panel-default" runat="server" id="divPanelResumen">
                                                                 <div class="panel-heading">
@@ -454,17 +427,19 @@
                                                                         <hr />
                                                                         <asp:Literal ID="ltCortesias" runat="server"></asp:Literal>
                                                                         <asp:Literal ID="ltRegalos" runat="server"></asp:Literal>
-                                                                        <asp:Label ID="lbEnlaceWompi" runat="server" ></asp:Label>
+                                                                        <asp:Label ID="lbEnlaceWompi" runat="server"></asp:Label>
                                                                         <asp:HiddenField ID="hdEnlaceWompi" runat="server" />
-                                                                        <button class="btn btn-success btn-circle" visible="false" id="btnPortapaleles" 
-                                                                            onclick="copyToClipboard()" runat="server" title="Copiar enlace"><i class="fa fa-copy"></i></button>
+                                                                        <button class="btn btn-success btn-circle" visible="false" id="btnPortapaleles"
+                                                                            onclick="copyToClipboard()" runat="server" title="Copiar enlace">
+                                                                            <i class="fa fa-copy"></i>
+                                                                        </button>
                                                                     </p>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-sm-5">
+                                                    <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <div class="panel panel-default" runat="server" id="div1">
                                                                 <div class="panel-heading">
@@ -475,7 +450,7 @@
                                                                     <div class="form-group" style="margin-bottom: 5px;">
                                                                         <label>Fecha de inicio:</label>
                                                                         <%--<div class="col-lg-7">--%>
-                                                                            <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm" runat="server" name="txbFechaInicio"></asp:TextBox>
+                                                                        <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm" runat="server" name="txbFechaInicio"></asp:TextBox>
                                                                         <%--</div>--%>
                                                                     </div>
 
@@ -488,9 +463,10 @@
                                                                                     runat="server" OnClick="lkVerificarPago_Click">Verificar pago...</asp:LinkButton>--%>
                                                                             </div>
                                                                             <div class="col-lg-4">
-                                                                                <asp:TextBox ID="txbWompi" CssClass="form-control input-sm" 
-                                                                                    runat="server" OnTextChanged="txbWompi_TextChanged" 
-                                                                                    AutoPostBack="true" style="text-align: right;"></asp:TextBox>
+                                                                                <asp:TextBox ID="txbWompi" CssClass="form-control input-sm"
+                                                                                    runat="server" OnTextChanged="txbWompi_TextChanged" Text="$0" onclick="this.value=''" 
+                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off" 
+                                                                                    AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -499,13 +475,14 @@
                                                                         <label>Pago por Datafono:</label>
                                                                         <div class="row">
                                                                             <div class="col-lg-8">
-                                                                                <asp:TextBox ID="txbNroAprobacion" CssClass="form-control input-sm" 
+                                                                                <asp:TextBox ID="txbNroAprobacion" CssClass="form-control input-sm"
                                                                                     runat="server" placeholder="Ref."></asp:TextBox>
                                                                             </div>
                                                                             <div class="col-lg-4">
-                                                                                <asp:TextBox ID="txbDatafono" CssClass="form-control input-sm" 
-                                                                                    runat="server" OnTextChanged="txbDatafono_TextChanged" 
-                                                                                    AutoPostBack="true" style="text-align: right;"></asp:TextBox>
+                                                                                <asp:TextBox ID="txbDatafono" CssClass="form-control input-sm"
+                                                                                    runat="server" OnTextChanged="txbDatafono_TextChanged" Text="$0" onclick="this.value=''"  
+                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off" 
+                                                                                    AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -514,12 +491,12 @@
                                                                         <label>Pago en Efectivo:</label>
                                                                         <div class="row">
                                                                             <div class="col-lg-8">
-                                                                                
                                                                             </div>
                                                                             <div class="col-lg-4">
-                                                                                <asp:TextBox ID="txbEfectivo" CssClass="form-control input-sm" 
-                                                                                    runat="server" OnTextChanged="txbEfectivo_TextChanged" 
-                                                                                    AutoPostBack="true" style="text-align: right;"></asp:TextBox>
+                                                                                <asp:TextBox ID="txbEfectivo" CssClass="form-control input-sm"
+                                                                                    runat="server" OnTextChanged="txbEfectivo_TextChanged" Text="$0" onclick="this.value=''"  
+                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off" 
+                                                                                    AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -528,7 +505,7 @@
                                                                         <label>Pago por Transferencia:</label>
                                                                         <div class="row">
                                                                             <div class="col-lg-8">
-                                                                                <asp:RadioButtonList ID="rblBancos" runat="server" 
+                                                                                <asp:RadioButtonList ID="rblBancos" runat="server"
                                                                                     RepeatDirection="Horizontal" CssClass="form-control input-sm">
                                                                                     <asp:ListItem Text="Bancolombia" Value="Bancolombia" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
                                                                                     <asp:ListItem Text="Davivienda" Value="Davivienda" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
@@ -536,18 +513,20 @@
                                                                                 </asp:RadioButtonList>
                                                                             </div>
                                                                             <div class="col-lg-4">
-                                                                                <asp:TextBox ID="txbTransferencia" CssClass="form-control input-sm" 
-                                                                                    runat="server" OnTextChanged="txbTransferencia_TextChanged" 
-                                                                                    AutoPostBack="true" style="text-align: right;"></asp:TextBox>
+                                                                                <asp:TextBox ID="txbTransferencia" CssClass="form-control input-sm"
+                                                                                    runat="server" OnTextChanged="txbTransferencia_TextChanged" Text="$0" onclick="this.value=''"  
+                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off" 
+                                                                                    AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <hr />  
+                                                                    <hr />
                                                                     <div class="form-group" style="margin-bottom: 5px;">
-                                                                        <label class="col-lg-7 control-label">TOTAL <asp:Literal ID="ltValorTotal" runat="server"></asp:Literal>:</label>
+                                                                        <label class="col-lg-7 control-label">TOTAL
+                                                                            <asp:Literal ID="ltValorTotal" runat="server"></asp:Literal>:</label>
                                                                         <div class="col-lg-5">
-                                                                            <asp:TextBox ID="txbTotal" CssClass="form-control input-sm" 
-                                                                                runat="server" ReadOnly style="text-align: right;"></asp:TextBox>
+                                                                            <asp:TextBox ID="txbTotal" CssClass="form-control input-sm"
+                                                                                runat="server" ReadOnly Style="text-align: right;"></asp:TextBox>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -556,21 +535,30 @@
                                                     </div>
                                                 </div>
                                                 <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+
+                                                <div>
+                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"
+                                                        onclick="window.location.href='afiliados'">
+                                                        <strong>Cancelar</strong></button>
+                                                    <asp:LinkButton ID="lbAgregarPlan" runat="server"
+                                                        CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
+                                                        OnClick="lbAgregarPlan_Click">
+                                                        <i class="fa fa-ticket"></i> Agregar plan</asp:LinkButton>
+                                                </div>
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
 
-                                        <div>
-                                            
+                                        <%--<div>
                                             <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"
                                                 onclick="window.location.href='afiliados'">
                                                 <strong>Cancelar</strong></button>
                                             <asp:LinkButton ID="lbAgregarPlan" runat="server"
-                                                CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" 
+                                                CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
                                                 OnClick="lbAgregarPlan_Click">
                                                 <i class="fa fa-ticket"></i> Agregar plan</asp:LinkButton>
-                                            <%--<asp:Button ID="btnAgregarPlan" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
-                                                Text="Agregar Plan" OnClick="btnAgregarPlan_Click" />--%>
-                                        </div>
+                                            <asp:Button ID="btnAgregarPlan" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
+                                                Text="Agregar Plan" OnClick="btnAgregarPlan_Click" />
+                                        </div>--%>
                                     </div>
                                 </form>
                             </div>
@@ -638,23 +626,25 @@
         ddlRegalos.setAttribute("disabled", true);
         check15.setAttribute("checked", false);
 
-        $("#ionrange_1").ionRangeSlider({
-            grid: true,
-            values: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
-            onChange: function (data) {
-                // fired on every range slider update
-                console.dir(data.fromNumber);
-                if (data.fromNumber >= 6) {
-                    console.log(data.fromNumber);
-                    ddlRegalos.removeAttribute('disabled');
-                    check15.setAttribute("checked", true);
-                }
-                else {
-                    ddlRegalos.setAttribute("disabled", true);
-                    check15.setAttribute("checked", false);
-                }
-            },
-        });
+        
+
+        //$("#ionrange_1").ionRangeSlider({
+        //    grid: true,
+        //    values: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+        //    onChange: function (data) {
+        //        // fired on every range slider update
+        //        console.dir(data.fromNumber);
+        //        if (data.fromNumber >= 6) {
+        //            console.log(data.fromNumber);
+        //            ddlRegalos.removeAttribute('disabled');
+        //            check15.setAttribute("checked", true);
+        //        }
+        //        else {
+        //            ddlRegalos.setAttribute("disabled", true);
+        //            check15.setAttribute("checked", false);
+        //        }
+        //    },
+        //});
 
         $(document).ready(function () {
             $('.i-checks').iCheck({

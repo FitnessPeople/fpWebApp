@@ -58,6 +58,11 @@ namespace fpWebApp
             }
         }
 
+        /// <summary>
+        /// Valida los permisos del usuario en la pagina visitada.
+        /// Contiene un parametro.
+        /// </summary>
+        /// <param name="strPagina"></param>
         private void ValidarPermisos(string strPagina)
         {
             ViewState["SinPermiso"] = "1";
@@ -81,6 +86,9 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        /// <summary>
+        /// Llena una lista con los tipos de documento
+        /// </summary>
         private void CargarTipoDocumento()
         {
             clasesglobales cg = new clasesglobales();
@@ -92,6 +100,9 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        /// <summary>
+        /// Llena una lista con las ciudades
+        /// </summary>
         private void CargarCiudad()
         {
             clasesglobales cg = new clasesglobales();

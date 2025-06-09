@@ -302,6 +302,7 @@
                                                 <tr>
                                                     <th data-sortable="false" data-breakpoints="xs" style="width: 200px;">Sede</th>
                                                     <th data-breakpoints="xs">Dirección</th>
+                                                    <th data-breakpoints="xs">Ciudad</th>
                                                     <th data-breakpoints="xs">Tipo Sede</th>
                                                     <th data-breakpoints="all" data-title="Info"></th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
@@ -313,6 +314,7 @@
                                                         <tr class="feed-element">
                                                             <td><%# Eval("NombreSede") %></td>
                                                             <td><%# Eval("DireccionSede") %></td>
+                                                            <td><%# Eval("NombreCiudadSede") %></td>
                                                             <td><%# string.IsNullOrEmpty(Eval("TipoSede") as string) ? "Oficina" : Eval("TipoSede") %></td>
                                                             <td>
                                                                 <table class="table table-bordered table-striped">

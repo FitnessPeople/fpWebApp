@@ -150,31 +150,31 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDiasCongelamiento;
 
         /// <summary>
-        /// Control txbDescuentoMensual.
+        /// Control txbPrecioTotal.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbDescuentoMensual;
+        protected global::System.Web.UI.WebControls.TextBox txbPrecioTotal;
 
         /// <summary>
-        /// Control rfvDescuentoMensual.
+        /// Control rfvPrecioTotal.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDescuentoMensual;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPrecioTotal;
 
         /// <summary>
-        /// Control txbMesesMaximo.
+        /// Control txbMeses.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbMesesMaximo;
+        protected global::System.Web.UI.WebControls.TextBox txbMeses;
 
         /// <summary>
         /// Control rfvMesesMaximo.
@@ -186,13 +186,40 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvMesesMaximo;
 
         /// <summary>
-        /// Control rblColor.
+        /// Control txbMesesCortesia.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblColor;
+        protected global::System.Web.UI.WebControls.TextBox txbMesesCortesia;
+
+        /// <summary>
+        /// Control rfvMesesCortesia.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvMesesCortesia;
+
+        /// <summary>
+        /// Control ddlColor.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlColor;
+
+        /// <summary>
+        /// Control rfvColor.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvColor;
 
         /// <summary>
         /// Control txbFechaInicio.
