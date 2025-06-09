@@ -226,7 +226,7 @@ namespace fpWebApp
         }
 
         /// <summary>
-        /// Maneja el evento de clic del botón Agregar para registrar un nuevo afiliado.
+        /// Maneja el evento de clic del botón "Agregar" para registrar un nuevo afiliado.
         /// Realiza validaciones para evitar duplicados por número de documento, correo electrónico o número de teléfono.
         /// Si las validaciones son exitosas, guarda la foto, genera una clave aleatoria, inserta el registro en la base de datos,
         /// envía un correo de bienvenida y redirige a la página de afiliados.
