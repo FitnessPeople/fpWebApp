@@ -488,8 +488,8 @@ namespace fpWebApp
             ltObservaciones.Text += "<b>Valor Total</b>: $" + string.Format("{0:N0}", intPrecio) + ".<br />";
 
             ViewState["observaciones"] = ltObservaciones.Text.ToString().Replace("<b>", "").Replace("</b>", "").Replace("<br />", "\r\n");
-            //ltValorTotal.Text = "($" + string.Format("{0:N0}", intPrecio) + ")";
-            ltValorTotal.Text = "";
+            ltValorTotal.Text = "($" + string.Format("{0:N0}", intPrecio) + ")";
+            //ltValorTotal.Text = "";
 
             string strDataWompi = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + intPrecio.ToString()));
             //lbEnlaceWompi.Text = "https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi;

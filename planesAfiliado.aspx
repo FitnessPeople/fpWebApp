@@ -462,8 +462,9 @@
                                                                             </div>
                                                                             <div class="col-lg-4">
                                                                                 <asp:TextBox ID="txbWompi" CssClass="form-control input-sm"
-                                                                                    runat="server" OnTextChanged="txbWompi_TextChanged" Text="$0" onclick="this.value=''" 
-                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off" 
+                                                                                    runat="server" OnTextChanged="txbWompi_TextChanged" Text="$0" onclick="if(this.value === '$0') this.value=''"
+                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" autocomplete="off" 
+                                                                                    onblur="if(this.value.replace(/\D/g, '') === '') this.value = '$0'; else keepFormatted(this);"
                                                                                     AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
@@ -478,8 +479,9 @@
                                                                             </div>
                                                                             <div class="col-lg-4">
                                                                                 <asp:TextBox ID="txbDatafono" CssClass="form-control input-sm"
-                                                                                    runat="server" OnTextChanged="txbDatafono_TextChanged" Text="$0" onclick="this.value=''"  
-                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off" 
+                                                                                    runat="server" OnTextChanged="txbDatafono_TextChanged" Text="$0" onclick="if(this.value === '$0') this.value=''" 
+                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" autocomplete="off" 
+                                                                                    onblur="if(this.value.replace(/\D/g, '') === '') this.value = '$0'; else keepFormatted(this);"
                                                                                     AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
@@ -492,8 +494,9 @@
                                                                             </div>
                                                                             <div class="col-lg-4">
                                                                                 <asp:TextBox ID="txbEfectivo" CssClass="form-control input-sm"
-                                                                                    runat="server" OnTextChanged="txbEfectivo_TextChanged" Text="$0" onclick="this.value=''"  
-                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off" 
+                                                                                    runat="server" OnTextChanged="txbEfectivo_TextChanged" Text="$0" onclick="if(this.value === '$0') this.value=''"
+                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" autocomplete="off" 
+                                                                                    onblur="if(this.value.replace(/\D/g, '') === '') this.value = '$0'; else keepFormatted(this);"
                                                                                     AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
@@ -512,8 +515,9 @@
                                                                             </div>
                                                                             <div class="col-lg-4">
                                                                                 <asp:TextBox ID="txbTransferencia" CssClass="form-control input-sm"
-                                                                                    runat="server" OnTextChanged="txbTransferencia_TextChanged" Text="$0" onclick="this.value=''"  
-                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off" 
+                                                                                    runat="server" OnTextChanged="txbTransferencia_TextChanged" Text="$0" onclick="if(this.value === '$0') this.value=''" 
+                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" autocomplete="off" 
+                                                                                    onblur="if(this.value.replace(/\D/g, '') === '') this.value = '$0'; else keepFormatted(this);"
                                                                                     AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
