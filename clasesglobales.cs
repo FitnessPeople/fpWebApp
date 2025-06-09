@@ -6442,7 +6442,7 @@ namespace fpWebApp
 
         public string InsertarContactoCRM(string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
             int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
-            int idUsuario, out bool respuesta, out string mensaje)
+            int idUsuario, int idObjetivo, string tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -6466,6 +6466,12 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_archivo_propuesta", archivoPropuesta);
                         cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_id_objetivo", idObjetivo);
+                        cmd.Parameters.AddWithValue("@p_tipo_pago", tipoPago);
+                        cmd.Parameters.AddWithValue("@p_id_tipo_afiliado", idTipoAfiliado);
+                        cmd.Parameters.AddWithValue("@p_id_canal_marketing", idCanalMarketing);
+                        cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
+                        cmd.Parameters.AddWithValue("@p_meses_plan", mesesPlan);
 
                         // Parámetro de salida
                         MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
@@ -6491,7 +6497,7 @@ namespace fpWebApp
 
         public string ActualizarContactoCRM(int idContactoCMR, string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
         int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
-        int idUsuario, out bool respuesta, out string mensaje)
+        int idUsuario, int idObjetivo, string tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -6516,6 +6522,12 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_archivo_propuesta", archivoPropuesta);
                         cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_id_objetivo", idObjetivo);
+                        cmd.Parameters.AddWithValue("@p_tipo_pago", tipoPago);
+                        cmd.Parameters.AddWithValue("@p_id_tipo_afiliado", idTipoAfiliado);
+                        cmd.Parameters.AddWithValue("@p_id_canal_marketing", idCanalMarketing);
+                        cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
+                        cmd.Parameters.AddWithValue("@p_meses_plan", mesesPlan);
 
                         cmd.ExecuteNonQuery();
                         respuesta = true;
@@ -6733,6 +6745,144 @@ namespace fpWebApp
 
             return dt;
         }
+
+        public string InsertarEmpresaCRM(string nombreEmpresaCRM, string paginaWeb, int idContacto, int idUsuario,
+        string observacionesEmp, string estadoEmpresaCRM, int idCiudad, out bool respuesta, out string mensaje)
+        {
+            mensaje = string.Empty;
+            respuesta = false;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_EMPRESA_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_nombre_empresa_crm", nombreEmpresaCRM);
+                        cmd.Parameters.AddWithValue("@p_paginaWeb", paginaWeb);
+                        cmd.Parameters.AddWithValue("@p_id_contacto", idContacto);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_observaciones_emp", observacionesEmp);
+                        cmd.Parameters.AddWithValue("@p_estado_empresa_crm", estadoEmpresaCRM);
+                        cmd.Parameters.AddWithValue("@p_id_ciudad", idCiudad);
+
+
+                        // Parámetro de salida
+                        MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
+                        pMensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pMensaje);
+
+                        cmd.ExecuteNonQuery();
+                        mensaje = pMensaje.Value?.ToString();
+
+                        if (mensaje == "OK") respuesta = true;
+                        else respuesta = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
+        }
+
+        public string ActualizarEmpresaCRM(int idEmpresaCRM, string nombreEmpresaCRM, string paginaWeb, int idContacto, int idUsuario,
+        string observacionesEmp, string estadoEmpresaCRM, int idCiudad, out bool respuesta, out string mensaje)
+        {
+            mensaje = string.Empty;
+            respuesta = false;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_EMPRESA_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_empresa_crm", idEmpresaCRM);
+                        cmd.Parameters.AddWithValue("@p_nombre_empresa_crm", nombreEmpresaCRM);
+                        cmd.Parameters.AddWithValue("@p_paginaWeb", paginaWeb);
+                        cmd.Parameters.AddWithValue("@p_id_contacto", idContacto);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_observaciones_emp", observacionesEmp);
+                        cmd.Parameters.AddWithValue("@p_estado_empresa_crm", estadoEmpresaCRM);
+                        cmd.Parameters.AddWithValue("@p_id_ciudad", idCiudad);
+
+
+                        // Parámetro de salida
+                        MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
+                        pMensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pMensaje);
+
+                        cmd.ExecuteNonQuery();
+                        mensaje = pMensaje.Value?.ToString();
+
+                        if (mensaje == "OK") respuesta = true;
+                        else respuesta = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
+        }
+
+        public string EliminarEmpresaCRM(int idEmpresaCMR, int idUsuario, string Usuario, out bool respuesta, out string mensaje)
+        {
+            mensaje = string.Empty;
+            respuesta = false;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ELIMINAR_EMPRESA_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_id_empresa_crm", idEmpresaCMR);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_usuario", Usuario);
+
+                        // ParámetroS de salida
+                        MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
+                        pMensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pMensaje);
+
+                        MySqlParameter pRespuesta = new MySqlParameter("@p_respuesta", MySqlDbType.Bit);
+                        pRespuesta.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pRespuesta);
+
+                        cmd.ExecuteNonQuery();
+
+                        mensaje = pMensaje.Value?.ToString();
+                        respuesta = Convert.ToBoolean(pRespuesta.Value);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
+        }
+
 
         #endregion
 
