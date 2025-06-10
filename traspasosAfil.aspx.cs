@@ -159,6 +159,16 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        /// <summary>
+        /// Verifica si el afiliado actual tiene un traspaso de planes en proceso.
+        /// Si existe un traspaso pendiente, deshabilita los controles asociados y muestra una alerta.
+        /// </summary>
+        /// <remarks>
+        /// - Consulta la tabla TraspasoPlanes filtrando por el ID del afiliado y estado "En proceso".
+        /// - Utiliza la clase clasesglobales para ejecutar la consulta SQL.
+        /// - Muestra un mensaje de alerta en el control ltNoPlanes si hay registros.
+        /// - Deshabilita el campo txbAfiliadoDestino y el botón 'btnTraspasar' en caso de traspaso pendiente.
+        /// </remarks>
         private void CargarTraspasos()
         {
             string strQuery = "SELECT * FROM TraspasoPlanes " +
@@ -179,6 +189,27 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        /// <summary>
+        /// Procesa la solicitud de traspaso de planes entre afiliados, validando los requisitos y almacenando la información en la base de datos.
+        /// </summary>
+        /// <remarks>
+        /// Realiza las siguientes validaciones antes de ejecutar el traspaso:
+        /// 1. Verifica que se haya adjuntado un documento de respaldo
+        /// 2. Valida que las observaciones tengan al menos 20 caracteres
+        /// 3. Comprueba que se haya especificado una fecha de inicio
+        /// 4. Asegura que el afiliado destino sea diferente al origen
+        /// 
+        /// Si todas las validaciones son exitosas:
+        /// - Guarda el documento adjunto en el servidor
+        /// - Registra el traspaso en la tabla TraspasoPlanes
+        /// - Crea un registro de log de la operación
+        /// - Redirige a la página de afiliados
+        /// 
+        /// En caso de error, muestra mensajes de alerta al usuario.
+        /// </remarks>
+        /// <param name="sender">Objeto que generó el evento</param>
+        /// <param name="e">Argumentos del evento</param>
+        /// <exception cref="OdbcException">Captura y muestra errores de base de datos</exception>
         protected void btnTraspasar_Click(object sender, EventArgs e)
         {
             if (Request.Files["documento"] == null)
@@ -255,6 +286,21 @@ namespace fpWebApp
             }
         }
 
+        /// <summary>
+        /// Busca y muestra la información de un afiliado destino basado en el documento ingresado.
+        /// </summary>
+        /// <remarks>
+        /// Esta función:
+        /// 1. Realiza una búsqueda en la base de datos usando el número de documento del afiliado
+        /// 2. Muestra los datos del afiliado encontrado en la interfaz
+        /// 3. Configura el campo de fecha de inicio con restricciones de fecha mínima
+        /// 4. Establece valores en ViewState para uso posterior
+        /// 5. Maneja la visualización de la foto de perfil (personalizada o por defecto según género)
+        /// 
+        /// Se espera que el texto de entrada esté en formato "documento - nombre" (se procesa solo la parte del documento)
+        /// </remarks>
+        /// <param name="sender">Objeto que disparó el evento</param>
+        /// <param name="e">Argumentos del evento</param>
         protected void btnAfiliadoDestino_Click(object sender, EventArgs e)
         {
             string[] strDocumento = txbAfiliadoDestino.Text.ToString().Split('-');

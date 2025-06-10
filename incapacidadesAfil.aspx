@@ -30,6 +30,13 @@
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
     <link href="css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet" />
     <link href="css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
+    
+
+
+
+
+    <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+
 
     <!-- FooTable -->
     <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
@@ -142,7 +149,7 @@
                         <div class="ibox-content">
 
                             <div class="row">
-                                <form role="form" id="form" runat="server">
+                                <form role="form" id="form" enctype="multipart/form-data" runat="server">
                                     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
                                     <div class="col-md-5">
                                         <div class="row">
@@ -251,6 +258,7 @@
                                                                         <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm" 
                                                                             data-dismiss="fileinput">Quitar</a>
                                                                     </div>
+                                                                    <div class="error-message" style="color: red;"></div>
                                                                 </div>
                                                             </div>
 
@@ -297,6 +305,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <!-- FooTable -->
     <script src="js/plugins/footable/footable.all.min.js"></script>
@@ -311,6 +320,9 @@
     <!-- IonRangeSlider -->
     <script src="js/plugins/ionRangeSlider/ion.rangeSlider.min.js"></script>
 
+    <!-- Jasny -->
+    <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
+
     <!-- Page-Level Scripts -->
     <script>
 
@@ -323,7 +335,7 @@
                 ddlTipoIncapacidad: {
                     required: true
                 },
-                txbFechaInicial: {
+                txbFechaInicio: {
                     required: true
                 },
                 txbObservaciones: {
@@ -333,6 +345,15 @@
                 documento: {
                     required: true
                 },
+            },
+            errorPlacement: function (error, element) {
+                if (element.attr("name") === "documento") {
+                    // Coloca el mensaje de error en el contenedor personalizado
+                    error.appendTo(element.closest(".form-group").find(".error-message"));
+                } else {
+                    // Comportamiento por defecto para otros campos
+                    error.insertAfter(element);
+                }
             }
         });
     </script>

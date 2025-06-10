@@ -208,6 +208,24 @@ namespace fpWebApp
             }
         }
 
+        /// <summary>
+        /// Procesa la solicitud de congelación de membresía para un afiliado, validando y registrando la información en el sistema.
+        /// </summary>
+        /// <remarks>
+        /// Flujo de validación y ejecución:
+        /// 1. Valida selección de tipo de congelación (ddlTipoCongelacion)
+        /// 2. Verifica existencia de fecha de inicio (txbFechaInicio)
+        /// 3. Comprueba carga de documento soporte (documento.Value)
+        /// 4. Valida ingreso de observaciones (txbObservaciones)
+        /// 
+        /// Si todas las validaciones son exitosas:
+        /// - Guarda el documento adjunto en servidor (formato: [idAfiliadoPlan]_[nombre_archivo])
+        /// - Registra la congelación en tabla Congelaciones
+        /// - Crea entrada en log de actividades
+        /// - Redirige a página de afiliados
+        /// </remarks>
+        /// <param name="sender">Objeto que generó el evento</param>
+        /// <param name="e">Argumentos del evento Click</param>
         protected void btnSolicitarCongelacion_Click(object sender, EventArgs e)
         {
             if (ddlTipoCongelacion.SelectedItem.Value.ToString() == "")

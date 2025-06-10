@@ -142,10 +142,6 @@ namespace fpWebApp
                     btnCortesia.Attributes.Add("onClick", "window.location.href='cortesiasAfil?id=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
                     btnCortesia.Visible = true;
 
-                    HtmlButton btnFreePass = (HtmlButton)e.Item.FindControl("btnFreePass");
-                    btnFreePass.Attributes.Add("onClick", "window.location.href='freepassAfil?id=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
-                    btnFreePass.Visible = true;
-
                     HtmlButton btnIncapacidad = (HtmlButton)e.Item.FindControl("btnIncapacidad");
                     btnIncapacidad.Attributes.Add("onClick", "window.location.href='incapacidadesAfil?id=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
                     btnIncapacidad.Visible = true;

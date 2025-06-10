@@ -207,6 +207,28 @@ namespace fpWebApp
             }
         }
 
+        /// <summary>
+        /// Registra una nueva solicitud de incapacidad para un afiliado en el sistema.
+        /// </summary>
+        /// <remarks>
+        /// Proceso realizado:
+        /// 1. Valida y guarda el documento adjunto (si existe) en la ruta de incapacidades
+        /// 2. Inserta un nuevo registro en la tabla Incapacidades con:
+        ///    - Datos del afiliado (idAfiliadoPlan)
+        ///    - Tipo de incapacidad (ddlTipoIncapacidad)
+        ///    - Fecha de inicio y días de incapacidad
+        ///    - Documento adjunto (si se cargó)
+        ///    - Observaciones y estado inicial "En proceso"
+        /// 3. Registra la acción en el log del sistema
+        /// 4. Redirige a la página de afiliados si es exitoso
+        /// 
+        /// Validaciones implícitas:
+        /// - El campo hfDias debe contener un valor válido
+        /// - La fecha de inicio debe estar en formato correcto
+        /// </remarks>
+        /// <param name="sender">Objeto que disparó el evento</param>
+        /// <param name="e">Argumentos del evento</param>
+        /// <exception cref="OdbcException">Maneja errores de base de datos mostrando un mensaje al usuario</exception>
         protected void btnSolicitarIncapacidad_Click(object sender, EventArgs e)
         {
             string strDias = hfDias.Value.ToString();

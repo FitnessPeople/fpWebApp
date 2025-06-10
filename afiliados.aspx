@@ -79,7 +79,6 @@
                         <i class="fa fa-ticket" style="color: #23C6C8;"></i> <b>Asignar Plan:</b> Selecciona o <b>cambia</b> su plan actual.<br />
                         <i class="fa fa-right-left" style="color: #F8AC59;"></i> <b>Traspaso:</b> Transfiere el plan <b>de un afiliado a otro</b>.<br />
                         <i class="fa fa-gift" style="color: #0D6EFD;"></i> <b>Cortesía:</b> Asigna <b>beneficios</b> especiales.<br />
-                        <i class="fa fa-person-walking" style="color: #0D6EFD;"></i> <b>FreePass:</b> Otorga <b>acceso</b> temporal.<br />
                         <i class="fa fa-head-side-mask" style="color: #1AB394;"></i> <b>Incapacidad:</b> Registra una incapacidad <b>médica</b>.<br />
                         <i class="fa fa-snowflake" style="color: #0D6EFD;"></i> <b>Congelación:</b> Pausa <b>temporalmente</b> su membresía.
                     <br />
@@ -285,11 +284,6 @@
                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
                                                         title="Cortesía" visible="false">
                                                         <i class="fa fa-gift"></i>
-                                                    </button>
-                                                    <button runat="server" id="btnFreePass" class="btn btn-outline btn-success pull-left m-r-xs"
-                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
-                                                        title="FreePass" visible="false">
-                                                        <i class="fa fa-person-walking"></i>
                                                     </button>
                                                     <button runat="server" id="btnIncapacidad" class="btn btn-outline btn-primary pull-left m-r-xs"
                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
