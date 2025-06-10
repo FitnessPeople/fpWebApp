@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="planes.aspx.cs" Inherits="fpWebApp.planes" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="planes.aspx.cs" Inherits="fpWebApp.planes"  %>
 
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
@@ -345,6 +345,8 @@
                                                 <tr>
                                                     <th>Nombre</th>
                                                     <th data-breakpoints="xs">Descripción</th>
+                                                    <th data-breakpoints="xs">Meses</th>
+                                                    <th data-breakpoints="xs">Vigencia</th>
                                                     <th data-breakpoints="xs" class="text-right">Precio</th>
                                                     <th data-breakpoints="xs sm md">Creado por</th>
                                                     <th data-breakpoints="xs sm md" data-sortable="false">Estado</th>
@@ -357,6 +359,8 @@
                                                         <tr class="feed-element">
                                                             <td><span class="btn btn-<%# Eval("NombreColorPlan") %> btn-outline btn-block btn-sm" style="font-size: 12px;"><%# Eval("NombrePlan") %></span></td>
                                                             <td><i class="fa fa-note-sticky m-r-xs font-bold"></i><%# Eval("DescripcionPlan") %></td>
+                                                            <td><%# Eval("TotalMeses") %></td>
+                                                            <td><%# String.Format("{0:d MMM 'de' yyyy} a {1:d MMM 'de' yyyy}", Eval("FechaInicial"), Eval("FechaFinal")) %></td>
                                                             <td style="text-align: right;">$<%# Eval("PrecioTotal","{0:N0}") %></td>
                                                             <td style="white-space: nowrap;"><i class="fa fa-circle-user m-r-xs font-bold"></i><%# Eval("NombreUsuario") %></td>
                                                             <td><span class="badge badge-<%# Eval("label") %>"><%# Eval("EstadoPlan") %></span></td>

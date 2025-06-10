@@ -230,6 +230,17 @@ namespace fpWebApp
                 "LEFT JOIN Usuarios u ON pm.idUsuario = u.idUsuario ";
             DataTable dt = cg.TraerDatos(strQuery);
             rpPlanes.DataSource = dt;
+
+            if (!dt.Columns.Contains("TotalMeses"))
+                dt.Columns.Add("TotalMeses", typeof(int));
+
+            foreach (DataRow row in dt.Rows)
+            {
+                int meses = row["Meses"] != DBNull.Value ? Convert.ToInt32(row["Meses"]) : 0;
+                int cortesia = row["MesesCortesia"] != DBNull.Value ? Convert.ToInt32(row["MesesCortesia"]) : 0;
+                row["TotalMeses"] = meses + cortesia;
+            }
+
             rpPlanes.DataBind();
             dt.Dispose();
         }
