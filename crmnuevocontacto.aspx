@@ -105,7 +105,7 @@
         }
     </script>
     <!-- Select2 -->
-      <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
+    <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
 
 
 
@@ -293,7 +293,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-sm-6">
+                                                            <%--                                                            <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <i class="fas fa-flag text-info"></i>
                                                                     <label for="StatusLead" class="col-form-label">Status Lead:</label>
@@ -306,7 +306,25 @@
                                                                         CssClass="font-bold text-danger" InitialValue="">
                                                                     </asp:RequiredFieldValidator>
                                                                 </div>
+                                                            </div>--%>
+
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <i class="fas fa-flag text-info"></i>
+                                                                    <label for="StatusLead" class="col-form-label">Status Lead:</label>
+                                                                    <asp:DropDownList ID="ddlStatusLead" runat="server" CssClass="select2_demo_1 form-control input-sm" AppendDataBoundItems="true">
+                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                    </asp:DropDownList>
+
+
+                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="* Campo requerido"
+                                                                        ControlToValidate="ddlStatusLead" ValidationGroup="agregar"
+                                                                        CssClass="font-bold text-danger" InitialValue="">
+                                                                    </asp:RequiredFieldValidator>
+                                                                </div>
                                                             </div>
+
+
 
                                                             <div class="col-sm-6">
                                                                 <label>Color del plan</label>
@@ -805,6 +823,26 @@
     </script>
     <script>
         $('#acordeonZonaLateralIzqSup').collapse('hide');
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#<%= ddlStatusLead.ClientID %>').select2({
+            templateResult: formatOption,
+            templateSelection: formatOption,
+            escapeMarkup: function (m) { return m; } // Permite HTML
+        });
+
+        function formatOption(state) {
+            if (!state.id) return state.text; // El "Seleccione"
+
+            // Obtiene atributos personalizados
+            var color = $(state.element).data('color');
+            var icon = $(state.element).data('icon');
+
+            return "<span style='color:" + color + ";'><i class='fa " + icon + "'></i> " + state.text + "</span>";
+        }
+    });
     </script>
 
 

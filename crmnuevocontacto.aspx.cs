@@ -64,6 +64,7 @@ namespace fpWebApp
                     ListaCanalesMarketingCRM();
                     ListaObjetivosfiliadoCRM();
                     CargarCiudad();
+                    
 
                     //ltTitulo.Text = "Nuevo contacto";
                     //Literal1.Text = "Empresas";
@@ -78,6 +79,7 @@ namespace fpWebApp
                             clasesglobales cg = new clasesglobales();
                             DataTable dt = cg.ConsultarContactosCRMPorId(int.Parse(Request.QueryString["editid"].ToString()), out respuesta);
                             Session["contactoId"] = int.Parse(Request.QueryString["editid"].ToString());
+
 
                             if (respuesta)
                             {
@@ -335,10 +337,20 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarEstadossCRM();
+            foreach (DataRow row in dt.Rows)
+            {
+                ListItem item = new ListItem
+                {
+                    Text = $"<i class='fa {row["IconoMinEstadoCRM"]}'></i> {row["NombreEstadoCRM"]}",
+                    Value = row["idEstadoCRM"].ToString()
+                };
 
-            ddlStatusLead.DataSource = dt;
-            ddlStatusLead.DataBind();
-            dt.Dispose();
+                item.Attributes["style"] = $"color: {row["ColorHexaCRM"]};";
+                item.Attributes["data-icon"] = $"fa {row["IconoMinEstadoCRM"]}";
+                item.Attributes["data-color"] = row["ColorHexaCRM"].ToString();
+
+                ddlStatusLead.Items.Add(item);
+            }
         }
 
         private void ListaTiposAfiliadosCRM()
@@ -1102,5 +1114,16 @@ namespace fpWebApp
             }           
                 
         }
+
+        public class EstadoCRM
+        {
+            public int idEstadoCRM { get; set; }
+            public string NombreEstadoCRM { get; set; }
+            public string ColorHexaCRM { get; set; }
+            public string IconoMinEstadoCRM { get; set; }
+        }
+
+        
+
     }
 }
