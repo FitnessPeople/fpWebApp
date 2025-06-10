@@ -64,7 +64,7 @@ namespace fpWebApp
                     ListaCanalesMarketingCRM();
                     ListaObjetivosfiliadoCRM();
                     CargarCiudad();
-                    
+
 
                     //ltTitulo.Text = "Nuevo contacto";
                     //Literal1.Text = "Empresas";
@@ -738,6 +738,11 @@ namespace fpWebApp
                 ViewState["MesesCortesia"] = fila[0]["MesesCortesia"];
                 ViewState["Recurrente"] = fila[0]["Recurrente"];
 
+                int meses = Convert.ToInt32(ViewState["Meses"]);
+                int cortesia = Convert.ToInt32(ViewState["MesesCortesia"]);
+                int totalMeses = meses + cortesia;
+
+
                 int ValorMes = Convert.ToInt32(fila[0]["PrecioBase"]);
                 txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
                 txbValorMes.Enabled = false;
@@ -746,19 +751,19 @@ namespace fpWebApp
                 txaObservaciones.InnerText = observaciones;
 
                 // Verificar si el plan es permanente
-                bool esPermanente = Convert.ToBoolean(fila[0]["Permanente"]);
-                if (esPermanente)
-                {
-                    int mesesPlan = Convert.ToInt32(fila[0]["Meses"]); // Asegúrate que esta columna está en tu tabla
+                //bool esPermanente = Convert.ToBoolean(fila[0]["Permanente"]);
+                //if (esPermanente)
+                //{
+                int mesesPlan = Convert.ToInt32(fila[0]["Meses"]); // Asegúrate que esta columna está en tu tabla
 
-                    // Buscar índice del valor y seleccionarlo
-                    int index = rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(mesesPlan.ToString()));
-                    if (index >= 0)
-                    {
-                        rblMesesPlan.ClearSelection();
-                        rblMesesPlan.SelectedIndex = index;
-                    }
+                // Buscar índice del valor y seleccionarlo
+                int index = rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(totalMeses.ToString()));
+                if (index >= 0)
+                {
+                    rblMesesPlan.ClearSelection();
+                    rblMesesPlan.SelectedIndex = index;
                 }
+                //}
             }
 
             // Calcular propuesta si ya hay un valor seleccionado en el radio
@@ -769,25 +774,23 @@ namespace fpWebApp
             else
             {
                 txbValorPropuesta.Text = "Primero selecciona los meses del plan.";
-            }            
+            }
         }
 
 
         protected void rblMesesPlan_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Verificar si ya hay un plan seleccionado
+            CalcularPropuesta();
+
             if (ViewState["precioBase"] == null || ViewState["Meses"] == null)
             {
                 txbValorPropuesta.Text = "Primero selecciona un plan.";
                 return;
             }
-
-            CalcularPropuesta();
         }
 
         private void CalcularPropuesta()
         {
-            double total = Convert.ToDouble((ViewState["precioTotal"].ToString()));
             if (ViewState["precioBase"] == null || ViewState["Meses"] == null || string.IsNullOrEmpty(rblMesesPlan.SelectedValue))
             {
                 txbValorPropuesta.Text = "Faltan datos para calcular.";
@@ -801,15 +804,22 @@ namespace fpWebApp
             }
 
             int precioBase = Convert.ToInt32(ViewState["precioBase"]);
-            //double descuentoMensual = Convert.ToDouble(ViewState["descuentoMensual"]);
             int meses = Convert.ToInt32(rblMesesPlan.SelectedValue);
+            double total = Convert.ToDouble(ViewState["precioTotal"]);
 
-            //double descuento = (meses - 1) * descuentoMensual;
+            int totalMesesOriginal = ViewState["Meses"] != null ? Convert.ToInt32(ViewState["Meses"]) : meses;
 
             if (ViewState["Recurrente"] != null && Convert.ToInt32(ViewState["Recurrente"]) == 1)
             {
                 total = precioBase * meses;
             }
+            //if(meses != totalMesesOriginal)
+            //{
+            //    total = precioBase * meses;
+            //}
+
+
+
             txbValorPropuesta.Text = $"${total:N0}";
         }
 
@@ -1055,7 +1065,7 @@ namespace fpWebApp
                 {
                     LinkButton btnEditarEmp = (LinkButton)e.Item.FindControl("btnEditarEmp");
 
-                   //LinkButton lnkPlan = (LinkButton)e.Item.FindControl("btnSeleccionarPlan");
+                    //LinkButton lnkPlan = (LinkButton)e.Item.FindControl("btnSeleccionarPlan");
                     btnEditarEmp.Attributes.Add("class", "btn btn-outline btn-" + ((DataRowView)e.Item.DataItem).Row[1].ToString() + " btn-block btn-sm");
                     //btnEditarEmp.CommandArgument = ((DataRowView)e.Item.DataItem).Row[0].ToString();
 
@@ -1120,8 +1130,8 @@ namespace fpWebApp
             if (e.CommandName == "EditarEmpresa")
             {
                 int idEmpresaCRM = Convert.ToInt32(e.CommandArgument.ToString());
-            }           
-                
+            }
+
         }
 
         public class EstadoCRM
@@ -1132,7 +1142,7 @@ namespace fpWebApp
             public string IconoMinEstadoCRM { get; set; }
         }
 
-        
+
 
     }
 }
