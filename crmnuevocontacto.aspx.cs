@@ -721,7 +721,9 @@ namespace fpWebApp
             {
                 txbValorPropuesta.Text = "Por favor selecciona un plan válido.";
                 ViewState["precioBase"] = null;
-                //ViewState["descuentoMensual"] = null;
+                ViewState["Meses"] = null;
+                ViewState["MesesCortesia"] = null;
+                ViewState["Recurrente"] = null;
                 return;
             }
 
@@ -731,7 +733,10 @@ namespace fpWebApp
             if (fila.Length > 0)
             {
                 ViewState["precioBase"] = fila[0]["PrecioBase"];
-                //ViewState["descuentoMensual"] = fila[0]["DescuentoMensual"];
+                ViewState["precioTotal"] = fila[0]["precioTotal"];
+                ViewState["Meses"] = fila[0]["Meses"];
+                ViewState["MesesCortesia"] = fila[0]["MesesCortesia"];
+                ViewState["Recurrente"] = fila[0]["Recurrente"];
 
                 int ValorMes = Convert.ToInt32(fila[0]["PrecioBase"]);
                 txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
@@ -771,7 +776,7 @@ namespace fpWebApp
         protected void rblMesesPlan_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Verificar si ya hay un plan seleccionado
-            if (ViewState["precioBase"] == null || ViewState["descuentoMensual"] == null)
+            if (ViewState["precioBase"] == null || ViewState["Meses"] == null)
             {
                 txbValorPropuesta.Text = "Primero selecciona un plan.";
                 return;
@@ -782,7 +787,8 @@ namespace fpWebApp
 
         private void CalcularPropuesta()
         {
-            if (ViewState["precioBase"] == null || ViewState["descuentoMensual"] == null || string.IsNullOrEmpty(rblMesesPlan.SelectedValue))
+            double total = Convert.ToDouble((ViewState["precioTotal"].ToString()));
+            if (ViewState["precioBase"] == null || ViewState["Meses"] == null || string.IsNullOrEmpty(rblMesesPlan.SelectedValue))
             {
                 txbValorPropuesta.Text = "Faltan datos para calcular.";
                 return;
@@ -795,12 +801,15 @@ namespace fpWebApp
             }
 
             int precioBase = Convert.ToInt32(ViewState["precioBase"]);
-            double descuentoMensual = Convert.ToDouble(ViewState["descuentoMensual"]);
+            //double descuentoMensual = Convert.ToDouble(ViewState["descuentoMensual"]);
             int meses = Convert.ToInt32(rblMesesPlan.SelectedValue);
 
-            double descuento = (meses - 1) * descuentoMensual;
-            double total = (precioBase - ((precioBase * descuento) / 100)) * meses;
+            //double descuento = (meses - 1) * descuentoMensual;
 
+            if (ViewState["Recurrente"] != null && Convert.ToInt32(ViewState["Recurrente"]) == 1)
+            {
+                total = precioBase * meses;
+            }
             txbValorPropuesta.Text = $"${total:N0}";
         }
 
