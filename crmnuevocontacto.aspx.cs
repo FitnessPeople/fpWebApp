@@ -341,12 +341,12 @@ namespace fpWebApp
             {
                 ListItem item = new ListItem
                 {
-                    Text = $"<i class='fa {row["IconoMinEstadoCRM"]}'></i> {row["NombreEstadoCRM"]}",
+                    Text = $"<i class='{row["IconoMinEstadoCRM"]}'></i>{row["NombreEstadoCRM"]}",
                     Value = row["idEstadoCRM"].ToString()
                 };
 
                 item.Attributes["style"] = $"color: {row["ColorHexaCRM"]};";
-                item.Attributes["data-icon"] = $"fa {row["IconoMinEstadoCRM"]}";
+                item.Attributes["data-icon"] = $"{row["IconoMinEstadoCRM"]}";
                 item.Attributes["data-color"] = row["ColorHexaCRM"].ToString();
 
                 ddlStatusLead.Items.Add(item);
