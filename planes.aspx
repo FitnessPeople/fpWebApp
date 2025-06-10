@@ -28,8 +28,6 @@
     <link href="css/style.css" rel="stylesheet" />
     <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
 
-    <%--<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />--%>
-
     <style type="text/css" media="print">
         body {
             visibility: hidden;
@@ -131,7 +129,7 @@
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                    <form role="form" id="form" runat="server">
+                    <form role="form" id="form" enctype="multipart/form-data" runat="server">
                         <div class="row" id="divContenido" runat="server">
                             <div class="col-lg-4">
                                 <div class="ibox float-e-margins">
@@ -154,6 +152,31 @@
                                                     <asp:RequiredFieldValidator ID="rfvPlan" runat="server" ErrorMessage="* Campo requerido"
                                                         ControlToValidate="txbPlan" ValidationGroup="agregar"
                                                         CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                </div>
+                                                <div class="form-group m-b-n-xs">
+                                                    <label>Título plan web:</label>
+                                                    <asp:TextBox ID="txbTituloPlan" runat="server" CssClass="form-control input-sm"
+                                                        placeholder="Título plan web"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="rfvTituloPlan" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="txbTituloPlan" ValidationGroup="agregar"
+                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                </div>
+                                                <div class="form-group m-b-n-xs">
+                                                    <label>Banner:</label>
+                                                    <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                        <div class="form-control input-sm" data-trigger="fileinput">
+                                                            <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                            <span class="fileinput-filename"></span>
+                                                        </div>
+                                                        <span class="input-group-addon btn btn-success btn-file input-sm">
+                                                            <span class="fileinput-new input-sm">Seleccionar banner</span>
+                                                            <span class="fileinput-exists input-sm">Cambiar</span>
+                                                            <input type="file" name="fileConvenio" id="fileConvenio" accept="image/*">
+                                                        </span>
+                                                        <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm" 
+                                                            data-dismiss="fileinput">Quitar</a>
+                                                    </div>
+                                                    <asp:Literal ID="ltBanner" runat="server"></asp:Literal>
                                                 </div>
                                                 <div class="form-group m-b-n-xs">
                                                     <label>Descripción del plan:</label>
@@ -401,7 +424,6 @@
     <script src="js/plugins/chartJs/Chart.min.js"></script>
 
     <!-- Select2 -->
-    <%--<script src="js/plugins/select2/select2.full.min.js"></script>--%>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
     <!-- Page-Level Scripts -->

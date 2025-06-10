@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Odbc;
 using System.Globalization;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Optimization;
@@ -79,6 +80,7 @@ namespace fpWebApp
                                 if (dt.Rows.Count > 0)
                                 {
                                     txbPlan.Text = dt.Rows[0]["NombrePlan"].ToString();
+                                    txbTituloPlan.Text = dt.Rows[0]["TituloPlan"].ToString();
                                     txbDescripcion.Text = dt.Rows[0]["DescripcionPlan"].ToString();
                                     int intPrecioBase = Convert.ToInt32(dt.Rows[0]["PrecioBase"]);
                                     txbPrecio.Text = intPrecioBase.ToString("C0", new CultureInfo("es-CO"));
@@ -92,6 +94,11 @@ namespace fpWebApp
                                     cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                     btnAgregar.Text = "Actualizar";
                                     ltTitulo.Text = "Actualizar Plan";
+
+                                    if (dt.Rows[0]["BannerWeb"].ToString() != "")
+                                    {
+                                        ltBanner.Text = "<img src=\"img/banners/" + dt.Rows[0]["BannerWeb"].ToString() + "\" class=\"img responsive\" />";
+                                    }
                                 }
                             }
                             if (Request.QueryString["deleteid"] != null)
@@ -111,6 +118,7 @@ namespace fpWebApp
                                     if (dt1.Rows.Count > 0)
                                     {
                                         txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
+                                        txbTituloPlan.Text = dt1.Rows[0]["TituloPlan"].ToString();
                                         txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
                                         txbPrecio.Text = dt1.Rows[0]["PrecioBase"].ToString();
                                         txbPrecioTotal.Text = dt.Rows[0]["PrecioTotal"].ToString();
@@ -145,6 +153,7 @@ namespace fpWebApp
                                     if (dt1.Rows.Count > 0)
                                     {
                                         txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
+                                        txbTituloPlan.Text = dt1.Rows[0]["TituloPlan"].ToString();
                                         txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
                                         txbPrecio.Text = dt1.Rows[0]["PrecioBase"].ToString();
                                         txbPrecioTotal.Text = dt1.Rows[0]["PrecioTotal"].ToString();
@@ -279,6 +288,17 @@ namespace fpWebApp
             {
                 string strInitData = TraerData();
 
+                string strFilename = "";
+                HttpPostedFile postedFile = Request.Files["fileConvenio"];
+
+                if (postedFile != null && postedFile.ContentLength > 0)
+                {
+                    //Save the File.
+                    string filePath = Server.MapPath("~//img//banners//") + Path.GetFileName(postedFile.FileName);
+                    postedFile.SaveAs(filePath);
+                    strFilename = postedFile.FileName;
+                }
+
                 if (Request.QueryString["editid"] != null)
                 {
                     string respuesta = cg.ActualizarPlan(int.Parse(Request.QueryString["editid"].ToString()), 
@@ -291,7 +311,8 @@ namespace fpWebApp
                         double.Parse(txbDiasCongelamiento.Text.ToString()), 
                         txbFechaInicio.Text.ToString(), 
                         txbFechaFinal.Text.ToString(),
-                        intPermanente);
+                        intPermanente, 
+                        txbTituloPlan.Text.ToString().Trim());
 
                     string strNewData = TraerData();
 
@@ -319,7 +340,8 @@ namespace fpWebApp
                         double.Parse(txbDiasCongelamiento.Text.ToString()),
                         txbFechaInicio.Text.ToString(),
                         txbFechaFinal.Text.ToString(), 
-                        intPermanente);
+                        intPermanente,
+                        txbTituloPlan.Text.ToString().Trim());
 
                         cg.InsertarLog(Session["idusuario"].ToString(), "planes", "Agrega", "El usuario agregó un nuevo plan: " + txbPlan.Text.ToString() + ".", "", "");
                     }
