@@ -228,11 +228,31 @@
                                         <div id="tab-1" class="tab-pane active">
                                             <%--Inicia contenido formulario Nuevo contacto--%>
                                             <div class="panel-body">
-                                                <%--                                                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
-                                                    <ContentTemplate>--%>
                                                 <%--Zona lateral izquierda sup --%>
                                                 <div class="col-lg-5">
                                                     <div class="ibox-content">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <i class="fa fa-id-card text-info"></i>
+                                                                    <label>Tipo de Documento</label>
+                                                                    <asp:DropDownList ID="ddlTipoDocumento" runat="server" AppendDataBoundItems="true"
+                                                                        DataTextField="TipoDocumento" DataValueField="idTipoDoc" CssClass="form-control input-sm">
+                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Nro. de Documento</label>
+                                                                    <asp:TextBox ID="txbDocumento" CssClass="form-control input-sm" runat="server" placeholder="#"></asp:TextBox>
+                                                                    <asp:RequiredFieldValidator ID="rfvNumDoc" runat="server" ErrorMessage="* Campo requerido"
+                                                                        ControlToValidate="txbDocumento" ValidationGroup="agregar"
+                                                                        CssClass="font-bold text-danger" InitialValue="">
+                                                                    </asp:RequiredFieldValidator>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
@@ -293,21 +313,6 @@
                                                             </div>
                                                         </div>
                                                         <div class="row">
-                                                            <%--                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <i class="fas fa-flag text-info"></i>
-                                                                    <label for="StatusLead" class="col-form-label">Status Lead:</label>
-                                                                    <asp:DropDownList ID="ddlStatusLead" DataTextField="NombreEstadoCRM" DataValueField="idEstadoCRM"
-                                                                        runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
-                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                    </asp:DropDownList>
-                                                                    <asp:RequiredFieldValidator ID="rfvStatusLead" runat="server" ErrorMessage="* Campo requerido"
-                                                                        ControlToValidate="ddlStatusLead" ValidationGroup="agregar"
-                                                                        CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
-                                                                </div>
-                                                            </div>--%>
-
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <i class="fas fa-flag text-info"></i>
@@ -796,25 +801,25 @@
         $('#acordeonZonaLateralIzqSup').collapse('hide');
     </script>
 
-<script>
-    $(document).ready(function () {
-        $('#<%= ddlStatusLead.ClientID %>').select2({
-            templateResult: formatOption,
-            templateSelection: formatOption,
-            escapeMarkup: function (m) { return m; } // Permite HTML
+    <script>
+        $(document).ready(function () {
+            $('#<%= ddlStatusLead.ClientID %>').select2({
+                templateResult: formatOption,
+                templateSelection: formatOption,
+                escapeMarkup: function (m) { return m; } // Permite HTML
+            });
+
+            function formatOption(state) {
+                if (!state.id) return state.text;
+
+                var color = $(state.element).data('color');
+                var icon = $(state.element).data('icon');
+
+                // Aplica color solo al icono
+                return "<span><span style='color:" + color + ";'>" + icon + "</span> " + state.text + "</span>";
+            }
         });
-
-        function formatOption(state) {
-            if (!state.id) return state.text;
-
-            var color = $(state.element).data('color');
-            var icon = $(state.element).data('icon');
-
-            // Aplica color solo al icono
-            return "<span><span style='color:" + color + ";'>" + icon + "</span> " + state.text + "</span>";
-        }
-    });
-</script>
+    </script>
 
 </body>
 

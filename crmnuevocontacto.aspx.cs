@@ -64,10 +64,9 @@ namespace fpWebApp
                     ListaCanalesMarketingCRM();
                     ListaObjetivosfiliadoCRM();
                     CargarCiudad();
+                    CargarTipoDocumento();
 
 
-                    //ltTitulo.Text = "Nuevo contacto";
-                    //Literal1.Text = "Empresas";
                     if (Request.QueryString.Count > 0)
                     {
                         rpContactosCRM.Visible = false;
@@ -306,7 +305,30 @@ namespace fpWebApp
             }
         }
 
+        private void ValidarPermisos(string strPagina)
+        {
+            ViewState["SinPermiso"] = "1";
+            ViewState["Consulta"] = "0";
+            ViewState["Exportar"] = "0";
+            ViewState["CrearModificar"] = "0";
+            ViewState["Borrar"] = "0";
 
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
+
+            if (dt.Rows.Count > 0)
+            {
+                ViewState["SinPermiso"] = dt.Rows[0]["SinPermiso"].ToString();
+                ViewState["Consulta"] = dt.Rows[0]["Consulta"].ToString();
+                ViewState["Exportar"] = dt.Rows[0]["Exportar"].ToString();
+                ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
+                ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
+            }
+
+            dt.Dispose();
+        }
+
+        #region Métodos cargue de datos
         private void ListaContactos()
         {
             decimal valorTotal = 0;
@@ -394,29 +416,6 @@ namespace fpWebApp
         }
 
 
-
-        private void ValidarPermisos(string strPagina)
-        {
-            ViewState["SinPermiso"] = "1";
-            ViewState["Consulta"] = "0";
-            ViewState["Exportar"] = "0";
-            ViewState["CrearModificar"] = "0";
-            ViewState["Borrar"] = "0";
-
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
-
-            if (dt.Rows.Count > 0)
-            {
-                ViewState["SinPermiso"] = dt.Rows[0]["SinPermiso"].ToString();
-                ViewState["Consulta"] = dt.Rows[0]["Consulta"].ToString();
-                ViewState["Exportar"] = dt.Rows[0]["Exportar"].ToString();
-                ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
-                ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
-            }
-
-            dt.Dispose();
-        }
         private void CargarCiudad()
         {
             clasesglobales cg = new clasesglobales();
@@ -427,6 +426,17 @@ namespace fpWebApp
 
             dt.Dispose();
         }
+
+        private void CargarTipoDocumento()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultartiposDocumento();
+            ddlTipoDocumento.DataSource = dt;
+            ddlTipoDocumento.DataBind();
+            dt.Dispose();
+        }
+
+        #endregion
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
@@ -695,7 +705,6 @@ namespace fpWebApp
 
         }
 
-
         protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
@@ -777,7 +786,6 @@ namespace fpWebApp
             }
         }
 
-
         protected void rblMesesPlan_SelectedIndexChanged(object sender, EventArgs e)
         {
             CalcularPropuesta();
@@ -806,6 +814,9 @@ namespace fpWebApp
             int precioBase = Convert.ToInt32(ViewState["precioBase"]);
             int meses = Convert.ToInt32(rblMesesPlan.SelectedValue);
             double total = Convert.ToDouble(ViewState["precioTotal"]);
+            double dobDescuento = (1 - (precioBase / meses) / precioBase) * 100;
+            double intConDescuento = (precioBase * meses) - precioBase;
+            double dobPrecioMesDescuento = precioBase / meses;
 
             int totalMesesOriginal = ViewState["Meses"] != null ? Convert.ToInt32(ViewState["Meses"]) : meses;
 
@@ -813,10 +824,10 @@ namespace fpWebApp
             {
                 total = precioBase * meses;
             }
-            //if(meses != totalMesesOriginal)
-            //{
-            //    total = precioBase * meses;
-            //}
+            else if (meses != totalMesesOriginal)
+            {
+                total = precioBase * meses;
+            }
 
 
 
