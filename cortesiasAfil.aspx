@@ -164,7 +164,6 @@
                                         <div class="col-md-12">
                                             <div class="row m-xs">
                                                 <h4>Planes</h4>
-                                                <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                                 <asp:Literal ID="ltNoPlanes" runat="server"></asp:Literal>
                                                 <ul class="todo-list m-t small-list">
                                                     <asp:Repeater ID="rpPlanesAfiliado" runat="server">
@@ -235,12 +234,17 @@
                                             </Triggers>
                                         </asp:UpdatePanel>
 
-                                        <div>
-                                            <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"
-                                                onclick="window.location.href='afiliados'">
-                                                <strong>Cancelar</strong></button>
-                                            <asp:Button ID="btnAgregarCortesia" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
-                                                Text="Agregar cortesía" OnClick="btnAgregarCortesia_Click" />
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"
+                                                        onclick="window.location.href='afiliados'">
+                                                        <strong>Cancelar</strong></button>
+                                                    <asp:Button ID="btnAgregarCortesia" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
+                                                        Text="Agregar cortesía" OnClick="btnAgregarCortesia_Click" />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>

@@ -30,6 +30,7 @@
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
     <link href="css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet" />
     <link href="css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
+    <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
 
     <!-- FooTable -->
     <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
@@ -176,7 +177,6 @@
                                             <div class="col-md-12">
                                                 <div class="row m-xs" runat="server" id="divPlanes">
                                                     <h4>Planes</h4>
-                                                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                                     <asp:Literal ID="ltNoPlanes" runat="server"></asp:Literal>
                                                     <ul class="todo-list small-list">
                                                         <asp:Repeater ID="rpPlanesAfiliado" runat="server">
@@ -246,12 +246,12 @@
                                                                         <span class="input-group-addon btn btn-success btn-file input-sm">
                                                                             <span class="fileinput-new input-sm">Seleccionar archivo</span>
                                                                             <span class="fileinput-exists input-sm">Cambiar</span>
-                                                                            <input type="file" name="documento" id="documento" 
-                                                                                accept="application/pdf" runat="server">
+                                                                            <input type="file" name="documento" id="documento" accept="application/pdf" />
                                                                         </span>
                                                                         <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm" 
                                                                             data-dismiss="fileinput">Quitar</a>
                                                                     </div>
+                                                                    <div class="error-message" style="color: red;"></div>
                                                                 </div>
                                                             </div>
 
@@ -270,12 +270,17 @@
                                             </Triggers>
                                         </asp:UpdatePanel>
 
-                                        <div>
-                                            <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"
-                                                onclick="window.location.href='afiliados'">
-                                                <strong>Cancelar</strong></button>
-                                            <asp:Button ID="btnSolicitarCongelacion" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
-                                                Text="Solicitar congelación" OnClick="btnSolicitarCongelacion_Click" />
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"
+                                                        onclick="window.location.href='afiliados'">
+                                                        <strong>Cancelar</strong></button>
+                                                    <asp:Button ID="btnSolicitarCongelacion" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
+                                                        Text="Solicitar congelación" OnClick="btnSolicitarCongelacion_Click" />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -312,6 +317,9 @@
     <!-- IonRangeSlider -->
     <script src="js/plugins/ionRangeSlider/ion.rangeSlider.min.js"></script>
 
+    <!-- Jasny -->
+    <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
+
     <!-- Page-Level Scripts -->
     <script>
 
@@ -324,7 +332,7 @@
                 ddlTipoCongelacion: {
                     required: true
                 },
-                txbFechaInicial: {
+                txbFechaInicio: {
                     required: true
                 },
                 txbObservaciones: {
@@ -333,9 +341,19 @@
                 },
                 documento: {
                     required: true
-                },
+                }
+            },
+            errorPlacement: function (error, element) {
+                if (element.attr("name") === "documento") {
+                    // Coloca el mensaje de error en el contenedor personalizado
+                    error.appendTo(element.closest(".form-group").find(".error-message"));
+                } else {
+                    // Comportamiento por defecto para otros campos
+                    error.insertAfter(element);
+                }
             }
         });
+
     </script>
 
     <script>

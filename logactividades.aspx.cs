@@ -69,7 +69,7 @@ namespace fpWebApp
         private void CargarLogs()
         {
             string strQuery = "SELECT *, " +
-                "IF(Accion='Agrega','primary',IF(Accion='Login','info',IF(Accion='Logout','success',IF(Accion='Modifica','warning',IF(Accion='Elimina','danger','default'))))) AS label " +
+                "IF(Accion='Agrega','primary',IF(Accion='Login' OR Accion='Nuevo','info',IF(Accion='Logout','success',IF(Accion='Modifica','warning',IF(Accion='Elimina','danger','default'))))) AS label " +
                 "FROM logs l, usuarios u " +
                 "WHERE l.idUsuario = u.idUsuario " +
                 "ORDER BY FechaHora DESC ";
