@@ -42,6 +42,52 @@
             element.classList.replace("old", "active");
         }
     </script>
+
+    <%--<style>
+
+    /* Style the container for inputs */
+    .container {
+      background-color: #f1f1f1;
+      padding: 5px;
+    }
+
+    /* The message box is shown when the user clicks on the password field */
+    #message {
+      display:none;
+      background: #f1f1f1;
+      color: #000;
+      position: relative;
+      padding: 5px;
+      margin-top: 10px;
+    }
+
+    #message p {
+      padding: 5px 15px;
+      font-size: 12px;
+    }
+
+    /* Add a green text color and a checkmark when the requirements are right */
+    .valid {
+      color: green;
+    }
+
+    .valid:before {
+      position: relative;
+      left: -5px;
+      content: "✔";
+    }
+
+    /* Add a red text color and an "x" when the requirements are wrong */
+    .invalid {
+      color: red;
+    }
+
+    .invalid:before {
+      position: relative;
+      left: -5px;
+      content: "✖";
+    }
+</style>--%>
 </head>
 
 <body onload="changeClass()">
@@ -115,7 +161,7 @@
                     <%--Inicio Contenido!!!!--%>
 
                     <div class="row m-b-lg m-t-lg">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
 
                             <div class="profile-image">
                                 <asp:Literal ID="ltFoto" runat="server"></asp:Literal>
@@ -127,12 +173,17 @@
                                             <asp:Literal ID="ltNombreUsuario" runat="server"></asp:Literal></h2>
                                         <h4>
                                             <asp:Literal ID="ltCargo" runat="server"></asp:Literal></h4>
-                                        <small></small>
+                                        <small class="text-danger">Por favor, diligencie el formulario de recolección de datos personales, 
+                                            el cual es necesario para mantener actualizada nuestra base de información del personal de la empresa.<br />
+                                            <b>La información que nos proporcione será tratada de manera confidencial y utilizada exclusivamente para fines administrativos internos.</b><br />
+                                        </small>
+                                        <small class="text-success">Si tiene dudas o no aparece algúna opción, escriba a sistemas@fitnesspeoplecmd.com.
+                                        </small>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <%--<div class="col-md-3">
                             <table class="table small m-b-xs">
                                 <tbody>
                                     <tr>
@@ -167,7 +218,7 @@
                             <small>Sales in last 24h</small>
                             <h2 class="no-margins">206 480</h2>
                             <div id="sparkline1"></div>
-                        </div>
+                        </div>--%>
 
 
                     </div>
@@ -578,17 +629,28 @@
                             <div class="row">
                                 <form role="form" id="form" enctype="multipart/form-data" runat="server">
                                     <div class="col-sm-6 b-r">
-                                        <div class="form-group">
-                                            <label>Nombre Completo</label>
-                                            <asp:TextBox ID="txbNombre" CssClass="form-control input-sm" runat="server" placeholder="Nombre completo"></asp:TextBox>
-                                        </div>
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-8">
                                                 <div class="form-group">
-                                                    <label>Nro. de Documento</label>
-                                                    <asp:TextBox ID="txbDocumento" CssClass="form-control input-sm" runat="server" placeholder="Documento"></asp:TextBox>
+                                                    <label>Nombre completo</label>
+                                                    <asp:TextBox ID="txbNombre" CssClass="form-control input-sm" runat="server" placeholder="Nombre completo"></asp:TextBox>
                                                 </div>
                                             </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Clave de acceso al sistema</label>
+                                                    <div class="input-group">
+                                                        <asp:TextBox ID="txbClave" name="txbClave" CssClass="form-control input-sm" runat="server" placeholder="Clave" TextMode="Password" ></asp:TextBox>
+                                                        <span class="input-group-btn">
+                                                            <span type="button" class="btn btn-default input-sm"><i class="fa fa-eye" id="togglePassword"></i></span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="error-message" style="color: red;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Tipo de Documento</label>
@@ -596,6 +658,12 @@
                                                         DataTextField="TipoDocumento" DataValueField="idTipoDoc" CssClass="form-control input-sm">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Nro. de Documento</label>
+                                                    <asp:TextBox ID="txbDocumento" CssClass="form-control input-sm" runat="server" placeholder="Documento"></asp:TextBox>
                                                 </div>
                                             </div>
                                         </div>
@@ -649,43 +717,6 @@
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                           <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Fecha de Nacimiento</label>
-                                                    <asp:TextBox ID="txbFechaNac" CssClass="form-control input-sm" runat="server" placeholder="Fecha nacimiento"></asp:TextBox>
-                                                </div>
-                                            </div>
-                                             <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Cargo</label>
-                                                    <asp:DropDownList ID="ddlCargo" runat="server" AppendDataBoundItems="true"
-                                                        DataTextField="NombreCargo" DataValueField="idCargo" CssClass="form-control input-sm">
-                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </div>
-                                            </div>
-                                        </div>
-                                       <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Estado civil</label>
-                                                <asp:DropDownList ID="ddlEstadoCivil" runat="server" AppendDataBoundItems="true"
-                                                    DataTextField="EstadoCivil" DataValueField="idEstadoCivil" CssClass="form-control input-sm">
-                                                    <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                </asp:DropDownList>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Género</label>
-                                                <asp:DropDownList ID="ddlGenero" runat="server" AppendDataBoundItems="true"
-                                                    DataTextField="Genero" DataValueField="idGenero" CssClass="form-control input-sm">
-                                                    <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                </asp:DropDownList>
-                                            </div>
-                                        </div>
-                                    </div>
                                         <div class="form-group">
                                             <label>Foto:</label>
                                             <div class="fileinput fileinput-new input-group" data-provides="fileinput">
@@ -704,69 +735,43 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
-                                        <%--<div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Nro. de Contrato</label>
-                                                    <asp:TextBox ID="txbContrato" CssClass="form-control input-sm" runat="server" placeholder="Contrato"></asp:TextBox>
+                                        <div class="row">
+                                               <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Fecha de Nacimiento</label>
+                                                        <asp:TextBox ID="txbFechaNac" CssClass="form-control input-sm" runat="server" placeholder="Fecha nacimiento"></asp:TextBox>
+                                                    </div>
+                                                </div>
+                                                 <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Cargo</label>
+                                                        <asp:DropDownList ID="ddlCargo" runat="server" AppendDataBoundItems="true"
+                                                            DataTextField="NombreCargo" DataValueField="idCargo" CssClass="form-control input-sm">
+                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                        </asp:DropDownList>
+                                                    </div>
                                                 </div>
                                             </div>
+                                           <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label>Tipo de Contrato</label>
-                                                    <asp:DropDownList ID="ddlTipoContrato" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
+                                                    <label>Estado civil</label>
+                                                    <asp:DropDownList ID="ddlEstadoCivil" runat="server" AppendDataBoundItems="true"
+                                                        DataTextField="EstadoCivil" DataValueField="idEstadoCivil" CssClass="form-control input-sm">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                        <asp:ListItem Text="Fijo" Value="Fijo"></asp:ListItem>
-                                                        <asp:ListItem Text="OPS" Value="OPS"></asp:ListItem>
-                                                        <asp:ListItem Text="Aprendiz" Value="Aprendiz"></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
-                                        </div>--%>
-
-                                        <%--<div class="row">
-                                            <div class="col-sm-3">
-                                                <div class="form-group">
-                                                    <label>Fecha inicio</label>
-                                                    <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm" runat="server" placeholder="Fecha inicio"></asp:TextBox>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <div class="form-group">
-                                                    <label>Fecha final</label>
-                                                    <asp:TextBox ID="txbFechaFinal" CssClass="form-control input-sm" runat="server" placeholder="Fecha final"></asp:TextBox>
-                                                </div>
-                                            </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>--%>
-
-                                        <%--<div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Sueldo</label>
-                                                    <asp:TextBox ID="txbSueldo" CssClass="form-control input-sm" runat="server" placeholder="Sueldo" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)"></asp:TextBox>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Grupo</label>
-                                                    <asp:DropDownList ID="ddlGrupo" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
+                                                    <label>Género</label>
+                                                    <asp:DropDownList ID="ddlGenero" runat="server" AppendDataBoundItems="true"
+                                                        DataTextField="Genero" DataValueField="idGenero" CssClass="form-control input-sm">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                        <asp:ListItem Text="Administrativos" Value="1 - ADMINISTRATIVOS"></asp:ListItem>
-                                                        <asp:ListItem Text="Comerciales" Value="2 - COMERCIALES"></asp:ListItem>
-                                                        <asp:ListItem Text="Líderes deportivos" Value="3 - LIDERES DEPORTIVOS"></asp:ListItem>
-                                                        <asp:ListItem Text="Marketing Digital" Value="5 - MARKETING DIGITAL"></asp:ListItem>
-                                                        <asp:ListItem Text="Fisioterapeuta y nutricionista" Value="6 - FISIOTERAPEUTA Y NUTRICIONISTA"></asp:ListItem>
-                                                        <asp:ListItem Text="Profesor planta" Value="7 - PROFESOR PLANTA"></asp:ListItem>
-                                                        <asp:ListItem Text="Practicantes" Value="9 - PRACTICANTES"></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
-                                        </div>--%>
+                                        </div>
 
                                         <div class="row">
                                             <div class="col-sm-6">
@@ -901,14 +906,45 @@
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
     <script>
+        const icon = document.getElementById('togglePassword');
+        let password = document.getElementById('txbClave');
+
+        /* Event fired when <i> is clicked */
+        icon.addEventListener('click', function () {
+            if (password.type === "password") {
+                password.type = "text";
+                icon.classList.add("fa-eye-slash");
+                icon.classList.remove("fa-eye");
+            }
+            else {
+                password.type = "password";
+                icon.classList.add("fa-eye");
+                icon.classList.remove("fa-eye-slash");
+            }
+        });
 
         $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" });
 
+        $.validator.addMethod(
+            "regex",
+            function (value, element, regexp) {
+                return this.optional(element) || regexp.test(value);
+            },
+            "La clave debe tener entre 8 y 20 caracteres con letras mayúsculas, letras minúsculas y al menos un número."
+        );
+
+        
         $("#form").validate({
             rules: {
                 txbNombre: {
                     required: true,
                     minlength: 3
+                },
+                txbClave: {
+                    required: true,
+                    minlength: 8,
+                    maxlength: 20,
+                    regex: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/
                 },
                 txbDocumento: {
                     required: true,
@@ -921,14 +957,7 @@
                     required: true,
                     minlength: 10
                 },
-                txbTelefonoCorp: {
-                    required: true,
-                    minlength: 10
-                },
                 txbEmail: {
-                    required: true,
-                },
-                txbEmailCorp: {
                     required: true,
                 },
                 txbDireccion: {
@@ -950,23 +979,7 @@
                 ddlGenero: {
                     required: true
                 },
-                txbContrato: {
-                    required: true,
-                    minlength: 5
-                },
-                ddlTipoContrato: {
-                    required: true
-                },
                 ddlSedes: {
-                    required: true
-                },
-                txbFechaInicio: {
-                    required: true
-                },
-                txbFechaFinal: {
-                    required: true
-                },
-                txbSueldo: {
                     required: true
                 },
                 ddlGrupo: {
@@ -978,21 +991,18 @@
                 ddlFondoPension: {
                     required: true
                 },
-                ddlArl: {
-                    required: true
-                },
-                ddlCajaComp: {
-                    required: true
-                },
-                ddlCesantias: {
-                    required: true
-                },
-                ddlEmpresasFP: {
-                    required: true
-                },
             },
             messages: {
                 ddlCiudadEmpleado: "*",
+            },
+            errorPlacement: function (error, element) {
+                if (element.attr("name") === "txbClave") {
+                    // Coloca el mensaje de error en el contenedor personalizado
+                    error.appendTo(element.closest(".form-group").find(".error-message"));
+                } else {
+                    // Comportamiento por defecto para otros campos
+                    error.insertAfter(element);
+                }
             }
         });
 

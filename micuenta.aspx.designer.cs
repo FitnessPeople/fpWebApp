@@ -105,13 +105,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbNombre;
 
         /// <summary>
-        /// Control txbDocumento.
+        /// Control txbClave.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbDocumento;
+        protected global::System.Web.UI.WebControls.TextBox txbClave;
 
         /// <summary>
         /// Control ddlTipoDocumento.
@@ -121,6 +121,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlTipoDocumento;
+
+        /// <summary>
+        /// Control txbDocumento.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbDocumento;
 
         /// <summary>
         /// Control txbTelefono.
