@@ -238,22 +238,24 @@
                                                     <div class="col-sm-12">
                                                         <h3>Período del plan</h3>
                                                     </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Fecha de inicio</label>
-                                                            <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm" runat="server"></asp:TextBox>
-                                                            <asp:RequiredFieldValidator ID="rfvFechaInicio" runat="server" ErrorMessage="* Campo requerido"
-                                                                ControlToValidate="txbFechaInicio" ValidationGroup="agregar"
-                                                                CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                    <div id="fechas">
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label>Fecha de inicio</label>
+                                                                <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                                <asp:RequiredFieldValidator ID="rfvFechaInicio" runat="server" ErrorMessage="* Campo requerido"
+                                                                    ControlToValidate="txbFechaInicio" ValidationGroup="agregar"
+                                                                    CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Fecha final</label>
-                                                            <asp:TextBox ID="txbFechaFinal" CssClass="form-control input-sm" runat="server"></asp:TextBox>
-                                                            <asp:RequiredFieldValidator ID="rfvFechaFinal" runat="server" ErrorMessage="* Campo requerido"
-                                                                ControlToValidate="txbFechaFinal" ValidationGroup="agregar"
-                                                                CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label>Fecha final</label>
+                                                                <asp:TextBox ID="txbFechaFinal" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                                <asp:RequiredFieldValidator ID="rfvFechaFinal" runat="server" ErrorMessage="* Campo requerido"
+                                                                    ControlToValidate="txbFechaFinal" ValidationGroup="agregar"
+                                                                    CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -407,6 +409,27 @@
     <!-- Page-Level Scripts -->
     <script>
 
+        window.onload = function () {
+            var cbPermanente = document.getElementById('<%= cbPermanente.ClientID %>');
+            var fechas = document.getElementById('fechas');
+
+            function toggleFechas() {
+                if (cbPermanente.checked) {
+                    fechas.style.display = 'none';
+                } else {
+                    fechas.style.display = '';
+                }
+            }
+
+            toggleFechas();
+
+            cbPermanente.addEventListener('change', toggleFechas);
+        }
+
+    </script>
+
+    <script>
+
         <%--var lineData = {
             labels: ["Mes 1", "Mes 2", "Mes 3", "Mes 4", "Mes 5", "Mes 6", "Mes 7", "Mes 8", "Mes 9", "Mes 10", "Mes 11", "Mes 12"],
             datasets: [
@@ -437,6 +460,8 @@
             });
         });
     </script>
+
+    
 
 </body>
 
