@@ -62,11 +62,11 @@ namespace fpWebApp
                         txbMeses.Attributes.Add("type", "number");
                         txbMeses.Attributes.Add("min", "1");
                         txbMeses.Attributes.Add("max", "12");
-                        txbFechaInicio.Attributes.Add("type", "date");
+                        txbFechaInicial.Attributes.Add("type", "date");
                         txbFechaFinal.Attributes.Add("type", "date");
 
-                        txbFechaInicio.Attributes.Add("value","2025-05-01");
-                        txbFechaFinal.Attributes.Add("value", "2025-05-31");
+                        txbFechaInicial.Attributes.Add("value", DateTime.Now.ToString("yyyy-MM-dd"));
+                        txbFechaFinal.Attributes.Add("value", DateTime.Now.ToString("yyyy-MM-dd"));
 
                         if (Request.QueryString.Count > 0)
                         {
@@ -78,16 +78,27 @@ namespace fpWebApp
                                 DataTable dt = cg.ConsultarPlanPorId(int.Parse(Request.QueryString["editid"].ToString()));
                                 if (dt.Rows.Count > 0)
                                 {
+                                    if (dt.Rows[0]["FechaInicial"] == DBNull.Value || string.IsNullOrWhiteSpace(dt.Rows[0]["FechaInicial"].ToString()) &&
+                                        dt.Rows[0]["FechaFinal"] == DBNull.Value || string.IsNullOrWhiteSpace(dt.Rows[0]["FechaFinal"].ToString()))
+                                    {
+                                        txbFechaInicial.Text = DateTime.Now.ToString("yyyy-MM-dd");
+                                        txbFechaFinal.Text = DateTime.Now.ToString("yyyy-MM-dd");
+                                    }
+                                    else
+                                    {
+                                        txbFechaInicial.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
+                                        txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
+                                    }
+
                                     txbPlan.Text = dt.Rows[0]["NombrePlan"].ToString();
                                     txbDescripcion.Text = dt.Rows[0]["DescripcionPlan"].ToString();
                                     int intPrecioBase = Convert.ToInt32(dt.Rows[0]["PrecioBase"]);
-                                    txbPrecio.Text = intPrecioBase.ToString("C0", new CultureInfo("es-CO"));
+                                    txbPrecioBase.Text = intPrecioBase.ToString("C0", new CultureInfo("es-CO"));
                                     txbDiasCongelamiento.Text = dt.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',','.');
                                     int intPrecioTotal = Convert.ToInt32(dt.Rows[0]["PrecioTotal"]);
                                     txbPrecioTotal.Text = intPrecioTotal.ToString("C0", new CultureInfo("es-CO"));
                                     txbMeses.Text = dt.Rows[0]["Meses"].ToString();
-                                    txbFechaInicio.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
-                                    txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
+                                    txbMesesCortesia.Text = dt.Rows[0]["MesesCortesia"].ToString();
                                     ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
                                     cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                     btnAgregar.Text = "Actualizar";
@@ -112,23 +123,23 @@ namespace fpWebApp
                                     {
                                         txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
                                         txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
-                                        txbPrecio.Text = dt1.Rows[0]["PrecioBase"].ToString();
+                                        txbPrecioBase.Text = dt1.Rows[0]["PrecioBase"].ToString();
                                         txbPrecioTotal.Text = dt.Rows[0]["PrecioTotal"].ToString();
                                         txbMeses.Text = dt.Rows[0]["Meses"].ToString();
                                         txbDiasCongelamiento.Text = dt1.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
-                                        txbFechaInicio.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
+                                        txbFechaInicial.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
                                         txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
                                         ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt1.Rows[0]["NombreColorPlan"].ToString())));
                                         cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                         txbPlan.Enabled = false;
                                         txbDescripcion.Enabled = false;
-                                        txbPrecio.Enabled = false;
+                                        txbPrecioBase.Enabled = false;
                                         txbPrecioTotal.Enabled = false;
                                         txbMeses.Enabled = false;
                                         txbMesesCortesia.Enabled = false;
                                         txbDiasCongelamiento.Enabled = false;
                                         ddlColor.Enabled = false;
-                                        txbFechaInicio.Enabled = false;
+                                        txbFechaInicial.Enabled = false;
                                         txbFechaFinal.Enabled = false;
                                         cbPermanente.Enabled = false;
                                         btnAgregar.Text = "⚠ Confirmar borrado ❗";
@@ -146,23 +157,23 @@ namespace fpWebApp
                                     {
                                         txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
                                         txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
-                                        txbPrecio.Text = dt1.Rows[0]["PrecioBase"].ToString();
+                                        txbPrecioBase.Text = dt1.Rows[0]["PrecioBase"].ToString();
                                         txbPrecioTotal.Text = dt1.Rows[0]["PrecioTotal"].ToString();
                                         txbMeses.Text = dt1.Rows[0]["Meses"].ToString();
                                         txbDiasCongelamiento.Text = dt1.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
-                                        txbFechaInicio.Text = Convert.ToDateTime(dt1.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
+                                        txbFechaInicial.Text = Convert.ToDateTime(dt1.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
                                         txbFechaFinal.Text = Convert.ToDateTime(dt1.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
                                         ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
                                         cbPermanente.Checked = Convert.ToBoolean(dt1.Rows[0]["Permanente"]);
                                         txbPlan.Enabled = false;
                                         txbDescripcion.Enabled = false;
-                                        txbPrecio.Enabled = false;
+                                        txbPrecioBase.Enabled = false;
                                         txbPrecioTotal.Enabled = false;
                                         txbMeses.Enabled = false;
                                         txbMesesCortesia.Enabled = false;
                                         txbDiasCongelamiento.Enabled = false;
                                         ddlColor.Enabled = false;
-                                        txbFechaInicio.Enabled = false;
+                                        txbFechaInicial.Enabled = false;
                                         txbFechaFinal.Enabled = false;
                                         cbPermanente.Enabled = false;
                                         btnAgregar.Text = "⚠ Confirmar borrado ❗";
@@ -269,11 +280,10 @@ namespace fpWebApp
         /// <param name="e"></param>
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            int intPermanente = 0;
-            if (cbPermanente.Checked)
-            {
-                intPermanente = 1;
-            }
+            int intPermanente = cbPermanente.Checked ? 1 : 0;
+            string fechaInicial = cbPermanente.Checked ? null : txbFechaInicial.Text.ToString();
+            string fechaFinal = cbPermanente.Checked ? null : txbFechaFinal.Text.ToString();
+
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
@@ -284,19 +294,22 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarPlan(int.Parse(Request.QueryString["editid"].ToString()), 
                         txbPlan.Text.ToString().Trim(), 
                         txbDescripcion.Text.ToString(),
-                        Convert.ToInt32(Regex.Replace(txbPrecio.Text, @"[^\d]", "")),
                         Convert.ToInt32(Regex.Replace(txbPrecioTotal.Text, @"[^\d]", "")),
+                        Convert.ToInt32(Regex.Replace(txbPrecioBase.Text, @"[^\d]", "")),
                         int.Parse(txbMeses.Text.ToString()),
-                        //rblColor.SelectedItem.Value.ToString(),
-                        double.Parse(txbDiasCongelamiento.Text.ToString()), 
-                        txbFechaInicio.Text.ToString(), 
-                        txbFechaFinal.Text.ToString(),
+                        int.Parse(txbMesesCortesia.Text.ToString()),
+                        ddlColor.SelectedItem.Value.ToString(),
+                        int.Parse(Session["idusuario"].ToString()),
+                        int.Parse(txbDiasCongelamiento.Text.ToString()),
+                        fechaInicial,
+                        fechaFinal,
                         intPermanente);
 
                     string strNewData = TraerData();
 
                     cg.InsertarLog(Session["idusuario"].ToString(), "planes", "Modifica", "El usuario modificó el plan: " + txbPlan.Text.ToString() + ".", strInitData, strNewData);
                 }
+
                 if (Request.QueryString["deleteid"] != null)
                 {
                     string respuesta = cg.EliminarPlan(int.Parse(Request.QueryString["deleteid"].ToString()));
@@ -311,14 +324,15 @@ namespace fpWebApp
                     {
                         string respuesta = cg.InsertarPlan(txbPlan.Text.ToString().Trim(),
                         txbDescripcion.Text.ToString(),
-                        Convert.ToInt32(Regex.Replace(txbPrecio.Text, @"[^\d]", "")),
                         Convert.ToInt32(Regex.Replace(txbPrecioTotal.Text, @"[^\d]", "")),
+                        Convert.ToInt32(Regex.Replace(txbPrecioBase.Text, @"[^\d]", "")),
                         int.Parse(txbMeses.Text.ToString()),
-                        //rblColor.SelectedItem.Value.ToString(),
+                        int.Parse(txbMesesCortesia.Text.ToString()),
+                        ddlColor.SelectedItem.Value.ToString(),
                         int.Parse(Session["idusuario"].ToString()),
-                        double.Parse(txbDiasCongelamiento.Text.ToString()),
-                        txbFechaInicio.Text.ToString(),
-                        txbFechaFinal.Text.ToString(), 
+                        int.Parse(txbDiasCongelamiento.Text.ToString()),
+                        fechaInicial,
+                        fechaFinal, 
                         intPermanente);
 
                         cg.InsertarLog(Session["idusuario"].ToString(), "planes", "Agrega", "El usuario agregó un nuevo plan: " + txbPlan.Text.ToString() + ".", "", "");
@@ -355,13 +369,17 @@ namespace fpWebApp
             {
                 string consultaSQL = @"SELECT NombrePlan AS 'Nombre de Plan', 
                     DescripcionPlan AS 'Descripción', 
-                    PrecioBase AS 'Precio Base', 
                     PrecioTotal AS 'Precio Total', 
-                    EstadoPlan AS 'Estado', 
+                    PrecioBase AS 'Precio Base', 
                     Meses AS 'Meses', 
+                    MesesCortesia AS 'Meses de Cortesía', 
+                    EstadoPlan AS 'Estado', 
                     DiasCongelamientoMes AS 'Cantidad de Días de Congelamiento', 
                     FechaInicial AS 'Fecha de Inicio', 
                     FechaFinal AS 'Fecha de Terminación', 
+                    IF(Permanente = 1, 'Si', 'No') AS Permanente,
+                    IF(Permanente = 1,'Sin caducidad', CONCAT('Hasta el ', DAY(FechaFinal), ' de ', MONTHNAME(FechaFinal))) AS Vigencia, 
+                    IF(Recurrente = 1, 'Si', 'No') AS Recurrente,
                     NombreUsuario AS 'Nombre de Usuario Creador', 
                     EmailUsuario AS 'Correo de Usuario Creador'
                     FROM Planes p 
@@ -387,72 +405,72 @@ namespace fpWebApp
             }
         }
 
-        protected void btnSimular_Click(object sender, EventArgs e)
-        {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanes();
+        //protected void btnSimular_Click(object sender, EventArgs e)
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarPlanes();
 
-            Random rnd = new Random();
+        //    Random rnd = new Random();
 
-            if (dt.Rows.Count > 0)
-            {
-                int intPrecioBase;
-                int intPrecioTotal;
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    _strData += "{\r\n";
-                    _strData += "label: \"" + dt.Rows[i]["NombrePlan"].ToString() + "\",\r\n";
-                    //_strData += "backgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1)',\r\n";
-                    //_strData += "borderColor: '" + dt.Rows[i]["ColorPlan"].ToString() + "',\r\n";
-                    _strData += "borderColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1)',\r\n";
-                    //_strData += "pointBackgroundColor: '" + dt.Rows[i]["ColorPlan"].ToString() + "',\r\n";
-                    _strData += "pointBackgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1)',\r\n";
-                    _strData += "pointBorderColor: \"#fff\",\r\n";
-                    _strData += "data: [";
+        //    if (dt.Rows.Count > 0)
+        //    {
+        //        int intPrecioBase;
+        //        int intPrecioTotal;
+        //        for (int i = 0; i < dt.Rows.Count; i++)
+        //        {
+        //            _strData += "{\r\n";
+        //            _strData += "label: \"" + dt.Rows[i]["NombrePlan"].ToString() + "\",\r\n";
+        //            //_strData += "backgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1)',\r\n";
+        //            //_strData += "borderColor: '" + dt.Rows[i]["ColorPlan"].ToString() + "',\r\n";
+        //            _strData += "borderColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1)',\r\n";
+        //            //_strData += "pointBackgroundColor: '" + dt.Rows[i]["ColorPlan"].ToString() + "',\r\n";
+        //            _strData += "pointBackgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1)',\r\n";
+        //            _strData += "pointBorderColor: \"#fff\",\r\n";
+        //            _strData += "data: [";
 
-                    intPrecioBase = Convert.ToInt32(dt.Rows[i]["PrecioBase"].ToString());
-                    intPrecioTotal = Convert.ToInt32(dt.Rows[i]["PrecioTotal"].ToString());
-                    for (int j = 0; j < 12; j++)
-                    {
-                        if (j < Convert.ToInt16(dt.Rows[i]["Meses"].ToString()))
-                        {
-                            _strData += intPrecioTotal + ",";
-                        }
-                        else
-                        {
-                            _strData += "0,";
-                        }
-                        //_strData += intPrecioTotal + ",";
-                    }
-                    _strData = _strData.Substring(0, _strData.Length - 1);
-                    _strData += "]\r\n";
-                    _strData += "},\r\n";
-                }
+        //            intPrecioBase = Convert.ToInt32(dt.Rows[i]["PrecioBase"].ToString());
+        //            intPrecioTotal = Convert.ToInt32(dt.Rows[i]["PrecioTotal"].ToString());
+        //            for (int j = 0; j < 12; j++)
+        //            {
+        //                if (j < Convert.ToInt16(dt.Rows[i]["Meses"].ToString()))
+        //                {
+        //                    _strData += intPrecioTotal + ",";
+        //                }
+        //                else
+        //                {
+        //                    _strData += "0,";
+        //                }
+        //                //_strData += intPrecioTotal + ",";
+        //            }
+        //            _strData = _strData.Substring(0, _strData.Length - 1);
+        //            _strData += "]\r\n";
+        //            _strData += "},\r\n";
+        //        }
 
-                _strData += "{\r\n";
-                _strData += "label: \"" + txbPlan.Text.ToString() + "\",\r\n";
-                _strData += "backgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1',\r\n";
-                _strData += "borderColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",0.7)',\r\n";
-                _strData += "pointBackgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1)',\r\n";
-                _strData += "pointBorderColor: \"#fff\",\r\n";
-                _strData += "data: [";
+        //        _strData += "{\r\n";
+        //        _strData += "label: \"" + txbPlan.Text.ToString() + "\",\r\n";
+        //        _strData += "backgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1',\r\n";
+        //        _strData += "borderColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",0.7)',\r\n";
+        //        _strData += "pointBackgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1)',\r\n";
+        //        _strData += "pointBorderColor: \"#fff\",\r\n";
+        //        _strData += "data: [";
 
-                intPrecioBase = Convert.ToInt32(txbPrecio.Text.ToString());
-                intPrecioTotal = Convert.ToInt32(txbPrecioTotal.Text.ToString());
-                for (int j = 0; j < 12; j++)
-                {
-                    //double dobDescuento = j * dobDescuentoMensual;
-                    //double dobTotal = (intPrecioBase - ((intPrecioBase * dobDescuento) / 100)) * (j + 1);
+        //        intPrecioBase = Convert.ToInt32(txbPrecioBase.Text.ToString());
+        //        intPrecioTotal = Convert.ToInt32(txbPrecioTotal.Text.ToString());
+        //        for (int j = 0; j < 12; j++)
+        //        {
+        //            //double dobDescuento = j * dobDescuentoMensual;
+        //            //double dobTotal = (intPrecioBase - ((intPrecioBase * dobDescuento) / 100)) * (j + 1);
 
-                    _strData += intPrecioTotal + ",";
-                }
-                _strData = _strData.Substring(0, _strData.Length - 1);
-                _strData += "]\r\n";
-                _strData += "}\r\n";
-            }
-            //_strData = _strData.Substring(0, _strData.Length - 1);
-            dt.Dispose();
-        }
+        //            _strData += intPrecioTotal + ",";
+        //        }
+        //        _strData = _strData.Substring(0, _strData.Length - 1);
+        //        _strData += "]\r\n";
+        //        _strData += "}\r\n";
+        //    }
+        //    //_strData = _strData.Substring(0, _strData.Length - 1);
+        //    dt.Dispose();
+        //}
 
         private string TraerData()
         {

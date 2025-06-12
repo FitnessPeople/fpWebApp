@@ -166,10 +166,10 @@
                                                 <div class="row">
                                                     <div class="col-sm-5">
                                                         <label>Precio base del mes</label>
-                                                        <asp:TextBox ID="txbPrecio" CssClass="form-control input-sm" runat="server"
+                                                        <asp:TextBox ID="txbPrecioBase" CssClass="form-control input-sm" runat="server"
                                                             placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
-                                                        <asp:RequiredFieldValidator ID="rfvPrecio" runat="server" ErrorMessage="* Campo requerido"
-                                                            ControlToValidate="txbPrecio" ValidationGroup="agregar"
+                                                        <asp:RequiredFieldValidator ID="rfvPrecioBase" runat="server" ErrorMessage="* Campo requerido"
+                                                            ControlToValidate="txbPrecioBase" ValidationGroup="agregar"
                                                             CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                     </div>
                                                     <div class="col-sm-7">
@@ -238,17 +238,26 @@
                                                     <div class="col-sm-12">
                                                         <h3>Período del plan</h3>
                                                     </div>
-                                                    <div id="fechas">
-                                                        <div class="col-sm-6">
+
+                                                    <div>
+                                                        <div class="col-sm-4">
                                                             <div class="form-group">
-                                                                <label>Fecha de inicio</label>
-                                                                <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm" runat="server"></asp:TextBox>
-                                                                <asp:RequiredFieldValidator ID="rfvFechaInicio" runat="server" ErrorMessage="* Campo requerido"
-                                                                    ControlToValidate="txbFechaInicio" ValidationGroup="agregar"
+                                                                <label>Estado</label>
+                                                                <asp:CheckBox runat="server" ID="cbPermanente" Text="&nbsp;Permanente" CssClass="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="fechas">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>Fecha inicial</label>
+                                                                <asp:TextBox ID="txbFechaInicial" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                                <asp:RequiredFieldValidator ID="rfvFechaInicial" runat="server" ErrorMessage="* Campo requerido"
+                                                                    ControlToValidate="txbFechaInicial" ValidationGroup="agregar"
                                                                     CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-6">
+                                                        <div class="col-sm-4">
                                                             <div class="form-group">
                                                                 <label>Fecha final</label>
                                                                 <asp:TextBox ID="txbFechaFinal" CssClass="form-control input-sm" runat="server"></asp:TextBox>
@@ -259,15 +268,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <div class="form-group">
-                                                            <asp:CheckBox runat="server" ID="cbPermanente" Text="&nbsp;Permanente" CssClass="form-control" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-
                                                 <div class="form-group">
                                                     <a href="planes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                     <%--<asp:Button ID="btnSimular" runat="server" Text="Simular"
