@@ -118,6 +118,7 @@ namespace fpWebApp
 
         private void CargarCongelaciones()
         {
+            string idAfi = Request.QueryString["id"].ToString();
             string strQuery = "SELECT * " +
                 "FROM congelaciones c, afiliadosplanes ap " +
                 "WHERE ap.idAfiliado = " + Request.QueryString["id"].ToString() + " " +
@@ -182,7 +183,11 @@ namespace fpWebApp
                 }
                 else
                 {
-                    ltNoPlanes.Text = "Sin planes. No es posible agregar una congelación.";
+                    ltNoPlanes.Text = "<div class=\"ibox-content\">" +
+                        "<div class=\"alert alert-danger alert-dismissable\">" +
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        "Sin planes. No es posible agregar una congelación." +
+                        "</div></div>";
                     ddlTipoCongelacion.Enabled = false;
                     txbObservaciones.Enabled = false;
                     txbFechaInicio.Enabled = false;
@@ -248,62 +253,52 @@ namespace fpWebApp
                 }
                 else
                 {
-                    if (documento.Value.ToString() == "")
+
+                    if (txbObservaciones.Text.ToString() == "")
                     {
                         ltMensaje.Text = "<div class=\"ibox-content\">" +
                             "<div class=\"alert alert-danger alert-dismissable\">" +
                             "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                            "Debe incluir un documento de soporte." +
+                            "Debe escribir las observaciones." +
                             "</div></div>";
                     }
                     else
                     {
-                        if (txbObservaciones.Text.ToString() == "")
+                        string strDias = hfDias.Value.ToString();
+
+                        try
                         {
+                            string strFilename = "";
+                            HttpPostedFile postedFile = Request.Files["documento"];
+
+                            if (postedFile != null && postedFile.ContentLength > 0)
+                            {
+                                //Save the File.
+                                string filePath = Server.MapPath("docs//congelaciones//") + ViewState["idAfiliadoPlan"].ToString() + "_" + Path.GetFileName(postedFile.FileName);
+                                postedFile.SaveAs(filePath);
+                                strFilename = ViewState["idAfiliadoPlan"].ToString() + "_" + postedFile.FileName;
+                            }
+
+                            string strQuery = "INSERT INTO Congelaciones " +
+                            "(idAfiliadoPlan, idTipoIncapacidad, idUsuario, FechaInicio, Dias, DocumentoCongelacion, Observaciones, Estado, Fecha) " +
+                            "VALUES (" + ViewState["idAfiliadoPlan"].ToString() + ", " + ddlTipoCongelacion.SelectedItem.Value.ToString() + ", " +
+                            "" + Session["idUsuario"].ToString() + ", '" + txbFechaInicio.Text.ToString() + "', " + strDias + ", " +
+                            "'" + strFilename + "', '" + txbObservaciones.Text.ToString() + "', 'En proceso', Now()) ";
+
+                            clasesglobales cg = new clasesglobales();
+                            string mensaje = cg.TraerDatosStr(strQuery);
+
+                            cg.InsertarLog(Session["idusuario"].ToString(), "congelaciones", "Agrega", "El usuario agregó una congelación al afiliado con documento " + ViewState["DocumentoAfiliado"].ToString() + ".", "", "");
+
+                            Response.Redirect("afiliados");
+                        }
+                        catch (OdbcException ex)
+                        {
+                            string mensaje = ex.Message;
                             ltMensaje.Text = "<div class=\"ibox-content\">" +
                                 "<div class=\"alert alert-danger alert-dismissable\">" +
-                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                "Debe escribir las observaciones." +
+                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
                                 "</div></div>";
-                        }
-                        else
-                        {
-                            string strDias = hfDias.Value.ToString();
-
-                            try
-                            {
-                                string strFilename = "";
-                                HttpPostedFile postedFile = Request.Files["documento"];
-
-                                if (postedFile != null && postedFile.ContentLength > 0)
-                                {
-                                    //Save the File.
-                                    string filePath = Server.MapPath("docs//congelaciones//") + ViewState["idAfiliadoPlan"].ToString() + "_" + Path.GetFileName(postedFile.FileName);
-                                    postedFile.SaveAs(filePath);
-                                    strFilename = ViewState["idAfiliadoPlan"].ToString() + "_" + postedFile.FileName;
-                                }
-
-                                string strQuery = "INSERT INTO Congelaciones " +
-                                "(idAfiliadoPlan, idTipoIncapacidad, idUsuario, FechaInicio, Dias, DocumentoCongelacion, Observaciones, Estado, Fecha) " +
-                                "VALUES (" + ViewState["idAfiliadoPlan"].ToString() + ", " + ddlTipoCongelacion.SelectedItem.Value.ToString() + ", " +
-                                "" + Session["idUsuario"].ToString() + ", '" + txbFechaInicio.Text.ToString() + "', " + strDias + ", " +
-                                "'" + strFilename + "', '" + txbObservaciones.Text.ToString() + "', 'En proceso', Now()) ";
-
-                                clasesglobales cg = new clasesglobales();
-                                string mensaje = cg.TraerDatosStr(strQuery);
-
-                                cg.InsertarLog(Session["idusuario"].ToString(), "Congelaciones", "Nuevo registro", "El usuario agregó una congelación al afiliado con documento " + ViewState["DocumentoAfiliado"].ToString() + ".", "", "");
-
-                                Response.Redirect("afiliados");
-                            }
-                            catch (OdbcException ex)
-                            {
-                                string mensaje = ex.Message;
-                                ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                    "<div class=\"alert alert-danger alert-dismissable\">" +
-                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
-                                    "</div></div>";
-                            }
                         }
                     }
                 }

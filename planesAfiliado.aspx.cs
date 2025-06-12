@@ -802,7 +802,7 @@ namespace fpWebApp
 
                                     DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(int.Parse(Request.QueryString["id"].ToString()));
 
-                                    cg.InsertarLog(Session["idusuario"].ToString(), "afiliadosplanes", "Nuevo registro", "El usuario asignó un nuevo plan al afiliado con documento: " + dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString() + ".", "", "");
+                                    cg.InsertarLog(Session["idusuario"].ToString(), "afiliadosplanes", "Agrega", "El usuario agregó un nuevo plan al afiliado con documento: " + dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString() + ".", "", "");
 
                                     Response.Redirect("afiliados");
                                 }

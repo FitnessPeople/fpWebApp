@@ -179,10 +179,11 @@ namespace fpWebApp
 
             if (dt.Rows.Count > 0)
             {
-                ltNoPlanes.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                "Este afiliado ya tiene un traspaso en proceso." +
-                "</div>";
+                ltNoPlanes.Text = "<div class=\"ibox-content\">" +
+                        "<div class=\"alert alert-danger alert-dismissable\">" +
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        "Este afiliado ya tiene un traspaso en proceso." +
+                        "</div></div>";
                 txbAfiliadoDestino.Enabled = false;
                 btnTraspasar.Enabled = false;
             }
@@ -269,7 +270,7 @@ namespace fpWebApp
                                 "'" + txbObservaciones.Text.ToString() + "', " + Session["idUsuario"].ToString() + ", 'En proceso') ";
                                 clasesglobales cg = new clasesglobales();
                                 string mensaje = cg.TraerDatosStr(strQuery);
-                                cg.InsertarLog(Session["idusuario"].ToString(), "TraspasoPlanes", "Nuevo registro", "El usuario agregó un traspaso del afiliado con documento " + ViewState["DocumentoAfiliadoOrigen"].ToString() + " al afiliado con documento " + ViewState["DocumentoAfiliadoDestino"].ToString() + ".", "", "");
+                                cg.InsertarLog(Session["idusuario"].ToString(), "traspasoplanes", "Agrega", "El usuario agregó un traspaso del afiliado con documento " + ViewState["DocumentoAfiliadoOrigen"].ToString() + " al afiliado con documento " + ViewState["DocumentoAfiliadoDestino"].ToString() + ".", "", "");
 
                                 Response.Redirect("afiliados");
                             }

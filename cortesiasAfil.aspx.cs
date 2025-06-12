@@ -153,7 +153,11 @@ namespace fpWebApp
                 }
                 else
                 {
-                    ltNoPlanes.Text = "Sin planes. No es posible agregar una cortesía.";
+                    ltNoPlanes.Text = "<div class=\"ibox-content\">" +
+                        "<div class=\"alert alert-danger alert-dismissable\">" +
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        "Sin planes. No es posible agregar una cortesía." +
+                        "</div></div>";
                     txbObservaciones.Enabled = false;
                     btnAgregarCortesia.Enabled = false;
                 }
@@ -255,7 +259,7 @@ namespace fpWebApp
                         clasesglobales cg = new clasesglobales();
                         string mensaje = cg.TraerDatosStr(strQuery);
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "Cortesias", "Nuevo registro", "El usuario agregó una cortesia al afiliado con documento " + ViewState["DocumentoAfiliado"].ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "cortesias", "Agrega", "El usuario agregó una cortesia al afiliado con documento " + ViewState["DocumentoAfiliado"].ToString() + ".", "", "");
 
                         Response.Redirect("afiliados");
                     }
