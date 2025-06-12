@@ -185,7 +185,7 @@ namespace fpWebApp
                             string respuesta = cg.EliminarAfiliado(idAfiliado, "Inactivo");
 
                             string strNewData = TraerData();
-                            cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Elimino", "El usuario eliminó al afiliado con documento: " + dt.Rows[0]["DocumentoAfiliado"].ToString() + ".", strInitData, strNewData);
+                            cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Elimina", "El usuario eliminó al afiliado con documento: " + dt.Rows[0]["DocumentoAfiliado"].ToString() + ".", strInitData, strNewData);
 
                         }
 

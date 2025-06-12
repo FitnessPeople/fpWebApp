@@ -130,12 +130,12 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             //DataTable dt = cg.ConsultarPlanes();
             string strQuery = "SELECT *, " +
-                "IF(Permanente=1,'Sin caducidad',CONCAT('Hasta el ', DAY(FechaFinal), ' de ', MONTHNAME(FechaFinal))) AS Vigencia, " +
+                "IF(Permanente = 1,'Sin caducidad',CONCAT('Hasta el ', DAY(FechaFinal), ' de ', MONTHNAME(FechaFinal))) AS Vigencia, " +
                 "DATEDIFF(CURDATE(), FechaInicial) diaspasados, " +
                 "DATEDIFF(FechaFinal, CURDATE()) diasporterminar, " +
                 "DATEDIFF(FechaFinal, FechaInicial) diastotales " +
                 "FROM Planes " +
-                "WHERE DATEDIFF(FechaFinal, CURDATE()) >= 0 ";
+                "WHERE DATEDIFF(FechaFinal, CURDATE()) >= 0 OR Permanente = 1";
             DataTable dt = cg.TraerDatos(strQuery);
             rpPlanes.DataSource = dt;
             rpPlanes.DataBind();
@@ -799,6 +799,10 @@ namespace fpWebApp
                                     {
                                         string respuesta = "ERROR: " + ex.Message;
                                     }
+
+                                    DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(int.Parse(Request.QueryString["id"].ToString()));
+
+                                    cg.InsertarLog(Session["idusuario"].ToString(), "afiliadosplanes", "Agrega", "El usuario agregó un nuevo plan al afiliado con documento: " + dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString() + ".", "", "");
 
                                     Response.Redirect("afiliados");
                                 }

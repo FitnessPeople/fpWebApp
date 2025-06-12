@@ -153,7 +153,11 @@ namespace fpWebApp
                 }
                 else
                 {
-                    ltNoPlanes.Text = "Sin planes. No es posible agregar una cortesía.";
+                    ltNoPlanes.Text = "<div class=\"ibox-content\">" +
+                        "<div class=\"alert alert-danger alert-dismissable\">" +
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        "Sin planes. No es posible agregar una cortesía." +
+                        "</div></div>";
                     txbObservaciones.Enabled = false;
                     btnAgregarCortesia.Enabled = false;
                 }
@@ -203,6 +207,25 @@ namespace fpWebApp
             
         }
 
+        /// <summary>
+        /// Registra días de cortesía para un afiliado en el sistema, validando los datos requeridos antes de realizar la operación.
+        /// </summary>
+        /// <remarks>
+        /// Flujo principal:
+        /// 1. Valida que se hayan seleccionado días de cortesía (almacenados en ViewState)
+        /// 2. Verifica que se hayan ingresado observaciones
+        /// 3. Si las validaciones son exitosas:
+        ///    - Registra la cortesía en la base de datos
+        ///    - Crea un registro de log de la operación
+        ///    - Redirige a la página de afiliados
+        /// 
+        /// En caso de error:
+        /// - Muestra mensajes de error específicos en la interfaz
+        /// - Captura y muestra excepciones de base de datos
+        /// </remarks>
+        /// <param name="sender">Objeto que generó el evento</param>
+        /// <param name="e">Argumentos del evento</param>
+        /// <exception cref="OdbcException">Maneja y muestra errores de conexión/consulta a la base de datos</exception>
         protected void btnAgregarCortesia_Click(object sender, EventArgs e)
         {
             if (ViewState["DiasCortesia"] == null)
@@ -236,7 +259,7 @@ namespace fpWebApp
                         clasesglobales cg = new clasesglobales();
                         string mensaje = cg.TraerDatosStr(strQuery);
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "Cortesias", "Nuevo registro", "El usuario agregó una cortesia al afiliado con documento " + ViewState["DocumentoAfiliado"].ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "cortesias", "Agrega", "El usuario agregó una cortesia al afiliado con documento " + ViewState["DocumentoAfiliado"].ToString() + ".", "", "");
 
                         Response.Redirect("afiliados");
                     }

@@ -141,22 +141,22 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDescripcion;
 
         /// <summary>
-        /// Control txbPrecio.
+        /// Control txbPrecioBase.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbPrecio;
+        protected global::System.Web.UI.WebControls.TextBox txbPrecioBase;
 
         /// <summary>
-        /// Control rfvPrecio.
+        /// Control rfvPrecioBase.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPrecio;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPrecioBase;
 
         /// <summary>
         /// Control txbDiasCongelamiento.
@@ -204,13 +204,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbMeses;
 
         /// <summary>
-        /// Control rfvMesesMaximo.
+        /// Control rfvMeses.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvMesesMaximo;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvMeses;
 
         /// <summary>
         /// Control txbMesesCortesia.
@@ -249,22 +249,31 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvColor;
 
         /// <summary>
-        /// Control txbFechaInicio.
+        /// Control cbPermanente.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbFechaInicio;
+        protected global::System.Web.UI.WebControls.CheckBox cbPermanente;
 
         /// <summary>
-        /// Control rfvFechaInicio.
+        /// Control txbFechaInicial.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvFechaInicio;
+        protected global::System.Web.UI.WebControls.TextBox txbFechaInicial;
+
+        /// <summary>
+        /// Control rfvFechaInicial.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvFechaInicial;
 
         /// <summary>
         /// Control txbFechaFinal.
@@ -283,24 +292,6 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvFechaFinal;
-
-        /// <summary>
-        /// Control cbPermanente.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbPermanente;
-
-        /// <summary>
-        /// Control btnSimular.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSimular;
 
         /// <summary>
         /// Control btnAgregar.

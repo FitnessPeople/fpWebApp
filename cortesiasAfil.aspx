@@ -161,30 +161,32 @@
                                             </div>
                                             <div class="clearfix"></div>
                                         </div>
-                                        <div class="row m-xs">
-                                            <h4>Planes</h4>
-                                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                                            <asp:Literal ID="ltNoPlanes" runat="server"></asp:Literal>
-                                            <ul class="todo-list small-list">
-                                                <asp:Repeater ID="rpPlanesAfiliado" runat="server">
-                                                    <ItemTemplate>
-                                                        <li>
-                                                            <small class="label label-primary pull-right"><%# Eval("DiasQueFaltan") %> días disponibles</small>
-                                                            <label>
-                                                                <%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
-                                                            </label>
-                                                            <br />
-                                                            <div class="progress progress-striped active">
-                                                                <div style='width: <%# Eval("Porcentaje1") %>%' class="progress-bar progress-bar-success"></div>
-                                                                <div style='width: <%# Eval("Porcentaje2") %>%' class="progress-bar progress-bar-warning"></div>
-                                                            </div>
-                                                            <small class="text-muted"><%# Eval("FechaInicioPlan", "{0:dd MMM yyyy}") %> - <%# Eval("FechaFinalPlan", "{0:dd MMM yyyy}") %></small>
-                                                        </li>
-                                                    </ItemTemplate>
-                                                </asp:Repeater>
-                                            </ul>
+                                        <div class="col-md-12">
+                                            <div class="row m-xs">
+                                                <h4>Planes</h4>
+                                                <asp:Literal ID="ltNoPlanes" runat="server"></asp:Literal>
+                                                <ul class="todo-list m-t small-list">
+                                                    <asp:Repeater ID="rpPlanesAfiliado" runat="server">
+                                                        <ItemTemplate>
+                                                            <li>
+                                                                <small class="label label-primary pull-right"><%# Eval("DiasQueFaltan") %> días disponibles</small>
+                                                                <label>
+                                                                    <%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
+                                                                </label>
+                                                                <br />
+                                                                <div class="progress progress-striped active">
+                                                                    <div style='width: <%# Eval("Porcentaje1") %>%' class="progress-bar progress-bar-success"></div>
+                                                                    <div style='width: <%# Eval("Porcentaje2") %>%' class="progress-bar progress-bar-warning"></div>
+                                                                </div>
+                                                                <small class="text-muted"><%# Eval("FechaInicioPlan", "{0:dd MMM yyyy}") %> - <%# Eval("FechaFinalPlan", "{0:dd MMM yyyy}") %></small>
+                                                            </li>
+                                                        </ItemTemplate>
+                                                    </asp:Repeater>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
+
                                     <div class="col-sm-7 m-t-xs">
                                         <asp:UpdatePanel ID="upCortesias" runat="server" UpdateMode="Always" ChildrenAsTriggers="true">
                                             <ContentTemplate>
@@ -232,12 +234,17 @@
                                             </Triggers>
                                         </asp:UpdatePanel>
 
-                                        <div>
-                                            <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"
-                                                onclick="window.location.href='afiliados'">
-                                                <strong>Cancelar</strong></button>
-                                            <asp:Button ID="btnAgregarCortesia" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
-                                                Text="Agregar cortesía" OnClick="btnAgregarCortesia_Click" />
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"
+                                                        onclick="window.location.href='afiliados'">
+                                                        <strong>Cancelar</strong></button>
+                                                    <asp:Button ID="btnAgregarCortesia" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
+                                                        Text="Agregar cortesía" OnClick="btnAgregarCortesia_Click" />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </form>
@@ -271,7 +278,17 @@
     <!-- Chosen -->
     <script src="js/plugins/chosen/chosen.jquery.js"></script>
 
-    <!-- Page-Level Scripts -->
+    <script>
+
+        $("#form").validate({
+            rules: {
+                txbObservaciones: {
+                    required: true,
+                }
+            }
+        });
+
+    </script>
 
 </body>
 

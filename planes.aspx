@@ -180,19 +180,19 @@
                                                 </div>
                                                 <div class="form-group m-b-n-xs">
                                                     <label>Descripción del plan:</label>
-                                                    <asp:TextBox ID="txbDescripcion" runat="server" CssClass="form-control input-sm" TextMode="MultiLine"
+                                                    <asp:TextBox ID="txbDescripcion" runat="server" CssClass="form-control input-sm" TextMode="MultiLine" Rows="4"
                                                         placeholder="Descripción"></asp:TextBox>
                                                     <asp:RequiredFieldValidator ID="rfvDescripcion" runat="server" ErrorMessage="* Campo requerido"
                                                         ControlToValidate="txbDescripcion" ValidationGroup="agregar"
                                                         CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                 </div>
-                                                <div class="row m-b-n-xs">
+                                                <div class="row">
                                                     <div class="col-sm-5">
                                                         <label>Precio base del mes</label>
-                                                        <asp:TextBox ID="txbPrecio" CssClass="form-control input-sm" runat="server"
+                                                        <asp:TextBox ID="txbPrecioBase" CssClass="form-control input-sm" runat="server"
                                                             placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
-                                                        <asp:RequiredFieldValidator ID="rfvPrecio" runat="server" ErrorMessage="* Campo requerido"
-                                                            ControlToValidate="txbPrecio" ValidationGroup="agregar"
+                                                        <asp:RequiredFieldValidator ID="rfvPrecioBase" runat="server" ErrorMessage="* Campo requerido"
+                                                            ControlToValidate="txbPrecioBase" ValidationGroup="agregar"
                                                             CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                     </div>
                                                     <div class="col-sm-7">
@@ -204,7 +204,7 @@
                                                             CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                     </div>
                                                 </div>
-                                                <div class="row m-b-n-xs">
+                                                <div class="row">
                                                     <div class="col-sm-5">
                                                         <label>Precio total</label>
                                                         <asp:TextBox ID="txbPrecioTotal" CssClass="form-control input-sm" runat="server"
@@ -217,12 +217,12 @@
                                                         <label>Meses del plan</label>
                                                         <asp:TextBox ID="txbMeses" CssClass="form-control input-sm" runat="server"
                                                             Text="1"></asp:TextBox>
-                                                        <asp:RequiredFieldValidator ID="rfvMesesMaximo" runat="server" ErrorMessage="* Campo requerido"
+                                                        <asp:RequiredFieldValidator ID="rfvMeses" runat="server" ErrorMessage="* Campo requerido"
                                                             ControlToValidate="txbMeses" ValidationGroup="agregar"
                                                             CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                     </div>
                                                 </div>
-                                                <div class="row m-b-n-xs">
+                                                <div class="row">
                                                     <div class="col-sm-6">
                                                         <label>Meses de cortesía</label>
                                                         <asp:TextBox ID="txbMesesCortesia" CssClass="form-control input-sm" runat="server"
@@ -257,49 +257,55 @@
                                                         <asp:ListItem Value="danger" style="margin-right: 5px; font-size: 10px; color: red;">&nbsp;Rojo</asp:ListItem>
                                                     </asp:RadioButtonList>
                                                 </div>--%>
-                                                <div class="row m-b-n-xs">
+                                                <div class="row">
                                                     <div class="col-sm-12">
                                                         <h3>Período del plan</h3>
                                                     </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Fecha de inicio</label>
-                                                            <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm" runat="server"></asp:TextBox>
-                                                            <asp:RequiredFieldValidator ID="rfvFechaInicio" runat="server" ErrorMessage="* Campo requerido"
-                                                                ControlToValidate="txbFechaInicio" ValidationGroup="agregar"
-                                                                CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Fecha final</label>
-                                                            <asp:TextBox ID="txbFechaFinal" CssClass="form-control input-sm" runat="server"></asp:TextBox>
-                                                            <asp:RequiredFieldValidator ID="rfvFechaFinal" runat="server" ErrorMessage="* Campo requerido"
-                                                                ControlToValidate="txbFechaFinal" ValidationGroup="agregar"
-                                                                CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
-                                                        </div>
-                                                    </div>
-                                                </div>
 
-                                                <div class="row m-b-n-xs">
-                                                    <div class="col-sm-12">
-                                                        <div class="form-group">
-                                                            <asp:CheckBox runat="server" ID="cbPermanente" Text="&nbsp;Permanente" CssClass="form-control" />
+                                                    <div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>Estado</label>
+                                                                <asp:CheckBox runat="server" ID="cbPermanente" Text="&nbsp;Permanente" CssClass="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="fechas">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>Fecha inicial</label>
+                                                                <asp:TextBox ID="txbFechaInicial" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                                <asp:RequiredFieldValidator ID="rfvFechaInicial" runat="server" ErrorMessage="* Campo requerido"
+                                                                    ControlToValidate="txbFechaInicial" ValidationGroup="agregar"
+                                                                    CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>Fecha final</label>
+                                                                <asp:TextBox ID="txbFechaFinal" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                                <asp:RequiredFieldValidator ID="rfvFechaFinal" runat="server" ErrorMessage="* Campo requerido"
+                                                                    ControlToValidate="txbFechaFinal" ValidationGroup="agregar"
+                                                                    CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <div class="form-group">
-                                                    <a href="planes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                    <asp:Button ID="btnSimular" runat="server" Text="Simular"
-                                                        CssClass="btn btn-sm btn-success pull-right m-t-n-xs m-l-md" OnClick="btnSimular_Click"
-                                                        Visible="true" ValidationGroup="agregar" />
-                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
-                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
-                                                        OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <a href="planes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                        <%--<asp:Button ID="btnSimular" runat="server" Text="Simular"
+                                                            CssClass="btn btn-sm btn-success pull-right m-t-n-xs m-l-md" OnClick="btnSimular_Click"
+                                                            Visible="true" ValidationGroup="agregar" />--%>
+                                                        <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
+                                                            CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
+                                                            OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
+                                                    </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -379,7 +385,7 @@
                                 </div>
 
                                 <%-- Gráfico --%>
-                                <div class="ibox float-e-margins">
+                                <%--<div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5>Comparativa de planes</h5>
                                         <div class="ibox-tools">
@@ -395,7 +401,7 @@
                                         </div>
                                         
                                     </div>
-                                </div>
+                                </div>--%>
                             </div>
                         </div>
                     </form>
@@ -433,7 +439,28 @@
     <!-- Page-Level Scripts -->
     <script>
 
-        var lineData = {
+        window.onload = function () {
+            var cbPermanente = document.getElementById('<%= cbPermanente.ClientID %>');
+            var fechas = document.getElementById('fechas');
+
+            function toggleFechas() {
+                if (cbPermanente.checked) {
+                    fechas.style.display = 'none';
+                } else {
+                    fechas.style.display = '';
+                }
+            }
+
+            toggleFechas();
+
+            cbPermanente.addEventListener('change', toggleFechas);
+        }
+
+    </script>
+
+    <script>
+
+        <%--var lineData = {
             labels: ["Mes 1", "Mes 2", "Mes 3", "Mes 4", "Mes 5", "Mes 6", "Mes 7", "Mes 8", "Mes 9", "Mes 10", "Mes 11", "Mes 12"],
             datasets: [
                 <%=strData%>
@@ -445,7 +472,9 @@
         };
 
         var ctx = document.getElementById("lineChart").getContext("2d");
-        new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
+        new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });--%>
+
+        <%=strData%>
 
         $('.footable').footable();
         $(".select2_demo_1").select2();
@@ -461,6 +490,8 @@
             });
         });
     </script>
+
+    
 
 </body>
 

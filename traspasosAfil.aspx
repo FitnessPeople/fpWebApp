@@ -19,7 +19,7 @@
     <link href="css/bootstrap.css" rel="stylesheet" />
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/smoothness/jquery-ui.css" />
 
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
     <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
@@ -157,7 +157,6 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
-
                                                 <div class="contact-box navy-bg">
                                                     <div class="col-sm-4">
                                                         <div class="text-center">
@@ -187,19 +186,16 @@
                                                         <asp:Repeater ID="rpPlanesAfiliado" runat="server">
                                                             <ItemTemplate>
                                                                 <li>
-                                                                    <div class="i-checks">
-                                                                        <small class="label label-primary pull-right"><%# Eval("DiasQueFaltan") %> días disponibles</small>
-                                                                        <label>
-                                                                            <input type="radio" value="<%# Eval("idPlan") %>" name="planes">
-                                                                            <i></i><%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
-                                                                        </label>
-                                                                        <br />
-                                                                        <div class="progress progress-striped active">
-                                                                            <div style='width: <%# Eval("Porcentaje1") %>%' class="progress-bar progress-bar-success"></div>
-                                                                            <div style='width: <%# Eval("Porcentaje2") %>%' class="progress-bar progress-bar-warning"></div>
-                                                                        </div>
-                                                                        <small class="text-muted"><%# Eval("FechaInicioPlan", "{0:dd MMM yyyy}") %> - <%# Eval("FechaFinalPlan", "{0:dd MMM yyyy}") %></small>
+                                                                    <small class="label label-primary pull-right"><%# Eval("DiasQueFaltan") %> días disponibles</small>
+                                                                    <label>
+                                                                        <%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
+                                                                    </label>
+                                                                    <br />
+                                                                    <div class="progress progress-striped active">
+                                                                        <div style='width: <%# Eval("Porcentaje1") %>%' class="progress-bar progress-bar-success"></div>
+                                                                        <div style='width: <%# Eval("Porcentaje2") %>%' class="progress-bar progress-bar-warning"></div>
                                                                     </div>
+                                                                    <small class="text-muted"><%# Eval("FechaInicioPlan", "{0:dd MMM yyyy}") %> - <%# Eval("FechaFinalPlan", "{0:dd MMM yyyy}") %></small>
                                                                 </li>
                                                             </ItemTemplate>
                                                         </asp:Repeater>
@@ -267,6 +263,7 @@
                                                                 <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm" 
                                                                     data-dismiss="fileinput">Quitar</a>
                                                             </div>
+                                                            <div class="error-message" style="color: red;"></div>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -344,17 +341,24 @@
                 txbObservaciones: {
                     required: true,
                 },
-                //documento: {
-                //    required: true,
-                //},
+                documento: {
+                    required: true,
+                },
                 txbFechaInicio: {
                     required: true,
                 }
+            },
+            errorPlacement: function (error, element) {
+                if (element.attr("name") === "documento") {
+                    // Coloca el mensaje de error en el contenedor personalizado
+                    error.appendTo(element.closest(".form-group").find(".error-message"));
+                } else {
+                    // Comportamiento por defecto para otros campos
+                    error.insertAfter(element);
+                }
             }
-            //messages: {
-            //    documento: "*",
-            //}
         });
+
     </script>
 
     <script type="text/javascript">  

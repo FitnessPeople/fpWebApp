@@ -448,7 +448,6 @@
     <Content Include="estadocivil.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="freepassAfil.aspx" />
     <Content Include="genero.aspx" />
     <Content Include="Global.asax" />
     <Content Include="gympass.aspx" />
@@ -1441,13 +1440,6 @@
     </Compile>
     <Compile Include="estadocivil.aspx.designer.cs">
       <DependentUpon>estadocivil.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="freepassAfil.aspx.cs">
-      <DependentUpon>freepassAfil.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="freepassAfil.aspx.designer.cs">
-      <DependentUpon>freepassAfil.aspx</DependentUpon>
     </Compile>
     <Compile Include="genero.aspx.cs">
       <DependentUpon>genero.aspx</DependentUpon>
