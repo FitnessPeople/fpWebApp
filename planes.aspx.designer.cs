@@ -177,13 +177,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbMeses;
 
         /// <summary>
-        /// Control rfvMesesMaximo.
+        /// Control rfvMeses.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvMesesMaximo;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvMeses;
 
         /// <summary>
         /// Control txbMesesCortesia.
@@ -265,15 +265,6 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbPermanente;
-
-        /// <summary>
-        /// Control btnSimular.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSimular;
 
         /// <summary>
         /// Control btnAgregar.
