@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="planes.aspx.cs" Inherits="fpWebApp.planes" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="planes.aspx.cs" Inherits="fpWebApp.planes"  %>
 
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
@@ -27,8 +27,6 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
     <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
-
-    <%--<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />--%>
 
     <style type="text/css" media="print">
         body {
@@ -131,7 +129,7 @@
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                    <form role="form" id="form" runat="server">
+                    <form role="form" id="form" enctype="multipart/form-data" runat="server">
                         <div class="row" id="divContenido" runat="server">
                             <div class="col-lg-4">
                                 <div class="ibox float-e-margins">
@@ -154,6 +152,31 @@
                                                     <asp:RequiredFieldValidator ID="rfvPlan" runat="server" ErrorMessage="* Campo requerido"
                                                         ControlToValidate="txbPlan" ValidationGroup="agregar"
                                                         CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                </div>
+                                                <div class="form-group m-b-n-xs">
+                                                    <label>Título plan web:</label>
+                                                    <asp:TextBox ID="txbTituloPlan" runat="server" CssClass="form-control input-sm"
+                                                        placeholder="Título plan web"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="rfvTituloPlan" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="txbTituloPlan" ValidationGroup="agregar"
+                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                </div>
+                                                <div class="form-group m-b-n-xs">
+                                                    <label>Banner:</label>
+                                                    <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                        <div class="form-control input-sm" data-trigger="fileinput">
+                                                            <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                            <span class="fileinput-filename"></span>
+                                                        </div>
+                                                        <span class="input-group-addon btn btn-success btn-file input-sm">
+                                                            <span class="fileinput-new input-sm">Seleccionar banner</span>
+                                                            <span class="fileinput-exists input-sm">Cambiar</span>
+                                                            <input type="file" name="fileConvenio" id="fileConvenio" accept="image/*">
+                                                        </span>
+                                                        <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm" 
+                                                            data-dismiss="fileinput">Quitar</a>
+                                                    </div>
+                                                    <asp:Literal ID="ltBanner" runat="server"></asp:Literal>
                                                 </div>
                                                 <div class="form-group m-b-n-xs">
                                                     <label>Descripción del plan:</label>
@@ -328,6 +351,8 @@
                                                 <tr>
                                                     <th>Nombre</th>
                                                     <th data-breakpoints="xs">Descripción</th>
+                                                    <th data-breakpoints="xs">Meses</th>
+                                                    <th data-breakpoints="xs">Vigencia</th>
                                                     <th data-breakpoints="xs" class="text-right">Precio</th>
                                                     <th data-breakpoints="xs sm md">Creado por</th>
                                                     <th data-breakpoints="xs sm md" data-sortable="false">Estado</th>
@@ -340,6 +365,8 @@
                                                         <tr class="feed-element">
                                                             <td><span class="btn btn-<%# Eval("NombreColorPlan") %> btn-outline btn-block btn-sm" style="font-size: 12px;"><%# Eval("NombrePlan") %></span></td>
                                                             <td><i class="fa fa-note-sticky m-r-xs font-bold"></i><%# Eval("DescripcionPlan") %></td>
+                                                            <td><%# Eval("TotalMeses") %></td>
+                                                            <td><%# String.Format("{0:d MMM 'de' yyyy} a {1:d MMM 'de' yyyy}", Eval("FechaInicial"), Eval("FechaFinal")) %></td>
                                                             <td style="text-align: right;">$<%# Eval("PrecioTotal","{0:N0}") %></td>
                                                             <td style="white-space: nowrap;"><i class="fa fa-circle-user m-r-xs font-bold"></i><%# Eval("NombreUsuario") %></td>
                                                             <td><span class="badge badge-<%# Eval("label") %>"><%# Eval("EstadoPlan") %></span></td>
@@ -407,7 +434,6 @@
     <script src="js/plugins/chartJs/Chart.min.js"></script>
 
     <!-- Select2 -->
-    <%--<script src="js/plugins/select2/select2.full.min.js"></script>--%>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
     <!-- Page-Level Scripts -->

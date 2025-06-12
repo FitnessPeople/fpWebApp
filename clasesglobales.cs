@@ -4933,6 +4933,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicial);
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
                         cmd.Parameters.AddWithValue("@p_permanente", permanente);
+                        cmd.Parameters.AddWithValue("@p_titulo_plan", tituloPlan);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -4977,6 +4978,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicial);
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
                         cmd.Parameters.AddWithValue("@p_permanente", permanente);
+                        cmd.Parameters.AddWithValue("@p_titulo_plan", tituloPlan);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -5901,11 +5903,17 @@ namespace fpWebApp
             return dt;
         }
 
+        //public string ActualizarEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, 
+        //string telEmpleado, string telEmpleadoCorp, string emailEmpleado, string emailEmpleadoCorp,
+        //    string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato,
+        //    string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
+        //    int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo)
+
         public string ActualizarEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, 
             string telEmpleado, string telEmpleadoCorp, string emailEmpleado, string emailEmpleadoCorp, 
             string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato, 
-            string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
-            int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo)
+            string tipoContrato, int idSede, int sueldo, string grupoNomina, int idEps,
+            int idFondo, int idArl, int idCajaCompensa, int idCesantias, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo)
         {
             string respuesta = string.Empty;
             try
@@ -5932,10 +5940,10 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_foto_empleado", fotoEmpleado);
                         cmd.Parameters.AddWithValue("@p_nro_contrato", nroContrato);
                         cmd.Parameters.AddWithValue("@p_tipo_contrato", tipoContrato);
-                        cmd.Parameters.AddWithValue("@p_id_empresa_fp", idEmpresaFP);
+                        //cmd.Parameters.AddWithValue("@p_id_empresa_fp", idEmpresaFP);
                         cmd.Parameters.AddWithValue("@p_id_sede", idSede);
-                        cmd.Parameters.AddWithValue("@p_fecha_inicio", fechaIni);
-                        cmd.Parameters.AddWithValue("@p_fecha_fin", fechaFin);
+                        //cmd.Parameters.AddWithValue("@p_fecha_inicio", fechaIni);
+                        //cmd.Parameters.AddWithValue("@p_fecha_fin", fechaFin);
                         cmd.Parameters.AddWithValue("@p_sueldo", sueldo);
                         cmd.Parameters.AddWithValue("@p_grupo_nomina", grupoNomina);
                         cmd.Parameters.AddWithValue("@p_id_eps", idEps);
@@ -5943,7 +5951,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_id_arl", idArl);
                         cmd.Parameters.AddWithValue("@p_id_caja_comp", idCajaCompensa);
                         cmd.Parameters.AddWithValue("@p_cesantias", idCesantias);
-                        cmd.Parameters.AddWithValue("@p_estado", estadoEmpleado);
+                        //cmd.Parameters.AddWithValue("@p_estado", estadoEmpleado);
                         cmd.Parameters.AddWithValue("@p_id_genero", idGenero);
                         cmd.Parameters.AddWithValue("@p_estado_civil", idEstadoCivil);
                         cmd.Parameters.AddWithValue("@p_canal_venta", idCanalVenta);

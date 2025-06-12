@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -23,11 +22,17 @@ namespace fpWebApp
             bool boolReturnValue = false;
             UserName = UserName.Replace("'", "");
 
+            //string strQuery = "SELECT u.*, e.*, p.* " +
+            //    "FROM Usuarios u " +
+            //    "LEFT JOIN Empleados p ON u.idEmpleado = p.DocumentoEmpleado " +
+            //    "LEFT JOIN Empresas e ON u.idEmpresa = e.idEmpresa " +
+            //    "WHERE u.EmailUsuario = '" + UserName + "' " +
+            //    "AND u.ClaveUsuario = '" + Password + "' ";
             string strQuery = "SELECT u.*, e.*, p.* " +
                 "FROM Usuarios u " +
                 "LEFT JOIN Empleados p ON u.idEmpleado = p.DocumentoEmpleado " +
                 "LEFT JOIN Empresas e ON u.idEmpresa = e.idEmpresa " +
-                "WHERE u.EmailUsuario = '" + UserName + "' " +
+                "WHERE u.idEmpleado = '" + UserName + "' " +
                 "AND u.ClaveUsuario = '" + Password + "' ";
 
             clasesglobales cg = new clasesglobales();
@@ -54,12 +59,14 @@ namespace fpWebApp
                     Session["idPerfil"] = dt.Rows[0]["idPerfil"].ToString();
                     Session["usuario"] = dt.Rows[0]["EmailUsuario"].ToString();
                     Session["idSede"] = dt.Rows[0]["idSede"].ToString();
+                    Session["idEmpleado"] = dt.Rows[0]["idEmpleado"].ToString();
                     boolReturnValue = true;
                 }
             }
             else
             {
-                strMensaje = "Email o contraseña errada.<br />";
+                //strMensaje = "Email o contraseña errada.<br />";
+                strMensaje = "Identificación o contraseña errada.<br />";
                 strMensaje += "<a class=\"alert-link\" href=\"#\">Intente nuevamente</a>.";
                 ltMensaje.Text = strMensaje;
                 divMensaje.Visible = true;
@@ -72,7 +79,8 @@ namespace fpWebApp
 
         protected void btnIngresar_Click(object sender, EventArgs e)
         {
-            string usuario = txbEmail.Text.ToString() + ddlDominio.SelectedItem.Value.ToString();
+            //string usuario = txbEmail.Text.ToString() + ddlDominio.SelectedItem.Value.ToString();
+            string usuario = txbEmail.Text.ToString();
             string clave = txbPassword.Text.ToString();
 
             clasesglobales cg = new clasesglobales();
@@ -81,7 +89,7 @@ namespace fpWebApp
             if (YourValidationFunction(usuario, strHashClave))
             {
                 cg.InsertarLog(Session["idusuario"].ToString(), "usuarios", "Login", "El usuario inicio sesión.", "", "");
-                Response.Redirect("inicio");
+                Response.Redirect("micuenta");
             }
         }
     }

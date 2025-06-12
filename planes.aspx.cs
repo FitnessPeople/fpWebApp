@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Odbc;
 using System.Globalization;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Optimization;
@@ -91,6 +92,7 @@ namespace fpWebApp
                                     }
 
                                     txbPlan.Text = dt.Rows[0]["NombrePlan"].ToString();
+                                    txbTituloPlan.Text = dt.Rows[0]["TituloPlan"].ToString();
                                     txbDescripcion.Text = dt.Rows[0]["DescripcionPlan"].ToString();
                                     int intPrecioBase = Convert.ToInt32(dt.Rows[0]["PrecioBase"]);
                                     txbPrecioBase.Text = intPrecioBase.ToString("C0", new CultureInfo("es-CO"));
@@ -103,6 +105,11 @@ namespace fpWebApp
                                     cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                     btnAgregar.Text = "Actualizar";
                                     ltTitulo.Text = "Actualizar Plan";
+
+                                    if (dt.Rows[0]["BannerWeb"].ToString() != "")
+                                    {
+                                        ltBanner.Text = "<img src=\"img/banners/" + dt.Rows[0]["BannerWeb"].ToString() + "\" class=\"img responsive\" />";
+                                    }
                                 }
                             }
                             if (Request.QueryString["deleteid"] != null)
@@ -134,6 +141,7 @@ namespace fpWebApp
                                         }
 
                                         txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
+                                        txbTituloPlan.Text = dt1.Rows[0]["TituloPlan"].ToString();
                                         txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
                                         txbPrecioBase.Text = dt1.Rows[0]["PrecioBase"].ToString();
                                         txbPrecioTotal.Text = dt.Rows[0]["PrecioTotal"].ToString();
@@ -179,6 +187,7 @@ namespace fpWebApp
                                         }
 
                                         txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
+                                        txbTituloPlan.Text = dt1.Rows[0]["TituloPlan"].ToString();
                                         txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
                                         txbPrecioBase.Text = dt1.Rows[0]["PrecioBase"].ToString();
                                         txbPrecioTotal.Text = dt1.Rows[0]["PrecioTotal"].ToString();
@@ -254,6 +263,17 @@ namespace fpWebApp
                 "LEFT JOIN Usuarios u ON pm.idUsuario = u.idUsuario ";
             DataTable dt = cg.TraerDatos(strQuery);
             rpPlanes.DataSource = dt;
+
+            if (!dt.Columns.Contains("TotalMeses"))
+                dt.Columns.Add("TotalMeses", typeof(int));
+
+            foreach (DataRow row in dt.Rows)
+            {
+                int meses = row["Meses"] != DBNull.Value ? Convert.ToInt32(row["Meses"]) : 0;
+                int cortesia = row["MesesCortesia"] != DBNull.Value ? Convert.ToInt32(row["MesesCortesia"]) : 0;
+                row["TotalMeses"] = meses + cortesia;
+            }
+
             rpPlanes.DataBind();
             dt.Dispose();
         }
@@ -310,6 +330,17 @@ namespace fpWebApp
             if (Request.QueryString.Count > 0)
             {
                 string strInitData = TraerData();
+
+                string strFilename = "";
+                HttpPostedFile postedFile = Request.Files["fileConvenio"];
+
+                if (postedFile != null && postedFile.ContentLength > 0)
+                {
+                    //Save the File.
+                    string filePath = Server.MapPath("~//img//banners//") + Path.GetFileName(postedFile.FileName);
+                    postedFile.SaveAs(filePath);
+                    strFilename = postedFile.FileName;
+                }
 
                 if (Request.QueryString["editid"] != null)
                 {
