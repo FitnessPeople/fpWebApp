@@ -320,8 +320,6 @@
                                                                     <asp:DropDownList ID="ddlStatusLead" runat="server" CssClass="select2_demo_1 form-control input-sm" AppendDataBoundItems="true">
                                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                     </asp:DropDownList>
-
-
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="ddlStatusLead" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">

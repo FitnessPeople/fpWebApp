@@ -391,7 +391,7 @@ namespace fpWebApp
             ViewState["idPlan"] = dt.Rows[0]["idPlan"].ToString();
             ViewState["nombrePlan"] = dt.Rows[0]["NombrePlan"].ToString();
             ViewState["precioBase"] = Convert.ToInt32(dt.Rows[0]["PrecioBase"].ToString());
-            ViewState["descuentoMensual"] = Convert.ToDouble(dt.Rows[0]["DescuentoMensual"].ToString());
+            ViewState["descuentoMensual"] = "";
             ViewState["mesesMaximo"] = Convert.ToDouble(dt.Rows[0]["MesesMaximo"].ToString());
 
             //divPanelResumen.Attributes.Remove("class");
