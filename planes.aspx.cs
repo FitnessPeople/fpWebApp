@@ -121,15 +121,26 @@ namespace fpWebApp
                                     dt1 = cg.ConsultarPlanPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                     if (dt1.Rows.Count > 0)
                                     {
+                                        if (dt1.Rows[0]["FechaInicial"] == DBNull.Value || string.IsNullOrWhiteSpace(dt1.Rows[0]["FechaInicial"].ToString()) &&
+                                        dt1.Rows[0]["FechaFinal"] == DBNull.Value || string.IsNullOrWhiteSpace(dt1.Rows[0]["FechaFinal"].ToString()))
+                                        {
+                                            txbFechaInicial.Text = DateTime.Now.ToString("yyyy-MM-dd");
+                                            txbFechaFinal.Text = DateTime.Now.ToString("yyyy-MM-dd");
+                                        }
+                                        else
+                                        {
+                                            txbFechaInicial.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
+                                            txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
+                                        }
+
                                         txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
                                         txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
                                         txbPrecioBase.Text = dt1.Rows[0]["PrecioBase"].ToString();
                                         txbPrecioTotal.Text = dt.Rows[0]["PrecioTotal"].ToString();
                                         txbMeses.Text = dt.Rows[0]["Meses"].ToString();
                                         txbDiasCongelamiento.Text = dt1.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
-                                        txbFechaInicial.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
-                                        txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
-                                        ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt1.Rows[0]["NombreColorPlan"].ToString())));
+                                        ddlColor.SelectedValue = dt1.Rows[0]["NombreColorPlan"].ToString();
+                                        //ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt1.Rows[0]["NombreColorPlan"].ToString())));
                                         cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                         txbPlan.Enabled = false;
                                         txbDescripcion.Enabled = false;
@@ -155,15 +166,26 @@ namespace fpWebApp
                                     dt1 = cg.ConsultarPlanPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                     if (dt1.Rows.Count > 0)
                                     {
+                                        if (dt1.Rows[0]["FechaInicial"] == DBNull.Value || string.IsNullOrWhiteSpace(dt1.Rows[0]["FechaInicial"].ToString()) &&
+                                        dt1.Rows[0]["FechaFinal"] == DBNull.Value || string.IsNullOrWhiteSpace(dt1.Rows[0]["FechaFinal"].ToString()))
+                                        {
+                                            txbFechaInicial.Text = DateTime.Now.ToString("yyyy-MM-dd");
+                                            txbFechaFinal.Text = DateTime.Now.ToString("yyyy-MM-dd");
+                                        }
+                                        else
+                                        {
+                                            txbFechaInicial.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
+                                            txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
+                                        }
+
                                         txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
                                         txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
                                         txbPrecioBase.Text = dt1.Rows[0]["PrecioBase"].ToString();
                                         txbPrecioTotal.Text = dt1.Rows[0]["PrecioTotal"].ToString();
                                         txbMeses.Text = dt1.Rows[0]["Meses"].ToString();
                                         txbDiasCongelamiento.Text = dt1.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
-                                        txbFechaInicial.Text = Convert.ToDateTime(dt1.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
-                                        txbFechaFinal.Text = Convert.ToDateTime(dt1.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
-                                        ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
+                                        ddlColor.SelectedValue = dt1.Rows[0]["NombreColorPlan"].ToString();
+                                        //ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
                                         cbPermanente.Checked = Convert.ToBoolean(dt1.Rows[0]["Permanente"]);
                                         txbPlan.Enabled = false;
                                         txbDescripcion.Enabled = false;
