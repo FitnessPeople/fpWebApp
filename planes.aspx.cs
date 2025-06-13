@@ -383,10 +383,9 @@ namespace fpWebApp
                         ddlColor.SelectedItem.Value.ToString(),
                         int.Parse(Session["idusuario"].ToString()),
                         double.Parse(txbDiasCongelamiento.Text.ToString()),
-                        txbFechaInicio.Text.ToString(),
-                        txbFechaFinal.Text.ToString(), 
-                        intPermanente,
-                        txbTituloPlan.Text.ToString().Trim());
+                        fechaInicial,
+                        fechaFinal, 
+                        intPermanente);
 
                         cg.InsertarLog(Session["idusuario"].ToString(), "planes", "Agrega", "El usuario agregó un nuevo plan: " + txbPlan.Text.ToString() + ".", "", "");
                     }

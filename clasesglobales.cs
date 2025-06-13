@@ -4908,8 +4908,9 @@ namespace fpWebApp
             return dt;
         }
 
-        public string InsertarPlan(string nombrePlan, string descripcionPlan, int precio, int precioTotal, int mesesMaximo,
-            int idUsuario, double Dias, string fechaInicio, string fechaFinal, int permanente, string tituloPlan)
+        public string InsertarPlan(string nombrePlan, string descripcionPlan, int precioTotal, int precioBase, int meses, 
+            int mesesCortesia, string color, 
+            int idUsuario, double diasCongelamiento, string fechaInicio, string fechaFinal, int permanente)
         {
             string respuesta = string.Empty;
             try
@@ -4921,8 +4922,8 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_PLAN", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@p_nombre", nombre);
-                        cmd.Parameters.AddWithValue("@p_descripcion", descripcion);
+                        cmd.Parameters.AddWithValue("@p_nombre", nombrePlan);
+                        cmd.Parameters.AddWithValue("@p_descripcion", descripcionPlan);
                         cmd.Parameters.AddWithValue("@p_precio_total", precioTotal);
                         cmd.Parameters.AddWithValue("@p_precio_base", precioBase);
                         cmd.Parameters.AddWithValue("@p_meses", meses);
@@ -4930,7 +4931,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_color_plan", color);
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
                         cmd.Parameters.AddWithValue("@p_dias_congelamiento", diasCongelamiento);
-                        cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicial);
+                        cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicio);
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
                         cmd.Parameters.AddWithValue("@p_permanente", permanente);
 
