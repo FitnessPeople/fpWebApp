@@ -267,19 +267,23 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="form-group">
-                                                        <a href="planes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                        <%--<asp:Button ID="btnSimular" runat="server" Text="Simular"
-                                                            CssClass="btn btn-sm btn-success pull-right m-t-n-xs m-l-md" OnClick="btnSimular_Click"
-                                                            Visible="true" ValidationGroup="agregar" />--%>
-                                                        <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
-                                                            CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
-                                                            OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
+                                                    <div class="col-sm-12">
+                                                         <div class="form-group">
+                                                             <a href="planes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                             <%--<asp:Button ID="btnSimular" runat="server" Text="Simular"
+                                                                 CssClass="btn btn-sm btn-success pull-right m-t-n-xs m-l-md" OnClick="btnSimular_Click"
+                                                                 Visible="true" ValidationGroup="agregar" />--%>
+                                                             <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
+                                                                 CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
+                                                                 OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
+                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="form-group">
-                                                        <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -465,8 +469,6 @@
             });
         });
     </script>
-
-    
 
 </body>
 

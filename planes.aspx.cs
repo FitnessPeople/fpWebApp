@@ -91,7 +91,6 @@ namespace fpWebApp
                                     }
 
                                     txbPlan.Text = dt.Rows[0]["NombrePlan"].ToString();
-                                    //txbTituloPlan.Text = dt.Rows[0]["TituloPlan"].ToString();
                                     txbDescripcion.Text = dt.Rows[0]["DescripcionPlan"].ToString();
                                     int intPrecioBase = Convert.ToInt32(dt.Rows[0]["PrecioBase"]);
                                     txbPrecioBase.Text = intPrecioBase.ToString("C0", new CultureInfo("es-CO"));
@@ -103,8 +102,7 @@ namespace fpWebApp
                                     ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
                                     cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                     btnAgregar.Text = "Actualizar";
-                                    ltTitulo.Text = "Actualizar Plan";
-
+                                    
                                     //if (dt.Rows[0]["BannerWeb"].ToString() != "")
                                     //{
                                     //    ltBanner.Text = "<img src=\"img/banners/" + dt.Rows[0]["BannerWeb"].ToString() + "\" class=\"img responsive\" />";
@@ -140,7 +138,6 @@ namespace fpWebApp
                                         }
 
                                         txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
-                                        //txbTituloPlan.Text = dt1.Rows[0]["TituloPlan"].ToString();
                                         txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
                                         txbPrecioBase.Text = dt1.Rows[0]["PrecioBase"].ToString();
                                         txbPrecioTotal.Text = dt.Rows[0]["PrecioTotal"].ToString();
@@ -186,7 +183,6 @@ namespace fpWebApp
                                         }
 
                                         txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
-                                        //txbTituloPlan.Text = dt1.Rows[0]["TituloPlan"].ToString();
                                         txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
                                         txbPrecioBase.Text = dt1.Rows[0]["PrecioBase"].ToString();
                                         txbPrecioTotal.Text = dt1.Rows[0]["PrecioTotal"].ToString();
@@ -328,18 +324,8 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
-                string strInitData = TraerData();
-
-                string strFilename = "";
-                HttpPostedFile postedFile = Request.Files["fileConvenio"];
-
-                if (postedFile != null && postedFile.ContentLength > 0)
-                {
-                    //Save the File.
-                    string filePath = Server.MapPath("~//img//banners//") + Path.GetFileName(postedFile.FileName);
-                    postedFile.SaveAs(filePath);
-                    strFilename = postedFile.FileName;
-                }
+                string requestQuery = Request.QueryString["editid"] ?? Request.QueryString["deleteid"];
+                string strInitData = TraerData(requestQuery);
 
                 if (Request.QueryString["editid"] != null)
                 {
@@ -357,7 +343,7 @@ namespace fpWebApp
                         fechaFinal,
                         intPermanente);
 
-                    string strNewData = TraerData();
+                    string strNewData = TraerData(requestQuery);
 
                     cg.InsertarLog(Session["idusuario"].ToString(), "planes", "Modifica", "El usuario modificó el plan: " + txbPlan.Text.ToString() + ".", strInitData, strNewData);
                 }
@@ -524,10 +510,10 @@ namespace fpWebApp
         //    dt.Dispose();
         //}
 
-        private string TraerData()
+        private string TraerData(string requestQuery)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanPorId(int.Parse(Request.QueryString["editid"].ToString()));
+            DataTable dt = cg.ConsultarPlanPorId(int.Parse(requestQuery));
 
             string strData = "";
             foreach (DataColumn column in dt.Columns)
