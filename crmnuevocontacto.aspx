@@ -35,7 +35,7 @@
     <!-- JS de Quill -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
-    <%--        formato de moneda--%>
+    <%--    formato de moneda--%>
     <script>
         function formatCurrency(input) {
             let value = input.value.replace(/\D/g, '');
@@ -58,7 +58,7 @@
         }
     </script>
 
-    <%--        formato de posición en el menú--%>
+    <%--    formato de posición en el menú--%>
     <script>
         function changeClass() {
             var element1 = document.querySelector("#crmnuevocontacto");
@@ -68,7 +68,7 @@
         }
     </script>
 
-    <%--        Formatear telefono --%>
+    <%--    Formatear telefono --%>
     <script>
         function formatearTelefono(input) {
             let num = input.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
@@ -106,9 +106,6 @@
     </script>
     <!-- Select2 -->
     <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
-
-
-
 
     <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
 
@@ -175,6 +172,7 @@
             </div>
         </div>
     </div>
+    
     <div id="wrapper">
 
         <uc1:navbar runat="server" ID="navbar1" />

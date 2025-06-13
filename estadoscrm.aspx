@@ -29,6 +29,9 @@
     <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
+    <!-- Select2 -->
+    <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
+
     <!-- FooTable -->
     <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
@@ -175,103 +178,117 @@
                                                             </asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
-                                                </div>
-
-                                                    <div class="form-group">
-                                                        <a href="ciudadessedes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                        <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
-                                                            CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
-                                                            OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
-                                                    </div>
-                                                    <br />
-                                                    <br />
-                                                    <div class="form-group">
-
-                                                        <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="ibox float-e-margins">
-                                        <div class="ibox-title">
-                                            <h5>Lista de Estados CRM</h5>
-                                            <div class="ibox-tools">
-                                                <a class="collapse-link">
-                                                    <i class="fa fa-chevron-up"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="ibox-content">
-
-                                            <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
-                                                <div class="col-lg-6 form-horizontal">
-                                                    <div class="form-group">
-                                                        <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
+                                                    <div class="col-sm-6">
+                                                        <label>Color del plan</label>
+                                                        <asp:DropDownList ID="ddlColor" runat="server" CssClass="select2_demo_1 form-control input-sm">
+                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            <asp:ListItem Value="primary" data-color="#1ab394" data-icon="fa-stop">&nbsp;Primary</asp:ListItem>
+                                                            <asp:ListItem Value="success" data-color="#1c84c6" data-icon="fa-stop">&nbsp;Success</asp:ListItem>
+                                                            <asp:ListItem Value="info" data-color="#23c6c8" data-icon="fa-stop">&nbsp;Info</asp:ListItem>
+                                                            <asp:ListItem Value="warning" data-color="#F8AC59" data-icon="fa-stop">&nbsp;Warning</asp:ListItem>
+                                                            <asp:ListItem Value="danger" data-color="#ed5565" data-icon="fa-stop">&nbsp;Danger</asp:ListItem>
+                                                        </asp:DropDownList>
+                                                        <asp:RequiredFieldValidator ID="rfvColor" runat="server" ErrorMessage="* Campo requerido"
+                                                            ControlToValidate="ddlColor" ValidationGroup="agregar" InitialValue=""
+                                                            CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-6 form-horizontal">
-                                                    <asp:LinkButton ID="lbExportarExcel" runat="server"
-                                                        CausesValidation="false"
-                                                        CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
-                                                        OnClick="lbExportarExcel_Click">
-                                                    <i class="fa fa-file-excel"></i> EXCEL
-                                                    </asp:LinkButton>
-                                                </div>
+                                            <div class="form-group">
+                                                <a href="ciudadessedes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
+                                                    CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
+                                                    OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
                                             </div>
+                                            <br />
+                                            <br />
+                                            <div class="form-group">
 
-                                            <table class="footable table table-striped" data-paging-size="10"
-                                                data-filter-min="3" data-filter-placeholder="Buscar"
-                                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
-                                                data-paging-limit="10" data-filtering="true"
-                                                data-filter-container="#filter-form-container" data-filter-delay="300"
-                                                data-filter-dropdown-title="Buscar en:" data-filter-position="left"
-                                                data-empty="Sin resultados">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Nombre Estado CRM</th>
-                                                        <th>Color</th>
-                                                        <th>Icono</th>
-                                                        <th>Hexadecimal</th>
-
-                                                        <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <asp:Repeater ID="rpCiudadSede" runat="server" OnItemDataBound="rpCiudadSede_ItemDataBound">
-                                                        <ItemTemplate>
-                                                            <tr class="feed-element">
-                                                                <td><%# Eval("NombreEstadoCRM") %></td>
-                                                                <td><%# Eval("ColorEstadoCRM") %></td>
-                                                                <td><%# Eval("IconoMinEstadoCRM") %></td>
-                                                                <td><%# Eval("ColorHexaCRM") %></td>
-                                                                <td>
-                                                                    <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
-                                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
-                                                                    <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a></td>
-                                                            </tr>
-                                                        </ItemTemplate>
-                                                    </asp:Repeater>
-                                                </tbody>
-                                            </table>
-
+                                                <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                    </form>
-                    <%--Fin Contenido!!!!--%>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>Lista de Estados CRM</h5>
+                                    <div class="ibox-tools">
+                                        <a class="collapse-link">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="ibox-content">
+
+                                    <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
+                                        <div class="col-lg-6 form-horizontal">
+                                            <div class="form-group">
+                                                <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 form-horizontal">
+                                            <asp:LinkButton ID="lbExportarExcel" runat="server"
+                                                CausesValidation="false"
+                                                CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
+                                                OnClick="lbExportarExcel_Click">
+                                                    <i class="fa fa-file-excel"></i> EXCEL
+                                            </asp:LinkButton>
+                                        </div>
+                                    </div>
+
+                                    <table class="footable table table-striped" data-paging-size="10"
+                                        data-filter-min="3" data-filter-placeholder="Buscar"
+                                        data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
+                                        data-paging-limit="10" data-filtering="true"
+                                        data-filter-container="#filter-form-container" data-filter-delay="300"
+                                        data-filter-dropdown-title="Buscar en:" data-filter-position="left"
+                                        data-empty="Sin resultados">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre Estado CRM</th>
+                                                <th>Color</th>
+                                                <th>Icono</th>
+                                                <th>Hexadecimal</th>
+
+                                                <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <asp:Repeater ID="rpCiudadSede" runat="server" OnItemDataBound="rpCiudadSede_ItemDataBound">
+                                                <ItemTemplate>
+                                                    <tr class="feed-element">
+                                                        <td><%# Eval("NombreEstadoCRM") %></td>
+                                                        <td><%# Eval("ColorEstadoCRM") %></td>
+                                                        <td><%# Eval("IconoMinEstadoCRM") %></td>
+                                                        <td><%# Eval("ColorHexaCRM") %></td>
+                                                        <td>
+                                                            <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                            <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a></td>
+                                                    </tr>
+                                                </ItemTemplate>
+                                            </asp:Repeater>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
                 </div>
+                </form>
+                    <%--Fin Contenido!!!!--%>
             </div>
-
-            <uc1:footer runat="server" ID="footer" />
-
         </div>
-        <uc1:rightsidebar runat="server" ID="rightsidebar" />
+
+        <uc1:footer runat="server" ID="footer" />
+
+    </div>
+    <uc1:rightsidebar runat="server" ID="rightsidebar" />
     </div>
 
     <!-- Mainly scripts -->
@@ -292,6 +309,7 @@
     <!-- Page-Level Scripts -->
     <script>
         $('.footable').footable();
+        $(".select2_demo_1").select2();
     </script>
 
 </body>
