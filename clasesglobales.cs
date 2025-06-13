@@ -4933,7 +4933,6 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicial);
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
                         cmd.Parameters.AddWithValue("@p_permanente", permanente);
-                        cmd.Parameters.AddWithValue("@p_titulo_plan", tituloPlan);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -4978,7 +4977,6 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicial);
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
                         cmd.Parameters.AddWithValue("@p_permanente", permanente);
-                        cmd.Parameters.AddWithValue("@p_titulo_plan", tituloPlan);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";

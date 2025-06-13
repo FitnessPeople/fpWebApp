@@ -154,31 +154,6 @@
                                                         CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group m-b-n-xs">
-                                                    <label>Título plan web:</label>
-                                                    <asp:TextBox ID="txbTituloPlan" runat="server" CssClass="form-control input-sm"
-                                                        placeholder="Título plan web"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="rfvTituloPlan" runat="server" ErrorMessage="* Campo requerido"
-                                                        ControlToValidate="txbTituloPlan" ValidationGroup="agregar"
-                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
-                                                </div>
-                                                <div class="form-group m-b-n-xs">
-                                                    <label>Banner:</label>
-                                                    <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                                                        <div class="form-control input-sm" data-trigger="fileinput">
-                                                            <i class="glyphicon glyphicon-file fileinput-exists"></i>
-                                                            <span class="fileinput-filename"></span>
-                                                        </div>
-                                                        <span class="input-group-addon btn btn-success btn-file input-sm">
-                                                            <span class="fileinput-new input-sm">Seleccionar banner</span>
-                                                            <span class="fileinput-exists input-sm">Cambiar</span>
-                                                            <input type="file" name="fileConvenio" id="fileConvenio" accept="image/*">
-                                                        </span>
-                                                        <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm" 
-                                                            data-dismiss="fileinput">Quitar</a>
-                                                    </div>
-                                                    <asp:Literal ID="ltBanner" runat="server"></asp:Literal>
-                                                </div>
-                                                <div class="form-group m-b-n-xs">
                                                     <label>Descripción del plan:</label>
                                                     <asp:TextBox ID="txbDescripcion" runat="server" CssClass="form-control input-sm" TextMode="MultiLine" Rows="4"
                                                         placeholder="Descripción"></asp:TextBox>
@@ -292,19 +267,23 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="form-group">
-                                                        <a href="planes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                        <%--<asp:Button ID="btnSimular" runat="server" Text="Simular"
-                                                            CssClass="btn btn-sm btn-success pull-right m-t-n-xs m-l-md" OnClick="btnSimular_Click"
-                                                            Visible="true" ValidationGroup="agregar" />--%>
-                                                        <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
-                                                            CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
-                                                            OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
+                                                    <div class="col-sm-12">
+                                                         <div class="form-group">
+                                                             <a href="planes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                             <%--<asp:Button ID="btnSimular" runat="server" Text="Simular"
+                                                                 CssClass="btn btn-sm btn-success pull-right m-t-n-xs m-l-md" OnClick="btnSimular_Click"
+                                                                 Visible="true" ValidationGroup="agregar" />--%>
+                                                             <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
+                                                                 CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
+                                                                 OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
+                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="form-group">
-                                                        <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -490,8 +469,6 @@
             });
         });
     </script>
-
-    
 
 </body>
 
