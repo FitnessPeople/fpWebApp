@@ -29,8 +29,7 @@
     <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
-    <!-- Select2 -->
-    <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
+
 
     <!-- FooTable -->
     <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
@@ -54,6 +53,9 @@
             element2.classList.remove("collapse");
         }
     </script>
+
+        <!-- Select2 -->
+    <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
 </head>
 
 <body onload="changeClass()">
@@ -165,7 +167,7 @@
                                                 </div>
 
                                                 <div class="row">
-                                                    <div class="col-sm-6">
+<%--                                                    <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <i class="fas fa-flag text-info"></i>
                                                             <label for="StatusLead" class="col-form-label">Color estado:</label>
@@ -177,17 +179,17 @@
                                                                 CssClass="font-bold text-danger" InitialValue="">
                                                             </asp:RequiredFieldValidator>
                                                         </div>
-                                                    </div>
+                                                    </div>--%>
                                                     <div class="col-sm-6">
-                                                        <label>Color del plan</label>
-                                                        <asp:DropDownList ID="ddlColor" runat="server" CssClass="select2_demo_1 form-control input-sm">
-                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                            <asp:ListItem Value="primary" data-color="#1ab394" data-icon="fa-stop">&nbsp;Primary</asp:ListItem>
-                                                            <asp:ListItem Value="success" data-color="#1c84c6" data-icon="fa-stop">&nbsp;Success</asp:ListItem>
-                                                            <asp:ListItem Value="info" data-color="#23c6c8" data-icon="fa-stop">&nbsp;Info</asp:ListItem>
-                                                            <asp:ListItem Value="warning" data-color="#F8AC59" data-icon="fa-stop">&nbsp;Warning</asp:ListItem>
-                                                            <asp:ListItem Value="danger" data-color="#ed5565" data-icon="fa-stop">&nbsp;Danger</asp:ListItem>
-                                                        </asp:DropDownList>
+                                                        <label>Color</label>
+                                                      <asp:DropDownList ID="ddlColor" runat="server" CssClass="form-control input-sm">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                        <asp:ListItem Value="primary" data-color="#1ab394" data-icon="fa-stop">&nbsp;Primary</asp:ListItem>
+                                                        <asp:ListItem Value="success" data-color="#1c84c6" data-icon="fa-stop">&nbsp;Success</asp:ListItem>
+                                                        <asp:ListItem Value="info" data-color="#23c6c8" data-icon="fa-stop">&nbsp;Info</asp:ListItem>
+                                                        <asp:ListItem Value="warning" data-color="#F8AC59" data-icon="fa-stop">&nbsp;Warning</asp:ListItem>
+                                                        <asp:ListItem Value="danger" data-color="#ed5565" data-icon="fa-stop">&nbsp;Danger</asp:ListItem>
+                                                    </asp:DropDownList>
                                                         <asp:RequiredFieldValidator ID="rfvColor" runat="server" ErrorMessage="* Campo requerido"
                                                             ControlToValidate="ddlColor" ValidationGroup="agregar" InitialValue=""
                                                             CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
@@ -309,7 +311,19 @@
     <!-- Page-Level Scripts -->
     <script>
         $('.footable').footable();
+    </script>
+    <script>        
         $(".select2_demo_1").select2();
+        function formatText(icon) {
+            return $('<span><i class="fa ' + $(icon.element).data('icon') + '" style="color: ' + $(icon.element).data('color') + '"></i> ' + icon.text + '</span>');
+        };
+        $(document).ready(function () {
+            $('#ddlColor').select2({
+                width: '100%',
+                templateSelection: formatText,
+                templateResult: formatText
+            });
+        });
     </script>
 
 </body>
