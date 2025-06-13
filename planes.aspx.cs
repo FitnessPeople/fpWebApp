@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -103,6 +102,11 @@ namespace fpWebApp
                                     ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
                                     cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                     btnAgregar.Text = "Actualizar";
+                                    
+                                    //if (dt.Rows[0]["BannerWeb"].ToString() != "")
+                                    //{
+                                    //    ltBanner.Text = "<img src=\"img/banners/" + dt.Rows[0]["BannerWeb"].ToString() + "\" class=\"img responsive\" />";
+                                    //}
                                 }
                             }
                             if (Request.QueryString["deleteid"] != null)
@@ -364,7 +368,7 @@ namespace fpWebApp
                         int.Parse(txbMesesCortesia.Text.ToString()),
                         ddlColor.SelectedItem.Value.ToString(),
                         int.Parse(Session["idusuario"].ToString()),
-                        int.Parse(txbDiasCongelamiento.Text.ToString()),
+                        double.Parse(txbDiasCongelamiento.Text.ToString()),
                         fechaInicial,
                         fechaFinal, 
                         intPermanente);
