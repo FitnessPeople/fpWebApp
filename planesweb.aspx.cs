@@ -256,7 +256,7 @@ namespace fpWebApp
                 {
                     string respuesta = cg.ActualizarPlanWeb(int.Parse(Request.QueryString["editid"].ToString()),
                         txbTituloPlan.Text.ToString().Trim(),
-                        txbDescripcion.Text.ToString());
+                        txbDescripcion.Text.ToString(), "", "", "");
 
                     string strNewData = TraerData();
 

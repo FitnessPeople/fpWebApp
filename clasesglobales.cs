@@ -4992,7 +4992,8 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarPlanWeb(int idPlan, string tituloPlan, string descripcionPlanWeb)
+        public string ActualizarPlanWeb(int idPlan, string tituloPlan, string descripcionPlanWeb, 
+            string bannerWeb, string imagenMarketing, string enlacePago)
         {
             string respuesta = string.Empty;
             try
@@ -5011,6 +5012,9 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
                         cmd.Parameters.AddWithValue("@p_titulo_plan", tituloPlan);
                         cmd.Parameters.AddWithValue("@p_descripcion_plan_web", descripcionPlanWeb);
+                        cmd.Parameters.AddWithValue("@p_banner_web", bannerWeb);
+                        cmd.Parameters.AddWithValue("@p_imagen_marketing", imagenMarketing);
+                        cmd.Parameters.AddWithValue("@p_enlace_pago", enlacePago);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
