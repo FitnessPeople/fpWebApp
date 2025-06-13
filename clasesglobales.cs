@@ -4908,8 +4908,8 @@ namespace fpWebApp
             return dt;
         }
 
-        public string InsertarPlan(string nombre, string descripcion, int precioTotal, int precioBase, int meses, int mesesCortesia,
-            string color, int idUsuario, int diasCongelamiento, string fechaInicial, string fechaFinal, int permanente)
+        public string InsertarPlan(string nombrePlan, string descripcionPlan, int precio, int precioTotal, int mesesMaximo,
+            int idUsuario, double Dias, string fechaInicio, string fechaFinal, int permanente, string tituloPlan)
         {
             string respuesta = string.Empty;
             try
@@ -4933,7 +4933,6 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicial);
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
                         cmd.Parameters.AddWithValue("@p_permanente", permanente);
-                        cmd.Parameters.AddWithValue("@p_titulo_plan", tituloPlan);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -4978,7 +4977,39 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicial);
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
                         cmd.Parameters.AddWithValue("@p_permanente", permanente);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarPlanWeb(int idPlan, string tituloPlan, string descripcionPlanWeb)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open(); // Abrir conexión antes de usarla
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_PLAN_WEB", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Parámetros de entrada
+                        cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
                         cmd.Parameters.AddWithValue("@p_titulo_plan", tituloPlan);
+                        cmd.Parameters.AddWithValue("@p_descripcion_plan_web", descripcionPlanWeb);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";

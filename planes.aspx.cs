@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -92,7 +91,7 @@ namespace fpWebApp
                                     }
 
                                     txbPlan.Text = dt.Rows[0]["NombrePlan"].ToString();
-                                    txbTituloPlan.Text = dt.Rows[0]["TituloPlan"].ToString();
+                                    //txbTituloPlan.Text = dt.Rows[0]["TituloPlan"].ToString();
                                     txbDescripcion.Text = dt.Rows[0]["DescripcionPlan"].ToString();
                                     int intPrecioBase = Convert.ToInt32(dt.Rows[0]["PrecioBase"]);
                                     txbPrecioBase.Text = intPrecioBase.ToString("C0", new CultureInfo("es-CO"));
@@ -106,10 +105,10 @@ namespace fpWebApp
                                     btnAgregar.Text = "Actualizar";
                                     ltTitulo.Text = "Actualizar Plan";
 
-                                    if (dt.Rows[0]["BannerWeb"].ToString() != "")
-                                    {
-                                        ltBanner.Text = "<img src=\"img/banners/" + dt.Rows[0]["BannerWeb"].ToString() + "\" class=\"img responsive\" />";
-                                    }
+                                    //if (dt.Rows[0]["BannerWeb"].ToString() != "")
+                                    //{
+                                    //    ltBanner.Text = "<img src=\"img/banners/" + dt.Rows[0]["BannerWeb"].ToString() + "\" class=\"img responsive\" />";
+                                    //}
                                 }
                             }
                             if (Request.QueryString["deleteid"] != null)
@@ -141,7 +140,7 @@ namespace fpWebApp
                                         }
 
                                         txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
-                                        txbTituloPlan.Text = dt1.Rows[0]["TituloPlan"].ToString();
+                                        //txbTituloPlan.Text = dt1.Rows[0]["TituloPlan"].ToString();
                                         txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
                                         txbPrecioBase.Text = dt1.Rows[0]["PrecioBase"].ToString();
                                         txbPrecioTotal.Text = dt.Rows[0]["PrecioTotal"].ToString();
@@ -187,7 +186,7 @@ namespace fpWebApp
                                         }
 
                                         txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
-                                        txbTituloPlan.Text = dt1.Rows[0]["TituloPlan"].ToString();
+                                        //txbTituloPlan.Text = dt1.Rows[0]["TituloPlan"].ToString();
                                         txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
                                         txbPrecioBase.Text = dt1.Rows[0]["PrecioBase"].ToString();
                                         txbPrecioTotal.Text = dt1.Rows[0]["PrecioTotal"].ToString();
@@ -383,10 +382,11 @@ namespace fpWebApp
                         int.Parse(txbMesesCortesia.Text.ToString()),
                         ddlColor.SelectedItem.Value.ToString(),
                         int.Parse(Session["idusuario"].ToString()),
-                        int.Parse(txbDiasCongelamiento.Text.ToString()),
-                        fechaInicial,
-                        fechaFinal, 
-                        intPermanente);
+                        double.Parse(txbDiasCongelamiento.Text.ToString()),
+                        txbFechaInicio.Text.ToString(),
+                        txbFechaFinal.Text.ToString(), 
+                        intPermanente,
+                        txbTituloPlan.Text.ToString().Trim());
 
                         cg.InsertarLog(Session["idusuario"].ToString(), "planes", "Agrega", "El usuario agregó un nuevo plan: " + txbPlan.Text.ToString() + ".", "", "");
                     }
