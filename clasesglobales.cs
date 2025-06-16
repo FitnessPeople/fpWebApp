@@ -6910,7 +6910,7 @@ namespace fpWebApp
             return mensaje;
         }
 
-        public string InsertarEstadoCRM(string nombreEstadoCRM, string colorEstadoCRM, int iconoMaxEstadoCRM, int iconoMinEstadoCRM,
+        public string InsertarEstadoCRM(string nombreEstadoCRM, string colorEstadoCRM, string iconoMaxEstadoCRM, string iconoMinEstadoCRM,
         string colorHexaCRM, out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;

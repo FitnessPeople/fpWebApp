@@ -78,22 +78,22 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltTitulo;
 
         /// <summary>
-        /// Control txbCiudadSede.
+        /// Control txbNombreEstado.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbCiudadSede;
+        protected global::System.Web.UI.WebControls.TextBox txbNombreEstado;
 
         /// <summary>
-        /// Control rfvCiudadSede.
+        /// Control rfvTxbNombreEstado.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCiudadSede;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTxbNombreEstado;
 
         /// <summary>
         /// Control ddlColores.
@@ -123,13 +123,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlIconos;
 
         /// <summary>
-        /// Control RequiredFieldValidator2.
+        /// Control rfvIconos.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvIconos;
 
         /// <summary>
         /// Control btnAgregar.

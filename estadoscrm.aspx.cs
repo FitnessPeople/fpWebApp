@@ -62,7 +62,7 @@ namespace fpWebApp
                             dt = cg.ConsultarCiudadSedePorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                txbCiudadSede.Text = dt.Rows[0]["NombreCiudadSede"].ToString();
+                                txbNombreEstado.Text = dt.Rows[0]["NombreCiudadSede"].ToString();
                                 btnAgregar.Text = "Actualizar";
                                 ltTitulo.Text = "Actualizar Estado CRM";
                             }
@@ -83,8 +83,8 @@ namespace fpWebApp
                                 dt1 = cg.ConsultarCiudadSedePorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt.Rows.Count > 0)
                                 {
-                                    txbCiudadSede.Text = dt1.Rows[0]["NombreCiudadSede"].ToString();
-                                    txbCiudadSede.Enabled = false;
+                                    txbNombreEstado.Text = dt1.Rows[0]["NombreCiudadSede"].ToString();
+                                    txbNombreEstado.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     btnAgregar.Enabled = false;
                                     ltTitulo.Text = "Borrar Estado CRM";
@@ -98,8 +98,8 @@ namespace fpWebApp
                                 dt1 = cg.ConsultarCiudadSedePorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
-                                    txbCiudadSede.Text = dt1.Rows[0]["NombreCiudadSede"].ToString();
-                                    txbCiudadSede.Enabled = false;
+                                    txbNombreEstado.Text = dt1.Rows[0]["NombreCiudadSede"].ToString();
+                                    txbNombreEstado.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     ltTitulo.Text = "Borrar Estado CRM";
                                 }
@@ -159,15 +159,13 @@ namespace fpWebApp
             dt.Columns.Add("IconoMinEstadoCRM", typeof(string));
             dt.Columns.Add("idEstadoCRM", typeof(string));
 
-            dt.Rows.Add("Primary", "#1c84c6", "fa fa-circle", "1");
-            dt.Rows.Add("Info", "#23c6c8", "fa fa-circle", "2");
-            dt.Rows.Add("Success", "#1ab394", "fa fa-circle", "3");
-            dt.Rows.Add("Warning", "#f8ac59", "fa fa-circle", "4");
-            dt.Rows.Add("Danger", "#ed5565", "fa fa-circle", "5");
-            dt.Rows.Add("Pink", "#e91e63", "fa fa-circle", "6");
-            dt.Rows.Add("Violet", "#8e44ad", "fa fa-circle", "7");
-            dt.Rows.Add("Brown", "#795548", "fa fa-circle", "8");
-            dt.Rows.Add("Silver", "#bdc3c7", "fa fa-circle", "9");
+            dt.Rows.Add("primary", "#1c84c6", "fa fa-circle", "1");
+            dt.Rows.Add("info", "#23c6c8", "fa fa-circle", "2");
+            dt.Rows.Add("success", "#1ab394", "fa fa-circle", "3");
+            dt.Rows.Add("warning", "#f8ac59", "fa fa-circle", "4");
+            dt.Rows.Add("danger", "#ed5565", "fa fa-circle", "5");
+            dt.Rows.Add("light", "#f8f9fa", "fa fa-circle", "6");           
+            dt.Rows.Add("secondary", "#6c757d", "fa fa-circle", "7");
 
             // Cargar al DropDownList
             ddlColores.Items.Clear();
@@ -178,7 +176,7 @@ namespace fpWebApp
                 ListItem item = new ListItem
                 {
                     Text = row["NombreEstadoCRM"].ToString(), // solo el texto
-                    Value = row["idEstadoCRM"].ToString()
+                    Value = row["ColorHexaCRM"].ToString()
                 };
 
                 item.Attributes["style"] = $"color: {row["ColorHexaCRM"]};";
@@ -195,14 +193,17 @@ namespace fpWebApp
             dt.Columns.Add("NombreEstadoCRM", typeof(string));
             dt.Columns.Add("ColorHexaCRM", typeof(string)); // Puedes usar un color genérico o fijo
             dt.Columns.Add("IconoMinEstadoCRM", typeof(string));
+            dt.Columns.Add("IconoMaxEstadoCRM", typeof(string)); // Nueva columna
             dt.Columns.Add("idEstadoCRM", typeof(string));
 
             string colorNeutro = "#6c757d"; // Gris Bootstrap
 
-            dt.Rows.Add("Apuntar", colorNeutro, "fa-solid fa-hand-point-up", "1");
-            dt.Rows.Add("Enviar", colorNeutro, "fa-solid fa-paper-plane", "2");
-            dt.Rows.Add("Acuerdo", colorNeutro, "fa-solid fa-handshake", "3");
-            dt.Rows.Add("Sin acuerdo", colorNeutro, "fa-solid fa-handshake-slash", "4");
+            // Agregamos el mismo ícono para el min y generamos el max agregando fa-5x
+            dt.Rows.Add("Apuntar", colorNeutro, "fa-solid fa-hand-point-up", "fa-solid fa-hand-point-up fa-5x", "1");
+            dt.Rows.Add("Enviar", colorNeutro, "fa-solid fa-paper-plane", "fa-solid fa-paper-plane fa-5x", "2");
+            dt.Rows.Add("Acuerdo", colorNeutro, "fa-solid fa-handshake", "fa-solid fa-handshake fa-5x", "3");
+            dt.Rows.Add("Sin acuerdo", colorNeutro, "fa-solid fa-handshake-slash", "fa-solid fa-handshake-slash fa-5x", "4");
+            dt.Rows.Add("Orden", colorNeutro, "fa-brands fa-first-order", "fa-solid fa-brands fa-first-order fa-5x", "4");
 
             ddlIconos.Items.Clear();
             ddlIconos.Items.Add(new ListItem("Seleccione", ""));
@@ -211,17 +212,19 @@ namespace fpWebApp
             {
                 ListItem item = new ListItem
                 {
-                    Text = row["NombreEstadoCRM"].ToString(), // solo el texto visible
-                    Value = row["idEstadoCRM"].ToString()
+                    Text = row["NombreEstadoCRM"].ToString(),
+                    Value = row["IconoMinEstadoCRM"].ToString()
                 };
 
                 item.Attributes["style"] = $"color: {row["ColorHexaCRM"]};";
                 item.Attributes["data-icon"] = row["IconoMinEstadoCRM"].ToString();
+                item.Attributes["data-icon-max"] = row["IconoMaxEstadoCRM"].ToString(); // Atributo adicional
                 item.Attributes["data-color"] = row["ColorHexaCRM"].ToString();
 
                 ddlIconos.Items.Add(item);
             }
         }
+
 
         private void ListaEstadosCRM()
         {
@@ -256,16 +259,19 @@ namespace fpWebApp
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
+            bool _respuesta = false;
+            string mensaje = string.Empty;
+
             if (Request.QueryString.Count > 0)
             {
                 string strInitData = TraerData();
 
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarCiudadSede(int.Parse(Request.QueryString["editid"].ToString()), txbCiudadSede.Text.ToString().Trim());
+                    string respuesta = cg.ActualizarCiudadSede(int.Parse(Request.QueryString["editid"].ToString()), txbNombreEstado.Text.ToString().Trim());
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "ciudades sedes", "Modifica", "El usuario modificó la ciudad sede: " + txbCiudadSede.Text.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "ciudades sedes", "Modifica", "El usuario modificó la ciudad sede: " + txbNombreEstado.Text.ToString() + ".", strInitData, strNewData);
                 }
 
                 if (Request.QueryString["deleteid"] != null)
@@ -276,13 +282,21 @@ namespace fpWebApp
             }
             else
             {
-                if (!ValidarCiudad(txbCiudadSede.Text.ToString()))
+                if (!ValidarCiudad(txbNombreEstado.Text.ToString()))
                 {
+                   
+                    string iconoMin = ddlIconos.SelectedItem.Value;                   
+                    string htmlIconoMin = $"<i class=\"{iconoMin}\"></i>";
+                  
+                    string iconoMax = iconoMin.Contains("fa-5x") ? iconoMin : iconoMin + " fa-5x";                   
+                    string htmlIconoMax = $"<i class=\"{iconoMax}\"></i>";
+
+
                     try
                     {
-                        string respuesta = cg.InsertarCiudadSede(txbCiudadSede.Text.ToString().Trim());
+                        string respuesta = cg.InsertarEstadoCRM(txbNombreEstado.Text, ddlColores.SelectedItem.Text.ToString(), htmlIconoMax, htmlIconoMin, ddlColores.SelectedItem.Value.ToString(), out _respuesta, out mensaje);
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "ciudades sedes", "Agrega", "El usuario agregó una nueva ciudad sede: " + txbCiudadSede.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "ciudades sedes", "Agrega", "El usuario agregó un nuevo nombre de estado crm: " + txbNombreEstado.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -298,13 +312,13 @@ namespace fpWebApp
                         "Excepción interna." +
                         "</div>";
                     }
-                    Response.Redirect("ciudadessedes");
+                    Response.Redirect("estadoscrm");
                 }
                 else
                 {
                     ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    "Ya existe una Ciudad Sede con ese nombre." +
+                    "Ya existe un estado con ese nombre." +
                     "</div>";
                 }
             }

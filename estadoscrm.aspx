@@ -162,9 +162,9 @@
                                             <div class="col-lg-12">
                                                 <div class="form-group">
                                                     <label>Nombre del estado CRM:</label>
-                                                    <asp:TextBox ID="txbCiudadSede" runat="server" CssClass="form-control input-sm" autocomplete="off" ></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="rfvCiudadSede" runat="server" ErrorMessage="* Campo requerido"
-                                                        ControlToValidate="txbCiudadSede" ValidationGroup="agregar" CssClass="font-bold text-danger">
+                                                    <asp:TextBox ID="txbNombreEstado" runat="server" CssClass="form-control input-sm" autocomplete="off" ></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="rfvTxbNombreEstado" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="txbNombreEstado" ValidationGroup="agregar" CssClass="font-bold text-danger">
                                                     </asp:RequiredFieldValidator>
                                                 </div>
 
@@ -190,7 +190,7 @@
                                                             <asp:DropDownList ID="ddlIconos" runat="server" CssClass="select2_demo_1 form-control input-sm" AppendDataBoundItems="true">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
-                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="* Campo requerido"
+                                                            <asp:RequiredFieldValidator ID="rfvIconos" runat="server" ErrorMessage="* Campo requerido"
                                                                 ControlToValidate="ddlIconos" ValidationGroup="agregar"
                                                                 CssClass="font-bold text-danger" InitialValue="">
                                                             </asp:RequiredFieldValidator>
@@ -244,6 +244,13 @@
                                             </div>
                                         </div>
 
+                                        <span class="badge badge-primary">Activo</span>
+<span class="badge badge-danger">Error</span>
+<span class="badge badge-warning">Pendiente</span>
+<span class="badge badge-light">Neutro</span>
+<span class="badge badge-dark">Texto</span>
+
+
                                         <table class="footable table table-striped" data-paging-size="10"
                                             data-filter-min="3" data-filter-placeholder="Buscar"
                                             data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
@@ -265,9 +272,11 @@
                                                         <tr class="feed-element">
                                                             <td><%# Eval("NombreEstadoCRM") %></td>
                                                             <td> 
-                                                                <span class='badge badge-<%# Eval("ColorEstadoCRM") %>'>
+                                                               <%-- <span class='badge badge-<%# Eval("ColorEstadoCRM") %>'>--%>
+                                                                <span class='badge bg-ligth'>
                                                                 <%# Eval("ColorEstadoCRM") %>
                                                                 </span>
+                                                                <span class="badge badge-warning">Estado</span>
                                                             </td>
                                                             
                                                             <td><%# Eval("IconoMinEstadoCRM") %></td>                                                            
