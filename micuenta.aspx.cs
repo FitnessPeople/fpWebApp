@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Odbc;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -320,7 +320,7 @@ namespace fpWebApp
 
                 if (mensaje == "OK")
                 {
-                    cg.InsertarLog(Session["idusuario"].ToString(), "Empleados", "Modifica", "El usuario actualizó sus datos (documento " + txbDocumento.Text.ToString() + ").", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "Empleados, Usuarios", "Modifica", "El usuario actualizó sus datos por primera vez (documento " + txbDocumento.Text.ToString() + ").", strInitData, strNewData);
 
                     string script = @"
                         Swal.fire({
@@ -353,7 +353,7 @@ namespace fpWebApp
                 }
 
             }
-            catch (OdbcException ex)
+            catch (SqlException ex)
             {
                 string script = @"
                     Swal.fire({

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
+using System.Data.SqlClient;
 using System.IO;
 using System.Web;
 using System.Web.UI;
@@ -210,7 +210,7 @@ namespace fpWebApp
         /// </remarks>
         /// <param name="sender">Objeto que generó el evento</param>
         /// <param name="e">Argumentos del evento</param>
-        /// <exception cref="OdbcException">Captura y muestra errores de base de datos</exception>
+        /// <exception cref="SqlException">Captura y muestra errores de base de datos</exception>
         protected void btnTraspasar_Click(object sender, EventArgs e)
         {
             if (Request.Files["documento"] == null)
@@ -274,7 +274,7 @@ namespace fpWebApp
 
                                 Response.Redirect("afiliados");
                             }
-                            catch (OdbcException ex)
+                            catch (SqlException ex)
                             {
                                 string mensaje = ex.Message;
                                 ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -420,7 +420,7 @@ namespace fpWebApp
 
 
             }
-            catch (OdbcException ex)
+            catch (SqlException ex)
             {
                 string script = @"
                     Swal.fire({

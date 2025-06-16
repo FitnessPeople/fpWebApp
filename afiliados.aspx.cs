@@ -110,7 +110,7 @@ namespace fpWebApp
                 "OR EmailAfiliado like '%" + strParam + "%' " +
                 "OR CelularAfiliado like '%" + strParam + "%') " + strQueryAdd + " " +
                 "ORDER BY a.idAfiliado DESC " +
-                "LIMIT 100";
+                "LIMIT 1000";
             clasesglobales cg1 = new clasesglobales();
             DataTable dt = cg1.TraerDatos(strQuery);
 

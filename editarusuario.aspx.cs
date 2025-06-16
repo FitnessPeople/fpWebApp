@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
+using System.Data.SqlClient;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -134,7 +134,7 @@ namespace fpWebApp
 
                 cg.InsertarLog(Session["idusuario"].ToString(), "usuarios", "Modifica", "El usuario modificó información del correo: " + txbEmail.Text.ToString() + ".", strInitData, strNewData);
             }
-            catch (OdbcException ex)
+            catch (SqlException ex)
             {
                 string mensaje = ex.Message;
             }
