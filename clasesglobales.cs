@@ -6450,7 +6450,7 @@ namespace fpWebApp
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
-                         {
+                        {
                             mysqlConexion.Open();
                             dataAdapter.Fill(dt);
                         }
@@ -6774,7 +6774,7 @@ namespace fpWebApp
         }
 
         public string InsertarEmpresaCRM(string nombreEmpresaCRM, string paginaWeb, int idContacto, int idUsuario,
-         string observacionesEmp, string estadoEmpresaCRM, int idCiudad,  out bool respuesta, out string mensaje)
+         string observacionesEmp, string estadoEmpresaCRM, int idCiudad, out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -6909,6 +6909,141 @@ namespace fpWebApp
 
             return mensaje;
         }
+
+        public string InsertarEstadoCRM(string nombreEstadoCRM, string colorEstadoCRM, int iconoMaxEstadoCRM, int iconoMinEstadoCRM,
+        string colorHexaCRM, out bool respuesta, out string mensaje)
+        {
+            mensaje = string.Empty;
+            respuesta = false;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_ESTADO_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_nombre_estado_crm", nombreEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_color_estado_crm", colorEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_icono_max_estado_crm", iconoMaxEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_icono_min_estado_crm", iconoMinEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_color_hexa_crm", colorHexaCRM);
+
+                        // Parámetro de salida
+                        MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
+                        pMensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pMensaje);
+
+                        cmd.ExecuteNonQuery();
+                        mensaje = pMensaje.Value?.ToString();
+
+                        if (mensaje == "OK") respuesta = true;
+                        else respuesta = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
+        }
+
+
+        public string ActualizarEstadoCRM(int idEstadoCRM, string nombreEstadoCRM, string colorEstadoCRM, int iconoMaxEstadoCRM, 
+        int iconoMinEstadoCRM, string colorHexaCRM, out bool respuesta, out string mensaje)
+        {
+            mensaje = string.Empty;
+            respuesta = false;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_ESTADO_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_estado_crm", idEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_nombre_estado_crm", nombreEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_color_estado_crm", colorEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_icono_max_estado_crm", iconoMaxEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_icono_min_estado_crm", iconoMinEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_color_hexa_crm", colorHexaCRM);
+
+
+                        // Parámetro de salida
+                        MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
+                        pMensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pMensaje);
+
+                        cmd.ExecuteNonQuery();
+                        mensaje = pMensaje.Value?.ToString();
+
+                        if (mensaje == "OK") respuesta = true;
+                        else respuesta = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
+        }
+
+        public string EliminarEstadoCRM(int idEstadoCRM, int idUsuario, string Usuario, out bool respuesta, out string mensaje)
+        {
+            mensaje = string.Empty;
+            respuesta = false;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ELIMINAR_ESTADO_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_id_estado_crm", idEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_usuario", Usuario);
+
+                        // ParámetroS de salida
+                        MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
+                        pMensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pMensaje);
+
+                        MySqlParameter pRespuesta = new MySqlParameter("@p_respuesta", MySqlDbType.Bit);
+                        pRespuesta.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pRespuesta);
+
+                        cmd.ExecuteNonQuery();
+
+                        mensaje = pMensaje.Value?.ToString();
+                        respuesta = Convert.ToBoolean(pRespuesta.Value);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
+        }
+
+
         #endregion
 
         #region GymPass
