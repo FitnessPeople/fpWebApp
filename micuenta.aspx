@@ -43,51 +43,6 @@
         }
     </script>
 
-    <%--<style>
-
-    /* Style the container for inputs */
-    .container {
-      background-color: #f1f1f1;
-      padding: 5px;
-    }
-
-    /* The message box is shown when the user clicks on the password field */
-    #message {
-      display:none;
-      background: #f1f1f1;
-      color: #000;
-      position: relative;
-      padding: 5px;
-      margin-top: 10px;
-    }
-
-    #message p {
-      padding: 5px 15px;
-      font-size: 12px;
-    }
-
-    /* Add a green text color and a checkmark when the requirements are right */
-    .valid {
-      color: green;
-    }
-
-    .valid:before {
-      position: relative;
-      left: -5px;
-      content: "✔";
-    }
-
-    /* Add a red text color and an "x" when the requirements are wrong */
-    .invalid {
-      color: red;
-    }
-
-    .invalid:before {
-      position: relative;
-      left: -5px;
-      content: "✖";
-    }
-</style>--%>
 </head>
 
 <body onload="changeClass()">
@@ -777,7 +732,7 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>EPS</label>
-                                                    <asp:DropDownList ID="ddlEps" runat="server" AppendDataBoundItems="true"
+                                                    <asp:DropDownList ID="ddlEps" runat="server" AppendDataBoundItems="true" 
                                                         DataTextField="NombreEps" DataValueField="idEps" CssClass="form-control input-sm">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
@@ -989,6 +944,15 @@
                     required: true
                 },
                 ddlFondoPension: {
+                    required: true
+                },
+                ddlArl: {
+                    required: true
+                },
+                ddlCajaComp: {
+                    required: true
+                },
+                ddlCesantias: {
                     required: true
                 },
             },
