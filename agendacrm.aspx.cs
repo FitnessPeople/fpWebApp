@@ -355,7 +355,7 @@ namespace fpWebApp
             return eventos;
         }
 
-
+        #region zona modal
         private void CargarPlanes()
         {
 
@@ -790,5 +790,6 @@ namespace fpWebApp
             //btnRegalo3.CssClass = btnRegalo3.CssClass.Replace("active", "");
         }
 
+        #endregion
     }
 }

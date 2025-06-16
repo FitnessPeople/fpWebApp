@@ -47,11 +47,13 @@ namespace fpWebApp
                     }
 
                     ListaEstadosCRM();
+                    ListaColoresCRM();
+                    ListaIconosCRM();
 
                     ltTitulo.Text = "Agregar Estado CRM";
                     if (Request.QueryString.Count > 0)
                     {
-                        rpCiudadSede.Visible = false;
+                        rpEstadosCRM.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
@@ -149,30 +151,103 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        private void ListaColoresCRM()
+        {            
+            DataTable dt = new DataTable();
+            dt.Columns.Add("NombreEstadoCRM", typeof(string));
+            dt.Columns.Add("ColorHexaCRM", typeof(string));
+            dt.Columns.Add("IconoMinEstadoCRM", typeof(string));
+            dt.Columns.Add("idEstadoCRM", typeof(string));
+
+            dt.Rows.Add("Primary", "#1c84c6", "fa fa-circle", "1");
+            dt.Rows.Add("Info", "#23c6c8", "fa fa-circle", "2");
+            dt.Rows.Add("Success", "#1ab394", "fa fa-circle", "3");
+            dt.Rows.Add("Warning", "#f8ac59", "fa fa-circle", "4");
+            dt.Rows.Add("Danger", "#ed5565", "fa fa-circle", "5");
+            dt.Rows.Add("Pink", "#e91e63", "fa fa-circle", "6");
+            dt.Rows.Add("Violet", "#8e44ad", "fa fa-circle", "7");
+            dt.Rows.Add("Brown", "#795548", "fa fa-circle", "8");
+            dt.Rows.Add("Silver", "#bdc3c7", "fa fa-circle", "9");
+
+            // Cargar al DropDownList
+            ddlColores.Items.Clear();
+            ddlColores.Items.Add(new ListItem("Seleccione", ""));
+
+            foreach (DataRow row in dt.Rows)
+            {
+                ListItem item = new ListItem
+                {
+                    Text = row["NombreEstadoCRM"].ToString(), // solo el texto
+                    Value = row["idEstadoCRM"].ToString()
+                };
+
+                item.Attributes["style"] = $"color: {row["ColorHexaCRM"]};";
+                item.Attributes["data-icon"] = row["IconoMinEstadoCRM"].ToString();
+                item.Attributes["data-color"] = row["ColorHexaCRM"].ToString();
+
+                ddlColores.Items.Add(item);
+            }
+        }
+
+        private void ListaIconosCRM()
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("NombreEstadoCRM", typeof(string));
+            dt.Columns.Add("ColorHexaCRM", typeof(string)); // Puedes usar un color genérico o fijo
+            dt.Columns.Add("IconoMinEstadoCRM", typeof(string));
+            dt.Columns.Add("idEstadoCRM", typeof(string));
+
+            string colorNeutro = "#6c757d"; // Gris Bootstrap
+
+            dt.Rows.Add("Apuntar", colorNeutro, "fa-solid fa-hand-point-up", "1");
+            dt.Rows.Add("Enviar", colorNeutro, "fa-solid fa-paper-plane", "2");
+            dt.Rows.Add("Acuerdo", colorNeutro, "fa-solid fa-handshake", "3");
+            dt.Rows.Add("Sin acuerdo", colorNeutro, "fa-solid fa-handshake-slash", "4");
+
+            ddlIconos.Items.Clear();
+            ddlIconos.Items.Add(new ListItem("Seleccione", ""));
+
+            foreach (DataRow row in dt.Rows)
+            {
+                ListItem item = new ListItem
+                {
+                    Text = row["NombreEstadoCRM"].ToString(), // solo el texto visible
+                    Value = row["idEstadoCRM"].ToString()
+                };
+
+                item.Attributes["style"] = $"color: {row["ColorHexaCRM"]};";
+                item.Attributes["data-icon"] = row["IconoMinEstadoCRM"].ToString();
+                item.Attributes["data-color"] = row["ColorHexaCRM"].ToString();
+
+                ddlIconos.Items.Add(item);
+            }
+        }
+
         private void ListaEstadosCRM()
         {
             DataTable dt = new DataTable();
             clasesglobales cg = new clasesglobales();
             dt = cg.ConsultarEstadossCRM();
-            rpCiudadSede.DataSource = dt;
-            rpCiudadSede.DataBind();
+            rpEstadosCRM.DataSource = dt;
+            rpEstadosCRM.DataBind();
             dt.Dispose();
         }
 
-        protected void rpCiudadSede_ItemDataBound(object sender, RepeaterItemEventArgs e)
+
+        protected void rpEstadosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
                     HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "ciudadessedes?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Attributes.Add("href", "estadoscrm?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEditar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
                     HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "ciudadessedes?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminar.Attributes.Add("href", "estadoscrm?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEliminar.Visible = true;
                 }
             }
@@ -275,5 +350,7 @@ namespace fpWebApp
 
             return strData;
         }
+
+
     }
 }
