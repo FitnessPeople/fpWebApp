@@ -59,6 +59,22 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 
+    <style>
+        .crm-align-row {
+            display: table;
+            width: 100%;
+        }
+
+        .crm-align-cell {
+            display: table-cell;
+            vertical-align: bottom;
+            padding-right: 15px;
+        }
+
+        .crm-spinner {
+            text-align: center;
+        }
+    </style>
 
 
 
@@ -147,7 +163,7 @@
             console.log(element2);
         }
     </script>
-<%--    <script>
+    <%--    <script>
     function mueveReloj() {
         var momentoActual = new Date();
         var hora = momentoActual.getHours();
@@ -268,8 +284,10 @@
                                                 <%--Zona lateral izquierda sup --%>
                                                 <div class="col-lg-5">
                                                     <div class="ibox-content">
-                                                        <div class="row">
-                                                            <div class="col-sm-6">
+
+                                                        <div class="crm-align-row">
+                                                            <!-- Campo de texto -->
+                                                            <div class="crm-align-cell" style="width: 80%;">
                                                                 <div class="form-group">
                                                                     <label>Consultar:</label>
                                                                     <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server"
@@ -278,13 +296,29 @@
                                                                         Style="display: none;" OnClick="btnAfiliado_Click" />
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-4">
+
+                                                            <!-- Contador -->
+                                                            <div class="crm-align-cell" style="width: 10%;">
                                                                 <div class="form-group">
                                                                     <label>Contador:</label>
                                                                     <div id="reloj" style="font-size: 20px; font-family: monospace;"></div>
                                                                 </div>
                                                             </div>
+
+                                                            <!-- Spinner -->
+                                                            <div class="crm-align-cell" style="width: 10%;">
+                                                                <div class="form-group crm-spinner">
+                                                                    <div class="sk-spinner sk-spinner-wave">
+                                                                        <div class="sk-rect1"></div>
+                                                                        <div class="sk-rect2"></div>
+                                                                        <div class="sk-rect3"></div>
+                                                                        <div class="sk-rect4"></div>
+                                                                        <div class="sk-rect5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
+
 
                                                         <div class="row">
                                                             <div class="col-sm-6">
@@ -876,7 +910,7 @@
         });
     </script>
 
-        <script type="text/javascript">  
+    <script type="text/javascript">  
         $(document).ready(function () {
             $("#txbAfiliado").autocomplete({
                 source: function (request, response) {
@@ -919,7 +953,7 @@
     </script>
 
 
-<%--    <script>
+    <%--    <script>
     function mueveReloj() {
         const ahora = new Date();
         let h = ahora.getHours().toString().padStart(2, '0');
@@ -931,7 +965,6 @@
         setTimeout(mueveReloj, 1000);
     }
     </script>--%>
-
 </body>
 
 </html>

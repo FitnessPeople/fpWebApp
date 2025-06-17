@@ -116,7 +116,7 @@ namespace fpWebApp
                                     ddlTiposAfiliado.SelectedIndex = Convert.ToInt32(ddlTiposAfiliado.Items.IndexOf(ddlTiposAfiliado.Items.FindByValue(dt.Rows[0]["idTipoAfiliado"].ToString())));
                                     ddlCanalesMarketing.SelectedIndex = Convert.ToInt32(ddlCanalesMarketing.Items.IndexOf(ddlCanalesMarketing.Items.FindByValue(dt.Rows[0]["idCanalMarketing"].ToString())));
                                     ddlPlanes.SelectedIndex = Convert.ToInt32(ddlPlanes.Items.IndexOf(ddlPlanes.Items.FindByValue(dt.Rows[0]["idPlan"].ToString())));
-                                    rblMesesPlan.SelectedIndex = Convert.ToInt32(rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(dt.Rows[0]["MesesPlan"].ToString())));
+                                    //rblMesesPlan.SelectedIndex = Convert.ToInt32(rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(dt.Rows[0]["MesesPlan"].ToString())));
 
                                 }
                             }
@@ -189,7 +189,7 @@ namespace fpWebApp
                                     ddlTiposAfiliado.SelectedIndex = Convert.ToInt32(ddlTiposAfiliado.Items.IndexOf(ddlTiposAfiliado.Items.FindByValue(dt1.Rows[0]["idTipoAfiliado"].ToString())));
                                     ddlCanalesMarketing.SelectedIndex = Convert.ToInt32(ddlCanalesMarketing.Items.IndexOf(ddlCanalesMarketing.Items.FindByValue(dt1.Rows[0]["idCanalMarketing"].ToString())));
                                     ddlPlanes.SelectedIndex = Convert.ToInt32(ddlPlanes.Items.IndexOf(ddlPlanes.Items.FindByValue(dt1.Rows[0]["idPlan"].ToString())));
-                                    rblMesesPlan.SelectedIndex = Convert.ToInt32(rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(dt1.Rows[0]["MesesPlan"].ToString())));
+                                    //rblMesesPlan.SelectedIndex = Convert.ToInt32(rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(dt1.Rows[0]["MesesPlan"].ToString())));
 
                                     //Inactivar controles
                                     txbNombreContacto.Disabled = true;
@@ -206,7 +206,7 @@ namespace fpWebApp
                                     ddlObjetivos.Enabled = false;
                                     ddlCanalesMarketing.Enabled = false;
                                     ddlPlanes.Enabled = false;
-                                    rblMesesPlan.Enabled = false;
+                                    //rblMesesPlan.Enabled = false;
                                     txaObservaciones.Disabled = true;
                                     ArchivoPropuesta.Disabled = true;
 
@@ -508,7 +508,7 @@ namespace fpWebApp
                                     txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
                                     ddlTipoPago.SelectedItem.Value.ToString(), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
                                     Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()),
-                                    Convert.ToInt32(rblMesesPlan.SelectedValue), out salida, out mensaje);
+                                    0, out salida, out mensaje);
 
                             if (salida)
                             {
@@ -651,7 +651,7 @@ namespace fpWebApp
                     fechaHoraMySQL.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
                     txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
                     ddlTipoPago.SelectedItem.Value.ToString(), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), Convert.ToInt32(rblMesesPlan.SelectedValue), out salida, out mensaje);
+                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()),0, out salida, out mensaje);
 
                     if (salida)
                     {
@@ -766,24 +766,25 @@ namespace fpWebApp
                 int mesesPlan = Convert.ToInt32(fila[0]["Meses"]); // Asegúrate que esta columna está en tu tabla
 
                 // Buscar índice del valor y seleccionarlo
-                int index = rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(totalMeses.ToString()));
-                if (index >= 0)
-                {
-                    rblMesesPlan.ClearSelection();
-                    rblMesesPlan.SelectedIndex = index;
-                }
+                //int index = rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(totalMeses.ToString()));
+                //if (index >= 0)
+                //{
+                //    rblMesesPlan.ClearSelection();
+                //    rblMesesPlan.SelectedIndex = index;
+                //}
                 //}
             }
 
             // Calcular propuesta si ya hay un valor seleccionado en el radio
-            if (!string.IsNullOrEmpty(rblMesesPlan.SelectedValue))
-            {
-                CalcularPropuesta();
-            }
-            else
-            {
-                txbValorPropuesta.Text = "Primero selecciona los meses del plan.";
-            }
+            //if (!string.IsNullOrEmpty(rblMesesPlan.SelectedValue))
+            //{
+            //    CalcularPropuesta();
+            //}
+            //else
+            //{
+            //    txbValorPropuesta.Text = "Primero selecciona los meses del plan.";
+            //}
+            txbValorPropuesta.Text = "Primero selecciona los meses del plan.";
         }
 
         protected void rblMesesPlan_SelectedIndexChanged(object sender, EventArgs e)
@@ -799,7 +800,7 @@ namespace fpWebApp
 
         private void CalcularPropuesta()
         {
-            if (ViewState["precioBase"] == null || ViewState["Meses"] == null || string.IsNullOrEmpty(rblMesesPlan.SelectedValue))
+            if (ViewState["precioBase"] == null || ViewState["Meses"] == null )
             {
                 txbValorPropuesta.Text = "Faltan datos para calcular.";
                 return;
@@ -812,7 +813,7 @@ namespace fpWebApp
             }
 
             int precioBase = Convert.ToInt32(ViewState["precioBase"]);
-            int meses = Convert.ToInt32(rblMesesPlan.SelectedValue);
+            int meses = Convert.ToInt32(ViewState["Meses"]);
             double total = Convert.ToDouble(ViewState["precioTotal"]);
             double dobDescuento = (1 - (precioBase / meses) / precioBase) * 100;
             double intConDescuento = (precioBase * meses) - precioBase;
