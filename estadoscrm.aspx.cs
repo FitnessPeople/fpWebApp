@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Presentation;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -76,7 +77,7 @@ namespace fpWebApp
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +
                                     "<div class=\"alert alert-danger alert-dismissable\">" +
                                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Esta Ciudad Sede no se puede borrar, hay empleados asociados a ella." +
+                                    "Este estado no se puede borrar, hay registros asociados a él." +
                                     "</div></div>";
 
                                 DataTable dt1 = new DataTable();
@@ -129,6 +130,19 @@ namespace fpWebApp
             return bExiste;
         }
 
+        private bool ValidarEstado(string strNombre)
+        {
+            bool bExiste = false;
+            DataTable dt = new DataTable();
+            clasesglobales cg = new clasesglobales();
+            dt = cg.ConsultarEstadoCRMPorNombre(strNombre);
+            if (dt.Rows.Count > 0)
+            {
+                bExiste = true;
+            }
+            return bExiste;
+        }
+
         private void ValidarPermisos(string strPagina)
         {
             ViewState["SinPermiso"] = "1";
@@ -163,8 +177,7 @@ namespace fpWebApp
             dt.Rows.Add("info", "#23c6c8", "fa fa-circle", "2");
             dt.Rows.Add("success", "#1ab394", "fa fa-circle", "3");
             dt.Rows.Add("warning", "#f8ac59", "fa fa-circle", "4");
-            dt.Rows.Add("danger", "#ed5565", "fa fa-circle", "5");
-            dt.Rows.Add("light", "#f8f9fa", "fa fa-circle", "6");           
+            dt.Rows.Add("danger", "#ed5565", "fa fa-circle", "5");                    
             dt.Rows.Add("secondary", "#6c757d", "fa fa-circle", "7");
 
             // Cargar al DropDownList
@@ -225,7 +238,6 @@ namespace fpWebApp
             }
         }
 
-
         private void ListaEstadosCRM()
         {
             DataTable dt = new DataTable();
@@ -259,7 +271,7 @@ namespace fpWebApp
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
-            bool _respuesta = false;
+            bool salida = false;
             string mensaje = string.Empty;
 
             if (Request.QueryString.Count > 0)
@@ -282,7 +294,7 @@ namespace fpWebApp
             }
             else
             {
-                if (!ValidarCiudad(txbNombreEstado.Text.ToString()))
+                if (ValidarEstado(txbNombreEstado.Text.ToString()))
                 {
                    
                     string iconoMin = ddlIconos.SelectedItem.Value;                   
@@ -290,27 +302,56 @@ namespace fpWebApp
                   
                     string iconoMax = iconoMin.Contains("fa-5x") ? iconoMin : iconoMin + " fa-5x";                   
                     string htmlIconoMax = $"<i class=\"{iconoMax}\"></i>";
-
-
+                    
                     try
                     {
-                        string respuesta = cg.InsertarEstadoCRM(txbNombreEstado.Text, ddlColores.SelectedItem.Text.ToString(), htmlIconoMax, htmlIconoMin, ddlColores.SelectedItem.Value.ToString(), out _respuesta, out mensaje);
+                        string respuesta = cg.InsertarEstadoCRM(txbNombreEstado.Text, ddlColores.SelectedItem.Text.ToString(), htmlIconoMax, htmlIconoMin, ddlColores.SelectedItem.Value.ToString(), out salida, out mensaje);
 
                         cg.InsertarLog(Session["idusuario"].ToString(), "ciudades sedes", "Agrega", "El usuario agregó un nuevo nombre de estado crm: " + txbNombreEstado.Text.ToString() + ".", "", "");
+
+                        if (salida)
+                        {
+                            string script = @"
+                                Swal.fire({
+                                    title: 'El estado se creó de forma exitosa',
+                                    text: '" + mensaje.Replace("'", "\\'") + @"',
+                                    icon: 'success',
+                                    timer: 3000, // 3 segundos
+                                    showConfirmButton: false,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    window.location.href = 'nuevocontactocrm';
+                                });
+                                ";
+
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                        }
+                        else
+                        {
+                            string script = @"
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: '" + mensaje.Replace("'", "\\'") + @"',
+                                    icon: 'error'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        $('#ModalContacto').modal('show');
+                                    }
+                                });
+                                ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                        }
                     }
                     catch (Exception ex)
                     {
-                        string mensajeExcepcionInterna = string.Empty;
-                        Console.WriteLine(ex.Message);
-                        if (ex.InnerException != null)
-                        {
-                            mensajeExcepcionInterna = ex.InnerException.Message;
-                            Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
-                        }
-                        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Excepción interna." +
-                        "</div>";
+                        string script = @"
+                        Swal.fire({
+                        title: 'Error',
+                        text: 'Ha ocurrido un error inesperado.',
+                        icon: 'error'
+                    });
+                    ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                     }
                     Response.Redirect("estadoscrm");
                 }

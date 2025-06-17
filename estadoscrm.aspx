@@ -29,7 +29,9 @@
     <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
-
+        <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
 
     <!-- FooTable -->
     <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
@@ -244,13 +246,6 @@
                                             </div>
                                         </div>
 
-                                        <span class="badge badge-primary">Activo</span>
-<span class="badge badge-danger">Error</span>
-<span class="badge badge-warning">Pendiente</span>
-<span class="badge badge-light">Neutro</span>
-<span class="badge badge-dark">Texto</span>
-
-
                                         <table class="footable table table-striped" data-paging-size="10"
                                             data-filter-min="3" data-filter-placeholder="Buscar"
                                             data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
@@ -272,13 +267,11 @@
                                                         <tr class="feed-element">
                                                             <td><%# Eval("NombreEstadoCRM") %></td>
                                                             <td> 
-                                                               <%-- <span class='badge badge-<%# Eval("ColorEstadoCRM") %>'>--%>
-                                                                <span class='badge bg-ligth'>
+                                                              <span class='badge badge-<%# Eval("ColorEstadoCRM") %>'>                                                             
                                                                 <%# Eval("ColorEstadoCRM") %>
                                                                 </span>
-                                                                <span class="badge badge-warning">Estado</span>
-                                                            </td>
-                                                            
+                                                              
+                                                            </td>                                                            
                                                             <td><%# Eval("IconoMinEstadoCRM") %></td>                                                            
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
