@@ -16,7 +16,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Sedes</title>
+    <title>Fitness People | Contacto CRM</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
@@ -35,8 +35,35 @@
     <!-- JS de Quill -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/smoothness/jquery-ui.css">
+
+    <link href="css/plugins/dropzone/basic.css" rel="stylesheet" />
+    <link href="css/plugins/dropzone/dropzone.css" rel="stylesheet" />
+    <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet" />
+    <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet" />
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
+    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
+    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
+    <link href="css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet" />
+    <link href="css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
+
+    <!-- FooTable -->
+    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
+
+    <link href="css/animate.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+
+
+
     <%--    formato de moneda--%>
-    <script>
+    <%--    <script>
         function formatCurrency(input) {
             let value = input.value.replace(/\D/g, '');
             if (value === "") {
@@ -56,20 +83,12 @@
         function getNumericValue(input) {
             return input.value.replace(/[^0-9]/g, '');
         }
-    </script>
+    </script>--%>
 
     <%--    formato de posición en el menú--%>
-    <script>
-        function changeClass() {
-            var element1 = document.querySelector("#crmnuevocontacto");
-            element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#crm");
-            element2.classList.remove("collapse");
-        }
-    </script>
 
     <%--    Formatear telefono --%>
-    <script>
+    <%--    <script>
         function formatearTelefono(input) {
             let num = input.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
 
@@ -84,17 +103,17 @@
                 input.value = num;
             }
         }
-    </script>
+    </script>--%>
 
     <%--    Formatear solo letraas --%>
-    <script>
+    <%--    <script>
         function validarSoloLetras(input) {
             input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
         }
-    </script>
+    </script>--%>
 
     <%--    Formatear solo correo --%>
-    <script>
+    <%--    <script>
         function validarCorreo(input) {
             const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             if (!emailRegex.test(input.value)) {
@@ -103,7 +122,7 @@
                 input.setCustomValidity('');
             }
         }
-    </script>
+    </script>--%>
     <!-- Select2 -->
     <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
 
@@ -128,10 +147,30 @@
             console.log(element2);
         }
     </script>
+<%--    <script>
+    function mueveReloj() {
+        var momentoActual = new Date();
+        var hora = momentoActual.getHours();
+        var minuto = momentoActual.getMinutes();
+        var segundo = momentoActual.getSeconds();
 
+        // Formatear con 0 al inicio si es necesario
+        if (hora < 10) hora = "0" + hora;
+        if (minuto < 10) minuto = "0" + minuto;
+        if (segundo < 10) segundo = "0" + segundo;
+
+        var horaImprimible = hora + " : " + minuto + " : " + segundo;
+
+        document.form_reloj.reloj.value = horaImprimible;
+
+        setTimeout(mueveReloj, 1000); // Mejor usar referencia directa
+    }
+    </script>--%>
+
+    <script src="js/jquery-3.1.1.min.js"></script>
 </head>
 
-<body onload="changeClass()">
+<body onload="changeClass(); iniciarContador()">
     <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated bounceInRight">
@@ -172,7 +211,7 @@
             </div>
         </div>
     </div>
-    
+
     <div id="wrapper">
 
         <uc1:navbar runat="server" ID="navbar1" />
@@ -229,6 +268,24 @@
                                                 <%--Zona lateral izquierda sup --%>
                                                 <div class="col-lg-5">
                                                     <div class="ibox-content">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Consultar:</label>
+                                                                    <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server"
+                                                                        placeholder="Nombre / Cédula / Email / Celular"></asp:TextBox>
+                                                                    <asp:Button ID="btnAfiliado" runat="server" Text=""
+                                                                        Style="display: none;" OnClick="btnAfiliado_Click" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <div class="form-group">
+                                                                    <label>Contador:</label>
+                                                                    <div id="reloj" style="font-size: 20px; font-family: monospace;"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
@@ -433,7 +490,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="row">
+                                                                <%--                                                               <div class="row">
                                                                     <div class="col-lg-12">
                                                                         <div class="form-group">
                                                                             <i class="fa-regular fa-calendar text-info"></i>
@@ -456,7 +513,7 @@
                                                                             </asp:RadioButtonList>
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                </div>--%>
                                                                 <div style="height: 30px;"></div>
                                                                 <div class="row">
                                                                     <div class="col-sm-4">
@@ -777,6 +834,8 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 
     <!-- FooTable -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
@@ -816,6 +875,62 @@
             }
         });
     </script>
+
+        <script type="text/javascript">  
+        $(document).ready(function () {
+            $("#txbAfiliado").autocomplete({
+                source: function (request, response) {
+                    $.getJSON("/obtenerafiliados?search=" + request.term, function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                label: item.nombre + " " + item.apellido + " - " + item.id + ", " + item.correo,
+                                value: item.id + " - " + item.nombre + " " + item.apellido,
+                            };
+                        }));
+                    });
+                },
+                select: function (event, ui) {
+                    if (ui.item) {
+                        console.log(ui.item.value);
+                        document.getElementById("txbAfiliado").value = ui.item.value;
+                        var btn = document.getElementById("btnAfiliado");
+                        btn.click();
+                    }
+                },
+                minLength: 3,
+                delay: 100
+            });
+        });
+    </script>
+
+    <script>
+    let segundos = 0;
+
+    function iniciarContador() {
+        setInterval(() => {
+            segundos++;
+            const min = Math.floor(segundos / 60).toString().padStart(2, '0');
+            const sec = (segundos % 60).toString().padStart(2, '0');
+            document.getElementById("reloj").textContent = `${min}:${sec}`;
+        }, 1000);
+    }
+
+    window.addEventListener("load", iniciarContador); // inicia al cargar la página
+    </script>
+
+
+<%--    <script>
+    function mueveReloj() {
+        const ahora = new Date();
+        let h = ahora.getHours().toString().padStart(2, '0');
+        let m = ahora.getMinutes().toString().padStart(2, '0');
+        let s = ahora.getSeconds().toString().padStart(2, '0');
+
+        document.getElementById("reloj").textContent = `${h} : ${m} : ${s}`;
+
+        setTimeout(mueveReloj, 1000);
+    }
+    </script>--%>
 
 </body>
 

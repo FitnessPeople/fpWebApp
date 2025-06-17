@@ -1153,7 +1153,58 @@ namespace fpWebApp
             public string IconoMinEstadoCRM { get; set; }
         }
 
+        protected void btnAfiliado_Click(object sender, EventArgs e)
+        {
+            string[] strDocumento = txbAfiliado.Text.ToString().Split('-');
+            string strQuery = "SELECT * FROM Afiliados a " +
+                "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +
+                "WHERE DocumentoAfiliado = '" + strDocumento[0].Trim() + "' ";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
 
+            if (dt.Rows.Count > 0)
+            {
+                //divAfiliado.Visible = true;
+                //ViewState["idAfiliado"] = dt.Rows[0]["idAfiliado"].ToString();
+                //ViewState["DocumentoAfiliado"] = dt.Rows[0]["DocumentoAfiliado"].ToString();
+                //ltNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
+                //ltApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
+                //ltEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
+                //ltCelular.Text = dt.Rows[0]["CelularAfiliado"].ToString();
+                //ltSede.Text = dt.Rows[0]["NombreSede"].ToString();
 
+                //if (dt.Rows[0]["FechaNacAfiliado"].ToString() != "1900-01-00")
+                //{
+                //    ltCumple.Text = String.Format("{0:dd MMM}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]));
+                //}
+                //else
+                //{
+                //    ltCumple.Text = "-";
+                //}
+
+                //if (dt.Rows[0]["FotoAfiliado"].ToString() != "")
+                //{
+                //    ltFoto.Text = "<img src=\"img/afiliados/" + dt.Rows[0]["FotoAfiliado"].ToString() + "\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+                //}
+                //else
+                //{
+                //    if (dt.Rows[0]["idGenero"].ToString() == "1" || dt.Rows[0]["idGenero"].ToString() == "3")
+                //    {
+                //        ltFoto.Text = "<img src=\"img/afiliados/avatar_male.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+                //    }
+                //    if (dt.Rows[0]["idGenero"].ToString() == "2")
+                //    {
+                //        ltFoto.Text = "<img src=\"img/afiliados/avatar_female.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+                //    }
+                //}
+
+                //divPlanes.Visible = true;
+                //CargarIncapacidades();
+                //CargarPlanesAfiliado();
+                //CargarTiposIncapacidades();
+            }
+            dt.Dispose();
+
+        }
     }
 }
