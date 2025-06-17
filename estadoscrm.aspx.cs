@@ -60,10 +60,17 @@ namespace fpWebApp
                             //Editar
                             clasesglobales cg = new clasesglobales();
                             DataTable dt = new DataTable();
-                            dt = cg.ConsultarCiudadSedePorId(int.Parse(Request.QueryString["editid"].ToString()));
+                            dt = cg.ConsultarEstadoCRMPorID(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                txbNombreEstado.Text = dt.Rows[0]["NombreCiudadSede"].ToString();
+                                txbNombreEstado.Text = dt.Rows[0]["NombreEstadoCRM"].ToString();
+                                ListItem item = ddlColores.Items.FindByText(dt.Rows[0]["ColorEstadoCRM"].ToString());
+                                if (item != null) ddlColores.SelectedIndex = ddlColores.Items.IndexOf(item);
+
+                                ListItem itemI = ddlIconos.Items.FindByText(dt.Rows[0]["ColorEstadoCRM"].ToString());
+                                if (itemI != null) ddlIconos.SelectedIndex = ddlIconos.Items.IndexOf(item);
+
+
                                 btnAgregar.Text = "Actualizar";
                                 ltTitulo.Text = "Actualizar Estado CRM";
                             }
@@ -168,7 +175,7 @@ namespace fpWebApp
         private void ListaColoresCRM()
         {            
             DataTable dt = new DataTable();
-            dt.Columns.Add("NombreEstadoCRM", typeof(string));
+            dt.Columns.Add("ColorEstadoCRM", typeof(string));
             dt.Columns.Add("ColorHexaCRM", typeof(string));
             dt.Columns.Add("IconoMinEstadoCRM", typeof(string));
             dt.Columns.Add("idEstadoCRM", typeof(string));
@@ -188,7 +195,7 @@ namespace fpWebApp
             {
                 ListItem item = new ListItem
                 {
-                    Text = row["NombreEstadoCRM"].ToString(), // solo el texto
+                    Text = row["ColorEstadoCRM"].ToString(), // solo el texto
                     Value = row["ColorHexaCRM"].ToString()
                 };
 
@@ -290,7 +297,7 @@ namespace fpWebApp
                 {
                     string respuesta = cg.EliminarCiudadSede(int.Parse(Request.QueryString["deleteid"].ToString()));
                 }
-                Response.Redirect("ciudadessedes");
+                Response.Redirect("estadoscrm");
             }
             else
             {

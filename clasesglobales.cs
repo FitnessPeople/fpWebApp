@@ -7043,7 +7043,7 @@ namespace fpWebApp
             return mensaje;
         }
 
-        public DataTable ConsultaEstadoCRMPorID(int idEstadoCRM)
+        public DataTable ConsultarEstadoCRMPorID(int idEstadoCRM)
         {
             DataTable dt = new DataTable();
 
