@@ -58,6 +58,7 @@
 
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <style>
         .crm-align-row {
@@ -104,7 +105,7 @@
     <%--    formato de posición en el menú--%>
 
     <%--    Formatear telefono --%>
-    <%--    <script>
+        <script>
         function formatearTelefono(input) {
             let num = input.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
 
@@ -119,7 +120,7 @@
                 input.value = num;
             }
         }
-    </script>--%>
+    </script>
 
     <%--    Formatear solo letraas --%>
     <%--    <script>
@@ -291,7 +292,7 @@
                                                                 <div class="form-group">
                                                                     <label>Consultar:</label>
                                                                     <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server"
-                                                                        placeholder="Nombre / Cédula / Email / Celular"></asp:TextBox>
+                                                                        placeholder="Nombre / Cédula / Email / Celular " autocomplete="off"></asp:TextBox>
                                                                     <asp:Button ID="btnAfiliado" runat="server" Text=""
                                                                         Style="display: none;" OnClick="btnAfiliado_Click" />
                                                                 </div>
@@ -335,10 +336,10 @@
                                                                 <div class="form-group">
                                                                     <label>Nro. de Documento</label>
                                                                     <asp:TextBox ID="txbDocumento" CssClass="form-control input-sm" runat="server" placeholder="#"></asp:TextBox>
-                                                                    <asp:RequiredFieldValidator ID="rfvNumDoc" runat="server" ErrorMessage="* Campo requerido"
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvNumDoc" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="txbDocumento" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -349,8 +350,8 @@
                                                                     <label for="nombreContacto" class="col-form-label">Nombre completo:</label>
                                                                     <input type="text" runat="server" id="txbNombreContacto" class="form-control"
                                                                         oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
-                                                                    <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txbNombreContacto"
-                                                                        ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txbNombreContacto"
+                                                                        ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />--%>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -366,11 +367,11 @@
                                                                         onkeyup="formatearTelefono(this)"
                                                                         maxlength="14" />
 
-                                                                    <asp:RequiredFieldValidator ID="rfvTelefono" runat="server"
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvTelefono" runat="server"
                                                                         ControlToValidate="txbTelefonoContacto"
                                                                         ErrorMessage="* Campo requerido"
                                                                         CssClass="text-danger"
-                                                                        Display="Dynamic" />
+                                                                        Display="Dynamic" />--%>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -394,10 +395,10 @@
                                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                         <asp:ListItem Text="No aplica" Value="0"></asp:ListItem>
                                                                     </asp:DropDownList>
-                                                                    <asp:RequiredFieldValidator ID="rfvEmpresa" runat="server" ErrorMessage="* Campo requerido"
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvEmpresa" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="ddlEmpresa" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -409,10 +410,10 @@
                                                                     <asp:DropDownList ID="ddlStatusLead" runat="server" CssClass="select2_demo_1 form-control input-sm" AppendDataBoundItems="true">
                                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                     </asp:DropDownList>
-                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="* Campo requerido"
+                                                                    <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="ddlStatusLead" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </div>
 
@@ -424,10 +425,10 @@
                                                                         runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                     </asp:DropDownList>
-                                                                    <asp:RequiredFieldValidator ID="rfvTipoAfiliado" runat="server" ErrorMessage="* Campo requerido"
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvTipoAfiliado" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="ddlTiposAfiliado" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -466,17 +467,13 @@
                                                                     <i class="fa-solid fa-coins text-info"></i>
                                                                     <label for="TipoPago" class="col-form-label">Métodos de pago:</label>
                                                                     <asp:DropDownList ID="ddlTipoPago" runat="server" AppendDataBoundItems="true"
-                                                                        DataTextField="TipoPago" DataValueField="idTipoDoc" CssClass="form-control input-sm">
-                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                        <asp:ListItem Text="Efectivo" Value="Efectivo"></asp:ListItem>
-                                                                        <asp:ListItem Text="Transferencia" Value="Transferencia"></asp:ListItem>
-                                                                        <asp:ListItem Text="Datafono" Value="Datafono"></asp:ListItem>
-                                                                        <asp:ListItem Text="Wompi" Value="Wompi"></asp:ListItem>
+                                                                        DataTextField="NombreMedioPago" DataValueField="idMedioPago" CssClass="form-control input-sm">
+                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>                                                                       
                                                                     </asp:DropDownList>
-                                                                    <asp:RequiredFieldValidator ID="rfvTipoPago" runat="server" ErrorMessage="* Campo requerido"
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvTipoPago" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="ddlTipoPago" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-6">
@@ -487,10 +484,10 @@
                                                                         runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                     </asp:DropDownList>
-                                                                    <asp:RequiredFieldValidator ID="rfvObjetios" runat="server" ErrorMessage="* Campo requerido"
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvObjetios" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="ddlObjetivos" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -506,10 +503,10 @@
                                                                                 runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                             </asp:DropDownList>
-                                                                            <asp:RequiredFieldValidator ID="rfvCanalesMarketing" runat="server" ErrorMessage="* Campo requerido"
+                                                                            <%--<asp:RequiredFieldValidator ID="rfvCanalesMarketing" runat="server" ErrorMessage="* Campo requerido"
                                                                                 ControlToValidate="ddlCanalesMarketing" ValidationGroup="agregar"
                                                                                 CssClass="font-bold text-danger" InitialValue="">
-                                                                            </asp:RequiredFieldValidator>
+                                                                            </asp:RequiredFieldValidator>--%>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-sm-6">
@@ -532,10 +529,10 @@
                                                                             <label for="ValorPropuesta" class="col-form-label">Valor Propuesta:</label>
                                                                             <asp:TextBox ID="txbValorPropuesta" CssClass="form-control input-sm" runat="server" placeholder="$0"
                                                                                 onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
-                                                                            <asp:RequiredFieldValidator ID="rfvValorPropuesta" runat="server" ErrorMessage="* Campo requerido"
+                                                                            <%--<asp:RequiredFieldValidator ID="rfvValorPropuesta" runat="server" ErrorMessage="* Campo requerido"
                                                                                 ControlToValidate="txbValorPropuesta" ValidationGroup="agregar"
                                                                                 CssClass="font-bold text-danger" InitialValue="">
-                                                                            </asp:RequiredFieldValidator>
+                                                                            </asp:RequiredFieldValidator>--%>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-sm-4">
@@ -560,10 +557,10 @@
                                                                     <label for="message-text" class="col-form-label">Contexto de la negociación:</label>
                                                                     <textarea id="txaObservaciones" runat="server" rows="3"
                                                                         cssclass="form-control input-sm" class="form-control"></textarea>
-                                                                    <asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ErrorMessage="* Campo requerido"
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="txbValorPropuesta" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </ContentTemplate>
                                                         </asp:UpdatePanel>
@@ -660,7 +657,7 @@
                                                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                                                     <ContentTemplate>
                                                         <%--Zona lateral izquierda inf --%>
-                                                        <div class="col-lg-5">
+                                                     <%--   <div class="col-lg-5">
                                                             <div class="ibox-content">
                                                                 <div class="row">
                                                                     <div class="col-sm-6">
@@ -750,9 +747,9 @@
                                                                     <asp:Literal ID="Literal3" runat="server"></asp:Literal>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div>--%>
                                                         <%--Zona lateral derecha inf --%>
-                                                        <div class="col-lg-7">
+                                                     <%--   <div class="col-lg-7">
                                                             <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista1">
                                                                 <div class="col-lg-6 form-horizontal">
                                                                     <div class="form-group">
@@ -819,7 +816,7 @@
                                                             </table>
 
 
-                                                        </div>
+                                                        </div>--%>
                                                     </ContentTemplate>
                                                 </asp:UpdatePanel>
                                             </div>
@@ -840,7 +837,7 @@
     </div>
 
     <!-- Mainly scripts -->
-    <script src="js/jquery-3.1.1.min.js"></script>
+    <%--<script src="js/jquery-3.1.1.min.js"></script>--%>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
@@ -853,6 +850,9 @@
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
+
+    <!-- Jasny -->
+    <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
     <!-- Page-Level Scripts -->
     <script src="js/plugins/clockpicker/clockpicker.js"></script>
