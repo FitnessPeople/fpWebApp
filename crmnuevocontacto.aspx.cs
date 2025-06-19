@@ -750,7 +750,9 @@ namespace fpWebApp
                 int meses = Convert.ToInt32(ViewState["Meses"]);
                 int cortesia = Convert.ToInt32(ViewState["MesesCortesia"]);
                 int totalMeses = meses + cortesia;
-
+                double total = Convert.ToDouble(ViewState["precioTotal"]);
+                int precioBase = Convert.ToInt32(ViewState["precioBase"]);
+                int recurrente = Convert.ToInt32(ViewState["Recurrente"]);
 
                 int ValorMes = Convert.ToInt32(fila[0]["PrecioBase"]);
                 txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
@@ -759,81 +761,64 @@ namespace fpWebApp
                 string observaciones = fila[0]["DescripcionPlan"].ToString();
                 txaObservaciones.InnerText = observaciones;
 
-                // Verificar si el plan es permanente
-                //bool esPermanente = Convert.ToBoolean(fila[0]["Permanente"]);
-                //if (esPermanente)
-                //{
                 int mesesPlan = Convert.ToInt32(fila[0]["Meses"]); // Asegúrate que esta columna está en tu tabla
 
-                // Buscar índice del valor y seleccionarlo
-                //int index = rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(totalMeses.ToString()));
-                //if (index >= 0)
-                //{
-                //    rblMesesPlan.ClearSelection();
-                //    rblMesesPlan.SelectedIndex = index;
-                //}
-                //}
-            }
-
-            // Calcular propuesta si ya hay un valor seleccionado en el radio
-            //if (!string.IsNullOrEmpty(rblMesesPlan.SelectedValue))
-            //{
-            //    CalcularPropuesta();
-            //}
-            //else
-            //{
-            //    txbValorPropuesta.Text = "Primero selecciona los meses del plan.";
-            //}
-            txbValorPropuesta.Text = "Primero selecciona los meses del plan.";
-        }
-
-        protected void rblMesesPlan_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            CalcularPropuesta();
-
-            if (ViewState["precioBase"] == null || ViewState["Meses"] == null)
-            {
-                txbValorPropuesta.Text = "Primero selecciona un plan.";
-                return;
+                if (ViewState["Recurrente"] != null && int.TryParse(ViewState["Recurrente"].ToString(), out recurrente))
+                {
+                    if (recurrente == 1)
+                    {
+                        total = precioBase * meses;
+                    }
+                }
+                txbValorPropuesta.Text = $"${total:N0}";
             }
         }
 
-        private void CalcularPropuesta()
-        {
-            if (ViewState["precioBase"] == null || ViewState["Meses"] == null )
-            {
-                txbValorPropuesta.Text = "Faltan datos para calcular.";
-                return;
-            }
+        //protected void rblMesesPlan_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    CalcularPropuesta();
 
-            if (ddlPlanes.SelectedValue == "0")
-            {
-                txbValorPropuesta.Text = "Debes seleccionar un plan válido.";
-                return;
-            }
+        //    if (ViewState["precioBase"] == null || ViewState["Meses"] == null)
+        //    {
+        //        txbValorPropuesta.Text = "Primero selecciona un plan.";
+        //        return;
+        //    }
+        //}
 
-            int precioBase = Convert.ToInt32(ViewState["precioBase"]);
-            int meses = Convert.ToInt32(ViewState["Meses"]);
-            double total = Convert.ToDouble(ViewState["precioTotal"]);
-            double dobDescuento = (1 - (precioBase / meses) / precioBase) * 100;
-            double intConDescuento = (precioBase * meses) - precioBase;
-            double dobPrecioMesDescuento = precioBase / meses;
+        //private void CalcularPropuesta()
+        //{
+        //    if (ViewState["precioBase"] == null)
+        //    {
+        //        txbValorPropuesta.Text = "Faltan datos para calcular.";
+        //        return;
+        //    }
 
-            int totalMesesOriginal = ViewState["Meses"] != null ? Convert.ToInt32(ViewState["Meses"]) : meses;
+        //    if (ddlPlanes.SelectedValue == "0")
+        //    {
+        //        txbValorPropuesta.Text = "Debes seleccionar un plan válido.";
+        //        return;
+        //    }
 
-            if (ViewState["Recurrente"] != null && Convert.ToInt32(ViewState["Recurrente"]) == 1)
-            {
-                total = precioBase * meses;
-            }
-            else if (meses != totalMesesOriginal)
-            {
-                total = precioBase * meses;
-            }
+        //    int precioBase = Convert.ToInt32(ViewState["precioBase"]);
+        //    int meses = Convert.ToInt32(ViewState["Meses"]);
+        //    double total = Convert.ToDouble(ViewState["precioTotal"]);
+        //    double dobDescuento = (1 - (precioBase / meses) / precioBase) * 100;
+        //    double intConDescuento = (precioBase * meses) - precioBase;
+        //    double dobPrecioMesDescuento = precioBase / meses;
 
+        //    int totalMesesOriginal = ViewState["Meses"] != null ? Convert.ToInt32(ViewState["Meses"]) : meses;
 
+        //    if (ViewState["Recurrente"] != null && Convert.ToInt32(ViewState["Recurrente"]) == 1)
+        //    {
+        //        total = precioBase * meses;
+        //    }
+        //    else if (meses != totalMesesOriginal)
+        //    {
+        //        total = precioBase * meses;
+        //    }
 
-            txbValorPropuesta.Text = $"${total:N0}";
-        }
+        //    txbValorPropuesta.Text = $"${total:N0}";
+        //}
 
         protected void btnAgregarEmp_Click(object sender, EventArgs e)
         {

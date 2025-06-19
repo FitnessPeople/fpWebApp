@@ -524,30 +524,6 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <%--                                                               <div class="row">
-                                                                    <div class="col-lg-12">
-                                                                        <div class="form-group">
-                                                                            <i class="fa-regular fa-calendar text-info"></i>
-                                                                            <label for="Meses" class="col-form-label">Meses del plan:</label>
-                                                                            <asp:RadioButtonList ID="rblMesesPlan" runat="server"
-                                                                                RepeatDirection="Horizontal" CssClass="form-control input-sm"
-                                                                                AutoPostBack="true" OnSelectedIndexChanged="rblMesesPlan_SelectedIndexChanged">
-                                                                                <asp:ListItem Text="&nbsp;1 &nbsp;&nbsp;&nbsp;" Value="1" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;2 &nbsp;&nbsp;&nbsp;" Value="2" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;3 &nbsp;&nbsp;&nbsp;" Value="3" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;4 &nbsp;&nbsp;&nbsp;" Value="4" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;5 &nbsp;&nbsp;&nbsp;" Value="5" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;6 &nbsp;&nbsp;&nbsp;" Value="6" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;7 &nbsp;&nbsp;&nbsp;" Value="7" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;8 &nbsp;&nbsp;&nbsp;" Value="8" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;9 &nbsp;&nbsp;&nbsp;" Value="9" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;10 &nbsp;&nbsp;&nbsp;" Value="10" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;11 &nbsp;&nbsp;&nbsp;" Value="11" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;12 &nbsp;&nbsp;&nbsp;" Value="12" style="margin-right: 5px;"></asp:ListItem>
-                                                                            </asp:RadioButtonList>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>--%>
                                                                 <div style="height: 30px;"></div>
                                                                 <div class="row">
                                                                     <div class="col-sm-4">
@@ -937,7 +913,7 @@
         });
     </script>
 
-    <script>
+<script>
     let segundos = 0;
 
     function iniciarContador() {
@@ -945,12 +921,23 @@
             segundos++;
             const min = Math.floor(segundos / 60).toString().padStart(2, '0');
             const sec = (segundos % 60).toString().padStart(2, '0');
-            document.getElementById("reloj").textContent = `${min}:${sec}`;
+
+            const reloj = document.getElementById("reloj");
+            reloj.textContent = `${min}:${sec}`;
+
+            // Cambiar color a rojo si pasan más de 5 minutos
+            if (segundos >= 300) { // 5 minutos * 60 segundos
+                reloj.style.color = '#1AB394';
+            }
+            if (segundos >= 600) { // 10 minutos * 60 segundos
+                reloj.style.color = '#ED5565';
+            }
         }, 1000);
     }
 
     window.addEventListener("load", iniciarContador); // inicia al cargar la página
-    </script>
+</script>
+
 
 
     <%--    <script>
