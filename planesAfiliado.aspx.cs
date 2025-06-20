@@ -690,7 +690,7 @@ namespace fpWebApp
                     {
                         string script = @"
                             Swal.fire({
-                                title: 'Error',
+                                title: 'Mensaje',
                                 text: 'Este afiliado ya tiene un plan activo, hasta el " + string.Format("{0:dd MMM yyyy}", dt.Rows[0]["FechaFinalPlan"]) + @".',
                                 icon: 'error'
                             }).then(() => {

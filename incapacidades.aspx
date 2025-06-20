@@ -366,19 +366,19 @@
                     required: true,
                     minlength: 3
                 },
-                //ddlTipoIncapacidad: {
-                //    required: true,
-                //},
-                //txbFechaInicial: {
-                //    required: true,
-                //},
-                //documento: {
-                //    required: true,
-                //},
-                //txbObservaciones: {
-                //    required: true,
-                //    minlength: 20
-                //}
+                ddlTipoIncapacidad: {
+                    required: true,
+                },
+                txbFechaInicial: {
+                    required: true,
+                },
+                documento: {
+                    required: true,
+                },
+                txbObservaciones: {
+                    required: true,
+                    minlength: 20
+                }
             },
             messages: {
                 documento: "*",

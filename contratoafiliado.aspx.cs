@@ -51,12 +51,12 @@ namespace fpWebApp
                     string contenidoEditor = hiddenEditor.Value;
                     hiddenEditor.Value = dt.Rows[0]["ContratoMayorEdad"].ToString();
 
-                    strQuery = "SELECT * " +
-                        "FROM Afiliados a " +
-                        "LEFT JOIN afiliadosplanes ap ON ap.idAfiliado = a.idAfiliado AND ap.EstadoPlan = 'Activo' " +
-                        "LEFT JOIN eps ON eps.idEps = a.idEps " +
-                        //"WHERE a.idAfiliado = 6066 " +
-                        "LIMIT 1 ";
+                    strQuery = @"SELECT * 
+                        FROM Afiliados a 
+                        LEFT JOIN afiliadosplanes ap ON ap.idAfiliado = a.idAfiliado AND ap.EstadoPlan = 'Activo' 
+                        LEFT JOIN eps ON eps.idEps = a.idEps 
+                        
+                        LIMIT 1";
 
                     DataTable dt1 = cg.TraerDatos(strQuery);
 
@@ -68,7 +68,11 @@ namespace fpWebApp
                         strTextoContrato = strTextoContrato.Replace("#CELULAR#", dt1.Rows[0]["CelularAfiliado"].ToString());
                         strTextoContrato = strTextoContrato.Replace("#FECHANAC#", Convert.ToDateTime(dt1.Rows[0]["FechaNacAfiliado"].ToString()).ToString("dd MMMM yyyy"));
                         strTextoContrato = strTextoContrato.Replace("#EMAIL#", dt1.Rows[0]["EmailAfiliado"].ToString());
-                        strTextoContrato = strTextoContrato.Replace("#FECHAINICIOPLAN#", Convert.ToDateTime(dt1.Rows[0]["FechaInicioPlan"].ToString()).ToString("dd MMMM yyyy"));
+
+                        if (dt1.Rows[0]["FechaInicioPlan"].ToString() != "")
+                        {
+                            strTextoContrato = strTextoContrato.Replace("#FECHAINICIOPLAN#", Convert.ToDateTime(dt1.Rows[0]["FechaInicioPlan"].ToString()).ToString("dd MMMM yyyy"));
+                        }
                         strTextoContrato = strTextoContrato.Replace("#EPS#", dt1.Rows[0]["NombreEps"].ToString());
 
                         ltContrato.Text = strTextoContrato;

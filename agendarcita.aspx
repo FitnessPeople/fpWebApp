@@ -34,6 +34,12 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
+    <style>
+        .afiliado {
+            z-index: 99999 !important;
+        }
+    </style>
+
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -49,6 +55,7 @@
 </head>
 
 <body onload="changeClass()">
+    <form runat="server" id="form">
     <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated bounceInRight">
@@ -101,6 +108,14 @@
                     <div class="event-description"></div>
                     <div class="event-id text-hide" id="event-id"></div>
                     <div class="event-allday text-hide" id="event-allday"></div>
+                    <div class="form-group">
+                        <label>Afiliado</label>
+                        <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm afiliado" runat="server"
+                            placeholder="Nombre / Cédula / Email / Celular"></asp:TextBox>
+                        <asp:Button ID="btnAfiliado" runat="server" Text=""
+                            Style="display: none;" OnClick="btnAfiliado_Click" />
+                        <asp:HiddenField ID="hfIdAfiliado" runat="server" />
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
@@ -150,7 +165,6 @@
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                    <form runat="server" id="form">
                         <%--<asp:ScriptManager ID="sm1" runat="server"></asp:ScriptManager>
                         <asp:UpdatePanel ID="upAgendarCita" runat="server">
                             <ContentTemplate>--%>
@@ -187,14 +201,14 @@
                                                         <asp:ListItem Text="Nutricionista" Value="30"></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
-                                                <div class="form-group">
+                                                <%--<div class="form-group">
                                                     <label>Afiliado</label>
                                                     <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server"
                                                         placeholder="Nombre / Cédula / Email / Celular"></asp:TextBox>
                                                     <asp:Button ID="btnAfiliado" runat="server" Text=""
                                                         Style="display: none;" OnClick="btnAfiliado_Click" />
                                                     <asp:HiddenField ID="hfIdAfiliado" runat="server" />
-                                                </div>
+                                                </div>--%>
                                             </div>
                                         </div>
                                     </div>
@@ -224,7 +238,7 @@
                                 </div>
                             <%--</ContentTemplate>
                         </asp:UpdatePanel>--%>
-                    </form>
+                    
                     <%--Fin Contenido!!!!--%>
                 </div>
             </div>
@@ -234,7 +248,7 @@
         </div>
         <uc1:rightsidebar runat="server" ID="rightsidebar" />
     </div>
-
+    </form>
     <!-- Mainly scripts -->
     <script src="js/plugins/fullcalendar/moment.min.js"></script>
     <script src="js/jquery-3.1.1.min.js"></script>
