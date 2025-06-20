@@ -123,13 +123,31 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltBanner;
 
         /// <summary>
-        /// Control Literal1.
+        /// Control rfvBanner.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal Literal1;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvBanner;
+
+        /// <summary>
+        /// Control ltImagenMarketing.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltImagenMarketing;
+
+        /// <summary>
+        /// Control rfvImagenMarketing.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvImagenMarketing;
 
         /// <summary>
         /// Control btnAgregar.

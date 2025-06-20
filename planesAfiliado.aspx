@@ -33,6 +33,12 @@
 
     <link href="css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet" />
 
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         function changeClass() {
             var element1 = document.querySelector("#afiliados1");
@@ -535,7 +541,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                <%--<asp:Literal ID="ltMensaje" runat="server"></asp:Literal>--%>
 
                                                 <div>
                                                     <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"

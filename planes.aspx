@@ -451,7 +451,7 @@
         var ctx = document.getElementById("lineChart").getContext("2d");
         new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });--%>
 
-        <%=strData%>
+        <%--<%=strData%>--%>
 
         $('.footable').footable();
         $(".select2_demo_1").select2();

@@ -64,7 +64,7 @@ namespace fpWebApp
                                 if (dt.Rows.Count > 0)
                                 {
                                     txbTituloPlan.Text = dt.Rows[0]["TituloPlan"].ToString();
-                                    txbDescripcion.Text = dt.Rows[0]["DescripcionPlan"].ToString();
+                                    txbDescripcion.Text = dt.Rows[0]["DescripcionPlanWeb"].ToString();
                                     btnAgregar.Text = "Actualizar";
                                     btnAgregar.Visible = true;
                                     ltTitulo.Text = "Actualizar Plan";
@@ -188,14 +188,8 @@ namespace fpWebApp
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
                     HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "planes?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Attributes.Add("href", "planesweb?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEditar.Visible = true;
-                }
-                if (ViewState["Borrar"].ToString() == "1")
-                {
-                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "planes?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    btnEliminar.Visible = true;
                 }
             }
         }

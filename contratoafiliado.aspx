@@ -187,7 +187,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <a href="contratoafiliado" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                                <asp:Button ID="btnAgregar" runat="server" Text="Agregar" Visible="false" 
+                                                                <asp:Button ID="btnAgregar" runat="server" Text="Guardar" Visible="false" 
                                                                     CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar"
                                                                     OnClick="btnAgregar_Click" OnClientClick="guardarContenidoEditor()" />
                                                             </div>

@@ -1940,7 +1940,6 @@
     <Folder Include="docs\incapacidades\" />
     <Folder Include="docs\traspasos\" />
     <Folder Include="img\contratos\" />
-    <Folder Include="Views\ejemplo\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\bootstrap.css.map" />
@@ -1966,10 +1965,6 @@
     <Content Include="js\plugins\justified-gallery\README.md" />
     <Content Include="js\plugins\topojson\LICENSE" />
     <None Include="packages.config" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

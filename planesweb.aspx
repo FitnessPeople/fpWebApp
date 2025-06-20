@@ -160,7 +160,7 @@
                                                 <div class="form-group m-b-n-xs">
                                                     <label>Descripción del plan web:</label>
                                                     <asp:TextBox ID="txbDescripcion" runat="server" CssClass="form-control input-sm" TextMode="MultiLine"
-                                                        placeholder="Descripción"></asp:TextBox>
+                                                        placeholder="Descripción" Rows="5"></asp:TextBox>
                                                     <asp:RequiredFieldValidator ID="rfvDescripcion" runat="server" ErrorMessage="* Campo requerido"
                                                         ControlToValidate="txbDescripcion" ValidationGroup="agregar"
                                                         CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
@@ -182,6 +182,9 @@
                                                             data-dismiss="fileinput">Quitar</a>
                                                     </div>
                                                     <asp:Literal ID="ltBanner" runat="server"></asp:Literal>
+                                                    <asp:RequiredFieldValidator ID="rfvBanner" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="txbDescripcion" ValidationGroup="agregar"
+                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                 </div>
 
                                                 <div class="form-group">
@@ -199,7 +202,10 @@
                                                         <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm" 
                                                             data-dismiss="fileinput">Quitar</a>
                                                     </div>
-                                                    <asp:Literal ID="Literal1" runat="server"></asp:Literal>
+                                                    <asp:Literal ID="ltImagenMarketing" runat="server"></asp:Literal>
+                                                    <asp:RequiredFieldValidator ID="rfvImagenMarketing" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="txbDescripcion" ValidationGroup="agregar"
+                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                 </div>
 
                                                 <div class="form-group">
@@ -273,8 +279,8 @@
                                                             <td style="white-space: nowrap;"><i class="fa fa-circle-user m-r-xs font-bold"></i><%# Eval("NombreUsuario") %></td>
                                                             <td><span class="badge badge-<%# Eval("label") %>"><%# Eval("EstadoPlan") %></span></td>
                                                             <td>
-                                                                <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                                <%--<a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>--%>
                                                                 <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
                                                             </td>

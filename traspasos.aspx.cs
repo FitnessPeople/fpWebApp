@@ -72,46 +72,91 @@ namespace fpWebApp
         {
             if (txbAfiliadoOrigen.Text.ToString() == "" || txbAfiliadoDestino.Text.ToString() == "")
             {
-                ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    "Afiliado origen o destino no puede estar vacio." +
-                    "</div>";
+                string script = @"
+                    Swal.fire({
+                        title: 'Validación',
+                        text: 'Afiliado origen o destino no puede estar vacio.',
+                        icon: 'error'
+                    }).then(() => {
+                    });
+                    ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                //    "Afiliado origen o destino no puede estar vacio." +
+                //    "</div>";
             }
             else
             {
                 if (Request.Files["documento"] == null)
                 {
-                    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Debe elegir un documento de respaldo para el traspaso." +
-                        "</div>";
+                    string script = @"
+                        Swal.fire({
+                            title: 'Validación',
+                            text: 'Debe elegir un documento de respaldo para el traspaso.',
+                            icon: 'error'
+                        }).then(() => {
+                        });
+                        ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                    //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                    //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                    //    "Debe elegir un documento de respaldo para el traspaso." +
+                    //    "</div>";
                 }
                 else
                 {
                     if (txbObservaciones.Text.Length < 20)
                     {
-                        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                            "Debe escribir las observaciones del traspaso (mínimo 20 caracteres)." +
-                            "</div>";
+                        string script = @"
+                            Swal.fire({
+                                title: 'Validación',
+                                text: 'Debe escribir las observaciones del traspaso (mínimo 20 caracteres).',
+                                icon: 'error'
+                            }).then(() => {
+                            });
+                            ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                        //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                        //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        //    "Debe escribir las observaciones del traspaso (mínimo 20 caracteres)." +
+                        //    "</div>";
                     }
                     else
                     {
                         if (txbFechaInicio.Text.ToString() == "")
                         {
-                            ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                "Debe elegir una fecha de inicio." +
-                                "</div>";
+                            string script = @"
+                                Swal.fire({
+                                    title: 'Validación',
+                                    text: 'Debe elegir una fecha de inicio.',
+                                    icon: 'error'
+                                }).then(() => {
+                                });
+                                ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                            //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                            //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                            //    "Debe elegir una fecha de inicio." +
+                            //    "</div>";
                         }
                         else
                         {
                             if (ViewState["idAfiliadoOrigen"].ToString() == ViewState["idAfiliadoDestino"].ToString())
                             {
-                                ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "El afiliado destino no puede ser el mismo afiliado de origen." +
-                                    "</div>";
+                                string script = @"
+                                    Swal.fire({
+                                        title: 'Validación',
+                                        text: 'El afiliado destino no puede ser el mismo afiliado de origen.',
+                                        icon: 'error'
+                                    }).then(() => {
+                                    });
+                                    ";
+                                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                                //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                                //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                //    "El afiliado destino no puede ser el mismo afiliado de origen." +
+                                //    "</div>";
                             }
                             else
                             {
@@ -143,9 +188,18 @@ namespace fpWebApp
                                 catch (SqlException ex)
                                 {
                                     string mensaje = ex.Message;
-                                    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
-                                        "</div>";
+                                    string script = @"
+                                        Swal.fire({
+                                            title: 'Error',
+                                            text: 'Ha ocurrido un error inesperado. " + mensaje + @"',
+                                            icon: 'error'
+                                        }).then(() => {
+                                        });
+                                        ";
+                                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                                    //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                                    //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
+                                    //    "</div>";
                                 }
                             }
                         }
@@ -156,7 +210,7 @@ namespace fpWebApp
 
         private void CargarPlanesAfiliado()
         {
-            ltNoPlanes.Text = "";
+            //ltNoPlanes.Text = "";
             //string strQuery = "SELECT *, " +
             //    "DATEDIFF(FechaFinalPlan, CURDATE()) AS diasquefaltan, " +
             //    "DATEDIFF(CURDATE(), FechaInicioPlan) AS diasconsumidos, " +
@@ -184,10 +238,19 @@ namespace fpWebApp
             }
             else
             {
-                ltNoPlanes.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                "Este afiliado no tiene planes activos para realizar traspasos." +
-                "</div>";
+                string script = @"
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Este afiliado no tiene planes activos para realizar traspasos.',
+                        icon: 'error'
+                    }).then(() => {
+                    });
+                    ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                //ltNoPlanes.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                //"<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                //"Este afiliado no tiene planes activos para realizar traspasos." +
+                //"</div>";
                 txbAfiliadoDestino.Enabled = false;
                 btnTraspasar.Enabled = false;
             }
@@ -254,10 +317,19 @@ namespace fpWebApp
 
             if (dt.Rows.Count > 0)
             {
-                ltNoPlanes.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                "Este afiliado ya tiene un traspaso en proceso." +
-                "</div>";
+                string script = @"
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Este afiliado ya tiene un traspaso en proceso.',
+                        icon: 'error'
+                    }).then(() => {
+                    });
+                    ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                //ltNoPlanes.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                //"<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                //"Este afiliado ya tiene un traspaso en proceso." +
+                //"</div>";
                 txbAfiliadoDestino.Enabled = false;
                 btnTraspasar.Enabled = false;
             }
@@ -313,10 +385,20 @@ namespace fpWebApp
                 else
                 {
                     //ltPlanActivo.Text = dt.Rows[0]["NombrePlan"].ToString();
-                    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Este afiliado ya tiene un plan activo (" + dt.Rows[0]["NombrePlan"].ToString() + "). No se puede realizar el traspaso." +
-                        "</div>";
+                    string script = @"
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Este afiliado ya tiene un plan activo (" + dt.Rows[0]["NombrePlan"].ToString() + @"). No se puede realizar el traspaso.',
+                            icon: 'error'
+                        }).then(() => {
+                        });
+                        ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+
+                    //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                    //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                    //    "Este afiliado ya tiene un plan activo (" + dt.Rows[0]["NombrePlan"].ToString() + "). No se puede realizar el traspaso." +
+                    //    "</div>";
                 }
             }
             dt.Dispose();

@@ -314,7 +314,7 @@ namespace fpWebApp
                             string respuesta = "ERROR: " + ex.Message;
                         }
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Nuevo", "El usuario creó un nuevo afiliado con documento: " + txbDocumento.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Nuevo", "Se creó un nuevo afiliado con documento: " + txbDocumento.Text.ToString() + ".", "", "");
 
                         DataTable dt = cg.TraerDatos("SELECT idAfiliado FROM Afiliados WHERE DocumentoAfiliado = '" + txbDocumento.Text.ToString() + "' ");
 

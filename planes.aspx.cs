@@ -16,8 +16,8 @@ namespace fpWebApp
 {
     public partial class planes : System.Web.UI.Page
     {
-        private string _strData;
-        protected string strData { get { return this._strData; } }
+        //private string _strData;
+        //protected string strData { get { return this._strData; } }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)

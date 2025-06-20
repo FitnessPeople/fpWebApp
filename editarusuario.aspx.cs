@@ -70,7 +70,7 @@ namespace fpWebApp
 
         private void CargarPerfiles()
         {
-            string strQuery = "SELECT * FROM Perfiles";
+            string strQuery = "SELECT * FROM Perfiles ORDER BY Perfil";
             clasesglobales cg1 = new clasesglobales();
             DataTable dt = cg1.TraerDatos(strQuery);
 

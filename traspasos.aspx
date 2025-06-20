@@ -39,6 +39,12 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         function changeClass() {
             var element1 = document.querySelector("#traspasos");
@@ -195,7 +201,7 @@
                                             <div class="col-md-12">
                                                 <div class="row m-xs" runat="server" id="divPlanes">
                                                     <h4>Planes</h4>
-                                                    <asp:Literal ID="ltNoPlanes" runat="server"></asp:Literal>
+                                                    <%--<asp:Literal ID="ltNoPlanes" runat="server"></asp:Literal>--%>
                                                     <ul class="todo-list m-t small-list">
                                                         <asp:Repeater ID="rpPlanesAfiliado" runat="server">
                                                             <ItemTemplate>
@@ -302,7 +308,7 @@
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div>
-                                                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                    <%--<asp:Literal ID="ltMensaje" runat="server"></asp:Literal>--%>
                                                     <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='afiliados'"><strong>Cancelar</strong></button>
                                                     <asp:Button ID="btnTraspasar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Traspasar" OnClick="btnTraspasar_Click"/>
                                                 </div>

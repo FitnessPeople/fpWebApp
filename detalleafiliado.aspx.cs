@@ -10,7 +10,7 @@ using System.Web;
 using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using static fpWebApp.editarafiliado;
+//using static fpWebApp.editarafiliado;
 
 namespace fpWebApp
 {
@@ -384,58 +384,58 @@ namespace fpWebApp
         /// Agrega y/o actualiza el afiliado en la base de datos de Armatura a través de API
         /// </summary>
         /// <param name="strDocumento"></param>
-        private void PostArmatura(string strDocumento)
-        {
-            clasesglobales cg = new clasesglobales();
-            string strQuery = "SELECT * " +
-                "FROM Afiliados a, AfiliadosPlanes ap " +
-                "WHERE a.DocumentoAfiliado = '" + strDocumento + "' " +
-                "AND a.idAfiliado = ap.idAfiliado " +
-                "AND ap.EstadoPlan = 'Activo'";
-            DataTable dt = cg.TraerDatos(strQuery);
+        //private void PostArmatura(string strDocumento)
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    string strQuery = "SELECT * " +
+        //        "FROM Afiliados a, AfiliadosPlanes ap " +
+        //        "WHERE a.DocumentoAfiliado = '" + strDocumento + "' " +
+        //        "AND a.idAfiliado = ap.idAfiliado " +
+        //        "AND ap.EstadoPlan = 'Activo'";
+        //    DataTable dt = cg.TraerDatos(strQuery);
 
-            if (dt.Rows.Count > 0)
-            {
-                string strGenero = "";
-                if (dt.Rows[0]["idGenero"].ToString() == "1")
-                {
-                    strGenero = "M";
-                }
-                if (dt.Rows[0]["idGenero"].ToString() == "2")
-                {
-                    strGenero = "F";
-                }
+        //    if (dt.Rows.Count > 0)
+        //    {
+        //        string strGenero = "";
+        //        if (dt.Rows[0]["idGenero"].ToString() == "1")
+        //        {
+        //            strGenero = "M";
+        //        }
+        //        if (dt.Rows[0]["idGenero"].ToString() == "2")
+        //        {
+        //            strGenero = "F";
+        //        }
 
-                Persona oPersona = new Persona()
-                {
-                    pin = "" + dt.Rows[0]["DocumentoAfiliado"].ToString() + "",
-                    name = "" + dt.Rows[0]["NombreAfiliado"].ToString() + "",
-                    lastName = "" + dt.Rows[0]["ApellidoAfiliado"].ToString() + "",
-                    gender = strGenero,
-                    personPhoto = "",
-                    certType = "",
-                    certNumber = "",
-                    mobilePhone = "" + dt.Rows[0]["CelularAfiliado"].ToString() + "",
-                    personPwd = "",
-                    birthday = "" + String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"].ToString())) + "",
-                    isSendMail = "false",
-                    email = "" + dt.Rows[0]["EmailAfiliado"].ToString() + "",
-                    deptCode = "01",
-                    ssn = "",
-                    cardNo = "",
-                    supplyCards = "",
-                    carPlate = "",
-                    accStartTime = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaInicioPlan"].ToString())) + " 05:00:00",
-                    accEndTime = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaFinalPlan"].ToString())) + " 23:00:00",
-                    accLevelIds = "402883f08df57ba4018df57cddf70490",
-                    hireDate = ""
-                };
+        //        Persona oPersona = new Persona()
+        //        {
+        //            pin = "" + dt.Rows[0]["DocumentoAfiliado"].ToString() + "",
+        //            name = "" + dt.Rows[0]["NombreAfiliado"].ToString() + "",
+        //            lastName = "" + dt.Rows[0]["ApellidoAfiliado"].ToString() + "",
+        //            gender = strGenero,
+        //            personPhoto = "",
+        //            certType = "",
+        //            certNumber = "",
+        //            mobilePhone = "" + dt.Rows[0]["CelularAfiliado"].ToString() + "",
+        //            personPwd = "",
+        //            birthday = "" + String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"].ToString())) + "",
+        //            isSendMail = "false",
+        //            email = "" + dt.Rows[0]["EmailAfiliado"].ToString() + "",
+        //            deptCode = "01",
+        //            ssn = "",
+        //            cardNo = "",
+        //            supplyCards = "",
+        //            carPlate = "",
+        //            accStartTime = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaInicioPlan"].ToString())) + " 05:00:00",
+        //            accEndTime = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaFinalPlan"].ToString())) + " 23:00:00",
+        //            accLevelIds = "402883f08df57ba4018df57cddf70490",
+        //            hireDate = ""
+        //        };
 
-                string contenido = JsonConvert.SerializeObject(oPersona, Formatting.Indented);
+        //        string contenido = JsonConvert.SerializeObject(oPersona, Formatting.Indented);
 
-                string url = "https://aone.armaturacolombia.co/api/person/add/?access_token=D2BCF6E6BD09DECAA1266D9F684FFE3F5310AD447D107A29974F71E1989AABDB";
-                string rta = EnviarPeticion(url, contenido);
-            }
-        }
+        //        string url = "https://aone.armaturacolombia.co/api/person/add/?access_token=D2BCF6E6BD09DECAA1266D9F684FFE3F5310AD447D107A29974F71E1989AABDB";
+        //        string rta = EnviarPeticion(url, contenido);
+        //    }
+        //}
     }
 }
