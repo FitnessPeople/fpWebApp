@@ -303,6 +303,7 @@
                                                                 <div class="form-group">
                                                                     <label>Contador:</label>
                                                                     <div id="reloj" style="font-size: 20px; font-family: monospace;"></div>
+                                                                    <asp:HiddenField ID="hfContador" runat="server" />
                                                                 </div>
                                                             </div>
 
@@ -915,28 +916,29 @@
 
 <script>
     let segundos = 0;
+        function iniciarContador() {
+            setInterval(() => {
+                segundos++;
+                const min = Math.floor(segundos / 60).toString().padStart(2, '0');
+                const sec = (segundos % 60).toString().padStart(2, '0');
 
-    function iniciarContador() {
-        setInterval(() => {
-            segundos++;
-            const min = Math.floor(segundos / 60).toString().padStart(2, '0');
-            const sec = (segundos % 60).toString().padStart(2, '0');
+                const reloj = document.getElementById("reloj");
+                reloj.textContent = `${min}:${sec}`;
 
-            const reloj = document.getElementById("reloj");
-            reloj.textContent = `${min}:${sec}`;
+                // ✅ Estas dos líneas actualizan el HiddenField CADA segundo
+                const hiddenField = document.getElementById("<%= hfContador.ClientID %>");
+            hiddenField.value = segundos;
 
-            // Cambiar color a rojo si pasan más de 5 minutos
-            if (segundos >= 300) { // 5 minutos * 60 segundos
-                reloj.style.color = '#1AB394';
-            }
-            if (segundos >= 600) { // 10 minutos * 60 segundos
-                reloj.style.color = '#ED5565';
-            }
-        }, 1000);
+            // Cambiar color según tiempo transcurrido
+            if (segundos >= 300) reloj.style.color = '#1AB394';
+            if (segundos >= 600) reloj.style.color = '#ED5565';
+
+        }, 1000); // Ejecuta cada segundo
     }
 
-    window.addEventListener("load", iniciarContador); // inicia al cargar la página
+    window.addEventListener("load", iniciarContador);
 </script>
+
 
 
 

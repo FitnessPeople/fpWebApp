@@ -19,7 +19,7 @@ namespace fpWebApp
         {
             if (!IsPostBack)
             {
-                ListaEstadosCRM();
+                
                 if (Session["idUsuario"] != null)
                 {
                     ValidarPermisos("Sedes");
@@ -387,6 +387,20 @@ namespace fpWebApp
             }
         }
 
+        //private void ListaEstadosCRM()
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarEstadossCRM();
+
+        //    ddlStatusLead.DataSource = dt;
+        //    ddlStatusLead.DataBind();
+        //    //rpEmpresasCRM.DataSource = dt;
+        //    //rpEmpresasCRM.DataBind();
+        //    dt.Dispose();
+        //}
+
+
+
         private void ListaTiposAfiliadosCRM()
         {
             clasesglobales cg = new clasesglobales();
@@ -520,7 +534,7 @@ namespace fpWebApp
                                     txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
                                     ddlTipoPago.SelectedItem.Value.ToString(), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
                                     Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()),
-                                    0, out salida, out mensaje);
+                                    0, Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbAfiliado.Text, out salida, out mensaje);
 
                             if (salida)
                             {
@@ -641,6 +655,7 @@ namespace fpWebApp
             }
             else
             {
+                int segundosPasados = 0;
                 //if (!ValidarSede(txbSede.Text.ToString()))
                 //{
                 bool salida = false;
@@ -654,7 +669,16 @@ namespace fpWebApp
                 TimeSpan hora = TimeSpan.Parse(txbHoraIni.Value);
                 DateTime fechaHora = fecha.Date + hora;
                 string fechaHoraMySQL = fechaHora.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                TimeSpan tiempo = TimeSpan.Zero;
 
+                if (int.TryParse(hfContador.Value, out segundosPasados))
+                {
+                    int minutos = segundosPasados / 60;
+                    int segundos = segundosPasados % 60;                    
+                    string tiempoFormateado = $"00:{minutos:D2}:{segundos:D2}";
+                    tiempo = TimeSpan.Parse(tiempoFormateado);
+                }
+               
                 try
                 {
                     respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
@@ -663,7 +687,8 @@ namespace fpWebApp
                     fechaHoraMySQL.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
                     txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
                     ddlTipoPago.SelectedItem.Value.ToString(), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()),0, out salida, out mensaje);
+                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()),0, 
+                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),txbAfiliado.Text,tiempo.ToString(), out salida, out mensaje);
 
                     if (salida)
                     {
