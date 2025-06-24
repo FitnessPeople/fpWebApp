@@ -569,7 +569,7 @@
                                                         <div class="form-group">
                                                             <a href="crmnuevocontacto" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                             <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
-                                                                CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar"
+                                                                CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
                                                                 OnClick="btnAgregar_Click" />
                                                         </div>
                                                         <br />
@@ -859,6 +859,14 @@
     <script src="js/plugins/clockpicker/clockpicker.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
+        <!-- Chosen -->
+    <script src="js/plugins/chosen/chosen.jquery.js"></script>
+
+
+        <!-- Jquery Validate -->
+    <script src="js/plugins/validate/jquery.validate.min.js"></script>
+
+
     <script>
         $('.footable').footable();
         $('.clockpicker').clockpicker();
@@ -954,6 +962,83 @@
         setTimeout(mueveReloj, 1000);
     }
     </script>--%>
+
+
+
+
+
+
+
+    <script>
+
+        $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" })
+
+        $("#form").validate({
+            rules: {
+                ddlTipoDocumento: {
+                    required: true                    
+                },
+                txbDocumento: {
+                    required: true,
+                    minlength: 3
+                },
+                nombreContacto: {
+                    required: true,
+                    minlength: 3
+                },
+                txbTelefonoContacto: {
+                    required: true,
+                    minlength: 3
+                },
+                txbCorreoContacto: {
+                    required: true,
+                    minlength: 3
+                },
+                ddlEmpresa: {
+                    required: true                  
+                },
+                ddlStatusLead: {
+                    required: true
+                },
+                ddlTiposAfiliado: {
+                    required: true
+                },
+                txbFechaPrim: {
+                    required: true
+                },
+                txbFechaProx: {
+                    required: true,
+                },
+                txbHoraIni: {
+                    required: true,
+                },
+                ddlTipoPago: {
+                    required: true,
+                },
+                ddlObjetivos: {
+                    required: true,
+                },
+                ddlCanalesMarketing: {
+                    required: true                   
+                },
+                ddlPlanes: {
+                    required: true,
+                },
+                txbValorPropuesta: {
+                    required: true,
+                    minlength: 3
+                },
+            },
+            messages: {
+                ddlCiudadAfiliado: "*",
+                ddlProfesiones: "*",
+            }
+        });
+
+        $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
+    </script>
+
+
 </body>
 
 </html>

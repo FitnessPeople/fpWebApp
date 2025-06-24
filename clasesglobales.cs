@@ -6469,7 +6469,8 @@ namespace fpWebApp
 
         public string InsertarContactoCRM(string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
             int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
-            int idUsuario, int idObjetivo, string tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, int idTipoDoc, string DocumentoAfiliado, string tiempoAtencion, out bool respuesta, out string mensaje)
+            int idUsuario, int idObjetivo, int tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, int idTipoDoc, 
+            string DocumentoAfiliado, string tiempoAtencion, out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -6494,7 +6495,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
                         cmd.Parameters.AddWithValue("@p_id_objetivo", idObjetivo);
-                        cmd.Parameters.AddWithValue("@p_tipo_pago", tipoPago);
+                        cmd.Parameters.AddWithValue("@p_id_medio_pago", tipoPago);
                         cmd.Parameters.AddWithValue("@p_id_tipo_afiliado", idTipoAfiliado);
                         cmd.Parameters.AddWithValue("@p_id_canal_marketing", idCanalMarketing);
                         cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
@@ -6528,7 +6529,7 @@ namespace fpWebApp
 
         public string ActualizarContactoCRM(int idContactoCMR, string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
         int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
-        int idUsuario, int idObjetivo, string tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, int idTipoDoc, string DocumentoAfiliado,
+        int idUsuario, int idObjetivo, int tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, int idTipoDoc, string DocumentoAfiliado,
         out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
@@ -6555,13 +6556,13 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
                         cmd.Parameters.AddWithValue("@p_id_objetivo", idObjetivo);
-                        cmd.Parameters.AddWithValue("@p_tipo_pago", tipoPago);
+                        cmd.Parameters.AddWithValue("@p_id_medio_pago", tipoPago);
                         cmd.Parameters.AddWithValue("@p_id_tipo_afiliado", idTipoAfiliado);
                         cmd.Parameters.AddWithValue("@p_id_canal_marketing", idCanalMarketing);
                         cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
                         cmd.Parameters.AddWithValue("@p_meses_plan", mesesPlan);
-                        cmd.Parameters.AddWithValue("@p_id_tipo_doc", mesesPlan);
-                        cmd.Parameters.AddWithValue("@p_documento_afiliado", mesesPlan);
+                        cmd.Parameters.AddWithValue("@p_id_tipo_doc", idTipoDoc);
+                        cmd.Parameters.AddWithValue("@p_documento_afiliado", DocumentoAfiliado);
 
                         cmd.ExecuteNonQuery();
                         respuesta = true;

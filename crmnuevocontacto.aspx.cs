@@ -88,6 +88,8 @@ namespace fpWebApp
                                 if (dt.Rows.Count > 0)
                                 {
                                     DataRow row = dt.Rows[0];
+                                    ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDoc"].ToString())));
+                                    txbDocumento.Text = row["DocumentoAfiliado"].ToString();
 
                                     txbNombreContacto.Value = row["NombreContacto"].ToString();
                                     string telefono = Convert.ToString(row["TelefonoContacto"]);
@@ -162,6 +164,9 @@ namespace fpWebApp
                                 {
                                     DataRow row = dt1.Rows[0];
 
+                                    ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt1.Rows[0]["idTipoDoc"].ToString())));
+                                    txbDocumento.Text = row["DocumentoAfiliado"].ToString();
+
                                     txbNombreContacto.Value = row["NombreContacto"].ToString();
                                     string telefono = Convert.ToString(row["TelefonoContacto"]);
                                     if (!string.IsNullOrEmpty(telefono) && telefono.Length == 10)
@@ -183,8 +188,8 @@ namespace fpWebApp
                                     txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
                                     int ValorPropuesta = Convert.ToInt32(dt1.Rows[0]["ValorPropuesta"]);
                                     txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
-                                    int ValorMes = Convert.ToInt32(dt.Rows[0]["ValorBase"]);
-                                    txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
+                                    //int ValorMes = Convert.ToInt32(dt.Rows[0]["ValorBase"]);
+                                    //txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
                                     //txaObservaciones.Value = row["observaciones"].ToString();
                                     ddlObjetivos.SelectedIndex = Convert.ToInt32(ddlObjetivos.Items.IndexOf(ddlObjetivos.Items.FindByValue(dt1.Rows[0]["idObjetivo"].ToString())));
                                     ddlTipoPago.SelectedIndex = ddlTipoPago.Items.IndexOf(ddlTipoPago.Items.FindByValue(dt1.Rows[0]["idMedioPago"].ToString()));
@@ -194,6 +199,8 @@ namespace fpWebApp
                                     //rblMesesPlan.SelectedIndex = Convert.ToInt32(rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(dt1.Rows[0]["MesesPlan"].ToString())));
 
                                     //Inactivar controles
+                                    txbDocumento.Enabled = false;
+                                    ddlTipoDocumento.Enabled = false;
                                     txbNombreContacto.Disabled = true;
                                     txbTelefonoContacto.Disabled = true;
                                     txbCorreoContacto.Disabled = true;
@@ -532,9 +539,9 @@ namespace fpWebApp
                                     Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()),
                                     txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
                                     txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
-                                    ddlTipoPago.SelectedItem.Value.ToString(), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
+                                    Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
                                     Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()),
-                                    0, Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbAfiliado.Text, out salida, out mensaje);
+                                    0, Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, out salida, out mensaje);
 
                             if (salida)
                             {
@@ -547,7 +554,7 @@ namespace fpWebApp
                                     showConfirmButton: false,
                                     timerProgressBar: true
                                 }).then(() => {
-                                    window.location.href = 'nuevocontactocrm';
+                                    window.location.href = 'crmnuevocontacto';
                                 });
                                 ";
 
@@ -581,7 +588,7 @@ namespace fpWebApp
                 ";
                         ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                     }
-                    Response.Redirect("crmnuevocontacto");
+                    //Response.Redirect("crmnuevocontacto");
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -686,9 +693,9 @@ namespace fpWebApp
                     Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
                     fechaHoraMySQL.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
                     txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
-                    ddlTipoPago.SelectedItem.Value.ToString(), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
                     Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()),0, 
-                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),txbAfiliado.Text,tiempo.ToString(), out salida, out mensaje);
+                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text ,tiempo.ToString(), out salida, out mensaje);
 
                     if (salida)
                     {
