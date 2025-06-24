@@ -16,7 +16,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Sedes</title>
+    <title>Fitness People | Contacto CRM</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
@@ -35,8 +35,52 @@
     <!-- JS de Quill -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
-    <%--        formato de moneda--%>
-    <script>
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/smoothness/jquery-ui.css">
+
+    <link href="css/plugins/dropzone/basic.css" rel="stylesheet" />
+    <link href="css/plugins/dropzone/dropzone.css" rel="stylesheet" />
+    <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet" />
+    <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet" />
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
+    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
+    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
+    <link href="css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet" />
+    <link href="css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
+
+    <!-- FooTable -->
+    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
+
+    <link href="css/animate.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <style>
+        .crm-align-row {
+            display: table;
+            width: 100%;
+        }
+
+        .crm-align-cell {
+            display: table-cell;
+            vertical-align: bottom;
+            padding-right: 15px;
+        }
+
+        .crm-spinner {
+            text-align: center;
+        }
+    </style>
+
+
+
+    <%--    formato de moneda--%>
+    <%--    <script>
         function formatCurrency(input) {
             let value = input.value.replace(/\D/g, '');
             if (value === "") {
@@ -56,45 +100,37 @@
         function getNumericValue(input) {
             return input.value.replace(/[^0-9]/g, '');
         }
-    </script>
+    </script>--%>
 
-    <%--        formato de posición en el menú--%>
-    <script>
-        function changeClass() {
-            var element1 = document.querySelector("#crmnuevocontacto");
-            element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#crm");
-            element2.classList.remove("collapse");
-        }
-    </script>
+    <%--    formato de posición en el menú--%>
 
-    <%--        Formatear telefono --%>
-    <script>
-        function formatearTelefono(input) {
-            let num = input.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
+    <%--    Formatear telefono --%>
+        <script>
+            function formatearTelefono(input) {
+                let num = input.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
 
-            // Si el número tiene 10 dígitos, es un celular
-            if (num.length === 10) {
-                input.value = num.substring(0, 3) + '-' + num.substring(3, 6) + '-' + num.substring(6, 10);
+                // Si el número tiene 10 dígitos, es un celular
+                if (num.length === 10) {
+                    input.value = num.substring(0, 3) + '-' + num.substring(3, 6) + '-' + num.substring(6, 10);
+                }
+                // Si el número tiene 7 o más dígitos, es un teléfono fijo
+                else if (num.length > 6) {
+                    input.value = '(' + num.substring(0, 3) + ') ' + num.substring(3, 6) + '-' + num.substring(6, 10);
+                } else {
+                    input.value = num;
+                }
             }
-            // Si el número tiene 7 o más dígitos, es un teléfono fijo
-            else if (num.length > 6) {
-                input.value = '(' + num.substring(0, 3) + ') ' + num.substring(3, 6) + '-' + num.substring(6, 10);
-            } else {
-                input.value = num;
-            }
-        }
-    </script>
+        </script>
 
     <%--    Formatear solo letraas --%>
-    <script>
+    <%--    <script>
         function validarSoloLetras(input) {
             input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
         }
-    </script>
+    </script>--%>
 
     <%--    Formatear solo correo --%>
-    <script>
+    <%--    <script>
         function validarCorreo(input) {
             const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             if (!emailRegex.test(input.value)) {
@@ -103,8 +139,9 @@
                 input.setCustomValidity('');
             }
         }
-    </script>
-
+    </script>--%>
+    <!-- Select2 -->
+    <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
 
     <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
 
@@ -127,10 +164,30 @@
             console.log(element2);
         }
     </script>
+    <%--    <script>
+    function mueveReloj() {
+        var momentoActual = new Date();
+        var hora = momentoActual.getHours();
+        var minuto = momentoActual.getMinutes();
+        var segundo = momentoActual.getSeconds();
 
+        // Formatear con 0 al inicio si es necesario
+        if (hora < 10) hora = "0" + hora;
+        if (minuto < 10) minuto = "0" + minuto;
+        if (segundo < 10) segundo = "0" + segundo;
+
+        var horaImprimible = hora + " : " + minuto + " : " + segundo;
+
+        document.form_reloj.reloj.value = horaImprimible;
+
+        setTimeout(mueveReloj, 1000); // Mejor usar referencia directa
+    }
+    </script>--%>
+
+    <script src="js/jquery-3.1.1.min.js"></script>
 </head>
 
-<body onload="changeClass()">
+<body onload="changeClass(); iniciarContador()">
     <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated bounceInRight">
@@ -171,6 +228,7 @@
             </div>
         </div>
     </div>
+
     <div id="wrapper">
 
         <uc1:navbar runat="server" ID="navbar1" />
@@ -224,11 +282,68 @@
                                         <div id="tab-1" class="tab-pane active">
                                             <%--Inicia contenido formulario Nuevo contacto--%>
                                             <div class="panel-body">
-                                                <%--                                                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
-                                                    <ContentTemplate>--%>
                                                 <%--Zona lateral izquierda sup --%>
                                                 <div class="col-lg-5">
                                                     <div class="ibox-content">
+
+                                                        <div class="crm-align-row">
+                                                            <!-- Campo de texto -->
+                                                            <div class="crm-align-cell" style="width: 80%;">
+                                                                <div class="form-group">
+                                                                    <label>Consultar:</label>
+                                                                    <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server"
+                                                                        placeholder="Nombre / Cédula / Email / Celular " autocomplete="off"></asp:TextBox>
+                                                                    <asp:Button ID="btnAfiliado" runat="server" Text=""
+                                                                        Style="display: none;" OnClick="btnAfiliado_Click" />
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Contador -->
+                                                            <div class="crm-align-cell" style="width: 10%;">
+                                                                <div class="form-group">
+                                                                    <label>Contador:</label>
+                                                                    <div id="reloj" style="font-size: 20px; font-family: monospace;"></div>
+                                                                    <asp:HiddenField ID="hfContador" runat="server" />
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Spinner -->
+                                                            <div class="crm-align-cell" style="width: 10%;">
+                                                                <div class="form-group crm-spinner">
+                                                                    <div class="sk-spinner sk-spinner-wave">
+                                                                        <div class="sk-rect1"></div>
+                                                                        <div class="sk-rect2"></div>
+                                                                        <div class="sk-rect3"></div>
+                                                                        <div class="sk-rect4"></div>
+                                                                        <div class="sk-rect5"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <i class="fa fa-id-card text-info"></i>
+                                                                    <label>Tipo de Documento</label>
+                                                                    <asp:DropDownList ID="ddlTipoDocumento" runat="server" AppendDataBoundItems="true"
+                                                                        DataTextField="TipoDocumento" DataValueField="idTipoDoc" CssClass="form-control input-sm">
+                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Nro. de Documento</label>
+                                                                    <asp:TextBox ID="txbDocumento" CssClass="form-control input-sm" runat="server" placeholder="#"></asp:TextBox>
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvNumDoc" runat="server" ErrorMessage="* Campo requerido"
+                                                                        ControlToValidate="txbDocumento" ValidationGroup="agregar"
+                                                                        CssClass="font-bold text-danger" InitialValue="">
+                                                                    </asp:RequiredFieldValidator>--%>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         <div class="row">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
@@ -236,8 +351,8 @@
                                                                     <label for="nombreContacto" class="col-form-label">Nombre completo:</label>
                                                                     <input type="text" runat="server" id="txbNombreContacto" class="form-control"
                                                                         oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
-                                                                    <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txbNombreContacto"
-                                                                        ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txbNombreContacto"
+                                                                        ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />--%>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -253,11 +368,11 @@
                                                                         onkeyup="formatearTelefono(this)"
                                                                         maxlength="14" />
 
-                                                                    <asp:RequiredFieldValidator ID="rfvTelefono" runat="server"
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvTelefono" runat="server"
                                                                         ControlToValidate="txbTelefonoContacto"
                                                                         ErrorMessage="* Campo requerido"
                                                                         CssClass="text-danger"
-                                                                        Display="Dynamic" />
+                                                                        Display="Dynamic" />--%>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -281,10 +396,10 @@
                                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                         <asp:ListItem Text="No aplica" Value="0"></asp:ListItem>
                                                                     </asp:DropDownList>
-                                                                    <asp:RequiredFieldValidator ID="rfvEmpresa" runat="server" ErrorMessage="* Campo requerido"
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvEmpresa" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="ddlEmpresa" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -293,16 +408,16 @@
                                                                 <div class="form-group">
                                                                     <i class="fas fa-flag text-info"></i>
                                                                     <label for="StatusLead" class="col-form-label">Status Lead:</label>
-                                                                    <asp:DropDownList ID="ddlStatusLead" DataTextField="NombreEstadoCRM" DataValueField="idEstadoCRM"
-                                                                        runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
+                                                                    <asp:DropDownList ID="ddlStatusLead" runat="server" CssClass="select2_demo_1 form-control input-sm" AppendDataBoundItems="true">
                                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                     </asp:DropDownList>
-                                                                    <asp:RequiredFieldValidator ID="rfvStatusLead" runat="server" ErrorMessage="* Campo requerido"
+                                                                    <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="ddlStatusLead" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </div>
+
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <i class="fas fa-industry text-info"></i>
@@ -311,10 +426,10 @@
                                                                         runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                     </asp:DropDownList>
-                                                                    <asp:RequiredFieldValidator ID="rfvTipoAfiliado" runat="server" ErrorMessage="* Campo requerido"
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvTipoAfiliado" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="ddlTiposAfiliado" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -353,17 +468,13 @@
                                                                     <i class="fa-solid fa-coins text-info"></i>
                                                                     <label for="TipoPago" class="col-form-label">Métodos de pago:</label>
                                                                     <asp:DropDownList ID="ddlTipoPago" runat="server" AppendDataBoundItems="true"
-                                                                        DataTextField="TipoPago" DataValueField="idTipoDoc" CssClass="form-control input-sm">
-                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                        <asp:ListItem Text="Efectivo" Value="Efectivo"></asp:ListItem>
-                                                                        <asp:ListItem Text="Transferencia" Value="Transferencia"></asp:ListItem>
-                                                                        <asp:ListItem Text="Datafono" Value="Datafono"></asp:ListItem>
-                                                                        <asp:ListItem Text="Wompi" Value="Wompi"></asp:ListItem>
+                                                                        DataTextField="NombreMedioPago" DataValueField="idMedioPago" CssClass="form-control input-sm">
+                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>                                                                       
                                                                     </asp:DropDownList>
-                                                                    <asp:RequiredFieldValidator ID="rfvTipoPago" runat="server" ErrorMessage="* Campo requerido"
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvTipoPago" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="ddlTipoPago" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-6">
@@ -374,10 +485,10 @@
                                                                         runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                     </asp:DropDownList>
-                                                                    <asp:RequiredFieldValidator ID="rfvObjetios" runat="server" ErrorMessage="* Campo requerido"
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvObjetios" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="ddlObjetivos" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -393,10 +504,10 @@
                                                                                 runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                             </asp:DropDownList>
-                                                                            <asp:RequiredFieldValidator ID="rfvCanalesMarketing" runat="server" ErrorMessage="* Campo requerido"
+                                                                            <%--<asp:RequiredFieldValidator ID="rfvCanalesMarketing" runat="server" ErrorMessage="* Campo requerido"
                                                                                 ControlToValidate="ddlCanalesMarketing" ValidationGroup="agregar"
                                                                                 CssClass="font-bold text-danger" InitialValue="">
-                                                                            </asp:RequiredFieldValidator>
+                                                                            </asp:RequiredFieldValidator>--%>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-sm-6">
@@ -411,30 +522,6 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="row">
-                                                                    <div class="col-lg-12">
-                                                                        <div class="form-group">
-                                                                            <i class="fa-regular fa-calendar text-info"></i>
-                                                                            <label for="Meses" class="col-form-label">Meses del plan:</label>
-                                                                            <asp:RadioButtonList ID="rblMesesPlan" runat="server"
-                                                                                RepeatDirection="Horizontal" CssClass="form-control input-sm"
-                                                                                AutoPostBack="true" OnSelectedIndexChanged="rblMesesPlan_SelectedIndexChanged">
-                                                                                <asp:ListItem Text="&nbsp;1 &nbsp;&nbsp;&nbsp;" Value="1" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;2 &nbsp;&nbsp;&nbsp;" Value="2" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;3 &nbsp;&nbsp;&nbsp;" Value="3" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;4 &nbsp;&nbsp;&nbsp;" Value="4" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;5 &nbsp;&nbsp;&nbsp;" Value="5" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;6 &nbsp;&nbsp;&nbsp;" Value="6" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;7 &nbsp;&nbsp;&nbsp;" Value="7" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;8 &nbsp;&nbsp;&nbsp;" Value="8" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;9 &nbsp;&nbsp;&nbsp;" Value="9" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;10 &nbsp;&nbsp;&nbsp;" Value="10" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;11 &nbsp;&nbsp;&nbsp;" Value="11" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;12 &nbsp;&nbsp;&nbsp;" Value="12" style="margin-right: 5px;"></asp:ListItem>
-                                                                            </asp:RadioButtonList>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
                                                                 <div style="height: 30px;"></div>
                                                                 <div class="row">
                                                                     <div class="col-sm-4">
@@ -443,10 +530,10 @@
                                                                             <label for="ValorPropuesta" class="col-form-label">Valor Propuesta:</label>
                                                                             <asp:TextBox ID="txbValorPropuesta" CssClass="form-control input-sm" runat="server" placeholder="$0"
                                                                                 onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
-                                                                            <asp:RequiredFieldValidator ID="rfvValorPropuesta" runat="server" ErrorMessage="* Campo requerido"
+                                                                            <%--<asp:RequiredFieldValidator ID="rfvValorPropuesta" runat="server" ErrorMessage="* Campo requerido"
                                                                                 ControlToValidate="txbValorPropuesta" ValidationGroup="agregar"
                                                                                 CssClass="font-bold text-danger" InitialValue="">
-                                                                            </asp:RequiredFieldValidator>
+                                                                            </asp:RequiredFieldValidator>--%>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-sm-4">
@@ -471,10 +558,10 @@
                                                                     <label for="message-text" class="col-form-label">Contexto de la negociación:</label>
                                                                     <textarea id="txaObservaciones" runat="server" rows="3"
                                                                         cssclass="form-control input-sm" class="form-control"></textarea>
-                                                                    <asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ErrorMessage="* Campo requerido"
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="txbValorPropuesta" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </ContentTemplate>
                                                         </asp:UpdatePanel>
@@ -482,7 +569,7 @@
                                                         <div class="form-group">
                                                             <a href="crmnuevocontacto" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                             <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
-                                                                CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar"
+                                                                CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
                                                                 OnClick="btnAgregar_Click" />
                                                         </div>
                                                         <br />
@@ -571,7 +658,7 @@
                                                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                                                     <ContentTemplate>
                                                         <%--Zona lateral izquierda inf --%>
-                                                        <div class="col-lg-5">
+                                                     <%--   <div class="col-lg-5">
                                                             <div class="ibox-content">
                                                                 <div class="row">
                                                                     <div class="col-sm-6">
@@ -661,9 +748,9 @@
                                                                     <asp:Literal ID="Literal3" runat="server"></asp:Literal>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div>--%>
                                                         <%--Zona lateral derecha inf --%>
-                                                        <div class="col-lg-7">
+                                                     <%--   <div class="col-lg-7">
                                                             <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista1">
                                                                 <div class="col-lg-6 form-horizontal">
                                                                     <div class="form-group">
@@ -730,7 +817,7 @@
                                                             </table>
 
 
-                                                        </div>
+                                                        </div>--%>
                                                     </ContentTemplate>
                                                 </asp:UpdatePanel>
                                             </div>
@@ -751,10 +838,12 @@
     </div>
 
     <!-- Mainly scripts -->
-    <script src="js/jquery-3.1.1.min.js"></script>
+    <%--<script src="js/jquery-3.1.1.min.js"></script>--%>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 
     <!-- FooTable -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
@@ -763,8 +852,20 @@
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
+    <!-- Jasny -->
+    <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
+
     <!-- Page-Level Scripts -->
     <script src="js/plugins/clockpicker/clockpicker.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
+        <!-- Chosen -->
+    <script src="js/plugins/chosen/chosen.jquery.js"></script>
+
+
+        <!-- Jquery Validate -->
+    <script src="js/plugins/validate/jquery.validate.min.js"></script>
+
 
     <script>
         $('.footable').footable();
@@ -774,6 +875,168 @@
         $('#acordeonZonaLateralIzqSup').collapse('hide');
     </script>
 
+    <script>
+        $(document).ready(function () {
+            $('#<%= ddlStatusLead.ClientID %>').select2({
+                templateResult: formatOption,
+                templateSelection: formatOption,
+                escapeMarkup: function (m) { return m; } // Permite HTML
+            });
+
+            function formatOption(state) {
+                if (!state.id) return state.text;
+
+                var color = $(state.element).data('color');
+                var icon = $(state.element).data('icon');
+
+                // Aplica color solo al icono
+                return "<span><span style='color:" + color + ";'>" + icon + "</span> " + state.text + "</span>";
+            }
+        });
+    </script>
+
+    <script type="text/javascript">  
+        $(document).ready(function () {
+            $("#txbAfiliado").autocomplete({
+                source: function (request, response) {
+                    $.getJSON("/obtenerafiliados?search=" + request.term, function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                label: item.nombre + " " + item.apellido + " - " + item.id + ", " + item.correo,
+                                value: item.id + " - " + item.nombre + " " + item.apellido,
+                            };
+                        }));
+                    });
+                },
+                select: function (event, ui) {
+                    if (ui.item) {
+                        console.log(ui.item.value);
+                        document.getElementById("txbAfiliado").value = ui.item.value;
+                        var btn = document.getElementById("btnAfiliado");
+                        btn.click();
+                    }
+                },
+                minLength: 3,
+                delay: 100
+            });
+        });
+    </script>
+
+<script>
+    let segundos = 0;
+        function iniciarContador() {
+            setInterval(() => {
+                segundos++;
+                const min = Math.floor(segundos / 60).toString().padStart(2, '0');
+                const sec = (segundos % 60).toString().padStart(2, '0');
+
+                const reloj = document.getElementById("reloj");
+                reloj.textContent = `${min}:${sec}`;
+
+                // ✅ Estas dos líneas actualizan el HiddenField CADA segundo
+                const hiddenField = document.getElementById("<%= hfContador.ClientID %>");
+            hiddenField.value = segundos;
+
+            // Cambiar color según tiempo transcurrido
+            if (segundos >= 300) reloj.style.color = '#1AB394';
+            if (segundos >= 600) reloj.style.color = '#ED5565';
+
+        }, 1000); // Ejecuta cada segundo
+    }
+
+    window.addEventListener("load", iniciarContador);
+</script>
+
+
+
+
+    <%--    <script>
+    function mueveReloj() {
+        const ahora = new Date();
+        let h = ahora.getHours().toString().padStart(2, '0');
+        let m = ahora.getMinutes().toString().padStart(2, '0');
+        let s = ahora.getSeconds().toString().padStart(2, '0');
+
+        document.getElementById("reloj").textContent = `${h} : ${m} : ${s}`;
+
+        setTimeout(mueveReloj, 1000);
+    }
+    </script>--%>
+
+
+
+
+
+
+
+    <script>
+
+        $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" })
+
+        $("#form").validate({
+            rules: {
+                ddlTipoDocumento: {
+                    required: true
+                },
+                txbDocumento: {
+                    required: true,
+                    minlength: 3
+                },
+                nombreContacto: {
+                    required: true,
+                    minlength: 3
+                },
+                txbTelefonoContacto: {
+                    required: true,
+                    minlength: 3
+                },
+                txbCorreoContacto: {
+                    required: true,
+                    minlength: 3
+                },
+                ddlEmpresa: {
+                    required: true
+                },
+                ddlStatusLead: {
+                    required: true
+                },
+                ddlTiposAfiliado: {
+                    required: true
+                },
+                txbFechaPrim: {
+                    required: true
+                },
+                txbFechaProx: {
+                    required: true,
+                },
+                txbHoraIni: {
+                    required: true,
+                },
+                ddlTipoPago: {
+                    required: true,
+                },
+                ddlObjetivos: {
+                    required: true,
+                },
+                ddlCanalesMarketing: {
+                    required: true
+                },
+                ddlPlanes: {
+                    required: true,
+                },
+                txbValorPropuesta: {
+                    required: true,
+                    minlength: 3
+                },
+            },
+            messages: {
+                ddlCiudadAfiliado: "*",
+                ddlProfesiones: "*",
+            }
+        });
+
+        $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
+    </script>
 
 
 </body>
