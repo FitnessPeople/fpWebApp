@@ -96,22 +96,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTituloPlan;
 
         /// <summary>
-        /// Control txbDescripcion.
+        /// Control hiddenEditor.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbDescripcion;
-
-        /// <summary>
-        /// Control rfvDescripcion.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDescripcion;
+        protected global::System.Web.UI.WebControls.HiddenField hiddenEditor;
 
         /// <summary>
         /// Control ltBanner.
@@ -123,15 +114,6 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltBanner;
 
         /// <summary>
-        /// Control rfvBanner.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvBanner;
-
-        /// <summary>
         /// Control ltImagenMarketing.
         /// </summary>
         /// <remarks>
@@ -139,15 +121,6 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltImagenMarketing;
-
-        /// <summary>
-        /// Control rfvImagenMarketing.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvImagenMarketing;
 
         /// <summary>
         /// Control btnAgregar.

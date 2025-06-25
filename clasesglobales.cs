@@ -4908,8 +4908,8 @@ namespace fpWebApp
         }
 
         public string InsertarPlan(string nombrePlan, string descripcionPlan, int precioTotal, int precioBase, int meses, 
-            int mesesCortesia, string color, 
-            int idUsuario, double diasCongelamiento, string fechaInicio, string fechaFinal, int permanente)
+            int mesesCortesia, string color, int idUsuario, double diasCongelamiento, string fechaInicio, 
+            string fechaFinal, int permanente, int debitoAutomatico)
         {
             string respuesta = string.Empty;
             try
@@ -4933,6 +4933,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicio);
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
                         cmd.Parameters.AddWithValue("@p_permanente", permanente);
+                        cmd.Parameters.AddWithValue("@p_debito_automatico", debitoAutomatico);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -4948,7 +4949,7 @@ namespace fpWebApp
         }
 
         public string ActualizarPlan(int idPlan, string nombre, string descripcion, int precioTotal, int precioBase, int meses, int mesesCortesia,
-            string color, int idUsuario, int diasCongelamiento, string fechaInicial, string fechaFinal, int permanente)
+            string color, int idUsuario, int diasCongelamiento, string fechaInicial, string fechaFinal, int permanente, int debitoAutomatico)
         {   
             string respuesta = string.Empty;
             try
@@ -4977,6 +4978,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicial);
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
                         cmd.Parameters.AddWithValue("@p_permanente", permanente);
+                        cmd.Parameters.AddWithValue("@p_debito_automatico", debitoAutomatico);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";

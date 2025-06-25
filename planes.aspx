@@ -34,6 +34,7 @@
     </style>
 
     <script>
+        /*TODO: Hacer el arreglo del menu OJO*/
         function changeClass() {
             var element1 = document.querySelector("#planes");
             element1.classList.replace("old", "active");
@@ -232,11 +233,11 @@
                                                 </div>--%>
                                                 <div class="row">
                                                     <div class="col-sm-12">
-                                                        <h3>Período del plan</h3>
+                                                        <h4>Período del plan</h4>
                                                     </div>
 
                                                     <div>
-                                                        <div class="col-sm-4">
+                                                        <div class="col-sm-12">
                                                             <div class="form-group">
                                                                 <label>Estado</label>
                                                                 <asp:CheckBox runat="server" ID="cbPermanente" Text="&nbsp;Permanente" CssClass="form-control" />
@@ -244,7 +245,7 @@
                                                         </div>
                                                     </div>
                                                     <div id="fechas">
-                                                        <div class="col-sm-4">
+                                                        <div class="col-sm-6">
                                                             <div class="form-group">
                                                                 <label>Fecha inicial</label>
                                                                 <asp:TextBox ID="txbFechaInicial" CssClass="form-control input-sm" runat="server"></asp:TextBox>
@@ -253,7 +254,7 @@
                                                                     CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-4">
+                                                        <div class="col-sm-6">
                                                             <div class="form-group">
                                                                 <label>Fecha final</label>
                                                                 <asp:TextBox ID="txbFechaFinal" CssClass="form-control input-sm" runat="server"></asp:TextBox>
@@ -264,6 +265,18 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <div class="row">
+                                                    <div>
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>Tipo de pago</label>
+                                                                <asp:CheckBox runat="server" ID="cbDebitoAutomatico" Text="&nbsp;Débito automático" CssClass="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                          <div class="form-group">

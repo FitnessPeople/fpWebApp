@@ -160,13 +160,14 @@ namespace fpWebApp
         {
             if (Request.QueryString.Count > 0)
             {
-                string strQuery = "SELECT *, " +
-                    "IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS label " +
-                    "FROM afiliados a " +
-                    "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +
-                    "LEFT JOIN ciudades ON ciudades.idCiudad = a.idCiudadAfiliado " +
-                    "WHERE a.idAfiliado = " + Request.QueryString["id"].ToString() + " ";
+                string strQuery = @"SELECT *, 
+                    IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS label 
+                    FROM afiliados a 
+                    LEFT JOIN Sedes s ON a.idSede = s.idSede 
+                    LEFT JOIN ciudades ON ciudades.idCiudad = a.idCiudadAfiliado 
+                    WHERE a.idAfiliado = " + Request.QueryString["id"].ToString();
                 clasesglobales cg = new clasesglobales();
+
                 DataTable dt = cg.TraerDatos(strQuery);
 
                 if (dt.Rows.Count > 0)
