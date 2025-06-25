@@ -141,6 +141,15 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlInputText txbNombreContacto;
 
         /// <summary>
+        /// Control txbApellidoContacto.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbApellidoContacto;
+
+        /// <summary>
         /// Control txbTelefonoContacto.
         /// </summary>
         /// <remarks>

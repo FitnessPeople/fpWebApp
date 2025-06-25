@@ -105,7 +105,7 @@
     <%--    formato de posición en el menú--%>
 
     <%--    Formatear telefono --%>
-        <script>
+    <script>
         function formatearTelefono(input) {
             let num = input.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
 
@@ -348,37 +348,37 @@
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <i class="fa fa-user-tie text-info"></i>
-                                                                    <label for="nombreContacto" class="col-form-label">Nombre completo:</label>
+                                                                    <label for="nombreContacto" class="col-form-label">Nombres:</label>
                                                                     <input type="text" runat="server" id="txbNombreContacto" class="form-control"
                                                                         oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
                                                                     <%--<asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txbNombreContacto"
                                                                         ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />--%>
                                                                 </div>
                                                             </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <i class="fa fa-user-tie text-info"></i>
+                                                                    <label for="apellidoContacto" class="col-form-label">Apellidos:</label>
+                                                                    <input type="text" runat="server" id="txbApellidoContacto" class="form-control"
+                                                                        oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txbNombreContacto"
+                                                                        ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />--%>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="row">
                                                             <div class="form-group">
                                                                 <div class="col-sm-6">
                                                                     <i class="fa-solid fa-phone text-info"></i>
                                                                     <label for="txbTelefonoContacto" class="col-form-label">Teléfono:</label>
-
-                                                                    <input type="text" runat="server" id="txbTelefonoContacto"
-                                                                        class="form-control"
-                                                                        placeholder="ej: 310 123 4567"
-                                                                        spellcheck="false"
-                                                                        autocomplete="off"
-                                                                        onkeyup="formatearTelefono(this)"
-                                                                        maxlength="14" />
-
-                                                                    <%--<asp:RequiredFieldValidator ID="rfvTelefono" runat="server"
-                                                                        ControlToValidate="txbTelefonoContacto"
-                                                                        ErrorMessage="* Campo requerido"
-                                                                        CssClass="text-danger"
-                                                                        Display="Dynamic" />--%>
+                                                                    <input type="text" runat="server" id="txbTelefonoContacto" class="form-control"
+                                                                        placeholder="ej: 310 123 4567" spellcheck="false" autocomplete="off"
+                                                                        onkeyup="formatearTelefono(this)" maxlength="14" />
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
+                                                            <div class="form-group">
+                                                                <div class="col-sm-6">
                                                                     <span class="glyphicon glyphicon-envelope text-info"></span>
                                                                     <label for="correoContacto" class="col-form-label">Correo electrónico:</label>
                                                                     <input type="text" runat="server" class="form-control" id="txbCorreoContacto"
@@ -387,6 +387,9 @@
                                                                     <asp:Literal ID="ltError" runat="server" Visible="false"></asp:Literal>
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                        <div class="row">
+
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <i class="fas fa-industry text-info"></i>
@@ -402,8 +405,7 @@
                                                                     </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="row">
+
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <i class="fas fa-flag text-info"></i>
@@ -417,13 +419,16 @@
                                                                     </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                        <div class="row">
+
 
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <i class="fas fa-industry text-info"></i>
                                                                     <label for="TiposAfiliado" class="col-form-label">Tipo cliente:</label>
                                                                     <asp:DropDownList ID="ddlTiposAfiliado" DataTextField="NombreTipoAfiliado" DataValueField="idTipoAfiliado"
-                                                                        runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
+                                                                        runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm" AutoPostBack="true">
                                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                     </asp:DropDownList>
                                                                     <%--<asp:RequiredFieldValidator ID="rfvTipoAfiliado" runat="server" ErrorMessage="* Campo requerido"
@@ -469,7 +474,7 @@
                                                                     <label for="TipoPago" class="col-form-label">Métodos de pago:</label>
                                                                     <asp:DropDownList ID="ddlTipoPago" runat="server" AppendDataBoundItems="true"
                                                                         DataTextField="NombreMedioPago" DataValueField="idMedioPago" CssClass="form-control input-sm">
-                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>                                                                       
+                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                     </asp:DropDownList>
                                                                     <%--<asp:RequiredFieldValidator ID="rfvTipoPago" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="ddlTipoPago" ValidationGroup="agregar"
@@ -601,7 +606,7 @@
                                                         data-empty="Sin resultados">
                                                         <thead>
                                                             <tr>
-                                                                <th data-sortable="false" data-breakpoints="xs" style="width: 200px;">Nombre</th>
+                                                                <th data-sortable="false" data-breakpoints="xs" style="width: 300px;">Nombre</th>
                                                                 <th data-breakpoints="xs">Teléfono</th>
                                                                 <th data-breakpoints="xs">Correo</th>
                                                                 <th data-breakpoints="xs">Lead</th>
@@ -636,6 +641,22 @@
                                                                             </table>
                                                                         </td>
                                                                         <td style="display: flex; flex-wrap: nowrap;">
+                                                                            <a runat="server" id="btnNuevoAfiliado" href="#" class="btn btn-outline btn-success pull-right m-r-xs" target="_blank"
+                                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" data-idcrm='<%# Eval("idContacto") %>'
+                                                                                onclick="redirigirNuevoAfiliado(this, event)">
+                                                                                <i class="fa fa-id-card"></i></a>
+
+
+                                                                            <%--                                                                            <a runat="server" id="A1"
+                                                                                href="#"
+                                                                                class="btn btn-outline btn-success pull-right m-r-xs"
+                                                                                target="_blank"
+                                                                                data-iconomin='<%# Eval("IconoMinEstadoCRM") %>'
+                                                                                onclick="redirigirNuevoAfiliado(this, event)"
+                                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;">
+                                                                                <i class="fa fa-id-card"></i>
+                                                                            </a>--%>
+
                                                                             <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
                                                                             <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
@@ -658,7 +679,7 @@
                                                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                                                     <ContentTemplate>
                                                         <%--Zona lateral izquierda inf --%>
-                                                     <%--   <div class="col-lg-5">
+                                                        <%--   <div class="col-lg-5">
                                                             <div class="ibox-content">
                                                                 <div class="row">
                                                                     <div class="col-sm-6">
@@ -750,7 +771,7 @@
                                                             </div>
                                                         </div>--%>
                                                         <%--Zona lateral derecha inf --%>
-                                                     <%--   <div class="col-lg-7">
+                                                        <%--   <div class="col-lg-7">
                                                             <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista1">
                                                                 <div class="col-lg-6 form-horizontal">
                                                                     <div class="form-group">
@@ -859,11 +880,11 @@
     <script src="js/plugins/clockpicker/clockpicker.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
-        <!-- Chosen -->
+    <!-- Chosen -->
     <script src="js/plugins/chosen/chosen.jquery.js"></script>
 
 
-        <!-- Jquery Validate -->
+    <!-- Jquery Validate -->
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
 
@@ -903,7 +924,7 @@
                         response($.map(data, function (item) {
                             return {
                                 label: item.nombre + " " + item.apellido + " - " + item.id + ", " + item.correo,
-                                value: item.id + " - " + item.nombre + " " + item.apellido,
+                                value: item.id + " - " + item.nombre + " - " + item.apellido,
                             };
                         }));
                     });
@@ -922,8 +943,8 @@
         });
     </script>
 
-<script>
-    let segundos = 0;
+    <script>
+        let segundos = 0;
         function iniciarContador() {
             setInterval(() => {
                 segundos++;
@@ -935,17 +956,17 @@
 
                 // ✅ Estas dos líneas actualizan el HiddenField CADA segundo
                 const hiddenField = document.getElementById("<%= hfContador.ClientID %>");
-            hiddenField.value = segundos;
+                hiddenField.value = segundos;
 
-            // Cambiar color según tiempo transcurrido
-            if (segundos >= 300) reloj.style.color = '#1AB394';
-            if (segundos >= 600) reloj.style.color = '#ED5565';
+                // Cambiar color según tiempo transcurrido
+                if (segundos >= 300) reloj.style.color = '#1AB394';
+                if (segundos >= 600) reloj.style.color = '#ED5565';
 
-        }, 1000); // Ejecuta cada segundo
-    }
+            }, 1000); // Ejecuta cada segundo
+        }
 
-    window.addEventListener("load", iniciarContador);
-</script>
+        window.addEventListener("load", iniciarContador);
+    </script>
 
 
 
@@ -976,7 +997,7 @@
         $("#form").validate({
             rules: {
                 ddlTipoDocumento: {
-                    required: true                    
+                    required: true
                 },
                 txbDocumento: {
                     required: true,
@@ -995,7 +1016,7 @@
                     minlength: 3
                 },
                 ddlEmpresa: {
-                    required: true                  
+                    required: true
                 },
                 ddlStatusLead: {
                     required: true
@@ -1019,7 +1040,7 @@
                     required: true,
                 },
                 ddlCanalesMarketing: {
-                    required: true                   
+                    required: true
                 },
                 ddlPlanes: {
                     required: true,
@@ -1037,6 +1058,23 @@
 
         $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
     </script>
+    <script>
+        function redirigirNuevoAfiliado(anchor, event) {
+            event.preventDefault();
+
+            const idcrm = anchor.getAttribute("data-idcrm");
+
+            if (!idcrm) {
+                alert("No se encontró el id CRM.");
+                return;
+            }
+
+            const url = `nuevoafiliado.aspx?idcrm=${encodeURIComponent(idcrm)}`;
+            window.open(url, '_blank');
+        }
+    </script>
+
+
 
 
 </body>

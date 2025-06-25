@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Configuration;
 using System.Data;
 using System.IO;
@@ -19,6 +20,9 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
+
+
+
                     ValidarPermisos("Afiliados");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
@@ -26,6 +30,7 @@ namespace fpWebApp
                         paginasperfil.Visible = true;
                         divContenido.Visible = false;
                     }
+
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
                         DateTime dt14 = DateTime.Now.AddYears(-14);
@@ -52,12 +57,31 @@ namespace fpWebApp
                         paginasperfil.Visible = true;
                         divContenido.Visible = false;
                     }
+                    if (Request.QueryString.Count > 0)
+                    {
+                        bool respuesta = false;
+                        int idCRM = Convert.ToInt32(Request.QueryString["idcrm"].ToString());
+                        clasesglobales cg = new clasesglobales();
+                        DataTable dt = cg.ConsultarContactosCRMPorId(idCRM, out respuesta);
+                        if (dt.Rows.Count > 0)
+                        {
+                            txbNombre.Text = dt.Rows[0]["NombreContacto"].ToString();
+                            txbDocumento.Text = dt.Rows[0]["DocumentoAfiliado"].ToString();
+                            ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDoc"].ToString())));
+                            txbTelefono.Text = dt.Rows[0]["TelefonoContacto"].ToString();
+                            txbEmail.Text = dt.Rows[0]["EmailContacto"].ToString();
+                            ddlEmpresaConvenio.SelectedValue = dt.Rows[0]["idEmpresaCRM"].ToString();
+                        }
+
+
+                        // txbNombre.Text = Request.QueryString["idcrm"].ToString();   
+                    }
                 }
                 else
                 {
                     Response.Redirect("logout");
                 }
-            }
+                }
         }
 
         private void ValidarPermisos(string strPagina)

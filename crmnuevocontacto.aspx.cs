@@ -19,7 +19,7 @@ namespace fpWebApp
         {
             if (!IsPostBack)
             {
-                
+
                 if (Session["idUsuario"] != null)
                 {
                     ValidarPermisos("Sedes");
@@ -45,18 +45,18 @@ namespace fpWebApp
                         if (ViewState["Consulta"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            //lbExportarExcel.Visible = false;
+                         
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
-                            divBotonesLista.Visible = true;
-                            //lbExportarExcel.Visible = true;
+                            divBotonesLista.Visible = true;                        
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             btnAgregar.Visible = true;
                         }
                     }
+
                     ListaEmpresasCRM();
                     ListaEstadosCRM();
                     ListaContactos();
@@ -64,7 +64,6 @@ namespace fpWebApp
                     CargarPlanes();
                     ListaCanalesMarketingCRM();
                     ListaObjetivosfiliadoCRM();
-                    //CargarCiudad();
                     CargarTipoDocumento();
                     ListaMediosDePago();
 
@@ -80,8 +79,6 @@ namespace fpWebApp
                             clasesglobales cg = new clasesglobales();
                             DataTable dt = cg.ConsultarContactosCRMPorId(int.Parse(Request.QueryString["editid"].ToString()), out respuesta);
                             Session["contactoId"] = int.Parse(Request.QueryString["editid"].ToString());
-
-
                             if (respuesta)
                             {
 
@@ -121,7 +118,6 @@ namespace fpWebApp
                                     ddlCanalesMarketing.SelectedIndex = Convert.ToInt32(ddlCanalesMarketing.Items.IndexOf(ddlCanalesMarketing.Items.FindByValue(dt.Rows[0]["idCanalMarketing"].ToString())));
                                     ddlPlanes.SelectedIndex = Convert.ToInt32(ddlPlanes.Items.IndexOf(ddlPlanes.Items.FindByValue(dt.Rows[0]["idPlan"].ToString())));
                                     //rblMesesPlan.SelectedIndex = Convert.ToInt32(rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(dt.Rows[0]["MesesPlan"].ToString())));
-
                                 }
                             }
                             else
@@ -225,85 +221,6 @@ namespace fpWebApp
                                 dt1.Dispose();
                             }
                         }
-                        //if (Request.QueryString["editidEmp"] != null)
-                        //{
-                        //    //Editar
-
-                        //    bool respuesta = false;
-                        //    clasesglobales cg = new clasesglobales();
-                        //    DataTable dt = cg.ConsultarEmpresaCRMPorId(int.Parse(Request.QueryString["editidEmp"].ToString()), out respuesta);
-                        //    Session["empresaCRMId"] = int.Parse(Request.QueryString["editidEmp"].ToString());
-                        //    btnAgregarEmp.Text = "Actualizar";
-                        //    if (respuesta)
-                        //    {
-
-                        //        if (dt.Rows.Count > 0)
-                        //        {
-                        //            DataRow row = dt.Rows[0];
-
-                        //            txbNombreEmpresaCRM.Value = row["NombreEmpresaCRM"].ToString();
-                        //            txbPaginaWeb.Value = row["paginaWeb"].ToString();
-                        //            if (row["idEmpresaCRM"].ToString() != "")
-                        //                ddlContactos.SelectedIndex = Convert.ToInt32(ddlContactos.Items.IndexOf(ddlContactos.Items.FindByValue(dt.Rows[0]["idContacto"].ToString())));
-                        //            else
-                        //                ddlContactos.SelectedItem.Value = "0";
-
-                        //            txaObservacionesEmp.Value = row["observacionesEmp"].ToString();
-                        //            rblEstado.SelectedIndex = Convert.ToInt32(rblEstado.Items.IndexOf(rblEstado.Items.FindByValue(dt.Rows[0]["EstadoEmpresaCRM"].ToString())));
-                        //            ddlCiudad.SelectedIndex = Convert.ToInt32(ddlCiudad.Items.IndexOf(ddlCiudad.Items.FindByValue(dt.Rows[0]["idCiudad"].ToString())));
-                        //        }
-                        //    }
-                        //    else
-                        //    {
-                        //        DataRow row = dt.Rows[0];
-                        //        txbNombreContacto.Value = row["Error"].ToString(); ;
-                        //    }
-                        //}
-                        //if (Request.QueryString["deleteidEmp"] != null)
-                        //{
-                        //    //Borrar
-                        //    bool respuesta = false;
-                        //    clasesglobales cg = new clasesglobales();
-                        //    DataTable dt1 = new DataTable();
-                        //    dt1 = cg.ConsultarEmpresaCRMPorId(int.Parse(Request.QueryString["deleteidEmp"].ToString()), out respuesta);
-                        //    if (dt1.Rows.Count > 0)
-                        //    {
-                        //        DataRow row = dt1.Rows[0];
-
-                        //        txbNombreEmpresaCRM.Value = row["NombreEmpresaCRM"].ToString();
-                        //        txbPaginaWeb.Value = row["paginaWeb"].ToString();
-
-
-                        //        if (row["idContacto"].ToString() != "")
-                        //            ddlContactos.SelectedIndex = Convert.ToInt32(ddlContactos.Items.IndexOf(ddlContactos.Items.FindByValue(dt1.Rows[0]["idContacto"].ToString())));
-                        //        else
-                        //            ddlContactos.SelectedItem.Value = "0";
-
-                        //        if (row["EstadoEmpresaCRM"].ToString() != "")
-                        //            rblEstado.SelectedIndex = Convert.ToInt32(rblEstado.Items.IndexOf(rblEstado.Items.FindByValue(dt1.Rows[0]["EstadoEmpresaCRM"].ToString())));
-                        //        else
-                        //            rblEstado.SelectedItem.Value = "0";
-
-                        //        if (row["idCiudad"].ToString() != "")
-                        //            ddlCiudad.SelectedIndex = Convert.ToInt32(ddlCiudad.Items.IndexOf(ddlCiudad.Items.FindByValue(dt1.Rows[0]["idCiudad"].ToString())));
-                        //        else
-                        //            ddlCiudad.SelectedItem.Value = "0";
-
-                        //        txaObservacionesEmp.Value = row["ObservacionesEmp"].ToString();
-
-                        //        //Inactivar controles
-                        //        txbNombreEmpresaCRM.Disabled = true;
-                        //        txbPaginaWeb.Disabled = true;
-                        //        ddlCiudad.Enabled = false;
-                        //        rblEstado.Enabled = false;
-                        //        ddlContactos.Enabled = false;
-                        //        txaObservacionesEmp.Disabled = true;
-
-                        //        btnAgregarEmp.Text = "⚠ Confirmar borrado ❗";
-                        //        //ltTitulo.Text = "Borrar empresa CRM";
-                        //    }
-                        //    dt1.Dispose();
-                        //}
                     }
                 }
 
@@ -346,8 +263,6 @@ namespace fpWebApp
 
             rpContactosCRM.DataSource = dt;
             rpContactosCRM.DataBind();
-            //ddlContactos.DataSource = dt;
-            //ddlContactos.DataBind();
 
             //ltValorTotal.Text = valorTotal.ToString("C0");
             dt.Dispose();
@@ -394,20 +309,6 @@ namespace fpWebApp
             }
         }
 
-        //private void ListaEstadosCRM()
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.ConsultarEstadossCRM();
-
-        //    ddlStatusLead.DataSource = dt;
-        //    ddlStatusLead.DataBind();
-        //    //rpEmpresasCRM.DataSource = dt;
-        //    //rpEmpresasCRM.DataBind();
-        //    dt.Dispose();
-        //}
-
-
-
         private void ListaTiposAfiliadosCRM()
         {
             clasesglobales cg = new clasesglobales();
@@ -448,18 +349,6 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-
-        //private void CargarCiudad()
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.ConsultarCiudadesCol();
-
-        //    ddlCiudad.DataSource = dt;
-        //    ddlCiudad.DataBind();
-
-        //    dt.Dispose();
-        //}
-
         private void CargarTipoDocumento()
         {
             clasesglobales cg = new clasesglobales();
@@ -474,8 +363,6 @@ namespace fpWebApp
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
-            //string contenidoEditor = hiddenEditor.Value;
-
             if (Request.QueryString.Count > 0)
             {
                 if (Request.QueryString["editid"] != null)
@@ -490,7 +377,6 @@ namespace fpWebApp
                     else
                         ddlEmpresa.SelectedItem.Value = "0";
 
-                    //clasesglobales cg = new clasesglobales();
                     try
                     {
                         // Obtener y limpiar valores
@@ -681,11 +567,11 @@ namespace fpWebApp
                 if (int.TryParse(hfContador.Value, out segundosPasados))
                 {
                     int minutos = segundosPasados / 60;
-                    int segundos = segundosPasados % 60;                    
+                    int segundos = segundosPasados % 60;
                     string tiempoFormateado = $"00:{minutos:D2}:{segundos:D2}";
                     tiempo = TimeSpan.Parse(tiempoFormateado);
                 }
-               
+
                 try
                 {
                     respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
@@ -694,8 +580,8 @@ namespace fpWebApp
                     fechaHoraMySQL.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
                     txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
                     Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()),0, 
-                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text ,tiempo.ToString(), out salida, out mensaje);
+                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
+                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, tiempo.ToString(), out salida, out mensaje);
 
                     if (salida)
                     {
@@ -744,10 +630,6 @@ namespace fpWebApp
             }
         }
 
-        protected void rblClaseSede_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
 
         protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
@@ -818,363 +700,6 @@ namespace fpWebApp
             }
         }
 
-        //protected void rblMesesPlan_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    CalcularPropuesta();
-
-        //    if (ViewState["precioBase"] == null || ViewState["Meses"] == null)
-        //    {
-        //        txbValorPropuesta.Text = "Primero selecciona un plan.";
-        //        return;
-        //    }
-        //}
-
-        //private void CalcularPropuesta()
-        //{
-        //    if (ViewState["precioBase"] == null)
-        //    {
-        //        txbValorPropuesta.Text = "Faltan datos para calcular.";
-        //        return;
-        //    }
-
-        //    if (ddlPlanes.SelectedValue == "0")
-        //    {
-        //        txbValorPropuesta.Text = "Debes seleccionar un plan válido.";
-        //        return;
-        //    }
-
-        //    int precioBase = Convert.ToInt32(ViewState["precioBase"]);
-        //    int meses = Convert.ToInt32(ViewState["Meses"]);
-        //    double total = Convert.ToDouble(ViewState["precioTotal"]);
-        //    double dobDescuento = (1 - (precioBase / meses) / precioBase) * 100;
-        //    double intConDescuento = (precioBase * meses) - precioBase;
-        //    double dobPrecioMesDescuento = precioBase / meses;
-
-        //    int totalMesesOriginal = ViewState["Meses"] != null ? Convert.ToInt32(ViewState["Meses"]) : meses;
-
-        //    if (ViewState["Recurrente"] != null && Convert.ToInt32(ViewState["Recurrente"]) == 1)
-        //    {
-        //        total = precioBase * meses;
-        //    }
-        //    else if (meses != totalMesesOriginal)
-        //    {
-        //        total = precioBase * meses;
-        //    }
-
-        //    txbValorPropuesta.Text = $"${total:N0}";
-        //}
-
-        //protected void btnAgregarEmp_Click(object sender, EventArgs e)
-        //{
-        //    clasesglobales cg = new clasesglobales();
-
-        //    if (Request.QueryString.Count > 0)
-        //    {
-        //        if (Request.QueryString["editidEmp"] != null)
-        //        {
-        //            bool salida = false;
-        //            string mensaje = string.Empty;
-        //            string respuesta = string.Empty;
-        //            string mensajeValidacion = string.Empty;
-
-        //            if (ddlCiudad.SelectedItem.Value != "")
-        //                ddlCiudad.SelectedIndex = Convert.ToInt32(ddlCiudad.Items.IndexOf(ddlCiudad.Items.FindByValue(ddlCiudad.SelectedItem.Value)));
-        //            else
-        //                ddlCiudad.SelectedItem.Value = "0";
-
-        //            if (ddlContactos.SelectedItem.Value != "")
-        //                ddlContactos.SelectedIndex = Convert.ToInt32(ddlContactos.Items.IndexOf(ddlContactos.Items.FindByValue(ddlContactos.SelectedItem.Value)));
-        //            else
-        //                ddlContactos.SelectedItem.Value = "0";
-
-        //            try
-        //            {
-        //                // Obtener y limpiar valores
-        //                string nombreEmp = txbNombreEmpresaCRM.Value?.ToString().Trim();
-        //                string paginaWeb = txbPaginaWeb.Value?.ToString().Trim();
-        //                string contacto = ddlContactos.SelectedItem?.Value;
-        //                string observaciones = txaObservacionesEmp.Value?.ToString().Trim();
-        //                string ciudad = ddlCiudad.SelectedItem?.Value;
-        //                string estado = rblEstado.SelectedItem?.Value;
-
-
-        //                // Validar campos requeridos
-        //                if (string.IsNullOrWhiteSpace(nombreEmp) ||
-        //                    string.IsNullOrWhiteSpace(paginaWeb) ||
-        //                    string.IsNullOrWhiteSpace(contacto) ||
-        //                    string.IsNullOrWhiteSpace(observaciones) ||
-        //                    string.IsNullOrWhiteSpace(ciudad) ||
-        //                    string.IsNullOrWhiteSpace(estado)
-        //                    )
-        //                {
-        //                    mensajeValidacion = "Todos los campos son obligatorios.";
-        //                    return;
-        //                }
-        //                else
-        //                {
-        //                    respuesta = cg.ActualizarEmpresaCRM(Convert.ToInt32(Request.QueryString["editidEmp"].ToString()), txbNombreEmpresaCRM.Value.ToString().Trim(),
-        //                                txbPaginaWeb.Value.ToString().Trim().ToLower(), Convert.ToInt32(ddlContactos.SelectedItem.Value.ToString()),
-        //                                Convert.ToInt32(Session["idUsuario"]), txaObservacionesEmp.Value.Trim(), rblEstado.SelectedItem.Value.ToString(), Convert.ToInt32(ddlCiudad.SelectedValue),
-        //                                out salida, out mensaje);
-
-        //                    if (salida)
-        //                    {
-        //                        string script = @"
-        //                        Swal.fire({
-        //                            title: 'La empresa CRM se actualizó de forma exitosa',
-        //                            text: '" + mensaje.Replace("'", "\\'") + @"',
-        //                            icon: 'success',
-        //                            timer: 3000, // 3 segundos
-        //                            showConfirmButton: false,
-        //                            timerProgressBar: true
-        //                        }).then(() => {
-        //                            window.location.href = 'crmnuevocontacto';
-        //                        });
-        //                        ";
-
-        //                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-        //                    }
-        //                    else
-        //                    {
-        //                        string script = @"
-        //                        Swal.fire({
-        //                            title: 'Error',
-        //                            text: '" + mensaje.Replace("'", "\\'") + @"',
-        //                            icon: 'error'
-        //                        });
-        //                        ";
-        //                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-        //                    }
-        //                }
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                mensaje = ex.Message.Replace("'", "\\'").Replace("\n", "").Replace("\r", "");
-        //                string script = @"
-        //                Swal.fire({
-        //                    title: 'Error',
-        //                    text: '" + mensaje + @"',
-        //                    icon: 'error'
-        //                });
-        //                ";
-        //                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-        //            }
-
-        //            //Response.Redirect("crmnuevocontacto");
-        //        }
-        //        if (Request.QueryString["deleteidEmp"] != null)
-        //        {
-        //            bool respuesta = false;
-        //            bool _respuesta = false;
-        //            string mensaje = string.Empty;
-        //            int idempresaCRM = Convert.ToInt32(Request.QueryString["deleteidEmp"].ToString());
-        //            int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
-        //            string Usuario = Session["NombreUsuario"].ToString();
-
-        //            try
-        //            {
-        //                DataTable dt = cg.ConsultarEmpresaCRMPorId(idempresaCRM, out _respuesta);
-        //                Session["contactoId"] = idempresaCRM;
-
-        //                if (idempresaCRM > 0)
-        //                {
-        //                    cg.EliminarEmpresaCRM(idempresaCRM, idUsuario, Usuario, out respuesta, out mensaje);
-
-        //                    if (respuesta)
-        //                    {
-        //                        string tipoMensaje = respuesta ? "Éxito" : "Error";
-        //                        string tipoIcono = respuesta ? "success" : "error";
-        //                        string script = @"
-        //                        Swal.fire({
-        //                            title: '" + tipoMensaje + @"',
-        //                            text: '" + mensaje + @"',
-        //                            icon: '" + tipoIcono + @"'
-        //                        }).then((result) => {
-        //                            if (result.isConfirmed) {
-        //                                window.location.href = 'crmnuevocontacto';
-        //                            }
-        //                        });
-        //                    ";
-
-        //                        ScriptManager.RegisterStartupScript(this, GetType(), "EliminarYAlerta", script, true);
-        //                    }
-        //                    else
-        //                    {
-        //                        string script = @"
-        //                        Swal.fire({
-        //                        title: 'Error',
-        //                        text: '" + mensaje.Replace("'", "\\'") + @"',
-        //                        icon: 'error',
-        //                        timer: 3000,
-        //                        timerProgressBar: true,
-        //                        showConfirmButton: true
-        //                    }).then(() => {
-        //                        Response.Redirect(Request.RawUrl);
-        //                    });
-        //                ";
-        //                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-
-        //                    }
-        //                }
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                mensaje = ex.Message.Replace("'", "\\'").Replace("\n", "").Replace("\r", "");
-        //                string script = @"
-        //                Swal.fire({
-        //                    title: 'Error',
-        //                    text: '" + mensaje + @"',
-        //                    icon: 'error'
-        //                });
-        //                ";
-        //                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (ddlContactos.SelectedItem.Value != "")
-        //            ddlContactos.SelectedIndex = Convert.ToInt32(ddlContactos.Items.IndexOf(ddlContactos.Items.FindByValue(ddlContactos.SelectedItem.Value)));
-        //        else
-        //            ddlContactos.SelectedItem.Value = "0";
-
-        //        bool salida = false;
-        //        string mensaje = string.Empty;
-        //        string mensajeValidacion = string.Empty;
-        //        string respuesta = string.Empty;
-        //        string nombreEmp = txbNombreEmpresaCRM.ToString().Trim();
-
-        //        try
-        //        {
-        //            respuesta = cg.InsertarEmpresaCRM(txbNombreEmpresaCRM.Value.ToString().Trim(), txbPaginaWeb.Value.ToString().Trim().ToUpper(),
-        //                Convert.ToInt32(ddlContactos.SelectedItem.Value.ToString()), Convert.ToInt32(Session["idUsuario"]), txaObservacionesEmp.Value.Trim(),
-        //                rblEstado.SelectedItem.Value.ToString(), Convert.ToInt32(ddlCiudad.SelectedValue), out salida, out mensaje);
-
-        //            if (salida)
-        //            {
-        //                string script = @"
-        //                Swal.fire({
-        //                    title: 'la empresa se creó para CRM de forma exitosa ',
-        //                    text: '" + mensaje.Replace("'", "\\'") + @"',
-        //                    icon: 'success',
-        //                    timer: 3000, // 3 segundos
-        //                    showConfirmButton: false,
-        //                    timerProgressBar: true
-        //                }).then(() => {
-        //                    window.location.href = 'crmnuevocontacto';
-        //                });
-        //            ";
-        //                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-        //            }
-        //            else
-        //            {
-        //                string script = @"
-        //                    Swal.fire({
-        //                        title: 'Error',
-        //                        text: '" + mensaje.Replace("'", "\\'") + @"',
-        //                        icon: 'error'
-        //                    }).then((result) => {
-        //                        if (result.isConfirmed) {
-        //                          window.location.href = 'crmnuevocontacto';
-        //                        }
-        //                    });
-        //                ";
-        //                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            mensaje = ex.Message.ToString();
-        //            string script = @"
-        //            Swal.fire({
-        //                title: 'Error',
-        //                text: '" + mensaje.Replace("'", "\\'") + @"',
-        //                icon: 'error'
-        //            });
-        //        ";
-        //            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-        //        }
-        //    }
-
-        //}
-
-        //protected void rpEmpresasCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        //{
-        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-        //    {
-        //        if (ViewState["CrearModificar"].ToString() == "1")
-        //        {
-        //            LinkButton btnEditarEmp = (LinkButton)e.Item.FindControl("btnEditarEmp");
-
-        //            //LinkButton lnkPlan = (LinkButton)e.Item.FindControl("btnSeleccionarPlan");
-        //            btnEditarEmp.Attributes.Add("class", "btn btn-outline btn-" + ((DataRowView)e.Item.DataItem).Row[1].ToString() + " btn-block btn-sm");
-        //            //btnEditarEmp.CommandArgument = ((DataRowView)e.Item.DataItem).Row[0].ToString();
-
-        //            //LinkButton lnkPlan = (LinkButton)e.Item.FindControl("btnSeleccionarPlan");
-        //            //lnkPlan.Attributes.Add("class", "btn btn-outline btn-" + ((DataRowView)e.Item.DataItem).Row[7].ToString() + " btn-block btn-sm");
-        //            //lnkPlan.Attributes.Add("class", "btn btn-outline btn-" + ((DataRowView)e.Item.DataItem).Row[7].ToString() + " btn-block btn-sm");
-
-
-
-        //            //int idEmpresaCRM = Convert.ToInt32(((DataRowView)e.Item.DataItem).Row[0].ToString());
-        //            //ViewState["idEmpresaCRM"] = idEmpresaCRM;
-
-
-        //            //bool respuesta = false;
-        //            //clasesglobales cg = new clasesglobales();
-        //            //DataTable dt = cg.ConsultarEmpresaCRMPorId(idEmpresaCRM, out respuesta);
-        //            //Session["empresaCRMId"] = idEmpresaCRM;
-        //            //btnAgregarEmp.Text = "Actualizar";
-        //            //if (respuesta)
-        //            //{
-
-        //            //    if (dt.Rows.Count > 0)
-        //            //    {
-        //            //        DataRow row = dt.Rows[0];
-
-        //            //        txbNombreEmpresaCRM.Value = row["NombreEmpresaCRM"].ToString();
-        //            //        txbPaginaWeb.Value = row["paginaWeb"].ToString();
-        //            //        if (row["idEmpresaCRM"].ToString() != "")
-        //            //            ddlContactos.SelectedIndex = Convert.ToInt32(ddlContactos.Items.IndexOf(ddlContactos.Items.FindByValue(dt.Rows[0]["idContacto"].ToString())));
-        //            //        else
-        //            //            ddlContactos.SelectedItem.Value = "0";
-
-        //            //        txaObservacionesEmp.Value = row["observacionesEmp"].ToString();
-        //            //        rblEstado.SelectedIndex = Convert.ToInt32(rblEstado.Items.IndexOf(rblEstado.Items.FindByValue(dt.Rows[0]["EstadoEmpresaCRM"].ToString())));
-        //            //        ddlCiudad.SelectedIndex = Convert.ToInt32(ddlCiudad.Items.IndexOf(ddlCiudad.Items.FindByValue(dt.Rows[0]["idCiudad"].ToString())));
-        //            //    }
-        //            //}
-        //            //else
-        //            //{
-        //            //    DataRow row = dt.Rows[0];
-        //            //    txbNombreContacto.Value = row["Error"].ToString(); ;
-        //            //}
-
-        //            //HtmlAnchor btnEditarEmp = (HtmlAnchor)e.Item.FindControl("btnEditarEmp");
-        //            //btnEditarEmp.Attributes.Add("href", "crmnuevocontacto?editidEmp=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-        //            //btnEditarEmp.Visible = true;
-        //        }
-        //        if (ViewState["Borrar"].ToString() == "1")
-        //        {
-        //            HtmlAnchor btnEliminarEmp = (HtmlAnchor)e.Item.FindControl("btnEliminarEmp");
-        //            btnEliminarEmp.Attributes.Add("href", "crmnuevocontacto?deleteidEmp=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-        //            btnEliminarEmp.Visible = true;
-        //        }
-        //        //ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "cerrarAcordeon", "$('#acordeonZonaLateralIzqSup').collapse('hide');", true);
-
-        //    }
-        //}
-
-        //protected void rpEmpresasCRM_ItemCommand(object source, RepeaterCommandEventArgs e)
-        //{
-        //    txbNombreEmpresaCRM.Value = "85";
-        //    if (e.CommandName == "EditarEmpresa")
-        //    {
-        //        int idEmpresaCRM = Convert.ToInt32(e.CommandArgument.ToString());
-        //    }
-
-        //}
-
         public class EstadoCRM
         {
             public int idEstadoCRM { get; set; }
@@ -1185,10 +710,10 @@ namespace fpWebApp
 
         protected void btnAfiliado_Click(object sender, EventArgs e)
         {
-            
+
             clasesglobales cg = new clasesglobales();
-            DataTable dt =  new DataTable();
-            DataTable dt1 =  new DataTable();
+            DataTable dt = new DataTable();
+            DataTable dt1 = new DataTable();
             int documento = 0;
             string[] strDocumento = txbAfiliado.Text.ToString().Split('-');
             if (int.TryParse(strDocumento[0], out documento))
@@ -1198,13 +723,6 @@ namespace fpWebApp
 
             dt1 = cg.ConsultarTipoAfiliadCRM();
 
-            //string strQuery = "SELECT * FROM Afiliados a " +
-            //    "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +
-            //    "WHERE DocumentoAfiliado = '" + strDocumento[0].Trim() + "' ";
-
-
-            //DataTable dt = cg.TraerDatos(strQuery);
-
             try
             {
                 if (dt.Rows.Count > 0)
@@ -1213,18 +731,12 @@ namespace fpWebApp
                     ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
                     txbNombreContacto.Value = $"{dt.Rows[0]["NombreAfiliado"]} {dt.Rows[0]["ApellidoAfiliado"]}";
                     txbTelefonoContacto.Value = dt.Rows[0]["CelularAfiliado"].ToString();
-                    txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString(); 
+                    txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString();
                     ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString())));
                     ddlTiposAfiliado.SelectedValue = "2";//Afiliado en renovación
 
-
-
-
                     ListaEmpresasCRM();
                     ListaMediosDePago();
-                   
-
-
                 }
                 dt.Dispose();
             }
@@ -1233,9 +745,41 @@ namespace fpWebApp
 
                 throw;
             }
-            
-
-
         }
+
+        //protected void ddlTiposAfiliado_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    // Validar si seleccionaron la opción "Afiliado Nuevo"
+        //    if (ddlTiposAfiliado.SelectedValue == "1")
+        //    {
+        //        string documento = txbDocumento.Text.Trim();
+        //        string tipoDocumento = ddlTipoDocumento.SelectedValue;
+        //        string nombreContacto = txbNombreContacto.Value.Trim();
+
+        //        // Verificar que todos los campos requeridos tengan datos
+        //        if (!string.IsNullOrEmpty(documento) &&
+        //            !string.IsNullOrEmpty(tipoDocumento) &&
+        //            !string.IsNullOrEmpty(nombreContacto))
+        //        {
+        //            // Construir URL con los parámetros
+        //            string url = $"nuevoafiliado.aspx?doc={HttpUtility.UrlEncode(documento)}&tipo={HttpUtility.UrlEncode(tipoDocumento)}&nombre={HttpUtility.UrlEncode(nombreContacto)}";
+
+        //            // Mostrar y configurar el enlace
+        //            lnkNuevoAfiliado.NavigateUrl = url;
+        //            lnkNuevoAfiliado.Visible = true;
+        //        }
+        //        else
+        //        {
+        //            // Si falta algún dato, no mostrar el enlace
+        //            lnkNuevoAfiliado.Visible = false;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // Si no se selecciona "Afiliado Nuevo", ocultar el enlace
+        //        lnkNuevoAfiliado.Visible = false;
+        //    }
+        //}
+
     }
 }
