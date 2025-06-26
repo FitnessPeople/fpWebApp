@@ -379,9 +379,13 @@ namespace fpWebApp
             }
         }
 
+        /// <summary>
+        /// Inserta en la tabola DisponibilidadEspecialistas
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            //Insertamos en la tabla DisponibilidadEspecialistas
             //string fechahorainicio = txbFechaIni.Value.ToString() + " " + txbHoraIni.Value.ToString();
             //string fechahorafin = txbFechaFin.Value.ToString() + " " + txbHoraFin.Value.ToString();
             
@@ -402,9 +406,10 @@ namespace fpWebApp
 
             int nroDias = (dtFechaFin - dtFechaIni).Days + 1;
 
+            string script = string.Empty;
+
             for (int i = 0; i < nroDias; i++)
             {
-
                 DateTime dtFechaIniCita = Convert.ToDateTime(dtFechaIni.AddDays(i).ToString("yyyy-MM-dd") + " " + txbHoraIni.Value.ToString());
                 DateTime dtFechaFinCitaDia = Convert.ToDateTime(dtFechaIni.AddDays(i).ToString("yyyy-MM-dd") + " " + txbHoraFin.Value.ToString());
 
@@ -443,7 +448,16 @@ namespace fpWebApp
                                 {
                                     if (dtFechaIniCita.Hour < 6 || dtFechaIniCita.Hour >= 21)
                                     {
-                                        ltMensaje.Text = "Horario fuera del intervalo del especialista";
+                                        script = @"
+                                            Swal.fire({
+                                                title: 'Advertencia',
+                                                text: 'Horario fuera del intervalo del especialista.',
+                                                icon: 'error'
+                                            }).then(() => {
+                                            });
+                                            ";
+                                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                                        //ltMensaje.Text = "Horario fuera del intervalo del especialista";
                                         dtFechaIniCita = dtFechaFinCita;
                                     }
                                     else
@@ -478,15 +492,38 @@ namespace fpWebApp
                                             string mensaje = cg.TraerDatosStr(strQuery);
                                         }
                                         dtFechaIniCita = dtFechaFinCita;
+
+                                        script = @"
+                                            Swal.fire({
+                                                title: 'Agenda creada exitosamente.',
+                                                text: '',
+                                                icon: 'success',
+                                                timer: 3000, // 3 segundos
+                                                showConfirmButton: false,
+                                                timerProgressBar: true
+                                            }).then(() => {
+                                                window.location.href = 'agenda';
+                                            });
+                                            ";
+                                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
                                     }
                                 }
                                 else
                                 {
-                                    ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                        "<div class=\"alert alert-danger alert-dismissable\">" +
-                                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                        "Ya esta ocupado este especialista en otra sede." +
-                                        "</div></div>";
+                                    script = @"
+                                        Swal.fire({
+                                            title: 'Advertencia',
+                                            text: 'Ya esta ocupado este especialista en otra sede.',
+                                            icon: 'error'
+                                        }).then(() => {
+                                        });
+                                        ";
+                                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                                    //ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                    //    "<div class=\"alert alert-danger alert-dismissable\">" +
+                                    //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                    //    "Ya esta ocupado este especialista en otra sede." +
+                                    //    "</div></div>";
                                     //ltMensaje.Text = "Ya esta ocupado este especialista en otra sede.";
                                     dtFechaIniCita = dtFechaFinCitaDia;
                                 }
@@ -494,11 +531,20 @@ namespace fpWebApp
                             }
                             else
                             {
-                                ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                    "<div class=\"alert alert-danger alert-dismissable\">" +
-                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Ya esta ocupado este horario en la sede." +
-                                    "</div></div>";
+                                script = @"
+                                    Swal.fire({
+                                        title: 'Advertencia',
+                                        text: 'Ya esta ocupado este horario en la sede.',
+                                        icon: 'error'
+                                    }).then(() => {
+                                    });
+                                    ";
+                                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                                //ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                //    "<div class=\"alert alert-danger alert-dismissable\">" +
+                                //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                //    "Ya esta ocupado este horario en la sede." +
+                                //    "</div></div>";
                                 //ltMensaje.Text = "Ya esta ocupado este horario en la sede.";
                                 dtFechaIniCita = dtFechaFinCitaDia;
                             }
@@ -507,20 +553,37 @@ namespace fpWebApp
                     }
                     catch (SqlException ex)
                     {
-                        string mensaje = ex.Message;
+                        script = @"
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'SqlException: (" + ex.Message.ToString() + @").',
+                                icon: 'error'
+                            }).then(() => {
+                            });
+                            ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                     }
                 }
                 else
                 {
-                    ltMensaje.Text = "<div class=\"ibox-content\">" +
-                        "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Hora de inicio debe ser menor a hora final." +
-                        "</div></div>";
+                    script = @"
+                        Swal.fire({
+                            title: 'Advertencia',
+                            text: 'Hora de inicio debe ser menor a hora final.',
+                            icon: 'error'
+                        }).then(() => {
+                        });
+                        ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                    //ltMensaje.Text = "<div class=\"ibox-content\">" +
+                    //    "<div class=\"alert alert-danger alert-dismissable\">" +
+                    //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                    //    "Hora de inicio debe ser menor a hora final." +
+                    //    "</div></div>";
                     //ltMensaje.Text = "Hora de inicio debe ser menor a hora final";
                 }
             }
-            Response.Redirect("agenda");
+            //Response.Redirect("agenda");
         }
     }
 }

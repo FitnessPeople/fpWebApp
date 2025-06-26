@@ -7,7 +7,10 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Net;
+using System.Security.Policy;
+using System.Text;
 using System.Web;
+using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using static System.Net.Mime.MediaTypeNames;
@@ -204,6 +207,9 @@ namespace fpWebApp
                     txbNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
                     txbApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
                     txbDocumento.Text = dt.Rows[0]["DocumentoAfiliado"].ToString();
+
+                    ObtenerDatosAdres(dt.Rows[0]["DocumentoAfiliado"].ToString());
+
                     ddlTipoDocumento.SelectedIndex = Convert.ToInt16(dt.Rows[0]["idTipoDocumento"].ToString());
                     txbTelefono.Text = dt.Rows[0]["CelularAfiliado"].ToString();
                     txbEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
@@ -270,6 +276,86 @@ namespace fpWebApp
                 divMensaje1.Visible = true;
                 btnActualizar.Visible = false;
             }
+        }
+
+        private void ObtenerDatosAdres(string documentoAfiliado)
+        {
+            string strUrl = "https://pqrdsuperargo.supersalud.gov.co/api/api/adres/0/";
+            strUrl += documentoAfiliado;
+            string resultado = "";
+            string[] strConjuntoResultados = new string[2];
+            StringBuilder sb = new StringBuilder();
+
+            try
+            {
+                WebRequest oRequest = WebRequest.Create(strUrl);
+                oRequest.Method = "GET";
+                oRequest.ContentType = "application/json;charset=UTF-8";
+                //oRequest.Headers.Add("Authorization", auth);
+
+                WebResponse oResponse = oRequest.GetResponse();
+                using (var oSr = new StreamReader(oResponse.GetResponseStream()))
+                {
+                    resultado = oSr.ReadToEnd().Trim();
+                    strConjuntoResultados[0] = resultado;
+                    JObject jsonObj = JObject.Parse(resultado);
+                }
+            }
+            catch (Exception ex)
+            {
+                string jsonError = JsonConvert.SerializeObject(new { error = "Error al enviar la petición: " + ex.Message });
+                strConjuntoResultados[0] = jsonError;
+            }
+
+            JToken token = JToken.Parse(strConjuntoResultados[0]);
+            string prettyJson = token.ToString(Formatting.Indented);
+
+            JObject jsonData = JObject.Parse(prettyJson);
+
+            List<adres> listaAfil = new List<adres>
+            {
+                new adres
+                {
+                    numero_doc = jsonData["numero_doc"]?.ToString(),
+                    nombre = jsonData["nombre"]?.ToString(),
+                    s_nombre = jsonData["s_nombre"]?.ToString(),
+                    apellido = jsonData["apellido"]?.ToString(),
+                    s_apellido = jsonData["s_apellido"]?.ToString(),
+                    fecha_nacimiento = jsonData["fecha_nacimiento"]?.ToString(),
+                    sexo = jsonData["sexo"]?.ToString(),
+                }
+            };
+
+            sb.Append("<table class=\"table table-bordered table-striped\">");
+            sb.Append("<tr>");
+            sb.Append("<th>Documento</th><th>Nombre(s)</th><th>Apellido(s)</th><th>Fecha nacimiento</th><th>Sexo</th>");
+            sb.Append("</tr>");
+
+            foreach (var pago in listaAfil)
+            {
+                sb.Append("<tr>");
+                sb.Append($"<td>{pago.numero_doc}</td>");
+                sb.Append($"<td>{pago.nombre} {pago.s_nombre}</td>");
+                sb.Append($"<td>{pago.apellido} {pago.s_apellido}</td>");
+                sb.Append($"<td>{pago.fecha_nacimiento}</td>");
+                sb.Append($"<td>{pago.sexo}</td>");
+                sb.Append("</tr>");
+            }
+
+            sb.Append("</table>");
+
+            ltDataAfiliado.Text = sb.ToString();
+        }
+
+        public class adres
+        {
+            public string numero_doc { get; set; }
+            public string nombre { get; set; }
+            public string s_nombre { get; set; }
+            public string apellido { get; set; }
+            public string s_apellido { get; set; }
+            public string fecha_nacimiento { get; set; }
+            public string sexo { get; set; }
         }
 
         /// <summary>

@@ -29,6 +29,9 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         function changeClass() {
             var element1 = document.querySelector("#nuevoafiliado");
@@ -165,7 +168,7 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Nro. de Documento:</label>
-                                                    <asp:TextBox ID="txbDocumento" CssClass="form-control input-sm" runat="server" placeholder="Documento" TabIndex="1"></asp:TextBox>
+                                                    <asp:TextBox ID="txbDocumento" CssClass="form-control input-sm" runat="server" placeholder="Documento" TabIndex="1" AutoPostBack="true" OnTextChanged="txbDocumento_TextChanged"></asp:TextBox>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">

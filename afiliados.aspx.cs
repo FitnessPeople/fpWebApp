@@ -86,9 +86,14 @@ namespace fpWebApp
         private void listaAfiliados(string strParam, string strSede)
         {
             string strQueryAdd = "";
+            string strLimit = "100";
             if (strSede != "todas")
             {
                 strQueryAdd = "AND a.idSede = " + strSede;
+            }
+            if (strParam != "")
+            {
+                strLimit = "1000";
             }
             string strQuery = "SELECT *, " +
                 "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) IS NOT NULL, CONCAT('(',TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()),')'),'<i class=\"fa fa-circle-question m-r-lg m-l-lg\"></i>') AS edad, " +
@@ -110,7 +115,7 @@ namespace fpWebApp
                 "OR EmailAfiliado like '%" + strParam + "%' " +
                 "OR CelularAfiliado like '%" + strParam + "%') " + strQueryAdd + " " +
                 "ORDER BY a.idAfiliado DESC " +
-                "LIMIT 1000";
+                "LIMIT " + strLimit + "";
             clasesglobales cg1 = new clasesglobales();
             DataTable dt = cg1.TraerDatos(strQuery);
 
@@ -149,6 +154,12 @@ namespace fpWebApp
                     HtmlButton btnCongelacion = (HtmlButton)e.Item.FindControl("btnCongelacion");
                     btnCongelacion.Attributes.Add("onClick", "window.location.href='congelacionesAfil?id=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
                     btnCongelacion.Visible = true;
+
+                    HtmlButton btnAdres = (HtmlButton)e.Item.FindControl("btnAdres");
+                    btnAdres.Attributes.Add("data-toggle", "modal");
+                    btnAdres.Attributes.Add("data-target", "#myModal2");
+                    btnAdres.Attributes.Add("data-documento", "" + ((DataRowView)e.Item.DataItem).Row[1].ToString() + "");
+                    btnAdres.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {

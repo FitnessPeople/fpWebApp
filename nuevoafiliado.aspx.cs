@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Math;
+using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -7,7 +9,6 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using MySql.Data.MySqlClient;
 
 namespace fpWebApp
 {
@@ -328,6 +329,34 @@ namespace fpWebApp
                     }
                 }
             }
+        }
+
+        protected void txbDocumento_TextChanged(object sender, EventArgs e)
+        {
+            //Consultar Documento en la base de Datos
+            string strQuery = @"SELECT DocumentoAfiliado, NombreAfiliado FROM afiliados WHERE DocumentoAfiliado = '" + txbDocumento.Text.ToString() + @"'";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            if (dt.Rows.Count > 0)
+            {
+                string script = @"
+                    Swal.fire({
+                        title: 'Consulta realizada, encontré un documento.',
+                        text: '',
+                        icon: 'success',
+                        timer: 3000, // 3 segundos
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    }).then(() => {
+                    });
+                    ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+
+                btnAgregar.Enabled = false;
+            }
+
+            //Consultqar Documento en Adres
         }
     }
 }

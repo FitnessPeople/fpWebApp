@@ -112,7 +112,8 @@
                     <div class="form-group" id="divAfil" runat="server" visible="false">
                         <label>Afiliado</label>
                         <asp:DropDownList ID="ddlAfiliados" runat="server" DataTextField="DocNombreAfiliado" 
-                            DataValueField="idAfiliado" CssClass="chosen-select input-sm" >
+                            DataValueField="idAfiliado" CssClass="chosen-select input-sm" AppendDataBoundItems="true" >
+                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                         </asp:DropDownList>
                     </div>
                 </div>
@@ -168,7 +169,7 @@
                         <asp:UpdatePanel ID="upAgendarCita" runat="server">
                             <ContentTemplate>--%>
                                 <div class="row animated fadeInDown" id="divContenido" runat="server">
-                                    <div class="col-xxl-2 col-lg-3 col-md-5 col-sm-6 col-xs-12">
+                                    <div class="col-xs-12">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <h5>Agendamiento de citas</h5>
@@ -182,36 +183,34 @@
                                                 </div>
                                             </div>
                                             <div class="ibox-content">
-                                                <div class="form-group">
-                                                    <label>Sede:</label>
-                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedes" runat="server"
-                                                        OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
-                                                        DataValueField="idSede" DataTextField="NombreSede"
-                                                        AutoPostBack="true" AppendDataBoundItems="true">
-                                                    </asp:DropDownList>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Especialidad:</label>
-                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEspecialidad" runat="server"
-                                                        OnSelectedIndexChanged="ddlEspecialidad_SelectedIndexChanged"
-                                                        AutoPostBack="true">
-                                                        <asp:ListItem Text="Médico deportólogo" Value="29"></asp:ListItem>
-                                                        <asp:ListItem Text="Fisioterapeuta" Value="18"></asp:ListItem>
-                                                        <asp:ListItem Text="Nutricionista" Value="30"></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Afiliado</label>
-                                                    <%--<asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server"
-                                                        placeholder="Nombre / Cédula / Email / Celular"></asp:TextBox>--%>
-                                                    <%--<asp:Button ID="btnAfiliado" runat="server" Text=""
-                                                        Style="display: none;" OnClick="btnAfiliado_Click" />
-                                                    <asp:HiddenField ID="hfIdAfiliado" runat="server" />--%>
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <div class="form-group">
+                                                            <label>Sede:</label>
+                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedes" runat="server"
+                                                                OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
+                                                                DataValueField="idSede" DataTextField="NombreSede"
+                                                                AutoPostBack="true" AppendDataBoundItems="true">
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <div class="form-group">
+                                                            <label>Especialidad:</label>
+                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEspecialidad" runat="server"
+                                                                OnSelectedIndexChanged="ddlEspecialidad_SelectedIndexChanged"
+                                                                AutoPostBack="true">
+                                                                <asp:ListItem Text="Médico deportólogo" Value="29"></asp:ListItem>
+                                                                <asp:ListItem Text="Fisioterapeuta" Value="18"></asp:ListItem>
+                                                                <asp:ListItem Text="Nutricionista" Value="30"></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xxl-10 col-lg-9 col-md-7 col-sm-6 col-xs-12">
+                                    <div class="col-xs-12">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <h5>Agenda

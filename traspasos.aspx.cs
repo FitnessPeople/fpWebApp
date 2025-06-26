@@ -274,8 +274,7 @@ namespace fpWebApp
             string strQuery = @"SELECT a.idAfiliado, 
                 CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado, ' - ', a.DocumentoAfiliado) AS DocNombreAfiliado 
                 FROM afiliados_copia_normalizada a 
-                INNER JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado 
-                WHERE EstadoAfiliado = 'Activo' 
+                WHERE a.EstadoAfiliado = 'Activo' 
                 AND a.idAfiliado <> " + ddlAfiliadoOrigen.SelectedItem.Value.ToString();
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);

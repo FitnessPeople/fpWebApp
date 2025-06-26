@@ -89,10 +89,12 @@ namespace fpWebApp
 
         private void CargarAfiliados()
         {
+            string strQuery = @"SELECT idAfiliado, 
+                CONCAT(NombreAfiliado, ' ', ApellidoAfiliado, ' - ', DocumentoAfiliado) AS DocNombreAfiliado 
+                FROM afiliados_copia_normalizada 
+                WHERE EstadoAfiliado = 'Activo' ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos("SELECT idAfiliado, " +
-                "CONCAT(NombreAfiliado, ' ', ApellidoAfiliado, ' - ', DocumentoAfiliado) AS DocNombreAfiliado " +
-                "FROM afiliados_copia_normalizada ");
+            DataTable dt = cg.TraerDatos(strQuery);
 
             ddlAfiliados.DataSource = dt;
             ddlAfiliados.DataBind();

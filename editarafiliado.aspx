@@ -241,6 +241,10 @@
                                             </div>
                                             <asp:Image runat="server" CssClass="img-rounded" ID="imgFoto" Width="150px" />
                                         </div>
+
+                                        <div class="form-group">
+                                            <asp:Literal ID="ltDataAfiliado" runat="server"></asp:Literal>
+                                        </div>
                                     </div>
 
                                     <div class="col-sm-6">

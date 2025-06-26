@@ -98,6 +98,27 @@
             </div>
         </div>
     </div>
+
+    <div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                    <h4 class="modal-title"><span id="titulo"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center m-t-md">
+                        <iframe id="objEmbed" title="Frame" width="300" height="200" src="">
+                        </iframe>
+                    </div>            
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="wrapper">
 
         <uc1:navbar runat="server" ID="navbar1" />
@@ -293,6 +314,11 @@
                                                         title="Congelación" visible="false">
                                                         <i class="fa fa-snowflake"></i>
                                                     </button>
+                                                    <button runat="server" id="btnAdres" class="btn btn-outline btn-success pull-left dropdown-toggle"
+                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
+                                                        title="Adres" visible="false">
+                                                        <i class="fa fa-id-badge"></i>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         </ItemTemplate>
@@ -347,6 +373,16 @@
                 if (e.keyCode == 13)
                     $('#btnBuscar').click();
             });
+        });
+
+        $(document).on("click", ".dropdown-toggle", function () {
+            /*var url = 'https://pqrdsuperargo.supersalud.gov.co/api/api/adres/0/';*/
+            var url = 'consultaadres?id';
+            url = url + $(this).data('documento');
+            //console.log(url);
+
+            document.getElementById('titulo').innerHTML = $(this).data('documento');
+            document.getElementById('objEmbed').src = url;
         });
 
     </script>
