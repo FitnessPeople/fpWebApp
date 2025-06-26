@@ -24,31 +24,22 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlForm form;
 
         /// <summary>
-        /// Control txbAfiliado.
+        /// Control divAfil.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbAfiliado;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divAfil;
 
         /// <summary>
-        /// Control btnAfiliado.
+        /// Control ddlAfiliados.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAfiliado;
-
-        /// <summary>
-        /// Control hfIdAfiliado.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfIdAfiliado;
+        protected global::System.Web.UI.WebControls.DropDownList ddlAfiliados;
 
         /// <summary>
         /// Control btnAsignar.

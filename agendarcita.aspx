@@ -24,6 +24,7 @@
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
     <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
 
@@ -36,7 +37,7 @@
 
     <style>
         .afiliado {
-            z-index: 99999 !important;
+            z-index: 9999 !important;
         }
     </style>
 
@@ -108,19 +109,17 @@
                     <div class="event-description"></div>
                     <div class="event-id text-hide" id="event-id"></div>
                     <div class="event-allday text-hide" id="event-allday"></div>
-                    <div class="form-group">
+                    <div class="form-group" id="divAfil" runat="server" visible="false">
                         <label>Afiliado</label>
-                        <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm afiliado" runat="server"
-                            placeholder="Nombre / Cédula / Email / Celular"></asp:TextBox>
-                        <asp:Button ID="btnAfiliado" runat="server" Text=""
-                            Style="display: none;" OnClick="btnAfiliado_Click" />
-                        <asp:HiddenField ID="hfIdAfiliado" runat="server" />
+                        <asp:DropDownList ID="ddlAfiliados" runat="server" DataTextField="DocNombreAfiliado" 
+                            DataValueField="idAfiliado" CssClass="chosen-select input-sm" >
+                        </asp:DropDownList>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
-                    <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href='asignarcita.aspx?id=' + document.getElementById('event-id').innerHTML + '&idAfil=' + document.getElementById('hfIdAfiliado').value" id="btnAsignar" runat="server" visible="false"><i class='fa fa-calendar-plus m-r-sm'></i>Asignar</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" 
+                        onclick="window.location.href='asignarcita.aspx?id=' + document.getElementById('event-id').innerHTML + '&idAfil=' + document.getElementById('ddlAfiliados').value" 
+                        id="btnAsignar" runat="server" visible="false"><i class='fa fa-calendar-plus m-r-sm'></i>Asignar</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>
                 </div>
             </div>
@@ -201,14 +200,14 @@
                                                         <asp:ListItem Text="Nutricionista" Value="30"></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
-                                                <%--<div class="form-group">
+                                                <div class="form-group">
                                                     <label>Afiliado</label>
-                                                    <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server"
-                                                        placeholder="Nombre / Cédula / Email / Celular"></asp:TextBox>
-                                                    <asp:Button ID="btnAfiliado" runat="server" Text=""
+                                                    <%--<asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server"
+                                                        placeholder="Nombre / Cédula / Email / Celular"></asp:TextBox>--%>
+                                                    <%--<asp:Button ID="btnAfiliado" runat="server" Text=""
                                                         Style="display: none;" OnClick="btnAfiliado_Click" />
-                                                    <asp:HiddenField ID="hfIdAfiliado" runat="server" />
-                                                </div>--%>
+                                                    <asp:HiddenField ID="hfIdAfiliado" runat="server" />--%>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -264,7 +263,6 @@
     <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
 
     <!-- Full Calendar -->
-    <%--<script src="js/plugins/fullcalendar/fullcalendar.min.js"></script>--%>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
 
     <!-- Chosen -->
@@ -277,17 +275,22 @@
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
     <script>
-        $("#form").validate({
-            rules: {
-                txbAfiliado: {
-                    required: true,
-                    minlength: 3
-                },
-            }
-        });
+
+        $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" });
+
+        //$("#form").validate({
+        //    rules: {
+        //        txbAfiliado: {
+        //            required: true,
+        //            minlength: 3
+        //        },
+        //    }
+        //});
+
+        $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
     </script>
 
-    <script type="text/javascript">  
+    <%--<script type="text/javascript">  
         $(document).ready(function () {
             $("#txbAfiliado").autocomplete({
                 source: function (request, response) {
@@ -312,7 +315,7 @@
                 delay: 100,
             });
         });
-    </script>
+    </script>--%>
 
     <script>
 
@@ -349,11 +352,13 @@
                         jQuery('.event-description').html(info.event.extendedProps.description);
                         var btn = document.getElementById("btnAsignar");
                         btn.style.display = info.event.extendedProps.btnAsignar;
+                        var seleccion = document.getElementById("divAfil");
+                        seleccion.style.display = info.event.extendedProps.divAfil;
                         jQuery('#modal-view-event').modal();
                     }
                 },
                 height: 700,
-                initialView: 'dayGridMonth',
+                initialView: 'timeGridWeek',
                 firstDay: 1,
                 allDayText: 'Todo\r\nel día',
                 moreLinkContent: function (args) {

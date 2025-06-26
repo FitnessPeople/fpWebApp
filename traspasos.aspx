@@ -17,15 +17,12 @@
     <title>Fitness People | Traspasos</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
-    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/smoothness/jquery-ui.css">
 
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
     <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
-    <link href="css/plugins/dropzone/basic.css" rel="stylesheet">
-    <link href="css/plugins/dropzone/dropzone.css" rel="stylesheet">
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
     <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet">
 
@@ -159,18 +156,21 @@
 
                             <div class="row">
                                 <form id="form" enctype="multipart/form-data" runat="server">
-                                    <%--<asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+                                    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
                                     <asp:UpdatePanel ID="upBusqueda" runat="server" UpdateMode="Always" ChildrenAsTriggers="true">
-                                        <ContentTemplate>--%>
+                                        <ContentTemplate>
                                     <div class="col-sm-5 b-r">
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label>Afiliado origen</label>
-                                                    <asp:TextBox ID="txbAfiliadoOrigen" CssClass="form-control input-sm" runat="server" 
-                                                        placeholder="Nombre / Cédula / Email / Celular"></asp:TextBox>
-                                                    <asp:Button ID="btnAfiliadoOrigen" runat="server" Text="" 
-                                                        style="display:none;" OnClick="btnAfiliadoOrigen_Click"/>
+                                                    <asp:DropDownList ID="ddlAfiliadoOrigen" name="ddlAfiliadoOrigen" runat="server" 
+                                                        DataTextField="DocNombreAfiliado" AppendDataBoundItems="true" 
+                                                        DataValueField="idAfiliado" CssClass="chosen-select form-control input-sm"  
+                                                        OnSelectedIndexChanged="ddlAfiliadoOrigen_SelectedIndexChanged" 
+                                                        AutoPostBack="true" >
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                    </asp:DropDownList>
                                                 </div>
                                             </div>
                                         </div>
@@ -237,10 +237,13 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label>Afiliado destino</label>
-                                                    <asp:TextBox ID="txbAfiliadoDestino" CssClass="form-control input-sm" runat="server" 
-                                                        placeholder="Nombre / Cédula / Email / Celular"></asp:TextBox>
-                                                    <asp:Button ID="btnAfiliadoDestino" runat="server" Text="" 
-                                                        style="display:none;" OnClick="btnAfiliadoDestino_Click"/>
+                                                    <asp:DropDownList ID="ddlAfiliadoDestino" name="ddlAfiliadoDestino" runat="server" 
+                                                        DataTextField="DocNombreAfiliado" AppendDataBoundItems="true" 
+                                                        DataValueField="idAfiliado" CssClass="chosen-select form-control input-sm"  
+                                                        OnSelectedIndexChanged="ddlAfiliadoDestino_SelectedIndexChanged" 
+                                                        AutoPostBack="true">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                    </asp:DropDownList>
                                                 </div>
                                             </div>
                                         </div>
@@ -316,13 +319,13 @@
                                         </div>
                                     </div>
                                     
-                                        <%--</ContentTemplate>
+                                        </ContentTemplate>
                                         <Triggers>
                                             <asp:PostBackTrigger ControlID="btnTraspasar" />
-                                            <asp:PostBackTrigger ControlID="btnAfiliadoDestino" />
-                                            <asp:PostBackTrigger ControlID="btnAfiliadoOrigen" />
+                                            <%--<asp:PostBackTrigger ControlID="btnAfiliadoDestino" />
+                                            <asp:PostBackTrigger ControlID="btnAfiliadoOrigen" />--%>
                                        </Triggers>
-                                    </asp:UpdatePanel>--%>
+                                    </asp:UpdatePanel>
                                 </form>
                             </div>
                         </div>
@@ -372,58 +375,6 @@
             messages: {
                 documento: "*",
             }
-        });
-    </script>
-
-    <script type="text/javascript">  
-        $(document).ready(function () {
-            $("#txbAfiliadoOrigen").autocomplete({
-                source: function (request, response) {
-                    $.getJSON("/obtenerafiliados?search=" + request.term, function (data) {
-                        response($.map(data, function (item) {
-                            return {
-                                label: item.nombre + " " + item.apellido + " - " + item.id + ", " + item.correo,
-                                value: item.id + " - " + item.nombre + " " + item.apellido,
-                            };
-                        }));
-                    });
-                },
-                select: function (event, ui) {
-                    if (ui.item) {
-                        //console.log(ui.item.value);
-                        document.getElementById("txbAfiliadoOrigen").value = ui.item.value;
-                        var btn = document.getElementById("btnAfiliadoOrigen");
-                        btn.click();
-                    }
-                },
-                minLength: 3,
-                delay: 100
-            });
-        });
-
-        $(document).ready(function () {
-            $("#txbAfiliadoDestino").autocomplete({
-                source: function (request, response) {
-                    $.getJSON("/obtenerafiliados?search=" + request.term, function (data) {
-                        response($.map(data, function (item) {
-                            return {
-                                label: item.nombre + " " + item.apellido + " - " + item.id + ", " + item.correo,
-                                value: item.id + " - " + item.nombre + " " + item.apellido,
-                            };
-                        }));
-                    });
-                },
-                select: function (event, ui) {
-                    if (ui.item) {
-                        console.log(ui.item.value);
-                        document.getElementById("txbAfiliadoDestino").value = ui.item.value;
-                        var btn = document.getElementById("btnAfiliadoDestino");
-                        btn.click();
-                    }
-                },
-                minLength: 3,
-                delay: 100
-            });
         });
     </script>
 

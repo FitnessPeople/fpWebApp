@@ -32,7 +32,9 @@ namespace fpWebApp
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
                         CargarSedes();
+                        CargarAfiliados();
                         btnAsignar.Visible = true;
+                        divAfil.Visible = true;
                     }
                     if (ViewState["Borrar"].ToString() == "1")
                     {
@@ -85,6 +87,19 @@ namespace fpWebApp
             CargarAgenda();
         }
 
+        private void CargarAfiliados()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos("SELECT idAfiliado, " +
+                "CONCAT(NombreAfiliado, ' ', ApellidoAfiliado, ' - ', DocumentoAfiliado) AS DocNombreAfiliado " +
+                "FROM afiliados_copia_normalizada ");
+
+            ddlAfiliados.DataSource = dt;
+            ddlAfiliados.DataBind();
+
+            dt.Dispose();
+        }
+
         protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlSedes.SelectedItem.Value.ToString() != "")
@@ -122,9 +137,10 @@ namespace fpWebApp
                     {
                         _strEventos += "color: '#F8AC59',\r\n";
                         _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                        _strEventos += "description: 'Cita asignada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                        _strEventos += "description: 'Cita asignada a: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
                         _strEventos += "icon: 'id-card',\r\n";
                         _strEventos += "btnAsignar: 'none',\r\n";
+                        _strEventos += "divAfil: 'none',\r\n";
                     }
                     else
                     {
@@ -135,6 +151,7 @@ namespace fpWebApp
                             _strEventos += "description: 'Cita cancelada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
                             _strEventos += "icon: 'id-card',\r\n";
                             _strEventos += "btnAsignar: 'none',\r\n";
+                            _strEventos += "divAfil: 'none',\r\n";
                         }
                         else
                         {
@@ -143,6 +160,7 @@ namespace fpWebApp
                             _strEventos += "description: 'Cita disponible.',\r\n";
                             _strEventos += "icon: 'user-doctor',\r\n";
                             _strEventos += "btnAsignar: 'inline',\r\n";
+                            _strEventos += "divAfil: 'inline',\r\n";
                         }
                     }
 
@@ -350,23 +368,23 @@ namespace fpWebApp
             CargarAgenda();
         }
 
-        protected void btnAfiliado_Click(object sender, EventArgs e)
-        {   
-            string[] strDocumento = txbAfiliado.Text.ToString().Split('-');
-            string strQuery = "SELECT * FROM Afiliados a " +
-                "LEFT JOIN Sedes s ON a.idSede = s.idSede " +
-                "WHERE DocumentoAfiliado = '" + strDocumento[0].Trim() + "' ";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+        //protected void btnAfiliado_Click(object sender, EventArgs e)
+        //{   
+        //    string[] strDocumento = txbAfiliado.Text.ToString().Split('-');
+        //    string strQuery = "SELECT * FROM Afiliados a " +
+        //        "LEFT JOIN Sedes s ON a.idSede = s.idSede " +
+        //        "WHERE DocumentoAfiliado = '" + strDocumento[0].Trim() + "' ";
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.TraerDatos(strQuery);
 
-            if (dt.Rows.Count > 0)
-            {
-                hfIdAfiliado.Value = dt.Rows[0]["idAfiliado"].ToString();
-            }
-            dt.Dispose();
+        //    if (dt.Rows.Count > 0)
+        //    {
+        //        hfIdAfiliado.Value = dt.Rows[0]["idAfiliado"].ToString();
+        //    }
+        //    dt.Dispose();
 
-            CargarAgenda();
-            //btnAsignar.Visible = true;
-        }
+        //    CargarAgenda();
+        //    //btnAsignar.Visible = true;
+        //}
     }
 }

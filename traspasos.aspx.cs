@@ -30,6 +30,7 @@ namespace fpWebApp
                     {
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
+                            CargarAfiliadosOrigen();
                             txbFechaInicio.Attributes.Add("type", "date");
                             divAfiliadoOrigen.Visible = false;
                             divPlanes.Visible = false;
@@ -68,143 +69,64 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        private void CargarAfiliadosOrigen()
+        {
+            string strQuery = @"SELECT a.idAfiliado, 
+                CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado, ' - ', a.DocumentoAfiliado) AS DocNombreAfiliado 
+                FROM afiliados_copia_normalizada a 
+                INNER JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado AND ap.EstadoPlan = 'Activo' 
+                WHERE EstadoAfiliado = 'Activo' ";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            ddlAfiliadoOrigen.DataSource = dt;
+            ddlAfiliadoOrigen.DataBind();
+
+            dt.Dispose();
+        }
+
         protected void btnTraspasar_Click(object sender, EventArgs e)
         {
-            if (txbAfiliadoOrigen.Text.ToString() == "" || txbAfiliadoDestino.Text.ToString() == "")
+            try
             {
+                string strFilename = "";
+                HttpPostedFile postedFile = Request.Files["documento"];
+
+                if (postedFile != null && postedFile.ContentLength > 0)
+                {
+                    //Save the File.
+                    string filePath = Server.MapPath("docs//traspasos//") + "Ori_" + ViewState["idAfiliadoOrigen"].ToString() + "_Des_" + ViewState["idAfiliadoDestino"].ToString() + "_" + Path.GetFileName(postedFile.FileName);
+                    postedFile.SaveAs(filePath);
+                    strFilename = "Ori_" + ViewState["idAfiliadoOrigen"].ToString() + "_Des_" + ViewState["idAfiliadoDestino"].ToString() + "_" + postedFile.FileName;
+                }
+
+                string strQuery = "INSERT INTO TraspasoPlanes " +
+                "(idAfiliadoOrigen, idAfiliadoDestino, idAfiliadoPlan, FechaTraspaso, FechaInicioTraspaso, " +
+                "DocumentoRespaldo, Observaciones, idUsuario, EstadoTraspaso) " +
+                "VALUES (" + ViewState["idAfiliadoOrigen"].ToString() + ", " + ViewState["idAfiliadoDestino"].ToString() + ", " +
+                "" + ViewState["idAfiliadoPlan"].ToString() + ", NOW(), '" + txbFechaInicio.Text.ToString() + "', '" + strFilename + "', " +
+                "'" + txbObservaciones.Text.ToString() + "', " + Session["idUsuario"].ToString() + ", 'En proceso') ";
+                clasesglobales cg = new clasesglobales();
+                string mensaje = cg.TraerDatosStr(strQuery);
+                cg.InsertarLog(Session["idusuario"].ToString(), "traspasos planes", "Agrega", "El usuario agregó un traspaso del afiliado con documento: " + ViewState["DocumentoAfiliadoOrigen"].ToString() + " al afiliado con documento: " + ViewState["DocumentoAfiliadoDestino"].ToString() + ".", "", "");
+
+                Response.Redirect("afiliados");
+            }
+            catch (SqlException ex)
+            {
+                string mensaje = ex.Message;
                 string script = @"
                     Swal.fire({
-                        title: 'Validación',
-                        text: 'Afiliado origen o destino no puede estar vacio.',
+                        title: 'Error',
+                        text: 'Ha ocurrido un error inesperado. " + mensaje + @"',
                         icon: 'error'
                     }).then(() => {
                     });
                     ";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                 //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                //    "Afiliado origen o destino no puede estar vacio." +
+                //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
                 //    "</div>";
-            }
-            else
-            {
-                if (Request.Files["documento"] == null)
-                {
-                    string script = @"
-                        Swal.fire({
-                            title: 'Validación',
-                            text: 'Debe elegir un documento de respaldo para el traspaso.',
-                            icon: 'error'
-                        }).then(() => {
-                        });
-                        ";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                    //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                    //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    //    "Debe elegir un documento de respaldo para el traspaso." +
-                    //    "</div>";
-                }
-                else
-                {
-                    if (txbObservaciones.Text.Length < 20)
-                    {
-                        string script = @"
-                            Swal.fire({
-                                title: 'Validación',
-                                text: 'Debe escribir las observaciones del traspaso (mínimo 20 caracteres).',
-                                icon: 'error'
-                            }).then(() => {
-                            });
-                            ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                        //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                        //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        //    "Debe escribir las observaciones del traspaso (mínimo 20 caracteres)." +
-                        //    "</div>";
-                    }
-                    else
-                    {
-                        if (txbFechaInicio.Text.ToString() == "")
-                        {
-                            string script = @"
-                                Swal.fire({
-                                    title: 'Validación',
-                                    text: 'Debe elegir una fecha de inicio.',
-                                    icon: 'error'
-                                }).then(() => {
-                                });
-                                ";
-                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                            //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                            //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                            //    "Debe elegir una fecha de inicio." +
-                            //    "</div>";
-                        }
-                        else
-                        {
-                            if (ViewState["idAfiliadoOrigen"].ToString() == ViewState["idAfiliadoDestino"].ToString())
-                            {
-                                string script = @"
-                                    Swal.fire({
-                                        title: 'Validación',
-                                        text: 'El afiliado destino no puede ser el mismo afiliado de origen.',
-                                        icon: 'error'
-                                    }).then(() => {
-                                    });
-                                    ";
-                                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                                //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                                //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                //    "El afiliado destino no puede ser el mismo afiliado de origen." +
-                                //    "</div>";
-                            }
-                            else
-                            {
-                                try
-                                {
-                                    string strFilename = "";
-                                    HttpPostedFile postedFile = Request.Files["documento"];
-
-                                    if (postedFile != null && postedFile.ContentLength > 0)
-                                    {
-                                        //Save the File.
-                                        string filePath = Server.MapPath("docs//traspasos//") + "Ori_" + ViewState["idAfiliadoOrigen"].ToString() + "_Des_" + ViewState["idAfiliadoDestino"].ToString() + "_" + Path.GetFileName(postedFile.FileName);
-                                        postedFile.SaveAs(filePath);
-                                        strFilename = "Ori_" + ViewState["idAfiliadoOrigen"].ToString() + "_Des_" + ViewState["idAfiliadoDestino"].ToString() + "_" + postedFile.FileName;
-                                    }
-
-                                    string strQuery = "INSERT INTO TraspasoPlanes " +
-                                    "(idAfiliadoOrigen, idAfiliadoDestino, idAfiliadoPlan, FechaTraspaso, FechaInicioTraspaso, " +
-                                    "DocumentoRespaldo, Observaciones, idUsuario, EstadoTraspaso) " +
-                                    "VALUES (" + ViewState["idAfiliadoOrigen"].ToString() + ", " + ViewState["idAfiliadoDestino"].ToString() + ", " +
-                                    "" + ViewState["idAfiliadoPlan"].ToString() + ", NOW(), '" + txbFechaInicio.Text.ToString() + "', '" + strFilename + "', " +
-                                    "'" + txbObservaciones.Text.ToString() + "', " + Session["idUsuario"].ToString() + ", 'En proceso') ";
-                                    clasesglobales cg = new clasesglobales();
-                                    string mensaje = cg.TraerDatosStr(strQuery);
-                                    cg.InsertarLog(Session["idusuario"].ToString(), "traspasos planes", "Agrega", "El usuario agregó un traspaso del afiliado con documento: " + ViewState["DocumentoAfiliadoOrigen"].ToString() + " al afiliado con documento: " + ViewState["DocumentoAfiliadoDestino"].ToString() + ".", "", "");
-
-                                    Response.Redirect("afiliados");
-                                }
-                                catch (SqlException ex)
-                                {
-                                    string mensaje = ex.Message;
-                                    string script = @"
-                                        Swal.fire({
-                                            title: 'Error',
-                                            text: 'Ha ocurrido un error inesperado. " + mensaje + @"',
-                                            icon: 'error'
-                                        }).then(() => {
-                                        });
-                                        ";
-                                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                                    //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                                    //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message +
-                                    //    "</div>";
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
 
@@ -234,7 +156,7 @@ namespace fpWebApp
                 ViewState["DocumentoAfiliadoOrigen"] = dt.Rows[0]["DocumentoAfiliado"].ToString();
                 rpPlanesAfiliado.DataSource = dt;
                 rpPlanesAfiliado.DataBind();
-                txbAfiliadoDestino.Enabled = true;
+                //txbAfiliadoDestino.Enabled = true;
             }
             else
             {
@@ -251,58 +173,8 @@ namespace fpWebApp
                 //"<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
                 //"Este afiliado no tiene planes activos para realizar traspasos." +
                 //"</div>";
-                txbAfiliadoDestino.Enabled = false;
+                //txbAfiliadoDestino.Enabled = false;
                 btnTraspasar.Enabled = false;
-            }
-            dt.Dispose();
-        }
-
-        protected void btnAfiliadoOrigen_Click(object sender, EventArgs e)
-        {
-            string[] strDocumento = txbAfiliadoOrigen.Text.ToString().Split('-');
-            string strQuery = "SELECT * FROM Afiliados a " +
-                "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +
-                "WHERE DocumentoAfiliado = '" + strDocumento[0].Trim() + "' ";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-            if (dt.Rows.Count > 0)
-            {
-                ViewState["idAfiliadoOrigen"] = dt.Rows[0]["idAfiliado"].ToString();
-                ltNombreAfiliadoOrigen.Text = dt.Rows[0]["NombreAfiliado"].ToString();
-                ltApellidoAfiliadoOrigen.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
-                ltEmailAfiliadoOrigen.Text = dt.Rows[0]["EmailAfiliado"].ToString();
-                ltCelularAfiliadoOrigen.Text = dt.Rows[0]["CelularAfiliado"].ToString();
-                ltSedeAfiliadoOrigen.Text = dt.Rows[0]["NombreSede"].ToString();
-
-                if (dt.Rows[0]["FechaNacAfiliado"].ToString() != "1900-01-00")
-                {
-                    ltCumpleAfiliadoOrigen.Text = String.Format("{0:dd MMM}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]));
-                }
-                else
-                {
-                    ltCumpleAfiliadoOrigen.Text = "-";
-                }
-
-                if (dt.Rows[0]["FotoAfiliado"].ToString() != "")
-                {
-                    ltFotoAfiliadoOrigen.Text = "<img src=\"img/afiliados/" + dt.Rows[0]["FotoAfiliado"].ToString() + "\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
-                }
-                else
-                {
-                    if (dt.Rows[0]["idGenero"].ToString() == "1" || dt.Rows[0]["idGenero"].ToString() == "3")
-                    {
-                        ltFotoAfiliadoOrigen.Text = "<img src=\"img/afiliados/avatar_male.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
-                    }
-                    if (dt.Rows[0]["idGenero"].ToString() == "2")
-                    {
-                        ltFotoAfiliadoOrigen.Text = "<img src=\"img/afiliados/avatar_female.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
-                    }
-                }
-
-                divAfiliadoOrigen.Visible = true;
-                divPlanes.Visible = true;
-                CargarPlanesAfiliado();
-                CargarTraspasos();
             }
             dt.Dispose();
         }
@@ -330,78 +202,160 @@ namespace fpWebApp
                 //"<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
                 //"Este afiliado ya tiene un traspaso en proceso." +
                 //"</div>";
-                txbAfiliadoDestino.Enabled = false;
+                //txbAfiliadoDestino.Enabled = false;
                 btnTraspasar.Enabled = false;
             }
             dt.Dispose();
         }
 
-        protected void btnAfiliadoDestino_Click(object sender, EventArgs e)
+        protected void ddlAfiliadoOrigen_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string[] strDocumento = txbAfiliadoDestino.Text.ToString().Split('-');
-            string strQuery = "SELECT * FROM Afiliados a " +
-                "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +
-                "LEFT JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado AND ap.EstadoPlan = 'Activo' " +
-                "LEFT JOIN Planes p ON ap.idPlan = p.idPlan " +
-                "WHERE DocumentoAfiliado = '" + strDocumento[0].Trim() + "' ";
+            if (ddlAfiliadoOrigen.SelectedItem.Value.ToString() != "")
+            {
+                string strQuery = @"SELECT a.idAfiliado, a.NombreAfiliado, a.ApellidoAfiliado, a.EmailAfiliado, 
+                a.CelularAfiliado, s.NombreSede, a.FotoAfiliado, a.idGenero, ap.idPlan, p.NombrePlan, a.FechaNacAfiliado  
+                FROM Afiliados_Copia_Normalizada a 
+                RIGHT JOIN Sedes s ON a.idSede = s.idSede 
+                LEFT JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado AND ap.EstadoPlan = 'Activo' 
+                LEFT JOIN Planes p ON ap.idPlan = p.idPlan 
+                WHERE a.idAfiliado = " + ddlAfiliadoOrigen.SelectedItem.Value.ToString() + " ";
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.TraerDatos(strQuery);
+                if (dt.Rows.Count > 0)
+                {
+                    ViewState["idAfiliadoOrigen"] = dt.Rows[0]["idAfiliado"].ToString();
+                    ltNombreAfiliadoOrigen.Text = dt.Rows[0]["NombreAfiliado"].ToString();
+                    ltApellidoAfiliadoOrigen.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
+                    ltEmailAfiliadoOrigen.Text = dt.Rows[0]["EmailAfiliado"].ToString();
+                    ltCelularAfiliadoOrigen.Text = dt.Rows[0]["CelularAfiliado"].ToString();
+                    ltSedeAfiliadoOrigen.Text = dt.Rows[0]["NombreSede"].ToString();
+
+                    if (dt.Rows[0]["FechaNacAfiliado"].ToString() != "1900-01-00")
+                    {
+                        ltCumpleAfiliadoOrigen.Text = String.Format("{0:dd MMM}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]));
+                    }
+                    else
+                    {
+                        ltCumpleAfiliadoOrigen.Text = "-";
+                    }
+
+                    if (dt.Rows[0]["FotoAfiliado"].ToString() != "")
+                    {
+                        ltFotoAfiliadoOrigen.Text = "<img src=\"img/afiliados/" + dt.Rows[0]["FotoAfiliado"].ToString() + "\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+                    }
+                    else
+                    {
+                        if (dt.Rows[0]["idGenero"].ToString() == "1" || dt.Rows[0]["idGenero"].ToString() == "3")
+                        {
+                            ltFotoAfiliadoOrigen.Text = "<img src=\"img/afiliados/avatar_male.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+                        }
+                        if (dt.Rows[0]["idGenero"].ToString() == "2")
+                        {
+                            ltFotoAfiliadoOrigen.Text = "<img src=\"img/afiliados/avatar_female.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+                        }
+                    }
+
+                    divAfiliadoOrigen.Visible = true;
+                    divPlanes.Visible = true;
+                    CargarPlanesAfiliado();
+                    CargarTraspasos();
+                }
+                dt.Dispose();
+
+                CargarAfiliadosDestino();
+            }
+        }
+
+        private void CargarAfiliadosDestino()
+        {
+            ddlAfiliadoDestino.Items.Clear();
+            ListItem li = new ListItem("Seleccione", "");
+            ddlAfiliadoDestino.Items.Add(li);
+            string strQuery = @"SELECT a.idAfiliado, 
+                CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado, ' - ', a.DocumentoAfiliado) AS DocNombreAfiliado 
+                FROM afiliados_copia_normalizada a 
+                INNER JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado 
+                WHERE EstadoAfiliado = 'Activo' 
+                AND a.idAfiliado <> " + ddlAfiliadoOrigen.SelectedItem.Value.ToString();
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
-            if (dt.Rows.Count > 0)
-            {
-                divAfiliadoDestino.Visible = true;
-                DateTime dtHoy = DateTime.Now;
-                txbFechaInicio.Attributes.Add("type", "date");
-                txbFechaInicio.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
 
-                ViewState["idAfiliadoDestino"] = dt.Rows[0]["idAfiliado"].ToString();
-                ViewState["DocumentoAfiliadoDestino"] = dt.Rows[0]["DocumentoAfiliado"].ToString();
-                ltNombreAfiliadoDestino.Text = dt.Rows[0]["NombreAfiliado"].ToString();
-                ltApellidoAfiliadoDestino.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
-                ltEmailAfiliadoDestino.Text = dt.Rows[0]["EmailAfiliado"].ToString();
-                ltCelularAfiliadoDestino.Text = dt.Rows[0]["CelularAfiliado"].ToString();
-                ltSedeAfiliadoDestino.Text = dt.Rows[0]["NombreSede"].ToString();
+            ddlAfiliadoDestino.DataSource = dt;
+            ddlAfiliadoDestino.DataBind();
 
-                if (dt.Rows[0]["FotoAfiliado"].ToString() != "")
-                {
-                    ltFotoAfiliadoDestino.Text = "<img src=\"img/afiliados/" + dt.Rows[0]["FotoAfiliado"].ToString() + "\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
-                }
-                else
-                {
-                    if (dt.Rows[0]["idGenero"].ToString() == "1" || dt.Rows[0]["idGenero"].ToString() == "3")
-                    {
-                        ltFotoAfiliadoDestino.Text = "<img src=\"img/afiliados/avatar_male.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
-                    }
-                    if (dt.Rows[0]["idGenero"].ToString() == "2")
-                    {
-                        ltFotoAfiliadoDestino.Text = "<img src=\"img/afiliados/avatar_female.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
-                    }
-                }
-
-                if (dt.Rows[0]["idPlan"] is DBNull)
-                {
-                    //ltPlanActivo.Text = "Ninguno";
-                    btnTraspasar.Enabled = true;
-                }
-                else
-                {
-                    //ltPlanActivo.Text = dt.Rows[0]["NombrePlan"].ToString();
-                    string script = @"
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'Este afiliado ya tiene un plan activo (" + dt.Rows[0]["NombrePlan"].ToString() + @"). No se puede realizar el traspaso.',
-                            icon: 'error'
-                        }).then(() => {
-                        });
-                        ";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-
-                    //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                    //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    //    "Este afiliado ya tiene un plan activo (" + dt.Rows[0]["NombrePlan"].ToString() + "). No se puede realizar el traspaso." +
-                    //    "</div>";
-                }
-            }
             dt.Dispose();
+        }
+
+        protected void ddlAfiliadoDestino_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlAfiliadoDestino.SelectedItem.Value.ToString() != "")
+            {
+                string strQuery = @"SELECT a.idAfiliado, a.DocumentoAfiliado, a.NombreAfiliado, a.ApellidoAfiliado, a.EmailAfiliado, 
+                a.CelularAfiliado, s.NombreSede, a.FotoAfiliado, a.idGenero, ap.idPlan, p.NombrePlan, a.FechaNacAfiliado  
+                FROM afiliados_copia_normalizada a 
+                RIGHT JOIN Sedes s ON a.idSede = s.idSede 
+                LEFT JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado AND ap.EstadoPlan = 'Activo' 
+                LEFT JOIN Planes p ON ap.idPlan = p.idPlan 
+                WHERE a.IdAfiliado = " + ddlAfiliadoDestino.SelectedItem.Value.ToString() + " ";
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.TraerDatos(strQuery);
+                if (dt.Rows.Count > 0)
+                {
+                    divAfiliadoDestino.Visible = true;
+                    DateTime dtHoy = DateTime.Now;
+                    txbFechaInicio.Attributes.Add("type", "date");
+                    txbFechaInicio.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
+
+                    ViewState["idAfiliadoDestino"] = dt.Rows[0]["idAfiliado"].ToString();
+                    ViewState["DocumentoAfiliadoDestino"] = dt.Rows[0]["DocumentoAfiliado"].ToString();
+                    ltNombreAfiliadoDestino.Text = dt.Rows[0]["NombreAfiliado"].ToString();
+                    ltApellidoAfiliadoDestino.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
+                    ltEmailAfiliadoDestino.Text = dt.Rows[0]["EmailAfiliado"].ToString();
+                    ltCelularAfiliadoDestino.Text = dt.Rows[0]["CelularAfiliado"].ToString();
+                    ltSedeAfiliadoDestino.Text = dt.Rows[0]["NombreSede"].ToString();
+
+                    if (dt.Rows[0]["FotoAfiliado"].ToString() != "")
+                    {
+                        ltFotoAfiliadoDestino.Text = "<img src=\"img/afiliados/" + dt.Rows[0]["FotoAfiliado"].ToString() + "\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+                    }
+                    else
+                    {
+                        if (dt.Rows[0]["idGenero"].ToString() == "1" || dt.Rows[0]["idGenero"].ToString() == "3")
+                        {
+                            ltFotoAfiliadoDestino.Text = "<img src=\"img/afiliados/avatar_male.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+                        }
+                        if (dt.Rows[0]["idGenero"].ToString() == "2")
+                        {
+                            ltFotoAfiliadoDestino.Text = "<img src=\"img/afiliados/avatar_female.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+                        }
+                    }
+
+                    if (dt.Rows[0]["idPlan"] is DBNull)
+                    {
+                        //ltPlanActivo.Text = "Ninguno";
+                        btnTraspasar.Enabled = true;
+                    }
+                    else
+                    {
+                        //ltPlanActivo.Text = dt.Rows[0]["NombrePlan"].ToString();
+                        string script = @"
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Este afiliado ya tiene un plan activo (" + dt.Rows[0]["NombrePlan"].ToString() + @"). No se puede realizar el traspaso.',
+                                icon: 'error'
+                            }).then(() => {
+                            });
+                            ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+
+                        //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                        //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        //    "Este afiliado ya tiene un plan activo (" + dt.Rows[0]["NombrePlan"].ToString() + "). No se puede realizar el traspaso." +
+                        //    "</div>";
+                    }
+                }
+                dt.Dispose();
+            }
         }
     }
 }
