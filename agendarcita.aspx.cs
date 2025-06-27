@@ -32,7 +32,6 @@ namespace fpWebApp
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
                         CargarSedes();
-                        CargarAfiliados();
                         btnAsignar.Visible = true;
                         divAfil.Visible = true;
                     }
@@ -89,9 +88,10 @@ namespace fpWebApp
 
         private void CargarAfiliados()
         {
-            string strQuery = @"SELECT idAfiliado, 
-                CONCAT(NombreAfiliado, ' ', ApellidoAfiliado, ' - ', DocumentoAfiliado) AS DocNombreAfiliado 
-                FROM afiliados_copia_normalizada 
+            string strQuery = @"SELECT a.idAfiliado, 
+                CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado, ' - ', a.DocumentoAfiliado) AS DocNombreAfiliado 
+                FROM afiliados a 
+                INNER JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado AND ap.EstadoPlan = 'Activo' 
                 WHERE EstadoAfiliado = 'Activo' ";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
@@ -368,6 +368,7 @@ namespace fpWebApp
         protected void ddlEspecialidad_SelectedIndexChanged(object sender, EventArgs e)
         {
             CargarAgenda();
+            CargarAfiliados();
         }
 
         //protected void btnAfiliado_Click(object sender, EventArgs e)

@@ -413,7 +413,6 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
-    <%--<script src="js/plugins/footable/footable.all.min.js"></script>--%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
     <!-- Custom and plugin javascript -->
@@ -467,16 +466,17 @@
         <%--<%=strData%>--%>
 
         $('.footable').footable();
-        $(".select2_demo_1").select2();
 
         function formatText(icon) {
             return $('<span><i class="fa ' + $(icon.element).data('icon') + '" style="color: ' + $(icon.element).data('color') + '"></i> ' + icon.text + '</span>');
         };
+
         $(document).ready(function () {
             $('#ddlColor').select2({
                 width: '100%',
                 templateSelection: formatText,
-                templateResult: formatText
+                templateResult: formatText,
+                minimumResultsForSearch: 10
             });
         });
     </script>

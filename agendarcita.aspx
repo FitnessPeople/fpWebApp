@@ -22,26 +22,14 @@
 
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
-
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
-    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
-
     <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
-
     <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
-
     <link href="css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
-    <style>
-        .afiliado {
-            z-index: 9999 !important;
-        }
-    </style>
-
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -204,6 +192,10 @@
                                                                 <asp:ListItem Text="Fisioterapeuta" Value="18"></asp:ListItem>
                                                                 <asp:ListItem Text="Nutricionista" Value="30"></asp:ListItem>
                                                             </asp:DropDownList>
+                                                            <%--<asp:DropDownList ID="ddlAfiliados" runat="server" DataTextField="DocNombreAfiliado" 
+                                                                DataValueField="idAfiliado" CssClass="select2 input-sm" AppendDataBoundItems="true" >
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>--%>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -248,7 +240,6 @@
     </div>
     </form>
     <!-- Mainly scripts -->
-    <script src="js/plugins/fullcalendar/moment.min.js"></script>
     <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
@@ -259,7 +250,7 @@
     <script src="js/plugins/pace/pace.min.js"></script>
 
     <!-- jQuery UI  -->
-    <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <%--<script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>--%>
 
     <!-- Full Calendar -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
@@ -268,14 +259,14 @@
     <script src="js/plugins/chosen/chosen.jquery.js"></script>
 
     <!-- Input Mask-->
-    <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <%--<script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>--%>
 
     <!-- Jquery Validate -->
-    <script src="js/plugins/validate/jquery.validate.min.js"></script>
+    <%--<script src="js/plugins/validate/jquery.validate.min.js"></script>--%>
 
     <script>
 
-        $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" });
+        //$.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" });
 
         //$("#form").validate({
         //    rules: {
@@ -284,6 +275,15 @@
         //            minlength: 3
         //        },
         //    }
+        //});
+
+        //$(document).ready(function () {
+        //    $('.select2').select2({
+        //        width: '100%',
+        //        minimumResultsForSearch: 10,
+        //        minimumInputLength: 3,
+        //        language: "es"
+        //    });
         //});
 
         $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });

@@ -73,7 +73,7 @@ namespace fpWebApp
         {
             string strQuery = @"SELECT a.idAfiliado, 
                 CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado, ' - ', a.DocumentoAfiliado) AS DocNombreAfiliado 
-                FROM afiliados_copia_normalizada a 
+                FROM afiliados a 
                 INNER JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado AND ap.EstadoPlan = 'Activo' 
                 WHERE EstadoAfiliado = 'Activo' ";
             clasesglobales cg = new clasesglobales();
@@ -214,7 +214,7 @@ namespace fpWebApp
             {
                 string strQuery = @"SELECT a.idAfiliado, a.NombreAfiliado, a.ApellidoAfiliado, a.EmailAfiliado, 
                 a.CelularAfiliado, s.NombreSede, a.FotoAfiliado, a.idGenero, ap.idPlan, p.NombrePlan, a.FechaNacAfiliado  
-                FROM Afiliados_Copia_Normalizada a 
+                FROM Afiliados a 
                 RIGHT JOIN Sedes s ON a.idSede = s.idSede 
                 LEFT JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado AND ap.EstadoPlan = 'Activo' 
                 LEFT JOIN Planes p ON ap.idPlan = p.idPlan 
@@ -273,7 +273,7 @@ namespace fpWebApp
             ddlAfiliadoDestino.Items.Add(li);
             string strQuery = @"SELECT a.idAfiliado, 
                 CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado, ' - ', a.DocumentoAfiliado) AS DocNombreAfiliado 
-                FROM afiliados_copia_normalizada a 
+                FROM afiliados a 
                 WHERE a.EstadoAfiliado = 'Activo' 
                 AND a.idAfiliado <> " + ddlAfiliadoOrigen.SelectedItem.Value.ToString();
             clasesglobales cg = new clasesglobales();
@@ -291,7 +291,7 @@ namespace fpWebApp
             {
                 string strQuery = @"SELECT a.idAfiliado, a.DocumentoAfiliado, a.NombreAfiliado, a.ApellidoAfiliado, a.EmailAfiliado, 
                 a.CelularAfiliado, s.NombreSede, a.FotoAfiliado, a.idGenero, ap.idPlan, p.NombrePlan, a.FechaNacAfiliado  
-                FROM afiliados_copia_normalizada a 
+                FROM afiliados a 
                 RIGHT JOIN Sedes s ON a.idSede = s.idSede 
                 LEFT JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado AND ap.EstadoPlan = 'Activo' 
                 LEFT JOIN Planes p ON ap.idPlan = p.idPlan 
