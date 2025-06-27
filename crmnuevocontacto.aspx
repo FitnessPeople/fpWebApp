@@ -643,20 +643,8 @@
                                                                         <td style="display: flex; flex-wrap: nowrap;">
                                                                             <a runat="server" id="btnNuevoAfiliado" href="#" class="btn btn-outline btn-success pull-right m-r-xs" target="_blank"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" data-idcrm='<%# Eval("idContacto") %>'
-                                                                                onclick="redirigirNuevoAfiliado(this, event)">
+                                                                                data-documento='<%# Eval("DocumentoAfiliado") %>' onclick="redirigirNuevoAfiliado(this, event)">
                                                                                 <i class="fa fa-id-card"></i></a>
-
-
-                                                                            <%--                                                                            <a runat="server" id="A1"
-                                                                                href="#"
-                                                                                class="btn btn-outline btn-success pull-right m-r-xs"
-                                                                                target="_blank"
-                                                                                data-iconomin='<%# Eval("IconoMinEstadoCRM") %>'
-                                                                                onclick="redirigirNuevoAfiliado(this, event)"
-                                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;">
-                                                                                <i class="fa fa-id-card"></i>
-                                                                            </a>--%>
-
                                                                             <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
                                                                             <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
@@ -1059,61 +1047,31 @@
         $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
     </script>
 
-    <script>
-        const esAfiliado = <%= Session["esAfiliado"] != null && Session["esAfiliado"].ToString().ToLower() == "true" ? "true" : "false" %>;
+
+    <script type="text/javascript">
+        function redirigirNuevoAfiliado(anchor, event) {
+            event.preventDefault();
+
+            const idcrm = anchor.getAttribute("data-idcrm");
+            const documento = anchor.getAttribute("data-documento");
+
+            if (!documento) {
+                const url = `nuevoafiliado.aspx?idcrm=${encodeURIComponent(idcrm)}`;
+            }
+
+            // Consultar si existe ese documento en el sistema
+            $.getJSON("/obtenerafiliados?search=" + encodeURIComponent(documento), function (data) {
+                // Verificar si el documento está en la lista
+                const existe = data.some(item => String(item.id) === String(documento));
+
+                const destino = existe ? "editarafiliado.aspx" : "nuevoafiliado.aspx";
+                const url = `${destino}?idcrm=${encodeURIComponent(idcrm)}`;
+                window.open(url, '_blank');
+            }).fail(function () {
+                alert("Error al consultar los afiliados.");
+            });
+        }
     </script>
-
-
-<script type="text/javascript">
-    let afiliadosList = [];
-
-    $(document).ready(function () {
-        $("#txbAfiliado").autocomplete({
-            source: function (request, response) {
-                $.getJSON("/obtenerafiliados?search=" + request.term, function (data) {
-                    afiliadosList = data; // Se guarda la lista para uso posterior
-                    response($.map(data, function (item) {
-                        return {
-                            label: item.nombre + " " + item.apellido + " - " + item.id + ", " + item.correo,
-                            value: item.nombre + " " + item.apellido,
-                            idcrm: item.id
-                        };
-                    }));
-                });
-            },
-            select: function (event, ui) {
-                if (ui.item && ui.item.idcrm) {
-                    const url = `editarafiliado.aspx?idcrm=${encodeURIComponent(ui.item.idcrm)}`;
-                    window.open(url, '_blank');
-                }
-            },
-            minLength: 3,
-            delay: 100
-        });
-    });
-
-    function redirigirNuevoAfiliado(anchor, event) {
-        event.preventDefault();
-
-        const idcrm = anchor.getAttribute("data-idcrm");
-
-        if (!idcrm) {
-            alert("No se encontró el id CRM.");
-            return;
-        }
-
-        if (!afiliadosList || afiliadosList.length === 0) {
-            alert("Por favor, busca primero el afiliado antes de redirigir.");
-            return;
-        }
-
-        const existe = afiliadosList.some(item => String(item.id) === String(idcrm));
-
-        const destino = existe ? "editarafiliado.aspx" : "nuevoafiliado.aspx";
-        const url = `${destino}?idcrm=${encodeURIComponent(idcrm)}`;
-        window.open(url, '_blank');
-    }
-</script>
 
 
 

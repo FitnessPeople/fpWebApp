@@ -786,6 +786,26 @@ namespace fpWebApp
         //        lnkNuevoAfiliado.Visible = false;
         //    }
         //}
+        public class verificarafiliado : IHttpHandler
+        {
+            public void ProcessRequest(HttpContext context)
+            {
+                string docStr = context.Request.QueryString["documento"];
+                bool existe = false;
+
+                if (!string.IsNullOrEmpty(docStr))
+                {
+                    clasesglobales cg = new clasesglobales();
+                    DataTable dt = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(docStr));
+                    existe = dt.Rows.Count > 0;
+                }
+
+                context.Response.ContentType = "application/json";
+                context.Response.Write("{\"existe\": " + existe.ToString().ToLower() + "}");
+            }
+
+            public bool IsReusable => false;
+        }
 
     }
 }
