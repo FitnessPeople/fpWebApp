@@ -428,7 +428,7 @@
                                                                     <i class="fas fa-industry text-info"></i>
                                                                     <label for="TiposAfiliado" class="col-form-label">Tipo cliente:</label>
                                                                     <asp:DropDownList ID="ddlTiposAfiliado" DataTextField="NombreTipoAfiliado" DataValueField="idTipoAfiliado"
-                                                                        runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm" AutoPostBack="true">
+                                                                        runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                     </asp:DropDownList>
                                                                     <%--<asp:RequiredFieldValidator ID="rfvTipoAfiliado" runat="server" ErrorMessage="* Campo requerido"
@@ -1058,21 +1058,65 @@
 
         $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
     </script>
+
     <script>
-        function redirigirNuevoAfiliado(anchor, event) {
-            event.preventDefault();
-
-            const idcrm = anchor.getAttribute("data-idcrm");
-
-            if (!idcrm) {
-                alert("No se encontró el id CRM.");
-                return;
-            }
-
-            const url = `nuevoafiliado.aspx?idcrm=${encodeURIComponent(idcrm)}`;
-            window.open(url, '_blank');
-        }
+        const esAfiliado = <%= Session["esAfiliado"] != null && Session["esAfiliado"].ToString().ToLower() == "true" ? "true" : "false" %>;
     </script>
+
+
+<script type="text/javascript">
+    let afiliadosList = [];
+
+    $(document).ready(function () {
+        $("#txbAfiliado").autocomplete({
+            source: function (request, response) {
+                $.getJSON("/obtenerafiliados?search=" + request.term, function (data) {
+                    afiliadosList = data; // Se guarda la lista para uso posterior
+                    response($.map(data, function (item) {
+                        return {
+                            label: item.nombre + " " + item.apellido + " - " + item.id + ", " + item.correo,
+                            value: item.nombre + " " + item.apellido,
+                            idcrm: item.id
+                        };
+                    }));
+                });
+            },
+            select: function (event, ui) {
+                if (ui.item && ui.item.idcrm) {
+                    const url = `editarafiliado.aspx?idcrm=${encodeURIComponent(ui.item.idcrm)}`;
+                    window.open(url, '_blank');
+                }
+            },
+            minLength: 3,
+            delay: 100
+        });
+    });
+
+    function redirigirNuevoAfiliado(anchor, event) {
+        event.preventDefault();
+
+        const idcrm = anchor.getAttribute("data-idcrm");
+
+        if (!idcrm) {
+            alert("No se encontró el id CRM.");
+            return;
+        }
+
+        if (!afiliadosList || afiliadosList.length === 0) {
+            alert("Por favor, busca primero el afiliado antes de redirigir.");
+            return;
+        }
+
+        const existe = afiliadosList.some(item => String(item.id) === String(idcrm));
+
+        const destino = existe ? "editarafiliado.aspx" : "nuevoafiliado.aspx";
+        const url = `${destino}?idcrm=${encodeURIComponent(idcrm)}`;
+        window.open(url, '_blank');
+    }
+</script>
+
+
+
 
 
 

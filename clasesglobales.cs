@@ -6467,7 +6467,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public string InsertarContactoCRM(string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
+        public string InsertarContactoCRM(string nombreContacto, string apellidoContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
             int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
             int idUsuario, int idObjetivo, int tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, int idTipoDoc, 
             string DocumentoAfiliado, string tiempoAtencion, out bool respuesta, out string mensaje)
@@ -6484,6 +6484,7 @@ namespace fpWebApp
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_nombre_contacto", nombreContacto);
+                        cmd.Parameters.AddWithValue("@p_apellido_contacto", apellidoContacto);
                         cmd.Parameters.AddWithValue("@p_telefono_contacto", telefonoContacto);
                         cmd.Parameters.AddWithValue("@p_email_contacto", emailContacto);
                         cmd.Parameters.AddWithValue("@p_id_empresa", idEmpresaCMR);
@@ -6527,7 +6528,7 @@ namespace fpWebApp
             return mensaje;
         }
 
-        public string ActualizarContactoCRM(int idContactoCMR, string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
+        public string ActualizarContactoCRM(int idContactoCMR, string apellidoContacto, string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
         int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
         int idUsuario, int idObjetivo, int tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, int idTipoDoc, string DocumentoAfiliado,
         out bool respuesta, out string mensaje)
@@ -6545,6 +6546,7 @@ namespace fpWebApp
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_id_contacto_cmr", idContactoCMR);
                         cmd.Parameters.AddWithValue("@p_nombre_contacto", nombreContacto);
+                        cmd.Parameters.AddWithValue("@p_apellido_contacto", apellidoContacto);
                         cmd.Parameters.AddWithValue("@p_telefono_contacto", telefonoContacto);
                         cmd.Parameters.AddWithValue("@p_email_contacto", emailContacto);
                         cmd.Parameters.AddWithValue("@p_id_empresa", idEmpresaCMR);

@@ -66,6 +66,7 @@ namespace fpWebApp
                         if (dt.Rows.Count > 0)
                         {
                             txbNombre.Text = dt.Rows[0]["NombreContacto"].ToString();
+                            txbApellido.Text = dt.Rows[0]["ApellidoContacto"].ToString();
                             txbDocumento.Text = dt.Rows[0]["DocumentoAfiliado"].ToString();
                             ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDoc"].ToString())));
                             txbTelefono.Text = dt.Rows[0]["TelefonoContacto"].ToString();

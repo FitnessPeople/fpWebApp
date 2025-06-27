@@ -420,14 +420,15 @@ namespace fpWebApp
                         }
                         else
                         {
-                            respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.ToString().Trim().ToUpper(),
-                                    Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), txbCorreoContacto.Value.ToString().Trim().ToLower(),
-                                    Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()),
-                                    txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
-                                    txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
+                            respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbApellidoContacto.Value.ToString().Trim().ToUpper(),
+                                    txbNombreContacto.Value.ToString().Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), 
+                                    txbCorreoContacto.Value.ToString().Trim().ToLower(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), 
+                                    Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(), 
+                                    Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "", txaObservaciones.Value.Trim(), 
+                                    Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
                                     Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
-                                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()),
-                                    0, Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, out salida, out mensaje);
+                                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0, 
+                                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, out salida, out mensaje);
 
                             if (salida)
                             {
@@ -574,9 +575,9 @@ namespace fpWebApp
 
                 try
                 {
-                    respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
-                    txbCorreoContacto.Value.ToString().Trim().ToLower(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
+                    respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim().ToUpper(), txbApellidoContacto.Value.ToString().Trim().ToUpper(),
+                    Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), txbCorreoContacto.Value.ToString().Trim().ToLower(), 
+                    Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
                     fechaHoraMySQL.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
                     txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
                     Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
@@ -714,6 +715,8 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             DataTable dt = new DataTable();
             DataTable dt1 = new DataTable();
+            bool esAfiliado = false;
+            Session["esAfiliado"] = esAfiliado.ToString();
             int documento = 0;
             string[] strDocumento = txbAfiliado.Text.ToString().Split('-');
             if (int.TryParse(strDocumento[0], out documento))
@@ -727,9 +730,12 @@ namespace fpWebApp
             {
                 if (dt.Rows.Count > 0)
                 {
+                    esAfiliado = true;
+                    Session["esAfiliado"] = esAfiliado.ToString();
                     txbDocumento.Text = documento.ToString();
                     ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
-                    txbNombreContacto.Value = $"{dt.Rows[0]["NombreAfiliado"]} {dt.Rows[0]["ApellidoAfiliado"]}";
+                    txbNombreContacto.Value = dt.Rows[0]["NombreAfiliado"].ToString();
+                    txbApellidoContacto.Value = dt.Rows[0]["ApellidoAfiliado"].ToString();
                     txbTelefonoContacto.Value = dt.Rows[0]["CelularAfiliado"].ToString();
                     txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString();
                     ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString())));
