@@ -344,6 +344,8 @@
                                                 <div>
                                                     <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='afiliados'"><strong>Cancelar</strong></button>
                                                     <asp:Button ID="btnActualizar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Actualizar" OnClick="btnActualizar_Click" />
+                                                    <asp:Button ID="btnActualizaryVenderPlan" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" 
+                                                        Text="Actualizar y Vender Plan" Visible="false" OnClick="btnActualizaryVenderPlan_Click" />
                                                 </div>
                                             </div>
                                         </form>

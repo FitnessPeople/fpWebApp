@@ -38,10 +38,10 @@
     <link href="css/style.css" rel="stylesheet" />
 
     <style>
-    .fc-event, .fc-event-title {
-        color: white !important;
-    }
-</style>
+        .fc-event, .fc-event-title {
+            color: white !important;
+        }
+    </style>
     <style>
         .modal-body {
             max-height: 70vh; /* Usa un 70% del alto de la ventana */
@@ -148,7 +148,7 @@
 
 
 
- 
+
 
 
     <div id="wrapper">
@@ -194,7 +194,7 @@
 
                         <asp:HiddenField ID="hdnIdContacto" runat="server" />
 
-                        <asp:ScriptManager ID="sm1" runat="server" ></asp:ScriptManager>
+                        <asp:ScriptManager ID="sm1" runat="server"></asp:ScriptManager>
                         <asp:UpdatePanel ID="upAsesorCRM" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
                                 <div id="modal-view-event" class="modal modal-top fade calendar-modal">
@@ -208,147 +208,42 @@
                                                 </h4>
 
                                                 <div class="row">
-                                                    <!-- Columna izquierda: contenido original -->
-                                                    <div class="col-md-6 border-right">
-                                                        <div class="tab-content">
-                                                            <asp:Repeater ID="rptContenido" runat="server">
-                                                                <ItemTemplate>
-                                                                    <div id='<%# Eval("IdContacto") %>' class='tab-pane <%# Eval("IdContacto").ToString() == Session["contactoId"]?.ToString() ? "active" : "" %>' style="margin-bottom: 0; padding-bottom: 0;">
-                                                                        <div class="m-b-sm">
-                                                                            <img alt="image" class="img-circle" src="img/a3.jpg" style="width: 62px">
+                                                    <!-- Columna izquierda con borde y padding -->
+                                                    <div class="col-sm-6">
+                                                        <div class="panel panel-default" style="padding: 15px;">
+                                                            <div class="panel-body">
+                                                                <asp:Repeater ID="rptContenido" runat="server">
+                                                                    <ItemTemplate>
+                                                                        <div id='<%# Eval("IdContacto") %>'
+                                                                            class='tab-pane <%# Eval("IdContacto").ToString() == Session["contactoId"]?.ToString() ? "active" : "" %>'
+                                                                            style="margin-bottom: 10px;">
+                                                                            <div class="media">
+                                                                                <div class="media-left">
+                                                                                    <img alt="image" class="img-circle" src="img/a3.jpg" style="width: 62px">
+                                                                                </div>
+                                                                                <div class="media-body">
+                                                                                    <!-- Aquí puedes añadir nombre, rol o más datos -->
+                                                                                    <%-- Ejemplo: <strong><%# Eval("Nombre") %></strong> --%>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                </ItemTemplate>
-                                                            </asp:Repeater>
+                                                                    </ItemTemplate>
+                                                                </asp:Repeater>
+                                                            </div>
                                                         </div>
-
-                                                        <!-- Elementos dinámicos -->
-                                                        <div id="contenedorAdicional"></div>
-                                                        <div id="datosEvento" style="margin-top: 10px;"></div>
                                                     </div>
 
-                                                    <!-- Columna derecha: zona de planes -->
-                                                    <div class="col-md-6">
-                                                        <h6><strong>Planes</strong></h6>
-
-                                                        <div class="mb-3">
-                                                            <label>Tipo de plan:</label>
-                                                            <asp:PlaceHolder ID="phPlanes" runat="server"></asp:PlaceHolder>
-                                                        </div>
-
-                                                        <div class="mb-3">
-                                                            <label>Meses del plan:</label>
-                                                            <%--    <div class="container-fluid">--%>
-                                                            <div class="row">
-                                                                <div class="col-sm-3 col-xs-3 col-xs-3">
-                                                                    <asp:Button ID="btnMes1" runat="server" Text="1"
-                                                                        CssClass="btn btn-warning btn-outline btn-block font-bold active"
-                                                                        OnClick="btnMes1_Click" />
-                                                                </div>
-                                                                <div class="col-sm-3 col-xs-3">
-                                                                    <asp:Button ID="btnMes2" runat="server" Text="2"
-                                                                        CssClass="btn btn-warning btn-outline btn-block font-bold"
-                                                                        OnClick="btnMes2_Click" />
-                                                                </div>
-                                                                <div class="col-sm-3 col-xs-3">
-                                                                    <asp:Button ID="btnMes3" runat="server" Text="3"
-                                                                        CssClass="btn btn-info btn-outline btn-block font-bold"
-                                                                        OnClick="btnMes3_Click" />
-                                                                </div>
-                                                                <div class="col-sm-3 col-xs-3">
-                                                                    <asp:Button ID="btnMes4" runat="server" Text="4"
-                                                                        CssClass="btn btn-danger btn-outline btn-block font-bold"
-                                                                        OnClick="btnMes4_Click" />
-                                                                </div>
-                                                                <div class="col-sm-3 col-xs-3">
-                                                                    <asp:Button ID="btnMes5" runat="server" Text="5"
-                                                                        CssClass="btn btn-warning btn-outline btn-block font-bold"
-                                                                        OnClick="btnMes5_Click" />
-                                                                </div>
-
-                                                                <div class="col-sm-3 col-xs-3">
-                                                                    <asp:Button ID="btnMes6" runat="server" Text="6"
-                                                                        CssClass="btn btn-info btn-outline btn-block font-bold"
-                                                                        OnClick="btnMes6_Click" />
-                                                                </div>
-                                                                <div class="col-sm-3 col-xs-3">
-                                                                    <asp:Button ID="btnMes7" runat="server" Text="7"
-                                                                        CssClass="btn btn-warning btn-outline btn-block font-bold"
-                                                                        OnClick="btnMes7_Click" />
-                                                                </div>
-                                                                <div class="col-sm-3 col-xs-3">
-                                                                    <asp:Button ID="btnMes8" runat="server" Text="8"
-                                                                        CssClass="btn btn-danger btn-outline btn-block font-bold"
-                                                                        OnClick="btnMes8_Click" />
-                                                                </div>
-                                                                <div class="col-sm-3 col-xs-3">
-                                                                    <asp:Button ID="btnMes9" runat="server" Text="9"
-                                                                        CssClass="btn btn-info btn-outline btn-block font-bold"
-                                                                        OnClick="btnMes9_Click" />
-                                                                </div>
-                                                                <div class="col-sm-3 col-xs-3">
-                                                                    <asp:Button ID="btnMes10" runat="server" Text="10"
-                                                                        CssClass="btn btn-warning btn-outline btn-block font-bold"
-                                                                        OnClick="btnMes10_Click" />
-                                                                </div>
-                                                                <div class="col-sm-3 col-xs-3">
-                                                                    <asp:Button ID="btnMes11" runat="server" Text="11"
-                                                                        CssClass="btn btn-warning btn-outline btn-block font-bold"
-                                                                        OnClick="btnMes11_Click" />
-                                                                </div>
-                                                                <div class="col-sm-3 col-xs-3">
-                                                                    <asp:Button ID="btnMes12" runat="server" Text="12"
-                                                                        CssClass="btn btn-danger btn-outline btn-block font-bold"
-                                                                        OnClick="btnMes12_Click" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <hr />
-
-                                                        <%-- Widgets apilados --%>
-                                                        <div class="row">
-                                                            <div class="col-12 mb-3 widget style1 bg-warning rounded">
-                                                                <div class="" style="display: flex; justify-content: space-between">
-                                                                    <i class="fa fa-money-bill-wave fa-3x" style="font-size: 2em; align-content: center"></i>
-                                                                    <span style="align-content: center">Mes
-                                                                        <asp:Literal ID="ltPrecioBase" runat="server"></asp:Literal></span>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-12 mb-3 widget style1 bg-danger">
-                                                                <div class="" style="display: flex; justify-content: space-between">
-                                                                    <i class="fa fa-tag fa-3x" style="font-size: 2em; align-content: center"></i>
-                                                                    <span style="align-content: center">Dcto.
-                                                                        <asp:Literal ID="ltDescuento" runat="server"></asp:Literal></span>
-                                                                </div>
-
-                                                                <div class="col-6 text-right">
-                                                                    <h3 class="font-bold text-sm">
-                                                                        <asp:Literal ID="ltConDescuento" runat="server"></asp:Literal>
-                                                                    </h3>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-12 mb-3 widget style1 bg-success p-3 rounded text-white">
-                                                                <div class="" style="display: flex; justify-content: space-between">
-                                                                    <i class="fa fa-cart-shopping fa-3x" style="font-size: 2em; align-content: center"></i>
-                                                                    <span style="align-content: center">Total
-                                                                        <asp:Literal ID="ltPrecioFinal" runat="server"></asp:Literal></span>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-12 mb-3 widget style1 lazur-bg">
-                                                                <div class="" style="display: flex; justify-content: space-between">
-                                                                    <i class="fa fa-hand-holding-dollar fa-3x" style="font-size: 2em; align-content: center"></i>
-                                                                    <span style="align-content: center">Ahorro
-                                                                        <asp:Literal ID="ltAhorro" runat="server"></asp:Literal></span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <hr />
+                                                    <!-- Elementos adicionales -->
+                                                    <div class="col-sm-6">
+                                                        <div id="contenedorAdicional" class="well well-sm"></div>
+                                                        <div id="datosEvento" class="well well-sm" style="margin-top: 10px;"></div>
                                                     </div>
                                                 </div>
+
+
+
+
+
                                             </div>
 
 
@@ -541,6 +436,7 @@
                 <%=strEventos%>
                 eventClick: function (event, jsEvent, view) {
                     // ...
+
                     jQuery('.event-id').html(event.id);
                     jQuery('.event-title').html('Contacto: ' + event.title);
 
@@ -575,12 +471,26 @@
                     // Insertar contenido en #contenedorAdicional
                     const contenedor = document.getElementById('contenedorAdicional');
                     if (contenedor) {
-                        contenedor.innerHTML =
-                            selectHtml +
-                            textareaHtml +
-                            "<label><strong>Historial del contacto</strong></label><br />" +
-                            (event.historialHTML2 || '') +
-                            "<br />";
+                        contenedor.innerHTML = `
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><strong>Gestión del Contacto</strong></div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    ${selectHtml}
+                                </div>
+                                <div class="form-group">
+                                    ${textareaHtml}
+                                </div>
+                                <div class="form-group">
+                                    <label><strong>Historial del contacto</strong></label>
+                                    <div class="well well-sm" style="max-height: 150px; overflow-y: auto;">
+                                        ${event.historialHTML2 || '<em>Sin historial</em>'}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
                     }
 
                     document.getElementById("btnAsignar").style.display = event.btnAsignar;
@@ -594,11 +504,12 @@
         });
 
     </script>
-<script>
-    $('#modal-view-event').on('hidden.bs.modal', function () {
-        location.reload();
-    });
-</script>
+
+    <script>
+        $('#modal-view-event').on('hidden.bs.modal', function () {
+            location.reload();
+        });
+    </script>
 </body>
 
 </html>

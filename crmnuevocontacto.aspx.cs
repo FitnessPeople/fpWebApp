@@ -20,6 +20,7 @@ namespace fpWebApp
             if (!IsPostBack)
             {
 
+
                 if (Session["idUsuario"] != null)
                 {
                     ValidarPermisos("Sedes");
@@ -39,6 +40,17 @@ namespace fpWebApp
                         txbFechaProx.Attributes.Add("type", "date");
                         txbFechaProx.Value = DateTime.Now.ToString("yyyy-MM-dd");
                         txbCorreoContacto.Attributes.Add("type", "email");
+
+                        btnAgregar.Text = "Agregar";
+
+                        txbAfiliado.Enabled = true;
+                        txbNombreContacto.Disabled = false;
+                        txbApellidoContacto.Disabled = false;
+                        txbDocumento.Enabled = true;
+                        ddlTipoDocumento.Enabled = true ;
+                        txbTelefonoContacto.Disabled = false;
+                        txbCorreoContacto.Disabled = false;
+                        txbFechaPrim.Disabled = false;
 
                         divBotonesLista.Visible = false;
                         btnAgregar.Visible = false;
@@ -74,14 +86,25 @@ namespace fpWebApp
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
+                            txbAfiliado.Enabled = false;
+                            txbNombreContacto.Disabled = false;
+                            txbApellidoContacto.Disabled = false;
+                            txbDocumento.Enabled = false;
+                            ddlTipoDocumento.Enabled = false;
+                            txbTelefonoContacto.Disabled = true;
+                            txbCorreoContacto.Disabled = true;
+                            txbFechaPrim.Disabled = true;
+                            btnAgregar.Text = "Actualizar";
+
+
 
                             bool respuesta = false;
                             clasesglobales cg = new clasesglobales();
                             DataTable dt = cg.ConsultarContactosCRMPorId(int.Parse(Request.QueryString["editid"].ToString()), out respuesta);
                             Session["contactoId"] = int.Parse(Request.QueryString["editid"].ToString());
+                           
                             if (respuesta)
                             {
-
                                 if (dt.Rows.Count > 0)
                                 {
                                     DataRow row = dt.Rows[0];
@@ -89,6 +112,7 @@ namespace fpWebApp
                                     txbDocumento.Text = row["DocumentoAfiliado"].ToString();
 
                                     txbNombreContacto.Value = row["NombreContacto"].ToString();
+                                    txbApellidoContacto.Value = row["ApellidoContacto"].ToString();
                                     string telefono = Convert.ToString(row["TelefonoContacto"]);
                                     if (!string.IsNullOrEmpty(telefono) && telefono.Length == 10)
                                     {
@@ -267,7 +291,6 @@ namespace fpWebApp
             //ltValorTotal.Text = valorTotal.ToString("C0");
             dt.Dispose();
         }
-
         private void ListaMediosDePago()
         {
             clasesglobales cg = new clasesglobales();
@@ -288,7 +311,6 @@ namespace fpWebApp
             //rpEmpresasCRM.DataBind();
             dt.Dispose();
         }
-
         private void ListaEstadosCRM()
         {
             clasesglobales cg = new clasesglobales();
@@ -308,7 +330,6 @@ namespace fpWebApp
                 ddlStatusLead.Items.Add(item);
             }
         }
-
         private void ListaTiposAfiliadosCRM()
         {
             clasesglobales cg = new clasesglobales();
@@ -318,7 +339,6 @@ namespace fpWebApp
             ddlTiposAfiliado.DataBind();
             dt.Dispose();
         }
-
         private void CargarPlanes()
         {
             clasesglobales cg = new clasesglobales();
@@ -328,7 +348,6 @@ namespace fpWebApp
             ddlPlanes.DataBind();
             dt.Dispose();
         }
-
         private void ListaObjetivosfiliadoCRM()
         {
             clasesglobales cg = new clasesglobales();
@@ -338,7 +357,6 @@ namespace fpWebApp
             ddlObjetivos.DataBind();
             dt.Dispose();
         }
-
         private void ListaCanalesMarketingCRM()
         {
             clasesglobales cg = new clasesglobales();
@@ -348,7 +366,6 @@ namespace fpWebApp
             ddlCanalesMarketing.DataBind();
             dt.Dispose();
         }
-
         private void CargarTipoDocumento()
         {
             clasesglobales cg = new clasesglobales();
@@ -640,7 +657,7 @@ namespace fpWebApp
                 {
                     HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
                     btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    btnEditar.Visible = true;
+                    btnEditar.Visible = true;                    
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {

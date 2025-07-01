@@ -575,8 +575,9 @@
                                                             <a href="crmnuevocontacto" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                             <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
                                                                 CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
-                                                                OnClick="btnAgregar_Click" />
+                                                                OnClick="btnAgregar_Click" />                                                           
                                                         </div>
+                                                         <asp:Literal ID="itBotonConfirmar" runat="server" Visible="false"></asp:Literal>
                                                         <br />
                                                         <br />
                                                         <div class="form-group">
@@ -648,7 +649,8 @@
                                                                             <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
                                                                             <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
+                                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" OnClientClick="ocultarContador(); return true;" >
+                                                                                <i class="fa fa-edit"></i></a>
                                                                         </td>
                                                                     </tr>
                                                                 </ItemTemplate>

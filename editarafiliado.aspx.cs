@@ -180,108 +180,130 @@ namespace fpWebApp
             string idcrm = Request.QueryString["idcrm"];
             string editid = Request.QueryString["editid"];
             string parametro = string.Empty;
+            Session["IdAfiliado"] = string.Empty;
+            bool respuesta = false;
+            btnActualizar.Visible = true;
+            btnActualizaryVenderPlan.Visible = false;
+            
 
-            if (Request.QueryString.Count > 0)
+
+
+            clasesglobales cg = new clasesglobales();
+            try
             {
-                if (!string.IsNullOrEmpty(idcrm))
+                if (Request.QueryString.Count > 0)
                 {
-                    parametro = idcrm;
-                }
-                else if (!string.IsNullOrEmpty(editid))
-                {
-                    parametro = editid;
-                }
-
-                if (!string.IsNullOrEmpty(parametro))
-                {
-                    string strQuery = "SELECT * FROM afiliados WHERE idAfiliado = " + parametro;
-                    clasesglobales cg = new clasesglobales();
-                    DataTable dt = cg.TraerDatos(strQuery);
-
-                    if (dt.Rows.Count > 0)
+                    if (!string.IsNullOrEmpty(idcrm))
                     {
-                        txbNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
-                        txbApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
-                        txbDocumento.Text = dt.Rows[0]["DocumentoAfiliado"].ToString();
-                        ddlTipoDocumento.SelectedIndex = Convert.ToInt16(dt.Rows[0]["idTipoDocumento"].ToString());
-                        txbTelefono.Text = dt.Rows[0]["CelularAfiliado"].ToString();
-                        txbEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
-                        txbDireccion.Text = dt.Rows[0]["DireccionAfiliado"].ToString();
-                        ddlCiudadAfiliado.SelectedIndex = ddlCiudadAfiliado.Items.IndexOf(ddlCiudadAfiliado.Items.FindByValue(dt.Rows[0]["idCiudadAfiliado"].ToString()));
-                        ddlEmpresaConvenio.SelectedIndex = ddlEmpresaConvenio.Items.IndexOf(ddlEmpresaConvenio.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString()));
-                        txbFechaNac.Attributes.Add("type", "date");
+                        DataTable dt1 = cg.ConsultarContactosCRMPorId(Convert.ToInt32(idcrm), out respuesta);
+                        DataTable dt2 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(dt1.Rows[0]["DocumentoAfiliado"].ToString()));
+                        parametro = dt2.Rows[0]["idAfiliado"].ToString();
+                        btnActualizar.Visible = false;
+                        btnActualizaryVenderPlan.Visible = true;
+                        Session["IdAfiliado"] = parametro.ToString();
+                    }
+                    else if (!string.IsNullOrEmpty(editid))
+                    {
+                        parametro = editid;
+                        Session["IdAfiliado"] = parametro.ToString();
+                    }
 
-                        DateTime dt14 = DateTime.Now.AddYears(-14);
-                        DateTime dt100 = DateTime.Now.AddYears(-100);
-                        txbFechaNac.Attributes.Add("min", $"{dt100:yyyy-MM-dd}");
-                        txbFechaNac.Attributes.Add("max", $"{dt14:yyyy-MM-dd}");
+                    if (!string.IsNullOrEmpty(parametro))
+                    {
+                        string strQuery = "SELECT * FROM afiliados WHERE idAfiliado = " + parametro;
 
-                        DateTime dtFecha = DateTime.MinValue;
-                        if (DateTime.TryParse(dt.Rows[0]["FechaNacAfiliado"].ToString(), out dtFecha))
+                        DataTable dt = cg.TraerDatos(strQuery);
+
+                        if (dt.Rows.Count > 0)
                         {
-                            txbFechaNac.Text = dtFecha.ToString("yyyy-MM-dd");
+                            txbNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
+                            txbApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
+                            txbDocumento.Text = dt.Rows[0]["DocumentoAfiliado"].ToString();
+                            ddlTipoDocumento.SelectedIndex = Convert.ToInt16(dt.Rows[0]["idTipoDocumento"].ToString());
+                            txbTelefono.Text = dt.Rows[0]["CelularAfiliado"].ToString();
+                            txbEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
+                            txbDireccion.Text = dt.Rows[0]["DireccionAfiliado"].ToString();
+                            ddlCiudadAfiliado.SelectedIndex = ddlCiudadAfiliado.Items.IndexOf(ddlCiudadAfiliado.Items.FindByValue(dt.Rows[0]["idCiudadAfiliado"].ToString()));
+                            ddlEmpresaConvenio.SelectedIndex = ddlEmpresaConvenio.Items.IndexOf(ddlEmpresaConvenio.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString()));
+                            txbFechaNac.Attributes.Add("type", "date");
+
+                            DateTime dt14 = DateTime.Now.AddYears(-14);
+                            DateTime dt100 = DateTime.Now.AddYears(-100);
+                            txbFechaNac.Attributes.Add("min", $"{dt100:yyyy-MM-dd}");
+                            txbFechaNac.Attributes.Add("max", $"{dt14:yyyy-MM-dd}");
+
+                            DateTime dtFecha = DateTime.MinValue;
+                            if (DateTime.TryParse(dt.Rows[0]["FechaNacAfiliado"].ToString(), out dtFecha))
+                            {
+                                txbFechaNac.Text = dtFecha.ToString("yyyy-MM-dd");
+                            }
+
+                            if (!string.IsNullOrEmpty(dt.Rows[0]["FotoAfiliado"].ToString()))
+                            {
+                                imgFoto.ImageUrl = "img/afiliados/" + dt.Rows[0]["FotoAfiliado"].ToString();
+                                ViewState["FotoAfiliado"] = dt.Rows[0]["FotoAfiliado"].ToString();
+                            }
+
+                            if (!string.IsNullOrEmpty(dt.Rows[0]["idGenero"].ToString()))
+                            {
+                                ddlGenero.SelectedIndex = ddlGenero.Items.IndexOf(
+                                    ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString()));
+                            }
+
+                            if (!string.IsNullOrEmpty(dt.Rows[0]["idEstadoCivilAfiliado"].ToString()))
+                            {
+                                ddlEstadoCivil.SelectedIndex = ddlEstadoCivil.Items.IndexOf(
+                                    ddlEstadoCivil.Items.FindByValue(dt.Rows[0]["idEstadoCivilAfiliado"].ToString()));
+                            }
+
+                            if (!string.IsNullOrEmpty(dt.Rows[0]["idProfesion"].ToString()))
+                            {
+                                ddlProfesiones.SelectedIndex = ddlProfesiones.Items.IndexOf(
+                                    ddlProfesiones.Items.FindByValue(dt.Rows[0]["idProfesion"].ToString()));
+                            }
+
+                            if (!string.IsNullOrEmpty(dt.Rows[0]["idEps"].ToString()))
+                            {
+                                ddlEps.SelectedIndex = ddlEps.Items.IndexOf(
+                                    ddlEps.Items.FindByValue(dt.Rows[0]["idEps"].ToString()));
+                            }
+
+                            if (!string.IsNullOrEmpty(dt.Rows[0]["idSede"].ToString()))
+                            {
+                                ddlSedes.SelectedIndex = ddlSedes.Items.IndexOf(
+                                    ddlSedes.Items.FindByValue(dt.Rows[0]["idSede"].ToString()));
+                            }
+
+                            if (!string.IsNullOrEmpty(dt.Rows[0]["Parentesco"].ToString()))
+                            {
+                                ddlParentesco.SelectedIndex = ddlParentesco.Items.IndexOf(
+                                    ddlParentesco.Items.FindByText(dt.Rows[0]["Parentesco"].ToString()));
+                            }
+
+                            txbResponsable.Text = dt.Rows[0]["ResponsableAfiliado"].ToString();
+                            txbTelefonoContacto.Text = dt.Rows[0]["ContactoAfiliado"].ToString();
+                            rblEstado.Items.FindByValue(dt.Rows[0]["EstadoAfiliado"].ToString()).Selected = true;
+                        }
+                        else
+                        {
+                            divMensaje1.Visible = true;
+                            btnActualizar.Visible = false;
                         }
 
-                        if (!string.IsNullOrEmpty(dt.Rows[0]["FotoAfiliado"].ToString()))
-                        {
-                            imgFoto.ImageUrl = "img/afiliados/" + dt.Rows[0]["FotoAfiliado"].ToString();
-                            ViewState["FotoAfiliado"] = dt.Rows[0]["FotoAfiliado"].ToString();
-                        }
-
-                        if (!string.IsNullOrEmpty(dt.Rows[0]["idGenero"].ToString()))
-                        {
-                            ddlGenero.SelectedIndex = ddlGenero.Items.IndexOf(
-                                ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString()));
-                        }
-
-                        if (!string.IsNullOrEmpty(dt.Rows[0]["idEstadoCivilAfiliado"].ToString()))
-                        {
-                            ddlEstadoCivil.SelectedIndex = ddlEstadoCivil.Items.IndexOf(
-                                ddlEstadoCivil.Items.FindByValue(dt.Rows[0]["idEstadoCivilAfiliado"].ToString()));
-                        }
-
-                        if (!string.IsNullOrEmpty(dt.Rows[0]["idProfesion"].ToString()))
-                        {
-                            ddlProfesiones.SelectedIndex = ddlProfesiones.Items.IndexOf(
-                                ddlProfesiones.Items.FindByValue(dt.Rows[0]["idProfesion"].ToString()));
-                        }
-
-                        if (!string.IsNullOrEmpty(dt.Rows[0]["idEps"].ToString()))
-                        {
-                            ddlEps.SelectedIndex = ddlEps.Items.IndexOf(
-                                ddlEps.Items.FindByValue(dt.Rows[0]["idEps"].ToString()));
-                        }
-
-                        if (!string.IsNullOrEmpty(dt.Rows[0]["idSede"].ToString()))
-                        {
-                            ddlSedes.SelectedIndex = ddlSedes.Items.IndexOf(
-                                ddlSedes.Items.FindByValue(dt.Rows[0]["idSede"].ToString()));
-                        }
-
-                        if (!string.IsNullOrEmpty(dt.Rows[0]["Parentesco"].ToString()))
-                        {
-                            ddlParentesco.SelectedIndex = ddlParentesco.Items.IndexOf(
-                                ddlParentesco.Items.FindByText(dt.Rows[0]["Parentesco"].ToString()));
-                        }
-
-                        txbResponsable.Text = dt.Rows[0]["ResponsableAfiliado"].ToString();
-                        txbTelefonoContacto.Text = dt.Rows[0]["ContactoAfiliado"].ToString();
-                        rblEstado.Items.FindByValue(dt.Rows[0]["EstadoAfiliado"].ToString()).Selected = true;
+                        dt.Dispose();
                     }
                     else
                     {
                         divMensaje1.Visible = true;
                         btnActualizar.Visible = false;
                     }
-
-                    dt.Dispose();
-                }
-                else
-                {
-                    divMensaje1.Visible = true;
-                    btnActualizar.Visible = false;
                 }
             }
+            catch (Exception ex)
+            {
+                string mensaje = "ERROR: " + ex.Message;
+            }
+
         }
 
 
@@ -531,5 +553,12 @@ namespace fpWebApp
 
             return strData;
         }
+
+        protected void btnActualizaryVenderPlan_Click(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32(Session["idAfiliado"].ToString());         
+            Response.Redirect("planesAfiliado.aspx?id=" + id);
+        }
+
     }
 }
