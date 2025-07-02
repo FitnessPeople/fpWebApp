@@ -301,7 +301,7 @@ namespace fpWebApp
             }
             else
             {
-                if (ValidarEstado(txbNombreEstado.Text.ToString()))
+                if (!ValidarEstado(txbNombreEstado.Text.ToString()))
                 {
                    
                     string iconoMin = ddlIconos.SelectedItem.Value;                   
@@ -320,14 +320,14 @@ namespace fpWebApp
                         {
                             string script = @"
                                 Swal.fire({
-                                    title: 'El estado se creó de forma exitosa',
+                                    title: 'El estado CRM se creó de forma exitosa',
                                     text: '" + mensaje.Replace("'", "\\'") + @"',
                                     icon: 'success',
                                     timer: 3000, // 3 segundos
                                     showConfirmButton: false,
                                     timerProgressBar: true
                                 }).then(() => {
-                                    window.location.href = 'nuevocontactocrm';
+                                    window.location.href = 'estadoscrm';
                                 });
                                 ";
 
@@ -336,16 +336,16 @@ namespace fpWebApp
                         else
                         {
                             string script = @"
-                                Swal.fire({
-                                    title: 'Error',
-                                    text: '" + mensaje.Replace("'", "\\'") + @"',
-                                    icon: 'error'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        $('#ModalContacto').modal('show');
-                                    }
-                                });
-                                ";
+                            Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                  window.location.href = 'estadoscrm';
+                                }
+                            });
+                        ";
                             ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
                         }
                     }
@@ -360,7 +360,7 @@ namespace fpWebApp
                     ";
                         ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                     }
-                    Response.Redirect("estadoscrm");
+                   // Response.Redirect("estadoscrm");
                 }
                 else
                 {

@@ -32,6 +32,8 @@
         <!-- Sweet Alert -->
     <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
     <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- FooTable -->
     <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
@@ -52,7 +54,7 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#ciudadessedes");
+            var element1 = document.querySelector("#estadoscrm");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#configuracion");
             element2.classList.remove("collapse");
@@ -69,8 +71,8 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                     <i class="fa fa-city modal-icon" style="color: #1C84C6;"></i>
-                    <h4 class="modal-title">Guía para visualizar ciudades en las que se encuentran sedes</h4>
-                    <small class="font-bold">¡Bienvenido! Te explicamos cómo gestionar las ciudades en las que se encuentran sedes de manera clara y eficiente.</small>
+                    <h4 class="modal-title">Guía para visualizar estados crm</h4>
+                    <small class="font-bold">¡Bienvenido! Te explicamos cómo gestionarlos estados crm de manera clara y eficiente.</small>
                 </div>
                 <div class="modal-body">
                     <p>
@@ -201,7 +203,7 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <a href="ciudadessedes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <a href="estadoscrm" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
                                                         OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />

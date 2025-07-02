@@ -435,70 +435,8 @@
                 },
                 <%=strEventos%>
                 eventClick: function (event, jsEvent, view) {
-                    // ...
-
-                    jQuery('.event-id').html(event.id);
-                    jQuery('.event-title').html('Contacto: ' + event.title);
-
-                    var selectHtml = "<label for='ddlStatusLead'>Estatus Lead</label><select id='ddlStatusLead' class='form-control'>";
-                    estadosLead.forEach(function (estado) {
-                        var selected = (estado.id == event.idEstadoCRM) ? "selected" : "";
-                        selectHtml += "<option value='" + estado.id + "' " + selected + ">" + estado.nombre + "</option>";
-                    });
-                    selectHtml += "</select><br />";
-
-                    var textareaHtml = "<label for='txtContexto'>Contexto de la negociación</label>" +
-                        "<textarea id='txtContexto' class='form-control' rows='3'></textarea><br />";
-
-                    const fechainicial = new Date(event.start);
-                    fechainicial.setHours(fechainicial.getHours() + 5);
-                    const fechafinal = new Date(event.end);
-                    fechafinal.setHours(fechafinal.getHours() + 5);
-
-                    const formatter1 = new Intl.DateTimeFormat('es-CO', { hour: '2-digit', minute: '2-digit' });
-                    const formatterdia = new Intl.DateTimeFormat('es-CO', { day: '2-digit' });
-                    const formattermes = new Intl.DateTimeFormat('es-CO', { month: 'long' });
-
-                    const formatteddiaini = formatterdia.format(fechainicial);
-                    const formattedmesini = formattermes.format(fechainicial)[0].toUpperCase() + formattermes.format(fechainicial).substring(1);
-                    const formattedTime1 = formatter1.format(fechainicial);
-                    const formattedTime2 = formatter1.format(fechafinal);
-
-                    jQuery('.event-id').html(event.id);
-                    jQuery('.event-icon').html("<i class='fa fa-" + event.icon + "'></i>");
-                    jQuery('.event-title').html('Contacto: ' + event.title);
-
-                    // Insertar contenido en #contenedorAdicional
-                    const contenedor = document.getElementById('contenedorAdicional');
-                    if (contenedor) {
-                        contenedor.innerHTML = `
-                        <div class="panel panel-default">
-                            <div class="panel-heading"><strong>Gestión del Contacto</strong></div>
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    ${selectHtml}
-                                </div>
-                                <div class="form-group">
-                                    ${textareaHtml}
-                                </div>
-                                <div class="form-group">
-                                    <label><strong>Historial del contacto</strong></label>
-                                    <div class="well well-sm" style="max-height: 150px; overflow-y: auto;">
-                                        ${event.historialHTML2 || '<em>Sin historial</em>'}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-
-                    }
-
-                    document.getElementById("btnAsignar").style.display = event.btnAsignar;
-
-
-                    //__doPostBack('MostrarDetalleContacto', event.id);
-                    jQuery('#modal-view-event').modal();
-
+                    $('.modal').modal('hide'); // Oculta la modal si está visible
+                    window.location.href = 'crmnuevocontacto.aspx?editid=' + event.id;
                 },
             });
         });

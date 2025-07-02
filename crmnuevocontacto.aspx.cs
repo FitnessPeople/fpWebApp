@@ -98,11 +98,15 @@ namespace fpWebApp
 
 
 
+
                             bool respuesta = false;
                             clasesglobales cg = new clasesglobales();
                             DataTable dt = cg.ConsultarContactosCRMPorId(int.Parse(Request.QueryString["editid"].ToString()), out respuesta);
                             Session["contactoId"] = int.Parse(Request.QueryString["editid"].ToString());
-                           
+                            litHistorialHTML.Text = dt.Rows[0]["HistorialHTML2"].ToString();
+
+
+
                             if (respuesta)
                             {
                                 if (dt.Rows.Count > 0)
@@ -437,8 +441,8 @@ namespace fpWebApp
                         }
                         else
                         {
-                            respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbApellidoContacto.Value.ToString().Trim().ToUpper(),
-                                    txbNombreContacto.Value.ToString().Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), 
+                            respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.ToString().Trim().ToUpper(), 
+                                    txbApellidoContacto.Value.ToString().Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), 
                                     txbCorreoContacto.Value.ToString().Trim().ToLower(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), 
                                     Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(), 
                                     Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "", txaObservaciones.Value.Trim(), 
@@ -451,7 +455,7 @@ namespace fpWebApp
                             {
                                 string script = @"
                                 Swal.fire({
-                                    title: 'El contacto se actualizó de forma exitosa',
+                                    title: 'El contacto CRM se actualizó de forma exitosa',
                                     text: '" + mensaje.Replace("'", "\\'") + @"',
                                     icon: 'success',
                                     timer: 3000, // 3 segundos

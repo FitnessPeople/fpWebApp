@@ -6528,7 +6528,7 @@ namespace fpWebApp
             return mensaje;
         }
 
-        public string ActualizarContactoCRM(int idContactoCMR, string apellidoContacto, string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
+        public string ActualizarContactoCRM(int idContactoCMR, string nombreContacto, string apellidoContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
         int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
         int idUsuario, int idObjetivo, int tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, int idTipoDoc, string DocumentoAfiliado,
         out bool respuesta, out string mensaje)
@@ -7062,7 +7062,7 @@ namespace fpWebApp
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_ESTADOS_CRM_POR_ID", mysqlConexion))
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_ESTADO_CRM_POR_ID", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_id_estado_CRM", idEstadoCRM);

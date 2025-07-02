@@ -77,6 +77,21 @@
         }
     </style>
 
+    <style>
+        #historialHTMLVisual table {
+            max-width: 100%;
+            width: auto;
+            table-layout: auto;
+            word-break: break-word;
+        }
+
+        #historialHTMLVisual td,
+        #historialHTMLVisual th {
+            word-break: break-word;
+            white-space: normal;
+            font-size: 12px;
+        }
+    </style>
 
 
     <%--    formato de moneda--%>
@@ -337,7 +352,7 @@
                                                                 <div class="form-group">
                                                                     <label>Nro. de Documento</label>
                                                                     <asp:TextBox ID="txbDocumento" CssClass="form-control input-sm" runat="server" placeholder="#"></asp:TextBox>
-                                                                    <%--<asp:RequiredFieldValidator ID="rfvNumDoc" runat="server" ErrorMessage="* Campo requerido"
+                                                                    <%--                                                     <asp:RequiredFieldValidator ID="rfvNumDoc" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="txbDocumento" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
                                                                     </asp:RequiredFieldValidator>--%>
@@ -368,22 +383,26 @@
 
                                                         </div>
                                                         <div class="row">
-                                                            <div class="form-group">
-                                                                <div class="col-sm-6">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+
                                                                     <i class="fa-solid fa-phone text-info"></i>
                                                                     <label for="txbTelefonoContacto" class="col-form-label">Teléfono:</label>
                                                                     <input type="text" runat="server" id="txbTelefonoContacto" class="form-control"
                                                                         placeholder="ej: 310 123 4567" spellcheck="false" autocomplete="off"
                                                                         onkeyup="formatearTelefono(this)" maxlength="14" />
+
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group">
-                                                                <div class="col-sm-6">
-                                                                    <span class="glyphicon glyphicon-envelope text-info"></span>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+
+                                                                    <i class="fa-solid fa-envelope text-info"></i>
                                                                     <label for="correoContacto" class="col-form-label">Correo electrónico:</label>
                                                                     <input type="text" runat="server" class="form-control" id="txbCorreoContacto"
                                                                         spellcheck="false" placeholder="ej: cliente@ejemplo.com" autocomplete="off"
                                                                         oninput="validarCorreo(this)" style="text-transform: lowercase;">
+                                                                    <asp:Literal ID="ltError" runat="server" Visible="false"></asp:Literal>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -408,10 +427,11 @@
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <i class="fas fa-flag text-info"></i>
-                                                                    <label for="StatusLead" class="col-form-label">Status Lead:</label>
-                                                                    <asp:DropDownList ID="ddlStatusLead" runat="server" CssClass="select2_demo_1 form-control input-sm" AppendDataBoundItems="true">
-                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                    </asp:DropDownList>
+                                                                    <label for="StatusLead" class="col-form-label">Status Lead:</label></br>
+                                                                <asp:DropDownList ID="ddlStatusLead" runat="server" CssClass="select2_demo_1 form-control input-sm"
+                                                                    AppendDataBoundItems="true">
+                                                                    <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                </asp:DropDownList>
                                                                     <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="ddlStatusLead" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
@@ -573,10 +593,11 @@
                                                         <div class="form-group">
                                                             <a href="crmnuevocontacto" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                             <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
-                                                                CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
-                                                                OnClick="btnAgregar_Click" />                                                           
+                                                                CssClass="btn btn-sm btn-primary pull-right m-t-n-xs m-l-md"
+                                                                OnClick="btnAgregar_Click" />
+                                                            <a href="agendacrm" class="btn btn-sm btn-success pull-right m-t-n-xs m-l-md">Volver a Agenda CRM</a>
                                                         </div>
-                                                         <asp:Literal ID="itBotonConfirmar" runat="server" Visible="false"></asp:Literal>
+                                                        <asp:Literal ID="itBotonConfirmar" runat="server" Visible="false"></asp:Literal>
                                                         <br />
                                                         <br />
                                                         <div class="form-group">
@@ -596,8 +617,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                                    <table id="tablaContactos" class="footable table table-striped list-group-item-text" data-paging-size="10"
                                                         data-filter-min="3" data-filter-placeholder="Buscar"
                                                         data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
                                                         data-paging-limit="10" data-filtering="true"
@@ -611,14 +631,14 @@
                                                                 <th data-breakpoints="xs">Correo</th>
                                                                 <th data-breakpoints="xs">Lead</th>
                                                                 <th data-breakpoints="all" data-title="Info"></th>
-                                                                <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
+                                                                <th data-sortable="false" data-filterable="false" class="text-left" style="width: 120px;">Acciones</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <asp:Repeater ID="rpContactosCRM" runat="server" OnItemDataBound="rpContactosCRM_ItemDataBound">
                                                                 <ItemTemplate>
                                                                     <tr class="feed-element">
-                                                                        <td><%# Eval("NombreContacto") %></td>
+                                                                        <td><%# Eval("NombreContacto") %> <%# Eval("ApellidoContacto") %></td>
                                                                         <td><%# Eval("TelefonoContacto") %></td>
                                                                         <td><%# Eval("EmailContacto") %></td>
                                                                         <td>
@@ -641,26 +661,40 @@
                                                                             </table>
                                                                         </td>
                                                                         <td style="display: flex; flex-wrap: nowrap;">
-                                                                            <a runat="server" id="btnNuevoAfiliado" href="#" class="btn btn-outline btn-success pull-right m-r-xs" target="_blank"
+
+                                                                            <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-left m-r-xs"
+                                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" onclientclick="ocultarContador(); return true;">
+                                                                                <i class="fa fa-edit"></i></a>
+                                                                            <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-left m-r-xs"
+                                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                                            <a runat="server" id="btnNuevoAfiliado" href="#" class="btn btn-outline btn-success pull-left" target="_blank"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" data-idcrm='<%# Eval("idContacto") %>'
                                                                                 data-documento='<%# Eval("DocumentoAfiliado") %>' onclick="redirigirNuevoAfiliado(this, event)">
                                                                                 <i class="fa fa-id-card"></i></a>
                                                                             <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
                                                                             <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
-                                                                                
+                                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" OnClientClick="ocultarContador(); return true;" >
+                                                                                <i class="fa fa-edit"></i></a>
                                                                         </td>
                                                                     </tr>
                                                                 </ItemTemplate>
                                                             </asp:Repeater>
                                                         </tbody>
                                                     </table>
-                                                    <%-- </div>--%>
-                                                    <%--  </div>--%>
                                                 </div>
-                                                <%--                                                    </ContentTemplate>
-                                                </asp:UpdatePanel>--%>
+
+                                                <!-- Zona lateral izquierda para mostrar historial -->
+                                                <!-- Contenedor para mostrar historial -->
+                                                <div id="contenedorHistorial" style="border: 1px solid #ccc; padding: 10px; max-height: 400px; overflow-y: auto; overflow-x: hidden;">
+                                                    <h5>Historial del contacto</h5>
+                                                    <div id="historialHTMLVisual" style="font-size: 12px; word-wrap: break-word;"></div>
+                                                </div>
+
+                                                <div style="overflow-x: auto;">
+                                                    <asp:Literal ID="litHistorialHTML" runat="server" />
+                                                </div>
+
                                             </div>
                                         </div>
                                         <div id="tab-2" class="tab-pane">
@@ -818,7 +852,7 @@
 
 
                                                                                     <%--                                                                                    <asp:Button ID="btnEditarEmp" runat="server" Text="E" CssClass="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                                        Style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" CausesValidation="false" OnClick="btnEditarEmp_Click" CommandArgument='<%# Eval("idEmpresaCRM") %>' />--%>
+                                                                                        Style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" CausesValidation="false" OnClick="btnEditarEmp_Click" CommandArgument='<%# Eval("idEmpresaCRM") %>' />
                                                                                 </td>
                                                                             </tr>
                                                                         </ItemTemplate>
@@ -934,28 +968,34 @@
 
     <script>
         let segundos = 0;
+        let contadorIniciado = false; // <--- control para evitar doble setInterval
+
         function iniciarContador() {
+            if (contadorIniciado) return; // ya se inició
+            contadorIniciado = true;
+
             setInterval(() => {
                 segundos++;
+
                 const min = Math.floor(segundos / 60).toString().padStart(2, '0');
                 const sec = (segundos % 60).toString().padStart(2, '0');
 
                 const reloj = document.getElementById("reloj");
-                reloj.textContent = `${min}:${sec}`;
+                if (reloj) reloj.textContent = `${min}:${sec}`;
 
-                // ✅ Estas dos líneas actualizan el HiddenField CADA segundo
                 const hiddenField = document.getElementById("<%= hfContador.ClientID %>");
-                hiddenField.value = segundos;
+                if (hiddenField) hiddenField.value = segundos;
 
-                // Cambiar color según tiempo transcurrido
                 if (segundos >= 300) reloj.style.color = '#1AB394';
                 if (segundos >= 600) reloj.style.color = '#ED5565';
 
-            }, 1000); // Ejecuta cada segundo
+            }, 1000); // cada segundo
         }
 
         window.addEventListener("load", iniciarContador);
     </script>
+
+
 
 
 
@@ -972,8 +1012,6 @@
         setTimeout(mueveReloj, 1000);
     }
     </script>--%>
-
-
 
 
 
@@ -1075,7 +1113,35 @@
     </script>
 
 
+    <script>
+        $(document).ready(function () {
+            // Escuchar clic en botones con historial
+            $(document).on("click", ".btnVerHistorial", function () {
+                var historial = $(this).data("historial");
 
+                // Mostrar el historial en la zona izquierda
+                $("#historialHTMLVisual").html(historial);
+            });
+        });
+    </script>
+
+<script>
+    $(document).ready(function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const editId = urlParams.get("editid");
+
+        if (editId) {
+            // Oculta la tabla de contactos
+            $("#tablaContactos").hide();
+
+            // Si quieres también ocultar botones, usa:
+            $("#divBotonesLista").hide();
+
+            // Muestra el historial si aún no es visible
+            $("#contenedorHistorial").show();
+        }
+    });
+</script>
 
 
 
