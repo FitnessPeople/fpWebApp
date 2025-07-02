@@ -384,7 +384,6 @@
                                                                     <input type="text" runat="server" class="form-control" id="txbCorreoContacto"
                                                                         spellcheck="false" placeholder="ej: cliente@ejemplo.com" autocomplete="off"
                                                                         oninput="validarCorreo(this)" style="text-transform: lowercase;">
-                                                                    <asp:Literal ID="ltError" runat="server" Visible="false"></asp:Literal>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -649,8 +648,8 @@
                                                                             <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
                                                                             <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" OnClientClick="ocultarContador(); return true;" >
-                                                                                <i class="fa fa-edit"></i></a>
+                                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
+                                                                                
                                                                         </td>
                                                                     </tr>
                                                                 </ItemTemplate>
