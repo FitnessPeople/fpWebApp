@@ -71,7 +71,7 @@ namespace fpWebApp
 
                     ListaEmpresasCRM();
                     ListaEstadosCRM();
-                    ListaContactos();
+                    ListaContactosPorUsuario();
                     ListaTiposAfiliadosCRM();
                     CargarPlanes();
                     ListaCanalesMarketingCRM();
@@ -103,7 +103,7 @@ namespace fpWebApp
                             clasesglobales cg = new clasesglobales();
                             DataTable dt = cg.ConsultarContactosCRMPorId(int.Parse(Request.QueryString["editid"].ToString()), out respuesta);
                             Session["contactoId"] = int.Parse(Request.QueryString["editid"].ToString());
-                            litHistorialHTML.Text = dt.Rows[0]["HistorialHTML2"].ToString();
+                            //litHistorialHTML.Text = dt.Rows[0]["HistorialHTML2"].ToString();
 
 
 
@@ -283,11 +283,12 @@ namespace fpWebApp
         }
 
         #region Métodos cargue de datos
-        private void ListaContactos()
+        private void ListaContactosPorUsuario()
         {
+            int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
             decimal valorTotal = 0;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarContactosCRM(out valorTotal);
+            DataTable dt = cg.ConsultarContactosCRMPorUsuario( idUsuario ,out valorTotal);
 
             rpContactosCRM.DataSource = dt;
             rpContactosCRM.DataBind();
