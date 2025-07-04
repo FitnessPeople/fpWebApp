@@ -193,6 +193,8 @@
                     <form runat="server" id="form">
 
                         <asp:HiddenField ID="hdnIdContacto" runat="server" />
+                        <input type="hidden" id="hdnDocumentoAfiliado" value="" />
+
 
                         <asp:ScriptManager ID="sm1" runat="server"></asp:ScriptManager>
                         <asp:UpdatePanel ID="upAsesorCRM" runat="server" UpdateMode="Conditional">
@@ -360,6 +362,8 @@
                     if (ui.item) {
                         console.log(ui.item.value);
                         document.getElementById("txbAfiliado").value = ui.item.value;
+                        let documento = ui.item.id; 
+                        $("#hdnDocumentoAfiliado").val(documento);
                         var btn = document.getElementById("btnAfiliado");
                         btn.click();
                     }
@@ -435,8 +439,9 @@
                 },
                 <%=strEventos%>
                 eventClick: function (event, jsEvent, view) {
-                    $('.modal').modal('hide'); // Oculta la modal si está visible
-                    window.location.href = 'crmnuevocontacto.aspx?editid=' + event.id;
+                    $('.modal').modal('hide');                  
+                    var documento = $('#hdnDocumentoAfiliado').val() || '';                   
+                    window.location.href = 'crmnuevocontacto.aspx?editid=' + encodeURIComponent(event.id) + '&evento=1' + '&documento=' + encodeURIComponent(documento);
                 },
             });
         });

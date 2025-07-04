@@ -50,7 +50,7 @@
     <link href="css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet" />
     <link href="css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
 
-        <!-- FooTable -->
+    <!-- FooTable -->
     <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
@@ -158,7 +158,7 @@
     <!-- Select2 -->
     <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
 
-<%--    <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />--%>
+    <%--    <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />--%>
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -295,6 +295,9 @@
                                     </ul>
                                     <div class="tab-content">
                                         <div id="tab-1" class="tab-pane active">
+                                            <div class="form-group">
+                                                <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                            </div>
                                             <%--Inicia contenido formulario Nuevo contacto--%>
                                             <div class="panel-body">
                                                 <%--Zona lateral izquierda sup --%>
@@ -427,11 +430,11 @@
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <i class="fas fa-flag text-info"></i>
-                                                                    <label for="StatusLead" class="col-form-label">Status Lead:</label></br>
-                                                                <asp:DropDownList ID="ddlStatusLead" runat="server" CssClass="select2_demo_1 form-control input-sm"
-                                                                    AppendDataBoundItems="true">
-                                                                    <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                </asp:DropDownList>
+                                                                    <label for="StatusLead" class="col-form-label">Status Lead:</label>
+                                                                    <asp:DropDownList ID="ddlStatusLead" runat="server" CssClass="select2_demo_1 form-control input-sm"
+                                                                        AppendDataBoundItems="true">
+                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                    </asp:DropDownList>
                                                                     <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="ddlStatusLead" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
@@ -440,7 +443,20 @@
                                                             </div>
                                                         </div>
                                                         <div class="row">
-
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <i class="fa-brands fa-square-facebook text-info"></i>
+                                                                    <label for="Canales" class="col-form-label">Canal de marketing:</label>
+                                                                    <asp:DropDownList ID="ddlCanalesMarketing" DataTextField="NombreCanalMarketing" DataValueField="idCanalMarketing"
+                                                                        runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
+                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvCanalesMarketing" runat="server" ErrorMessage="* Campo requerido"
+                                                                                ControlToValidate="ddlCanalesMarketing" ValidationGroup="agregar"
+                                                                                CssClass="font-bold text-danger" InitialValue="">
+                                                                            </asp:RequiredFieldValidator>--%>
+                                                                </div>
+                                                            </div>
 
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
@@ -458,14 +474,14 @@
                                                             </div>
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-sm-6">
+                                                            <div class="col-sm-4">
                                                                 <div class="form-group">
                                                                     <i class="fa-solid fa-hand-point-up text-info"></i>
-                                                                    <label for="txbFechaPrim" class="col-form-label">Primer contacto:</label>
+                                                                    <label for="txbFechaPrim" class="col-form-label">1er contacto:</label>
                                                                     <input type="text" runat="server" id="txbFechaPrim" class="form-control input-sm datepicker" />
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-3">
+                                                            <div class="col-sm-4">
                                                                 <div class="form-group">
                                                                     <i class="fas fa-angle-right"></i>
                                                                     <label for="txbFechaProx" class="col-form-label">Llamada</label>
@@ -473,7 +489,7 @@
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-sm-3">
+                                                            <div class="col-sm-4">
                                                                 <div class="form-group">
                                                                     <label for="txbHoraIni" class="col-form-label">Hora:</label>
                                                                     <div class="input-group clockpicker" data-autoclose="true">
@@ -522,20 +538,6 @@
                                                                 <div class="row">
                                                                     <div class="col-sm-6">
                                                                         <div class="form-group">
-                                                                            <i class="fa-brands fa-square-facebook text-info"></i>
-                                                                            <label for="Canales" class="col-form-label">Canal de marketing:</label>
-                                                                            <asp:DropDownList ID="ddlCanalesMarketing" DataTextField="NombreCanalMarketing" DataValueField="idCanalMarketing"
-                                                                                runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
-                                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                            </asp:DropDownList>
-                                                                            <%--<asp:RequiredFieldValidator ID="rfvCanalesMarketing" runat="server" ErrorMessage="* Campo requerido"
-                                                                                ControlToValidate="ddlCanalesMarketing" ValidationGroup="agregar"
-                                                                                CssClass="font-bold text-danger" InitialValue="">
-                                                                            </asp:RequiredFieldValidator>--%>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-sm-6">
-                                                                        <div class="form-group">
                                                                             <i class="fa fa-ticket text-info"></i>
                                                                             <label for="Planes" class="col-form-label">Planes:</label>
                                                                             <asp:DropDownList ID="ddlPlanes" DataTextField="NombrePlan" DataValueField="idPlan"
@@ -545,10 +547,17 @@
 
                                                                         </div>
                                                                     </div>
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <i class="fa fa-dollar text-info"></i>
+                                                                            <label for="ValorMes" class="col-form-label">Valor mes:</label>
+                                                                            <asp:TextBox ID="txbValorMes" CssClass="form-control input-sm" runat="server" placeholder="$0"
+                                                                                onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off" Style="background-color: #e3ff00;"></asp:TextBox>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                                <div style="height: 30px;"></div>
                                                                 <div class="row">
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-6">
                                                                         <div class="form-group">
                                                                             <i class="fa fa-dollar text-info"></i>
                                                                             <label for="ValorPropuesta" class="col-form-label">Valor Propuesta:</label>
@@ -560,15 +569,8 @@
                                                                             </asp:RequiredFieldValidator>--%>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-sm-4">
-                                                                        <div class="form-group">
-                                                                            <i class="fa fa-dollar text-info"></i>
-                                                                            <label for="ValorMes" class="col-form-label">Valor mes:</label>
-                                                                            <asp:TextBox ID="txbValorMes" CssClass="form-control input-sm" runat="server" placeholder="$0"
-                                                                                onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off" Style="background-color: #e3ff00;"></asp:TextBox>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-sm-4">
+
+                                                                    <div class="col-sm-6">
                                                                         <div class="form-group">
                                                                             <i class="fas fa-paperclip text-info"></i>
                                                                             <label for="ArchivoPropuesta" class="col-form-label">Archivo Propuesta:</label>
@@ -595,21 +597,18 @@
                                                             <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
                                                                 CssClass="btn btn-sm btn-primary pull-right m-t-n-xs m-l-md"
                                                                 OnClick="btnAgregar_Click" />
-                                                            <a href="agendacrm" class="btn btn-sm btn-success pull-right m-t-n-xs m-l-md">Volver a Agenda CRM</a>
+                                                            <a href="agendacrm" class="btn btn-sm btn-success pull-right m-t-n-xs m-l-md" id="btnVolverAgenda" style="display: none;">Volver a Agenda CRM</a>
                                                         </div>
                                                         <asp:Literal ID="itBotonConfirmar" runat="server" Visible="false"></asp:Literal>
                                                         <br />
                                                         <br />
-                                                        <div class="form-group">
-                                                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                                                        </div>
+
                                                         <%--     </div>--%>
                                                         <%-- </div>--%>
                                                     </div>
                                                 </div>
-
                                                 <%--Zona lateral derecha sup --%>
-                                                <div class="col-lg-7">
+                                                <div class="col-lg-7" id="divTabla">
                                                     <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
                                                         <div class="col-lg-6 form-horizontal">
                                                             <div class="form-group">
@@ -667,7 +666,7 @@
                                                                                 <i class="fa fa-edit"></i></a>
                                                                             <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-left m-r-xs"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
-                                                                            <a runat="server" id="btnNuevoAfiliado" href="#" class="btn btn-outline btn-success pull-left" target="_blank"
+                                                                            <a runat="server" id="btnNuevoAfiliado" href="#" class="btn btn-outline btn-success pull-left"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" data-idcrm='<%# Eval("idContacto") %>'
                                                                                 data-documento='<%# Eval("DocumentoAfiliado") %>' onclick="redirigirNuevoAfiliado(this, event)">
                                                                                 <i class="fa fa-id-card"></i></a>
@@ -679,136 +678,144 @@
                                                     </table>
                                                 </div>
 
-                                                 <div class="col-lg-7">
-                                                <div id="contact-1" class="tab-pane active">
-                                    <div class="row m-b-lg">
-                                        <div class="col-lg-4 text-center">
-                                            <h2>Nicki Smith</h2>
+                                                <div class="col-lg-7" id="divDatos" style="display: none;">
+                                                    <div id="contact-1" class="tab-pane active">
+                                                        <div class="row m-b-lg">
+                                                            <div class="col-lg-4 text-center">
+                                                                <h2>
+                                                                    <asp:Literal ID="ltNombreContacto" runat="server"></asp:Literal></h2>
 
-                                            <div class="m-b-sm">
-                                                <img alt="image" class="img-circle" src="img/a2.jpg"
-                                                     style="width: 62px">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-8">
-                                            <strong>
-                                                About me
-                                            </strong>
+                                                                <div class="m-b-sm">
+                                                                    <img alt="image" class="img-circle" src="img/a4.jpg"
+                                                                        style="width: 62px">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                <strong>Acerca del afiliado
+                                                                </strong>                                                               
+                                                                <br>
+                                                                
+                                                                    Tipo de cliente: <asp:Literal ID="ltTipoAfiliado" runat="server"></asp:Literal></br>
+                                                                    Objetivo del afiliado: <asp:Literal ID="ltObjetivo" runat="server"></asp:Literal>                                                                   
+                                                                </p>
+                                                                <asp:Literal ID="ltDocumento" runat="server"></asp:Literal>
+                                                                <button type="button"
+                                                                    class="btn btn-success btn-sm btn-block" id="btnNuevoAfiliado" data-idcrm="" data-documento="" onclick="redirigirNuevoAfiliado(this, event)">
+                                                                    <i class="fa fa-id-card"></i>Ir a afiliaciones
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="client-detail">
+                                                            <div class="full-height-scroll">
 
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                tempor incididunt ut labore et dolore magna aliqua.
-                                            </p>
-                                            <button type="button" class="btn btn-primary btn-sm btn-block"><i
-                                                    class="fa fa-envelope"></i> Send Message
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="client-detail">
-                                    <div class="full-height-scroll">
+                                                                <strong>Last activity</strong>
 
-                                        <strong>Last activity</strong>
-
-                                        <ul class="list-group clear-list">
-                                            <li class="list-group-item fist-item">
-                                                <span class="pull-right"> 09:00 pm </span>
-                                                Please contact me
-                                            </li>
-                                            <li class="list-group-item">
-                                                <span class="pull-right"> 10:16 am </span>
-                                                Sign a contract
-                                            </li>
-                                            <li class="list-group-item">
-                                                <span class="pull-right"> 08:22 pm </span>
-                                                Open new shop
-                                            </li>
-                                            <li class="list-group-item">
-                                                <span class="pull-right"> 11:06 pm </span>
-                                                Call back to Sylvia
-                                            </li>
-                                            <li class="list-group-item">
-                                                <span class="pull-right"> 12:00 am </span>
-                                                Write a letter to Sandra
-                                            </li>
-                                        </ul>
-                                        <strong>Notes</strong>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                                                <ul class="list-group clear-list">
+                                                                    <li class="list-group-item fist-item">
+                                                                        <span class="pull-right">09:00 pm </span>
+                                                                        Please contact me
+                                                                    </li>
+                                                                    <li class="list-group-item">
+                                                                        <span class="pull-right">10:16 am </span>
+                                                                        Sign a contract
+                                                                    </li>
+                                                                    <li class="list-group-item">
+                                                                        <span class="pull-right">08:22 pm </span>
+                                                                        Open new shop
+                                                                    </li>
+                                                                    <li class="list-group-item">
+                                                                        <span class="pull-right">11:06 pm </span>
+                                                                        Call back to Sylvia
+                                                                    </li>
+                                                                    <li class="list-group-item">
+                                                                        <span class="pull-right">12:00 am </span>
+                                                                        Write a letter to Sandra
+                                                                    </li>
+                                                                </ul>
+                                                                <strong>Notes</strong>
+                                                                <p>
+                                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                                             tempor incididunt ut labore et dolore magna aliqua.
-                                        </p>
-                                        <hr/>
-                                        <strong>Timeline activity</strong>
-                                        <div id="vertical-timeline" class="vertical-container dark-timeline">
-                                            <div class="vertical-timeline-block">
-                                                <div class="vertical-timeline-icon gray-bg">
-                                                    <i class="fa fa-coffee"></i>
+                                                                </p>
+                                                                <hr />
+                                                                <strong>Timeline activity</strong>
+                                                                <div id="vertical-timeline" class="vertical-container dark-timeline">
+                                                                    <div class="vertical-timeline-block">
+                                                                        <div class="vertical-timeline-icon gray-bg">
+                                                                            <i class="fa fa-coffee"></i>
+                                                                        </div>
+                                                                        <div class="vertical-timeline-content">
+                                                                            <p>
+                                                                                Conference on the sales results for the previous year.
+                                                                            </p>
+                                                                            <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="vertical-timeline-block">
+                                                                        <div class="vertical-timeline-icon gray-bg">
+                                                                            <i class="fa fa-briefcase"></i>
+                                                                        </div>
+                                                                        <div class="vertical-timeline-content">
+                                                                            <p>
+                                                                                Many desktop publishing packages and web page editors now use Lorem.
+                                                                            </p>
+                                                                            <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="vertical-timeline-block">
+                                                                        <div class="vertical-timeline-icon gray-bg">
+                                                                            <i class="fa fa-bolt"></i>
+                                                                        </div>
+                                                                        <div class="vertical-timeline-content">
+                                                                            <p>
+                                                                                There are many variations of passages of Lorem Ipsum available.
+                                                                            </p>
+                                                                            <span class="vertical-date small text-muted">06:10 pm - 11.03.2014 </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="vertical-timeline-block">
+                                                                        <div class="vertical-timeline-icon navy-bg">
+                                                                            <i class="fa fa-warning"></i>
+                                                                        </div>
+                                                                        <div class="vertical-timeline-content">
+                                                                            <p>
+                                                                                The generated Lorem Ipsum is therefore.
+                                                                            </p>
+                                                                            <span class="vertical-date small text-muted">02:50 pm - 03.10.2014 </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="vertical-timeline-block">
+                                                                        <div class="vertical-timeline-icon gray-bg">
+                                                                            <i class="fa fa-coffee"></i>
+                                                                        </div>
+                                                                        <div class="vertical-timeline-content">
+                                                                            <p>
+                                                                                Conference on the sales results for the previous year.
+                                                                            </p>
+                                                                            <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="vertical-timeline-block">
+                                                                        <div class="vertical-timeline-icon gray-bg">
+                                                                            <i class="fa fa-briefcase"></i>
+                                                                        </div>
+                                                                        <div class="vertical-timeline-content">
+                                                                            <p>
+                                                                                Many desktop publishing packages and web page editors now use Lorem.
+                                                                            </p>
+                                                                            <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="vertical-timeline-content">
-                                                    <p>Conference on the sales results for the previous year.
-                                                    </p>
-                                                    <span class="vertical-date small text-muted"> 2:10 pm - 12.06.2014 </span>
-                                                </div>
-                                            </div>
-                                            <div class="vertical-timeline-block">
-                                                <div class="vertical-timeline-icon gray-bg">
-                                                    <i class="fa fa-briefcase"></i>
-                                                </div>
-                                                <div class="vertical-timeline-content">
-                                                    <p>Many desktop publishing packages and web page editors now use Lorem.
-                                                    </p>
-                                                    <span class="vertical-date small text-muted"> 4:20 pm - 10.05.2014 </span>
-                                                </div>
-                                            </div>
-                                            <div class="vertical-timeline-block">
-                                                <div class="vertical-timeline-icon gray-bg">
-                                                    <i class="fa fa-bolt"></i>
-                                                </div>
-                                                <div class="vertical-timeline-content">
-                                                    <p>There are many variations of passages of Lorem Ipsum available.
-                                                    </p>
-                                                    <span class="vertical-date small text-muted"> 06:10 pm - 11.03.2014 </span>
-                                                </div>
-                                            </div>
-                                            <div class="vertical-timeline-block">
-                                                <div class="vertical-timeline-icon navy-bg">
-                                                    <i class="fa fa-warning"></i>
-                                                </div>
-                                                <div class="vertical-timeline-content">
-                                                    <p>The generated Lorem Ipsum is therefore.
-                                                    </p>
-                                                    <span class="vertical-date small text-muted"> 02:50 pm - 03.10.2014 </span>
-                                                </div>
-                                            </div>
-                                            <div class="vertical-timeline-block">
-                                                <div class="vertical-timeline-icon gray-bg">
-                                                    <i class="fa fa-coffee"></i>
-                                                </div>
-                                                <div class="vertical-timeline-content">
-                                                    <p>Conference on the sales results for the previous year.
-                                                    </p>
-                                                    <span class="vertical-date small text-muted"> 2:10 pm - 12.06.2014 </span>
-                                                </div>
-                                            </div>
-                                            <div class="vertical-timeline-block">
-                                                <div class="vertical-timeline-icon gray-bg">
-                                                    <i class="fa fa-briefcase"></i>
-                                                </div>
-                                                <div class="vertical-timeline-content">
-                                                    <p>Many desktop publishing packages and web page editors now use Lorem.
-                                                    </p>
-                                                    <span class="vertical-date small text-muted"> 4:20 pm - 10.05.2014 </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                                                     </div>
 
 
                                                 <!-- Zona lateral izquierda para mostrar historial -->
                                                 <!-- Contenedor para mostrar historial -->
-<%--                                                <div id="contenedorHistorial" style="border: 1px solid #ccc; padding: 10px; max-height: 400px; overflow-y: auto; overflow-x: hidden;">
+                                                <%--                                                <div id="contenedorHistorial" style="border: 1px solid #ccc; padding: 10px; max-height: 400px; overflow-y: auto; overflow-x: hidden;">
                                                     <h5>Historial del contacto</h5>
                                                     <div id="historialHTMLVisual" style="font-size: 12px; word-wrap: break-word;"></div>
                                                 </div>
@@ -818,7 +825,6 @@
                                                 <div style="overflow-x: auto;">
                                                     <asp:Literal ID="litHistorialHTML" runat="server" />
                                                 </div>--%>
-
                                             </div>
                                         </div>
                                         <div id="tab-2" class="tab-pane">
@@ -1013,7 +1019,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
-     <!-- FooTable -->
+    <!-- FooTable -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
 
@@ -1230,7 +1236,7 @@
 
                 const destino = existe ? "editarafiliado.aspx" : "nuevoafiliado.aspx";
                 const url = `${destino}?idcrm=${encodeURIComponent(idcrm)}`;
-                window.open(url, '_blank');
+                window.location.href = url;
             }).fail(function () {
                 alert("Error al consultar los afiliados.");
             });
@@ -1250,23 +1256,68 @@
         });
     </script>
 
-<script>
-    $(document).ready(function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        const editId = urlParams.get("editid");
+    <script>
+        $(document).ready(function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const editId = urlParams.get("editid");
 
-        if (editId) {
-            // Oculta la tabla de contactos
-            $("#tablaContactos").hide();
+            if (editId) {
+                // Oculta la tabla de contactos
+                $("#tablaContactos").hide();
 
-            // Si quieres también ocultar botones, usa:
-            $("#divBotonesLista").hide();
+                // Si quieres también ocultar botones, usa:
+                $("#divBotonesLista").hide();
 
-            // Muestra el historial si aún no es visible
-            $("#contenedorHistorial").show();
-        }
-    });
-</script>
+                // Muestra el historial si aún no es visible
+                $("#contenedorHistorial").show();
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            const params = new URLSearchParams(window.location.search);
+            const evento = params.get("evento");
+
+            if (evento === "1") {
+                $("#divTabla").hide();
+                $("#divDatos").show();
+                $("#btnVolverAgenda").show(); // Muestra el botón solo si viene del evento
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            const params = new URLSearchParams(window.location.search);
+            const idcrm = params.get("editid");
+            const documento = params.get("documento");
+
+            if (idcrm) {
+                $("#btnNuevoAfiliado").attr("data-idcrm", idcrm);
+            }
+            if (documento) {
+                $("#btnNuevoAfiliado").attr("data-documento", documento);
+            }
+
+            // Mostrar el botón solo si llegó desde evento
+            if (params.get("evento") === "1") {
+                $("#btnNuevoAfiliado").show();
+            } else {
+                $("#btnNuevoAfiliado").hide();
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Obtener el valor del literal (HTML plano insertado)
+            var documento = $("#ltDocumento").text().trim();
+
+            // Asignarlo al botón
+            $("#btnNuevoAfiliado").attr("data-documento", documento);
+        });
+    </script>
 
 
 

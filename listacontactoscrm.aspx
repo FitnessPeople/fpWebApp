@@ -290,7 +290,7 @@
 
                         <%-- Modal--%>
                         <asp:UpdatePanel ID="upModal" runat="server" UpdateMode="Conditional">
-                            <ContentTemplate>
+                            <ContentTemplate> 
                                 <div class="modal fade" id="ModalContacto" tabindex="-1" role="dialog" aria-labelledby="ModalContactoLabel" aria-hidden="false">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">

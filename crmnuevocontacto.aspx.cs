@@ -114,9 +114,10 @@ namespace fpWebApp
                                     DataRow row = dt.Rows[0];
                                     ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDoc"].ToString())));
                                     txbDocumento.Text = row["DocumentoAfiliado"].ToString();
-
+                                    ltDocumento.Text = row["DocumentoAfiliado"].ToString();
                                     txbNombreContacto.Value = row["NombreContacto"].ToString();
                                     txbApellidoContacto.Value = row["ApellidoContacto"].ToString();
+                                    ltNombreContacto.Text =  row["NombreContacto"].ToString() + " " +row["ApellidoContacto"].ToString();
                                     string telefono = Convert.ToString(row["TelefonoContacto"]);
                                     if (!string.IsNullOrEmpty(telefono) && telefono.Length == 10)
                                     {
@@ -141,8 +142,21 @@ namespace fpWebApp
                                     //txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
                                     //txaObservaciones.Value = row["observaciones"].ToString();
                                     ddlObjetivos.SelectedIndex = Convert.ToInt32(ddlObjetivos.Items.IndexOf(ddlObjetivos.Items.FindByValue(dt.Rows[0]["idObjetivo"].ToString())));
+                                    ListItem item = ddlObjetivos.Items.FindByValue(dt.Rows[0]["idObjetivo"].ToString());
+                                    if (item != null) ltObjetivo.Text = item.Text;                                    
+                                    else                                     
+                                        ltObjetivo.Text = "sin objetivo asignado";                                     
+
                                     ddlTipoPago.SelectedIndex = ddlTipoPago.Items.IndexOf(ddlTipoPago.Items.FindByValue(dt.Rows[0]["idMedioPago"].ToString()));
                                     ddlTiposAfiliado.SelectedIndex = Convert.ToInt32(ddlTiposAfiliado.Items.IndexOf(ddlTiposAfiliado.Items.FindByValue(dt.Rows[0]["idTipoAfiliado"].ToString())));
+                                    
+                                    ListItem itemTipAfil = ddlTiposAfiliado.Items.FindByValue(dt.Rows[0]["idTipoAfiliado"].ToString());
+                                    if (itemTipAfil != null) ltTipoAfiliado.Text = itemTipAfil.Text;
+                                    else
+                                        ltTipoAfiliado.Text = "sin Tipo afiliado asignado";
+
+
+
                                     ddlCanalesMarketing.SelectedIndex = Convert.ToInt32(ddlCanalesMarketing.Items.IndexOf(ddlCanalesMarketing.Items.FindByValue(dt.Rows[0]["idCanalMarketing"].ToString())));
                                     ddlPlanes.SelectedIndex = Convert.ToInt32(ddlPlanes.Items.IndexOf(ddlPlanes.Items.FindByValue(dt.Rows[0]["idPlan"].ToString())));
                                     //rblMesesPlan.SelectedIndex = Convert.ToInt32(rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(dt.Rows[0]["MesesPlan"].ToString())));
@@ -403,6 +417,7 @@ namespace fpWebApp
                     {
                         // Obtener y limpiar valores
                         string nombre = txbNombreContacto.Value?.ToString().Trim();
+                        string apellido = txbApellidoContacto.Value?.ToString().Trim();
                         string telefono = Regex.Replace(txbTelefonoContacto.Value?.ToString().Trim(), @"\D", "");
                         string correo = txbCorreoContacto.Value?.ToString().Trim();
                         string fechaPrim = txbFechaPrim?.Value?.ToString().Trim();
@@ -415,10 +430,12 @@ namespace fpWebApp
                         string tipoAfiliado = ddlTiposAfiliado.SelectedItem?.Value;
                         string canalMarketing = ddlCanalesMarketing.SelectedItem?.Value;
                         string plan = ddlPlanes.SelectedItem?.Value;
+                        string observaciones = txaObservaciones.Value.ToString().Trim(); 
 
 
                         // Validar campos requeridos
                         if (string.IsNullOrWhiteSpace(nombre) ||
+                            string.IsNullOrWhiteSpace(apellido) ||
                             string.IsNullOrWhiteSpace(telefono) ||
                             string.IsNullOrWhiteSpace(correo) ||
                             string.IsNullOrWhiteSpace(empresa) ||
@@ -431,15 +448,19 @@ namespace fpWebApp
                             string.IsNullOrWhiteSpace(tipoPago) ||
                             string.IsNullOrWhiteSpace(tipoAfiliado) ||
                             string.IsNullOrWhiteSpace(canalMarketing) ||
+                            string.IsNullOrWhiteSpace(observaciones) ||
                             string.IsNullOrWhiteSpace(plan)
                             )
-                        {
-                            mensajeValidacion = "Todos los campos son obligatorios.";
+                            {
+                                mensajeValidacion = "Todos los campos son obligatorios.";
 
-                            //ltMensajeVal.Text = "<div class='alert alert-danger'>Todos los campos son obligatorios.</div>";
-                            //MostrarModalEditar(Convert.ToInt32(Session["contactoId"]));
+                            ltMensaje.Text = "<div class=\"ibox-content\">" +
+                             "<div class=\"alert alert-danger alert-dismissable\">" +
+                             "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                             "Todos los campos son obligatorios." +
+                             "</div></div>";
                             return;
-                        }
+                            }
                         else
                         {
                             respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.ToString().Trim().ToUpper(), 
