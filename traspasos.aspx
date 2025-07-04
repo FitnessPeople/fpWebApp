@@ -26,9 +26,6 @@
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
     <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet">
 
-    <!-- FooTable -->
-    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
-
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
@@ -156,7 +153,7 @@
 
                             <div class="row">
                                 <form id="form" enctype="multipart/form-data" runat="server">
-                                    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+                                    <asp:ScriptManager ID="sm1" runat="server"></asp:ScriptManager>
                                     <asp:UpdatePanel ID="upBusqueda" runat="server" UpdateMode="Always" ChildrenAsTriggers="true">
                                         <ContentTemplate>
                                     <div class="col-sm-5 b-r">

@@ -17,13 +17,14 @@
     <title>Fitness People | Cortesías</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
-    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/smoothness/jquery-ui.css">
 
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
     <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
+    <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+    <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet">
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -31,6 +32,12 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         function changeClass() {
@@ -151,10 +158,17 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Afiliado</label>
-                                                    <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server" 
+                                                    <%--<asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server" 
                                                         placeholder="Nombre / Cédula / Email / Celular"></asp:TextBox>
                                                      <asp:Button ID="btnAfiliado" runat="server" Text="" 
-                                                        style="display:none;" OnClick="btnAfiliado_Click" />
+                                                        style="display:none;" OnClick="btnAfiliado_Click" />--%>
+                                                    <asp:DropDownList ID="ddlAfiliado" name="ddlAfiliado" runat="server" 
+                                                        DataTextField="DocNombreAfiliado" AppendDataBoundItems="true" 
+                                                        DataValueField="idAfiliado" CssClass="chosen-select form-control input-sm"  
+                                                        OnSelectedIndexChanged="ddlAfiliado_SelectedIndexChanged" 
+                                                        AutoPostBack="true" >
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                    </asp:DropDownList>
                                                 </div>
                                             </div>
                                         </div>
