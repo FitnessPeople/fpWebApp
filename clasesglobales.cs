@@ -6536,10 +6536,10 @@ namespace fpWebApp
             return dt;
         }
 
-        public string InsertarContactoCRM(string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
-            int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
-            int idUsuario, int idObjetivo, int tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, int idTipoDoc,
-            string DocumentoAfiliado, string tiempoAtencion, out bool respuesta, out string mensaje)
+        public string InsertarContactoCRM(string nombreContacto, string apellidoContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
+        int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
+        int idUsuario, int idObjetivo, int tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, int idTipoDoc,
+        string DocumentoAfiliado, string tiempoAtencion, out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -6553,6 +6553,7 @@ namespace fpWebApp
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_nombre_contacto", nombreContacto);
+                        cmd.Parameters.AddWithValue("@p_apellido_contacto", apellidoContacto);
                         cmd.Parameters.AddWithValue("@p_telefono_contacto", telefonoContacto);
                         cmd.Parameters.AddWithValue("@p_email_contacto", emailContacto);
                         cmd.Parameters.AddWithValue("@p_id_empresa", idEmpresaCMR);
@@ -6596,7 +6597,7 @@ namespace fpWebApp
             return mensaje;
         }
 
-        public string ActualizarContactoCRM(int idContactoCMR, string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
+        public string ActualizarContactoCRM(int idContactoCMR, string nombreContacto, string apellidoContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
         int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
         int idUsuario, int idObjetivo, int tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, int idTipoDoc, string DocumentoAfiliado,
         out bool respuesta, out string mensaje)
@@ -6614,6 +6615,7 @@ namespace fpWebApp
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_id_contacto_cmr", idContactoCMR);
                         cmd.Parameters.AddWithValue("@p_nombre_contacto", nombreContacto);
+                        cmd.Parameters.AddWithValue("@p_apellido_contacto", apellidoContacto);
                         cmd.Parameters.AddWithValue("@p_telefono_contacto", telefonoContacto);
                         cmd.Parameters.AddWithValue("@p_email_contacto", emailContacto);
                         cmd.Parameters.AddWithValue("@p_id_empresa", idEmpresaCMR);
@@ -6647,6 +6649,7 @@ namespace fpWebApp
 
             return mensaje;
         }
+
 
         public string EliminarContactoCRM(int idContactoCMR, int idUsuario, string Usuario, out bool respuesta, out string mensaje)
         {
@@ -7184,6 +7187,49 @@ namespace fpWebApp
 
             return dt;
         }
+
+        public DataTable ConsultarContactosCRMPorUsuario(int idUsuario, out decimal valorTotal)
+        {
+            DataTable dt = new DataTable();
+            valorTotal = 0;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CONTACTOS_CRM_POR_USUARIO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+                        // Parámetro de salida
+                        MySqlParameter ValorTotal = new MySqlParameter("@Total_Valor_Propuesta", MySqlDbType.Decimal);
+                        ValorTotal.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(ValorTotal);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+
+                            if (ValorTotal.Value != DBNull.Value)
+                            {
+                                valorTotal = Convert.ToDecimal(ValorTotal.Value);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
 
         #endregion
 

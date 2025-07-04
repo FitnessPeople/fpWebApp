@@ -87,6 +87,15 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContenido;
 
         /// <summary>
+        /// Control ltMensaje.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltMensaje;
+
+        /// <summary>
         /// Control txbAfiliado.
         /// </summary>
         /// <remarks>
@@ -141,6 +150,15 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlInputText txbNombreContacto;
 
         /// <summary>
+        /// Control txbApellidoContacto.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbApellidoContacto;
+
+        /// <summary>
         /// Control txbTelefonoContacto.
         /// </summary>
         /// <remarks>
@@ -184,6 +202,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlStatusLead;
+
+        /// <summary>
+        /// Control ddlCanalesMarketing.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlCanalesMarketing;
 
         /// <summary>
         /// Control ddlTiposAfiliado.
@@ -249,15 +276,6 @@ namespace fpWebApp
         protected global::System.Web.UI.UpdatePanel UpdatePanel1;
 
         /// <summary>
-        /// Control ddlCanalesMarketing.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCanalesMarketing;
-
-        /// <summary>
         /// Control ddlPlanes.
         /// </summary>
         /// <remarks>
@@ -267,15 +285,6 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlPlanes;
 
         /// <summary>
-        /// Control txbValorPropuesta.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbValorPropuesta;
-
-        /// <summary>
         /// Control txbValorMes.
         /// </summary>
         /// <remarks>
@@ -283,6 +292,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbValorMes;
+
+        /// <summary>
+        /// Control txbValorPropuesta.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbValorPropuesta;
 
         /// <summary>
         /// Control ArchivoPropuesta.
@@ -312,13 +330,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Button btnAgregar;
 
         /// <summary>
-        /// Control ltMensaje.
+        /// Control itBotonConfirmar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltMensaje;
+        protected global::System.Web.UI.WebControls.Literal itBotonConfirmar;
 
         /// <summary>
         /// Control divBotonesLista.
@@ -337,6 +355,42 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpContactosCRM;
+
+        /// <summary>
+        /// Control ltNombreContacto.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltNombreContacto;
+
+        /// <summary>
+        /// Control ltTipoAfiliado.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltTipoAfiliado;
+
+        /// <summary>
+        /// Control ltObjetivo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltObjetivo;
+
+        /// <summary>
+        /// Control ltDocumento.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltDocumento;
 
         /// <summary>
         /// Control UpdatePanel2.

@@ -1,7 +1,6 @@
-﻿using DocumentFormat.OpenXml.Math;
-using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Configuration;
 using System.Data;
 using System.IO;
@@ -9,6 +8,7 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using MySql.Data.MySqlClient;
 
 namespace fpWebApp
 {
@@ -20,6 +20,9 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
+
+
+
                     ValidarPermisos("Afiliados");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
@@ -27,6 +30,7 @@ namespace fpWebApp
                         paginasperfil.Visible = true;
                         divContenido.Visible = false;
                     }
+
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
                         DateTime dt14 = DateTime.Now.AddYears(-14);
@@ -52,6 +56,26 @@ namespace fpWebApp
                         divMensaje.Visible = true;
                         paginasperfil.Visible = true;
                         divContenido.Visible = false;
+                    }
+                    if (Request.QueryString.Count > 0)
+                    {
+                        bool respuesta = false;
+                        int idCRM = Convert.ToInt32(Request.QueryString["idcrm"].ToString());
+                        clasesglobales cg = new clasesglobales();
+                        DataTable dt = cg.ConsultarContactosCRMPorId(idCRM, out respuesta);
+                        if (dt.Rows.Count > 0)
+                        {
+                            txbNombre.Text = dt.Rows[0]["NombreContacto"].ToString();
+                            txbApellido.Text = dt.Rows[0]["ApellidoContacto"].ToString();
+                            txbDocumento.Text = dt.Rows[0]["DocumentoAfiliado"].ToString();
+                            ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDoc"].ToString())));
+                            txbTelefono.Text = dt.Rows[0]["TelefonoContacto"].ToString();
+                            txbEmail.Text = dt.Rows[0]["EmailContacto"].ToString();
+                            ddlEmpresaConvenio.SelectedValue = dt.Rows[0]["idEmpresaCRM"].ToString();
+                        }
+
+
+                        // txbNombre.Text = Request.QueryString["idcrm"].ToString();   
                     }
                 }
                 else
@@ -226,14 +250,6 @@ namespace fpWebApp
             return rta;
         }
 
-        /// <summary>
-        /// Maneja el evento de clic del botón "Agregar" para registrar un nuevo afiliado.
-        /// Realiza validaciones para evitar duplicados por número de documento, correo electrónico o número de teléfono.
-        /// Si las validaciones son exitosas, guarda la foto, genera una clave aleatoria, inserta el registro en la base de datos,
-        /// envía un correo de bienvenida y redirige a la página de afiliados.
-        /// </summary>
-        /// <param name="sender">El origen del evento (generalmente el botón).</param>
-        /// <param name="e">Argumentos del evento asociados al clic.</param>
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             // Validar si existe por Cedula, Email y/o Telefono
@@ -241,7 +257,7 @@ namespace fpWebApp
             {
                 ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    "¡Error! ¡Un afiliado con este número de documento ya existe!" +
+                    "Un afiliado con este documento ya existe!" +
                     "</div>";
             }
             else
@@ -250,7 +266,7 @@ namespace fpWebApp
                 {
                     ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
                         "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "¡Error! ¡Un afiliado con este correo electrónico ya existe!" +
+                        "Un afiliado con este correo electronico ya existe!" +
                         "</div>";
                 }
                 else
@@ -259,7 +275,7 @@ namespace fpWebApp
                     {
                         ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
                         "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "¡Error! ¡Un afiliado con este número de teléfono ya existe!" +
+                        "Un afiliado con este teléfono ya existe!" +
                         "</div>";
                     }
                     else
@@ -278,7 +294,7 @@ namespace fpWebApp
 
                         clasesglobales cg = new clasesglobales();
                         string strClave = cg.CreatePassword(8);
-                        
+
                         string strQuery = "INSERT INTO afiliados " +
                         "(DocumentoAfiliado, idTipoDocumento, NombreAfiliado, ApellidoAfiliado, CelularAfiliado, EmailAfiliado, ClaveAfiliado, " +
                         "DireccionAfiliado, idCiudadAfiliado, FechaNacAfiliado, FotoAfiliado, idGenero, idEstadoCivilAfiliado, idEmpresaAfil, idProfesion, " +
@@ -293,7 +309,7 @@ namespace fpWebApp
                         "" + ddlProfesiones.SelectedItem.Value.ToString() + ", " + ddlEps.SelectedItem.Value.ToString() + ", " +
                         "" + ddlSedes.SelectedItem.Value.ToString() + ", '" + txbResponsable.Text.ToString() + "', " +
                         "'" + ddlParentesco.SelectedItem.Value.ToString() + "', '" + txbTelefonoContacto.Text.ToString() + "', " +
-                        "'Pendiente', CURDATE(), "  + Session["idusuario"].ToString() + ") ";
+                        "'Pendiente', CURDATE(), " + Session["idusuario"].ToString() + ") ";
 
                         try
                         {
@@ -315,7 +331,7 @@ namespace fpWebApp
                             string respuesta = "ERROR: " + ex.Message;
                         }
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Nuevo", "Se creó un nuevo afiliado con documento: " + txbDocumento.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Nuevo", "El usuario creó un nuevo afiliado con documento: " + txbDocumento.Text.ToString() + ".", "", "");
 
                         DataTable dt = cg.TraerDatos("SELECT idAfiliado FROM Afiliados WHERE DocumentoAfiliado = '" + txbDocumento.Text.ToString() + "' ");
 
@@ -329,34 +345,6 @@ namespace fpWebApp
                     }
                 }
             }
-        }
-
-        protected void txbDocumento_TextChanged(object sender, EventArgs e)
-        {
-            //Consultar Documento en la base de Datos
-            string strQuery = @"SELECT DocumentoAfiliado, NombreAfiliado FROM afiliados WHERE DocumentoAfiliado = '" + txbDocumento.Text.ToString() + @"'";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
-            if (dt.Rows.Count > 0)
-            {
-                string script = @"
-                    Swal.fire({
-                        title: 'Consulta realizada, encontré un documento.',
-                        text: '',
-                        icon: 'success',
-                        timer: 3000, // 3 segundos
-                        showConfirmButton: false,
-                        timerProgressBar: true
-                    }).then(() => {
-                    });
-                    ";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-
-                btnAgregar.Enabled = false;
-            }
-
-            //Consultqar Documento en Adres
         }
     }
 }
