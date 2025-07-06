@@ -305,7 +305,7 @@
                                                     <div class="ibox-content">
 
                                                         <div class="crm-align-row">
-                                                            <!-- Campo de texto -->
+                                                            <!-- Consultar Afiliado -->
                                                             <div class="crm-align-cell" style="width: 80%;">
                                                                 <div class="form-group">
                                                                     <label>Consultar:</label>
@@ -655,7 +655,7 @@
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td><%# Eval("ArchivoPropuesta") %></td>
-                                                                                    <td><%# Eval("historialHTML") %></td>
+                                                                                    <td><%# Eval("HistorialHTML2") %></td>
                                                                                 </tr>
                                                                             </table>
                                                                         </td>
@@ -692,13 +692,13 @@
                                                             </div>
                                                             <div class="col-lg-8">
                                                                 <strong>Acerca del afiliado
-                                                                </strong>                                                               
-                                                                <br>
-                                                                
-                                                                    Tipo de cliente: <asp:Literal ID="ltTipoAfiliado" runat="server"></asp:Literal></br>
-                                                                    Objetivo del afiliado: <asp:Literal ID="ltObjetivo" runat="server"></asp:Literal>                                                                   
+                                                                </strong>
+                                                                <br>Tipo de cliente:
+                                                                    <asp:Literal ID="ltTipoAfiliado" runat="server"></asp:Literal></br>
+                                                                Objetivo del afiliado:
+                                                                <asp:Literal ID="ltObjetivo" runat="server"></asp:Literal>
                                                                 </p>
-                                                                <asp:Literal ID="ltDocumento" runat="server"></asp:Literal>
+                                                                
                                                                 <button type="button"
                                                                     class="btn btn-success btn-sm btn-block" id="btnNuevoAfiliado" data-idcrm="" data-documento="" onclick="redirigirNuevoAfiliado(this, event)">
                                                                     <i class="fa fa-id-card"></i>Ir a afiliaciones
@@ -708,104 +708,38 @@
                                                         <div class="client-detail">
                                                             <div class="full-height-scroll">
 
-                                                                <strong>Last activity</strong>
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <strong>Actividad</strong>
+                                                                    </div>
+                                                                </div>
 
-                                                                <ul class="list-group clear-list">
+                                                                Primer registro:
+                                                                <asp:Literal ID="ltPrimerContacto" runat="server"></asp:Literal>
+                                                                <ul class="list-group clear-list" runat="server">
                                                                     <li class="list-group-item fist-item">
-                                                                        <span class="pull-right">09:00 pm </span>
-                                                                        Please contact me
-                                                                    </li>
-                                                                    <li class="list-group-item">
-                                                                        <span class="pull-right">10:16 am </span>
-                                                                        Sign a contract
-                                                                    </li>
-                                                                    <li class="list-group-item">
-                                                                        <span class="pull-right">08:22 pm </span>
-                                                                        Open new shop
-                                                                    </li>
-                                                                    <li class="list-group-item">
-                                                                        <span class="pull-right">11:06 pm </span>
-                                                                        Call back to Sylvia
-                                                                    </li>
-                                                                    <li class="list-group-item">
-                                                                        <span class="pull-right">12:00 am </span>
-                                                                        Write a letter to Sandra
+                                                                        <div style="display: flex; flex-direction: column; gap: 5px;">
+                                                                            <div style="display: flex; align-items: center; flex-wrap: wrap;">
+                                                                                <i class="fa fa-phone" style="margin-right: 5px; color: green;"></i>
+                                                                                <strong>Por favor, contáctame al:</strong>
+                                                                                <span style="margin-left: 5px;">
+                                                                                    <asp:Literal ID="ltTelefono" runat="server"></asp:Literal></span>
+                                                                            </div>
+                                                                            <div style="margin-left: 20px;">
+                                                                                <asp:Literal ID="ltProximoContacto" runat="server"></asp:Literal>
+                                                                            </div>
+                                                                        </div>
                                                                     </li>
                                                                 </ul>
-                                                                <strong>Notes</strong>
+
+                                                                <strong>Plan Sugerido</strong>
                                                                 <p>
-                                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                            tempor incididunt ut labore et dolore magna aliqua.
+                                                                    <asp:Literal ID="ltPlan" runat="server"></asp:Literal>
                                                                 </p>
                                                                 <hr />
-                                                                <strong>Timeline activity</strong>
-                                                                <div id="vertical-timeline" class="vertical-container dark-timeline">
-                                                                    <div class="vertical-timeline-block">
-                                                                        <div class="vertical-timeline-icon gray-bg">
-                                                                            <i class="fa fa-coffee"></i>
-                                                                        </div>
-                                                                        <div class="vertical-timeline-content">
-                                                                            <p>
-                                                                                Conference on the sales results for the previous year.
-                                                                            </p>
-                                                                            <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="vertical-timeline-block">
-                                                                        <div class="vertical-timeline-icon gray-bg">
-                                                                            <i class="fa fa-briefcase"></i>
-                                                                        </div>
-                                                                        <div class="vertical-timeline-content">
-                                                                            <p>
-                                                                                Many desktop publishing packages and web page editors now use Lorem.
-                                                                            </p>
-                                                                            <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="vertical-timeline-block">
-                                                                        <div class="vertical-timeline-icon gray-bg">
-                                                                            <i class="fa fa-bolt"></i>
-                                                                        </div>
-                                                                        <div class="vertical-timeline-content">
-                                                                            <p>
-                                                                                There are many variations of passages of Lorem Ipsum available.
-                                                                            </p>
-                                                                            <span class="vertical-date small text-muted">06:10 pm - 11.03.2014 </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="vertical-timeline-block">
-                                                                        <div class="vertical-timeline-icon navy-bg">
-                                                                            <i class="fa fa-warning"></i>
-                                                                        </div>
-                                                                        <div class="vertical-timeline-content">
-                                                                            <p>
-                                                                                The generated Lorem Ipsum is therefore.
-                                                                            </p>
-                                                                            <span class="vertical-date small text-muted">02:50 pm - 03.10.2014 </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="vertical-timeline-block">
-                                                                        <div class="vertical-timeline-icon gray-bg">
-                                                                            <i class="fa fa-coffee"></i>
-                                                                        </div>
-                                                                        <div class="vertical-timeline-content">
-                                                                            <p>
-                                                                                Conference on the sales results for the previous year.
-                                                                            </p>
-                                                                            <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="vertical-timeline-block">
-                                                                        <div class="vertical-timeline-icon gray-bg">
-                                                                            <i class="fa fa-briefcase"></i>
-                                                                        </div>
-                                                                        <div class="vertical-timeline-content">
-                                                                            <p>
-                                                                                Many desktop publishing packages and web page editors now use Lorem.
-                                                                            </p>
-                                                                            <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                                        </div>
-                                                                    </div>
+                                                                <strong>Historial de actividades</strong>
+                                                                <div style="overflow-x: auto;">
+                                                                    <asp:Literal ID="litHistorialHTML" runat="server" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1224,12 +1158,14 @@
 
             const idcrm = anchor.getAttribute("data-idcrm");
             const documento = anchor.getAttribute("data-documento");
-
+            console.log("IDCRM:", idcrm, "DOCUMENTO:", documento);
             if (!documento) {
                 const url = `nuevoafiliado.aspx?idcrm=${encodeURIComponent(idcrm)}`;
+                window.location.href = url; // <-- Redirige de inmediato
+                return; // <-- Detiene el resto
             }
 
-            // Consultar si existe ese documento en el sistema
+            // Si hay documento, consulta si existe en el sistema
             $.getJSON("/obtenerafiliados?search=" + encodeURIComponent(documento), function (data) {
                 // Verificar si el documento está en la lista
                 const existe = data.some(item => String(item.id) === String(documento));
@@ -1242,6 +1178,7 @@
             });
         }
     </script>
+
 
 
     <script>

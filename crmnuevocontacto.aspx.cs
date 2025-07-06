@@ -103,9 +103,7 @@ namespace fpWebApp
                             clasesglobales cg = new clasesglobales();
                             DataTable dt = cg.ConsultarContactosCRMPorId(int.Parse(Request.QueryString["editid"].ToString()), out respuesta);
                             Session["contactoId"] = int.Parse(Request.QueryString["editid"].ToString());
-                            //litHistorialHTML.Text = dt.Rows[0]["HistorialHTML2"].ToString();
-
-
+                            litHistorialHTML.Text = dt.Rows[0]["HistorialHTML2"].ToString();
 
                             if (respuesta)
                             {
@@ -114,7 +112,6 @@ namespace fpWebApp
                                     DataRow row = dt.Rows[0];
                                     ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDoc"].ToString())));
                                     txbDocumento.Text = row["DocumentoAfiliado"].ToString();
-                                    ltDocumento.Text = row["DocumentoAfiliado"].ToString();
                                     txbNombreContacto.Value = row["NombreContacto"].ToString();
                                     txbApellidoContacto.Value = row["ApellidoContacto"].ToString();
                                     ltNombreContacto.Text =  row["NombreContacto"].ToString() + " " +row["ApellidoContacto"].ToString();
@@ -127,6 +124,7 @@ namespace fpWebApp
                                     {
                                         txbTelefonoContacto.Value = row["TelefonoContacto"].ToString();
                                     }
+                                    ltTelefono.Text = txbTelefonoContacto.Value.ToString();
                                     txbCorreoContacto.Value = row["EmailContacto"].ToString();
                                     if (row["idEmpresaCRM"].ToString() != "")
                                         ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaCRM"].ToString())));
@@ -134,8 +132,30 @@ namespace fpWebApp
                                         ddlEmpresa.SelectedItem.Value = "0";
 
                                     ddlStatusLead.SelectedIndex = Convert.ToInt32(ddlStatusLead.Items.IndexOf(ddlStatusLead.Items.FindByValue(dt.Rows[0]["idEstadoCRM"].ToString())));
+                                    CultureInfo cultura = new CultureInfo("es-ES");
                                     txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
+                                    DateTime fechaPC = Convert.ToDateTime(row["FechaPrimerCon"]);
+                                    ltPrimerContacto.Text = fechaPC.ToString("dddd dd MMM yyyy hh:mm tt", cultura);
                                     txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
+                                    DateTime fecha = Convert.ToDateTime(row["FechaProximoCon"]);
+                                    
+                                    if (fecha.Date == DateTime.Today)
+                                    {
+                                        ltProximoContacto.Text = "Hoy a las " + fecha.ToString("hh:mm tt", cultura);
+                                    }
+                                    else if (fecha.Date == DateTime.Today.AddDays(1))
+                                    {
+                                        string hora = fecha.ToString("hh:mm", cultura);
+                                        string ampm = fecha.ToString("tt", CultureInfo.InvariantCulture).ToLower();
+
+                                        ltProximoContacto.Text = "Mañana " + fecha.ToString("d 'de' MMMM", cultura)
+                                            + " a las " + hora + " " + ampm;
+                                    }
+                                    else
+                                    {
+                                        ltProximoContacto.Text = "El próximo " + fecha.ToString("dddd dd MMM yyyy hh:mm tt", cultura);
+                                    }
+
                                     int ValorPropuesta = Convert.ToInt32(dt.Rows[0]["ValorPropuesta"]);
                                     //int ValorMes = Convert.ToInt32(dt.Rows[0]["ValorBase"]);
                                     txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
@@ -159,6 +179,7 @@ namespace fpWebApp
 
                                     ddlCanalesMarketing.SelectedIndex = Convert.ToInt32(ddlCanalesMarketing.Items.IndexOf(ddlCanalesMarketing.Items.FindByValue(dt.Rows[0]["idCanalMarketing"].ToString())));
                                     ddlPlanes.SelectedIndex = Convert.ToInt32(ddlPlanes.Items.IndexOf(ddlPlanes.Items.FindByValue(dt.Rows[0]["idPlan"].ToString())));
+                                    ltPlan.Text = row["NombrePlan"].ToString();
                                     //rblMesesPlan.SelectedIndex = Convert.ToInt32(rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(dt.Rows[0]["MesesPlan"].ToString())));
                                 }
                             }
@@ -848,6 +869,31 @@ namespace fpWebApp
             }
 
             public bool IsReusable => false;
+        }
+
+        public string GetTelefonoHTML(object telefonoObj)
+        {
+            if (telefonoObj == null) return "";
+
+            // 1. Limpiar el número (quitar espacios, guiones, paréntesis, etc.)
+            string telefonoLimpio = Regex.Replace(telefonoObj.ToString(), @"\D", "");
+
+            // 2. Validar longitud y aplicar formato visual
+            string telefonoFormateado = telefonoLimpio;
+            if (telefonoLimpio.Length == 10)
+            {
+                telefonoFormateado = $"{telefonoLimpio.Substring(0, 3)} {telefonoLimpio.Substring(3, 3)} {telefonoLimpio.Substring(6, 4)}";
+            }
+
+            bool esCelular = telefonoLimpio.StartsWith("3");
+            bool esFijo = telefonoLimpio.StartsWith("60");
+            string icono = esCelular ? "fab fa-whatsapp" : "fas fa-phone";
+            string color = esCelular ? "forestgreen" : "#007bff";
+            string enlace = esCelular ? $"https://wa.me/57{telefonoLimpio}" : $"tel:{telefonoLimpio}";
+
+            // 4. Devolver HTML
+            return $"<a href='{enlace}' target='_blank'>" +
+                   $"<i class='{icono} m-r-xs font-bold' style='color:{color};'></i> {telefonoFormateado}</a>";
         }
 
     }

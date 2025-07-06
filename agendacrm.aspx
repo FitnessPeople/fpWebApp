@@ -441,7 +441,7 @@
                 eventClick: function (event, jsEvent, view) {
                     $('.modal').modal('hide');                  
                     var documento = $('#hdnDocumentoAfiliado').val() || '';                   
-                    window.location.href = 'crmnuevocontacto.aspx?editid=' + encodeURIComponent(event.id) + '&evento=1' + '&documento=' + encodeURIComponent(documento);
+                    window.location.href = 'crmnuevocontacto.aspx?editid=' + encodeURIComponent(event.id) + '&evento=1' + '&documento=' + encodeURIComponent(event.doc);
                 },
             });
         });

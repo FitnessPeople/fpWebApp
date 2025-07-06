@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using Newtonsoft.Json;  
 
 namespace fpWebApp
 {
@@ -12,39 +9,37 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string strQuery = "SELECT * " +
-                "FROM Afiliados " +
-                "WHERE NombreAfiliado LIKE '%" + Request.QueryString["search"].ToString() + "%' " +
-                "OR ApellidoAfiliado LIKE '%" + Request.QueryString["search"].ToString() + "%' " +
-                "OR DocumentoAfiliado like '%" + Request.QueryString["search"].ToString() + "%' " +
-                "OR EmailAfiliado like '%" + Request.QueryString["search"].ToString() + "%' " +
-                "OR CelularAfiliado like '%" + Request.QueryString["search"].ToString() + "%' " +
+            string strQuery = "SELECT * FROM Afiliados " +
+                "WHERE NombreAfiliado LIKE '%" + Request.QueryString["search"] + "%' " +
+                "OR ApellidoAfiliado LIKE '%" + Request.QueryString["search"] + "%' " +
+                "OR DocumentoAfiliado LIKE '%" + Request.QueryString["search"] + "%' " +
+                "OR EmailAfiliado LIKE '%" + Request.QueryString["search"] + "%' " +
+                "OR CelularAfiliado LIKE '%" + Request.QueryString["search"] + "%' " +
                 "LIMIT 20";
+
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
-            string strJson = "[\r\n";
-            int intCuantasFilas = dt.Rows.Count;
 
-            if (intCuantasFilas > 0)
+            var lista = new List<object>();
+            foreach (DataRow row in dt.Rows)
             {
-                for (int i = 0; i < intCuantasFilas; i++)
+                lista.Add(new
                 {
-                    strJson += "{\r\n";
-
-                    strJson += "\"id\":\"" + dt.Rows[i]["DocumentoAfiliado"] + "\",\r\n";
-                    strJson += "\"nombre\":\"" + dt.Rows[i]["NombreAfiliado"] + "\",\r\n";
-                    strJson += "\"apellido\":\"" + dt.Rows[i]["ApellidoAfiliado"] + "\",\r\n";
-                    strJson += "\"celular\":\"" + dt.Rows[i]["CelularAfiliado"] + "\",\r\n";
-                    strJson += "\"correo\":\"" + dt.Rows[i]["EmailAfiliado"] + "\",\r\n";
-                    strJson += "\"direccion\":\"" + dt.Rows[i]["DireccionAfiliado"] + "\"\r\n";
-
-                    strJson += "},\r\n";
-                }
+                    id = row["DocumentoAfiliado"],
+                    nombre = row["NombreAfiliado"],
+                    apellido = row["ApellidoAfiliado"],
+                    celular = row["CelularAfiliado"],
+                    correo = row["EmailAfiliado"],
+                    direccion = row["DireccionAfiliado"]
+                });
             }
-            strJson = strJson.Remove(strJson.Length - 3);
-            strJson += "]\r\n";
-            Response.Write(strJson);
-            dt.Dispose();
+
+            string json = JsonConvert.SerializeObject(lista);
+
+            Response.Clear();
+            Response.ContentType = "application/json";
+            Response.Write(json);
+            Response.End();
         }
     }
 }
