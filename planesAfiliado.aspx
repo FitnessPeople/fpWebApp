@@ -529,8 +529,8 @@
                                                                     </div>
                                                                     <hr />
                                                                     <div class="form-group" style="margin-bottom: 5px;">
-                                                                        <label class="col-lg-7 control-label">TOTAL
-                                                                            <asp:Literal ID="ltValorTotal" runat="server"></asp:Literal>:</label>
+                                                                        <h1><label class="col-lg-7 control-label">TOTAL
+                                                                            <asp:Literal ID="ltValorTotal" runat="server"></asp:Literal>:</label></h1>
                                                                         <div class="col-lg-5">
                                                                             <asp:TextBox ID="txbTotal" CssClass="form-control input-sm"
                                                                                 runat="server" ReadOnly Style="text-align: right;"></asp:TextBox>

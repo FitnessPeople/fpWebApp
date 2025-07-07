@@ -252,6 +252,7 @@
   <ItemGroup>
     <Content Include="404.html" />
     <Content Include="500.html" />
+    <Content Include="accesoafiliado.aspx" />
     <Content Include="afiliados.aspx" />
     <Content Include="agenda.aspx" />
     <Content Include="agendacrm.aspx" />
@@ -997,6 +998,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="accesoafiliado.aspx.cs">
+      <DependentUpon>accesoafiliado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="accesoafiliado.aspx.designer.cs">
+      <DependentUpon>accesoafiliado.aspx</DependentUpon>
+    </Compile>
     <Compile Include="afiliados.aspx.cs">
       <DependentUpon>afiliados.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

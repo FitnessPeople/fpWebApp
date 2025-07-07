@@ -860,7 +860,7 @@ namespace fpWebApp
                                                 showConfirmButton: false,
                                                 timerProgressBar: true
                                             }).then(() => {
-                                                window.location.href = 'afiliados';
+                                                window.location.href = 'detalleafiliado?search=" + dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString() + @"';
                                             });
                                             ";
                                     ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);

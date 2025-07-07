@@ -20,9 +20,6 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-
-
-
                     ValidarPermisos("Afiliados");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
