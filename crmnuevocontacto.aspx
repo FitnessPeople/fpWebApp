@@ -306,7 +306,7 @@
 
                                                         <div class="crm-align-row">
                                                             <!-- Consultar Afiliado -->
-                                                            <div class="crm-align-cell" style="width: 80%;">
+                                                            <div class="crm-align-cell" style="width: 80%;" id="btnAfiliadoBus">
                                                                 <div class="form-group">
                                                                     <label>Consultar:</label>
                                                                     <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server"
@@ -340,7 +340,7 @@
                                                         </div>
 
 
-                                                        <div class="row">
+                                                        <div class="row" id="tipoDocYDoc">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <i class="fa fa-id-card text-info"></i>
@@ -362,7 +362,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="row">
+                                                        <div class="row" id="nombres">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <i class="fa fa-user-tie text-info"></i>
@@ -385,7 +385,7 @@
                                                             </div>
 
                                                         </div>
-                                                        <div class="row">
+                                                        <div class="row" id="telefonoYCorreo">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
 
@@ -411,7 +411,7 @@
                                                         </div>
                                                         <div class="row">
 
-                                                            <div class="col-sm-6">
+                                                            <div class="col-sm-6" id="empresa">
                                                                 <div class="form-group">
                                                                     <i class="fas fa-industry text-info"></i>
                                                                     <label for="Empresa" class="col-form-label">Empresa / Persona:</label>
@@ -442,7 +442,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="row">
+                                                        <div class="row" id="canalMarkYTipoCli">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <i class="fa-brands fa-square-facebook text-info"></i>
@@ -474,7 +474,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-sm-4">
+                                                            <div class="col-sm-4" id="primerContacto">
                                                                 <div class="form-group">
                                                                     <i class="fa-solid fa-hand-point-up text-info"></i>
                                                                     <label for="txbFechaPrim" class="col-form-label">1er contacto:</label>
@@ -502,7 +502,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="row">
+                                                        <div class="row" id="metodosPagoYObjetivos">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <i class="fa-solid fa-coins text-info"></i>
@@ -535,7 +535,7 @@
 
                                                         <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                                                             <ContentTemplate>
-                                                                <div class="row">
+                                                                <div class="row" id="planesYValorMes">
                                                                     <div class="col-sm-6">
                                                                         <div class="form-group">
                                                                             <i class="fa fa-ticket text-info"></i>
@@ -556,7 +556,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="row">
+                                                                <div class="row" id="valorPropuestaYArchivo">
                                                                     <div class="col-sm-6">
                                                                         <div class="form-group">
                                                                             <i class="fa fa-dollar text-info"></i>
@@ -593,11 +593,11 @@
                                                         </asp:UpdatePanel>
 
                                                         <div class="form-group">
-                                                            <a href="crmnuevocontacto" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                            <a href="crmnuevocontacto" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md" id="btnCancelar_">Cancelar</a>
                                                             <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
                                                                 CssClass="btn btn-sm btn-primary pull-right m-t-n-xs m-l-md"
                                                                 OnClick="btnAgregar_Click" />
-                                                            <a href="agendacrm" class="btn btn-sm btn-success pull-right m-t-n-xs m-l-md" id="btnVolverAgenda" style="display: none;">Volver a Agenda CRM</a>
+                                                            <a href="agendacrm" class="btn btn-sm btn-info pull-right m-t-n-xs m-l-md" id="btnVolverAgenda" style="display: none;">Volver a Agenda CRM</a>
                                                         </div>
                                                         <asp:Literal ID="itBotonConfirmar" runat="server" Visible="false"></asp:Literal>
                                                         <br />
@@ -627,7 +627,7 @@
                                                             <tr>
                                                                 <th data-sortable="false" data-breakpoints="xs" style="width: 300px;">Nombre</th>
                                                                 <th data-breakpoints="xs">Teléfono</th>
-                                                                <th data-breakpoints="xs">Correo</th>
+                                                                <th data-breakpoints="xs">HaceCuanto</th>
                                                                 <th data-breakpoints="xs">Lead</th>
                                                                 <th data-breakpoints="all" data-title="Info"></th>
                                                                 <th data-sortable="false" data-filterable="false" class="text-left" style="width: 120px;">Acciones</th>
@@ -639,7 +639,8 @@
                                                                     <tr class="feed-element">
                                                                         <td><%# Eval("NombreContacto") %> <%# Eval("ApellidoContacto") %></td>
                                                                         <td><%# Eval("TelefonoContacto") %></td>
-                                                                        <td><%# Eval("EmailContacto") %></td>
+                                                                        <td>
+                                                                            <asp:Literal ID="ltTiempoTranscurrido" runat="server"></asp:Literal></td>
                                                                         <td>
                                                                             <span title='<%# Eval("NombreEstadoCRM") %>' style='color: <%# Eval("ColorHexaCRM") %>'>
                                                                                 <%# Eval("IconoMinEstadoCRM") %>
@@ -701,8 +702,10 @@
                                                                 
                                                                 <button type="button"
                                                                     class="btn btn-success btn-sm btn-block" id="btnNuevoAfiliado" data-idcrm="" data-documento="" onclick="redirigirNuevoAfiliado(this, event)">
-                                                                    <i class="fa fa-id-card"></i>Ir a afiliaciones
+                                                                    <i class="fa fa-id-card"></i>Actualizar e ir a afiliaciones
                                                                 </button>
+                                                                <asp:Button ID="btnActualizarYRedirigir" runat="server" Text="Actualizar y Redirigir"
+                                                                    OnClick="btnActualizarYRedirigir_Click" class="btn btn-primary btn-sm btn-block"/>
                                                             </div>
                                                         </div>
                                                         <div class="client-detail">
@@ -1193,23 +1196,7 @@
         });
     </script>
 
-    <script>
-        $(document).ready(function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const editId = urlParams.get("editid");
 
-            if (editId) {
-                // Oculta la tabla de contactos
-                $("#tablaContactos").hide();
-
-                // Si quieres también ocultar botones, usa:
-                $("#divBotonesLista").hide();
-
-                // Muestra el historial si aún no es visible
-                $("#contenedorHistorial").show();
-            }
-        });
-    </script>
 
     <script>
         $(document).ready(function () {
@@ -1219,7 +1206,19 @@
             if (evento === "1") {
                 $("#divTabla").hide();
                 $("#divDatos").show();
+                $("#tipoDocYDoc").hide();
+                $("#btnAfiliadoBus").hide();
+                $("#nombres").hide();
+                $("#telefonoYCorreo").hide();
+                $("#empresa").hide();
+                $("#primerContacto").hide();
+                $("#canalMarkYTipoCli").hide();
+                $("#metodosPagoYObjetivos").hide();
+                $("#planesYValorMes").hide();
+                $("#valorPropuestaYArchivo").hide();
+                $("#btnCancelar_").hide();
                 $("#btnVolverAgenda").show(); // Muestra el botón solo si viene del evento
+
             }
         });
     </script>

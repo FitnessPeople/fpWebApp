@@ -52,6 +52,8 @@ namespace fpWebApp
                         txbCorreoContacto.Disabled = false;
                         txbFechaPrim.Disabled = false;
 
+                       
+
                         divBotonesLista.Visible = false;
                         btnAgregar.Visible = false;
                         if (ViewState["Consulta"].ToString() == "1")
@@ -71,6 +73,7 @@ namespace fpWebApp
 
                     ListaEmpresasCRM();
                     ListaEstadosCRM();
+                    rpContactosCRM.ItemDataBound += rpContactosCRM_ItemDataBound;
                     ListaContactosPorUsuario();
                     ListaTiposAfiliadosCRM();
                     CargarPlanes();
@@ -134,8 +137,10 @@ namespace fpWebApp
                                     ddlStatusLead.SelectedIndex = Convert.ToInt32(ddlStatusLead.Items.IndexOf(ddlStatusLead.Items.FindByValue(dt.Rows[0]["idEstadoCRM"].ToString())));
                                     CultureInfo cultura = new CultureInfo("es-ES");
                                     txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
-                                    DateTime fechaPC = Convert.ToDateTime(row["FechaPrimerCon"]);
+                                    
+                                    DateTime fechaPC = Convert.ToDateTime(row["FechaCreacion"]);
                                     ltPrimerContacto.Text = fechaPC.ToString("dddd dd MMM yyyy hh:mm tt", cultura);
+                                    
                                     txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
                                     DateTime fecha = Convert.ToDateTime(row["FechaProximoCon"]);
                                     
@@ -324,7 +329,7 @@ namespace fpWebApp
             decimal valorTotal = 0;
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarContactosCRMPorUsuario( idUsuario ,out valorTotal);
-
+           
             rpContactosCRM.DataSource = dt;
             rpContactosCRM.DataBind();
 
@@ -700,6 +705,7 @@ namespace fpWebApp
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
+                DataRowView row = (DataRowView)e.Item.DataItem;
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
                     HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
@@ -712,6 +718,41 @@ namespace fpWebApp
                     btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEliminar.Visible = true;
                 }
+
+                //  ltTiempoTranscurrido: Hace X minutos
+                if (row["FechaCreacion"] != DBNull.Value)
+                {
+                    DateTime fechaPrimerContacto = Convert.ToDateTime(row["FechaCreacion"]);
+                    TimeSpan diferencia = DateTime.Now - fechaPrimerContacto;
+
+                    string leyenda = "";
+                    if (diferencia.TotalMinutes < 1)
+                    {
+                        leyenda = "Hace menos de un minuto";
+                    }
+                    else if (diferencia.TotalMinutes < 60)
+                    {
+                        int min = (int)Math.Floor(diferencia.TotalMinutes);
+                        leyenda = $"Hace {min} minuto" + (min == 1 ? "" : "s");
+                    }
+                    else if (diferencia.TotalHours < 24)
+                    {
+                        int hrs = (int)Math.Floor(diferencia.TotalHours);
+                        leyenda = $"Hace {hrs} hora" + (hrs == 1 ? "" : "s");
+                    }
+                    else
+                    {
+                        int dias = (int)Math.Floor(diferencia.TotalDays);
+                        leyenda = $"Hace {dias} día" + (dias == 1 ? "" : "s");
+                    }
+
+                    Literal ltTiempo = (Literal)e.Item.FindControl("ltTiempoTranscurrido");
+                    if (ltTiempo != null)
+                    {
+                        ltTiempo.Text = leyenda;
+                    }
+                }
+
             }
         }
 
@@ -896,5 +937,19 @@ namespace fpWebApp
                    $"<i class='{icono} m-r-xs font-bold' style='color:{color};'></i> {telefonoFormateado}</a>";
         }
 
+        protected void btnActualizarYRedirigir_Click(object sender, EventArgs e)
+        {
+            //// 1️⃣ Obtén los valores necesarios: ID, fecha, estado, observaciones.
+            //int idContacto = Convert.ToInt32(hdnIdContacto.Value); // Por ejemplo en un HiddenField
+            //DateTime nuevaFechaProx = DateTime.Now.AddDays(1); // o lo que tengas en un input
+            //int nuevoEstadoId = Convert.ToInt32(ddlEstado.SelectedValue); // ejemplo: un DropDownList
+            //string nuevasObservaciones = txtObservaciones.Text.Trim(); // ejemplo: un TextBox
+
+            //// 2️⃣ Ejecuta la actualización
+            //ActualizarContacto(idContacto, nuevaFechaProx, nuevoEstadoId, nuevasObservaciones);
+
+            //// 3️⃣ Redirige a la URL deseada
+            //Response.Redirect("crmnuevocontacto.aspx?editid=" + idContacto);
+        }
     }
 }
