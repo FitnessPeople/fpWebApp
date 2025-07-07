@@ -198,29 +198,29 @@ namespace fpWebApp
                         {
                             bool respuesta = false;
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ValidarArlEmpleados(int.Parse(Request.QueryString["deleteid"].ToString()));
-                            if (dt.Rows.Count > 0)
-                            {
-                                ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                    "<div class=\"alert alert-danger alert-dismissable\">" +
-                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Este Contacto no se puede borrar, hay registros asociados a él" +
-                                    "</div></div>";
+                            //DataTable dt = cg.validarco(int.Parse(Request.QueryString["deleteid"].ToString()));
+                            //if (dt.Rows.Count > 0)
+                            //{
+                            //    ltMensaje.Text = "<div class=\"ibox-content\">" +
+                            //        "<div class=\"alert alert-danger alert-dismissable\">" +
+                            //        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                            //        "Este Contacto no se puede borrar, hay registros asociados a él" +
+                            //        "</div></div>";
 
-                                DataTable dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                            //    DataTable dt1 = cg.ConsultarContactosCRMPorId(int.Parse(Request.QueryString["deleteid"].ToString()),out respuesta);
 
-                                if (dt1.Rows.Count > 0)
-                                {
-                                    txbNombreContacto.Value = dt.Rows[0]["NombreContacto"].ToString();
-                                    txbNombreContacto.Disabled = true;
-                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                    btnAgregar.Enabled = false;
-                                    //ltTitulo.Text = "Borrar Contacto CRM";
-                                }
-                                dt1.Dispose();
-                            }
-                            else
-                            {
+                            //    if (dt1.Rows.Count > 0)
+                            //    {
+                            //        txbNombreContacto.Value = dt.Rows[0]["NombreContacto"].ToString();
+                            //        txbNombreContacto.Disabled = true;
+                            //        btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                            //        btnAgregar.Enabled = false;
+                            //        //ltTitulo.Text = "Borrar Contacto CRM";
+                            //    }
+                            //    dt1.Dispose();
+                            //}
+                           // else
+                            //{
                                 //Borrar
                                 DataTable dt1 = new DataTable();
                                 dt1 = cg.ConsultarContactosCRMPorId(int.Parse(Request.QueryString["deleteid"].ToString()), out respuesta);
@@ -287,7 +287,7 @@ namespace fpWebApp
                                     //ltTitulo.Text = "Borrar contacto CRM";
                                 }
                                 dt1.Dispose();
-                            }
+                            //}
                         }
                     }
                 }
@@ -567,7 +567,7 @@ namespace fpWebApp
 
                             if (respuesta)
                             {
-                                string tipoMensaje = respuesta ? "Éxito" : "Error";
+                                string tipoMensaje = respuesta ? "Fitness People" : "Error";
                                 string tipoIcono = respuesta ? "success" : "error";
                                 string script = @"
                                 Swal.fire({
