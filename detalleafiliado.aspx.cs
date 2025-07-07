@@ -153,35 +153,35 @@ namespace fpWebApp
 
 
             // Consulta en Armatura la existencia de los datos biométricos
-            int idempresa = 2; //2 Armatura tabla integraciones
-            string parametro = string.Empty;
-            DataTable dti = cg.ConsultarUrl(idempresa);
-            string urlServicio = dti.Rows[0]["urlTest"].ToString() + parametro;
-            if (dt.Rows.Count > 0)
-            {
-                parametro = dti.Rows[0]["urlServicioAd1"].ToString();
-            }
-            string mensaje = "falso";
-            string url = urlServicio + strDocumento + parametro;
-            string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
+            //int idempresa = 2; //2 Armatura tabla integraciones
+            //string parametro = string.Empty;
+            //DataTable dti = cg.ConsultarUrl(idempresa);
+            //string urlServicio = dti.Rows[0]["urlTest"].ToString() + parametro;
+            //if (dt.Rows.Count > 0)
+            //{
+            //    parametro = dti.Rows[0]["urlServicioAd1"].ToString();
+            //}
+            //string mensaje = "falso";
+            //string url = urlServicio + strDocumento + parametro;
+            //string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
 
-            ltImagen.Text = "<img src=\"img/facial-recognition.png\" width=\"100px\" />";
-            if (mensaje=="Ok")
-            {
-                if (respuesta[1] == "success")
-                {
-                    ltMensaje.Text = "Con acceso biométrico";
-                    divAcceso.Visible = false;
-                }
-                else
-                {
-                    ltMensaje.Text = "Sin acceso biométrico";
-                }
-            }
-            else
-            {
-                ltMensaje.Text = respuesta[0];
-            }
+            //ltImagen.Text = "<img src=\"img/facial-recognition.png\" width=\"100px\" />";
+            //if (mensaje=="Ok")
+            //{
+            //    if (respuesta[1] == "success")
+            //    {
+            //        ltMensaje.Text = "Con acceso biométrico";
+            //        divAcceso.Visible = false;
+            //    }
+            //    else
+            //    {
+            //        ltMensaje.Text = "Sin acceso biométrico";
+            //    }
+            //}
+            //else
+            //{
+            //    ltMensaje.Text = respuesta[0];
+            //}
         }
 
         private void CargarCongelaciones(string idAfiliado)
@@ -332,18 +332,19 @@ namespace fpWebApp
                             MetodoPago = jsonData["data"]["payment_method_type"]?.ToString(),
                             Estado = jsonData["data"]["status"]?.ToString(),
                             Referencia = jsonData["data"]["reference"]?.ToString(),
-                            NombreTarjeta = jsonData["data"]["payment_method"]["extra"]["name"]?.ToString(),
-                            UltimosDigitos = jsonData["data"]["payment_method"]["extra"]["last_four"]?.ToString(),
-                            MarcaTarjeta = jsonData["data"]["payment_method"]["extra"]["brand"]?.ToString(),
-                            TipoTarjeta = jsonData["data"]["payment_method"]["extra"]["card_type"]?.ToString(),
+                            //NombreTarjeta = jsonData["data"]["payment_method"]["extra"]["name"]?.ToString(),
+                            //UltimosDigitos = jsonData["data"]["payment_method"]["extra"]["last_four"]?.ToString(),
+                            //MarcaTarjeta = jsonData["data"]["payment_method"]["extra"]["brand"]?.ToString(),
+                            //TipoTarjeta = jsonData["data"]["payment_method"]["extra"]["card_type"]?.ToString(),
                             NombreComercio = jsonData["data"]["merchant"]["name"]?.ToString(),
                             ContactoComercio = jsonData["data"]["merchant"]["contact_name"]?.ToString(),
                             TelefonoComercio = jsonData["data"]["merchant"]["phone_number"]?.ToString(),
                             URLRedireccion = jsonData["data"]["redirect_url"]?.ToString(),
                             PaymentLinkId = jsonData["data"]["payment_link_id"]?.ToString(),
                             PublicKeyComercio = jsonData["data"]["merchant"]["public_key"]?.ToString(),
-                            EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString(),
-                            Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
+                            EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString()
+                            //Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()
+                        }
                     };
 
                 StringBuilder sb = new StringBuilder();
