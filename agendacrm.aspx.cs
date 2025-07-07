@@ -173,11 +173,12 @@ namespace fpWebApp
                 {
                     _strEventos += "{\r\n";
                     _strEventos += "id: '" + dt.Rows[i]["idContacto"].ToString() + "',\r\n";
+                    _strEventos += "doc: '" + dt.Rows[i]["DocumentoAfiliado"].ToString() + "',\r\n";
                     _strEventos += "title: '" + dt.Rows[i]["NombreContacto"].ToString() + "',\r\n";
                     _strEventos += "start: '" + dt.Rows[i]["FechaProximoCon1"].ToString() + "',\r\n";
                     _strEventos += "end: '" + dt.Rows[i]["FechaProximoCon1"].ToString() + "',\r\n";
                     _strEventos += "idEstadoCRM: '" + dt.Rows[i]["idEstadoCRM"].ToString() + "',\r\n";
-                    _strEventos += "historialHTML2: '" + dt.Rows[i]["historialHTML2"].ToString() + "',\r\n";
+
 
                     if (dt.Rows[i]["idContacto"].ToString() != "")
                     {

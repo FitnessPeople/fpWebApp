@@ -145,12 +145,6 @@
         </div>
     </div>
 
-
-
-
-
-
-
     <div id="wrapper">
 
         <uc1:navbar runat="server" ID="navbar" />
@@ -224,8 +218,6 @@
                                                                                     <img alt="image" class="img-circle" src="img/a3.jpg" style="width: 62px">
                                                                                 </div>
                                                                                 <div class="media-body">
-                                                                                    <!-- Aquí puedes añadir nombre, rol o más datos -->
-                                                                                    <%-- Ejemplo: <strong><%# Eval("Nombre") %></strong> --%>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -241,10 +233,6 @@
                                                         <div id="datosEvento" class="well well-sm" style="margin-top: 10px;"></div>
                                                     </div>
                                                 </div>
-
-
-
-
 
                                             </div>
 
@@ -267,10 +255,6 @@
                                     </div>
                                 </div>
 
-
-
-
-
                                 <div class="row animated fadeInDown" id="divContenido" runat="server">
                                     <%-- Zona del calendario--%>
                                     <div class="col-xxl-10 col-lg-9 col-md-7 col-sm-6 col-xs-12">
@@ -291,7 +275,7 @@
                                         </div>
                                     </div>
 
-                                    <%-- zona de detalle del afuliado bienvenido--%>
+
                                     <div class="col-xxl-2 col-lg-3 col-md-5 col-sm-6 col-xs-12">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
@@ -441,7 +425,7 @@
                 eventClick: function (event, jsEvent, view) {
                     $('.modal').modal('hide');                  
                     var documento = $('#hdnDocumentoAfiliado').val() || '';                   
-                    window.location.href = 'crmnuevocontacto.aspx?editid=' + encodeURIComponent(event.id) + '&evento=1' + '&documento=' + encodeURIComponent(documento);
+                    window.location.href = 'crmnuevocontacto.aspx?editid=' + encodeURIComponent(event.id) + '&evento=1' + '&documento=' + encodeURIComponent(event.doc);
                 },
             });
         });
