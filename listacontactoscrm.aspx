@@ -463,8 +463,8 @@
                                                                                 </td>
                                                                                 <td><%# GetTelefonoHTML(Eval("TelefonoContacto")) %></a></td>
                                                                                 <td class="contact-type"><i class="fa fa-envelope"></i></td>
-                                                                                <td><%# Eval("NombreEmpresaCRM") %> </td>
-                                                                                <td><span class='badge badge-<%# Eval("ColorEstadoCRM")%>'>
+                                                                             <%--   <td><%# Eval("NombreEmpresaCRM") %> </td>--%>
+                                                                                <%--<td><span class='badge badge-<%# Eval("ColorEstadoCRM")%>'>--%>
                                                                                     <%# Eval("NombreEstadoCRM") %></span>
                                                                                 </td>
                                                                                 <%--<td><%# Eval("ValorPropuesta", "{0:C0}") %></td>--%>
