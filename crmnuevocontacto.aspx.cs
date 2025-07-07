@@ -52,6 +52,8 @@ namespace fpWebApp
                         txbCorreoContacto.Disabled = false;
                         txbFechaPrim.Disabled = false;
 
+
+
                         divBotonesLista.Visible = false;
                         btnAgregar.Visible = false;
                         if (ViewState["Consulta"].ToString() == "1")
@@ -71,6 +73,7 @@ namespace fpWebApp
 
                     ListaEmpresasCRM();
                     ListaEstadosCRM();
+                    rpContactosCRM.ItemDataBound += rpContactosCRM_ItemDataBound;
                     ListaContactosPorUsuario();
                     ListaTiposAfiliadosCRM();
                     CargarPlanes();
@@ -103,9 +106,7 @@ namespace fpWebApp
                             clasesglobales cg = new clasesglobales();
                             DataTable dt = cg.ConsultarContactosCRMPorId(int.Parse(Request.QueryString["editid"].ToString()), out respuesta);
                             Session["contactoId"] = int.Parse(Request.QueryString["editid"].ToString());
-                            //litHistorialHTML.Text = dt.Rows[0]["HistorialHTML2"].ToString();
-
-
+                            litHistorialHTML.Text = dt.Rows[0]["HistorialHTML2"].ToString();
 
                             if (respuesta)
                             {
@@ -114,7 +115,6 @@ namespace fpWebApp
                                     DataRow row = dt.Rows[0];
                                     ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDoc"].ToString())));
                                     txbDocumento.Text = row["DocumentoAfiliado"].ToString();
-                                    ltDocumento.Text = row["DocumentoAfiliado"].ToString();
                                     txbNombreContacto.Value = row["NombreContacto"].ToString();
                                     txbApellidoContacto.Value = row["ApellidoContacto"].ToString();
                                     ltNombreContacto.Text = row["NombreContacto"].ToString() + " " + row["ApellidoContacto"].ToString();
@@ -127,6 +127,7 @@ namespace fpWebApp
                                     {
                                         txbTelefonoContacto.Value = row["TelefonoContacto"].ToString();
                                     }
+                                    ltTelefono.Text = txbTelefonoContacto.Value.ToString();
                                     txbCorreoContacto.Value = row["EmailContacto"].ToString();
                                     if (row["idEmpresaCRM"].ToString() != "")
                                         ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaCRM"].ToString())));
@@ -134,8 +135,32 @@ namespace fpWebApp
                                         ddlEmpresa.SelectedItem.Value = "0";
 
                                     ddlStatusLead.SelectedIndex = Convert.ToInt32(ddlStatusLead.Items.IndexOf(ddlStatusLead.Items.FindByValue(dt.Rows[0]["idEstadoCRM"].ToString())));
+                                    CultureInfo cultura = new CultureInfo("es-ES");
                                     txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
+
+                                    DateTime fechaPC = Convert.ToDateTime(row["FechaCreacion"]);
+                                    ltPrimerContacto.Text = fechaPC.ToString("dddd dd MMM yyyy hh:mm tt", cultura);
+
                                     txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
+                                    DateTime fecha = Convert.ToDateTime(row["FechaProximoCon"]);
+
+                                    if (fecha.Date == DateTime.Today)
+                                    {
+                                        ltProximoContacto.Text = "Hoy a las " + fecha.ToString("hh:mm tt", cultura);
+                                    }
+                                    else if (fecha.Date == DateTime.Today.AddDays(1))
+                                    {
+                                        string hora = fecha.ToString("hh:mm", cultura);
+                                        string ampm = fecha.ToString("tt", CultureInfo.InvariantCulture).ToLower();
+
+                                        ltProximoContacto.Text = "Mañana " + fecha.ToString("d 'de' MMMM", cultura)
+                                            + " a las " + hora + " " + ampm;
+                                    }
+                                    else
+                                    {
+                                        ltProximoContacto.Text = "El próximo " + fecha.ToString("dddd dd MMM yyyy hh:mm tt", cultura);
+                                    }
+
                                     int ValorPropuesta = Convert.ToInt32(dt.Rows[0]["ValorPropuesta"]);
                                     //int ValorMes = Convert.ToInt32(dt.Rows[0]["ValorBase"]);
                                     txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
@@ -159,6 +184,7 @@ namespace fpWebApp
 
                                     ddlCanalesMarketing.SelectedIndex = Convert.ToInt32(ddlCanalesMarketing.Items.IndexOf(ddlCanalesMarketing.Items.FindByValue(dt.Rows[0]["idCanalMarketing"].ToString())));
                                     ddlPlanes.SelectedIndex = Convert.ToInt32(ddlPlanes.Items.IndexOf(ddlPlanes.Items.FindByValue(dt.Rows[0]["idPlan"].ToString())));
+                                    ltPlan.Text = row["NombrePlan"].ToString();
                                     //rblMesesPlan.SelectedIndex = Convert.ToInt32(rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(dt.Rows[0]["MesesPlan"].ToString())));
                                 }
                             }
@@ -172,96 +198,96 @@ namespace fpWebApp
                         {
                             bool respuesta = false;
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ValidarArlEmpleados(int.Parse(Request.QueryString["deleteid"].ToString()));
-                            if (dt.Rows.Count > 0)
+                            //DataTable dt = cg.validarco(int.Parse(Request.QueryString["deleteid"].ToString()));
+                            //if (dt.Rows.Count > 0)
+                            //{
+                            //    ltMensaje.Text = "<div class=\"ibox-content\">" +
+                            //        "<div class=\"alert alert-danger alert-dismissable\">" +
+                            //        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                            //        "Este Contacto no se puede borrar, hay registros asociados a él" +
+                            //        "</div></div>";
+
+                            //    DataTable dt1 = cg.ConsultarContactosCRMPorId(int.Parse(Request.QueryString["deleteid"].ToString()),out respuesta);
+
+                            //    if (dt1.Rows.Count > 0)
+                            //    {
+                            //        txbNombreContacto.Value = dt.Rows[0]["NombreContacto"].ToString();
+                            //        txbNombreContacto.Disabled = true;
+                            //        btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                            //        btnAgregar.Enabled = false;
+                            //        //ltTitulo.Text = "Borrar Contacto CRM";
+                            //    }
+                            //    dt1.Dispose();
+                            //}
+                            // else
+                            //{
+                            //Borrar
+                            DataTable dt1 = new DataTable();
+                            dt1 = cg.ConsultarContactosCRMPorId(int.Parse(Request.QueryString["deleteid"].ToString()), out respuesta);
+                            if (dt1.Rows.Count > 0)
                             {
-                                ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                    "<div class=\"alert alert-danger alert-dismissable\">" +
-                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Este Contacto no se puede borrar, hay registros asociados a él" +
-                                    "</div></div>";
+                                DataRow row = dt1.Rows[0];
 
-                                DataTable dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt1.Rows[0]["idTipoDoc"].ToString())));
+                                txbDocumento.Text = row["DocumentoAfiliado"].ToString();
 
-                                if (dt1.Rows.Count > 0)
+                                txbNombreContacto.Value = row["NombreContacto"].ToString();
+                                string telefono = Convert.ToString(row["TelefonoContacto"]);
+                                if (!string.IsNullOrEmpty(telefono) && telefono.Length == 10)
                                 {
-                                    txbNombreContacto.Value = dt.Rows[0]["NombreContacto"].ToString();
-                                    txbNombreContacto.Disabled = true;
-                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                    btnAgregar.Enabled = false;
-                                    //ltTitulo.Text = "Borrar Contacto CRM";
+                                    txbTelefonoContacto.Value = $"{telefono.Substring(0, 3)} {telefono.Substring(3, 3)} {telefono.Substring(6, 4)}";
                                 }
-                                dt1.Dispose();
-                            }
-                            else
-                            {
-                                //Borrar
-                                DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarContactosCRMPorId(int.Parse(Request.QueryString["deleteid"].ToString()), out respuesta);
-                                if (dt1.Rows.Count > 0)
+                                else
                                 {
-                                    DataRow row = dt1.Rows[0];
-
-                                    ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt1.Rows[0]["idTipoDoc"].ToString())));
-                                    txbDocumento.Text = row["DocumentoAfiliado"].ToString();
-
-                                    txbNombreContacto.Value = row["NombreContacto"].ToString();
-                                    string telefono = Convert.ToString(row["TelefonoContacto"]);
-                                    if (!string.IsNullOrEmpty(telefono) && telefono.Length == 10)
-                                    {
-                                        txbTelefonoContacto.Value = $"{telefono.Substring(0, 3)} {telefono.Substring(3, 3)} {telefono.Substring(6, 4)}";
-                                    }
-                                    else
-                                    {
-                                        txbTelefonoContacto.Value = row["TelefonoContacto"].ToString();
-                                    }
-                                    txbCorreoContacto.Value = row["EmailContacto"].ToString();
-                                    if (row["idEmpresaCRM"].ToString() != "")
-                                        ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt1.Rows[0]["idEmpresaCRM"].ToString())));
-                                    else
-                                        ddlEmpresa.SelectedItem.Value = "0";
-
-                                    ddlStatusLead.SelectedIndex = Convert.ToInt32(ddlStatusLead.Items.IndexOf(ddlStatusLead.Items.FindByValue(dt1.Rows[0]["idEstadoCRM"].ToString())));
-                                    txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
-                                    txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
-                                    int ValorPropuesta = Convert.ToInt32(dt1.Rows[0]["ValorPropuesta"]);
-                                    txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
-                                    //int ValorMes = Convert.ToInt32(dt.Rows[0]["ValorBase"]);
-                                    //txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
-                                    //txaObservaciones.Value = row["observaciones"].ToString();
-                                    ddlObjetivos.SelectedIndex = Convert.ToInt32(ddlObjetivos.Items.IndexOf(ddlObjetivos.Items.FindByValue(dt1.Rows[0]["idObjetivo"].ToString())));
-                                    ddlTipoPago.SelectedIndex = ddlTipoPago.Items.IndexOf(ddlTipoPago.Items.FindByValue(dt1.Rows[0]["idMedioPago"].ToString()));
-                                    ddlTiposAfiliado.SelectedIndex = Convert.ToInt32(ddlTiposAfiliado.Items.IndexOf(ddlTiposAfiliado.Items.FindByValue(dt1.Rows[0]["idTipoAfiliado"].ToString())));
-                                    ddlCanalesMarketing.SelectedIndex = Convert.ToInt32(ddlCanalesMarketing.Items.IndexOf(ddlCanalesMarketing.Items.FindByValue(dt1.Rows[0]["idCanalMarketing"].ToString())));
-                                    ddlPlanes.SelectedIndex = Convert.ToInt32(ddlPlanes.Items.IndexOf(ddlPlanes.Items.FindByValue(dt1.Rows[0]["idPlan"].ToString())));
-                                    //rblMesesPlan.SelectedIndex = Convert.ToInt32(rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(dt1.Rows[0]["MesesPlan"].ToString())));
-
-                                    //Inactivar controles
-                                    txbDocumento.Enabled = false;
-                                    ddlTipoDocumento.Enabled = false;
-                                    txbNombreContacto.Disabled = true;
-                                    txbTelefonoContacto.Disabled = true;
-                                    txbCorreoContacto.Disabled = true;
-                                    txbFechaPrim.Disabled = true;
-                                    txbFechaProx.Disabled = true;
-                                    txbValorPropuesta.Enabled = false;
-                                    ddlEmpresa.Enabled = false;
-                                    ddlStatusLead.Enabled = false;
-                                    ddlTiposAfiliado.Enabled = false;
-                                    txbHoraIni.Disabled = true;
-                                    ddlTipoPago.Enabled = false;
-                                    ddlObjetivos.Enabled = false;
-                                    ddlCanalesMarketing.Enabled = false;
-                                    ddlPlanes.Enabled = false;
-                                    //rblMesesPlan.Enabled = false;
-                                    txaObservaciones.Disabled = true;
-                                    ArchivoPropuesta.Disabled = true;
-
-                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                    //ltTitulo.Text = "Borrar contacto CRM";
+                                    txbTelefonoContacto.Value = row["TelefonoContacto"].ToString();
                                 }
-                                dt1.Dispose();
+                                txbCorreoContacto.Value = row["EmailContacto"].ToString();
+                                if (row["idEmpresaCRM"].ToString() != "")
+                                    ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt1.Rows[0]["idEmpresaCRM"].ToString())));
+                                else
+                                    ddlEmpresa.SelectedItem.Value = "0";
+
+                                ddlStatusLead.SelectedIndex = Convert.ToInt32(ddlStatusLead.Items.IndexOf(ddlStatusLead.Items.FindByValue(dt1.Rows[0]["idEstadoCRM"].ToString())));
+                                txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
+                                txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
+                                int ValorPropuesta = Convert.ToInt32(dt1.Rows[0]["ValorPropuesta"]);
+                                txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
+                                //int ValorMes = Convert.ToInt32(dt.Rows[0]["ValorBase"]);
+                                //txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
+                                //txaObservaciones.Value = row["observaciones"].ToString();
+                                ddlObjetivos.SelectedIndex = Convert.ToInt32(ddlObjetivos.Items.IndexOf(ddlObjetivos.Items.FindByValue(dt1.Rows[0]["idObjetivo"].ToString())));
+                                ddlTipoPago.SelectedIndex = ddlTipoPago.Items.IndexOf(ddlTipoPago.Items.FindByValue(dt1.Rows[0]["idMedioPago"].ToString()));
+                                ddlTiposAfiliado.SelectedIndex = Convert.ToInt32(ddlTiposAfiliado.Items.IndexOf(ddlTiposAfiliado.Items.FindByValue(dt1.Rows[0]["idTipoAfiliado"].ToString())));
+                                ddlCanalesMarketing.SelectedIndex = Convert.ToInt32(ddlCanalesMarketing.Items.IndexOf(ddlCanalesMarketing.Items.FindByValue(dt1.Rows[0]["idCanalMarketing"].ToString())));
+                                ddlPlanes.SelectedIndex = Convert.ToInt32(ddlPlanes.Items.IndexOf(ddlPlanes.Items.FindByValue(dt1.Rows[0]["idPlan"].ToString())));
+                                //rblMesesPlan.SelectedIndex = Convert.ToInt32(rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(dt1.Rows[0]["MesesPlan"].ToString())));
+
+                                //Inactivar controles
+                                txbDocumento.Enabled = false;
+                                ddlTipoDocumento.Enabled = false;
+                                txbNombreContacto.Disabled = true;
+                                txbTelefonoContacto.Disabled = true;
+                                txbCorreoContacto.Disabled = true;
+                                txbFechaPrim.Disabled = true;
+                                txbFechaProx.Disabled = true;
+                                txbValorPropuesta.Enabled = false;
+                                ddlEmpresa.Enabled = false;
+                                ddlStatusLead.Enabled = false;
+                                ddlTiposAfiliado.Enabled = false;
+                                txbHoraIni.Disabled = true;
+                                ddlTipoPago.Enabled = false;
+                                ddlObjetivos.Enabled = false;
+                                ddlCanalesMarketing.Enabled = false;
+                                ddlPlanes.Enabled = false;
+                                //rblMesesPlan.Enabled = false;
+                                txaObservaciones.Disabled = true;
+                                ArchivoPropuesta.Disabled = true;
+
+                                btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                                //ltTitulo.Text = "Borrar contacto CRM";
                             }
+                            dt1.Dispose();
+                            //}
                         }
                     }
                 }
@@ -541,7 +567,7 @@ namespace fpWebApp
 
                             if (respuesta)
                             {
-                                string tipoMensaje = respuesta ? "Éxito" : "Error";
+                                string tipoMensaje = respuesta ? "Fitness People" : "Error";
                                 string tipoIcono = respuesta ? "success" : "error";
                                 string script = @"
                                 Swal.fire({
@@ -679,6 +705,7 @@ namespace fpWebApp
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
+                DataRowView row = (DataRowView)e.Item.DataItem;
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
                     HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
@@ -691,6 +718,41 @@ namespace fpWebApp
                     btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
                     btnEliminar.Visible = true;
                 }
+
+                //  ltTiempoTranscurrido: Hace X minutos
+                if (row["FechaCreacion"] != DBNull.Value)
+                {
+                    DateTime fechaPrimerContacto = Convert.ToDateTime(row["FechaCreacion"]);
+                    TimeSpan diferencia = DateTime.Now - fechaPrimerContacto;
+
+                    string leyenda = "";
+                    if (diferencia.TotalMinutes < 1)
+                    {
+                        leyenda = "Hace menos de un minuto";
+                    }
+                    else if (diferencia.TotalMinutes < 60)
+                    {
+                        int min = (int)Math.Floor(diferencia.TotalMinutes);
+                        leyenda = $"Hace {min} minuto" + (min == 1 ? "" : "s");
+                    }
+                    else if (diferencia.TotalHours < 24)
+                    {
+                        int hrs = (int)Math.Floor(diferencia.TotalHours);
+                        leyenda = $"Hace {hrs} hora" + (hrs == 1 ? "" : "s");
+                    }
+                    else
+                    {
+                        int dias = (int)Math.Floor(diferencia.TotalDays);
+                        leyenda = $"Hace {dias} día" + (dias == 1 ? "" : "s");
+                    }
+
+                    Literal ltTiempo = (Literal)e.Item.FindControl("ltTiempoTranscurrido");
+                    if (ltTiempo != null)
+                    {
+                        ltTiempo.Text = leyenda;
+                    }
+                }
+
             }
         }
 
@@ -850,5 +912,44 @@ namespace fpWebApp
             public bool IsReusable => false;
         }
 
+        public string GetTelefonoHTML(object telefonoObj)
+        {
+            if (telefonoObj == null) return "";
+
+            // 1. Limpiar el número (quitar espacios, guiones, paréntesis, etc.)
+            string telefonoLimpio = Regex.Replace(telefonoObj.ToString(), @"\D", "");
+
+            // 2. Validar longitud y aplicar formato visual
+            string telefonoFormateado = telefonoLimpio;
+            if (telefonoLimpio.Length == 10)
+            {
+                telefonoFormateado = $"{telefonoLimpio.Substring(0, 3)} {telefonoLimpio.Substring(3, 3)} {telefonoLimpio.Substring(6, 4)}";
+            }
+
+            bool esCelular = telefonoLimpio.StartsWith("3");
+            bool esFijo = telefonoLimpio.StartsWith("60");
+            string icono = esCelular ? "fab fa-whatsapp" : "fas fa-phone";
+            string color = esCelular ? "forestgreen" : "#007bff";
+            string enlace = esCelular ? $"https://wa.me/57{telefonoLimpio}" : $"tel:{telefonoLimpio}";
+
+            // 4. Devolver HTML
+            return $"<a href='{enlace}' target='_blank'>" +
+                   $"<i class='{icono} m-r-xs font-bold' style='color:{color};'></i> {telefonoFormateado}</a>";
+        }
+
+        protected void btnActualizarYRedirigir_Click(object sender, EventArgs e)
+        {
+            //// 1️⃣ Obtén los valores necesarios: ID, fecha, estado, observaciones.
+            //int idContacto = Convert.ToInt32(hdnIdContacto.Value); // Por ejemplo en un HiddenField
+            //DateTime nuevaFechaProx = DateTime.Now.AddDays(1); // o lo que tengas en un input
+            //int nuevoEstadoId = Convert.ToInt32(ddlEstado.SelectedValue); // ejemplo: un DropDownList
+            //string nuevasObservaciones = txtObservaciones.Text.Trim(); // ejemplo: un TextBox
+
+            //// 2️⃣ Ejecuta la actualización
+            //ActualizarContacto(idContacto, nuevaFechaProx, nuevoEstadoId, nuevasObservaciones);
+
+            //// 3️⃣ Redirige a la URL deseada
+            //Response.Redirect("crmnuevocontacto.aspx?editid=" + idContacto);
+        }
     }
 }
