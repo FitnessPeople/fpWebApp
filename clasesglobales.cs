@@ -4581,7 +4581,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public DataTable ConsultarPagosPorTipo(string tipoPago, string fechaIni, string fechaFin, out decimal valorTotal)
+        public DataTable ConsultarPagosPorTipo(int tipoPago, string fechaIni, string fechaFin, out decimal valorTotal)
         {
             DataTable dt = new DataTable();
             valorTotal = 0;

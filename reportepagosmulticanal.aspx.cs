@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NPOI.SS.Formula.Functions;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
@@ -47,23 +48,37 @@ namespace fpWebApp
                             txbFechaFin.Attributes.Add("type", "date");
                             txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
 
-                            listaTransaccionesEfectivo("Efectivo", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
+                            clasesglobales cg = new clasesglobales();
+                            DataTable dt = cg.ConsultarMediosDePago();
 
-                            listaTransaccionesDatafono("Datafono", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
-
-                            listaTransaccionesTransferencia("Transferencia", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
-
-                            listaTransaccionesWompi("Wompi", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
-
+                            for (int i = 0; i < dt.Rows.Count; i++)
+                            {
+                                int idMedioPago = Convert.ToInt32(dt.Rows[i]["idMedioPago"].ToString());
+                                listaTransaccionesGeneral(idMedioPago, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+                            }
                         }
+
+
+
+
+
+                        //listaTransaccionesEfectivo("Efectivo", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
+
+                        //listaTransaccionesDatafono("Datafono", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
+
+                        //listaTransaccionesTransferencia("Transferencia", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
+
+                        //listaTransaccionesWompi("Wompi", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
+
                     }
                 }
-                else
-                {
-                    Response.Redirect("logout");
-                }
+            }
+            else
+            {
+                Response.Redirect("logout");
             }
         }
+        
 
         private void ValidarPermisos(string strPagina)
         {
@@ -88,77 +103,124 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void listaTransaccionesEfectivo(string tipoPago, string fechaIni, string fechaFin)
+        private void ListaMediosDePago()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
-            rpTipoEfectivo.DataSource = dt;
-            rpTipoEfectivo.DataBind();
-            ltValorTotalEfe.Text = valorTotal.ToString("C0");
+            DataTable dt = cg.ConsultarMediosDePago();
+
+            //ddlTipoPago.DataSource = dt;
+            //ddlTipoPago.DataBind();
             dt.Dispose();
         }
 
-        private void listaTransaccionesDatafono(string tipoPago, string fechaIni, string fechaFin)
+        private void listaTransaccionesGeneral(int tipoPago, string fechaIni, string fechaFin)
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
-            rpTipoDatafono.DataSource = dt;
-            rpTipoDatafono.DataBind();
-            ltValorTotalData.Text = valorTotal.ToString("C0");
-            dt.Dispose();
-        }
 
-        private void listaTransaccionesTransferencia(string tipoPago, string fechaIni, string fechaFin)
-        {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
-            rpTransferencia.DataSource = dt;
-            rpTransferencia.DataBind();
-            ltValorTotalTrans.Text = valorTotal.ToString("C0");
-            dt.Dispose();
-        }
 
-        private void listaTransaccionesWompi(string tipoPago, string fechaIni, string fechaFin)
-        {
-            bool rtaStatus = false;
-            clasesglobales cg = new clasesglobales();
-            DataTable dt1 = listarDetalle(out rtaStatus);
-
-            if (rtaStatus)
+            if (tipoPago == 1)
             {
-                foreach (DataRow row in dt1.Rows)
-                {
-                    row["amount_in_cents"] = Convert.ToInt32(row["amount_in_cents"]) / 100;
-                    string paymentMethod = row["payment_method_type"].ToString().ToLower();
-                    row["payment_method_type"] = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(paymentMethod);
-                    string status = row["status"].ToString().ToLower();
-                    row["status"] = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(status);
-                }
+                rpTipoEfectivo.DataSource = dt;
+                rpTipoEfectivo.DataBind();
+                ltValorTotalEfe.Text = valorTotal.ToString("C0");
+            }
 
-                DataTable dt = cg.ConsultarPagosTransaccWompi(txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valorTotal);
-                rpWompi.DataSource = dt1;
+            if (tipoPago == 2)
+            {
+                rpTransferencia.DataSource = dt;
+                rpTransferencia.DataBind();
+                ltValorTotalTrans.Text = valorTotal.ToString("C0");
+            }
+
+            if (tipoPago == 3 || tipoPago == 4)
+            {
+                rpTipoDatafono.DataSource = dt;
+                rpTipoDatafono.DataBind();
+                ltValorTotalData.Text = valorTotal.ToString("C0");
+            }
+
+            if (tipoPago == 5)
+            {
+                rpWompi.DataSource = dt;
                 rpWompi.DataBind();
                 ltValortotalWompi.Text = valorTotal.ToString("C0");
-                dt1.Dispose();
             }
-            else
-            {
-                if (dt1.Columns.Contains("Error") && dt1.Rows.Count > 0)
-                {
-                    string mensajeError = dt1.Rows[0]["Error"].ToString();
-                    ltError.Text = mensajeError;
-                    trError.Visible = true;
-                }
-                else
-                {
-                    ltError.Text = "Ocurrió un error desconocido.";
-                    trError.Visible = true;
-                }
 
-                rpWompi.DataSource = new DataTable();
-                rpWompi.DataBind();
-            }
+            dt.Dispose();
         }
+
+        //private void listaTransaccionesEfectivo(int tipoPago, string fechaIni, string fechaFin)
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
+        //    rpTipoEfectivo.DataSource = dt;
+        //    rpTipoEfectivo.DataBind();
+        //    ltValorTotalEfe.Text = valorTotal.ToString("C0");
+        //    dt.Dispose();
+        //}
+
+        //private void listaTransaccionesDatafono(int tipoPago, string fechaIni, string fechaFin)
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
+        //    rpTipoDatafono.DataSource = dt;
+        //    rpTipoDatafono.DataBind();
+        //    ltValorTotalData.Text = valorTotal.ToString("C0");
+        //    dt.Dispose();
+        //}
+
+        //private void listaTransaccionesTransferencia(int tipoPago, string fechaIni, string fechaFin)
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
+        //    rpTransferencia.DataSource = dt;
+        //    rpTransferencia.DataBind();
+        //    ltValorTotalTrans.Text = valorTotal.ToString("C0");
+        //    dt.Dispose();
+        //}
+
+        //private void listaTransaccionesWompi(int tipoPago, string fechaIni, string fechaFin)
+        //{
+        //    bool rtaStatus = false;
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt1 = listarDetalle(out rtaStatus);
+
+        //    if (rtaStatus)
+        //    {
+        //        foreach (DataRow row in dt1.Rows)
+        //        {
+        //            row["amount_in_cents"] = Convert.ToInt32(row["amount_in_cents"]) / 100;
+        //            string paymentMethod = row["payment_method_type"].ToString().ToLower();
+        //            row["payment_method_type"] = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(paymentMethod);
+        //            string status = row["status"].ToString().ToLower();
+        //            row["status"] = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(status);
+        //        }
+
+        //        DataTable dt = cg.ConsultarPagosTransaccWompi(txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valorTotal);
+        //        rpWompi.DataSource = dt1;
+        //        rpWompi.DataBind();
+        //        ltValortotalWompi.Text = valorTotal.ToString("C0");
+        //        dt1.Dispose();
+        //    }
+        //    else
+        //    {
+        //        if (dt1.Columns.Contains("Error") && dt1.Rows.Count > 0)
+        //        {
+        //            string mensajeError = dt1.Rows[0]["Error"].ToString();
+        //            ltError.Text = mensajeError;
+        //            trError.Visible = true;
+        //        }
+        //        else
+        //        {
+        //            ltError.Text = "Ocurrió un error desconocido.";
+        //            trError.Visible = true;
+        //        }
+
+        //        rpWompi.DataSource = new DataTable();
+        //        rpWompi.DataBind();
+        //    }
+        //}
 
         private DataTable listarDetalle(out bool rtaStatus)
         {
@@ -226,17 +288,32 @@ namespace fpWebApp
 
         protected void btnFiltrar_Click(object sender, EventArgs e)
         {
-            listaTransaccionesEfectivo("Efectivo", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
-            listaTransaccionesDatafono("Datafono", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
-            listaTransaccionesTransferencia("Transferencia", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
-            listaTransaccionesWompi("Wompi", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarMediosDePago();
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                int idMedioPago = Convert.ToInt32(dt.Rows[i]["idMedioPago"].ToString());
+                listaTransaccionesGeneral(idMedioPago, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+            }
+
+
+            //listaTransaccionesEfectivo("Efectivo", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+            //listaTransaccionesDatafono("Datafono", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+            //listaTransaccionesTransferencia("Transferencia", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+            //listaTransaccionesWompi("Wompi", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
         }
+
+
+
+
         protected void btnExportarEfe_Click(object sender, EventArgs e)
         {
             try
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarPagosPorTipo("Efectivo", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+                DataTable dt = cg.ConsultarPagosPorTipo(1, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
                 string nombreArchivo = $"Efectivo_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
@@ -298,7 +375,7 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarPagosPorTipo("Datafono", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+                DataTable dt = cg.ConsultarPagosPorTipo(3, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
                 string nombreArchivo = $"Datafono_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
@@ -360,7 +437,7 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarPagosPorTipo("Transferencia", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+                DataTable dt = cg.ConsultarPagosPorTipo(2, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
                 string nombreArchivo = $"Transferencia_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

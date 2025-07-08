@@ -64,6 +64,7 @@ namespace fpWebApp
                         }
                     }
                     listaTransacciones();
+                    ListaMediosDePago();
                 }
                 else
                 {
@@ -95,6 +96,17 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+
+        private void ListaMediosDePago()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarMediosDePago();
+
+            ddlTipoPago.DataSource = dt;
+            ddlTipoPago.DataBind();
+            dt.Dispose();
+        }
+
         private void listaTransacciones()
         {
             decimal valorTotal = 0;
@@ -106,7 +118,7 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void listaTransaccionesPorFecha(string tipoPago, string fechaIni, string fechaFin)
+        private void listaTransaccionesPorFecha(int tipoPago, string fechaIni, string fechaFin)
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
@@ -401,7 +413,7 @@ namespace fpWebApp
 
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
-            listaTransaccionesPorFecha(ddlTipoPago.SelectedValue.ToString(), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+            listaTransaccionesPorFecha(Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
         }
     }
 }
