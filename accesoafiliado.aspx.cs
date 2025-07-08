@@ -31,30 +31,9 @@ namespace fpWebApp
 
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
+                        ConsultarSedes();
+                        ConsultarAccesos();
                         txbDocumento.Attributes.Add("type", "number");
-
-                        clasesglobales cg = new clasesglobales();
-                        string strQuery = @"SELECT * 
-                            FROM AccesoAfiliado aa, Afiliados a, Sedes s 
-                            WHERE aa.idAfiliado = a.idAfiliado 
-                            AND aa.idSede = s.idSede ";
-                        DataTable dt = cg.TraerDatos(strQuery);
-
-                        rpAccesoAfiliados.DataSource = dt;
-                        rpAccesoAfiliados.DataBind();
-
-                        //txbTelefono.Attributes.Add("type", "number");
-                        //txbFechaNac.Attributes.Add("type", "date");
-                        //txbTelefonoContacto.Attributes.Add("type", "number");
-                        //txbEmail.Attributes.Add("type", "email");
-                        //CargarTipoDocumento();
-                        //CargarCiudad();
-                        //CargarEmpresas();
-                        //CargarEstadoCivil();
-                        //CargarEps();
-                        //CargarProfesiones();
-                        //CargarSedes();
-                        //CargarGeneros();
                     }
                     else
                     {
@@ -93,6 +72,58 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        /// <summary>
+        /// Consulta las sedes por ID y muestra el título con el nombre de la sede.
+        /// Si la sede es la oficina, muestra el título "Todas las sedes"
+        /// </summary>
+        private void ConsultarSedes()
+        {
+            int idSedeUsuario = Convert.ToInt32(Session["idSede"]);
+
+            clasesglobales cg = new clasesglobales();
+
+            int? idSede = (idSedeUsuario == 11) ? (int?)null : idSedeUsuario;
+
+            DataTable dt = cg.ConsultaCargarSedesPorId(idSede, "Gimnasio");
+
+            if (idSedeUsuario == 11)
+            {
+                ltSede.Text = "todas las sedes.";
+            }
+            else
+            {
+                ltSede.Text = "Sede " + dt.Rows[0]["NombreSede"].ToString();
+            }
+        }
+
+        private void ConsultarAccesos()
+        {
+            int idSedeUsuario = Convert.ToInt32(Session["idSede"]);
+            string strQuery = string.Empty;
+            clasesglobales cg = new clasesglobales();
+            if (idSedeUsuario == 11)
+            {
+                strQuery = @"SELECT * 
+                    FROM AccesoAfiliado aa, Afiliados a, Sedes s 
+                    WHERE aa.idAfiliado = a.idAfiliado 
+                    AND aa.idSede = s.idSede 
+                    ORDER BY FechaHoraIngreso DESC";
+            }
+            else
+            {
+                strQuery = @"SELECT * 
+                    FROM AccesoAfiliado aa, Afiliados a, Sedes s 
+                    WHERE aa.idAfiliado = a.idAfiliado 
+                    AND aa.idSede = s.idSede 
+                    AND s.idSede = " + idSedeUsuario.ToString() + @"
+                    ORDER BY FechaHoraIngreso DESC";
+            }
+
+            DataTable dt = cg.TraerDatos(strQuery);
+            rpAccesoAfiliados.DataSource = dt;
+            rpAccesoAfiliados.DataBind();
+        }
+
         protected void txbDocumento_TextChanged(object sender, EventArgs e)
         {
             ltMensaje.Text = string.Empty;
@@ -126,15 +157,21 @@ namespace fpWebApp
                 string strApellido = dt.Rows[0]["ApellidoAfiliado"].ToString();
                 string strDocumento = dt.Rows[0]["DocumentoAfiliado"].ToString();
 
-                string strDatosAfiliado = @"<h1><b>" + strNombre + " " + strApellido + @"</b><br />Nro. de Documento: " + strDocumento + @"</h1>";
+                string strDatosAfiliado = @"<h2><b>" + strNombre + " " + strApellido + @"</b><br />Nro. de Documento: " + strDocumento + @"</h2>";
 
                 string script = @"
                     Swal.fire({
                         title: 'Acceso permitido a: " + strDatosAfiliado + @"',
-                        text: '',
-                        icon: 'success',
+                        text: 'Bienvenido a Fitness People',
+                        width: 500,
+                        background: '#1ab394',
+                        color: '#fff',
                         timer: 5000, // 5 segundos
-                        showConfirmButton: false,
+                        showConfirmButton: true,
+                        imageUrl: 'img/logo_fp_white.svg',
+                        imageWidth: 466,
+                        imageHeight: 78,
+                        imageAlt: 'Fondo',
                         timerProgressBar: true
                     }).then(() => {
                         window.location.href = 'accesoafiliado';
@@ -146,16 +183,17 @@ namespace fpWebApp
             {
                 string script = @"
                     Swal.fire({
-                        title: 'El afiliado no existe.',
-                        text: '',
-                        icon: 'error',
-                        timer: 3000, // 3 segundos
-                        showConfirmButton: false,
-                        backdrop: `
-                            rgba(71,80,100,0.8)
-                            left top
-                            no-repeat
-                          `,
+                        title: 'Acceso denegado.',
+                        text: 'Intente nuevamente',
+                        width: 500,
+                        background: '#ca5f59',
+                        color: '#fff',
+                        timer: 5000, // 5 segundos
+                        showConfirmButton: true,
+                        imageUrl: 'img/logo_fp_white.svg',
+                        imageWidth: 466,
+                        imageHeight: 78,
+                        imageAlt: 'Fondo',
                         timerProgressBar: true
                     }).then(() => {
                         window.location.href = 'accesoafiliado';

@@ -503,6 +503,7 @@
     <Content Include="img\empleados\nofoto.png" />
     <Content Include="img\especialistas\nofoto.png" />
     <Content Include="img\facial-recognition.png" />
+    <Content Include="img\fp-logo-lime-f-min.svg" />
     <Content Include="img\full_height.jpg" />
     <Content Include="img\gallery\1.jpg" />
     <Content Include="img\gallery\10.jpg" />
@@ -530,6 +531,7 @@
     <Content Include="img\gallery\9s.jpg" />
     <Content Include="img\headphones.jpg" />
     <Content Include="img\html_logo.png" />
+    <Content Include="img\icono_cmd_3.png" />
     <Content Include="img\landing\avatar1.jpg" />
     <Content Include="img\landing\avatar2.jpg" />
     <Content Include="img\landing\avatar3.jpg" />
@@ -548,6 +550,8 @@
     <Content Include="img\landing\perspective.png" />
     <Content Include="img\landing\shattered.png" />
     <Content Include="img\landing\word_map.png" />
+    <Content Include="img\logo_fp_black.svg" />
+    <Content Include="img\logo_fp_white.svg" />
     <Content Include="img\meteor_logo.png" />
     <Content Include="img\mvc_logo.png" />
     <Content Include="img\off_canvas.jpg" />

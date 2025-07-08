@@ -127,7 +127,8 @@
 
                     <div class="ibox float-e-margins" runat="server" id="divContenido">
                         <div class="ibox-title">
-                            <h5>Autorización de acceso a afiliado</h5>
+                            <h5>Autorización de acceso a afiliado, <b>
+                                <asp:Literal ID="ltSede" runat="server"></asp:Literal></b> </h5>
                             <div class="ibox-tools">
                                 <a class="collapse-link">
                                     <i class="fa fa-chevron-up"></i>
