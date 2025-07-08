@@ -1,11 +1,13 @@
-﻿using System;
+﻿using NPOI.OpenXmlFormats.Spreadsheet;
+using Org.BouncyCastle.Asn1.Ocsp;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO.Ports;
 using System.Web;
+using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.IO.Ports;
-using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace fpWebApp
 {
@@ -30,10 +32,21 @@ namespace fpWebApp
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
                         txbDocumento.Attributes.Add("type", "number");
-                        txbTelefono.Attributes.Add("type", "number");
-                        txbFechaNac.Attributes.Add("type", "date");
-                        txbTelefonoContacto.Attributes.Add("type", "number");
-                        txbEmail.Attributes.Add("type", "email");
+
+                        clasesglobales cg = new clasesglobales();
+                        string strQuery = @"SELECT * 
+                            FROM AccesoAfiliado aa, Afiliados a, Sedes s 
+                            WHERE aa.idAfiliado = a.idAfiliado 
+                            AND aa.idSede = s.idSede ";
+                        DataTable dt = cg.TraerDatos(strQuery);
+
+                        rpAccesoAfiliados.DataSource = dt;
+                        rpAccesoAfiliados.DataBind();
+
+                        //txbTelefono.Attributes.Add("type", "number");
+                        //txbFechaNac.Attributes.Add("type", "date");
+                        //txbTelefonoContacto.Attributes.Add("type", "number");
+                        //txbEmail.Attributes.Add("type", "email");
                         //CargarTipoDocumento();
                         //CargarCiudad();
                         //CargarEmpresas();
@@ -83,14 +96,18 @@ namespace fpWebApp
         protected void txbDocumento_TextChanged(object sender, EventArgs e)
         {
             ltMensaje.Text = string.Empty;
-            string strQuery = "SELECT * FROM afiliados WHERE DocumentoAfiliado = '" + txbDocumento.Text.ToString() + "' ";
+            string strQuery = @"SELECT * 
+                FROM Afiliados a, AfiliadosPlanes ap 
+                WHERE DocumentoAfiliado = '" + txbDocumento.Text.ToString() + @"' 
+                AND ap.idAfiliado = a.idAfiliado 
+                AND ap.EstadoPlan = 'Activo' ";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
             if (dt.Rows.Count > 0)
             {
                 //Cargar Datos del Afiliado
-                txbNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
+                //txbNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
 
                 //Cargar Planes del Afiliado
                 serialController = new SerialController("COM1"); // Reemplaza con tu puerto
@@ -99,10 +116,52 @@ namespace fpWebApp
                 serialController.SendData("ON");
 
                 serialController.Close();
+
+                strQuery = @"INSERT INTO AccesoAfiliado 
+                    (idAfiliado, idSede, FechaHoraIngreso) 
+                    VALUES (" + dt.Rows[0]["idAfiliado"].ToString() + ", 1, NOW())";
+                cg.TraerDatosStr(strQuery);
+
+                string strNombre = dt.Rows[0]["NombreAfiliado"].ToString();
+                string strApellido = dt.Rows[0]["ApellidoAfiliado"].ToString();
+                string strDocumento = dt.Rows[0]["DocumentoAfiliado"].ToString();
+
+                string strDatosAfiliado = @"<h1><b>" + strNombre + " " + strApellido + @"</b><br />Nro. de Documento: " + strDocumento + @"</h1>";
+
+                string script = @"
+                    Swal.fire({
+                        title: 'Acceso permitido a: " + strDatosAfiliado + @"',
+                        text: '',
+                        icon: 'success',
+                        timer: 5000, // 5 segundos
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    }).then(() => {
+                        window.location.href = 'accesoafiliado';
+                    });
+                    ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
             }
             else
             {
-                ltMensaje.Text = "El afiliado no existe.";
+                string script = @"
+                    Swal.fire({
+                        title: 'El afiliado no existe.',
+                        text: '',
+                        icon: 'error',
+                        timer: 3000, // 3 segundos
+                        showConfirmButton: false,
+                        backdrop: `
+                            rgba(71,80,100,0.8)
+                            left top
+                            no-repeat
+                          `,
+                        timerProgressBar: true
+                    }).then(() => {
+                        window.location.href = 'accesoafiliado';
+                    });
+                    ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
             }
         }
 

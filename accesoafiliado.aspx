@@ -20,6 +20,9 @@
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
+    <!-- FooTable -->
+    <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
+
     <link href="css/plugins/dropzone/basic.css" rel="stylesheet" />
     <link href="css/plugins/dropzone/dropzone.css" rel="stylesheet" />
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet" />
@@ -29,6 +32,9 @@
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
+
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         function changeClass() {
@@ -92,7 +98,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-address-card text-success m-r-sm"></i>Acceso afiliado</h2>
+                    <h2><i class="fa fa-lock-open text-success m-r-sm"></i>Acceso afiliado</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Afiliados</li>
@@ -136,44 +142,40 @@
                                         <ContentTemplate>
                                             <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                             <div class="col-sm-6 b-r">
+
                                                 <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Nro. de Documento:</label>
+                                                            <asp:TextBox ID="txbDocumento" CssClass="form-control input-sm" runat="server"
+                                                                placeholder="Documento" TabIndex="1"
+                                                                OnTextChanged="txbDocumento_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <%--<div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Tipo de Documento:</label>
+                                                            <asp:DropDownList ID="ddlTipoDocumento" runat="server"
+                                                                AppendDataBoundItems="true" DataTextField="TipoDocumento"
+                                                                DataValueField="idTipoDoc" Enabled="false" CssClass="form-control input-sm m-b">
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>--%>
+                                                </div>
+
+                                                <%--<div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Nombre(s):</label>
                                                             <asp:TextBox ID="txbNombre" CssClass="form-control input-sm" runat="server"
-                                                                placeholder="Nombre(s)" TabIndex="4"></asp:TextBox>
-                                                            <asp:TextBox ID="txbNombre2" runat="server" TabIndex="5"
-                                                                Style="opacity: 0; position: absolute;"
-                                                                onchange="pasaNombre(this)"></asp:TextBox>
+                                                                placeholder="Nombre(s)" TabIndex="4" Enabled="false"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Apellido(s):</label>
                                                             <asp:TextBox ID="txbApellido" CssClass="form-control input-sm" runat="server"
-                                                                placeholder="Apellido(s)" TabIndex="2"></asp:TextBox>
-                                                            <asp:TextBox ID="txbApellido2" runat="server" TabIndex="3"
-                                                                Style="opacity: 0; position: absolute;"
-                                                                onchange="pasaApellido(this)"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Nro. de Documento:</label>
-                                                            <asp:TextBox ID="txbDocumento" CssClass="form-control input-sm" runat="server" placeholder="Documento" TabIndex="1" OnTextChanged="txbDocumento_TextChanged" AutoPostBack="true"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Tipo de Documento:</label>
-                                                            <asp:DropDownList ID="ddlTipoDocumento" runat="server"
-                                                                AppendDataBoundItems="true" DataTextField="TipoDocumento"
-                                                                DataValueField="idTipoDoc" CssClass="form-control input-sm m-b">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                            </asp:DropDownList>
+                                                                placeholder="Apellido(s)" TabIndex="2" Enabled="false"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -182,13 +184,15 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Teléfono:</label>
-                                                            <asp:TextBox ID="txbTelefono" CssClass="form-control input-sm" runat="server" placeholder="Teléfono"></asp:TextBox>
+                                                            <asp:TextBox ID="txbTelefono" CssClass="form-control input-sm" 
+                                                                runat="server" placeholder="Teléfono" Enabled="false"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Email:</label>
-                                                            <asp:TextBox ID="txbEmail" CssClass="form-control input-sm" runat="server" placeholder="Email" required></asp:TextBox>
+                                                            <asp:TextBox ID="txbEmail" CssClass="form-control input-sm" 
+                                                                runat="server" placeholder="Email" Enabled="false"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -197,7 +201,8 @@
                                                     <div class="col-sm-8">
                                                         <div class="form-group">
                                                             <label>Dirección:</label>
-                                                            <asp:TextBox ID="txbDireccion" CssClass="form-control input-sm" runat="server" placeholder="Dirección"></asp:TextBox>
+                                                            <asp:TextBox ID="txbDireccion" CssClass="form-control input-sm" 
+                                                                runat="server" placeholder="Dirección" Enabled="false"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4">
@@ -205,8 +210,8 @@
                                                             <label>Ciudad:</label>
                                                             <asp:DropDownList ID="ddlCiudadAfiliado" runat="server"
                                                                 AppendDataBoundItems="true" DataTextField="NombreCiudad"
-                                                                DataValueField="idCiudad" CssClass="chosen-select form-control input-sm">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                DataValueField="idCiudad" Enabled="false" 
+                                                                CssClass="chosen-select form-control input-sm">
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
@@ -218,8 +223,8 @@
                                                             <label>Empresa convenio:</label>
                                                             <asp:DropDownList ID="ddlEmpresaConvenio" runat="server"
                                                                 AppendDataBoundItems="true" DataTextField="RazonSocial"
-                                                                DataValueField="idEmpresaAfiliada" CssClass="form-control input-sm">
-                                                                <asp:ListItem Text="Ninguna" Value="null"></asp:ListItem>
+                                                                DataValueField="idEmpresaAfiliada" Enabled="false" 
+                                                                CssClass="form-control input-sm">
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
@@ -227,29 +232,39 @@
 
                                                 <div class="form-group">
                                                     <label>Foto:</label>
-                                                    <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                                                        <div class="form-control input-sm" data-trigger="fileinput">
-                                                            <i class="glyphicon glyphicon-file fileinput-exists"></i>
-                                                            <span class="fileinput-filename"></span>
-                                                        </div>
-                                                        <span class="input-group-addon btn btn-success btn-file input-sm">
-                                                            <span class="fileinput-new input-sm">Seleccionar foto</span>
-                                                            <span class="fileinput-exists input-sm">Cambiar</span>
-                                                            <input type="file" name="fileFoto" id="fileFoto" accept="image/*">
-                                                        </span>
-                                                        <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm"
-                                                            data-dismiss="fileinput">Quitar</a>
-                                                    </div>
                                                     <asp:Image runat="server" CssClass="img-rounded" ID="imgFoto" Width="150px" />
-                                                </div>
+                                                </div>--%>
                                             </div>
 
                                             <div class="col-sm-6">
                                                 <div class="row">
-                                                    <div class="col-sm-6">
+                                                    <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                                        data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
+                                                        data-empty="Sin resultados" data-toggle-column="first">
+                                                        <thead>
+                                                            <tr>
+                                                                <th data-sortable="false" data-breakpoints="xs">Afiliado</th>
+                                                                <th data-sortable="false" data-breakpoints="xs">Sede</th>
+                                                                <th class="text-nowrap" data-breakpoints="xs">Fecha Hora</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <asp:Repeater ID="rpAccesoAfiliados" runat="server">
+                                                                <ItemTemplate>
+                                                                    <tr>
+                                                                        <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
+                                                                        <td><%# Eval("NombreSede") %></td>
+                                                                        <td><%# Eval("FechaHoraIngreso") %></td>
+                                                                    </tr>
+                                                                </ItemTemplate>
+                                                            </asp:Repeater>
+                                                        </tbody>
+                                                    </table>
+                                                    <%--<div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Fecha nacimiento:</label>
-                                                            <asp:TextBox ID="txbFechaNac" CssClass="form-control input-sm" runat="server" name="txbFechaNac" TabIndex="7"></asp:TextBox>
+                                                            <asp:TextBox ID="txbFechaNac" CssClass="form-control input-sm" 
+                                                                runat="server" name="txbFechaNac" Enabled="false"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
@@ -257,20 +272,19 @@
                                                             <label>Género:</label>
                                                             <asp:DropDownList ID="ddlGenero" runat="server" AppendDataBoundItems="true"
                                                                 DataTextField="Genero" DataValueField="idGenero"
-                                                                CssClass="form-control input-sm m-b" TabIndex="6">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                CssClass="form-control input-sm m-b" Enabled="false">
                                                             </asp:DropDownList>
                                                         </div>
-                                                    </div>
+                                                    </div>--%>
                                                 </div>
 
-                                                <div class="row">
+                                                <%--<div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Estado civil:</label>
                                                             <asp:DropDownList ID="ddlEstadoCivil" runat="server" AppendDataBoundItems="true"
-                                                                DataTextField="EstadoCivil" DataValueField="idEstadoCivil" CssClass="form-control input-sm m-b">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                DataTextField="EstadoCivil" DataValueField="idEstadoCivil" Enabled="false" 
+                                                                CssClass="form-control input-sm m-b">
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
@@ -278,8 +292,8 @@
                                                         <div class="form-group">
                                                             <label>Profesión:</label>
                                                             <asp:DropDownList ID="ddlProfesiones" runat="server" AppendDataBoundItems="true"
-                                                                DataTextField="Profesion" DataValueField="idProfesion" CssClass="chosen-select form-control input-sm m-b">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                DataTextField="Profesion" DataValueField="idProfesion" Enabled="false" 
+                                                                CssClass="chosen-select form-control input-sm m-b">
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
@@ -290,8 +304,8 @@
                                                         <div class="form-group">
                                                             <label>EPS:</label>
                                                             <asp:DropDownList ID="ddlEps" runat="server" AppendDataBoundItems="true"
-                                                                DataTextField="NombreEps" DataValueField="idEps" CssClass="form-control input-sm m-b">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                DataTextField="NombreEps" DataValueField="idEps" Enabled="false" 
+                                                                CssClass="form-control input-sm m-b">
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
@@ -299,8 +313,8 @@
                                                         <div class="form-group">
                                                             <label>Sede:</label>
                                                             <asp:DropDownList ID="ddlSedes" runat="server" AppendDataBoundItems="true"
-                                                                DataTextField="NombreSede" DataValueField="idSede" CssClass="form-control input-sm m-b">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                DataTextField="NombreSede" DataValueField="idSede" Enabled="false" 
+                                                                CssClass="form-control input-sm m-b">
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
@@ -308,14 +322,16 @@
 
                                                 <div class="form-group">
                                                     <label>Persona responsable:</label>
-                                                    <asp:TextBox ID="txbResponsable" CssClass="form-control input-sm" runat="server" placeholder="Nombre responsable"></asp:TextBox>
+                                                    <asp:TextBox ID="txbResponsable" CssClass="form-control input-sm" runat="server" 
+                                                        placeholder="Nombre responsable" Enabled="false"></asp:TextBox>
                                                 </div>
 
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Parentesco:</label>
-                                                            <asp:DropDownList ID="ddlParentesco" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
+                                                            <asp:DropDownList ID="ddlParentesco" runat="server" AppendDataBoundItems="true" 
+                                                                CssClass="form-control input-sm m-b" Enabled="false">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                 <asp:ListItem Text="Padre/Madre" Value="Padre/Madre"></asp:ListItem>
                                                                 <asp:ListItem Text="Esposo/a" Value="Esposo/a"></asp:ListItem>
@@ -330,15 +346,16 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Teléfono de contacto:</label>
-                                                            <asp:TextBox ID="txbTelefonoContacto" CssClass="form-control input-sm" runat="server" placeholder="Teléfono"></asp:TextBox>
+                                                            <asp:TextBox ID="txbTelefonoContacto" CssClass="form-control input-sm" 
+                                                                runat="server" placeholder="Teléfono" Enabled="false"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div>
-                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='afiliados'"><strong>Cancelar</strong></button>
+                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='accesoafiliado'"><strong>Cancelar</strong></button>
                                                     <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Agregar" />
-                                                </div>
+                                                </div>--%>
                                             </div>
                                         </ContentTemplate>
                                     </asp:UpdatePanel>
@@ -374,33 +391,22 @@
     <!-- Jquery Validate -->
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
+    <!-- FooTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
+
     <!-- Jasny -->
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
     <script>
 
+        $('.footable').footable();
+
         $("#txbDocumento").focus();
-
-        function pasaNombre(objetoinput) {
-            document.getElementById('txbNombre').value = document.getElementById('txbNombre').value + " " + objetoinput.value;
-        }
-
-        function pasaApellido(objetoinput) {
-            document.getElementById('txbApellido').value = document.getElementById('txbApellido').value + " " + objetoinput.value;
-        }
 
         $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" })
 
         $("#form").validate({
             rules: {
-                txbNombre: {
-                    required: true,
-                    minlength: 3
-                },
-                txbApellido: {
-                    required: true,
-                    minlength: 3
-                },
                 txbDocumento: {
                     required: true,
                     minlength: 7

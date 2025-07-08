@@ -46,6 +46,7 @@
                         <a href="afiliados"><i class="fa fa-id-card"></i>Afiliados<span class="label label-warning1 pull-right"><asp:Literal ID="ltTotalAfiliados" runat="server"></asp:Literal></span></a>
                     </li>
                     <li id="nuevoafiliado" class="old"><a href="nuevoafiliado"><i class="fa fa-id-card"></i>Crear afiliado</a></li>
+                    <li id="accesoafiliado" class="old"><a href="accesoafiliado"><i class="fa fa-lock-open"></i>Acceso afiliado</a></li>
                     <li id="empresasafiliadas" class="old"><a href="empresasafiliadas"><i class="fa fa-building"></i>Empresas convenios</a></li>
                     <li id="nuevaempresa" class="old"><a href="nuevaempresaafiliada"><i class="fa fa-building"></i>Crear empresa</a></li>
                     <li id="traspasos" class="old"><a href="traspasos"><i class="fa fa-right-left"></i>Traspasos</a></li>
