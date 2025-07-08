@@ -939,17 +939,16 @@ namespace fpWebApp
 
         protected void btnActualizarYRedirigir_Click(object sender, EventArgs e)
         {
-            //// 1️⃣ Obtén los valores necesarios: ID, fecha, estado, observaciones.
-            //int idContacto = Convert.ToInt32(hdnIdContacto.Value); // Por ejemplo en un HiddenField
-            //DateTime nuevaFechaProx = DateTime.Now.AddDays(1); // o lo que tengas en un input
-            //int nuevoEstadoId = Convert.ToInt32(ddlEstado.SelectedValue); // ejemplo: un DropDownList
-            //string nuevasObservaciones = txtObservaciones.Text.Trim(); // ejemplo: un TextBox
+            // Supongamos que ya tienes el ID en una variable:
+            string idcrm = "2"; // <-- Aquí asignas el valor real de tu ID
 
-            //// 2️⃣ Ejecuta la actualización
-            //ActualizarContacto(idContacto, nuevaFechaProx, nuevoEstadoId, nuevasObservaciones);
+            // Construyes la URL con el parámetro
+            string url = $"editarafiliado.aspx?idcrm={idcrm}";
 
-            //// 3️⃣ Redirige a la URL deseada
-            //Response.Redirect("crmnuevocontacto.aspx?editid=" + idContacto);
+            // Rediriges
+            Response.Redirect(url);
+
+
         }
     }
 }

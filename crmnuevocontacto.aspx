@@ -700,12 +700,9 @@
                                                                 <asp:Literal ID="ltObjetivo" runat="server"></asp:Literal>
                                                                 </p>
                                                                 
-                                                                <button type="button"
-                                                                    class="btn btn-success btn-sm btn-block" id="btnNuevoAfiliado" data-idcrm="" data-documento="" onclick="redirigirNuevoAfiliado(this, event)">
-                                                                    <i class="fa fa-id-card"></i>Actualizar e ir a afiliaciones
-                                                                </button>
+                                                             
                                                                 <asp:Button ID="btnActualizarYRedirigir" runat="server" Text="Actualizar y Redirigir"
-                                                                    OnClick="btnActualizarYRedirigir_Click" class="btn btn-primary btn-sm btn-block"/>
+                                                                    OnClick="btnActualizarYRedirigir_Click" class="btn btn-success btn-sm btn-block"/>
                                                             </div>
                                                         </div>
                                                         <div class="client-detail">

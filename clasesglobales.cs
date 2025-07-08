@@ -6624,6 +6624,38 @@ namespace fpWebApp
             return mensaje;
         }
 
+        public string ActualizarContactoCRM(int idContactoCMR,  int idEstado,  string fechaProxCon, string observaciones, 
+        out bool respuesta, out string mensaje)
+        {
+            mensaje = string.Empty;
+            respuesta = false;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_CONTACTO_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_contacto_cmr", idContactoCMR);
+                        cmd.Parameters.AddWithValue("@p_fecha_proximo_con", fechaProxCon);
+                        cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
+                        cmd.ExecuteNonQuery();
+                        respuesta = true;
+                        mensaje = "Ok";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
+        }
+
         public string EliminarContactoCRM(int idContactoCMR, int idUsuario, string Usuario, out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
