@@ -5,6 +5,7 @@
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
+<%@ Register Src="~/controles/indicadoresacceso.ascx" TagPrefix="uc1" TagName="indicadoresacceso" %>
 
 <!DOCTYPE html>
 <html>
@@ -112,6 +113,7 @@
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row animated fadeInDown">
                     <%--Inicio Contenido!!!!--%>
+                    <uc1:indicadoresacceso runat="server" ID="indicadoresacceso" />
 
                     <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
                         <div class="p-xs">
@@ -153,88 +155,7 @@
                                                                 OnTextChanged="txbDocumento_TextChanged" AutoPostBack="true"></asp:TextBox>
                                                         </div>
                                                     </div>
-                                                    <%--<div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Tipo de Documento:</label>
-                                                            <asp:DropDownList ID="ddlTipoDocumento" runat="server"
-                                                                AppendDataBoundItems="true" DataTextField="TipoDocumento"
-                                                                DataValueField="idTipoDoc" Enabled="false" CssClass="form-control input-sm m-b">
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>--%>
                                                 </div>
-
-                                                <%--<div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Nombre(s):</label>
-                                                            <asp:TextBox ID="txbNombre" CssClass="form-control input-sm" runat="server"
-                                                                placeholder="Nombre(s)" TabIndex="4" Enabled="false"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Apellido(s):</label>
-                                                            <asp:TextBox ID="txbApellido" CssClass="form-control input-sm" runat="server"
-                                                                placeholder="Apellido(s)" TabIndex="2" Enabled="false"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Teléfono:</label>
-                                                            <asp:TextBox ID="txbTelefono" CssClass="form-control input-sm" 
-                                                                runat="server" placeholder="Teléfono" Enabled="false"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Email:</label>
-                                                            <asp:TextBox ID="txbEmail" CssClass="form-control input-sm" 
-                                                                runat="server" placeholder="Email" Enabled="false"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-sm-8">
-                                                        <div class="form-group">
-                                                            <label>Dirección:</label>
-                                                            <asp:TextBox ID="txbDireccion" CssClass="form-control input-sm" 
-                                                                runat="server" placeholder="Dirección" Enabled="false"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Ciudad:</label>
-                                                            <asp:DropDownList ID="ddlCiudadAfiliado" runat="server"
-                                                                AppendDataBoundItems="true" DataTextField="NombreCiudad"
-                                                                DataValueField="idCiudad" Enabled="false" 
-                                                                CssClass="chosen-select form-control input-sm">
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <div class="form-group">
-                                                            <label>Empresa convenio:</label>
-                                                            <asp:DropDownList ID="ddlEmpresaConvenio" runat="server"
-                                                                AppendDataBoundItems="true" DataTextField="RazonSocial"
-                                                                DataValueField="idEmpresaAfiliada" Enabled="false" 
-                                                                CssClass="form-control input-sm">
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label>Foto:</label>
-                                                    <asp:Image runat="server" CssClass="img-rounded" ID="imgFoto" Width="150px" />
-                                                </div>--%>
                                             </div>
 
                                             <div class="col-sm-6">
@@ -255,108 +176,15 @@
                                                                     <tr>
                                                                         <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
                                                                         <td><%# Eval("NombreSede") %></td>
-                                                                        <td><%# Eval("FechaHoraIngreso") %></td>
+                                                                        <td><%# Eval("FechaHoraIngreso","{0:dd MMM yyyy HH:mm:ss}") %></td>
                                                                     </tr>
                                                                 </ItemTemplate>
                                                             </asp:Repeater>
                                                         </tbody>
                                                     </table>
-                                                    <%--<div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Fecha nacimiento:</label>
-                                                            <asp:TextBox ID="txbFechaNac" CssClass="form-control input-sm" 
-                                                                runat="server" name="txbFechaNac" Enabled="false"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Género:</label>
-                                                            <asp:DropDownList ID="ddlGenero" runat="server" AppendDataBoundItems="true"
-                                                                DataTextField="Genero" DataValueField="idGenero"
-                                                                CssClass="form-control input-sm m-b" Enabled="false">
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>--%>
+                                                    
                                                 </div>
 
-                                                <%--<div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Estado civil:</label>
-                                                            <asp:DropDownList ID="ddlEstadoCivil" runat="server" AppendDataBoundItems="true"
-                                                                DataTextField="EstadoCivil" DataValueField="idEstadoCivil" Enabled="false" 
-                                                                CssClass="form-control input-sm m-b">
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Profesión:</label>
-                                                            <asp:DropDownList ID="ddlProfesiones" runat="server" AppendDataBoundItems="true"
-                                                                DataTextField="Profesion" DataValueField="idProfesion" Enabled="false" 
-                                                                CssClass="chosen-select form-control input-sm m-b">
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>EPS:</label>
-                                                            <asp:DropDownList ID="ddlEps" runat="server" AppendDataBoundItems="true"
-                                                                DataTextField="NombreEps" DataValueField="idEps" Enabled="false" 
-                                                                CssClass="form-control input-sm m-b">
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Sede:</label>
-                                                            <asp:DropDownList ID="ddlSedes" runat="server" AppendDataBoundItems="true"
-                                                                DataTextField="NombreSede" DataValueField="idSede" Enabled="false" 
-                                                                CssClass="form-control input-sm m-b">
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label>Persona responsable:</label>
-                                                    <asp:TextBox ID="txbResponsable" CssClass="form-control input-sm" runat="server" 
-                                                        placeholder="Nombre responsable" Enabled="false"></asp:TextBox>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Parentesco:</label>
-                                                            <asp:DropDownList ID="ddlParentesco" runat="server" AppendDataBoundItems="true" 
-                                                                CssClass="form-control input-sm m-b" Enabled="false">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                <asp:ListItem Text="Padre/Madre" Value="Padre/Madre"></asp:ListItem>
-                                                                <asp:ListItem Text="Esposo/a" Value="Esposo/a"></asp:ListItem>
-                                                                <asp:ListItem Text="Hermano/a" Value="Hermano/a"></asp:ListItem>
-                                                                <asp:ListItem Text="Hijo/a" Value="Hijo/a"></asp:ListItem>
-                                                                <asp:ListItem Text="Primo/a" Value="Primo/a"></asp:ListItem>
-                                                                <asp:ListItem Text="Sobrino/a" Value="Sobrino/a"></asp:ListItem>
-                                                                <asp:ListItem Text="Encargado/a" Value="Encargado/a"></asp:ListItem>
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label>Teléfono de contacto:</label>
-                                                            <asp:TextBox ID="txbTelefonoContacto" CssClass="form-control input-sm" 
-                                                                runat="server" placeholder="Teléfono" Enabled="false"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div>
-                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='accesoafiliado'"><strong>Cancelar</strong></button>
-                                                    <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Agregar" />
-                                                </div>--%>
                                             </div>
                                         </ContentTemplate>
                                     </asp:UpdatePanel>
