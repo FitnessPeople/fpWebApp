@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
+using System.Data.SqlClient;
 using System.IO;
 using System.Web;
 using System.Web.UI;
@@ -199,7 +199,7 @@ namespace fpWebApp
                 
                 cg.InsertarLog(Session["idusuario"].ToString(), "empresas afiliadas", "Modifica", "El usuario modificó datos a la empresa afiliada con documento: " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
             }
-            catch (OdbcException ex)
+            catch (SqlException ex)
             {
                 string mensaje = ex.Message;               
             }

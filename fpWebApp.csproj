@@ -252,6 +252,7 @@
   <ItemGroup>
     <Content Include="404.html" />
     <Content Include="500.html" />
+    <Content Include="accesoafiliado.aspx" />
     <Content Include="afiliados.aspx" />
     <Content Include="agenda.aspx" />
     <Content Include="agendacrm.aspx" />
@@ -289,6 +290,7 @@
     <Content Include="controles\indicadores03.ascx" />
     <Content Include="controles\indicadores04.ascx" />
     <Content Include="controles\indicadores05.ascx" />
+    <Content Include="controles\indicadoresacceso.ascx" />
     <Content Include="controles\indicadoresgympass.ascx" />
     <Content Include="controles\indicadoresmedico.ascx" />
     <Content Include="controles\indicadoresusucrm.ascx" />
@@ -502,6 +504,7 @@
     <Content Include="img\empleados\nofoto.png" />
     <Content Include="img\especialistas\nofoto.png" />
     <Content Include="img\facial-recognition.png" />
+    <Content Include="img\fp-logo-lime-f-min.svg" />
     <Content Include="img\full_height.jpg" />
     <Content Include="img\gallery\1.jpg" />
     <Content Include="img\gallery\10.jpg" />
@@ -529,6 +532,7 @@
     <Content Include="img\gallery\9s.jpg" />
     <Content Include="img\headphones.jpg" />
     <Content Include="img\html_logo.png" />
+    <Content Include="img\icono_cmd_3.png" />
     <Content Include="img\landing\avatar1.jpg" />
     <Content Include="img\landing\avatar2.jpg" />
     <Content Include="img\landing\avatar3.jpg" />
@@ -547,6 +551,8 @@
     <Content Include="img\landing\perspective.png" />
     <Content Include="img\landing\shattered.png" />
     <Content Include="img\landing\word_map.png" />
+    <Content Include="img\logo_fp_black.svg" />
+    <Content Include="img\logo_fp_white.svg" />
     <Content Include="img\meteor_logo.png" />
     <Content Include="img\mvc_logo.png" />
     <Content Include="img\off_canvas.jpg" />
@@ -997,6 +1003,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="accesoafiliado.aspx.cs">
+      <DependentUpon>accesoafiliado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="accesoafiliado.aspx.designer.cs">
+      <DependentUpon>accesoafiliado.aspx</DependentUpon>
+    </Compile>
     <Compile Include="afiliados.aspx.cs">
       <DependentUpon>afiliados.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1245,6 +1258,13 @@
     <Compile Include="controles\indicadores05.ascx.designer.cs">
       <DependentUpon>indicadores05.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadoresacceso.ascx.cs">
+      <DependentUpon>indicadoresacceso.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadoresacceso.ascx.designer.cs">
+      <DependentUpon>indicadoresacceso.ascx</DependentUpon>
     </Compile>
     <Compile Include="controles\indicadoresgympass.ascx.cs">
       <DependentUpon>indicadoresgympass.ascx</DependentUpon>
@@ -1940,7 +1960,6 @@
     <Folder Include="docs\incapacidades\" />
     <Folder Include="docs\traspasos\" />
     <Folder Include="img\contratos\" />
-    <Folder Include="Views\ejemplo\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\bootstrap.css.map" />
@@ -1966,10 +1985,6 @@
     <Content Include="js\plugins\justified-gallery\README.md" />
     <Content Include="js\plugins\topojson\LICENSE" />
     <None Include="packages.config" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

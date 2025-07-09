@@ -32,6 +32,49 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
+    <!-- CSS de Quill -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+    <!-- JS de Quill -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+    <script>
+        var editorContenido = document.querySelector(".ql-editor");
+        console.log(editorContenido);
+        //editorContenido.style.height = "600";
+        //editorContenido.style.height = editorContenido.scrollHeight + "px";
+
+        var quill;
+        document.addEventListener("DOMContentLoaded", function () {
+            quill = new Quill("#editor", {
+                theme: "snow",
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold', 'strike'], // Negrita y Tachado
+                        ['italic', 'underline'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'align': [] }],
+                    ]
+                }
+            });
+            function ajustarAlturaEditor() {
+                var editorContenido = document.querySelector(".ql-editor");
+                editorContenido.style.height = "auto";
+                editorContenido.style.height = editorContenido.scrollHeight + "px";
+            }
+            quill.on("text-change", ajustarAlturaEditor);
+
+            var contenidoGuardado = document.getElementById('<%= hiddenEditor.ClientID %>').value;
+        if (contenidoGuardado.trim() !== "") {
+            quill.root.innerHTML = contenidoGuardado;
+        }
+    });
+    function guardarContenidoEditor() {
+        var contenido = quill.root.innerHTML;
+        document.getElementById('<%= hiddenEditor.ClientID %>').value = contenido;
+        }
+    </script>
+
     <style type="text/css" media="print">
         body {
             visibility: hidden;
@@ -159,11 +202,11 @@
                                                 
                                                 <div class="form-group m-b-n-xs">
                                                     <label>Descripción del plan web:</label>
-                                                    <asp:TextBox ID="txbDescripcion" runat="server" CssClass="form-control input-sm" TextMode="MultiLine"
-                                                        placeholder="Descripción"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="rfvDescripcion" runat="server" ErrorMessage="* Campo requerido"
+                                                    <div id="editor" cssclass="form-control input-sm"></div>
+                                                    <asp:HiddenField ID="hiddenEditor" runat="server" />
+                                                    <%--<asp:RequiredFieldValidator ID="rfvDescripcion" runat="server" ErrorMessage="* Campo requerido"
                                                         ControlToValidate="txbDescripcion" ValidationGroup="agregar"
-                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>--%>
                                                 </div>
 
                                                 <div class="form-group m-b-n-xs">
@@ -182,6 +225,9 @@
                                                             data-dismiss="fileinput">Quitar</a>
                                                     </div>
                                                     <asp:Literal ID="ltBanner" runat="server"></asp:Literal>
+                                                    <%--<asp:RequiredFieldValidator ID="rfvBanner" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="txbDescripcion" ValidationGroup="agregar"
+                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>--%>
                                                 </div>
 
                                                 <div class="form-group">
@@ -199,7 +245,10 @@
                                                         <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm" 
                                                             data-dismiss="fileinput">Quitar</a>
                                                     </div>
-                                                    <asp:Literal ID="Literal1" runat="server"></asp:Literal>
+                                                    <asp:Literal ID="ltImagenMarketing" runat="server"></asp:Literal>
+                                                    <%--<asp:RequiredFieldValidator ID="rfvImagenMarketing" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="txbDescripcion" ValidationGroup="agregar"
+                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>--%>
                                                 </div>
 
                                                 <div class="form-group">
@@ -273,8 +322,8 @@
                                                             <td style="white-space: nowrap;"><i class="fa fa-circle-user m-r-xs font-bold"></i><%# Eval("NombreUsuario") %></td>
                                                             <td><span class="badge badge-<%# Eval("label") %>"><%# Eval("EstadoPlan") %></span></td>
                                                             <td>
-                                                                <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                                <%--<a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>--%>
                                                                 <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
                                                             </td>

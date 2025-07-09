@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
+using System.Data.SqlClient;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -137,7 +137,7 @@ namespace fpWebApp
                 clasesglobales cg = new clasesglobales();
                 string mensaje = cg.TraerDatosStr(strQuery);
             }
-            catch (OdbcException ex)
+            catch (SqlException ex)
             {
                 string mensaje = ex.Message;
             }

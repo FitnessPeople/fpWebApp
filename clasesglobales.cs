@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Web;
 using System.Data;
 using System.Data.Common;
-using System.Data.Odbc;
 using System.Configuration;
 using System.Text;
 using System.Net.Mail;
@@ -4909,8 +4908,8 @@ namespace fpWebApp
         }
 
         public string InsertarPlan(string nombrePlan, string descripcionPlan, int precioTotal, int precioBase, int meses, 
-            int mesesCortesia, string color, 
-            int idUsuario, double diasCongelamiento, string fechaInicio, string fechaFinal, int permanente)
+            int mesesCortesia, string color, int idUsuario, double diasCongelamiento, string fechaInicio, 
+            string fechaFinal, int permanente, int debitoAutomatico)
         {
             string respuesta = string.Empty;
             try
@@ -4934,6 +4933,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicio);
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
                         cmd.Parameters.AddWithValue("@p_permanente", permanente);
+                        cmd.Parameters.AddWithValue("@p_debito_automatico", debitoAutomatico);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -4949,7 +4949,7 @@ namespace fpWebApp
         }
 
         public string ActualizarPlan(int idPlan, string nombre, string descripcion, int precioTotal, int precioBase, int meses, int mesesCortesia,
-            string color, int idUsuario, int diasCongelamiento, string fechaInicial, string fechaFinal, int permanente)
+            string color, int idUsuario, int diasCongelamiento, string fechaInicial, string fechaFinal, int permanente, int debitoAutomatico)
         {   
             string respuesta = string.Empty;
             try
@@ -4978,6 +4978,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_fecha_inicial", fechaInicial);
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
                         cmd.Parameters.AddWithValue("@p_permanente", permanente);
+                        cmd.Parameters.AddWithValue("@p_debito_automatico", debitoAutomatico);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -4992,7 +4993,8 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarPlanWeb(int idPlan, string tituloPlan, string descripcionPlanWeb)
+        public string ActualizarPlanWeb(int idPlan, string tituloPlan, string descripcionPlanWeb, 
+            string bannerWeb, string imagenMarketing, string enlacePago)
         {
             string respuesta = string.Empty;
             try
@@ -5011,6 +5013,9 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
                         cmd.Parameters.AddWithValue("@p_titulo_plan", tituloPlan);
                         cmd.Parameters.AddWithValue("@p_descripcion_plan_web", descripcionPlanWeb);
+                        cmd.Parameters.AddWithValue("@p_banner_web", bannerWeb);
+                        cmd.Parameters.AddWithValue("@p_imagen_marketing", imagenMarketing);
+                        cmd.Parameters.AddWithValue("@p_enlace_pago", enlacePago);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -5935,17 +5940,63 @@ namespace fpWebApp
             return dt;
         }
 
-        //public string ActualizarEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, 
-        //string telEmpleado, string telEmpleadoCorp, string emailEmpleado, string emailEmpleadoCorp,
-        //    string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato,
-        //    string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
-        //    int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo)
-
-        public string ActualizarEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, 
+        public string ActualizarEmpleadoNuevo(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, 
             string telEmpleado, string telEmpleadoCorp, string emailEmpleado, string emailEmpleadoCorp, 
-            string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato, 
-            string tipoContrato, int idSede, int sueldo, string grupoNomina, int idEps,
-            int idFondo, int idArl, int idCajaCompensa, int idCesantias, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo)
+            string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, int idSede, int idEps,
+            int idFondo, int idArl, int idCajaCompensa, int idCesantias, int idGenero, int idEstadoCivil, int idCargo, string claveUsuario)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_EMPLEADO_NUEVO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_documento_empleado", documentoEmpleado);
+                        cmd.Parameters.AddWithValue("@p_tipo_doc_empleado", tipoDocumento);
+                        cmd.Parameters.AddWithValue("@p_nombre_empleado", nombreEmpleado);
+                        cmd.Parameters.AddWithValue("@p_tel_empleado", telEmpleado);
+                        cmd.Parameters.AddWithValue("@p_email_empleado", emailEmpleado);
+                        cmd.Parameters.AddWithValue("@p_tel_empleado_corp", telEmpleadoCorp);
+                        cmd.Parameters.AddWithValue("@p_email_empleado_corp", emailEmpleadoCorp);
+                        cmd.Parameters.AddWithValue("@p_dir_empleado", dirEmpleado);
+                        cmd.Parameters.AddWithValue("@p_id_ciu_empleado", idCiudadEmpleado);
+                        cmd.Parameters.AddWithValue("@p_fecha_nac_empleado", fechaNacEmpleado);
+                        cmd.Parameters.AddWithValue("@p_foto_empleado", fotoEmpleado);
+                        cmd.Parameters.AddWithValue("@p_id_sede", idSede);
+                        cmd.Parameters.AddWithValue("@p_id_eps", idEps);
+                        cmd.Parameters.AddWithValue("@p_id_fondo_pension", idFondo);
+                        cmd.Parameters.AddWithValue("@p_id_arl", idArl);
+                        cmd.Parameters.AddWithValue("@p_id_caja_comp", idCajaCompensa);
+                        cmd.Parameters.AddWithValue("@p_cesantias", idCesantias);
+                        cmd.Parameters.AddWithValue("@p_id_genero", idGenero);
+                        cmd.Parameters.AddWithValue("@p_estado_civil", idEstadoCivil);
+                        cmd.Parameters.AddWithValue("@p_id_cargo", idCargo);
+                        cmd.Parameters.AddWithValue("@p_clave_usuario", claveUsuario);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado,
+            string telEmpleado, string telEmpleadoCorp, string emailEmpleado, string emailEmpleadoCorp,
+            string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato,
+            string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
+            int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo)
         {
             string respuesta = string.Empty;
             try
@@ -5972,10 +6023,10 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_foto_empleado", fotoEmpleado);
                         cmd.Parameters.AddWithValue("@p_nro_contrato", nroContrato);
                         cmd.Parameters.AddWithValue("@p_tipo_contrato", tipoContrato);
-                        //cmd.Parameters.AddWithValue("@p_id_empresa_fp", idEmpresaFP);
+                        cmd.Parameters.AddWithValue("@p_id_empresa_fp", idEmpresaFP);
                         cmd.Parameters.AddWithValue("@p_id_sede", idSede);
-                        //cmd.Parameters.AddWithValue("@p_fecha_inicio", fechaIni);
-                        //cmd.Parameters.AddWithValue("@p_fecha_fin", fechaFin);
+                        cmd.Parameters.AddWithValue("@p_fecha_inicio", fechaIni);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", fechaFin);
                         cmd.Parameters.AddWithValue("@p_sueldo", sueldo);
                         cmd.Parameters.AddWithValue("@p_grupo_nomina", grupoNomina);
                         cmd.Parameters.AddWithValue("@p_id_eps", idEps);
@@ -5983,7 +6034,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_id_arl", idArl);
                         cmd.Parameters.AddWithValue("@p_id_caja_comp", idCajaCompensa);
                         cmd.Parameters.AddWithValue("@p_cesantias", idCesantias);
-                        //cmd.Parameters.AddWithValue("@p_estado", estadoEmpleado);
+                        cmd.Parameters.AddWithValue("@p_estado", estadoEmpleado);
                         cmd.Parameters.AddWithValue("@p_id_genero", idGenero);
                         cmd.Parameters.AddWithValue("@p_estado_civil", idEstadoCivil);
                         cmd.Parameters.AddWithValue("@p_canal_venta", idCanalVenta);
@@ -6485,9 +6536,10 @@ namespace fpWebApp
             return dt;
         }
 
-        public string InsertarContactoCRM(string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
-            int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
-            int idUsuario, int idObjetivo, string tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, out bool respuesta, out string mensaje)
+        public string InsertarContactoCRM(string nombreContacto, string apellidoContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
+        int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
+        int idUsuario, int idObjetivo, int tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, int idTipoDoc,
+        string DocumentoAfiliado, string tiempoAtencion, out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -6501,6 +6553,7 @@ namespace fpWebApp
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_nombre_contacto", nombreContacto);
+                        cmd.Parameters.AddWithValue("@p_apellido_contacto", apellidoContacto);
                         cmd.Parameters.AddWithValue("@p_telefono_contacto", telefonoContacto);
                         cmd.Parameters.AddWithValue("@p_email_contacto", emailContacto);
                         cmd.Parameters.AddWithValue("@p_id_empresa", idEmpresaCMR);
@@ -6512,11 +6565,15 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
                         cmd.Parameters.AddWithValue("@p_id_objetivo", idObjetivo);
-                        cmd.Parameters.AddWithValue("@p_tipo_pago", tipoPago);
+                        cmd.Parameters.AddWithValue("@p_id_medio_pago", tipoPago);
                         cmd.Parameters.AddWithValue("@p_id_tipo_afiliado", idTipoAfiliado);
                         cmd.Parameters.AddWithValue("@p_id_canal_marketing", idCanalMarketing);
                         cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
                         cmd.Parameters.AddWithValue("@p_meses_plan", mesesPlan);
+                        cmd.Parameters.AddWithValue("@p_id_tipo_doc", idTipoDoc);
+                        cmd.Parameters.AddWithValue("@p_documento_afiliado", DocumentoAfiliado);
+                        cmd.Parameters.AddWithValue("@p_tiempo_atencion", tiempoAtencion);
+
 
                         // Parámetro de salida
                         MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
@@ -6540,9 +6597,10 @@ namespace fpWebApp
             return mensaje;
         }
 
-        public string ActualizarContactoCRM(int idContactoCMR, string nombreContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
+        public string ActualizarContactoCRM(int idContactoCMR, string nombreContacto, string apellidoContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
         int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
-        int idUsuario, int idObjetivo, string tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, out bool respuesta, out string mensaje)
+        int idUsuario, int idObjetivo, int tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, int idTipoDoc, string DocumentoAfiliado,
+        out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -6557,6 +6615,7 @@ namespace fpWebApp
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_id_contacto_cmr", idContactoCMR);
                         cmd.Parameters.AddWithValue("@p_nombre_contacto", nombreContacto);
+                        cmd.Parameters.AddWithValue("@p_apellido_contacto", apellidoContacto);
                         cmd.Parameters.AddWithValue("@p_telefono_contacto", telefonoContacto);
                         cmd.Parameters.AddWithValue("@p_email_contacto", emailContacto);
                         cmd.Parameters.AddWithValue("@p_id_empresa", idEmpresaCMR);
@@ -6568,11 +6627,13 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
                         cmd.Parameters.AddWithValue("@p_id_objetivo", idObjetivo);
-                        cmd.Parameters.AddWithValue("@p_tipo_pago", tipoPago);
+                        cmd.Parameters.AddWithValue("@p_id_medio_pago", tipoPago);
                         cmd.Parameters.AddWithValue("@p_id_tipo_afiliado", idTipoAfiliado);
                         cmd.Parameters.AddWithValue("@p_id_canal_marketing", idCanalMarketing);
                         cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
                         cmd.Parameters.AddWithValue("@p_meses_plan", mesesPlan);
+                        cmd.Parameters.AddWithValue("@p_id_tipo_doc", idTipoDoc);
+                        cmd.Parameters.AddWithValue("@p_documento_afiliado", DocumentoAfiliado);
 
                         cmd.ExecuteNonQuery();
                         respuesta = true;
@@ -6588,6 +6649,7 @@ namespace fpWebApp
 
             return mensaje;
         }
+
 
         public string EliminarContactoCRM(int idContactoCMR, int idUsuario, string Usuario, out bool respuesta, out string mensaje)
         {
@@ -6792,7 +6854,7 @@ namespace fpWebApp
         }
 
         public string InsertarEmpresaCRM(string nombreEmpresaCRM, string paginaWeb, int idContacto, int idUsuario,
-        string observacionesEmp, string estadoEmpresaCRM, int idCiudad, out bool respuesta, out string mensaje)
+         string observacionesEmp, string estadoEmpresaCRM, int idCiudad, out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -6926,6 +6988,246 @@ namespace fpWebApp
             }
 
             return mensaje;
+        }
+
+        public string InsertarEstadoCRM(string nombreEstadoCRM, string colorEstadoCRM, string iconoMaxEstadoCRM, string iconoMinEstadoCRM,
+        string colorHexaCRM, out bool respuesta, out string mensaje)
+        {
+            mensaje = string.Empty;
+            respuesta = false;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_ESTADO_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_nombre_estado_crm", nombreEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_color_estado_crm", colorEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_icono_max_estado_crm", iconoMaxEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_icono_min_estado_crm", iconoMinEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_color_hexa_crm", colorHexaCRM);
+
+                        // Parámetro de salida
+                        MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
+                        pMensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pMensaje);
+
+                        cmd.ExecuteNonQuery();
+                        mensaje = pMensaje.Value?.ToString();
+
+                        if (mensaje == "OK") respuesta = true;
+                        else respuesta = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
+        }
+
+
+        public string ActualizarEstadoCRM(int idEstadoCRM, string nombreEstadoCRM, string colorEstadoCRM, int iconoMaxEstadoCRM,
+        int iconoMinEstadoCRM, string colorHexaCRM, out bool respuesta, out string mensaje)
+        {
+            mensaje = string.Empty;
+            respuesta = false;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_ESTADO_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_estado_crm", idEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_nombre_estado_crm", nombreEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_color_estado_crm", colorEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_icono_max_estado_crm", iconoMaxEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_icono_min_estado_crm", iconoMinEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_color_hexa_crm", colorHexaCRM);
+
+
+                        // Parámetro de salida
+                        MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
+                        pMensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pMensaje);
+
+                        cmd.ExecuteNonQuery();
+                        mensaje = pMensaje.Value?.ToString();
+
+                        if (mensaje == "OK") respuesta = true;
+                        else respuesta = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
+        }
+
+        public string EliminarEstadoCRM(int idEstadoCRM, int idUsuario, string Usuario, out bool respuesta, out string mensaje)
+        {
+            mensaje = string.Empty;
+            respuesta = false;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ELIMINAR_ESTADO_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_id_estado_crm", idEstadoCRM);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_usuario", Usuario);
+
+                        // ParámetroS de salida
+                        MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
+                        pMensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pMensaje);
+
+                        MySqlParameter pRespuesta = new MySqlParameter("@p_respuesta", MySqlDbType.Bit);
+                        pRespuesta.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pRespuesta);
+
+                        cmd.ExecuteNonQuery();
+
+                        mensaje = pMensaje.Value?.ToString();
+                        respuesta = Convert.ToBoolean(pRespuesta.Value);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
+        }
+
+        public DataTable ConsultarEstadoCRMPorID(int idEstadoCRM)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_ESTADOS_CRM_POR_ID", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_estado_CRM", idEstadoCRM);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+
+        public DataTable ConsultarEstadoCRMPorNombre(string nombreEstadoCRM)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_ESTADO_CRM_POR_NOMBRE", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_nombre_estado_CRM", nombreEstadoCRM);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarContactosCRMPorUsuario(int idUsuario, out decimal valorTotal)
+        {
+            DataTable dt = new DataTable();
+            valorTotal = 0;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CONTACTOS_CRM_POR_USUARIO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+                        // Parámetro de salida
+                        MySqlParameter ValorTotal = new MySqlParameter("@Total_Valor_Propuesta", MySqlDbType.Decimal);
+                        ValorTotal.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(ValorTotal);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+
+                            if (ValorTotal.Value != DBNull.Value)
+                            {
+                                valorTotal = Convert.ToDecimal(ValorTotal.Value);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
         }
 
 
@@ -7342,6 +7644,39 @@ namespace fpWebApp
             }
 
             return respuesta;
+        }
+
+        #endregion
+
+        #region Medios de pago
+        public DataTable ConsultarMediosDePago()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_MEDIOS_DE_PAGO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
         }
 
         #endregion

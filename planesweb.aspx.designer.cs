@@ -96,22 +96,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTituloPlan;
 
         /// <summary>
-        /// Control txbDescripcion.
+        /// Control hiddenEditor.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbDescripcion;
-
-        /// <summary>
-        /// Control rfvDescripcion.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDescripcion;
+        protected global::System.Web.UI.WebControls.HiddenField hiddenEditor;
 
         /// <summary>
         /// Control ltBanner.
@@ -123,13 +114,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltBanner;
 
         /// <summary>
-        /// Control Literal1.
+        /// Control ltImagenMarketing.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal Literal1;
+        protected global::System.Web.UI.WebControls.Literal ltImagenMarketing;
 
         /// <summary>
         /// Control btnAgregar.

@@ -22,19 +22,14 @@
 
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
-
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
-
     <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
-
     <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
-
     <link href="css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -49,6 +44,7 @@
 </head>
 
 <body onload="changeClass()">
+    <form runat="server" id="form">
     <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated bounceInRight">
@@ -101,11 +97,18 @@
                     <div class="event-description"></div>
                     <div class="event-id text-hide" id="event-id"></div>
                     <div class="event-allday text-hide" id="event-allday"></div>
+                    <div class="form-group" id="divAfil" runat="server" visible="false">
+                        <label>Afiliado</label>
+                        <asp:DropDownList ID="ddlAfiliados" runat="server" DataTextField="DocNombreAfiliado" 
+                            DataValueField="idAfiliado" CssClass="chosen-select input-sm" AppendDataBoundItems="true" >
+                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                        </asp:DropDownList>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
-                    <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href='asignarcita.aspx?id=' + document.getElementById('event-id').innerHTML + '&idAfil=' + document.getElementById('hfIdAfiliado').value" id="btnAsignar" runat="server" visible="false"><i class='fa fa-calendar-plus m-r-sm'></i>Asignar</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" 
+                        onclick="window.location.href='asignarcita.aspx?id=' + document.getElementById('event-id').innerHTML + '&idAfil=' + document.getElementById('ddlAfiliados').value" 
+                        id="btnAsignar" runat="server" visible="false"><i class='fa fa-calendar-plus m-r-sm'></i>Asignar</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>
                 </div>
             </div>
@@ -150,12 +153,11 @@
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                    <form runat="server" id="form">
                         <%--<asp:ScriptManager ID="sm1" runat="server"></asp:ScriptManager>
                         <asp:UpdatePanel ID="upAgendarCita" runat="server">
                             <ContentTemplate>--%>
                                 <div class="row animated fadeInDown" id="divContenido" runat="server">
-                                    <div class="col-xxl-2 col-lg-3 col-md-5 col-sm-6 col-xs-12">
+                                    <div class="col-xs-12">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <h5>Agendamiento de citas</h5>
@@ -169,36 +171,38 @@
                                                 </div>
                                             </div>
                                             <div class="ibox-content">
-                                                <div class="form-group">
-                                                    <label>Sede:</label>
-                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedes" runat="server"
-                                                        OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
-                                                        DataValueField="idSede" DataTextField="NombreSede"
-                                                        AutoPostBack="true" AppendDataBoundItems="true">
-                                                    </asp:DropDownList>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Especialidad:</label>
-                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEspecialidad" runat="server"
-                                                        OnSelectedIndexChanged="ddlEspecialidad_SelectedIndexChanged"
-                                                        AutoPostBack="true">
-                                                        <asp:ListItem Text="Médico deportólogo" Value="29"></asp:ListItem>
-                                                        <asp:ListItem Text="Fisioterapeuta" Value="18"></asp:ListItem>
-                                                        <asp:ListItem Text="Nutricionista" Value="30"></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Afiliado</label>
-                                                    <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server"
-                                                        placeholder="Nombre / Cédula / Email / Celular"></asp:TextBox>
-                                                    <asp:Button ID="btnAfiliado" runat="server" Text=""
-                                                        Style="display: none;" OnClick="btnAfiliado_Click" />
-                                                    <asp:HiddenField ID="hfIdAfiliado" runat="server" />
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <div class="form-group">
+                                                            <label>Sede:</label>
+                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedes" runat="server"
+                                                                OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
+                                                                DataValueField="idSede" DataTextField="NombreSede"
+                                                                AutoPostBack="true" AppendDataBoundItems="true">
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <div class="form-group">
+                                                            <label>Especialidad:</label>
+                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEspecialidad" runat="server"
+                                                                OnSelectedIndexChanged="ddlEspecialidad_SelectedIndexChanged"
+                                                                AutoPostBack="true">
+                                                                <asp:ListItem Text="Médico deportólogo" Value="29"></asp:ListItem>
+                                                                <asp:ListItem Text="Fisioterapeuta" Value="18"></asp:ListItem>
+                                                                <asp:ListItem Text="Nutricionista" Value="30"></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                            <%--<asp:DropDownList ID="ddlAfiliados" runat="server" DataTextField="DocNombreAfiliado" 
+                                                                DataValueField="idAfiliado" CssClass="select2 input-sm" AppendDataBoundItems="true" >
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>--%>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xxl-10 col-lg-9 col-md-7 col-sm-6 col-xs-12">
+                                    <div class="col-xs-12">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <h5>Agenda
@@ -224,7 +228,7 @@
                                 </div>
                             <%--</ContentTemplate>
                         </asp:UpdatePanel>--%>
-                    </form>
+                    
                     <%--Fin Contenido!!!!--%>
                 </div>
             </div>
@@ -234,9 +238,8 @@
         </div>
         <uc1:rightsidebar runat="server" ID="rightsidebar" />
     </div>
-
+    </form>
     <!-- Mainly scripts -->
-    <script src="js/plugins/fullcalendar/moment.min.js"></script>
     <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
@@ -247,33 +250,46 @@
     <script src="js/plugins/pace/pace.min.js"></script>
 
     <!-- jQuery UI  -->
-    <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <%--<script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>--%>
 
     <!-- Full Calendar -->
-    <%--<script src="js/plugins/fullcalendar/fullcalendar.min.js"></script>--%>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
 
     <!-- Chosen -->
     <script src="js/plugins/chosen/chosen.jquery.js"></script>
 
     <!-- Input Mask-->
-    <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
+    <%--<script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>--%>
 
     <!-- Jquery Validate -->
-    <script src="js/plugins/validate/jquery.validate.min.js"></script>
+    <%--<script src="js/plugins/validate/jquery.validate.min.js"></script>--%>
 
     <script>
-        $("#form").validate({
-            rules: {
-                txbAfiliado: {
-                    required: true,
-                    minlength: 3
-                },
-            }
-        });
+
+        //$.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" });
+
+        //$("#form").validate({
+        //    rules: {
+        //        txbAfiliado: {
+        //            required: true,
+        //            minlength: 3
+        //        },
+        //    }
+        //});
+
+        //$(document).ready(function () {
+        //    $('.select2').select2({
+        //        width: '100%',
+        //        minimumResultsForSearch: 10,
+        //        minimumInputLength: 3,
+        //        language: "es"
+        //    });
+        //});
+
+        $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
     </script>
 
-    <script type="text/javascript">  
+    <%--<script type="text/javascript">  
         $(document).ready(function () {
             $("#txbAfiliado").autocomplete({
                 source: function (request, response) {
@@ -298,7 +314,7 @@
                 delay: 100,
             });
         });
-    </script>
+    </script>--%>
 
     <script>
 
@@ -335,11 +351,13 @@
                         jQuery('.event-description').html(info.event.extendedProps.description);
                         var btn = document.getElementById("btnAsignar");
                         btn.style.display = info.event.extendedProps.btnAsignar;
+                        var seleccion = document.getElementById("divAfil");
+                        seleccion.style.display = info.event.extendedProps.divAfil;
                         jQuery('#modal-view-event').modal();
                     }
                 },
                 height: 700,
-                initialView: 'dayGridMonth',
+                initialView: 'timeGridWeek',
                 firstDay: 1,
                 allDayText: 'Todo\r\nel día',
                 moreLinkContent: function (args) {

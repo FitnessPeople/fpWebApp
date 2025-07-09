@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -361,19 +361,17 @@ namespace fpWebApp
             {
                 clasesglobales cg = new clasesglobales();
 
-                string mensaje = "Ok";
-
-                //string mensaje = cg.ActualizarEmpleado(txbDocumento.Text.ToString(), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
-                //    txbNombre.Text.ToString(), txbTelefono.Text.ToString(), txbTelefonoCorp.Text.ToString(), 
-                //    txbEmail.Text.ToString(), txbEmailCorp.Text.ToString(), txbDireccion.Text.ToString(),
-                //    Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), txbFechaNac.Text.ToString(), strFilename,
-                //    txbContrato.Text.ToString(), ddlTipoContrato.SelectedItem.Value.ToString(), 
-                //    Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), txbFechaInicio.Text.ToString(), txbFechaFinal.Text.ToString(),
-                //    Convert.ToInt32(Regex.Replace(txbSueldo.Text, @"[^\d]", "")), ddlGrupo.SelectedItem.Value.ToString(), Convert.ToInt32(ddlEps.SelectedItem.Value.ToString()),
-                //    Convert.ToInt32(ddlFondoPension.SelectedItem.Value.ToString()), Convert.ToInt32(ddlArl.SelectedItem.Value.ToString()),
-                //    Convert.ToInt32(ddlCajaComp.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCesantias.SelectedItem.Value.ToString()),
-                //    rblEstado.Text.ToString(), Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value.ToString()),
-                //    Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()));
+                string mensaje = cg.ActualizarEmpleado(txbDocumento.Text.ToString(), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
+                    txbNombre.Text.ToString(), txbTelefono.Text.ToString(), txbTelefonoCorp.Text.ToString(),
+                    txbEmail.Text.ToString(), txbEmailCorp.Text.ToString(), txbDireccion.Text.ToString(),
+                    Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), txbFechaNac.Text.ToString(), strFilename,
+                    txbContrato.Text.ToString(), ddlTipoContrato.SelectedItem.Value.ToString(), Convert.ToInt32(ddlEmpresasFP.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), txbFechaInicio.Text.ToString(), txbFechaFinal.Text.ToString(),
+                    Convert.ToInt32(Regex.Replace(txbSueldo.Text, @"[^\d]", "")), ddlGrupo.SelectedItem.Value.ToString(), Convert.ToInt32(ddlEps.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(ddlFondoPension.SelectedItem.Value.ToString()), Convert.ToInt32(ddlArl.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(ddlCajaComp.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCesantias.SelectedItem.Value.ToString()),
+                    rblEstado.Text.ToString(), Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()));
 
                 if (rblEstado.Text.ToString() == "Inactivo")
                 {
@@ -422,7 +420,7 @@ namespace fpWebApp
 
 
             }
-            catch (OdbcException ex)
+            catch (SqlException ex)
             {
                 string script = @"
                     Swal.fire({

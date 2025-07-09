@@ -16,8 +16,8 @@ namespace fpWebApp
 {
     public partial class planes : System.Web.UI.Page
     {
-        private string _strData;
-        protected string strData { get { return this._strData; } }
+        //private string _strData;
+        //protected string strData { get { return this._strData; } }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -101,6 +101,7 @@ namespace fpWebApp
                                     txbMesesCortesia.Text = dt.Rows[0]["MesesCortesia"].ToString();
                                     ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
                                     cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
+                                    cbDebitoAutomatico.Checked = Convert.ToBoolean(dt.Rows[0]["DebitoAutomatico"]);
                                     btnAgregar.Text = "Actualizar";
                                     
                                     //if (dt.Rows[0]["BannerWeb"].ToString() != "")
@@ -146,6 +147,7 @@ namespace fpWebApp
                                         ddlColor.SelectedValue = dt1.Rows[0]["NombreColorPlan"].ToString();
                                         //ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt1.Rows[0]["NombreColorPlan"].ToString())));
                                         cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
+                                        cbDebitoAutomatico.Checked = Convert.ToBoolean(dt.Rows[0]["DebitoAutomatico"]);
                                         txbPlan.Enabled = false;
                                         txbDescripcion.Enabled = false;
                                         txbPrecioBase.Enabled = false;
@@ -157,6 +159,7 @@ namespace fpWebApp
                                         txbFechaInicial.Enabled = false;
                                         txbFechaFinal.Enabled = false;
                                         cbPermanente.Enabled = false;
+                                        cbDebitoAutomatico.Enabled = false;
                                         btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                         btnAgregar.Enabled = false;
                                         ltTitulo.Text = "Borrar Plan";
@@ -191,6 +194,7 @@ namespace fpWebApp
                                         ddlColor.SelectedValue = dt1.Rows[0]["NombreColorPlan"].ToString();
                                         //ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
                                         cbPermanente.Checked = Convert.ToBoolean(dt1.Rows[0]["Permanente"]);
+                                        cbDebitoAutomatico.Checked = Convert.ToBoolean(dt1.Rows[0]["DebitoAutomatico"]);
                                         txbPlan.Enabled = false;
                                         txbDescripcion.Enabled = false;
                                         txbPrecioBase.Enabled = false;
@@ -202,6 +206,7 @@ namespace fpWebApp
                                         txbFechaInicial.Enabled = false;
                                         txbFechaFinal.Enabled = false;
                                         cbPermanente.Enabled = false;
+                                        cbDebitoAutomatico.Enabled = false;
                                         btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                         ltTitulo.Text = "Borrar Plan";
                                     }
@@ -318,6 +323,7 @@ namespace fpWebApp
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             int intPermanente = cbPermanente.Checked ? 1 : 0;
+            int intDebitoAutomatico = cbDebitoAutomatico.Checked ? 1 : 0;
             string fechaInicial = cbPermanente.Checked ? null : txbFechaInicial.Text.ToString();
             string fechaFinal = cbPermanente.Checked ? null : txbFechaFinal.Text.ToString();
 
@@ -341,7 +347,8 @@ namespace fpWebApp
                         int.Parse(txbDiasCongelamiento.Text.ToString()),
                         fechaInicial,
                         fechaFinal,
-                        intPermanente);
+                        intPermanente, 
+                        intDebitoAutomatico);
 
                     string strNewData = TraerData(requestQuery);
 
@@ -371,7 +378,8 @@ namespace fpWebApp
                         double.Parse(txbDiasCongelamiento.Text.ToString()),
                         fechaInicial,
                         fechaFinal, 
-                        intPermanente);
+                        intPermanente,
+                        intDebitoAutomatico);
 
                         cg.InsertarLog(Session["idusuario"].ToString(), "planes", "Agrega", "El usuario agregó un nuevo plan: " + txbPlan.Text.ToString() + ".", "", "");
                     }

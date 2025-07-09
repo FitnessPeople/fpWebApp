@@ -4,7 +4,7 @@ using NPOI.OpenXmlFormats.Wordprocessing;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Odbc;
+using System.Data.SqlClient;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -353,7 +353,7 @@ namespace fpWebApp
                     ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
                 }
             }
-            catch (OdbcException ex)
+            catch (SqlException ex)
             {
                 string mensaje = ex.Message;
                 string script = @"

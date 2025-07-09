@@ -17,6 +17,7 @@
     <title>Fitness People | Nuevo afiliado</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
+    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <link href="css/plugins/dropzone/basic.css" rel="stylesheet" />
@@ -37,11 +38,6 @@
             element2.classList.remove("collapse");
         }
     </script>
-    <style>
-        select.input-validation-error + .chosen-container .chosen-single {
-            border: 1px dotted #cc5965;
-        }
-    </style>
 </head>
 
 <body onload="changeClass()">
@@ -173,7 +169,7 @@
                                                     <label>Tipo de Documento:</label>
                                                     <asp:DropDownList ID="ddlTipoDocumento" runat="server" 
                                                         AppendDataBoundItems="true" DataTextField="TipoDocumento" 
-                                                        DataValueField="idTipoDoc" CssClass="form-control input-sm">
+                                                        DataValueField="idTipoDoc" CssClass="form-control input-sm m-b">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
@@ -205,7 +201,7 @@
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                     <label>Ciudad:</label>
-                                                    <asp:DropDownList ID="ddlCiudadAfiliado" name="ddlCiudadAfiliado" runat="server" 
+                                                    <asp:DropDownList ID="ddlCiudadAfiliado" runat="server" 
                                                         AppendDataBoundItems="true" DataTextField="NombreCiudad" 
                                                         DataValueField="idCiudad" CssClass="chosen-select form-control input-sm">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
@@ -259,7 +255,7 @@
                                                     <label>Género:</label>
                                                     <asp:DropDownList ID="ddlGenero" runat="server" AppendDataBoundItems="true" 
                                                         DataTextField="Genero" DataValueField="idGenero" 
-                                                        CssClass="form-control input-sm" TabIndex="6">
+                                                        CssClass="form-control input-sm m-b" TabIndex="6">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
@@ -271,7 +267,7 @@
                                                 <div class="form-group">
                                                     <label>Estado civil:</label>
                                                     <asp:DropDownList ID="ddlEstadoCivil" runat="server" AppendDataBoundItems="true" 
-                                                        DataTextField="EstadoCivil" DataValueField="idEstadoCivil" CssClass="form-control input-sm">
+                                                        DataTextField="EstadoCivil" DataValueField="idEstadoCivil" CssClass="form-control input-sm m-b">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
@@ -279,8 +275,8 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Profesión:</label>
-                                                    <asp:DropDownList ID="ddlProfesiones" runat="server" name="ddlProfesiones" AppendDataBoundItems="true" 
-                                                        DataTextField="Profesion" DataValueField="idProfesion" CssClass="chosen-select form-control input-sm">
+                                                    <asp:DropDownList ID="ddlProfesiones" runat="server" AppendDataBoundItems="true" 
+                                                        DataTextField="Profesion" DataValueField="idProfesion" CssClass="chosen-select form-control input-sm m-b">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
@@ -292,7 +288,7 @@
                                                 <div class="form-group">
                                                     <label>EPS:</label>
                                                     <asp:DropDownList ID="ddlEps" runat="server" AppendDataBoundItems="true" 
-                                                        DataTextField="NombreEps" DataValueField="idEps" CssClass="form-control input-sm">
+                                                        DataTextField="NombreEps" DataValueField="idEps" CssClass="form-control input-sm m-b">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
@@ -301,7 +297,7 @@
                                                 <div class="form-group">
                                                     <label>Sede:</label>
                                                     <asp:DropDownList ID="ddlSedes" runat="server" AppendDataBoundItems="true" 
-                                                        DataTextField="NombreSede" DataValueField="idSede" CssClass="form-control input-sm">
+                                                        DataTextField="NombreSede" DataValueField="idSede" CssClass="form-control input-sm m-b">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
@@ -317,7 +313,7 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Parentesco:</label>
-                                                    <asp:DropDownList ID="ddlParentesco" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
+                                                    <asp:DropDownList ID="ddlParentesco" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                         <asp:ListItem Text="Padre/Madre" Value="Padre/Madre"></asp:ListItem>
                                                         <asp:ListItem Text="Esposo/a" Value="Esposo/a"></asp:ListItem>
@@ -416,6 +412,9 @@
                     required: true,
                     minlength: 10
                 },
+                ddlCiudadAfiliado: {
+                    required: true
+                },
                 ddlGenero: {
                     required: true
                 },
@@ -423,6 +422,9 @@
                     required: true
                 },
                 ddlEstadoCivil: {
+                    required: true,
+                },
+                ddlProfesiones: {
                     required: true,
                 },
                 ddlEps: {
@@ -442,38 +444,14 @@
                     required: true,
                     minlength: 10
                 },
-                ddlCiudadAfiliado: {
-                    required: true,
-                },
-                ddlProfesiones: {
-                    required: true,
-                }
             },
             messages: {
-                ddlCiudadAfiliado: {
-                    required: "Campo requerido."
-                },
-                ddlProfesiones: {
-                    required: "Campo requerido."
-                },
-            },
-            errorPlacement: function (error, element) {
-                if (element.hasClass("chosen-select")) {
-                    error.insertAfter(element.siblings(".chosen-container"));
-                } else {
-                    error.insertAfter(element);
-                }
-            },
+                ddlCiudadAfiliado: "*",
+                ddlProfesiones: "*",
+            }
         });
 
         $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
-        $("#ddlCiudadAfiliado").on("change", function () {
-            $(this).valid();
-        });
-        $("#ddlProfesiones").on("change", function () {
-            $(this).valid();
-        });
-
     </script>
 
 </body>

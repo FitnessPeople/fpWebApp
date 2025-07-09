@@ -16,7 +16,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Sedes</title>
+    <title>Fitness People | Contacto CRM</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
@@ -35,8 +35,67 @@
     <!-- JS de Quill -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
-    <%--        formato de moneda--%>
-    <script>
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/smoothness/jquery-ui.css">
+
+    <link href="css/plugins/dropzone/basic.css" rel="stylesheet" />
+    <link href="css/plugins/dropzone/dropzone.css" rel="stylesheet" />
+    <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet" />
+    <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet" />
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
+    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
+    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
+    <link href="css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet" />
+    <link href="css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
+
+    <!-- FooTable -->
+    <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
+
+    <link href="css/animate.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <style>
+        .crm-align-row {
+            display: table;
+            width: 100%;
+        }
+
+        .crm-align-cell {
+            display: table-cell;
+            vertical-align: bottom;
+            padding-right: 15px;
+        }
+
+        .crm-spinner {
+            text-align: center;
+        }
+    </style>
+
+    <style>
+        #historialHTMLVisual table {
+            max-width: 100%;
+            width: auto;
+            table-layout: auto;
+            word-break: break-word;
+        }
+
+        #historialHTMLVisual td,
+        #historialHTMLVisual th {
+            word-break: break-word;
+            white-space: normal;
+            font-size: 12px;
+        }
+    </style>
+
+
+    <%--    formato de moneda--%>
+    <%--    <script>
         function formatCurrency(input) {
             let value = input.value.replace(/\D/g, '');
             if (value === "") {
@@ -56,19 +115,11 @@
         function getNumericValue(input) {
             return input.value.replace(/[^0-9]/g, '');
         }
-    </script>
+    </script>--%>
 
-    <%--        formato de posición en el menú--%>
-    <script>
-        function changeClass() {
-            var element1 = document.querySelector("#crmnuevocontacto");
-            element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#crm");
-            element2.classList.remove("collapse");
-        }
-    </script>
+    <%--    formato de posición en el menú--%>
 
-    <%--        Formatear telefono --%>
+    <%--    Formatear telefono --%>
     <script>
         function formatearTelefono(input) {
             let num = input.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
@@ -87,14 +138,14 @@
     </script>
 
     <%--    Formatear solo letraas --%>
-    <script>
+    <%--    <script>
         function validarSoloLetras(input) {
             input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
         }
-    </script>
+    </script>--%>
 
     <%--    Formatear solo correo --%>
-    <script>
+    <%--    <script>
         function validarCorreo(input) {
             const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             if (!emailRegex.test(input.value)) {
@@ -103,10 +154,11 @@
                 input.setCustomValidity('');
             }
         }
-    </script>
+    </script>--%>
+    <!-- Select2 -->
+    <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
 
-
-    <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
+    <%--    <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />--%>
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -127,10 +179,30 @@
             console.log(element2);
         }
     </script>
+    <%--    <script>
+    function mueveReloj() {
+        var momentoActual = new Date();
+        var hora = momentoActual.getHours();
+        var minuto = momentoActual.getMinutes();
+        var segundo = momentoActual.getSeconds();
 
+        // Formatear con 0 al inicio si es necesario
+        if (hora < 10) hora = "0" + hora;
+        if (minuto < 10) minuto = "0" + minuto;
+        if (segundo < 10) segundo = "0" + segundo;
+
+        var horaImprimible = hora + " : " + minuto + " : " + segundo;
+
+        document.form_reloj.reloj.value = horaImprimible;
+
+        setTimeout(mueveReloj, 1000); // Mejor usar referencia directa
+    }
+    </script>--%>
+
+    <script src="js/jquery-3.1.1.min.js"></script>
 </head>
 
-<body onload="changeClass()">
+<body onload="changeClass(); iniciarContador()">
     <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated bounceInRight">
@@ -171,6 +243,7 @@
             </div>
         </div>
     </div>
+
     <div id="wrapper">
 
         <uc1:navbar runat="server" ID="navbar1" />
@@ -222,49 +295,112 @@
                                     </ul>
                                     <div class="tab-content">
                                         <div id="tab-1" class="tab-pane active">
+                                            <div class="form-group">
+                                                <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                            </div>
                                             <%--Inicia contenido formulario Nuevo contacto--%>
                                             <div class="panel-body">
-                                                <%--                                                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
-                                                    <ContentTemplate>--%>
                                                 <%--Zona lateral izquierda sup --%>
                                                 <div class="col-lg-5">
                                                     <div class="ibox-content">
-                                                        <div class="row">
-                                                            <div class="col-sm-6">
+
+                                                        <div class="crm-align-row">
+                                                            <!-- Consultar Afiliado -->
+                                                            <div class="crm-align-cell" style="width: 80%;" id="btnAfiliadoBus">
                                                                 <div class="form-group">
-                                                                    <i class="fa fa-user-tie text-info"></i>
-                                                                    <label for="nombreContacto" class="col-form-label">Nombre completo:</label>
-                                                                    <input type="text" runat="server" id="txbNombreContacto" class="form-control"
-                                                                        oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
-                                                                    <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txbNombreContacto"
-                                                                        ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
+                                                                    <label>Consultar:</label>
+                                                                    <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server"
+                                                                        placeholder="Nombre / Cédula / Email / Celular " autocomplete="off"></asp:TextBox>
+                                                                    <asp:Button ID="btnAfiliado" runat="server" Text=""
+                                                                        Style="display: none;" OnClick="btnAfiliado_Click" />
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group">
-                                                                <div class="col-sm-6">
-                                                                    <i class="fa-solid fa-phone text-info"></i>
-                                                                    <label for="txbTelefonoContacto" class="col-form-label">Teléfono:</label>
 
-                                                                    <input type="text" runat="server" id="txbTelefonoContacto"
-                                                                        class="form-control"
-                                                                        placeholder="ej: 310 123 4567"
-                                                                        spellcheck="false"
-                                                                        autocomplete="off"
-                                                                        onkeyup="formatearTelefono(this)"
-                                                                        maxlength="14" />
+                                                            <!-- Contador -->
+                                                            <div class="crm-align-cell" style="width: 10%;">
+                                                                <div class="form-group">
+                                                                    <label>Contador:</label>
+                                                                    <div id="reloj" style="font-size: 20px; font-family: monospace;"></div>
+                                                                    <asp:HiddenField ID="hfContador" runat="server" />
+                                                                </div>
+                                                            </div>
 
-                                                                    <asp:RequiredFieldValidator ID="rfvTelefono" runat="server"
-                                                                        ControlToValidate="txbTelefonoContacto"
-                                                                        ErrorMessage="* Campo requerido"
-                                                                        CssClass="text-danger"
-                                                                        Display="Dynamic" />
+                                                            <!-- Spinner -->
+                                                            <div class="crm-align-cell" style="width: 10%;">
+                                                                <div class="form-group crm-spinner">
+                                                                    <div class="sk-spinner sk-spinner-wave">
+                                                                        <div class="sk-rect1"></div>
+                                                                        <div class="sk-rect2"></div>
+                                                                        <div class="sk-rect3"></div>
+                                                                        <div class="sk-rect4"></div>
+                                                                        <div class="sk-rect5"></div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="row">
+
+
+                                                        <div class="row" id="tipoDocYDoc">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
-                                                                    <span class="glyphicon glyphicon-envelope text-info"></span>
+                                                                    <i class="fa fa-id-card text-info"></i>
+                                                                    <label>Tipo de Documento</label>
+                                                                    <asp:DropDownList ID="ddlTipoDocumento" runat="server" AppendDataBoundItems="true"
+                                                                        DataTextField="TipoDocumento" DataValueField="idTipoDoc" CssClass="form-control input-sm">
+                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Nro. de Documento</label>
+                                                                    <asp:TextBox ID="txbDocumento" CssClass="form-control input-sm" runat="server" placeholder="#"></asp:TextBox>
+                                                                    <%--                                                     <asp:RequiredFieldValidator ID="rfvNumDoc" runat="server" ErrorMessage="* Campo requerido"
+                                                                        ControlToValidate="txbDocumento" ValidationGroup="agregar"
+                                                                        CssClass="font-bold text-danger" InitialValue="">
+                                                                    </asp:RequiredFieldValidator>--%>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" id="nombres">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <i class="fa fa-user-tie text-info"></i>
+                                                                    <label for="nombreContacto" class="col-form-label">Nombres:</label>
+                                                                    <input type="text" runat="server" id="txbNombreContacto" class="form-control"
+                                                                        oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txbNombreContacto"
+                                                                        ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />--%>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <i class="fa fa-user-tie text-info"></i>
+                                                                    <label for="apellidoContacto" class="col-form-label">Apellidos:</label>
+                                                                    <input type="text" runat="server" id="txbApellidoContacto" class="form-control"
+                                                                        oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txbNombreContacto"
+                                                                        ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />--%>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="row" id="telefonoYCorreo">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+
+                                                                    <i class="fa-solid fa-phone text-info"></i>
+                                                                    <label for="txbTelefonoContacto" class="col-form-label">Teléfono:</label>
+                                                                    <input type="text" runat="server" id="txbTelefonoContacto" class="form-control"
+                                                                        placeholder="ej: 310 123 4567" spellcheck="false" autocomplete="off"
+                                                                        onkeyup="formatearTelefono(this)" maxlength="14" />
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+
+                                                                    <i class="fa-solid fa-envelope text-info"></i>
                                                                     <label for="correoContacto" class="col-form-label">Correo electrónico:</label>
                                                                     <input type="text" runat="server" class="form-control" id="txbCorreoContacto"
                                                                         spellcheck="false" placeholder="ej: cliente@ejemplo.com" autocomplete="off"
@@ -272,7 +408,10 @@
                                                                     <asp:Literal ID="ltError" runat="server" Visible="false"></asp:Literal>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6">
+                                                        </div>
+                                                        <div class="row">
+
+                                                            <div class="col-sm-6" id="empresa">
                                                                 <div class="form-group">
                                                                     <i class="fas fa-industry text-info"></i>
                                                                     <label for="Empresa" class="col-form-label">Empresa / Persona:</label>
@@ -281,28 +420,44 @@
                                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                         <asp:ListItem Text="No aplica" Value="0"></asp:ListItem>
                                                                     </asp:DropDownList>
-                                                                    <asp:RequiredFieldValidator ID="rfvEmpresa" runat="server" ErrorMessage="* Campo requerido"
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvEmpresa" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="ddlEmpresa" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="row">
+
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <i class="fas fa-flag text-info"></i>
                                                                     <label for="StatusLead" class="col-form-label">Status Lead:</label>
-                                                                    <asp:DropDownList ID="ddlStatusLead" DataTextField="NombreEstadoCRM" DataValueField="idEstadoCRM"
+                                                                    <asp:DropDownList ID="ddlStatusLead" runat="server" CssClass="select2_demo_1 form-control input-sm"
+                                                                        AppendDataBoundItems="true">
+                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                    <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="* Campo requerido"
+                                                                        ControlToValidate="ddlStatusLead" ValidationGroup="agregar"
+                                                                        CssClass="font-bold text-danger" InitialValue="">
+                                                                    </asp:RequiredFieldValidator>--%>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" id="canalMarkYTipoCli">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <i class="fa-brands fa-square-facebook text-info"></i>
+                                                                    <label for="Canales" class="col-form-label">Canal de marketing:</label>
+                                                                    <asp:DropDownList ID="ddlCanalesMarketing" DataTextField="NombreCanalMarketing" DataValueField="idCanalMarketing"
                                                                         runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                     </asp:DropDownList>
-                                                                    <asp:RequiredFieldValidator ID="rfvStatusLead" runat="server" ErrorMessage="* Campo requerido"
-                                                                        ControlToValidate="ddlStatusLead" ValidationGroup="agregar"
-                                                                        CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvCanalesMarketing" runat="server" ErrorMessage="* Campo requerido"
+                                                                                ControlToValidate="ddlCanalesMarketing" ValidationGroup="agregar"
+                                                                                CssClass="font-bold text-danger" InitialValue="">
+                                                                            </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </div>
+
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <i class="fas fa-industry text-info"></i>
@@ -311,22 +466,22 @@
                                                                         runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                     </asp:DropDownList>
-                                                                    <asp:RequiredFieldValidator ID="rfvTipoAfiliado" runat="server" ErrorMessage="* Campo requerido"
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvTipoAfiliado" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="ddlTiposAfiliado" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-sm-6">
+                                                            <div class="col-sm-4" id="primerContacto">
                                                                 <div class="form-group">
                                                                     <i class="fa-solid fa-hand-point-up text-info"></i>
-                                                                    <label for="txbFechaPrim" class="col-form-label">Primer contacto:</label>
+                                                                    <label for="txbFechaPrim" class="col-form-label">1er contacto:</label>
                                                                     <input type="text" runat="server" id="txbFechaPrim" class="form-control input-sm datepicker" />
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-3">
+                                                            <div class="col-sm-4">
                                                                 <div class="form-group">
                                                                     <i class="fas fa-angle-right"></i>
                                                                     <label for="txbFechaProx" class="col-form-label">Llamada</label>
@@ -334,7 +489,7 @@
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-sm-3">
+                                                            <div class="col-sm-4">
                                                                 <div class="form-group">
                                                                     <label for="txbHoraIni" class="col-form-label">Hora:</label>
                                                                     <div class="input-group clockpicker" data-autoclose="true">
@@ -347,23 +502,19 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="row">
+                                                        <div class="row" id="metodosPagoYObjetivos">
                                                             <div class="col-sm-6">
                                                                 <div class="form-group">
                                                                     <i class="fa-solid fa-coins text-info"></i>
                                                                     <label for="TipoPago" class="col-form-label">Métodos de pago:</label>
                                                                     <asp:DropDownList ID="ddlTipoPago" runat="server" AppendDataBoundItems="true"
-                                                                        DataTextField="TipoPago" DataValueField="idTipoDoc" CssClass="form-control input-sm">
+                                                                        DataTextField="NombreMedioPago" DataValueField="idMedioPago" CssClass="form-control input-sm">
                                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                        <asp:ListItem Text="Efectivo" Value="Efectivo"></asp:ListItem>
-                                                                        <asp:ListItem Text="Transferencia" Value="Transferencia"></asp:ListItem>
-                                                                        <asp:ListItem Text="Datafono" Value="Datafono"></asp:ListItem>
-                                                                        <asp:ListItem Text="Wompi" Value="Wompi"></asp:ListItem>
                                                                     </asp:DropDownList>
-                                                                    <asp:RequiredFieldValidator ID="rfvTipoPago" runat="server" ErrorMessage="* Campo requerido"
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvTipoPago" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="ddlTipoPago" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-6">
@@ -374,31 +525,17 @@
                                                                         runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                     </asp:DropDownList>
-                                                                    <asp:RequiredFieldValidator ID="rfvObjetios" runat="server" ErrorMessage="* Campo requerido"
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvObjetios" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="ddlObjetivos" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </div>
                                                         </div>
 
                                                         <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                                                             <ContentTemplate>
-                                                                <div class="row">
-                                                                    <div class="col-sm-6">
-                                                                        <div class="form-group">
-                                                                            <i class="fa-brands fa-square-facebook text-info"></i>
-                                                                            <label for="Canales" class="col-form-label">Canal de marketing:</label>
-                                                                            <asp:DropDownList ID="ddlCanalesMarketing" DataTextField="NombreCanalMarketing" DataValueField="idCanalMarketing"
-                                                                                runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
-                                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                            </asp:DropDownList>
-                                                                            <asp:RequiredFieldValidator ID="rfvCanalesMarketing" runat="server" ErrorMessage="* Campo requerido"
-                                                                                ControlToValidate="ddlCanalesMarketing" ValidationGroup="agregar"
-                                                                                CssClass="font-bold text-danger" InitialValue="">
-                                                                            </asp:RequiredFieldValidator>
-                                                                        </div>
-                                                                    </div>
+                                                                <div class="row" id="planesYValorMes">
                                                                     <div class="col-sm-6">
                                                                         <div class="form-group">
                                                                             <i class="fa fa-ticket text-info"></i>
@@ -410,46 +547,7 @@
 
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-lg-12">
-                                                                        <div class="form-group">
-                                                                            <i class="fa-regular fa-calendar text-info"></i>
-                                                                            <label for="Meses" class="col-form-label">Meses del plan:</label>
-                                                                            <asp:RadioButtonList ID="rblMesesPlan" runat="server"
-                                                                                RepeatDirection="Horizontal" CssClass="form-control input-sm"
-                                                                                AutoPostBack="true" OnSelectedIndexChanged="rblMesesPlan_SelectedIndexChanged">
-                                                                                <asp:ListItem Text="&nbsp;1 &nbsp;&nbsp;&nbsp;" Value="1" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;2 &nbsp;&nbsp;&nbsp;" Value="2" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;3 &nbsp;&nbsp;&nbsp;" Value="3" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;4 &nbsp;&nbsp;&nbsp;" Value="4" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;5 &nbsp;&nbsp;&nbsp;" Value="5" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;6 &nbsp;&nbsp;&nbsp;" Value="6" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;7 &nbsp;&nbsp;&nbsp;" Value="7" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;8 &nbsp;&nbsp;&nbsp;" Value="8" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;9 &nbsp;&nbsp;&nbsp;" Value="9" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;10 &nbsp;&nbsp;&nbsp;" Value="10" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;11 &nbsp;&nbsp;&nbsp;" Value="11" style="margin-right: 5px;"></asp:ListItem>
-                                                                                <asp:ListItem Text="&nbsp;12 &nbsp;&nbsp;&nbsp;" Value="12" style="margin-right: 5px;"></asp:ListItem>
-                                                                            </asp:RadioButtonList>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div style="height: 30px;"></div>
-                                                                <div class="row">
-                                                                    <div class="col-sm-4">
-                                                                        <div class="form-group">
-                                                                            <i class="fa fa-dollar text-info"></i>
-                                                                            <label for="ValorPropuesta" class="col-form-label">Valor Propuesta:</label>
-                                                                            <asp:TextBox ID="txbValorPropuesta" CssClass="form-control input-sm" runat="server" placeholder="$0"
-                                                                                onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
-                                                                            <asp:RequiredFieldValidator ID="rfvValorPropuesta" runat="server" ErrorMessage="* Campo requerido"
-                                                                                ControlToValidate="txbValorPropuesta" ValidationGroup="agregar"
-                                                                                CssClass="font-bold text-danger" InitialValue="">
-                                                                            </asp:RequiredFieldValidator>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-sm-4">
+                                                                    <div class="col-sm-6">
                                                                         <div class="form-group">
                                                                             <i class="fa fa-dollar text-info"></i>
                                                                             <label for="ValorMes" class="col-form-label">Valor mes:</label>
@@ -457,7 +555,22 @@
                                                                                 onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off" Style="background-color: #e3ff00;"></asp:TextBox>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-sm-4">
+                                                                </div>
+                                                                <div class="row" id="valorPropuestaYArchivo">
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <i class="fa fa-dollar text-info"></i>
+                                                                            <label for="ValorPropuesta" class="col-form-label">Valor Propuesta:</label>
+                                                                            <asp:TextBox ID="txbValorPropuesta" CssClass="form-control input-sm" runat="server" placeholder="$0"
+                                                                                onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
+                                                                            <%--<asp:RequiredFieldValidator ID="rfvValorPropuesta" runat="server" ErrorMessage="* Campo requerido"
+                                                                                ControlToValidate="txbValorPropuesta" ValidationGroup="agregar"
+                                                                                CssClass="font-bold text-danger" InitialValue="">
+                                                                            </asp:RequiredFieldValidator>--%>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-sm-6">
                                                                         <div class="form-group">
                                                                             <i class="fas fa-paperclip text-info"></i>
                                                                             <label for="ArchivoPropuesta" class="col-form-label">Archivo Propuesta:</label>
@@ -471,32 +584,31 @@
                                                                     <label for="message-text" class="col-form-label">Contexto de la negociación:</label>
                                                                     <textarea id="txaObservaciones" runat="server" rows="3"
                                                                         cssclass="form-control input-sm" class="form-control"></textarea>
-                                                                    <asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ErrorMessage="* Campo requerido"
+                                                                    <%--<asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ErrorMessage="* Campo requerido"
                                                                         ControlToValidate="txbValorPropuesta" ValidationGroup="agregar"
                                                                         CssClass="font-bold text-danger" InitialValue="">
-                                                                    </asp:RequiredFieldValidator>
+                                                                    </asp:RequiredFieldValidator>--%>
                                                                 </div>
                                                             </ContentTemplate>
                                                         </asp:UpdatePanel>
 
                                                         <div class="form-group">
-                                                            <a href="crmnuevocontacto" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                            <a href="crmnuevocontacto" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md" id="btnCancelar_">Cancelar</a>
                                                             <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
-                                                                CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar"
+                                                                CssClass="btn btn-sm btn-primary pull-right m-t-n-xs m-l-md"
                                                                 OnClick="btnAgregar_Click" />
+                                                            <a href="agendacrm" class="btn btn-sm btn-info pull-right m-t-n-xs m-l-md" id="btnVolverAgenda" style="display: none;">Volver a Agenda CRM</a>
                                                         </div>
+                                                        <asp:Literal ID="itBotonConfirmar" runat="server" Visible="false"></asp:Literal>
                                                         <br />
                                                         <br />
-                                                        <div class="form-group">
-                                                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                                                        </div>
+
                                                         <%--     </div>--%>
                                                         <%-- </div>--%>
                                                     </div>
                                                 </div>
-
                                                 <%--Zona lateral derecha sup --%>
-                                                <div class="col-lg-7">
+                                                <div class="col-lg-7" id="divTabla">
                                                     <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
                                                         <div class="col-lg-6 form-horizontal">
                                                             <div class="form-group">
@@ -504,8 +616,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                                    <table id="tablaContactos" class="footable table table-striped list-group-item-text" data-paging-size="10"
                                                         data-filter-min="3" data-filter-placeholder="Buscar"
                                                         data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
                                                         data-paging-limit="10" data-filtering="true"
@@ -514,21 +625,22 @@
                                                         data-empty="Sin resultados">
                                                         <thead>
                                                             <tr>
-                                                                <th data-sortable="false" data-breakpoints="xs" style="width: 200px;">Nombre</th>
+                                                                <th data-sortable="false" data-breakpoints="xs" style="width: 300px;">Nombre</th>
                                                                 <th data-breakpoints="xs">Teléfono</th>
-                                                                <th data-breakpoints="xs">Correo</th>
+                                                                <th data-breakpoints="xs">HaceCuanto</th>
                                                                 <th data-breakpoints="xs">Lead</th>
                                                                 <th data-breakpoints="all" data-title="Info"></th>
-                                                                <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
+                                                                <th data-sortable="false" data-filterable="false" class="text-left" style="width: 120px;">Acciones</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <asp:Repeater ID="rpContactosCRM" runat="server" OnItemDataBound="rpContactosCRM_ItemDataBound">
                                                                 <ItemTemplate>
                                                                     <tr class="feed-element">
-                                                                        <td><%# Eval("NombreContacto") %></td>
+                                                                        <td><%# Eval("NombreContacto") %> <%# Eval("ApellidoContacto") %></td>
                                                                         <td><%# Eval("TelefonoContacto") %></td>
-                                                                        <td><%# Eval("EmailContacto") %></td>
+                                                                        <td>
+                                                                            <asp:Literal ID="ltTiempoTranscurrido" runat="server"></asp:Literal></td>
                                                                         <td>
                                                                             <span title='<%# Eval("NombreEstadoCRM") %>' style='color: <%# Eval("ColorHexaCRM") %>'>
                                                                                 <%# Eval("IconoMinEstadoCRM") %>
@@ -544,26 +656,112 @@
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td><%# Eval("ArchivoPropuesta") %></td>
-                                                                                    <td><%# Eval("historialHTML") %></td>
+                                                                                    <td><%# Eval("HistorialHTML2") %></td>
                                                                                 </tr>
                                                                             </table>
                                                                         </td>
                                                                         <td style="display: flex; flex-wrap: nowrap;">
-                                                                            <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+
+                                                                            <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-left m-r-xs"
+                                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" onclientclick="ocultarContador(); return true;">
+                                                                                <i class="fa fa-edit"></i></a>
+                                                                            <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-left m-r-xs"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
-                                                                            <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
+                                                                            <a runat="server" id="btnNuevoAfiliado" href="#" class="btn btn-outline btn-success pull-left"
+                                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" data-idcrm='<%# Eval("idContacto") %>'
+                                                                                data-documento='<%# Eval("DocumentoAfiliado") %>' onclick="redirigirNuevoAfiliado(this, event)">
+                                                                                <i class="fa fa-id-card"></i></a>
                                                                         </td>
                                                                     </tr>
                                                                 </ItemTemplate>
                                                             </asp:Repeater>
                                                         </tbody>
                                                     </table>
-                                                    <%-- </div>--%>
-                                                    <%--  </div>--%>
                                                 </div>
-                                                <%--                                                    </ContentTemplate>
-                                                </asp:UpdatePanel>--%>
+
+                                                <div class="col-lg-7" id="divDatos" style="display: none;">
+                                                    <div id="contact-1" class="tab-pane active">
+                                                        <div class="row m-b-lg">
+                                                            <div class="col-lg-4 text-center">
+                                                                <h2>
+                                                                    <asp:Literal ID="ltNombreContacto" runat="server"></asp:Literal></h2>
+
+                                                                <div class="m-b-sm">
+                                                                    <img alt="image" class="img-circle" src="img/a4.jpg"
+                                                                        style="width: 62px">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-8">
+                                                                <strong>Acerca del afiliado
+                                                                </strong>
+                                                                <br>Tipo de cliente:
+                                                                    <asp:Literal ID="ltTipoAfiliado" runat="server"></asp:Literal></br>
+                                                                Objetivo del afiliado:
+                                                                <asp:Literal ID="ltObjetivo" runat="server"></asp:Literal>
+                                                                </p>
+                                                                
+                                                                <button type="button"
+                                                                    class="btn btn-success btn-sm btn-block" id="btnNuevoAfiliado" data-idcrm="" data-documento="" onclick="redirigirNuevoAfiliado(this, event)">
+                                                                    <i class="fa fa-id-card"></i>Actualizar e ir a afiliaciones
+                                                                </button>
+                                                                <asp:Button ID="btnActualizarYRedirigir" runat="server" Text="Actualizar y Redirigir"
+                                                                    OnClick="btnActualizarYRedirigir_Click" class="btn btn-primary btn-sm btn-block"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="client-detail">
+                                                            <div class="full-height-scroll">
+
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <strong>Actividad</strong>
+                                                                    </div>
+                                                                </div>
+
+                                                                Primer registro:
+                                                                <asp:Literal ID="ltPrimerContacto" runat="server"></asp:Literal>
+                                                                <ul class="list-group clear-list" runat="server">
+                                                                    <li class="list-group-item fist-item">
+                                                                        <div style="display: flex; flex-direction: column; gap: 5px;">
+                                                                            <div style="display: flex; align-items: center; flex-wrap: wrap;">
+                                                                                <i class="fa fa-phone" style="margin-right: 5px; color: green;"></i>
+                                                                                <strong>Por favor, contáctame al:</strong>
+                                                                                <span style="margin-left: 5px;">
+                                                                                    <asp:Literal ID="ltTelefono" runat="server"></asp:Literal></span>
+                                                                            </div>
+                                                                            <div style="margin-left: 20px;">
+                                                                                <asp:Literal ID="ltProximoContacto" runat="server"></asp:Literal>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+
+                                                                <strong>Plan Sugerido</strong>
+                                                                <p>
+                                                                    <asp:Literal ID="ltPlan" runat="server"></asp:Literal>
+                                                                </p>
+                                                                <hr />
+                                                                <strong>Historial de actividades</strong>
+                                                                <div style="overflow-x: auto;">
+                                                                    <asp:Literal ID="litHistorialHTML" runat="server" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <!-- Zona lateral izquierda para mostrar historial -->
+                                                <!-- Contenedor para mostrar historial -->
+                                                <%--                                                <div id="contenedorHistorial" style="border: 1px solid #ccc; padding: 10px; max-height: 400px; overflow-y: auto; overflow-x: hidden;">
+                                                    <h5>Historial del contacto</h5>
+                                                    <div id="historialHTMLVisual" style="font-size: 12px; word-wrap: break-word;"></div>
+                                                </div>
+
+
+
+                                                <div style="overflow-x: auto;">
+                                                    <asp:Literal ID="litHistorialHTML" runat="server" />
+                                                </div>--%>
                                             </div>
                                         </div>
                                         <div id="tab-2" class="tab-pane">
@@ -571,7 +769,7 @@
                                                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                                                     <ContentTemplate>
                                                         <%--Zona lateral izquierda inf --%>
-                                                        <div class="col-lg-5">
+                                                        <%--   <div class="col-lg-5">
                                                             <div class="ibox-content">
                                                                 <div class="row">
                                                                     <div class="col-sm-6">
@@ -661,9 +859,9 @@
                                                                     <asp:Literal ID="Literal3" runat="server"></asp:Literal>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div>--%>
                                                         <%--Zona lateral derecha inf --%>
-                                                        <div class="col-lg-7">
+                                                        <%--   <div class="col-lg-7">
                                                             <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista1">
                                                                 <div class="col-lg-6 form-horizontal">
                                                                     <div class="form-group">
@@ -721,7 +919,7 @@
 
 
                                                                                     <%--                                                                                    <asp:Button ID="btnEditarEmp" runat="server" Text="E" CssClass="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                                        Style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" CausesValidation="false" OnClick="btnEditarEmp_Click" CommandArgument='<%# Eval("idEmpresaCRM") %>' />--%>
+                                                                                        Style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" CausesValidation="false" OnClick="btnEditarEmp_Click" CommandArgument='<%# Eval("idEmpresaCRM") %>' />
                                                                                 </td>
                                                                             </tr>
                                                                         </ItemTemplate>
@@ -730,7 +928,7 @@
                                                             </table>
 
 
-                                                        </div>
+                                                        </div>--%>
                                                     </ContentTemplate>
                                                 </asp:UpdatePanel>
                                             </div>
@@ -751,20 +949,35 @@
     </div>
 
     <!-- Mainly scripts -->
-    <script src="js/jquery-3.1.1.min.js"></script>
+    <%--<script src="js/jquery-3.1.1.min.js"></script>--%>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 
     <!-- FooTable -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
+
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
+    <!-- Jasny -->
+    <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
+
     <!-- Page-Level Scripts -->
     <script src="js/plugins/clockpicker/clockpicker.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
+    <!-- Chosen -->
+    <script src="js/plugins/chosen/chosen.jquery.js"></script>
+
+
+    <!-- Jquery Validate -->
+    <script src="js/plugins/validate/jquery.validate.min.js"></script>
+
 
     <script>
         $('.footable').footable();
@@ -773,6 +986,275 @@
     <script>
         $('#acordeonZonaLateralIzqSup').collapse('hide');
     </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#<%= ddlStatusLead.ClientID %>').select2({
+                templateResult: formatOption,
+                templateSelection: formatOption,
+                escapeMarkup: function (m) { return m; } // Permite HTML
+            });
+
+            function formatOption(state) {
+                if (!state.id) return state.text;
+
+                var color = $(state.element).data('color');
+                var icon = $(state.element).data('icon');
+
+                // Aplica color solo al icono
+                return "<span><span style='color:" + color + ";'>" + icon + "</span> " + state.text + "</span>";
+            }
+        });
+    </script>
+
+    <script type="text/javascript">  
+        $(document).ready(function () {
+            $("#txbAfiliado").autocomplete({
+                source: function (request, response) {
+                    $.getJSON("/obtenerafiliados?search=" + request.term, function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                label: item.nombre + " " + item.apellido + " - " + item.id + ", " + item.correo,
+                                value: item.id + " - " + item.nombre + " - " + item.apellido,
+                            };
+                        }));
+                    });
+                },
+                select: function (event, ui) {
+                    if (ui.item) {
+                        console.log(ui.item.value);
+                        document.getElementById("txbAfiliado").value = ui.item.value;
+                        var btn = document.getElementById("btnAfiliado");
+                        btn.click();
+                    }
+                },
+                minLength: 3,
+                delay: 100
+            });
+        });
+    </script>
+
+    <script>
+        let segundos = 0;
+        let contadorIniciado = false; // <--- control para evitar doble setInterval
+
+        function iniciarContador() {
+            if (contadorIniciado) return; // ya se inició
+            contadorIniciado = true;
+
+            setInterval(() => {
+                segundos++;
+
+                const min = Math.floor(segundos / 60).toString().padStart(2, '0');
+                const sec = (segundos % 60).toString().padStart(2, '0');
+
+                const reloj = document.getElementById("reloj");
+                if (reloj) reloj.textContent = `${min}:${sec}`;
+
+                const hiddenField = document.getElementById("<%= hfContador.ClientID %>");
+                if (hiddenField) hiddenField.value = segundos;
+
+                if (segundos >= 300) reloj.style.color = '#1AB394';
+                if (segundos >= 600) reloj.style.color = '#ED5565';
+
+            }, 1000); // cada segundo
+        }
+
+        window.addEventListener("load", iniciarContador);
+    </script>
+
+
+
+
+
+
+    <%--    <script>
+    function mueveReloj() {
+        const ahora = new Date();
+        let h = ahora.getHours().toString().padStart(2, '0');
+        let m = ahora.getMinutes().toString().padStart(2, '0');
+        let s = ahora.getSeconds().toString().padStart(2, '0');
+
+        document.getElementById("reloj").textContent = `${h} : ${m} : ${s}`;
+
+        setTimeout(mueveReloj, 1000);
+    }
+    </script>--%>
+
+
+
+
+
+    <script>
+
+        $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" })
+
+        $("#form").validate({
+            rules: {
+                ddlTipoDocumento: {
+                    required: true
+                },
+                txbDocumento: {
+                    required: true,
+                    minlength: 3
+                },
+                nombreContacto: {
+                    required: true,
+                    minlength: 3
+                },
+                txbTelefonoContacto: {
+                    required: true,
+                    minlength: 3
+                },
+                txbCorreoContacto: {
+                    required: true,
+                    minlength: 3
+                },
+                ddlEmpresa: {
+                    required: true
+                },
+                ddlStatusLead: {
+                    required: true
+                },
+                ddlTiposAfiliado: {
+                    required: true
+                },
+                txbFechaPrim: {
+                    required: true
+                },
+                txbFechaProx: {
+                    required: true,
+                },
+                txbHoraIni: {
+                    required: true,
+                },
+                ddlTipoPago: {
+                    required: true,
+                },
+                ddlObjetivos: {
+                    required: true,
+                },
+                ddlCanalesMarketing: {
+                    required: true
+                },
+                ddlPlanes: {
+                    required: true,
+                },
+                txbValorPropuesta: {
+                    required: true,
+                    minlength: 3
+                },
+            },
+            messages: {
+                ddlCiudadAfiliado: "*",
+                ddlProfesiones: "*",
+            }
+        });
+
+        $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
+    </script>
+
+
+    <script type="text/javascript">
+        function redirigirNuevoAfiliado(anchor, event) {
+            event.preventDefault();
+
+            const idcrm = anchor.getAttribute("data-idcrm");
+            const documento = anchor.getAttribute("data-documento");
+            console.log("IDCRM:", idcrm, "DOCUMENTO:", documento);
+            if (!documento) {
+                const url = `nuevoafiliado.aspx?idcrm=${encodeURIComponent(idcrm)}`;
+                window.location.href = url; // <-- Redirige de inmediato
+                return; // <-- Detiene el resto
+            }
+
+            // Si hay documento, consulta si existe en el sistema
+            $.getJSON("/obtenerafiliados?search=" + encodeURIComponent(documento), function (data) {
+                // Verificar si el documento está en la lista
+                const existe = data.some(item => String(item.id) === String(documento));
+
+                const destino = existe ? "editarafiliado.aspx" : "nuevoafiliado.aspx";
+                const url = `${destino}?idcrm=${encodeURIComponent(idcrm)}`;
+                window.location.href = url;
+            }).fail(function () {
+                alert("Error al consultar los afiliados.");
+            });
+        }
+    </script>
+
+
+
+    <script>
+        $(document).ready(function () {
+            // Escuchar clic en botones con historial
+            $(document).on("click", ".btnVerHistorial", function () {
+                var historial = $(this).data("historial");
+
+                // Mostrar el historial en la zona izquierda
+                $("#historialHTMLVisual").html(historial);
+            });
+        });
+    </script>
+
+
+
+    <script>
+        $(document).ready(function () {
+            const params = new URLSearchParams(window.location.search);
+            const evento = params.get("evento");
+
+            if (evento === "1") {
+                $("#divTabla").hide();
+                $("#divDatos").show();
+                $("#tipoDocYDoc").hide();
+                $("#btnAfiliadoBus").hide();
+                $("#nombres").hide();
+                $("#telefonoYCorreo").hide();
+                $("#empresa").hide();
+                $("#primerContacto").hide();
+                $("#canalMarkYTipoCli").hide();
+                $("#metodosPagoYObjetivos").hide();
+                $("#planesYValorMes").hide();
+                $("#valorPropuestaYArchivo").hide();
+                $("#btnCancelar_").hide();
+                $("#btnVolverAgenda").show(); // Muestra el botón solo si viene del evento
+
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            const params = new URLSearchParams(window.location.search);
+            const idcrm = params.get("editid");
+            const documento = params.get("documento");
+
+            if (idcrm) {
+                $("#btnNuevoAfiliado").attr("data-idcrm", idcrm);
+            }
+            if (documento) {
+                $("#btnNuevoAfiliado").attr("data-documento", documento);
+            }
+
+            // Mostrar el botón solo si llegó desde evento
+            if (params.get("evento") === "1") {
+                $("#btnNuevoAfiliado").show();
+            } else {
+                $("#btnNuevoAfiliado").hide();
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Obtener el valor del literal (HTML plano insertado)
+            var documento = $("#ltDocumento").text().trim();
+
+            // Asignarlo al botón
+            $("#btnNuevoAfiliado").attr("data-documento", documento);
+        });
+    </script>
+
 
 
 

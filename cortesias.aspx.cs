@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
+using System.Data.SqlClient;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -29,6 +29,7 @@ namespace fpWebApp
                     {
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
+                            CargarAfiliados();
                             divAfiliado.Visible = false;
                             divPlanes.Visible = false;
                         }
@@ -60,6 +61,22 @@ namespace fpWebApp
                 ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
                 ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
             }
+
+            dt.Dispose();
+        }
+
+        private void CargarAfiliados()
+        {
+            string strQuery = @"SELECT a.idAfiliado, 
+                CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado, ' - ', a.DocumentoAfiliado) AS DocNombreAfiliado 
+                FROM afiliados a 
+                INNER JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado AND ap.EstadoPlan = 'Activo' 
+                WHERE EstadoAfiliado = 'Activo' ";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            ddlAfiliado.DataSource = dt;
+            ddlAfiliado.DataBind();
 
             dt.Dispose();
         }
@@ -141,7 +158,7 @@ namespace fpWebApp
 
                         Response.Redirect("afiliados");
                     }
-                    catch (OdbcException ex)
+                    catch (SqlException ex)
                     {
                         ltMensaje.Text = "<div class=\"ibox-content\">" +
                             "<div class=\"alert alert-danger alert-dismissable\">" +
@@ -152,59 +169,59 @@ namespace fpWebApp
             }
         }
 
-        protected void btnAfiliado_Click(object sender, EventArgs e)
-        {
-            ltNoPlanes.Text = "";
-            ltMensaje.Text = "";
-            btnAgregarCortesia.Enabled = true;
-            txbObservaciones.Enabled = true;
-            string[] strDocumento = txbAfiliado.Text.ToString().Split('-');
-            string strQuery = "SELECT * FROM Afiliados a " +
-                "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +
-                "WHERE DocumentoAfiliado = '" + strDocumento[0].Trim() + "' ";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+        //protected void btnAfiliado_Click(object sender, EventArgs e)
+        //{
+        //    ltNoPlanes.Text = "";
+        //    ltMensaje.Text = "";
+        //    btnAgregarCortesia.Enabled = true;
+        //    txbObservaciones.Enabled = true;
+        //    string[] strDocumento = txbAfiliado.Text.ToString().Split('-');
+        //    string strQuery = "SELECT * FROM Afiliados a " +
+        //        "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +
+        //        "WHERE DocumentoAfiliado = '" + strDocumento[0].Trim() + "' ";
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.TraerDatos(strQuery);
 
-            if (dt.Rows.Count > 0)
-            {
-                divAfiliado.Visible = true;
-                //ViewState["idAfiliado"] = dt.Rows[0]["idAfiliado"].ToString();
-                ltNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
-                ltApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
-                ltEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
-                ltCelular.Text = dt.Rows[0]["CelularAfiliado"].ToString();
-                ltSede.Text = dt.Rows[0]["NombreSede"].ToString();
+        //    if (dt.Rows.Count > 0)
+        //    {
+        //        divAfiliado.Visible = true;
+        //        //ViewState["idAfiliado"] = dt.Rows[0]["idAfiliado"].ToString();
+        //        ltNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
+        //        ltApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
+        //        ltEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
+        //        ltCelular.Text = dt.Rows[0]["CelularAfiliado"].ToString();
+        //        ltSede.Text = dt.Rows[0]["NombreSede"].ToString();
 
-                if (dt.Rows[0]["FechaNacAfiliado"].ToString() != "1900-01-00")
-                {
-                    ltCumple.Text = String.Format("{0:dd MMM}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]));
-                }
-                else
-                {
-                    ltCumple.Text = "-";
-                }
+        //        if (dt.Rows[0]["FechaNacAfiliado"].ToString() != "1900-01-00")
+        //        {
+        //            ltCumple.Text = String.Format("{0:dd MMM}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]));
+        //        }
+        //        else
+        //        {
+        //            ltCumple.Text = "-";
+        //        }
 
-                if (dt.Rows[0]["FotoAfiliado"].ToString() != "")
-                {
-                    ltFoto.Text = "<img src=\"img/afiliados/" + dt.Rows[0]["FotoAfiliado"].ToString() + "\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
-                }
-                else
-                {
-                    if (dt.Rows[0]["idGenero"].ToString() == "1" || dt.Rows[0]["idGenero"].ToString() == "3")
-                    {
-                        ltFoto.Text = "<img src=\"img/afiliados/avatar_male.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
-                    }
-                    if (dt.Rows[0]["idGenero"].ToString() == "2")
-                    {
-                        ltFoto.Text = "<img src=\"img/afiliados/avatar_female.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
-                    }
-                }
+        //        if (dt.Rows[0]["FotoAfiliado"].ToString() != "")
+        //        {
+        //            ltFoto.Text = "<img src=\"img/afiliados/" + dt.Rows[0]["FotoAfiliado"].ToString() + "\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+        //        }
+        //        else
+        //        {
+        //            if (dt.Rows[0]["idGenero"].ToString() == "1" || dt.Rows[0]["idGenero"].ToString() == "3")
+        //            {
+        //                ltFoto.Text = "<img src=\"img/afiliados/avatar_male.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+        //            }
+        //            if (dt.Rows[0]["idGenero"].ToString() == "2")
+        //            {
+        //                ltFoto.Text = "<img src=\"img/afiliados/avatar_female.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+        //            }
+        //        }
 
-                CargarPlanesAfiliado(dt.Rows[0]["idAfiliado"].ToString());
-                CargarCortesias(dt.Rows[0]["idAfiliado"].ToString());
-            }
-            dt.Dispose();
-        }
+        //        CargarPlanesAfiliado(dt.Rows[0]["idAfiliado"].ToString());
+        //        CargarCortesias(dt.Rows[0]["idAfiliado"].ToString());
+        //    }
+        //    dt.Dispose();
+        //}
 
         private void CargarPlanesAfiliado(string idAfiliado)
         {
@@ -270,6 +287,58 @@ namespace fpWebApp
                 btnAgregarCortesia.Enabled = false;
             }
 
+            dt.Dispose();
+        }
+
+        protected void ddlAfiliado_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string strQuery = @"SELECT a.idAfiliado, a.NombreAfiliado, a.ApellidoAfiliado, a.EmailAfiliado, 
+                a.CelularAfiliado, s.NombreSede, a.FotoAfiliado, a.idGenero, ap.idPlan, p.NombrePlan, a.FechaNacAfiliado  
+                FROM Afiliados a 
+                RIGHT JOIN Sedes s ON a.idSede = s.idSede 
+                LEFT JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado AND ap.EstadoPlan = 'Activo' 
+                LEFT JOIN Planes p ON ap.idPlan = p.idPlan 
+                WHERE a.idAfiliado = " + ddlAfiliado.SelectedItem.Value.ToString() + " ";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+            if (dt.Rows.Count > 0)
+            {
+                ViewState["idAfiliado"] = dt.Rows[0]["idAfiliado"].ToString();
+                ltNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
+                ltApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
+                ltEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
+                ltCelular.Text = dt.Rows[0]["CelularAfiliado"].ToString();
+                ltSede.Text = dt.Rows[0]["NombreSede"].ToString();
+
+                if (dt.Rows[0]["FechaNacAfiliado"].ToString() != "1900-01-00")
+                {
+                    ltCumple.Text = String.Format("{0:dd MMM}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]));
+                }
+                else
+                {
+                    ltCumple.Text = "-";
+                }
+
+                if (dt.Rows[0]["FotoAfiliado"].ToString() != "")
+                {
+                    ltFoto.Text = "<img src=\"img/afiliados/" + dt.Rows[0]["FotoAfiliado"].ToString() + "\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+                }
+                else
+                {
+                    if (dt.Rows[0]["idGenero"].ToString() == "1" || dt.Rows[0]["idGenero"].ToString() == "3")
+                    {
+                        ltFoto.Text = "<img src=\"img/afiliados/avatar_male.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+                    }
+                    if (dt.Rows[0]["idGenero"].ToString() == "2")
+                    {
+                        ltFoto.Text = "<img src=\"img/afiliados/avatar_female.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+                    }
+                }
+
+                divAfiliado.Visible = true;
+                divPlanes.Visible = true;
+                CargarPlanesAfiliado(ViewState["idAfiliado"].ToString());
+            }
             dt.Dispose();
         }
     }

@@ -18,7 +18,7 @@ namespace fpWebApp
             if (!IsPostBack)
             {
                 //Session["idUsuario"] = 1;
-                //Session["NombreUsuario"] = "CARLOS RIVERA";
+                //Session["NombreUsuario"] = "Christian Morales";
                 //Session["idEmpresa"] = 1;
                 //Session["Cargo"] = "WebMaster";
                 //Session["Foto"] = "chrismo.jpg";

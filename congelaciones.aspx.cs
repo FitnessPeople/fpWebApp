@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
+using System.Data.SqlClient;
 using System.IO;
 using System.Web;
 using System.Web.UI;
@@ -257,7 +257,7 @@ namespace fpWebApp
 
                                 Response.Redirect("afiliados");
                             }
-                            catch (OdbcException ex)
+                            catch (SqlException ex)
                             {
                                 string mensaje = ex.Message;
                                 ltValidacion.Text = "<div class=\"ibox-content\">" +

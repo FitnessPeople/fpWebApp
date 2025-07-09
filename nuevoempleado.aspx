@@ -17,7 +17,6 @@
     <title>Fitness People | Nuevo empleado</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
-    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
@@ -30,28 +29,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        function formatCurrency(input) {
-            let value = input.value.replace(/\D/g, '');
-            if (value === "") {
-                input.value = "";
-                return;
-            }
-            let formattedValue = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(value);
-            input.value = formattedValue;
-        }
-
-        function keepFormatted(input) {
-            if (input.value.trim() === "") {
-                input.value = "";
-                return;
-            }
-            formatCurrency(input);
-        }
-
-        function getNumericValue(input) {
-            return input.value.replace(/[^0-9]/g, '');
-        }
-
         function changeClass() {
             var element1 = document.querySelector("#nuevoempleado");
             element1.classList.replace("old", "active");

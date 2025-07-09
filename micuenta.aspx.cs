@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Odbc;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -44,8 +44,6 @@ namespace fpWebApp
                     CargarArl();
                     CargarCajaComp();
                     CargarCesantias();
-                    //CargarEmpresasFP();
-                    //CargarCanalesVenta();
                     CargarCargos();
                     CargarEstadoCivil();
                     CargarGeneros();
@@ -186,6 +184,11 @@ namespace fpWebApp
             DataTable dt = cg.CargarEmpleados(Session["idEmpleado"].ToString());
             txbDocumento.Text = dt.Rows[0]["DocumentoEmpleado"].ToString();
 
+            if (ConsultarSiActualizo(Session["idEmpleado"].ToString()))
+            {
+                Response.Redirect("inicio");
+            }
+
             if (dt.Rows[0]["idTipoDocumento"].ToString() != "")
             {
                 ddlTipoDocumento.SelectedIndex = Convert.ToInt16(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
@@ -213,28 +216,8 @@ namespace fpWebApp
                 dtFecha = Convert.ToDateTime(dt.Rows[0]["FechaNacEmpleado"].ToString());
             }
             txbFechaNac.Text = dtFecha.ToString("yyyy-MM-dd");
-            //if (dt.Rows[0]["FotoEmpleado"].ToString() != "")
-            //{
-            //    imgFoto.Src = "img/empleados/" + dt.Rows[0]["FotoEmpleado"].ToString();
-            //    ViewState["FotoEmpleado"] = dt.Rows[0]["FotoEmpleado"].ToString();
-            //}
-            //else
-            //{
-            //    imgFoto.Src = "img/empleados/nofoto.png";
-            //}
-            //txbContrato.Text = dt.Rows[0]["NroContrato"].ToString();
-            //if (dt.Rows[0]["TipoContrato"].ToString() != "")
-            //{
-            //    ddlTipoContrato.SelectedIndex = Convert.ToInt16(ddlTipoContrato.Items.IndexOf(ddlTipoContrato.Items.FindByText(dt.Rows[0]["TipoContrato"].ToString())));
-            //}
             ddlSedes.SelectedIndex = Convert.ToInt32(ddlSedes.Items.IndexOf(ddlSedes.Items.FindByValue(dt.Rows[0]["idSede"].ToString())));
-            //int sueldo = (dt.Rows[0]["Sueldo"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["Sueldo"]) : 0;
-            //txbSueldo.Text = sueldo.ToString("C0", new CultureInfo("es-CO"));
-
-            //if (dt.Rows[0]["GrupoNomina"].ToString() != "")
-            //{
-            //    ddlGrupo.SelectedIndex = Convert.ToInt16(ddlGrupo.Items.IndexOf(ddlGrupo.Items.FindByValue(dt.Rows[0]["GrupoNomina"].ToString())));
-            //}
+            
             if (dt.Rows[0]["idEps"].ToString() != "")
             {
                 ddlEps.SelectedIndex = Convert.ToInt16(ddlEps.Items.IndexOf(ddlEps.Items.FindByValue(dt.Rows[0]["idEps"].ToString())));
@@ -260,18 +243,6 @@ namespace fpWebApp
                 ddlCesantias.SelectedIndex = Convert.ToInt16(ddlCesantias.Items.IndexOf(ddlCesantias.Items.FindByValue(dt.Rows[0]["idCesantias"].ToString())));
             }
 
-            //rblEstado.Items.FindByValue(dt.Rows[0]["Estado"].ToString()).Selected = true;
-
-            //if (dt.Rows[0]["idCanalVenta"].ToString() != "")
-            //{
-            //    ddlCanalVenta.SelectedIndex = Convert.ToInt16(ddlCanalVenta.Items.IndexOf(ddlCanalVenta.Items.FindByValue(dt.Rows[0]["idCanalVenta"].ToString())));
-            //}
-
-            //if (dt.Rows[0]["idEmpresaFP"].ToString() != "")
-            //{
-            //    ddlEmpresasFP.SelectedIndex = Convert.ToInt16(ddlEmpresasFP.Items.IndexOf(ddlEmpresasFP.Items.FindByValue(dt.Rows[0]["idEmpresaFP"].ToString())));
-            //}
-
             if (dt.Rows[0]["idEstadoCivil"].ToString() != "")
             {
                 ddlEstadoCivil.SelectedIndex = Convert.ToInt16(ddlEstadoCivil.Items.IndexOf(ddlEstadoCivil.Items.FindByValue(dt.Rows[0]["idEstadoCivil"].ToString())));
@@ -288,6 +259,21 @@ namespace fpWebApp
             }
 
             dt.Dispose();
+        }
+
+        private bool ConsultarSiActualizo(string idEmpleado)
+        {
+            bool actualizo = false;
+
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.CargarEmpleados(idEmpleado);
+
+            if (dt.Rows[0]["FechaNacEmpleado"].ToString() != "" && dt.Rows[0]["idSede"].ToString() != "" && dt.Rows[0]["idEps"].ToString() != "" && dt.Rows[0]["idFondoPension"].ToString() != "" && dt.Rows[0]["idEstadoCivil"].ToString() != "")
+            {
+                actualizo = true;
+            }
+
+            return actualizo;
         }
 
         protected void btnActualizar_Click(object sender, EventArgs e)
@@ -317,30 +303,24 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
+                string strHashClave = cg.ComputeSha256Hash(txbClave.Text.ToString());
 
-                string mensaje = cg.ActualizarEmpleado(txbDocumento.Text.ToString(), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
+                string mensaje = cg.ActualizarEmpleadoNuevo(txbDocumento.Text.ToString(), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
                     txbNombre.Text.ToString(), txbTelefono.Text.ToString(), txbTelefonoCorp.Text.ToString(),
                     txbEmail.Text.ToString(), txbEmailCorp.Text.ToString(), txbDireccion.Text.ToString(),
-                    Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), txbFechaNac.Text.ToString(), strFilename,
-                    "", "Fijo", Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), 
-                    0, "1 - ADMINISTRATIVOS", Convert.ToInt32(ddlEps.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), txbFechaNac.Text.ToString(), strFilename, 
+                    Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), 
+                    Convert.ToInt32(ddlEps.SelectedItem.Value.ToString()),
                     Convert.ToInt32(ddlFondoPension.SelectedItem.Value.ToString()), Convert.ToInt32(ddlArl.SelectedItem.Value.ToString()),
                     Convert.ToInt32(ddlCajaComp.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCesantias.SelectedItem.Value.ToString()),
                     Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value.ToString()),
-                    1, Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()));
-
-                //if (rblEstado.Text.ToString() == "Inactivo")
-                //{
-                //    string restpuestaEstado = cg.ActualizarEstadoUsuario(txbDocumento.Text.ToString());
-                //}
+                    Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()), strHashClave);
 
                 string strNewData = TraerData();
 
-                //cg.InsertarLog(Session["idusuario"].ToString(), "Empleados", "Modifica", "El usuario modificó datos al empleado con documento " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
-
                 if (mensaje == "OK")
                 {
-                    cg.InsertarLog(Session["idusuario"].ToString(), "Empleados", "Modifica", "El usuario modificó datos al empleado con documento " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "Empleados, Usuarios", "Modifica", "El usuario actualizó sus datos por primera vez (documento " + txbDocumento.Text.ToString() + ").", strInitData, strNewData);
 
                     string script = @"
                         Swal.fire({
@@ -351,7 +331,7 @@ namespace fpWebApp
                             showConfirmButton: false,
                             timerProgressBar: true
                         }).then(() => {
-                            window.location.href = 'empleados';
+                            window.location.href = 'inicio';
                         });
                         ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
@@ -372,11 +352,8 @@ namespace fpWebApp
                     ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
                 }
 
-                //Response.Redirect("empleados");
-
-
             }
-            catch (OdbcException ex)
+            catch (SqlException ex)
             {
                 string script = @"
                     Swal.fire({

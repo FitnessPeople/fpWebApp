@@ -17,11 +17,9 @@
     <title>Fitness People | Planes</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
-    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <%--<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />--%>
     <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
@@ -36,6 +34,7 @@
     </style>
 
     <script>
+        /*TODO: Hacer el arreglo del menu OJO*/
         function changeClass() {
             var element1 = document.querySelector("#planes");
             element1.classList.replace("old", "active");
@@ -234,11 +233,11 @@
                                                 </div>--%>
                                                 <div class="row">
                                                     <div class="col-sm-12">
-                                                        <h3>Período del plan</h3>
+                                                        <h4>Período del plan</h4>
                                                     </div>
 
                                                     <div>
-                                                        <div class="col-sm-4">
+                                                        <div class="col-sm-12">
                                                             <div class="form-group">
                                                                 <label>Estado</label>
                                                                 <asp:CheckBox runat="server" ID="cbPermanente" Text="&nbsp;Permanente" CssClass="form-control" />
@@ -246,7 +245,7 @@
                                                         </div>
                                                     </div>
                                                     <div id="fechas">
-                                                        <div class="col-sm-4">
+                                                        <div class="col-sm-6">
                                                             <div class="form-group">
                                                                 <label>Fecha inicial</label>
                                                                 <asp:TextBox ID="txbFechaInicial" CssClass="form-control input-sm" runat="server"></asp:TextBox>
@@ -255,7 +254,7 @@
                                                                     CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-4">
+                                                        <div class="col-sm-6">
                                                             <div class="form-group">
                                                                 <label>Fecha final</label>
                                                                 <asp:TextBox ID="txbFechaFinal" CssClass="form-control input-sm" runat="server"></asp:TextBox>
@@ -266,6 +265,18 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <div class="row">
+                                                    <div>
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>Tipo de pago</label>
+                                                                <asp:CheckBox runat="server" ID="cbDebitoAutomatico" Text="&nbsp;Débito automático" CssClass="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                          <div class="form-group">
@@ -402,7 +413,6 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
-    <%--<script src="js/plugins/footable/footable.all.min.js"></script>--%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
     <!-- Custom and plugin javascript -->
@@ -453,19 +463,20 @@
         var ctx = document.getElementById("lineChart").getContext("2d");
         new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });--%>
 
-        <%=strData%>
+        <%--<%=strData%>--%>
 
         $('.footable').footable();
-        $(".select2_demo_1").select2();
 
         function formatText(icon) {
             return $('<span><i class="fa ' + $(icon.element).data('icon') + '" style="color: ' + $(icon.element).data('color') + '"></i> ' + icon.text + '</span>');
         };
+
         $(document).ready(function () {
             $('#ddlColor').select2({
                 width: '100%',
                 templateSelection: formatText,
-                templateResult: formatText
+                templateResult: formatText,
+                minimumResultsForSearch: 10
             });
         });
     </script>

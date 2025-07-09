@@ -17,7 +17,6 @@
     <title>Fitness People | Plan afiliado</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
-    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
@@ -33,6 +32,12 @@
     <link href="css/style.css" rel="stylesheet" />
 
     <link href="css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         function changeClass() {
@@ -524,8 +529,8 @@
                                                                     </div>
                                                                     <hr />
                                                                     <div class="form-group" style="margin-bottom: 5px;">
-                                                                        <label class="col-lg-7 control-label">TOTAL
-                                                                            <asp:Literal ID="ltValorTotal" runat="server"></asp:Literal>:</label>
+                                                                        <h1><label class="col-lg-7 control-label">TOTAL
+                                                                            <asp:Literal ID="ltValorTotal" runat="server"></asp:Literal>:</label></h1>
                                                                         <div class="col-lg-5">
                                                                             <asp:TextBox ID="txbTotal" CssClass="form-control input-sm"
                                                                                 runat="server" ReadOnly Style="text-align: right;"></asp:TextBox>
@@ -536,7 +541,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                <%--<asp:Literal ID="ltMensaje" runat="server"></asp:Literal>--%>
 
                                                 <div>
                                                     <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"

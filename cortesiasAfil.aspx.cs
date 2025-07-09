@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
+using System.Data.SqlClient;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -225,7 +225,7 @@ namespace fpWebApp
         /// </remarks>
         /// <param name="sender">Objeto que generó el evento</param>
         /// <param name="e">Argumentos del evento</param>
-        /// <exception cref="OdbcException">Maneja y muestra errores de conexión/consulta a la base de datos</exception>
+        /// <exception cref="SqlException">Maneja y muestra errores de conexión/consulta a la base de datos</exception>
         protected void btnAgregarCortesia_Click(object sender, EventArgs e)
         {
             if (ViewState["DiasCortesia"] == null)
@@ -263,7 +263,7 @@ namespace fpWebApp
 
                         Response.Redirect("afiliados");
                     }
-                    catch (OdbcException ex)
+                    catch (SqlException ex)
                     {
                         ltMensaje.Text = "<div class=\"ibox-content\">" +
                             "<div class=\"alert alert-danger alert-dismissable\">" +

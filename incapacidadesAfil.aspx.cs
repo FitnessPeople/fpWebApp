@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
+using System.Data.SqlClient;
 using System.IO;
 using System.Web;
 using System.Web.UI;
@@ -232,7 +232,7 @@ namespace fpWebApp
         /// </remarks>
         /// <param name="sender">Objeto que disparó el evento</param>
         /// <param name="e">Argumentos del evento</param>
-        /// <exception cref="OdbcException">Maneja errores de base de datos mostrando un mensaje al usuario</exception>
+        /// <exception cref="SqlException">Maneja errores de base de datos mostrando un mensaje al usuario</exception>
         protected void btnSolicitarIncapacidad_Click(object sender, EventArgs e)
         {
             string strDias = hfDias.Value.ToString();
@@ -261,7 +261,7 @@ namespace fpWebApp
 
                 Response.Redirect("afiliados");
             }
-            catch (OdbcException ex)
+            catch (SqlException ex)
             {
                 string mensaje = ex.Message;
                 ltMensaje.Text = "<div class=\"ibox-content\">" +

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
 using System.IO;
 using System.Web;
 using System.Web.UI;
@@ -80,6 +79,32 @@ namespace fpWebApp
             rpLogs.DataBind();
 
             dt.Dispose();
+        }
+
+        protected void lbExportarExcel_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string consultaSQL = @"SELECT * 
+                    FROM logs l;";
+
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.TraerDatos(consultaSQL);
+                string nombreArchivo = $"LogActividades_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+
+                if (dt.Rows.Count > 0)
+                {
+                    cg.ExportarExcel(dt, nombreArchivo);
+                }
+                else
+                {
+                    Response.Write("<script>alert('No existen registros para esta consulta');</script>");
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+            }
         }
     }
 }

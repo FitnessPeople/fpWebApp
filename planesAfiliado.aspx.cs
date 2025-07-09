@@ -80,6 +80,20 @@ namespace fpWebApp
                         CargarAfiliado();
                         CargarPlanesAfiliado();
 
+                        if (ViewState["EstadoAfiliado"].ToString() != "Activo")
+                        {
+                            string script = @"
+                                Swal.fire({
+                                    title: 'Alerta',
+                                    text: 'El afiliado no se encuentra activo.',
+                                    icon: 'error'
+                                }).then(() => {
+                                    window.location.href = 'afiliados';
+                                });
+                                ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                        }
+
                         string strData = ListarDetalle();
                         ltDetalleWompi.Text = strData;
                     }
@@ -146,13 +160,14 @@ namespace fpWebApp
         {
             if (Request.QueryString.Count > 0)
             {
-                string strQuery = "SELECT *, " +
-                    "IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS label " +
-                    "FROM afiliados a " +
-                    "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +
-                    "LEFT JOIN ciudades ON ciudades.idCiudad = a.idCiudadAfiliado " +
-                    "WHERE a.idAfiliado = " + Request.QueryString["id"].ToString() + " ";
+                string strQuery = @"SELECT *, 
+                    IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS label 
+                    FROM afiliados a 
+                    LEFT JOIN Sedes s ON a.idSede = s.idSede 
+                    LEFT JOIN ciudades ON ciudades.idCiudad = a.idCiudadAfiliado 
+                    WHERE a.idAfiliado = " + Request.QueryString["id"].ToString();
                 clasesglobales cg = new clasesglobales();
+
                 DataTable dt = cg.TraerDatos(strQuery);
 
                 if (dt.Rows.Count > 0)
@@ -652,43 +667,75 @@ namespace fpWebApp
         /// <param name="e"></param>
         protected void lbAgregarPlan_Click(object sender, EventArgs e)
         {
-            if (ViewState["EstadoAfiliado"].ToString() != "Activo")
+            //if (ViewState["EstadoAfiliado"].ToString() != "Activo")
+            //{
+            //    ltMensaje.Text = "<div class=\"ibox-content\">" +
+            //        "<div class=\"alert alert-danger alert-dismissable\">" +
+            //        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+            //        "El afiliado no se encuentra activo." +
+            //        "</div></div>";
+            //}
+            //else
+            //{
+            if (ViewState["nombrePlan"] != null)
             {
-                ltMensaje.Text = "<div class=\"ibox-content\">" +
-                    "<div class=\"alert alert-danger alert-dismissable\">" +
-                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    "El afiliado no se encuentra activo." +
-                    "</div></div>";
-            }
-            else
-            {
-                if (ViewState["nombrePlan"] != null)
+                if (txbFechaInicio.Text != "")
                 {
-                    if (txbFechaInicio.Text != "")
+                    // Consultar si este usuario tiene un plan activo y cual es su fecha de inicio y fecha final.
+                    string strQuery = "SELECT * FROM AfiliadosPlanes " +
+                        "WHERE idAfiliado = " + Request.QueryString["id"].ToString() + " " +
+                        "AND EstadoPlan = 'Activo'";
+                    clasesglobales cg = new clasesglobales();
+                    DataTable dt = cg.TraerDatos(strQuery);
+                    if (dt.Rows.Count > 0)
                     {
-                        // Consultar si este usuario tiene un plan activo y cual es su fecha de inicio y fecha final.
-                        string strQuery = "SELECT * FROM AfiliadosPlanes " +
-                            "WHERE idAfiliado = " + Request.QueryString["id"].ToString() + " " +
-                            "AND EstadoPlan = 'Activo'";
-                        clasesglobales cg = new clasesglobales();
-                        DataTable dt = cg.TraerDatos(strQuery);
-                        if (dt.Rows.Count > 0)
+                        string script = @"
+                            Swal.fire({
+                                title: 'Mensaje',
+                                text: 'Este afiliado ya tiene un plan activo, hasta el " + string.Format("{0:dd MMM yyyy}", dt.Rows[0]["FechaFinalPlan"]) + @".',
+                                icon: 'error'
+                            }).then(() => {
+                            });
+                            ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                        //ltMensaje.Text = "<div class=\"ibox-content\">" +
+                        //    "<div class=\"alert alert-danger alert-dismissable\">" +
+                        //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        //    "Este afiliado ya tiene un plan activo, hasta el " + string.Format("{0:dd MMM yyyy}", dt.Rows[0]["FechaFinalPlan"]) +
+                        //    "</div></div>";
+                    }
+                    else
+                    {
+                        if (txbTotal.Text.ToString() == "")
                         {
-                            ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                "<div class=\"alert alert-danger alert-dismissable\">" +
-                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                "Este afiliado ya tiene un plan activo, hasta el " + string.Format("{0:dd MMM yyyy}", dt.Rows[0]["FechaFinalPlan"]) +
-                                "</div></div>";
+                            string script = @"
+                                Swal.fire({
+                                    title: 'Verificación',
+                                    text: 'Debe poner el valor a pagar.',
+                                    icon: 'error'
+                                }).then(() => {
+                                });
+                                ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                         }
                         else
-                        {
+                        { 
                             if (ViewState["precioTotal"].ToString() != Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")).ToString())
                             {
-                                ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                "<div class=\"alert alert-danger alert-dismissable\">" +
-                                "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                "El precio del plan es diferente al precio a pagar." +
-                                "</div></div>";
+                                string script = @"
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: 'El precio del plan es diferente al precio a pagar.',
+                                        icon: 'error'
+                                    }).then(() => {
+                                    });
+                                    ";
+                                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                                //ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                //"<div class=\"alert alert-danger alert-dismissable\">" +
+                                //"<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                //"El precio del plan es diferente al precio a pagar." +
+                                //"</div></div>";
                             }
                             else
                             {
@@ -804,38 +851,63 @@ namespace fpWebApp
 
                                     cg.InsertarLog(Session["idusuario"].ToString(), "afiliadosplanes", "Agrega", "El usuario agregó un nuevo plan al afiliado con documento: " + dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString() + ".", "", "");
 
-                                    Response.Redirect("afiliados");
+                                    string script = @"
+                                            Swal.fire({
+                                                title: 'El plan se registró de forma exitosa.',
+                                                text: '',
+                                                icon: 'success',
+                                                timer: 3000, // 3 segundos
+                                                showConfirmButton: false,
+                                                timerProgressBar: true
+                                            }).then(() => {
+                                                window.location.href = 'detalleafiliado?search=" + dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString() + @"';
+                                            });
+                                            ";
+                                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
                                 }
                                 catch (Exception ex)
                                 {
-                                    ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                    "<div class=\"alert alert-danger alert-dismissable\">" +
-                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" + ex.Message.ToString() +
-                                    "</div></div>";
-                                    throw;
+                                    string script = @"
+                                        Swal.fire({
+                                            title: 'Error',
+                                            text: 'Ha ocurrido un error inesperado. " + ex.Message.ToString() + @"',
+                                            icon: 'error'
+                                        }).then(() => {
+                                        });
+                                        ";
+                                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                                 }
                             }
                         }
-                        dt.Dispose();
                     }
-                    else
-                    {
-                        ltMensaje.Text = "<div class=\"ibox-content\">" +
-                            "<div class=\"alert alert-danger alert-dismissable\">" +
-                            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                            "Elija la fecha de inicio del plan." +
-                            "</div></div>";
-                    }
+                    dt.Dispose();
                 }
                 else
                 {
-                    ltMensaje.Text = "<div class=\"ibox-content\">" +
-                        "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Elija el tipo de plan." +
-                        "</div></div>";
+                    string script = @"
+                        Swal.fire({
+                            title: 'Validación',
+                            text: 'Elija la fecha de inicio del plan.',
+                            icon: 'error'
+                        }).then(() => {
+                        });
+                        ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                 }
             }
+            else
+            {
+                string script = @"
+                    Swal.fire({
+                        title: 'Validación',
+                        text: 'Elija el tipo de plan.',
+                        icon: 'error'
+                    }).then(() => {
+                    });
+                    ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+            }
+            //}
         }
 
         /// <summary>
@@ -900,7 +972,7 @@ namespace fpWebApp
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
                     LinkButton lnkPlan = (LinkButton)e.Item.FindControl("btnSeleccionarPlan");
-                    lnkPlan.Attributes.Add("class", "btn btn-outline btn-" + ((DataRowView)e.Item.DataItem).Row[7].ToString() + " btn-block btn-sm");
+                    lnkPlan.Attributes.Add("class", "btn btn-outline btn-" + ((DataRowView)e.Item.DataItem).Row["NombreColorPlan"].ToString() + " btn-block btn-sm");
                 }
             }
         }

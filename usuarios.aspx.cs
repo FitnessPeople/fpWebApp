@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Odbc;
 using System.IO;
 using System.Web;
 using System.Web.UI;
@@ -66,7 +65,7 @@ namespace fpWebApp
                 "IF(EstadoUsuario = 'Activo','success','danger') AS estatus " +
                 "FROM Usuarios u " +
                 "LEFT JOIN Empleados e ON u.idEmpleado = e.DocumentoEmpleado " +
-                "INNER JOIN Perfiles pf ON u.idPerfil = pf.idPerfil " +
+                "LEFT JOIN Perfiles pf ON u.idPerfil = pf.idPerfil " +
                 "ORDER BY NombreUsuario";
             clasesglobales cg1 = new clasesglobales();
             DataTable dt = cg1.TraerDatos(strQuery);

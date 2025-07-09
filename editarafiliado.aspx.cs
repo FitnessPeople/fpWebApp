@@ -58,11 +58,6 @@ namespace fpWebApp
             }
         }
 
-        /// <summary>
-        /// Valida los permisos del usuario en la pagina visitada.
-        /// Contiene un parametro.
-        /// </summary>
-        /// <param name="strPagina"></param>
         private void ValidarPermisos(string strPagina)
         {
             ViewState["SinPermiso"] = "1";
@@ -86,9 +81,6 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        /// <summary>
-        /// Llena una lista con los tipos de documento
-        /// </summary>
         private void CargarTipoDocumento()
         {
             clasesglobales cg = new clasesglobales();
@@ -100,9 +92,6 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        /// <summary>
-        /// Llena una lista con las ciudades
-        /// </summary>
         private void CargarCiudad()
         {
             clasesglobales cg = new clasesglobales();
@@ -186,100 +175,138 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        /// <summary>
-        /// Carga los datos de un afiliado en el formulario cuando se detecta un parámetro "editid" en la URL.
-        /// Recupera la información desde la base de datos y la asigna a los controles del formulario para su edición.
-        /// Si no se encuentra el afiliado o no se proporciona el parámetro, muestra un mensaje de error y oculta el botón de actualización.
-        /// </summary>
         private void CargarAfiliado()
         {
-            if (Request.QueryString.Count > 0)
+            string idcrm = Request.QueryString["idcrm"];
+            string editid = Request.QueryString["editid"];
+            string parametro = string.Empty;
+            Session["IdAfiliado"] = string.Empty;
+            bool respuesta = false;
+            btnActualizar.Visible = true;
+            btnActualizaryVenderPlan.Visible = false;
+
+
+
+
+            clasesglobales cg = new clasesglobales();
+            try
             {
-                string strQuery = "SELECT * FROM afiliados WHERE idAfiliado = " + Request.QueryString["editid"].ToString();
-                clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.TraerDatos(strQuery);
-
-                if (dt.Rows.Count > 0)
+                if (Request.QueryString.Count > 0)
                 {
-                    txbNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
-                    txbApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
-                    txbDocumento.Text = dt.Rows[0]["DocumentoAfiliado"].ToString();
-                    ddlTipoDocumento.SelectedIndex = Convert.ToInt16(dt.Rows[0]["idTipoDocumento"].ToString());
-                    txbTelefono.Text = dt.Rows[0]["CelularAfiliado"].ToString();
-                    txbEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
-                    txbDireccion.Text = dt.Rows[0]["DireccionAfiliado"].ToString();
-                    ddlCiudadAfiliado.SelectedIndex = Convert.ToInt16(ddlCiudadAfiliado.Items.IndexOf(ddlCiudadAfiliado.Items.FindByValue(dt.Rows[0]["idCiudadAfiliado"].ToString())));
-                    ddlEmpresaConvenio.SelectedIndex = Convert.ToInt16(ddlEmpresaConvenio.Items.IndexOf(ddlEmpresaConvenio.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString())));
-                    txbFechaNac.Attributes.Add("type", "date");
-
-                    DateTime dt14 = DateTime.Now.AddYears(-14);
-                    DateTime dt100 = DateTime.Now.AddYears(-100);
-                    txbFechaNac.Attributes.Add("min", dt100.Year.ToString() + "-" + String.Format("{0:MM}", dt100) + "-" + String.Format("{0:dd}", dt100));
-                    txbFechaNac.Attributes.Add("max", dt14.Year.ToString() + "-" + String.Format("{0:MM}", dt14) + "-" + String.Format("{0:dd}", dt14));
-                    DateTime dtFecha = new DateTime();
-                    if (dt.Rows[0]["FechaNacAfiliado"].ToString() != "1900-01-00")
+                    if (!string.IsNullOrEmpty(idcrm))
                     {
-                        dtFecha = Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"].ToString());
+                        DataTable dt1 = cg.ConsultarContactosCRMPorId(Convert.ToInt32(idcrm), out respuesta);
+                        DataTable dt2 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(dt1.Rows[0]["DocumentoAfiliado"].ToString()));
+                        parametro = dt2.Rows[0]["idAfiliado"].ToString();
+                        btnActualizar.Visible = false;
+                        btnActualizaryVenderPlan.Visible = true;
+                        Session["IdAfiliado"] = parametro.ToString();
+                    }
+                    else if (!string.IsNullOrEmpty(editid))
+                    {
+                        parametro = editid;
+                        Session["IdAfiliado"] = parametro.ToString();
                     }
 
-                    txbFechaNac.Text = dtFecha.ToString("yyyy-MM-dd");
+                    if (!string.IsNullOrEmpty(parametro))
+                    {
+                        string strQuery = "SELECT * FROM afiliados WHERE idAfiliado = " + parametro;
 
-                    if (dt.Rows[0]["FotoAfiliado"].ToString() != "")
-                    {
-                        imgFoto.ImageUrl = "img/afiliados/" + dt.Rows[0]["FotoAfiliado"].ToString();
-                        ViewState["FotoAfiliado"] = dt.Rows[0]["FotoAfiliado"].ToString();
+                        DataTable dt = cg.TraerDatos(strQuery);
+
+                        if (dt.Rows.Count > 0)
+                        {
+                            txbNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
+                            txbApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
+                            txbDocumento.Text = dt.Rows[0]["DocumentoAfiliado"].ToString();
+                            ddlTipoDocumento.SelectedIndex = Convert.ToInt16(dt.Rows[0]["idTipoDocumento"].ToString());
+                            txbTelefono.Text = dt.Rows[0]["CelularAfiliado"].ToString();
+                            txbEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
+                            txbDireccion.Text = dt.Rows[0]["DireccionAfiliado"].ToString();
+                            ddlCiudadAfiliado.SelectedIndex = ddlCiudadAfiliado.Items.IndexOf(ddlCiudadAfiliado.Items.FindByValue(dt.Rows[0]["idCiudadAfiliado"].ToString()));
+                            ddlEmpresaConvenio.SelectedIndex = ddlEmpresaConvenio.Items.IndexOf(ddlEmpresaConvenio.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString()));
+                            txbFechaNac.Attributes.Add("type", "date");
+
+                            DateTime dt14 = DateTime.Now.AddYears(-14);
+                            DateTime dt100 = DateTime.Now.AddYears(-100);
+                            txbFechaNac.Attributes.Add("min", $"{dt100:yyyy-MM-dd}");
+                            txbFechaNac.Attributes.Add("max", $"{dt14:yyyy-MM-dd}");
+
+                            DateTime dtFecha = DateTime.MinValue;
+                            if (DateTime.TryParse(dt.Rows[0]["FechaNacAfiliado"].ToString(), out dtFecha))
+                            {
+                                txbFechaNac.Text = dtFecha.ToString("yyyy-MM-dd");
+                            }
+
+                            if (!string.IsNullOrEmpty(dt.Rows[0]["FotoAfiliado"].ToString()))
+                            {
+                                imgFoto.ImageUrl = "img/afiliados/" + dt.Rows[0]["FotoAfiliado"].ToString();
+                                ViewState["FotoAfiliado"] = dt.Rows[0]["FotoAfiliado"].ToString();
+                            }
+
+                            if (!string.IsNullOrEmpty(dt.Rows[0]["idGenero"].ToString()))
+                            {
+                                ddlGenero.SelectedIndex = ddlGenero.Items.IndexOf(
+                                    ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString()));
+                            }
+
+                            if (!string.IsNullOrEmpty(dt.Rows[0]["idEstadoCivilAfiliado"].ToString()))
+                            {
+                                ddlEstadoCivil.SelectedIndex = ddlEstadoCivil.Items.IndexOf(
+                                    ddlEstadoCivil.Items.FindByValue(dt.Rows[0]["idEstadoCivilAfiliado"].ToString()));
+                            }
+
+                            if (!string.IsNullOrEmpty(dt.Rows[0]["idProfesion"].ToString()))
+                            {
+                                ddlProfesiones.SelectedIndex = ddlProfesiones.Items.IndexOf(
+                                    ddlProfesiones.Items.FindByValue(dt.Rows[0]["idProfesion"].ToString()));
+                            }
+
+                            if (!string.IsNullOrEmpty(dt.Rows[0]["idEps"].ToString()))
+                            {
+                                ddlEps.SelectedIndex = ddlEps.Items.IndexOf(
+                                    ddlEps.Items.FindByValue(dt.Rows[0]["idEps"].ToString()));
+                            }
+
+                            if (!string.IsNullOrEmpty(dt.Rows[0]["idSede"].ToString()))
+                            {
+                                ddlSedes.SelectedIndex = ddlSedes.Items.IndexOf(
+                                    ddlSedes.Items.FindByValue(dt.Rows[0]["idSede"].ToString()));
+                            }
+
+                            if (!string.IsNullOrEmpty(dt.Rows[0]["Parentesco"].ToString()))
+                            {
+                                ddlParentesco.SelectedIndex = ddlParentesco.Items.IndexOf(
+                                    ddlParentesco.Items.FindByText(dt.Rows[0]["Parentesco"].ToString()));
+                            }
+
+                            txbResponsable.Text = dt.Rows[0]["ResponsableAfiliado"].ToString();
+                            txbTelefonoContacto.Text = dt.Rows[0]["ContactoAfiliado"].ToString();
+                            rblEstado.Items.FindByValue(dt.Rows[0]["EstadoAfiliado"].ToString()).Selected = true;
+                        }
+                        else
+                        {
+                            divMensaje1.Visible = true;
+                            btnActualizar.Visible = false;
+                        }
+
+                        dt.Dispose();
                     }
-                    if (dt.Rows[0]["idGenero"].ToString() != "")
+                    else
                     {
-                        ddlGenero.SelectedIndex = Convert.ToInt16(ddlGenero.Items.IndexOf(ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString())));
+                        divMensaje1.Visible = true;
+                        btnActualizar.Visible = false;
                     }
-                    if (dt.Rows[0]["idEstadoCivilAfiliado"].ToString() != "")
-                    {
-                        ddlEstadoCivil.SelectedIndex = Convert.ToInt16(ddlEstadoCivil.Items.IndexOf(ddlEstadoCivil.Items.FindByValue(dt.Rows[0]["idEstadoCivilAfiliado"].ToString())));
-                    }
-                    if (dt.Rows[0]["idProfesion"].ToString() != "")
-                    {
-                        ddlProfesiones.SelectedIndex = Convert.ToInt16(ddlProfesiones.Items.IndexOf(ddlProfesiones.Items.FindByValue(dt.Rows[0]["idProfesion"].ToString())));
-                    }
-                    if (dt.Rows[0]["idEps"].ToString() != "")
-                    {
-                        ddlEps.SelectedIndex = Convert.ToInt16(ddlEps.Items.IndexOf(ddlEps.Items.FindByValue(dt.Rows[0]["idEps"].ToString())));
-                    }
-                    if (dt.Rows[0]["idSede"].ToString() != "")
-                    {
-                        ddlSedes.SelectedIndex = Convert.ToInt16(ddlSedes.Items.IndexOf(ddlSedes.Items.FindByValue(dt.Rows[0]["idSede"].ToString())));
-                    }
-                    if (dt.Rows[0]["Parentesco"].ToString() != "")
-                    {
-                        ddlParentesco.SelectedIndex = Convert.ToInt16(ddlParentesco.Items.IndexOf(ddlParentesco.Items.FindByText(dt.Rows[0]["Parentesco"].ToString())));
-                    }
-                    txbResponsable.Text = dt.Rows[0]["ResponsableAfiliado"].ToString();
-                    txbTelefonoContacto.Text = dt.Rows[0]["ContactoAfiliado"].ToString();
-                    rblEstado.Items.FindByValue(dt.Rows[0]["EstadoAfiliado"].ToString()).Selected = true;
                 }
-                else
-                {
-                    divMensaje1.Visible = true;
-                    btnActualizar.Visible = false;
-                }
-
-                dt.Dispose();
             }
-            else
+            catch (Exception ex)
             {
-                divMensaje1.Visible = true;
-                btnActualizar.Visible = false;
+                string mensaje = "ERROR: " + ex.Message;
             }
+
         }
 
-        /// <summary>
-        /// Maneja el evento de clic del botón "Actualizar" para modificar los datos de un afiliado existente.
-        /// Actualiza la información en la base de datos, gestiona el reemplazo de la foto si se ha subido una nueva,
-        /// registra los cambios en un log, y si el afiliado existe en Armatura, también actualiza sus datos a través de una API externa.
-        /// Finalmente, redirige a la página de afiliados.
-        /// </summary>
-        /// <param name="sender">El origen del evento (generalmente el botón).</param>
-        /// <param name="e">Argumentos del evento asociados al clic.</param>
+
         protected void btnActualizar_Click(object sender, EventArgs e)
         {
             string strFilename = "";
@@ -362,15 +389,6 @@ namespace fpWebApp
             Response.Redirect("afiliados");
         }
 
-        /// <summary>
-        /// Consulta si un afiliado existe en el sistema externo Armatura mediante una solicitud HTTP GET.
-        /// Interpreta la respuesta JSON para extraer el mensaje de estado de la operación.
-        /// </summary>
-        /// <param name="url">La URL del servicio web de Armatura, que incluye el documento del afiliado y el token de acceso.</param>
-        /// <returns>
-        /// Un mensaje indicando el estado de la consulta. Si es exitoso, retorna el contenido del campo "message" del JSON.
-        /// En caso de error, retorna un mensaje con la descripción del error.
-        /// </returns>
         private static string ConsultarPersona(string url)
         {
             string resultado = "";
@@ -397,11 +415,6 @@ namespace fpWebApp
             }
         }
 
-        /// <summary>
-        /// Envía la información del afiliado al sistema externo Armatura para registrar o actualizar su perfil.
-        /// Extrae los datos del afiliado y su plan desde la base de datos local, arma un objeto <c>Persona</c> y lo envía en formato JSON.
-        /// </summary>
-        /// <param name="strDocumento">Número de documento del afiliado a sincronizar con Armatura.</param>
         private void PostArmatura(string strDocumento)
         {
             clasesglobales cg = new clasesglobales();
@@ -466,16 +479,6 @@ namespace fpWebApp
             }
         }
 
-        /// <summary>
-        /// Envía una solicitud HTTP POST al servicio especificado con el contenido JSON proporcionado.
-        /// Espera una respuesta en formato JSON y devuelve el valor del campo "message".
-        /// </summary>
-        /// <param name="url">URL del servicio web al cual se enviará la solicitud.</param>
-        /// <param name="contenido">Cadena JSON que representa el cuerpo de la solicitud.</param>
-        /// <returns>
-        /// Devuelve el mensaje contenido en la respuesta JSON bajo la clave "message".
-        /// En caso de error, retorna una cadena con el mensaje de excepción.
-        /// </returns>
         public static string EnviarPeticion(string url, string contenido)
         {
             string result = "";
@@ -550,5 +553,12 @@ namespace fpWebApp
 
             return strData;
         }
+
+        protected void btnActualizaryVenderPlan_Click(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32(Session["idAfiliado"].ToString());
+            Response.Redirect("planesAfiliado.aspx?id=" + id);
+        }
+
     }
 }

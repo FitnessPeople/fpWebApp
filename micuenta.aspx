@@ -16,16 +16,12 @@
     <title>Fitness People | Mi cuenta</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
-    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
     <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
-
-    <!-- FooTable -->
-    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
 
     <!-- Sweet Alert -->
     <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
@@ -43,51 +39,6 @@
         }
     </script>
 
-    <%--<style>
-
-    /* Style the container for inputs */
-    .container {
-      background-color: #f1f1f1;
-      padding: 5px;
-    }
-
-    /* The message box is shown when the user clicks on the password field */
-    #message {
-      display:none;
-      background: #f1f1f1;
-      color: #000;
-      position: relative;
-      padding: 5px;
-      margin-top: 10px;
-    }
-
-    #message p {
-      padding: 5px 15px;
-      font-size: 12px;
-    }
-
-    /* Add a green text color and a checkmark when the requirements are right */
-    .valid {
-      color: green;
-    }
-
-    .valid:before {
-      position: relative;
-      left: -5px;
-      content: "✔";
-    }
-
-    /* Add a red text color and an "x" when the requirements are wrong */
-    .invalid {
-      color: red;
-    }
-
-    .invalid:before {
-      position: relative;
-      left: -5px;
-      content: "✖";
-    }
-</style>--%>
 </head>
 
 <body onload="changeClass()">
@@ -777,7 +728,7 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>EPS</label>
-                                                    <asp:DropDownList ID="ddlEps" runat="server" AppendDataBoundItems="true"
+                                                    <asp:DropDownList ID="ddlEps" runat="server" AppendDataBoundItems="true" 
                                                         DataTextField="NombreEps" DataValueField="idEps" CssClass="form-control input-sm">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
@@ -889,9 +840,6 @@
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-    <!-- FooTable -->
-    <script src="js/plugins/footable/footable.all.min.js"></script>
-
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
@@ -989,6 +937,15 @@
                     required: true
                 },
                 ddlFondoPension: {
+                    required: true
+                },
+                ddlArl: {
+                    required: true
+                },
+                ddlCajaComp: {
+                    required: true
+                },
+                ddlCesantias: {
                     required: true
                 },
             },
