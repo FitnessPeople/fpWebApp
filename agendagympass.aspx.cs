@@ -417,8 +417,6 @@ namespace fpWebApp
                 ? (int?)null
                 : Convert.ToInt32(ddlSedes.SelectedItem.Value);
 
-            
-
             int? idSedeAnterior = ViewState["FiltroSede"] as int?;
 
             if (nuevoIdSede != idSedeAnterior)
