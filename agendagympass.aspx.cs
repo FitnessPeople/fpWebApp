@@ -37,6 +37,23 @@ namespace fpWebApp
                     {
                         int idSedeUsuario = Convert.ToInt32(Session["idSede"]);
 
+                        if (idSedeUsuario != 11)
+                        {
+                            clasesglobales cg = new clasesglobales();
+
+                            int? idSede = (idSedeUsuario == 11) ? (int?)null : idSedeUsuario;
+
+                            DataTable dt = cg.ConsultaCargarSedesPorId(idSede, "Gimnasio");
+
+                            ltSede.Text = $"Sede {dt.Rows[0]["NombreSede"]}";
+
+                            dt.Dispose();
+                        } 
+                        else
+                        {
+                            ltSede.Text = "de todas las sedes";
+                        }
+
                         divFiltroSede.Visible = (idSedeUsuario == 11);
                         CargarSedes();
                         CargarEstados();
@@ -386,7 +403,14 @@ namespace fpWebApp
 
         protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ltSede.Text = ddlSedes.SelectedItem.Text;
+            if (ddlSedes.SelectedItem.Text == "Todas")
+            {
+                ltSede.Text = "de todas las sedes";
+            }
+            else
+            {
+                ltSede.Text = $"Sede {ddlSedes.SelectedItem.Text}";
+            }
 
             int? nuevoIdSede = ddlSedes.SelectedItem.Text == "Todas" || ddlSedes.SelectedItem.Value == "0"
                 ? (int?)null
