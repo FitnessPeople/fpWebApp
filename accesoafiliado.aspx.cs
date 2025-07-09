@@ -1,9 +1,8 @@
-﻿using NPOI.OpenXmlFormats.Spreadsheet;
-using Org.BouncyCastle.Asn1.Ocsp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO.Ports;
+using System.Threading;
 using System.Web;
 using System.Web.Services.Description;
 using System.Web.UI;
@@ -141,12 +140,6 @@ namespace fpWebApp
                 //txbNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
 
                 //Cargar Planes del Afiliado
-                serialController = new SerialController("COM1"); // Reemplaza con tu puerto
-                serialController.Open();
-
-                serialController.SendData("ON");
-
-                serialController.Close();
 
                 strQuery = @"INSERT INTO AccesoAfiliado 
                     (idAfiliado, idSede, FechaHoraIngreso) 
@@ -178,6 +171,8 @@ namespace fpWebApp
                     });
                     ";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+
+                AbrirTorniquete();
             }
             else
             {
@@ -201,6 +196,20 @@ namespace fpWebApp
                     ";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
             }
+        }
+
+        public void AbrirTorniquete()
+        {
+            serialController = new SerialController("COM3"); // Reemplaza con tu puerto
+            serialController.Open();
+
+            serialController.SendData("1");
+
+            Thread.Sleep(1000);
+
+            serialController.SendData("0");
+
+            serialController.Close();
         }
 
         public class SerialController

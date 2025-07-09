@@ -44,11 +44,11 @@ namespace fpWebApp
 
                     if (Request.QueryString.Count > 0)
                     {
+                        clasesglobales cg = new clasesglobales();
                         rpPerfiles.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
-                            clasesglobales cg = new clasesglobales();
                             DataTable dt = cg.ConsultarPerfilPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
@@ -59,7 +59,9 @@ namespace fpWebApp
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
-                            //Borrar
+                            string strQuery = "DELETE FROM perfiles WHERE idPerfil = " + Request.QueryString["deleteid"].ToString();
+                            cg.TraerDatosStr(strQuery);
+                            Response.Redirect("perfiles");
                         }
                     }
                 }
@@ -143,10 +145,6 @@ namespace fpWebApp
                     string strNewData = TraerData();
                     cg.InsertarLog(Session["idusuario"].ToString(), "perfiles", "Modifica", "El usuario modificó el perfil: " + txbPerfil.Text.ToString() + ".", strInitData, strNewData);
                 }
-                if (Request.QueryString["deleteid"] != null)
-                {
-                    // Eliminar
-                }
                 Response.Redirect("perfiles");
             }
             else
@@ -224,13 +222,13 @@ namespace fpWebApp
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
                     HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "perfiles?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Attributes.Add("href", "perfiles?editid=" + ((DataRowView)e.Item.DataItem).Row["idPerfil"].ToString());
                     btnEditar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
                     HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "perfiles?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminar.Attributes.Add("href", "perfiles?deleteid=" + ((DataRowView)e.Item.DataItem).Row["idPerfil"].ToString());
                     btnEliminar.Visible = true;
                 }
             }
@@ -239,19 +237,19 @@ namespace fpWebApp
         protected void rpPaginasPermisos_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             LinkButton lb1 = (LinkButton)e.Item.FindControl("lb1");
-            lb1.CommandArgument = ((DataRowView)e.Item.DataItem).Row[0].ToString() + "," + ((DataRowView)e.Item.DataItem).Row[1].ToString();
+            lb1.CommandArgument = ((DataRowView)e.Item.DataItem).Row["idPagina"].ToString() + "," + ((DataRowView)e.Item.DataItem).Row["idPerfil"].ToString();
 
             LinkButton lb2 = (LinkButton)e.Item.FindControl("lb2");
-            lb2.CommandArgument = ((DataRowView)e.Item.DataItem).Row[0].ToString() + "," + ((DataRowView)e.Item.DataItem).Row[1].ToString();
+            lb2.CommandArgument = ((DataRowView)e.Item.DataItem).Row["idPagina"].ToString() + "," + ((DataRowView)e.Item.DataItem).Row["idPerfil"].ToString();
 
             LinkButton lb3 = (LinkButton)e.Item.FindControl("lb3");
-            lb3.CommandArgument = ((DataRowView)e.Item.DataItem).Row[0].ToString() + "," + ((DataRowView)e.Item.DataItem).Row[1].ToString();
+            lb3.CommandArgument = ((DataRowView)e.Item.DataItem).Row["idPagina"].ToString() + "," + ((DataRowView)e.Item.DataItem).Row["idPerfil"].ToString();
 
             LinkButton lb4 = (LinkButton)e.Item.FindControl("lb4");
-            lb4.CommandArgument = ((DataRowView)e.Item.DataItem).Row[0].ToString() + "," + ((DataRowView)e.Item.DataItem).Row[1].ToString();
+            lb4.CommandArgument = ((DataRowView)e.Item.DataItem).Row["idPagina"].ToString() + "," + ((DataRowView)e.Item.DataItem).Row["idPerfil"].ToString();
 
             LinkButton lb5 = (LinkButton)e.Item.FindControl("lb5");
-            lb5.CommandArgument = ((DataRowView)e.Item.DataItem).Row[0].ToString() + "," + ((DataRowView)e.Item.DataItem).Row[1].ToString();
+            lb5.CommandArgument = ((DataRowView)e.Item.DataItem).Row["idPagina"].ToString() + "," + ((DataRowView)e.Item.DataItem).Row["idPerfil"].ToString();
         }
 
         protected void lb1_Click(object sender, EventArgs e)

@@ -69,7 +69,7 @@ namespace fpWebApp.controles
 
         private void CuantasSedes()
         {
-            string strQuery = "SELECT COUNT(*) AS cuantos FROM Sedes";
+            string strQuery = "SELECT COUNT(*) AS cuantos FROM Sedes WHERE idSede <> 11";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 

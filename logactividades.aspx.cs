@@ -17,7 +17,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Log Actividades");
+                    ValidarPermisos("Flujo de actividades");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         divMensaje.Visible = true;
