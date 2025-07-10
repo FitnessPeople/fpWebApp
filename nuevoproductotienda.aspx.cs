@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Web;
-using System.Web.Configuration;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using MySql.Data.MySqlClient;
 
 namespace fpWebApp
 {
@@ -126,6 +120,7 @@ namespace fpWebApp
             }
             else
             {
+                clasesglobales cg = new clasesglobales();
                 string strQuery = "INSERT INTO productos " +
                     "(idCategoria, CodigoProd, NombreProd, PrecioPublicoProd, DetalleProd, DescripcionProd, " +
                     "CaracteristicasProd, BeneficiosProd, Imagen1Prod, Imagen2Prod, Imagen3Prod, Imagen4Prod, VideoProd, " +
@@ -136,28 +131,8 @@ namespace fpWebApp
                     "'" + txbDescripcion.Text.ToString() + "', '" + txbCaracteristicas.Text.ToString() + "', " +
                     "'" + txbBeneficios.Text.ToString() + "', '" + strFilename1 + "', '" + strFilename2 + "', " +
                     "'" + strFilename3 + "', '" + strFilename4 + "', '', 1, 1, 1) ";
+                cg.TraerDatosStr(strQuery);
 
-                try
-                {
-                    string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-
-                    using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
-                    {
-                        mysqlConexion.Open();
-                        using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
-                        {
-                            cmd.CommandType = CommandType.Text;
-                            cmd.ExecuteNonQuery();
-                        }
-                        mysqlConexion.Close();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    string respuesta = "ERROR: " + ex.Message;
-                }
-
-                clasesglobales cg = new clasesglobales();
                 cg.InsertarLog(Session["idusuario"].ToString(), "productos", "Nuevo", "El usuario creó un nuevo producto con código: " + txbCodigo.Text.ToString() + ".", "", "");
 
             }

@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Web;
-using System.Web.Configuration;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using MySql.Data.MySqlClient;
 
 namespace fpWebApp
 {
@@ -308,26 +301,8 @@ namespace fpWebApp
                         "'" + ddlParentesco.SelectedItem.Value.ToString() + "', '" + txbTelefonoContacto.Text.ToString() + "', " +
                         "'Pendiente', CURDATE(), " + Session["idusuario"].ToString() + ") ";
 
-                        try
-                        {
-                            string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-
-                            using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
-                            {
-                                mysqlConexion.Open();
-                                using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
-                                {
-                                    cmd.CommandType = CommandType.Text;
-                                    cmd.ExecuteNonQuery();
-                                }
-                                mysqlConexion.Close();
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            string respuesta = "ERROR: " + ex.Message;
-                        }
-
+                        cg.TraerDatosStr(strQuery);
+                        
                         cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Nuevo", "El usuario creó un nuevo afiliado con documento: " + txbDocumento.Text.ToString() + ".", "", "");
 
                         DataTable dt = cg.TraerDatos("SELECT idAfiliado FROM Afiliados WHERE DocumentoAfiliado = '" + txbDocumento.Text.ToString() + "' ");

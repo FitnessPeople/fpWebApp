@@ -3,14 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Net;
 using System.Text;
-using System.Web;
-using System.Web.Services.Description;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-//using static fpWebApp.editarafiliado;
 
 namespace fpWebApp
 {

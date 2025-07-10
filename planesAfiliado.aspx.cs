@@ -1,5 +1,4 @@
-﻿using MySql.Data.MySqlClient;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -9,10 +8,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Configuration;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace fpWebApp
@@ -750,26 +746,8 @@ namespace fpWebApp
                                         "'" + txbFechaInicio.Text.ToString() + "', '" + String.Format("{0:yyyy-MM-dd}", fechafinal) + "', 'Activo', " +
                                         "" + ViewState["meses"].ToString() + ", " + ViewState["precioTotal"].ToString() + ",  " +
                                         "'" + ViewState["observaciones"].ToString() + "') ";
-
-                                    try
-                                    {
-                                        string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-
-                                        using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
-                                        {
-                                            mysqlConexion.Open();
-                                            using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
-                                            {
-                                                cmd.CommandType = CommandType.Text;
-                                                cmd.ExecuteNonQuery();
-                                            }
-                                            mysqlConexion.Close();
-                                        }
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        string respuesta = "ERROR: " + ex.Message;
-                                    }
+                                    cg.TraerDatosStr(strQuery);
+                                    
 
                                     //if (txbWompi.Text.ToString() != "0")
                                     //{
@@ -826,27 +804,8 @@ namespace fpWebApp
                                         "'" + strBanco + "', " +
                                         "NOW(), 'Aprobado', " +
                                         "" + Session["idUsuario"].ToString() + ") ";
-
-                                    try
-                                    {
-                                        string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-
-                                        using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
-                                        {
-                                            mysqlConexion.Open();
-                                            using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
-                                            {
-                                                cmd.CommandType = CommandType.Text;
-                                                cmd.ExecuteNonQuery();
-                                            }
-                                            mysqlConexion.Close();
-                                        }
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        string respuesta = "ERROR: " + ex.Message;
-                                    }
-
+                                    cg.TraerDatosStr(strQuery);
+                                    
                                     DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(int.Parse(Request.QueryString["id"].ToString()));
 
                                     cg.InsertarLog(Session["idusuario"].ToString(), "afiliadosplanes", "Agrega", "El usuario agregó un nuevo plan al afiliado con documento: " + dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString() + ".", "", "");

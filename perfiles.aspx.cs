@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
-using System.IO;
-using System.Web;
-using System.Web.Configuration;
-using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using MySql.Data.MySqlClient;
 
 namespace fpWebApp
 {
@@ -378,22 +370,7 @@ namespace fpWebApp
                     default:
                         break;
                 }
-
-                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-
-                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
-                {
-                    using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
-                    {
-                        cmd.CommandType = CommandType.Text;
-
-                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
-                        {
-                            mysqlConexion.Open();
-                            dataAdapter.Fill(dt);
-                        }
-                    }
-                }
+                cg.TraerDatosStr(strQuery);
             }
 
             dt.Dispose();

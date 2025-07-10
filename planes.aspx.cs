@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Globalization;
-using System.IO;
 using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Optimization;
-using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
 
 namespace fpWebApp
 {
@@ -22,64 +15,110 @@ namespace fpWebApp
         {
             if (!IsPostBack)
             {
-                if (!IsPostBack)
+                if (Session["idUsuario"] != null)
                 {
-                    if (Session["idUsuario"] != null)
+                    ValidarPermisos("Planes");
+                    if (ViewState["SinPermiso"].ToString() == "1")
                     {
-                        ValidarPermisos("Planes");
-                        if (ViewState["SinPermiso"].ToString() == "1")
+                        //No tiene acceso a esta página
+                        divMensaje.Visible = true;
+                        paginasperfil.Visible = true;
+                        divContenido.Visible = false;
+                    }
+                    else
+                    {
+                        //Si tiene acceso a esta página
+                        divBotonesLista.Visible = false;
+                        btnAgregar.Visible = false;
+                        if (ViewState["Consulta"].ToString() == "1")
                         {
-                            //No tiene acceso a esta página
-                            divMensaje.Visible = true;
-                            paginasperfil.Visible = true;
-                            divContenido.Visible = false;
+                            divBotonesLista.Visible = true;
+                            lbExportarExcel.Visible = false;
                         }
-                        else
+                        if (ViewState["Exportar"].ToString() == "1")
                         {
-                            //Si tiene acceso a esta página
-                            divBotonesLista.Visible = false;
-                            btnAgregar.Visible = false;
-                            if (ViewState["Consulta"].ToString() == "1")
-                            {
-                                divBotonesLista.Visible = true;
-                                lbExportarExcel.Visible = false;
-                            }
-                            if (ViewState["Exportar"].ToString() == "1")
-                            {
-                                divBotonesLista.Visible = true;
-                                lbExportarExcel.Visible = true;
-                            }
-                            if (ViewState["CrearModificar"].ToString() == "1")
-                            {
-                                btnAgregar.Visible = true;
-                            }
+                            divBotonesLista.Visible = true;
+                            lbExportarExcel.Visible = true;
                         }
-                        ListaPlanes();
-                        ltTitulo.Text = "Agregar un plan";
-                        txbDiasCongelamiento.Attributes.Add("type", "number");
-                        txbDiasCongelamiento.Attributes.Add("step", "0.1");
-                        txbDiasCongelamiento.Attributes.Add("max", "10");
-                        txbMeses.Attributes.Add("type", "number");
-                        txbMeses.Attributes.Add("min", "1");
-                        txbMeses.Attributes.Add("max", "12");
-                        txbFechaInicial.Attributes.Add("type", "date");
-                        txbFechaFinal.Attributes.Add("type", "date");
-
-                        txbFechaInicial.Attributes.Add("value", DateTime.Now.ToString("yyyy-MM-dd"));
-                        txbFechaFinal.Attributes.Add("value", DateTime.Now.ToString("yyyy-MM-dd"));
-
-                        if (Request.QueryString.Count > 0)
+                        if (ViewState["CrearModificar"].ToString() == "1")
                         {
-                            rpPlanes.Visible = false;
-                            if (Request.QueryString["editid"] != null)
+                            btnAgregar.Visible = true;
+                        }
+                    }
+                    ListaPlanes();
+                    ltTitulo.Text = "Agregar un plan";
+                    txbDiasCongelamiento.Attributes.Add("type", "number");
+                    txbDiasCongelamiento.Attributes.Add("step", "0.1");
+                    txbDiasCongelamiento.Attributes.Add("max", "10");
+                    txbMeses.Attributes.Add("type", "number");
+                    txbMeses.Attributes.Add("min", "1");
+                    txbMeses.Attributes.Add("max", "12");
+                    txbFechaInicial.Attributes.Add("type", "date");
+                    txbFechaFinal.Attributes.Add("type", "date");
+
+                    txbFechaInicial.Attributes.Add("value", DateTime.Now.ToString("yyyy-MM-dd"));
+                    txbFechaFinal.Attributes.Add("value", DateTime.Now.ToString("yyyy-MM-dd"));
+
+                    if (Request.QueryString.Count > 0)
+                    {
+                        rpPlanes.Visible = false;
+                        if (Request.QueryString["editid"] != null)
+                        {
+                            //Editar
+                            clasesglobales cg = new clasesglobales();
+                            DataTable dt = cg.ConsultarPlanPorId(int.Parse(Request.QueryString["editid"].ToString()));
+                            if (dt.Rows.Count > 0)
                             {
-                                //Editar
-                                clasesglobales cg = new clasesglobales();
-                                DataTable dt = cg.ConsultarPlanPorId(int.Parse(Request.QueryString["editid"].ToString()));
-                                if (dt.Rows.Count > 0)
+                                if (dt.Rows[0]["FechaInicial"] == DBNull.Value || string.IsNullOrWhiteSpace(dt.Rows[0]["FechaInicial"].ToString()) &&
+                                    dt.Rows[0]["FechaFinal"] == DBNull.Value || string.IsNullOrWhiteSpace(dt.Rows[0]["FechaFinal"].ToString()))
                                 {
-                                    if (dt.Rows[0]["FechaInicial"] == DBNull.Value || string.IsNullOrWhiteSpace(dt.Rows[0]["FechaInicial"].ToString()) &&
-                                        dt.Rows[0]["FechaFinal"] == DBNull.Value || string.IsNullOrWhiteSpace(dt.Rows[0]["FechaFinal"].ToString()))
+                                    txbFechaInicial.Text = DateTime.Now.ToString("yyyy-MM-dd");
+                                    txbFechaFinal.Text = DateTime.Now.ToString("yyyy-MM-dd");
+                                }
+                                else
+                                {
+                                    txbFechaInicial.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
+                                    txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
+                                }
+
+                                txbPlan.Text = dt.Rows[0]["NombrePlan"].ToString();
+                                txbDescripcion.Text = dt.Rows[0]["DescripcionPlan"].ToString();
+                                int intPrecioBase = Convert.ToInt32(dt.Rows[0]["PrecioBase"]);
+                                txbPrecioBase.Text = intPrecioBase.ToString("C0", new CultureInfo("es-CO"));
+                                txbDiasCongelamiento.Text = dt.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',','.');
+                                int intPrecioTotal = Convert.ToInt32(dt.Rows[0]["PrecioTotal"]);
+                                txbPrecioTotal.Text = intPrecioTotal.ToString("C0", new CultureInfo("es-CO"));
+                                txbMeses.Text = dt.Rows[0]["Meses"].ToString();
+                                txbMesesCortesia.Text = dt.Rows[0]["MesesCortesia"].ToString();
+                                ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
+                                cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
+                                cbDebitoAutomatico.Checked = Convert.ToBoolean(dt.Rows[0]["DebitoAutomatico"]);
+                                btnAgregar.Text = "Actualizar";
+                                    
+                                //if (dt.Rows[0]["BannerWeb"].ToString() != "")
+                                //{
+                                //    ltBanner.Text = "<img src=\"img/banners/" + dt.Rows[0]["BannerWeb"].ToString() + "\" class=\"img responsive\" />";
+                                //}
+                            }
+                        }
+                        if (Request.QueryString["deleteid"] != null)
+                        {
+                            clasesglobales cg = new clasesglobales();
+                            DataTable dt = cg.ValidarPlanAfiliados(int.Parse(Request.QueryString["deleteid"].ToString()));
+                            if (dt.Rows.Count > 0)
+                            {
+                                ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                    "Este Plan no se puede borrar, hay afiliados asociados a éste." +
+                                    "</div></div>";
+
+                                DataTable dt1 = new DataTable();
+                                dt1 = cg.ConsultarPlanPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                if (dt1.Rows.Count > 0)
+                                {
+                                    if (dt1.Rows[0]["FechaInicial"] == DBNull.Value || string.IsNullOrWhiteSpace(dt1.Rows[0]["FechaInicial"].ToString()) &&
+                                    dt1.Rows[0]["FechaFinal"] == DBNull.Value || string.IsNullOrWhiteSpace(dt1.Rows[0]["FechaFinal"].ToString()))
                                     {
                                         txbFechaInicial.Text = DateTime.Now.ToString("yyyy-MM-dd");
                                         txbFechaFinal.Text = DateTime.Now.ToString("yyyy-MM-dd");
@@ -90,135 +129,86 @@ namespace fpWebApp
                                         txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
                                     }
 
-                                    txbPlan.Text = dt.Rows[0]["NombrePlan"].ToString();
-                                    txbDescripcion.Text = dt.Rows[0]["DescripcionPlan"].ToString();
-                                    int intPrecioBase = Convert.ToInt32(dt.Rows[0]["PrecioBase"]);
-                                    txbPrecioBase.Text = intPrecioBase.ToString("C0", new CultureInfo("es-CO"));
-                                    txbDiasCongelamiento.Text = dt.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',','.');
-                                    int intPrecioTotal = Convert.ToInt32(dt.Rows[0]["PrecioTotal"]);
-                                    txbPrecioTotal.Text = intPrecioTotal.ToString("C0", new CultureInfo("es-CO"));
+                                    txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
+                                    txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
+                                    txbPrecioBase.Text = dt1.Rows[0]["PrecioBase"].ToString();
+                                    txbPrecioTotal.Text = dt.Rows[0]["PrecioTotal"].ToString();
                                     txbMeses.Text = dt.Rows[0]["Meses"].ToString();
-                                    txbMesesCortesia.Text = dt.Rows[0]["MesesCortesia"].ToString();
-                                    ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
+                                    txbDiasCongelamiento.Text = dt1.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
+                                    ddlColor.SelectedValue = dt1.Rows[0]["NombreColorPlan"].ToString();
+                                    //ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt1.Rows[0]["NombreColorPlan"].ToString())));
                                     cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                     cbDebitoAutomatico.Checked = Convert.ToBoolean(dt.Rows[0]["DebitoAutomatico"]);
-                                    btnAgregar.Text = "Actualizar";
-                                    
-                                    //if (dt.Rows[0]["BannerWeb"].ToString() != "")
-                                    //{
-                                    //    ltBanner.Text = "<img src=\"img/banners/" + dt.Rows[0]["BannerWeb"].ToString() + "\" class=\"img responsive\" />";
-                                    //}
+                                    txbPlan.Enabled = false;
+                                    txbDescripcion.Enabled = false;
+                                    txbPrecioBase.Enabled = false;
+                                    txbPrecioTotal.Enabled = false;
+                                    txbMeses.Enabled = false;
+                                    txbMesesCortesia.Enabled = false;
+                                    txbDiasCongelamiento.Enabled = false;
+                                    ddlColor.Enabled = false;
+                                    txbFechaInicial.Enabled = false;
+                                    txbFechaFinal.Enabled = false;
+                                    cbPermanente.Enabled = false;
+                                    cbDebitoAutomatico.Enabled = false;
+                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                                    btnAgregar.Enabled = false;
+                                    ltTitulo.Text = "Borrar Plan";
                                 }
+                                dt1.Dispose();
                             }
-                            if (Request.QueryString["deleteid"] != null)
+                            else
                             {
-                                clasesglobales cg = new clasesglobales();
-                                DataTable dt = cg.ValidarPlanAfiliados(int.Parse(Request.QueryString["deleteid"].ToString()));
-                                if (dt.Rows.Count > 0)
+                                //Borrar
+                                DataTable dt1 = new DataTable();
+                                dt1 = cg.ConsultarPlanPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                if (dt1.Rows.Count > 0)
                                 {
-                                    ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                        "<div class=\"alert alert-danger alert-dismissable\">" +
-                                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                        "Este Plan no se puede borrar, hay afiliados asociados a éste." +
-                                        "</div></div>";
-
-                                    DataTable dt1 = new DataTable();
-                                    dt1 = cg.ConsultarPlanPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
-                                    if (dt1.Rows.Count > 0)
+                                    if (dt1.Rows[0]["FechaInicial"] == DBNull.Value || string.IsNullOrWhiteSpace(dt1.Rows[0]["FechaInicial"].ToString()) &&
+                                    dt1.Rows[0]["FechaFinal"] == DBNull.Value || string.IsNullOrWhiteSpace(dt1.Rows[0]["FechaFinal"].ToString()))
                                     {
-                                        if (dt1.Rows[0]["FechaInicial"] == DBNull.Value || string.IsNullOrWhiteSpace(dt1.Rows[0]["FechaInicial"].ToString()) &&
-                                        dt1.Rows[0]["FechaFinal"] == DBNull.Value || string.IsNullOrWhiteSpace(dt1.Rows[0]["FechaFinal"].ToString()))
-                                        {
-                                            txbFechaInicial.Text = DateTime.Now.ToString("yyyy-MM-dd");
-                                            txbFechaFinal.Text = DateTime.Now.ToString("yyyy-MM-dd");
-                                        }
-                                        else
-                                        {
-                                            txbFechaInicial.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
-                                            txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
-                                        }
-
-                                        txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
-                                        txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
-                                        txbPrecioBase.Text = dt1.Rows[0]["PrecioBase"].ToString();
-                                        txbPrecioTotal.Text = dt.Rows[0]["PrecioTotal"].ToString();
-                                        txbMeses.Text = dt.Rows[0]["Meses"].ToString();
-                                        txbDiasCongelamiento.Text = dt1.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
-                                        ddlColor.SelectedValue = dt1.Rows[0]["NombreColorPlan"].ToString();
-                                        //ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt1.Rows[0]["NombreColorPlan"].ToString())));
-                                        cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
-                                        cbDebitoAutomatico.Checked = Convert.ToBoolean(dt.Rows[0]["DebitoAutomatico"]);
-                                        txbPlan.Enabled = false;
-                                        txbDescripcion.Enabled = false;
-                                        txbPrecioBase.Enabled = false;
-                                        txbPrecioTotal.Enabled = false;
-                                        txbMeses.Enabled = false;
-                                        txbMesesCortesia.Enabled = false;
-                                        txbDiasCongelamiento.Enabled = false;
-                                        ddlColor.Enabled = false;
-                                        txbFechaInicial.Enabled = false;
-                                        txbFechaFinal.Enabled = false;
-                                        cbPermanente.Enabled = false;
-                                        cbDebitoAutomatico.Enabled = false;
-                                        btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                        btnAgregar.Enabled = false;
-                                        ltTitulo.Text = "Borrar Plan";
+                                        txbFechaInicial.Text = DateTime.Now.ToString("yyyy-MM-dd");
+                                        txbFechaFinal.Text = DateTime.Now.ToString("yyyy-MM-dd");
                                     }
-                                    dt1.Dispose();
-                                }
-                                else
-                                {
-                                    //Borrar
-                                    DataTable dt1 = new DataTable();
-                                    dt1 = cg.ConsultarPlanPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
-                                    if (dt1.Rows.Count > 0)
+                                    else
                                     {
-                                        if (dt1.Rows[0]["FechaInicial"] == DBNull.Value || string.IsNullOrWhiteSpace(dt1.Rows[0]["FechaInicial"].ToString()) &&
-                                        dt1.Rows[0]["FechaFinal"] == DBNull.Value || string.IsNullOrWhiteSpace(dt1.Rows[0]["FechaFinal"].ToString()))
-                                        {
-                                            txbFechaInicial.Text = DateTime.Now.ToString("yyyy-MM-dd");
-                                            txbFechaFinal.Text = DateTime.Now.ToString("yyyy-MM-dd");
-                                        }
-                                        else
-                                        {
-                                            txbFechaInicial.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
-                                            txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
-                                        }
-
-                                        txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
-                                        txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
-                                        txbPrecioBase.Text = dt1.Rows[0]["PrecioBase"].ToString();
-                                        txbPrecioTotal.Text = dt1.Rows[0]["PrecioTotal"].ToString();
-                                        txbMeses.Text = dt1.Rows[0]["Meses"].ToString();
-                                        txbDiasCongelamiento.Text = dt1.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
-                                        ddlColor.SelectedValue = dt1.Rows[0]["NombreColorPlan"].ToString();
-                                        //ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
-                                        cbPermanente.Checked = Convert.ToBoolean(dt1.Rows[0]["Permanente"]);
-                                        cbDebitoAutomatico.Checked = Convert.ToBoolean(dt1.Rows[0]["DebitoAutomatico"]);
-                                        txbPlan.Enabled = false;
-                                        txbDescripcion.Enabled = false;
-                                        txbPrecioBase.Enabled = false;
-                                        txbPrecioTotal.Enabled = false;
-                                        txbMeses.Enabled = false;
-                                        txbMesesCortesia.Enabled = false;
-                                        txbDiasCongelamiento.Enabled = false;
-                                        ddlColor.Enabled = false;
-                                        txbFechaInicial.Enabled = false;
-                                        txbFechaFinal.Enabled = false;
-                                        cbPermanente.Enabled = false;
-                                        cbDebitoAutomatico.Enabled = false;
-                                        btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                        ltTitulo.Text = "Borrar Plan";
+                                        txbFechaInicial.Text = Convert.ToDateTime(dt.Rows[0]["FechaInicial"]).ToString("yyyy-MM-dd");
+                                        txbFechaFinal.Text = Convert.ToDateTime(dt.Rows[0]["FechaFinal"]).ToString("yyyy-MM-dd");
                                     }
-                                    dt1.Dispose();
+
+                                    txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
+                                    txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
+                                    txbPrecioBase.Text = dt1.Rows[0]["PrecioBase"].ToString();
+                                    txbPrecioTotal.Text = dt1.Rows[0]["PrecioTotal"].ToString();
+                                    txbMeses.Text = dt1.Rows[0]["Meses"].ToString();
+                                    txbDiasCongelamiento.Text = dt1.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
+                                    ddlColor.SelectedValue = dt1.Rows[0]["NombreColorPlan"].ToString();
+                                    //ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
+                                    cbPermanente.Checked = Convert.ToBoolean(dt1.Rows[0]["Permanente"]);
+                                    cbDebitoAutomatico.Checked = Convert.ToBoolean(dt1.Rows[0]["DebitoAutomatico"]);
+                                    txbPlan.Enabled = false;
+                                    txbDescripcion.Enabled = false;
+                                    txbPrecioBase.Enabled = false;
+                                    txbPrecioTotal.Enabled = false;
+                                    txbMeses.Enabled = false;
+                                    txbMesesCortesia.Enabled = false;
+                                    txbDiasCongelamiento.Enabled = false;
+                                    ddlColor.Enabled = false;
+                                    txbFechaInicial.Enabled = false;
+                                    txbFechaFinal.Enabled = false;
+                                    cbPermanente.Enabled = false;
+                                    cbDebitoAutomatico.Enabled = false;
+                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                                    ltTitulo.Text = "Borrar Plan";
                                 }
+                                dt1.Dispose();
                             }
                         }
                     }
-                    else
-                    {
-                        Response.Redirect("logout");
-                    }
+                }
+                else
+                {
+                    Response.Redirect("logout");
                 }
             }
         }

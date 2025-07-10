@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
@@ -7,10 +9,44 @@ using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
-    public partial class agenda : System.Web.UI.Page
+    public partial class agendacomercial : System.Web.UI.Page
     {
         private string _strEventos;
         protected string strEventos { get { return this._strEventos; } }
+
+        public class Evento
+        {
+            public string id { get; set; }
+            public string title { get; set; }
+            public string start { get; set; }
+            public string end { get; set; }
+        }
+
+        public static string GetEventos()
+        {
+            List<Evento> eventos = new List<Evento>();
+            clasesglobales cg = new clasesglobales();
+            
+            string strQuery = "SELECT idDisponibilidad, DocumentoEmpleado, FechaHoraInicio, FechaHoraFinal FROM DisponibilidadEspecialistas";
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    eventos.Add(new Evento
+                    {
+                        id = dt.Rows[i]["idDisponibilidad"].ToString(),
+                        title = dt.Rows[i]["DocumentoEmpleado"].ToString(),
+                        start = Convert.ToDateTime(dt.Rows[i]["FechaHoraInicio"]).ToString("yyyy-MM-ddTHH:mm:ss"),
+                        end = dt.Rows[i]["FechaHoraFinal"] == DBNull.Value ? null : Convert.ToDateTime(dt.Rows[i]["FechaHoraFinal"]).ToString("yyyy-MM-ddTHH:mm:ss")
+                    });
+                }
+            }
+
+            return JsonConvert.SerializeObject(eventos);
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -37,7 +73,7 @@ namespace fpWebApp
                         txbFechaFin.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
                         divCrear.Visible = true;
                         CargarSedes();
-                        CargarEspecialistas();
+                        CargarAsesores();
                     }
                     if (ViewState["Borrar"].ToString() == "1")
                     {
@@ -247,6 +283,16 @@ namespace fpWebApp
                 _strEventos += "},\r\n";
 
                 _strEventos += "{\r\n";
+                _strEventos += "start: '2025-07-01',\r\n";
+                _strEventos += "end: '2025-07-01',\r\n";
+                _strEventos += "title: '20%',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#009900',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
+                _strEventos += "},\r\n";
+
+                _strEventos += "{\r\n";
                 _strEventos += "start: '2025-07-20',\r\n";
                 _strEventos += "end: '2025-07-20',\r\n";
                 _strEventos += "title: 'Día de la Independencia',\r\n";
@@ -356,13 +402,13 @@ namespace fpWebApp
             CargarAgenda();
         }
 
-        private void CargarEspecialistas()
+        private void CargarAsesores()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultaCargarEspecialistas();
+            DataTable dt = cg.ConsultaCargarAsesores();
 
-            ddlEspecialistas.DataSource = dt;
-            ddlEspecialistas.DataBind();
+            ddlAsesores.DataSource = dt;
+            ddlAsesores.DataBind();
 
             dt.Dispose();
         }
@@ -385,7 +431,7 @@ namespace fpWebApp
         {
             //string fechahorainicio = txbFechaIni.Value.ToString() + " " + txbHoraIni.Value.ToString();
             //string fechahorafin = txbFechaFin.Value.ToString() + " " + txbHoraFin.Value.ToString();
-            
+
             //DateTime dtFechaIniCita = Convert.ToDateTime(fechahorainicio);
             DateTime dtFechaFinCita;
 
@@ -421,7 +467,7 @@ namespace fpWebApp
                             // Consulta si se cruza la cita en la sede con la fecha y hora de otra disponible
                             string strQuery = "SELECT * FROM DisponibilidadEspecialistas " +
                                 "WHERE (idSede = " + ddlSedesCita.SelectedItem.Value.ToString() + " " +
-                                "OR DocumentoEmpleado = '" + ddlEspecialistas.SelectedItem.Value.ToString() + "') " +
+                                "OR DocumentoEmpleado = '" + ddlAsesores.SelectedItem.Value.ToString() + "') " +
                                 "AND (('" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal) " +
                                 "OR ('" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal))";
                             clasesglobales cg = new clasesglobales();
@@ -435,7 +481,7 @@ namespace fpWebApp
                                 //    "AND (('" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal) " +
                                 //    "OR ('" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal))";
                                 strQuery = "SELECT * FROM DisponibilidadEspecialistas " +
-                                    "WHERE DocumentoEmpleado = '" + ddlEspecialistas.SelectedItem.Value.ToString() + "' " +
+                                    "WHERE DocumentoEmpleado = '" + ddlAsesores.SelectedItem.Value.ToString() + "' " +
                                     "AND idSede != " + ddlSedes.SelectedItem.Value.ToString() + " " +
                                     "AND TIMESTAMPDIFF(MINUTE, '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', FechaHoraInicio) <= 60 " +
                                     "AND '" + dtFechaIniCita.ToString("yyyy-MM-dd") + "' = DATE(FechaHoraInicio) ";
@@ -469,10 +515,10 @@ namespace fpWebApp
                                                     {
                                                         strQuery = "INSERT INTO DisponibilidadEspecialistas " +
                                                             "(DocumentoEmpleado, idSede, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
-                                                            "VALUES ('" + ddlEspecialistas.SelectedItem.Value.ToString() + "', " + ddlSedesCita.SelectedItem.Value.ToString() + ", " +
+                                                            "VALUES ('" + ddlAsesores.SelectedItem.Value.ToString() + "', " + ddlSedesCita.SelectedItem.Value.ToString() + ", " +
                                                             "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
                                                             "" + Session["idusuario"].ToString() + ") ";
-                                                        
+
                                                         string mensaje = cg.TraerDatosStr(strQuery);
                                                     }
                                                 }
@@ -482,7 +528,7 @@ namespace fpWebApp
                                         {
                                             strQuery = "INSERT INTO DisponibilidadEspecialistas " +
                                                 "(DocumentoEmpleado, idSede, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
-                                                "VALUES ('" + ddlEspecialistas.SelectedItem.Value.ToString() + "', " + ddlSedesCita.SelectedItem.Value.ToString() + ", " +
+                                                "VALUES ('" + ddlAsesores.SelectedItem.Value.ToString() + "', " + ddlSedesCita.SelectedItem.Value.ToString() + ", " +
                                                 "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
                                                 "" + Session["idusuario"].ToString() + ") ";
 

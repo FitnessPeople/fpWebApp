@@ -408,42 +408,42 @@
                     required: true,
                     minlength: 10
                 },
-                txbDireccion: {
-                    required: true,
-                    minlength: 10
-                },
-                ddlCiudadAfiliado: {
-                    required: true
-                },
+                //txbDireccion: {
+                //    required: true,
+                //    minlength: 10
+                //},
+                //ddlCiudadAfiliado: {
+                //    required: true
+                //},
                 ddlGenero: {
                     required: true
                 },
                 txbFechaNac: {
                     required: true
                 },
-                ddlEstadoCivil: {
-                    required: true,
-                },
-                ddlProfesiones: {
-                    required: true,
-                },
-                ddlEps: {
-                    required: true,
-                },
-                ddlSedes: {
-                    required: true,
-                },
-                txbResponsable: {
-                    required: true,
-                    minlength: 10
-                },
-                ddlParentesco: {
-                    required: true,
-                },
-                txbTelefonoContacto: {
-                    required: true,
-                    minlength: 10
-                },
+                //ddlEstadoCivil: {
+                //    required: true,
+                //},
+                //ddlProfesiones: {
+                //    required: true,
+                //},
+                //ddlEps: {
+                //    required: true,
+                //},
+                //ddlSedes: {
+                //    required: true,
+                //},
+                //txbResponsable: {
+                //    required: true,
+                //    minlength: 10
+                //},
+                //ddlParentesco: {
+                //    required: true,
+                //},
+                //txbTelefonoContacto: {
+                //    required: true,
+                //    minlength: 10
+                //},
             },
             messages: {
                 ddlCiudadAfiliado: "*",
