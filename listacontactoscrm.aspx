@@ -465,10 +465,10 @@
                                                                                 <td class="contact-type"><i class="fa fa-envelope"></i></td>
                                                                              <%--   <td><%# Eval("NombreEmpresaCRM") %> </td>--%>
                                                                                 <%--<td><span class='badge badge-<%# Eval("ColorEstadoCRM")%>'>--%>
-                                                                                    <%# Eval("NombreEstadoCRM") %></span>
+                                                                                    <%--<%# Eval("NombreEstadoCRM") %></span>--%>
                                                                                 </td>
                                                                                 <%--<td><%# Eval("ValorPropuesta", "{0:C0}") %></td>--%>
-                                                                                <td><%# Eval("NombreCanalVenta", "{0:C0}") %></td>
+                                                                               <%-- <td><%# Eval("NombreCanalVenta", "{0:C0}") %></td>--%>
                                                                             </tr>
                                                                         </ItemTemplate>
                                                                     </asp:Repeater>

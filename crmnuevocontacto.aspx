@@ -270,21 +270,22 @@
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row animated fadeInDown">
                     <%--Inicio Contenido!!!!--%>
+                    
+                    <%--Gráfica asesor--%>
                     <div class="row">
-
                         <div class="col-lg-6">
                             <div class="ibox float-e-margins">
                                 <div class="ibox-content">
                                     <div>
                                         <span class="pull-right text-right">
-                                            <small>Average value of sales in the past month in: <strong>United states</strong></small>
+                                            <small>Valor promedio de ventas del último mes en: <strong>Online</strong></small>
                                             <br />
-                                            All sales: 162,862
+                                            Total ventas: 19'162,862
                                         </span>
-                                        <h1 class="m-b-xs">$ 50,992</h1>
-                                        <h3 class="font-bold no-margins">Half-year revenue margin
+                                        <h1 class="m-b-xs">$ 5'098,992</h1>
+                                        <h3 class="font-bold no-margins">Meta de julio
                                         </h3>
-                                        <small>Sales marketing.</small>
+                                        <small>..</small>
                                     </div>
 
                                     <div>
@@ -297,17 +298,17 @@
                                             Update on 16.07.2015
                                         </small>
                                         <small>
-                                            <strong>Analysis of sales:</strong> The value has been changed over time, and last month reached a level over $50,000.
+                                            <strong>Análisis de ventas:</strong> The value has been changed over time, and last month reached a level over $50,000.
                                         </small>
                                     </div>
 
                                 </div>
                             </div>
                         </div>
-
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-2">
+                       <%-- Widgets--%>
+                        <div class="col-lg-6">
+                        <div class="row">
+                         <div class="col-lg-4">
                             <div class="widget style1 navy-bg">
                                 <div class="row vertical-align">
                                     <div class="col-xs-3">
@@ -319,7 +320,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-4">
                             <div class="widget style1 navy-bg">
                                 <div class="row vertical-align">
                                     <div class="col-xs-3">
@@ -331,7 +332,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-4">
                             <div class="widget style1 navy-bg">
                                 <div class="row vertical-align">
                                     <div class="col-xs-3">
@@ -343,7 +344,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2">
+ </div>
+                             <div class="row">
+                        <div class="col-lg-4">
                             <div class="widget style1 lazur-bg">
                                 <div class="row vertical-align">
                                     <div class="col-xs-3">
@@ -355,7 +358,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-4">
                             <div class="widget style1 lazur-bg">
                                 <div class="row vertical-align">
                                     <div class="col-xs-3">
@@ -367,7 +370,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-4">
                             <div class="widget style1 yellow-bg">
                                 <div class="row vertical-align">
                                     <div class="col-xs-3">
@@ -379,6 +382,35 @@
                                 </div>
                             </div>
                         </div>
+                                  </div>
+                        </div>
+
+                                         <div class="col-lg-3">
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <h5>Vendido hasta hoy</h5>
+                                <h1 class="no-margins">1 738,200</h1>
+                                <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>
+                                <small>Tasa de cumplimiento</small>
+                            </div>
+                        </div>
+                    </div>
+                                            <div class="col-lg-3">
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <h5>Brecha</h5>
+                                <h1 class="no-margins">-200,100</h1>
+                                <div class="stat-percent font-bold text-danger">12% <i class="fa fa-level-down"></i></div>
+                                <small>% de cumplimiento Pendiente</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    </div>
+
+                    <%--widgets--%>
+                    <div class="row">
+
                     </div>
 
 
@@ -388,7 +420,7 @@
 
 
 
-                    <%--                    <uc2:indicadoresusucrm runat="server" ID="indicadoresusucrm" />--%>
+                                   <%--     <uc2:indicadoresusucrm runat="server" ID="indicadoresusucrm" />--%>
                     <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
                         <div class="p-xs">
                             <div class="pull-left m-r-md">
@@ -1371,8 +1403,8 @@
     </script>
 
     <!-- Mainly scripts -->
-    <script src="js/jquery-3.1.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+<%--    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>--%>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
@@ -1389,9 +1421,9 @@
     <script src="js/plugins/peity/jquery.peity.min.js"></script>
     <script src="js/demo/peity-demo.js"></script>
 
-    <!-- Custom and plugin javascript -->
+<%--    <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
-    <script src="js/plugins/pace/pace.min.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>--%>
 
     <!-- jQuery UI -->
     <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -1416,20 +1448,20 @@
                 labels: ["January", "February", "March", "April", "May", "June", "July"],
                 datasets: [
                     {
-                        label: "Example dataset",
+                        label: "Ventas completadas",
                         backgroundColor: "rgba(26,179,148,0.5)",
                         borderColor: "rgba(26,179,148,0.7)",
                         pointBackgroundColor: "rgba(26,179,148,1)",
                         pointBorderColor: "#fff",
-                        data: [28, 48, 40, 19, 86, 27, 90]
+                        data: [280, 480, 400, 190, 860, 270, 900]
                     },
                     {
-                        label: "Example dataset",
+                        label: "Gestiones sin éxito",
                         backgroundColor: "rgba(220,220,220,0.5)",
                         borderColor: "rgba(220,220,220,1)",
                         pointBackgroundColor: "rgba(220,220,220,1)",
                         pointBorderColor: "#fff",
-                        data: [65, 59, 80, 81, 56, 55, 40]
+                        data: [650, 590, 800, 810, 560, 550, 400]
                     }
                 ]
             };
