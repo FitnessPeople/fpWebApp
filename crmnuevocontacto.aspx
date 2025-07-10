@@ -283,7 +283,7 @@
                                             Total ventas: 19'162,862
                                         </span>
                                         <h1 class="m-b-xs">$ 5'098,992</h1>
-                                        <h3 class="font-bold no-margins">Meta de julio
+                                        <h3 class="font-bold no-margins">Objetivo mes julio
                                         </h3>
                                         <small>..</small>
                                     </div>
@@ -292,15 +292,15 @@
                                         <canvas id="lineChart" height="70"></canvas>
                                     </div>
 
-                                    <div class="m-t-md">
+ <%--                                   <div class="m-t-md">
                                         <small class="pull-right">
                                             <i class="fa fa-clock-o"></i>
                                             Update on 16.07.2015
                                         </small>
                                         <small>
-                                            <strong>Análisis de ventas:</strong> The value has been changed over time, and last month reached a level over $50,000.
+                                            <strong>Análisis de ventas:</strong> 
                                         </small>
-                                    </div>
+                                    </div>--%>
 
                                 </div>
                             </div>
@@ -859,8 +859,7 @@
 
                                                                 <div class="row">
                                                                     <div class="col-md-12">
-                                                                        <strong>Actividad</strong>
-                                                                        <strong>Last activity</strong>
+                                                                        <strong>Actividad</strong>                                                                        
 
                                                                         <ul class="list-group clear-list">
                                                                             <li class="list-group-item fist-item">
@@ -1467,7 +1466,7 @@
                         data: [280, 480, 400, 190, 860, 270, 900]
                     },
                     {
-                        label: "Gestiones sin éxito",
+                        label: "Meta propuesta",
                         backgroundColor: "rgba(220,220,220,0.5)",
                         borderColor: "rgba(220,220,220,1)",
                         pointBackgroundColor: "rgba(220,220,220,1)",
