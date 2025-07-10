@@ -43,7 +43,7 @@
         #external-events {
           position: fixed;
           z-index: 2;
-          top: 200px;
+          top: 20px;
           left: 20px;
           width: 150px;
           padding: 0 10px;
@@ -325,31 +325,37 @@
                                             </div>
                                         </div>
                                         <hr />
+                                        <div>Semana No.27: <span id="porcentaje1"></span></div>
                                         <div id='external-events'>
                                           <p>
-                                            <strong>Draggable Events</strong>
+                                            <strong>Arrastra al calendario</strong>
                                           </p>
 
-                                          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                                          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event' 
+                                              data-title="5%" 
+                                              data-value="5">
                                             <div class='fc-event-main'>5%</div>
                                           </div>
-                                          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                                          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'
+                                              data-title="10%" 
+                                              data-value="10">
                                             <div class='fc-event-main'>10%</div>
                                           </div>
-                                          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                                          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event' 
+                                              data-title="15%" 
+                                              data-value="15">
                                             <div class='fc-event-main'>15%</div>
                                           </div>
-                                          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                                          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event' 
+                                              data-title="20%" 
+                                              data-value="20">
                                             <div class='fc-event-main'>20%</div>
                                           </div>
-                                          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+                                          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event' 
+                                              data-title="25%" 
+                                              data-value="25">
                                             <div class='fc-event-main'>25%</div>
                                           </div>
-
-                                          <p>
-                                            <input type='checkbox' id='drop-remove' />
-                                            <label for='drop-remove'>remove after drop</label>
-                                          </p>
                                         </div>
                                         <div id="calendar"></div>
                                     </div>
@@ -478,41 +484,194 @@
     </script>
 
     <script>
+
+        function addDays(date, days) {
+            var result = new Date(date);
+            result.setDate(result.getDate() + days);
+            return result;
+        }
+
+        function getStartAndEndDateOfWeek(weekNumber, year) {
+            const simple = new Date(year, 0, 1 + (weekNumber - 1) * 7);
+            const dayOfWeek = simple.getDay();
+            const ISOweekStart = new Date(simple);
+            if (dayOfWeek <= 4)
+                ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
+            else
+                ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
+
+            const ISOweekEnd = new Date(ISOweekStart);
+            ISOweekEnd.setDate(ISOweekStart.getDate() + 6);
+            return { start: ISOweekStart, end: ISOweekEnd };
+        }
+
+        function sumarValoresDeSemana(calendar) {
+            const { start, end } = getStartAndEndDateOfWeek(27, 2025);
+
+            const eventosSemana = calendar.getEvents().filter(evento => {
+                return evento.start >= start && evento.start <= end;
+            });
+
+            const total = eventosSemana.reduce((acum, evento) => {
+                return acum + (parseInt(evento.extendedProps.value) || 0);
+            }, 0);
+
+            console.log(`Total de valores en la semana: ${total}`);
+            return total;
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
-            const calendarEl = document.getElementById('calendar');
+            var Calendar = FullCalendar.Calendar;
+            var Draggable = FullCalendar.Draggable;
 
-            const calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                editable: true,
-                events: '/agendacomercial.aspx/GetEventos',
-                eventDrop: function (info) {
-                    const event = info.event;
+            var containerEl = document.getElementById('external-events');
+            var calendarEl = document.getElementById('calendar');
+            var checkbox = document.getElementById('drop-remove');
 
-                    const updatedEvent = {
-                        id: event.id,
-                        title: event.title,
-                        start: event.start.toISOString(),
-                        end: event.end ? event.end.toISOString() : null
+            // initialize the external events
+            // -----------------------------------------------------------------
+
+            new Draggable(containerEl, {
+                itemSelector: '.fc-event',
+                eventData: function (eventEl) {
+                    return {
+                        //title: eventEl.innerText
+                        title: eventEl.getAttribute('data-title'),
+                        extendedProps: {
+                            value: eventEl.getAttribute('data-value')
+                        }
                     };
+                }
+            });
 
-                    fetch('agendacomercial.aspx/ActualizarEvento', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ evento: updatedEvent })
-                    })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (!data.d.includes("ok")) {
-                                info.revert(); // Revertir si falla
-                                alert("Error al actualizar evento");
-                            }
-                        })
-                        .catch(err => {
-                            info.revert();
-                            alert("Error de conexión");
-                        });
+            // initialize the calendar
+            // -----------------------------------------------------------------
+
+            var calendar = new Calendar(calendarEl, {
+                eventClick: function (info) {
+                    let numero = parseInt(info.event.title);
+                    console.log(info.event.start);
+                    console.log(numero);
+                    info.jsEvent.preventDefault();
+
+                    const fechainicial = new Date(info.event.start);
+                    fechainicial.setHours(fechainicial.getHours() + 5);
+
+                    const formatter1 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
+                    const formattedTime1 = formatter1.format(fechainicial);
+
+                    const formatterdia = new Intl.DateTimeFormat('en-US', { day: '2-digit' });
+                    const formatteddiaini = formatterdia.format(fechainicial);
+
+                    const formattermes = new Intl.DateTimeFormat('es-US', { month: 'long' });
+                    const formattedmesini = formattermes.format(fechainicial)[0].toUpperCase() + formattermes.format(fechainicial).substring(1);
+
+                    const fechafinal = new Date(info.event.end);
+                    fechafinal.setHours(fechafinal.getHours() + 5);
+                    const formatter2 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
+                    const formattedTime2 = formatter2.format(fechafinal);
+
+                    if (info.event.id) {
+                        console.log(info.event.extendedProps);
+                        jQuery('.event-id').html(info.event.id);
+                        jQuery('.event-icon').html("<i class='fa fa-" + info.event.extendedProps.icon + "'></i>");
+                        jQuery('.event-title').html(info.event.title);
+                        jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />");
+                        jQuery('.event-description').html(info.event.extendedProps.description);
+                        var btn = document.getElementById("btnEliminar");
+                        btn.style.display = info.event.extendedProps.btnEliminar;
+                        jQuery('#modal-view-event').modal();
+                    }
+                },
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                editable: true,
+                weekNumbers: true,
+                firstDay: 1,
+                allDayText: 'Todo\r\nel día',
+                slotMinTime: '06:00',
+                slotMaxTime: '22:00',
+                moreLinkContent: function (args) {
+                    return '+' + args.num + ' eventos más';
+                },
+                slotLabelFormat: {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    omitZeroMinute: false,
+                    meridiem: 'short'
+                },
+                locale: 'es',
+                buttonText: {
+                    prev: '',
+                    next: '',
+                    prevYear: 'Año anterior',
+                    nextYear: 'Año siguiente',
+                    year: 'Año',
+                    today: 'Hoy',
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Día',
+                    list: 'Lista',
+                    listWeek: 'Lista',
+                },
+                businessHours: true,
+                businessHours: [ // specify an array instead
+                    {
+                        daysOfWeek: [1, 2, 3, 4, 5], // Lunes, martes, miercoles, jueves y viernes
+                        startTime: '06:00',
+                        endTime: '21:00'
+                    },
+                    {
+                        daysOfWeek: [6], // Sabado
+                        startTime: '7:00',
+                        endTime: '18:00'
+                    }
+                ],
+                dayMaxEventRows: true, // for all non-TimeGrid views
+                views: {
+                    timeGrid: {
+                        dayMaxEventRows: 6 // adjust to 6 only for timeGridWeek/timeGridDay
+                    },
+                },
+                eventTimeFormat: { // like '14:30'
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                },
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+                droppable: true, // this allows things to be dropped onto the calendar
+                eventDrop: function (info) {
+                    // Evento que se acaba de mover
+                    const allEvents = calendar.getEvents();
+                    const weekNumber = moment(addDays(info.event.start, -1)).week();
+                    const { start, end } = getStartAndEndDateOfWeek(weekNumber, 2025);
+
+                    const eventsInWeek = calendar.getEvents().filter(event => {
+                        const eventStart = event.start;
+                        return eventStart >= start && eventStart <= end;
+                    });
+                    console.log(`Eventos en la semana ${weekNumber}:`, eventsInWeek);
+
+                    console.log('Se movió un evento. Todos los eventos:', allEvents);
+                },
+                eventReceive: function (info) {
+                    // Aquí el evento ya ha sido agregado al calendario
+
+                    //const weekNumber = moment(addDays(info.event.start, -1)).week();
+                    //const { start, end } = getStartAndEndDateOfWeek(weekNumber, 2025);
+
+                    const divPorcentaje = document.getElementById("porcentaje1");
+                    const totalSemana = sumarValoresDeSemana(calendar);
+                    divPorcentaje.innerHTML = totalSemana;
+
+                    //console.log('Se arrastró hacia el calendario. Todos los eventos:', allEvents);
                 }
             });
 

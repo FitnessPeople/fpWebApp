@@ -1,8 +1,8 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="planes.aspx.cs" Inherits="fpWebApp.planes"  %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="planes.aspx.cs" Inherits="fpWebApp.planes" %>
 
+<%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
-<%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
 
@@ -20,7 +20,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />    
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -34,13 +34,12 @@
     </style>
 
     <script>
-        /*TODO: Hacer el arreglo del menu OJO*/
         function changeClass() {
             var element1 = document.querySelector("#planes");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#sistema");
             element2.classList.remove("collapse");
-            console.log(element1);
+            inicio();
         }
     </script>
 </head>
@@ -60,7 +59,6 @@
                         <b>Paso 1: Crea un nuevo plan</b><br />
                         Usa el formulario que está a la <b>izquierda</b> para digitar la información necesaria del plan.<br />
                         <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Agregar:</b> Guarda la información y finaliza el registro.<br />
-                        <i class="fa-solid fa-chart-simple" style="color: #1A7BB9;"></i> <b>Simular:</b> Recrea en un gráfico el comportamiento que tendrá el plan en una cantidad de tiempo.<br />
                         <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
                     <br />
                         <br />
@@ -92,11 +90,11 @@
     </div>
     <div id="wrapper">
 
-        <uc1:navbar runat="server" ID="navbar1" />
+        <uc1:navbar runat="server" ID="navbar" />
 
         <div id="page-wrapper" class="gray-bg">
             <div class="row border-bottom">
-                <uc1:header runat="server" ID="header1" />
+                <uc1:header runat="server" ID="header" />
             </div>
             <div class="row wrapper border-bottom white-bg page-heading">
 
@@ -401,10 +399,10 @@
                 </div>
             </div>
 
-            <uc1:footer runat="server" ID="footer1" />
+            <uc1:footer runat="server" ID="footer" />
 
         </div>
-        <uc1:rightsidebar runat="server" ID="rightsidebar1" />
+        <uc1:rightsidebar runat="server" ID="rightsidebar" />
     </div>
 
     <!-- Mainly scripts -->
@@ -416,20 +414,19 @@
     <!-- FooTable -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
+    <!-- Select2 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
-    <!-- ChartJS-->
-    <script src="js/plugins/chartJs/Chart.min.js"></script>
-
-    <!-- Select2 -->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <!-- Chosen -->
+    <script src="js/plugins/chosen/chosen.jquery.js"></script>
 
     <!-- Page-Level Scripts -->
     <script>
-
-        window.onload = function () {
+        function inicio() {
             var cbPermanente = document.getElementById('<%= cbPermanente.ClientID %>');
             var fechas = document.getElementById('fechas');
 
@@ -445,26 +442,6 @@
 
             cbPermanente.addEventListener('change', toggleFechas);
         }
-
-    </script>
-
-    <script>
-
-        <%--var lineData = {
-            labels: ["Mes 1", "Mes 2", "Mes 3", "Mes 4", "Mes 5", "Mes 6", "Mes 7", "Mes 8", "Mes 9", "Mes 10", "Mes 11", "Mes 12"],
-            datasets: [
-                <%=strData%>
-            ]
-        };
-
-        var lineOptions = {
-            responsive: true
-        };
-
-        var ctx = document.getElementById("lineChart").getContext("2d");
-        new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });--%>
-
-        <%--<%=strData%>--%>
 
         $('.footable').footable();
 

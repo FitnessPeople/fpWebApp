@@ -9,8 +9,6 @@ namespace fpWebApp
 {
     public partial class planes : System.Web.UI.Page
     {
-        //private string _strData;
-        //protected string strData { get { return this._strData; } }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -20,45 +18,45 @@ namespace fpWebApp
                     ValidarPermisos("Planes");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
-                        //No tiene acceso a esta página
                         divMensaje.Visible = true;
                         paginasperfil.Visible = true;
                         divContenido.Visible = false;
                     }
+                    if (ViewState["Consulta"].ToString() == "1")
+                    {
+                        divBotonesLista.Visible = true;
+                        lbExportarExcel.Visible = false;
+                    }
+                    if (ViewState["Exportar"].ToString() == "1")
+                    {
+                        divBotonesLista.Visible = true;
+                        lbExportarExcel.Visible = true;
+                    }
+                    if (ViewState["CrearModificar"].ToString() == "1")
+                    {
+                        btnAgregar.Visible = true;
+                        ListaPlanes();
+                        ltTitulo.Text = "Agregar un plan";
+                        txbDiasCongelamiento.Attributes.Add("type", "number");
+                        txbDiasCongelamiento.Attributes.Add("step", "0.1");
+                        txbDiasCongelamiento.Attributes.Add("max", "10");
+                        txbMeses.Attributes.Add("type", "number");
+                        txbMeses.Attributes.Add("min", "1");
+                        txbMeses.Attributes.Add("max", "12");
+                        txbFechaInicial.Attributes.Add("type", "date");
+                        txbFechaFinal.Attributes.Add("type", "date");
+
+                        txbFechaInicial.Attributes.Add("value", DateTime.Now.ToString("yyyy-MM-dd"));
+                        txbFechaFinal.Attributes.Add("value", DateTime.Now.ToString("yyyy-MM-dd"));
+                    }
                     else
                     {
-                        //Si tiene acceso a esta página
-                        divBotonesLista.Visible = false;
-                        btnAgregar.Visible = false;
-                        if (ViewState["Consulta"].ToString() == "1")
-                        {
-                            divBotonesLista.Visible = true;
-                            lbExportarExcel.Visible = false;
-                        }
-                        if (ViewState["Exportar"].ToString() == "1")
-                        {
-                            divBotonesLista.Visible = true;
-                            lbExportarExcel.Visible = true;
-                        }
-                        if (ViewState["CrearModificar"].ToString() == "1")
-                        {
-                            btnAgregar.Visible = true;
-                        }
+                        divMensaje.Visible = true;
+                        paginasperfil.Visible = true;
+                        divContenido.Visible = false;
                     }
-                    ListaPlanes();
-                    ltTitulo.Text = "Agregar un plan";
-                    txbDiasCongelamiento.Attributes.Add("type", "number");
-                    txbDiasCongelamiento.Attributes.Add("step", "0.1");
-                    txbDiasCongelamiento.Attributes.Add("max", "10");
-                    txbMeses.Attributes.Add("type", "number");
-                    txbMeses.Attributes.Add("min", "1");
-                    txbMeses.Attributes.Add("max", "12");
-                    txbFechaInicial.Attributes.Add("type", "date");
-                    txbFechaFinal.Attributes.Add("type", "date");
 
-                    txbFechaInicial.Attributes.Add("value", DateTime.Now.ToString("yyyy-MM-dd"));
-                    txbFechaFinal.Attributes.Add("value", DateTime.Now.ToString("yyyy-MM-dd"));
-
+                    //Si es llamado para editar o borrar
                     if (Request.QueryString.Count > 0)
                     {
                         rpPlanes.Visible = false;
@@ -85,7 +83,7 @@ namespace fpWebApp
                                 txbDescripcion.Text = dt.Rows[0]["DescripcionPlan"].ToString();
                                 int intPrecioBase = Convert.ToInt32(dt.Rows[0]["PrecioBase"]);
                                 txbPrecioBase.Text = intPrecioBase.ToString("C0", new CultureInfo("es-CO"));
-                                txbDiasCongelamiento.Text = dt.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',','.');
+                                txbDiasCongelamiento.Text = dt.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
                                 int intPrecioTotal = Convert.ToInt32(dt.Rows[0]["PrecioTotal"]);
                                 txbPrecioTotal.Text = intPrecioTotal.ToString("C0", new CultureInfo("es-CO"));
                                 txbMeses.Text = dt.Rows[0]["Meses"].ToString();
@@ -94,13 +92,14 @@ namespace fpWebApp
                                 cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                 cbDebitoAutomatico.Checked = Convert.ToBoolean(dt.Rows[0]["DebitoAutomatico"]);
                                 btnAgregar.Text = "Actualizar";
-                                    
+
                                 //if (dt.Rows[0]["BannerWeb"].ToString() != "")
                                 //{
                                 //    ltBanner.Text = "<img src=\"img/banners/" + dt.Rows[0]["BannerWeb"].ToString() + "\" class=\"img responsive\" />";
                                 //}
                             }
                         }
+
                         if (Request.QueryString["deleteid"] != null)
                         {
                             clasesglobales cg = new clasesglobales();
@@ -213,11 +212,6 @@ namespace fpWebApp
             }
         }
 
-        /// <summary>
-        /// Valida los permisos del usuario en la pagina visitada.
-        /// Contiene un parametro.
-        /// </summary>
-        /// <param name="strPagina"></param>
         private void ValidarPermisos(string strPagina)
         {
             ViewState["SinPermiso"] = "1";
@@ -247,7 +241,6 @@ namespace fpWebApp
         private void ListaPlanes()
         {
             clasesglobales cg = new clasesglobales();
-            //DataTable dt = cg.ConsultarPlanes();
             string strQuery = "SELECT *, IF(pm.EstadoPlan='Activo','primary','danger') AS label " +
                 "FROM Planes pm " +
                 "LEFT JOIN Usuarios u ON pm.idUsuario = u.idUsuario ";
@@ -266,43 +259,6 @@ namespace fpWebApp
 
             rpPlanes.DataBind();
             dt.Dispose();
-        }
-
-        protected void rpPlanes_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                if (ViewState["CrearModificar"].ToString() == "1")
-                {
-                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "planes?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    btnEditar.Visible = true;
-                }
-                if (ViewState["Borrar"].ToString() == "1")
-                {
-                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "planes?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    btnEliminar.Visible = true;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Valida si un plan ya existe con ese mismo nombre
-        /// </summary>
-        /// <param name="strNombre"></param>
-        /// <returns>Devuelve 'true' si existe o 'false' si no existe.</returns>
-        private bool ValidarPlan(string strNombre)
-        {
-            bool bExiste = false;
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanPorNombre(strNombre);
-            if (dt.Rows.Count > 0)
-            {
-                bExiste = true;
-            }
-            dt.Dispose();
-            return bExiste;
         }
 
         /// <summary>
@@ -325,8 +281,8 @@ namespace fpWebApp
 
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarPlan(int.Parse(Request.QueryString["editid"].ToString()), 
-                        txbPlan.Text.ToString().Trim(), 
+                    string respuesta = cg.ActualizarPlan(int.Parse(Request.QueryString["editid"].ToString()),
+                        txbPlan.Text.ToString().Trim(),
                         txbDescripcion.Text.ToString(),
                         Convert.ToInt32(Regex.Replace(txbPrecioTotal.Text, @"[^\d]", "")),
                         Convert.ToInt32(Regex.Replace(txbPrecioBase.Text, @"[^\d]", "")),
@@ -337,7 +293,7 @@ namespace fpWebApp
                         int.Parse(txbDiasCongelamiento.Text.ToString()),
                         fechaInicial,
                         fechaFinal,
-                        intPermanente, 
+                        intPermanente,
                         intDebitoAutomatico);
 
                     string strNewData = TraerData(requestQuery);
@@ -367,7 +323,7 @@ namespace fpWebApp
                         int.Parse(Session["idusuario"].ToString()),
                         double.Parse(txbDiasCongelamiento.Text.ToString()),
                         fechaInicial,
-                        fechaFinal, 
+                        fechaFinal,
                         intPermanente,
                         intDebitoAutomatico);
 
@@ -397,6 +353,38 @@ namespace fpWebApp
                         "</div>";
                 }
             }
+        }
+
+        /// <summary>
+        /// Valida si un plan ya existe con ese mismo nombre
+        /// </summary>
+        /// <param name="strNombre"></param>
+        /// <returns>Devuelve 'true' si existe o 'false' si no existe.</returns>
+        private bool ValidarPlan(string strNombre)
+        {
+            bool bExiste = false;
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPlanPorNombre(strNombre);
+            if (dt.Rows.Count > 0)
+            {
+                bExiste = true;
+            }
+            dt.Dispose();
+            return bExiste;
+        }
+
+        private string TraerData(string requestQuery)
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPlanPorId(int.Parse(requestQuery));
+
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+            return strData;
         }
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
@@ -441,85 +429,23 @@ namespace fpWebApp
             }
         }
 
-        //protected void btnSimular_Click(object sender, EventArgs e)
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.ConsultarPlanes();
-
-        //    Random rnd = new Random();
-
-        //    if (dt.Rows.Count > 0)
-        //    {
-        //        int intPrecioBase;
-        //        int intPrecioTotal;
-        //        for (int i = 0; i < dt.Rows.Count; i++)
-        //        {
-        //            _strData += "{\r\n";
-        //            _strData += "label: \"" + dt.Rows[i]["NombrePlan"].ToString() + "\",\r\n";
-        //            //_strData += "backgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1)',\r\n";
-        //            //_strData += "borderColor: '" + dt.Rows[i]["ColorPlan"].ToString() + "',\r\n";
-        //            _strData += "borderColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1)',\r\n";
-        //            //_strData += "pointBackgroundColor: '" + dt.Rows[i]["ColorPlan"].ToString() + "',\r\n";
-        //            _strData += "pointBackgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1)',\r\n";
-        //            _strData += "pointBorderColor: \"#fff\",\r\n";
-        //            _strData += "data: [";
-
-        //            intPrecioBase = Convert.ToInt32(dt.Rows[i]["PrecioBase"].ToString());
-        //            intPrecioTotal = Convert.ToInt32(dt.Rows[i]["PrecioTotal"].ToString());
-        //            for (int j = 0; j < 12; j++)
-        //            {
-        //                if (j < Convert.ToInt16(dt.Rows[i]["Meses"].ToString()))
-        //                {
-        //                    _strData += intPrecioTotal + ",";
-        //                }
-        //                else
-        //                {
-        //                    _strData += "0,";
-        //                }
-        //                //_strData += intPrecioTotal + ",";
-        //            }
-        //            _strData = _strData.Substring(0, _strData.Length - 1);
-        //            _strData += "]\r\n";
-        //            _strData += "},\r\n";
-        //        }
-
-        //        _strData += "{\r\n";
-        //        _strData += "label: \"" + txbPlan.Text.ToString() + "\",\r\n";
-        //        _strData += "backgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1',\r\n";
-        //        _strData += "borderColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",0.7)',\r\n";
-        //        _strData += "pointBackgroundColor: 'rgba(" + rnd.Next(255) + "," + rnd.Next(255) + "," + rnd.Next(255) + ",1)',\r\n";
-        //        _strData += "pointBorderColor: \"#fff\",\r\n";
-        //        _strData += "data: [";
-
-        //        intPrecioBase = Convert.ToInt32(txbPrecioBase.Text.ToString());
-        //        intPrecioTotal = Convert.ToInt32(txbPrecioTotal.Text.ToString());
-        //        for (int j = 0; j < 12; j++)
-        //        {
-        //            //double dobDescuento = j * dobDescuentoMensual;
-        //            //double dobTotal = (intPrecioBase - ((intPrecioBase * dobDescuento) / 100)) * (j + 1);
-
-        //            _strData += intPrecioTotal + ",";
-        //        }
-        //        _strData = _strData.Substring(0, _strData.Length - 1);
-        //        _strData += "]\r\n";
-        //        _strData += "}\r\n";
-        //    }
-        //    //_strData = _strData.Substring(0, _strData.Length - 1);
-        //    dt.Dispose();
-        //}
-
-        private string TraerData(string requestQuery)
+        protected void rpPlanes_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanPorId(int.Parse(requestQuery));
-
-            string strData = "";
-            foreach (DataColumn column in dt.Columns)
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+                if (ViewState["CrearModificar"].ToString() == "1")
+                {
+                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("href", "planes?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Visible = true;
+                }
+                if (ViewState["Borrar"].ToString() == "1")
+                {
+                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                    btnEliminar.Attributes.Add("href", "planes?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminar.Visible = true;
+                }
             }
-            dt.Dispose();
-            return strData;
         }
     }
 }
