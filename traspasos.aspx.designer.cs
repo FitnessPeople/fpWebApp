@@ -69,22 +69,31 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlForm form;
 
         /// <summary>
-        /// Control txbAfiliadoOrigen.
+        /// Control sm1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbAfiliadoOrigen;
+        protected global::System.Web.UI.ScriptManager sm1;
 
         /// <summary>
-        /// Control btnAfiliadoOrigen.
+        /// Control upBusqueda.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAfiliadoOrigen;
+        protected global::System.Web.UI.UpdatePanel upBusqueda;
+
+        /// <summary>
+        /// Control ddlAfiliadoOrigen.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlAfiliadoOrigen;
 
         /// <summary>
         /// Control divAfiliadoOrigen.
@@ -168,15 +177,6 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divPlanes;
 
         /// <summary>
-        /// Control ltNoPlanes.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltNoPlanes;
-
-        /// <summary>
         /// Control rpPlanesAfiliado.
         /// </summary>
         /// <remarks>
@@ -195,22 +195,13 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divArrow;
 
         /// <summary>
-        /// Control txbAfiliadoDestino.
+        /// Control ddlAfiliadoDestino.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbAfiliadoDestino;
-
-        /// <summary>
-        /// Control btnAfiliadoDestino.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAfiliadoDestino;
+        protected global::System.Web.UI.WebControls.DropDownList ddlAfiliadoDestino;
 
         /// <summary>
         /// Control divAfiliadoDestino.
@@ -301,15 +292,6 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbObservaciones;
-
-        /// <summary>
-        /// Control ltMensaje.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltMensaje;
 
         /// <summary>
         /// Control btnTraspasar.

@@ -43,7 +43,7 @@ namespace fpWebApp
 
                         btnAgregar.Text = "Agregar";
 
-                        txbAfiliado.Enabled = true;
+                        ddlAfiliadoOrigen.Enabled = true;
                         txbNombreContacto.Disabled = false;
                         txbApellidoContacto.Disabled = false;
                         txbDocumento.Enabled = true;
@@ -81,6 +81,7 @@ namespace fpWebApp
                     ListaObjetivosfiliadoCRM();
                     CargarTipoDocumento();
                     ListaMediosDePago();
+                    CargarAfiliadosOrigen();
 
 
                     if (Request.QueryString.Count > 0)
@@ -89,7 +90,7 @@ namespace fpWebApp
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
-                            txbAfiliado.Enabled = false;
+                            ddlAfiliadoOrigen.Enabled = false;
                             txbNombreContacto.Disabled = false;
                             txbApellidoContacto.Disabled = false;
                             txbDocumento.Enabled = false;
@@ -356,21 +357,45 @@ namespace fpWebApp
             //rpEmpresasCRM.DataBind();
             dt.Dispose();
         }
+        //private void ListaEstadosCRM()
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarEstadossCRM();
+        //    foreach (DataRow row in dt.Rows)
+        //    {
+        //        ListItem item = new ListItem
+        //        {
+        //            Text = $"<i class='{row["IconoMinEstadoCRM"]}'></i>{row["NombreEstadoCRM"]}",
+        //            Value = row["idEstadoCRM"].ToString()
+        //        };
+
+        //        item.Attributes["style"] = $"color: {row["ColorHexaCRM"]};";
+        //        item.Attributes["data-icon"] = $"{row["IconoMinEstadoCRM"]}";
+        //        item.Attributes["data-color"] = row["ColorHexaCRM"].ToString();
+
+        //        ddlStatusLead.Items.Add(item);
+        //    }
+        //}
+
         private void ListaEstadosCRM()
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarEstadossCRM();
+            ddlStatusLead.Items.Clear();
+
+            ddlStatusLead.Items.Add(new ListItem("Seleccione", ""));
+
             foreach (DataRow row in dt.Rows)
             {
                 ListItem item = new ListItem
                 {
-                    Text = $"<i class='{row["IconoMinEstadoCRM"]}'></i>{row["NombreEstadoCRM"]}",
+                    Text = row["NombreEstadoCRM"].ToString(),
                     Value = row["idEstadoCRM"].ToString()
                 };
 
+                item.Attributes["data-icon"] = row["IconoMinEstadoCRM"].ToString();  // ej: "fa-solid fa-handshake"
+                item.Attributes["data-color"] = row["ColorHexaCRM"].ToString();      // ej: "#1ab394"
                 item.Attributes["style"] = $"color: {row["ColorHexaCRM"]};";
-                item.Attributes["data-icon"] = $"{row["IconoMinEstadoCRM"]}";
-                item.Attributes["data-color"] = row["ColorHexaCRM"].ToString();
 
                 ddlStatusLead.Items.Add(item);
             }
@@ -417,6 +442,20 @@ namespace fpWebApp
             DataTable dt = cg.ConsultartiposDocumento();
             ddlTipoDocumento.DataSource = dt;
             ddlTipoDocumento.DataBind();
+            dt.Dispose();
+        }
+
+        private void CargarAfiliadosOrigen()
+        {
+            string strQuery = @"SELECT a.idAfiliado, a.DocumentoAfiliado,
+                CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado, ' - ', a.DocumentoAfiliado) AS DocNombreAfiliado 
+                FROM afiliados a";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            ddlAfiliadoOrigen.DataSource = dt;
+            ddlAfiliadoOrigen.DataBind();
+
             dt.Dispose();
         }
 
@@ -814,49 +853,49 @@ namespace fpWebApp
             public string IconoMinEstadoCRM { get; set; }
         }
 
-        protected void btnAfiliado_Click(object sender, EventArgs e)
-        {
+        //protected void /*btnAfiliado*/_Click(object sender, EventArgs e)
+        //{
 
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = new DataTable();
-            DataTable dt1 = new DataTable();
-            bool esAfiliado = false;
-            Session["esAfiliado"] = esAfiliado.ToString();
-            int documento = 0;
-            string[] strDocumento = txbAfiliado.Text.ToString().Split('-');
-            if (int.TryParse(strDocumento[0], out documento))
-            {
-                dt = cg.ConsultarAfiliadoPorDocumento(documento);
-            }
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = new DataTable();
+        //    DataTable dt1 = new DataTable();
+        //    bool esAfiliado = false;
+        //    Session["esAfiliado"] = esAfiliado.ToString();
+        //    int documento = 0;
+        //    string[] strDocumento = ddlAfiliadoOrigen.Text.ToString().Split('-');
+        //    if (int.TryParse(strDocumento[0], out documento))
+        //    {
+        //        dt = cg.ConsultarAfiliadoPorDocumento(documento);
+        //    }
 
-            dt1 = cg.ConsultarTipoAfiliadCRM();
+        //    dt1 = cg.ConsultarTipoAfiliadCRM();
 
-            try
-            {
-                if (dt.Rows.Count > 0)
-                {
-                    esAfiliado = true;
-                    Session["esAfiliado"] = esAfiliado.ToString();
-                    txbDocumento.Text = documento.ToString();
-                    ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
-                    txbNombreContacto.Value = dt.Rows[0]["NombreAfiliado"].ToString();
-                    txbApellidoContacto.Value = dt.Rows[0]["ApellidoAfiliado"].ToString();
-                    txbTelefonoContacto.Value = dt.Rows[0]["CelularAfiliado"].ToString();
-                    txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString();
-                    ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString())));
-                    ddlTiposAfiliado.SelectedValue = "2";//Afiliado en renovación
+        //    try
+        //    {
+        //        if (dt.Rows.Count > 0)
+        //        {
+        //            esAfiliado = true;
+        //            Session["esAfiliado"] = esAfiliado.ToString();
+        //            txbDocumento.Text = documento.ToString();
+        //            ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
+        //            txbNombreContacto.Value = dt.Rows[0]["NombreAfiliado"].ToString();
+        //            txbApellidoContacto.Value = dt.Rows[0]["ApellidoAfiliado"].ToString();
+        //            txbTelefonoContacto.Value = dt.Rows[0]["CelularAfiliado"].ToString();
+        //            txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString();
+        //            ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString())));
+        //            ddlTiposAfiliado.SelectedValue = "2";//Afiliado en renovación
 
-                    ListaEmpresasCRM();
-                    ListaMediosDePago();
-                }
-                dt.Dispose();
-            }
-            catch (Exception)
-            {
+        //            ListaEmpresasCRM();
+        //            ListaMediosDePago();
+        //        }
+        //        dt.Dispose();
+        //    }
+        //    catch (Exception)
+        //    {
 
-                throw;
-            }
-        }
+        //        throw;
+        //    }
+        //}
 
         //protected void ddlTiposAfiliado_SelectedIndexChanged(object sender, EventArgs e)
         //{
@@ -938,17 +977,56 @@ namespace fpWebApp
         }
 
         protected void btnActualizarYRedirigir_Click(object sender, EventArgs e)
-        {
-            // Supongamos que ya tienes el ID en una variable:
-            string idcrm = "2"; // <-- Aquí asignas el valor real de tu ID
+        {           
+            string idcrm = "2";
 
-            // Construyes la URL con el parámetro
             string url = $"editarafiliado.aspx?idcrm={idcrm}";
-
-            // Rediriges
+           
             Response.Redirect(url);
+        }
 
+        protected void ddlAfiliadoOrigen_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlAfiliadoOrigen.SelectedItem.Value.ToString() != "")
+            {
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = new DataTable();
+                DataTable dt1 = new DataTable();
+                bool esAfiliado = false;
+                Session["esAfiliado"] = esAfiliado.ToString();
+                int documento = 0;
+                string[] strDocumento = ddlAfiliadoOrigen.SelectedItem.Value.ToString().Split('-');
+                if (int.TryParse(strDocumento[0], out documento))
+                {
+                    dt = cg.ConsultarAfiliadoPorDocumento(documento);
+                }
 
+                dt1 = cg.ConsultarTipoAfiliadCRM();
+
+                try
+                {
+                    if (dt.Rows.Count > 0)
+                    {
+                        esAfiliado = true;
+                        Session["esAfiliado"] = esAfiliado.ToString();
+                        txbDocumento.Text = documento.ToString();
+                        ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
+                        txbNombreContacto.Value = dt.Rows[0]["NombreAfiliado"].ToString();
+                        txbApellidoContacto.Value = dt.Rows[0]["ApellidoAfiliado"].ToString();
+                        txbTelefonoContacto.Value = dt.Rows[0]["CelularAfiliado"].ToString();
+                        txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString();
+                        ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString())));
+                        ddlTiposAfiliado.SelectedValue = "2";//Afiliado en renovación
+                    }
+                    dt.Dispose();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            ////////////////////////////////ANTERIOR/////////////////////////////////////////////////////////
         }
     }
 }
