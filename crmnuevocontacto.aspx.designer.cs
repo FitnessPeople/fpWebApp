@@ -384,13 +384,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Button btnActualizarYRedirigir;
 
         /// <summary>
-        /// Control ltPrimerContacto.
+        /// Control ltProximoContacto.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltPrimerContacto;
+        protected global::System.Web.UI.WebControls.Literal ltProximoContacto;
 
         /// <summary>
         /// Control ltTelefono.
@@ -402,15 +402,6 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltTelefono;
 
         /// <summary>
-        /// Control ltProximoContacto.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltProximoContacto;
-
-        /// <summary>
         /// Control ltPlan.
         /// </summary>
         /// <remarks>
@@ -418,6 +409,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltPlan;
+
+        /// <summary>
+        /// Control ltPrimerContacto.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltPrimerContacto;
 
         /// <summary>
         /// Control litHistorialHTML.

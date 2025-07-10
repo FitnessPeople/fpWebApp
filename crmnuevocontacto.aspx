@@ -270,7 +270,7 @@
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row animated fadeInDown">
                     <%--Inicio Contenido!!!!--%>
-                    
+
                     <%--Gráfica asesor--%>
                     <div class="row">
                         <div class="col-lg-6">
@@ -305,112 +305,111 @@
                                 </div>
                             </div>
                         </div>
-                       <%-- Widgets--%>
+                        <%-- Widgets--%>
                         <div class="col-lg-6">
-                        <div class="row">
-                         <div class="col-lg-4">
-                            <div class="widget style1 navy-bg">
-                                <div class="row vertical-align">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-user fa-3x"></i>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="widget style1 navy-bg">
+                                        <div class="row vertical-align">
+                                            <div class="col-xs-3">
+                                                <i class="fa fa-user fa-3x"></i>
+                                            </div>
+                                            <div class="col-xs-9 text-right">
+                                                <h2 class="font-bold">217</h2>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-xs-9 text-right">
-                                        <h2 class="font-bold">217</h2>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="widget style1 navy-bg">
+                                        <div class="row vertical-align">
+                                            <div class="col-xs-3">
+                                                <i class="fa fa-thumbs-up fa-3x"></i>
+                                            </div>
+                                            <div class="col-xs-9 text-right">
+                                                <h2 class="font-bold">400</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="widget style1 navy-bg">
+                                        <div class="row vertical-align">
+                                            <div class="col-xs-3">
+                                                <i class="fa fa-rss fa-3x"></i>
+                                            </div>
+                                            <div class="col-xs-9 text-right">
+                                                <h2 class="font-bold">10</h2>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="widget style1 navy-bg">
-                                <div class="row vertical-align">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-thumbs-up fa-3x"></i>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="widget style1 lazur-bg">
+                                        <div class="row vertical-align">
+                                            <div class="col-xs-3">
+                                                <i class="fa fa-phone fa-3x"></i>
+                                            </div>
+                                            <div class="col-xs-9 text-right">
+                                                <h2 class="font-bold">120</h2>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-xs-9 text-right">
-                                        <h2 class="font-bold">400</h2>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="widget style1 lazur-bg">
+                                        <div class="row vertical-align">
+                                            <div class="col-xs-3">
+                                                <i class="fa fa-euro fa-3x"></i>
+                                            </div>
+                                            <div class="col-xs-9 text-right">
+                                                <h2 class="font-bold">462</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="widget style1 yellow-bg">
+                                        <div class="row vertical-align">
+                                            <div class="col-xs-3">
+                                                <i class="fa fa-shield fa-3x"></i>
+                                            </div>
+                                            <div class="col-xs-9 text-right">
+                                                <h2 class="font-bold">610</h2>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="widget style1 navy-bg">
-                                <div class="row vertical-align">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-rss fa-3x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <h2 class="font-bold">10</h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
- </div>
-                             <div class="row">
-                        <div class="col-lg-4">
-                            <div class="widget style1 lazur-bg">
-                                <div class="row vertical-align">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-phone fa-3x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <h2 class="font-bold">120</h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="widget style1 lazur-bg">
-                                <div class="row vertical-align">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-euro fa-3x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <h2 class="font-bold">462</h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="widget style1 yellow-bg">
-                                <div class="row vertical-align">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-shield fa-3x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <h2 class="font-bold">610</h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                                  </div>
                         </div>
 
-                                         <div class="col-lg-3">
-                        <div class="ibox">
-                            <div class="ibox-content">
-                                <h5>Vendido hasta hoy</h5>
-                                <h1 class="no-margins">1 738,200</h1>
-                                <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>
-                                <small>Tasa de cumplimiento</small>
+                        <div class="col-lg-3">
+                            <div class="ibox">
+                                <div class="ibox-content">
+                                    <h5>Vendido hasta hoy</h5>
+                                    <h1 class="no-margins">1 738,200</h1>
+                                    <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>
+                                    <small>Tasa de cumplimiento</small>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                                            <div class="col-lg-3">
-                        <div class="ibox">
-                            <div class="ibox-content">
-                                <h5>Brecha</h5>
-                                <h1 class="no-margins">-200,100</h1>
-                                <div class="stat-percent font-bold text-danger">12% <i class="fa fa-level-down"></i></div>
-                                <small>% de cumplimiento Pendiente</small>
+                        <div class="col-lg-3">
+                            <div class="ibox">
+                                <div class="ibox-content">
+                                    <h5>Brecha</h5>
+                                    <h1 class="no-margins">-200,100</h1>
+                                    <div class="stat-percent font-bold text-danger">12% <i class="fa fa-level-down"></i></div>
+                                    <small>% de cumplimiento Pendiente</small>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
                     </div>
 
                     <%--widgets--%>
                     <div class="row">
-
                     </div>
 
 
@@ -420,7 +419,7 @@
 
 
 
-                                   <%--     <uc2:indicadoresusucrm runat="server" ID="indicadoresusucrm" />--%>
+                    <%--     <uc2:indicadoresusucrm runat="server" ID="indicadoresusucrm" />--%>
                     <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
                         <div class="p-xs">
                             <div class="pull-left m-r-md">
@@ -851,7 +850,7 @@
                                                                 </p>
                                                                 
                                                              
-                                                                <asp:Button ID="btnActualizarYRedirigir" runat="server" Text="Actualizar y Redirigir"
+                                                                <asp:Button ID="btnActualizarYRedirigir" runat="server" Text="Ir a afiliaciones"
                                                                     OnClick="btnActualizarYRedirigir_Click" class="btn btn-success btn-sm btn-block" />
                                                             </div>
                                                         </div>
@@ -861,31 +860,43 @@
                                                                 <div class="row">
                                                                     <div class="col-md-12">
                                                                         <strong>Actividad</strong>
+                                                                        <strong>Last activity</strong>
+
+                                                                        <ul class="list-group clear-list">
+                                                                            <li class="list-group-item fist-item">
+                                                                                <span class="pull-right">
+                                                                                    <div style="margin-left: 20px;">
+                                                                                        <asp:Literal ID="ltProximoContacto" runat="server"></asp:Literal>
+                                                                                    </div>
+                                                                                </span>
+                                                                                <i class="fa fa-phone" style="margin-right: 5px; color: green;"></i>Por favor, contáctame al:
+                                                                                <asp:Literal ID="ltTelefono" runat="server"></asp:Literal>
+                                                                            </li>
+                                                                            <li class="list-group-item">
+                                                                                <span class="pull-right">
+                                                                                    <asp:Literal ID="ltPlan" runat="server"></asp:Literal>
+                                                                                </span>
+                                                                                Plan Sugerido
+                                                                            </li>
+                                                                            <li class="list-group-item">
+                                                                                <span class="pull-right">Tonificar </span>
+                                                                                Objetivo del afiliado
+                                                                            </li>
+                                                                            <li class="list-group-item">
+                                                                                <span class="pull-right">Pago en linea </span>
+                                                                                Método de pago sugerido
+                                                                            </li>
+                                                                            <li class="list-group-item">
+                                                                                <span class="pull-right">Whatsapp </span>
+                                                                                Canal de marketing
+                                                                            </li>
+                                                                            <li class="list-group-item">
+                                                                                <span class="pull-right"><asp:Literal ID="ltPrimerContacto" runat="server"></asp:Literal> </span>
+                                                                                Registrado en el CRM 
+                                                                            </li>
+                                                                        </ul>
                                                                     </div>
                                                                 </div>
-
-                                                                Primer registro:
-                                                                <asp:Literal ID="ltPrimerContacto" runat="server"></asp:Literal>
-                                                                <ul class="list-group clear-list" runat="server">
-                                                                    <li class="list-group-item fist-item">
-                                                                        <div style="display: flex; flex-direction: column; gap: 5px;">
-                                                                            <div style="display: flex; align-items: center; flex-wrap: wrap;">
-                                                                                <i class="fa fa-phone" style="margin-right: 5px; color: green;"></i>
-                                                                                <strong>Por favor, contáctame al:</strong>
-                                                                                <span style="margin-left: 5px;">
-                                                                                    <asp:Literal ID="ltTelefono" runat="server"></asp:Literal></span>
-                                                                            </div>
-                                                                            <div style="margin-left: 20px;">
-                                                                                <asp:Literal ID="ltProximoContacto" runat="server"></asp:Literal>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
-
-                                                                <strong>Plan Sugerido</strong>
-                                                                <p>
-                                                                    <asp:Literal ID="ltPlan" runat="server"></asp:Literal>
-                                                                </p>
                                                                 <hr />
                                                                 <strong>Historial de actividades</strong>
                                                                 <div style="overflow-x: auto;">
@@ -1403,7 +1414,7 @@
     </script>
 
     <!-- Mainly scripts -->
-<%--    <script src="js/jquery-3.1.1.min.js"></script>
+    <%--    <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>--%>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
@@ -1421,7 +1432,7 @@
     <script src="js/plugins/peity/jquery.peity.min.js"></script>
     <script src="js/demo/peity-demo.js"></script>
 
-<%--    <!-- Custom and plugin javascript -->
+    <%--    <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>--%>
 

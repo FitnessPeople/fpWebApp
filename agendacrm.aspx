@@ -279,7 +279,7 @@
                                     <div class="col-xxl-2 col-lg-3 col-md-5 col-sm-6 col-xs-12">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
-                                                <h5>Planes para afiliado</h5>
+                                                <h5>Información de gestión del asesor</h5>
                                             </div>
                                             <div class="ibox-content">
 
@@ -329,32 +329,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <%--            <div class="col-lg-3">
-                <div class="widget style1 navy-bg">
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <i class="fa fa-cloud fa-5x"></i>
-                        </div>
-                        <div class="col-xs-8 text-right">
-                            <span> Today degrees </span>
-                            <h2 class="font-bold">26'C</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>--%>
-                                                        <%--            <div class="col-lg-3">
-                <div class="widget style1 lazur-bg">
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <i class="fa fa-envelope-o fa-5x"></i>
-                        </div>
-                        <div class="col-xs-8 text-right">
-                            <span> New messages </span>
-                            <h2 class="font-bold">260</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>--%>
+                      
                                                         <div class="col-lg-12">
                                                             <div class="widget navy-bg no-padding">
                                                                 <div class="p-m">
@@ -370,19 +345,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <%--            <div class="col-lg-3">
-                <div class="widget style1 yellow-bg">
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <i class="fa fa-music fa-5x"></i>
-                        </div>
-                        <div class="col-xs-8 text-right">
-                            <span> New albums </span>
-                            <h2 class="font-bold">12</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>--%>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -463,10 +426,10 @@
     </script>
 
             <!-- Mainly scripts -->
-    <script src="js/jquery-3.1.1.min.js"></script>
+<%--    <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>--%>
 
     <!-- jquery UI -->
     <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -714,11 +677,7 @@
 
     </script>
 
-    <script>
-        $('#modal-view-event').on('hidden.bs.modal', function () {
-            location.reload();
-        });
-    </script>
+
 
 
 
