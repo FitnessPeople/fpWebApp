@@ -34,6 +34,8 @@ namespace fpWebApp
                         txbDocumento.Attributes.Add("type", "number");
                         txbTelefono.Attributes.Add("type", "number");
                         txbTelefonoContacto.Attributes.Add("type", "number");
+                        btnCancelar.Visible = true;
+
                         CargarTipoDocumento();
                         CargarCiudad();
                         CargarEmpresas();
@@ -177,20 +179,25 @@ namespace fpWebApp
 
         private void CargarAfiliado()
         {
-            string idcrm = Request.QueryString["idcrm"];
-            string editid = Request.QueryString["editid"];
+            string idcrm = string.Empty;
+           
             string parametro = string.Empty;
             Session["IdAfiliado"] = string.Empty;
+            Session["IdCRM"] = string.Empty;
             bool respuesta = false;
             btnActualizar.Visible = true;
-            btnActualizaryVenderPlan.Visible = false;
-            
+            btnCancelar.Visible = true;
+            btnActualizaryVenderPlan.Visible = false;            
+            btnVolver.Visible = false;
 
 
 
             clasesglobales cg = new clasesglobales();
             try
             {
+                idcrm = Request.QueryString["idcrm"];
+                Session["IdCRM"] = idcrm;
+                string editid = Request.QueryString["editid"];
                 if (Request.QueryString.Count > 0)
                 {
                     if (!string.IsNullOrEmpty(idcrm))
@@ -199,7 +206,10 @@ namespace fpWebApp
                         DataTable dt2 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(dt1.Rows[0]["DocumentoAfiliado"].ToString()));
                         parametro = dt2.Rows[0]["idAfiliado"].ToString();
                         btnActualizar.Visible = false;
-                        btnActualizaryVenderPlan.Visible = true;
+                        btnCancelar.Visible = false;
+                        btnActualizaryVenderPlan.Visible = true;                        
+                        btnVolver.Visible = true;
+                        
                         Session["IdAfiliado"] = parametro.ToString();
                     }
                     else if (!string.IsNullOrEmpty(editid))
@@ -556,7 +566,8 @@ namespace fpWebApp
 
         protected void btnActualizaryVenderPlan_Click(object sender, EventArgs e)
         {
-            int id = Convert.ToInt32(Session["idAfiliado"].ToString());         
+            int id = Convert.ToInt32(Session["idAfiliado"].ToString());
+            string idcrm = Session["IdCRM"].ToString();
             Response.Redirect("planesAfiliado.aspx?id=" + id);
         }
 

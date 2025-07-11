@@ -465,8 +465,16 @@ namespace fpWebApp
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
+            Session["IdCRM"] = string.Empty;
+            string idcrm = string.Empty;
+
             if (Request.QueryString.Count > 0)
-            {
+            {                
+                idcrm = Request.QueryString["editid"];
+                Session["IdCRM"] = idcrm;
+                string evento = Request.QueryString["evento"];
+                string documento = Request.QueryString["documento"];
+
                 if (Request.QueryString["editid"] != null)
                 {
                     bool salida = false;
@@ -481,54 +489,6 @@ namespace fpWebApp
 
                     try
                     {
-                        // Obtener y limpiar valores
-                        string nombre = txbNombreContacto.Value?.ToString().Trim();
-                        string apellido = txbApellidoContacto.Value?.ToString().Trim();
-                        string telefono = Regex.Replace(txbTelefonoContacto.Value?.ToString().Trim(), @"\D", "");
-                        string correo = txbCorreoContacto.Value?.ToString().Trim();
-                        string fechaPrim = txbFechaPrim?.Value?.ToString().Trim();
-                        string fechaProx = txbFechaProx?.Value?.ToString().Trim();
-                        string valorPropuestaTexto = Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "");
-                        string empresa = ddlEmpresa.SelectedItem?.Value;
-                        string statusLead = ddlStatusLead.SelectedItem?.Value;
-                        string objetivo = ddlObjetivos.SelectedItem?.Value;
-                        string tipoPago = ddlTipoPago.SelectedItem?.Value;
-                        string tipoAfiliado = ddlTiposAfiliado.SelectedItem?.Value;
-                        string canalMarketing = ddlCanalesMarketing.SelectedItem?.Value;
-                        string plan = ddlPlanes.SelectedItem?.Value;
-                        string observaciones = txaObservaciones.Value.ToString().Trim(); 
-
-
-                        // Validar campos requeridos
-                        //if (string.IsNullOrWhiteSpace(nombre) ||
-                        //    string.IsNullOrWhiteSpace(apellido) ||
-                        //    string.IsNullOrWhiteSpace(telefono) ||
-                        //    string.IsNullOrWhiteSpace(correo) ||
-                        //    string.IsNullOrWhiteSpace(empresa) ||
-                        //    string.IsNullOrWhiteSpace(statusLead) ||
-                        //    string.IsNullOrWhiteSpace(fechaPrim) ||
-                        //    string.IsNullOrWhiteSpace(fechaProx) ||
-                        //    string.IsNullOrWhiteSpace(valorPropuestaTexto) ||
-                        //    string.IsNullOrWhiteSpace(statusLead) ||
-                        //    string.IsNullOrWhiteSpace(objetivo) ||
-                        //    string.IsNullOrWhiteSpace(tipoPago) ||
-                        //    string.IsNullOrWhiteSpace(tipoAfiliado) ||
-                        //    string.IsNullOrWhiteSpace(canalMarketing) ||
-                        //    string.IsNullOrWhiteSpace(observaciones) ||
-                        //    string.IsNullOrWhiteSpace(plan)
-                        //    )
-                        //    {
-                        //        mensajeValidacion = "Todos los campos son obligatorios.";
-
-                        //    ltMensaje.Text = "<div class=\"ibox-content\">" +
-                        //     "<div class=\"alert alert-danger alert-dismissable\">" +
-                        //     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        //     "Todos los campos son obligatorios." +
-                        //     "</div></div>";
-                        //    return;
-                        //    }
-                       // else
-                       // {
                             respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.ToString().Trim().ToUpper(), 
                                     txbApellidoContacto.Value.ToString().Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), 
                                     txbCorreoContacto.Value.ToString().Trim().ToLower(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), 
@@ -541,7 +501,9 @@ namespace fpWebApp
 
                             if (salida)
                             {
-                                string script = @"
+                            string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
+
+                            string script = @"
                                 Swal.fire({
                                     title: 'El contacto CRM se actualizó de forma exitosa',
                                     text: '" + mensaje.Replace("'", "\\'") + @"',
@@ -550,7 +512,7 @@ namespace fpWebApp
                                     showConfirmButton: false,
                                     timerProgressBar: true
                                 }).then(() => {
-                                    window.location.href = 'crmnuevocontacto';
+                                    window.location.href = '" + urlRedirect + @"';
                                 });
                                 ";
 
@@ -558,23 +520,25 @@ namespace fpWebApp
                             }
                             else
                             {
-                                string script = @"
+                            string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
+                            string script = @"
                                 Swal.fire({
                                     title: 'Error',
                                     text: '" + mensaje.Replace("'", "\\'") + @"',
                                     icon: 'error'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        $('#ModalContacto').modal('show');
+                                       window.location.href = '"" + urlRedirect + @""';
                                     }
                                 });
                                 ";
                                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
                             }
-                       // }
+                  
                     }
                     catch (Exception ex)
                     {
+                        string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
                         string script = @"
                         Swal.fire({
                         title: 'Error',
@@ -584,7 +548,7 @@ namespace fpWebApp
                 ";
                         ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                     }
-                    //Response.Redirect("crmnuevocontacto");
+                  
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -979,7 +943,7 @@ namespace fpWebApp
 
         protected void btnActualizarYRedirigir_Click(object sender, EventArgs e)
         {           
-            string idcrm = "2";
+            string idcrm = Request.QueryString["editid"];
 
             string url = $"editarafiliado.aspx?idcrm={idcrm}";
            

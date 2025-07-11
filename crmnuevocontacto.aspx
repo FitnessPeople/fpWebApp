@@ -50,6 +50,8 @@
     <link href="css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet" />
     <link href="css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
 
+
+
     <!-- FooTable -->
     <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
 
@@ -1149,6 +1151,11 @@
     <!-- Chosen -->
     <script src="js/plugins/chosen/chosen.jquery.js"></script>
 
+    <script>
+        function pageLoad() {
+            $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
+        }
+    </script>
 
     <!-- Jquery Validate -->
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
