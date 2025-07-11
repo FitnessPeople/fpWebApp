@@ -19,16 +19,41 @@
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
-    <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
-    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+
+    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet">
+
+    <link href="css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
+
+    <link href="css/plugins/colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet">
+
+    <link href="css/plugins/cropper/cropper.min.css" rel="stylesheet">
+
+    <link href="css/plugins/switchery/switchery.css" rel="stylesheet">
 
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
 
+    <link href="css/plugins/nouslider/jquery.nouislider.css" rel="stylesheet">
+
     <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
+    <link href="css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet">
+    <link href="css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet">
+
+    <link href="css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
 
     <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
 
     <link href="css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
+
+    <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
+
+    <link href="css/plugins/touchspin/jquery.bootstrap-touchspin.min.css" rel="stylesheet">
+
+    <link href="css/plugins/dualListbox/bootstrap-duallistbox.min.css" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.js"></script>
@@ -36,22 +61,15 @@
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <link href="css/animate.css" rel="stylesheet" />
-    <link href="css/style.css" rel="stylesheet" />
-
     <style>
         #external-events {
-          top: 20px;
-          left: 20px;
-          width: 200px;
-          padding: 10px 10px;
-          border: 1px solid #ccc;
-          background: #eee;
+            top: 20px;
+            left: 20px;
         }
 
         #external-events .fc-event {
-          cursor: move;
-          margin: 3px 0;
+            cursor: move;
+            margin: 3px 0;
         }
 
         /*.fc-event-title-container {
@@ -154,128 +172,107 @@
 
                     <form runat="server" id="form">
                         <div class="row animated fadeInDown" id="divContenido" runat="server">
-                            <%--<div class="col-xxl-3 col-lg-4 col-md-5 col-sm-6 col-xs-12">--%>
                             <div class="col-sm-12">
-                                <div class="ibox float-e-margins">
-                                    <div class="ibox-title">
-                                        <h5>Agregar porcentajes</h5>
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-up"></i>
-                                            </a>
-                                            <a class="close-link">
-                                                <i class="fa fa-times"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="ibox-content" id="divCrear" runat="server" visible="false">
-
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <label>Asesor:</label>
-                                                <div class="form-group">
-                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlAsesores" runat="server"
-                                                        DataValueField="DocumentoEmpleado" DataTextField="NombreCompletoProfesion"
-                                                        AppendDataBoundItems="true">
-                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title">
+                                                <%--<span class="label label-success pull-right">Monthly</span>--%>
+                                                <h5>Arrastra al calendario</h5>
                                             </div>
-                                            <div class="col-sm-6">
-                                                <label>Sede:</label>
-                                                <div class="form-group">
-                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedesCita" runat="server"
-                                                        DataValueField="idSede" DataTextField="NombreSede" AppendDataBoundItems="true">
-                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <label>Fecha Inicial:</label>
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control input-sm" id="txbFechaIni" name="txbFechaIni" runat="server" />
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <label>Fecha Final:</label>
-                                                <div class="form-group">
-                                                    <%--<span class="input-group-addon"><i class="fa fa-calendar-day"></i></span>--%>
-                                                    <input type="text" class="form-control input-sm" id="txbFechaFin" name="txbFechaFin" runat="server" />
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-3 m-b-md">
-                                                <label>Hora inicio:</label>
-                                                <div class="input-group clockpicker" data-autoclose="true">
-                                                    <input type="text" class="form-control input-sm" value="08:00" id="txbHoraIni" name="txbHoraIni" runat="server" />
-                                                    <span class="input-group-addon">
-                                                        <span class="fa fa-clock"></span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <label>Hora final:</label>
-                                                <div class="input-group clockpicker" data-autoclose="true">
-                                                    <input type="text" class="form-control input-sm" value="12:00" id="txbHoraFin" name="txbHoraFin" runat="server" />
-                                                    <span class="input-group-addon">
-                                                        <span class="fa fa-clock"></span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-horizontal">
-                                                    <div class="form-group m-b-mb">
-                                                        <label class="col-sm-4">Duración cita:</label>
-                                                        <div class="col-sm-8">
-                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlDuracion" runat="server"
-                                                                AppendDataBoundItems="true">
-                                                                <asp:ListItem Text="30 minutos" Value="30"></asp:ListItem>
-                                                                <asp:ListItem Text="40 minutos" Value="40"></asp:ListItem>
-                                                                <asp:ListItem Text="45 minutos" Value="45"></asp:ListItem>
-                                                            </asp:DropDownList>
-                                                        </div>
+                                            <div id='external-events' class="ibox-content">
+                                                <div class='fc-event'
+                                                    data-title="5%" data-value="5" data-bgcolor="#ed5565">
+                                                    <div class='fc-event-main'
+                                                        style="color: #fff; background: #ed5565; border: 1px solid #ed5565; border-radius: 3px; font-size: 1.5em;">
+                                                        5%
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-horizontal">
-                                                    <div class="form-group m-b-mb">
-                                                        <label class="col-sm-2">Repetir:</label>
-                                                        <div class="col-sm-8">
-                                                            <asp:CheckBoxList ID="cbDiasRepite" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="form-control input-sm">
-                                                                <asp:ListItem Text="&nbsp;Lun" Value="1" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;Mar" Value="2" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;Mié" Value="3" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;Jue" Value="4" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;Vie" Value="5" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;Sáb" Value="6" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                            </asp:CheckBoxList>
-                                                        </div>
-                                                        <div class="col-sm-2">
-                                                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                                                            <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md m-b-lg pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
-                                                        </div>
+                                                <div class='fc-event'
+                                                    data-title="10%" data-value="10" data-bgcolor="#1ab394">
+                                                    <div class='fc-event-main'
+                                                        style="color: #fff; background: #1ab394; border: 1px solid #1ab394; border-radius: 3px; font-size: 1.5em;">
+                                                        10%
+                                                    </div>
+                                                </div>
+                                                <div class='fc-event'
+                                                    data-title="15%" data-value="15" data-bgcolor="#1c84c6">
+                                                    <div class='fc-event-main'
+                                                        style="color: #fff; background: #1c84c6; border: 1px solid #1c84c6; border-radius: 3px; font-size: 1.5em;">
+                                                        15%
+                                                    </div>
+                                                </div>
+                                                <div class='fc-event'
+                                                    data-title="20%" data-value="20" data-bgcolor="#f8ac59">
+                                                    <div class='fc-event-main'
+                                                        style="color: #fff; background: #f8ac59; border: 1px solid #f8ac59; border-radius: 3px; font-size: 1.5em;">
+                                                        20%
+                                                    </div>
+                                                </div>
+                                                <div class='fc-event'
+                                                    data-title="25%" data-value="25" data-bgcolor="#23c6c8">
+                                                    <div class='fc-event-main'
+                                                        style="color: #fff; background: #23c6c8; border: 1px solid #23c6c8; border-radius: 3px; font-size: 1.5em;">
+                                                        25%
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <%--<div class="form-horizontal">
-                                            <div class="form-group m-b-mb">
-                                                
-                                                
-                                            </div>
-                                        </div>--%>
                                     </div>
+                                    <div class="col-lg-3">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title">
+                                                <%--<span class="label label-info pull-right">Annual</span>--%>
+                                                <h5>Meta por semana</h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <input type="text" id="semana1" value="0" class="dial m-r-sm" data-fgColor="#1AB394" data-width="85" data-height="85" />
+                                                <div id="listaSemanas"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title">
+                                                <span class="label label-primary pull-right">Today</span>
+                                                <h5>Meta mensual</h5>
+                                            </div>
+                                            <div class="ibox-content">
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <h1 class="no-margins">$1´700.000.000</h1>
+                                                        <div class="font-bold text-navy">44% <i class="fa fa-level-up"></i><small>Creciendo</small></div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <h1 class="no-margins">$700.000.000</h1>
+                                                        <div class="font-bold text-navy">22% <i class="fa fa-level-up"></i><small>Creciendo</small></div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <%--<div class="col-lg-4">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title">
+                                                <h5>Monthly income</h5>
+                                                <div class="ibox-tools">
+                                                    <span class="label label-primary">Updated 12.2015</span>
+                                                </div>
+                                            </div>
+                                            <div class="ibox-content no-padding">
+                                                <div class="flot-chart m-t-lg" style="height: 55px;">
+                                                    <div class="flot-chart-content" id="flot-chart1"></div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>--%>
                                 </div>
                             </div>
-                            <%--<div class="col-xxl-9 col-lg-8 col-md-7 col-sm-6 col-xs-12">--%>
                             <div class="col-sm-12">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
@@ -296,38 +293,48 @@
                                             </div>
                                         </div>
                                         <hr />
-                                        <div id="listaSemanas"></div>
-                                        <div id='external-events'>
-                                          <p>
-                                            <strong>Arrastra al calendario</strong>
-                                          </p>
+                                        
+                                        <%--<div id='external-events'>
+                                            <p>
+                                                <strong>Arrastra al calendario</strong>
+                                            </p>
 
-                                          <div class='fc-event' 
-                                              data-title="5%" data-value="5" data-bgcolor="#ed5565">
-                                            <div class='fc-event-main' 
-                                                style="color: #fff; background: #ed5565; border: 1px solid #ed5565; border-radius: 3px; font-size: 1.5em;">5%</div>
-                                          </div>
-                                          <div class='fc-event'
-                                              data-title="10%" data-value="10" data-bgcolor="#1ab394">
-                                            <div class='fc-event-main' 
-                                                style="color: #fff; background: #1ab394; border: 1px solid #1ab394; border-radius: 3px; font-size: 1.5em;">10%</div>
-                                          </div>
-                                          <div class='fc-event' 
-                                              data-title="15%" data-value="15" data-bgcolor="#1c84c6">
-                                            <div class='fc-event-main' 
-                                                style="color: #fff; background: #1c84c6; border: 1px solid #1c84c6; border-radius: 3px; font-size: 1.5em;">15%</div>
-                                          </div>
-                                          <div class='fc-event' 
-                                              data-title="20%" data-value="20" data-bgcolor="#f8ac59">
-                                            <div class='fc-event-main' 
-                                                style="color: #fff; background: #f8ac59; border: 1px solid #f8ac59; border-radius: 3px; font-size: 1.5em;">20%</div>
-                                          </div>
-                                          <div class='fc-event' 
-                                              data-title="25%" data-value="25" data-bgcolor="#23c6c8">
-                                            <div class='fc-event-main' 
-                                                style="color: #fff; background: #23c6c8; border: 1px solid #23c6c8; border-radius: 3px; font-size: 1.5em;">25%</div>
-                                          </div>
-                                        </div>
+                                            <div class='fc-event'
+                                                data-title="5%" data-value="5" data-bgcolor="#ed5565">
+                                                <div class='fc-event-main'
+                                                    style="color: #fff; background: #ed5565; border: 1px solid #ed5565; border-radius: 3px; font-size: 1.5em;">
+                                                    5%
+                                                </div>
+                                            </div>
+                                            <div class='fc-event'
+                                                data-title="10%" data-value="10" data-bgcolor="#1ab394">
+                                                <div class='fc-event-main'
+                                                    style="color: #fff; background: #1ab394; border: 1px solid #1ab394; border-radius: 3px; font-size: 1.5em;">
+                                                    10%
+                                                </div>
+                                            </div>
+                                            <div class='fc-event'
+                                                data-title="15%" data-value="15" data-bgcolor="#1c84c6">
+                                                <div class='fc-event-main'
+                                                    style="color: #fff; background: #1c84c6; border: 1px solid #1c84c6; border-radius: 3px; font-size: 1.5em;">
+                                                    15%
+                                                </div>
+                                            </div>
+                                            <div class='fc-event'
+                                                data-title="20%" data-value="20" data-bgcolor="#f8ac59">
+                                                <div class='fc-event-main'
+                                                    style="color: #fff; background: #f8ac59; border: 1px solid #f8ac59; border-radius: 3px; font-size: 1.5em;">
+                                                    20%
+                                                </div>
+                                            </div>
+                                            <div class='fc-event'
+                                                data-title="25%" data-value="25" data-bgcolor="#23c6c8">
+                                                <div class='fc-event-main'
+                                                    style="color: #fff; background: #23c6c8; border: 1px solid #23c6c8; border-radius: 3px; font-size: 1.5em;">
+                                                    25%
+                                                </div>
+                                            </div>
+                                        </div>--%>
                                         <div id="calendar"></div>
                                     </div>
                                 </div>
@@ -345,7 +352,7 @@
     </div>
 
     <!-- Mainly scripts -->
-    <script src="js/plugins/fullcalendar/moment.min.js"></script>
+   <script src="js/plugins/fullcalendar/moment.min.js"></script>
     <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
@@ -357,6 +364,9 @@
 
     <!-- jQuery UI  -->
     <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+   <!-- JSKnob -->
+   <script src="js/plugins/jsKnob/jquery.knob.js"></script>
 
     <!-- Date range picker -->
     <script src="js/plugins/daterangepicker/daterangepicker.js"></script>
@@ -379,33 +389,11 @@
     <!-- Jquery Validate -->
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
-    <script>
+    
 
-        $("#form").validate({
-            rules: {
-                ddlEspecialistas: {
-                    required: true,
-                },
-                ddlSedesCita: {
-                    required: true,
-                },
-                txbFechaIni: {
-                    required: true
-                },
-                txbFechaFin: {
-                    required: true
-                },
-                txbHoraIni: {
-                    required: true,
-                },
-                txbHoraFin: {
-                    required: true,
-                },
-                txbDuracion: {
-                    required: true,
-                },
-            }
-        });
+
+    <script>
+        $(".dial").knob();
 
         !(function (a) {
             a.fn.datepicker.dates.es = {
@@ -527,13 +515,13 @@
                 eventContent: function (arg) {
                     //console.log(arg);
                     let backgroundColor = arg.event.extendedProps.bgcolor || '#fff'; // Color por defecto si no se define
-                    let italicEl = document.createElement('span')
-                    
+                    let italicEl = document.createElement('i')
+
                     italicEl.innerHTML = arg.event.title;
-                    italicEl.className = "btn btn-lg";
-                    italicEl.style = `background: ${backgroundColor};`;
-                    console.log(backgroundColor);
-                    
+                    //italicEl.style = `background: ${backgroundColor};`;
+                    italicEl.style = `font-size: 1.5em;`;
+                    //console.log(backgroundColor);
+
                     let arrayOfDomNodes = [italicEl]
                     return { domNodes: arrayOfDomNodes }
                 },
@@ -671,7 +659,9 @@
         function mostrarSemanasDelMes(startDate, endDate, calendar) {
             //console.log(endDate);
             const semanasDiv = document.getElementById('listaSemanas');
+            const knob1 = document.getElementById("semana1");
             semanasDiv.innerHTML = ''; // limpiar lista anterior
+            knob1.value = 0;
 
             let current = new Date(startDate);
             let weekNumber = moment(addDays(startDate, -1)).week();
@@ -687,9 +677,30 @@
                 // Mostrar solo semanas que tengan algún día en el mes visible
                 if (startOfWeek.getMonth() === endDate.getMonth() - 1 || endOfWeek.getMonth() === endDate.getMonth() - 1) {
                     const totalSemana = sumarValoresDeSemana(semanaIndex, calendar, yearNumber);
-                    //console.log(totalSemana)
+                    //console.log(`Semana ${semanaIndex}, Total semana: ${totalSemana}`);
                     //semanasDiv.innerHTML += `<div>Semana ${semanaIndex}: ${formatearFecha(startOfWeek)} - ${formatearFecha(endOfWeek)}</div>`;
-                    semanasDiv.innerHTML += `<div>Semana ${semanaIndex}: ${totalSemana}%</div>`;
+
+                    knob1.value = parseInt(totalSemana);
+
+                    //semanasDiv.innerHTML += `<div class="m-r-md inline"><input type="text" value="${totalSemana}" class="dial m-r-sm" data-fgColor="#1AB394" data-width="85" data-height="85" /></div>`
+                    if (parseInt(totalSemana) == 0) {
+                        semanasDiv.innerHTML += `<div>Semana ${semanaIndex}: <span class='badge badge-danger'>${totalSemana}%</span></div>`;
+                    }
+                    else {
+                        if (parseInt(totalSemana) < 100) {
+                            semanasDiv.innerHTML += `<div>Semana ${semanaIndex}: <span class='badge badge-warning'>${totalSemana}%</span></div>`;
+                        }
+                        else {
+                            if (parseInt(totalSemana) == 100) {
+                                semanasDiv.innerHTML += `<div>Semana ${semanaIndex}: <span class='badge badge-primary'>${totalSemana}%</span></div>`;
+                            }
+                            else {
+                                semanasDiv.innerHTML += `<div>Semana ${semanaIndex}: <span class='badge badge-danger'>${totalSemana}%</span></div>`;
+                            }
+                        }
+                    }
+
+                    //semanasDiv.innerHTML += `<div>Semana ${semanaIndex}: ${totalSemana}%</div>`;
                     semanaIndex++;
                 }
 
@@ -700,6 +711,8 @@
         function formatearFecha(fecha) {
             return fecha.toISOString().split('T')[0];
         }
+
+        
     </script>
 
 </body>

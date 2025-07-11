@@ -240,8 +240,8 @@ namespace fpWebApp
         private void CargarParq(string idAfiliado)
         {
             string strQuery = "SELECT *, " +
-                "IF(Respuesta1ParQ=0,'No','Si') AS respuesta1, " +
-                "IF(Respuesta1ParQ=0,'info','danger') AS label " +
+                "IF(Respuesta=0,'No','Si') AS respuesta1, " +
+                "IF(Respuesta=0,'info','danger') AS label " +
                 "FROM ParQ p, ParqAfiliados pa " +
                 "WHERE p.idParq IN (SELECT idParQ FROM ParqAfiliados WHERE idAfiliado = " + idAfiliado + " GROUP BY idParQ) " +
                 "AND p.idParq = pa.idParq " +
