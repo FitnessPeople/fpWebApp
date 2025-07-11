@@ -77,7 +77,7 @@ namespace fpWebApp
                     }
                     if (ViewState["Borrar"].ToString() == "1")
                     {
-                        btnEliminar.Visible = true;
+                        //btnEliminar.Visible = true;
                     }
                     //indicadores01.Visible = false;
                 }

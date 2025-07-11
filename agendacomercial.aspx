@@ -30,8 +30,8 @@
 
     <link href="css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
 
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.js"></script>
 
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -41,12 +41,10 @@
 
     <style>
         #external-events {
-          position: fixed;
-          z-index: 2;
           top: 20px;
           left: 20px;
-          width: 150px;
-          padding: 0 10px;
+          width: 200px;
+          padding: 10px 10px;
           border: 1px solid #ccc;
           background: #eee;
         }
@@ -55,6 +53,10 @@
           cursor: move;
           margin: 3px 0;
         }
+
+        /*.fc-event-title-container {
+            background: #f8ac59;
+        }*/
     </style>
 
     <script>
@@ -107,25 +109,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="modal-view-event" class="modal modal-top fade calendar-modal">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <h4 class="h4"><span class="event-icon mr-3 fa-2x"></span><span class="event-title"></span></h4>
-                    <div class="event-body"></div>
-                    <div class="event-description"></div>
-                    <div class="event-id text-hide" id="event-id"></div>
-                    <div class="event-allday text-hide" id="event-allday"></div>
-                </div>
-                <div class="modal-footer">
-                    <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
-                    <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>
                 </div>
             </div>
         </div>
@@ -298,18 +281,6 @@
                                     <div class="ibox-title">
                                         <h5>Agenda
                                             <asp:Literal ID="ltSede" runat="server"></asp:Literal></h5>
-                                        <div class="ibox-tools">
-                                            <%--<a class="collapse-link">
-                                                        <i class="fa fa-chevron-up"></i>
-                                                    </a>
-                                                    <a class="close-link">
-                                                        <i class="fa fa-times"></i>
-                                                    </a>--%>
-                                            <span class="label label-success pull-right" style="color: #000;">Cita atendida</span>
-                                            <span class="label label-danger pull-right" style="color: #000;">Cita cancelada</span>
-                                            <span class="label label-warning pull-right" style="color: #000;">Cita asignada</span>
-                                            <span class="label label-primary pull-right" style="color: #000;">Cita disponible</span>
-                                        </div>
                                     </div>
                                     <div class="ibox-content">
                                         <div class="form-horizontal">
@@ -325,36 +296,36 @@
                                             </div>
                                         </div>
                                         <hr />
-                                        <div>Semana No.27: <span id="porcentaje1"></span></div>
+                                        <div id="listaSemanas"></div>
                                         <div id='external-events'>
                                           <p>
                                             <strong>Arrastra al calendario</strong>
                                           </p>
 
-                                          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event' 
-                                              data-title="5%" 
-                                              data-value="5">
-                                            <div class='fc-event-main'>5%</div>
+                                          <div class='fc-event' 
+                                              data-title="5%" data-value="5" data-bgcolor="#ed5565">
+                                            <div class='fc-event-main' 
+                                                style="color: #fff; background: #ed5565; border: 1px solid #ed5565; border-radius: 3px; font-size: 1.5em;">5%</div>
                                           </div>
-                                          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'
-                                              data-title="10%" 
-                                              data-value="10">
-                                            <div class='fc-event-main'>10%</div>
+                                          <div class='fc-event'
+                                              data-title="10%" data-value="10" data-bgcolor="#1ab394">
+                                            <div class='fc-event-main' 
+                                                style="color: #fff; background: #1ab394; border: 1px solid #1ab394; border-radius: 3px; font-size: 1.5em;">10%</div>
                                           </div>
-                                          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event' 
-                                              data-title="15%" 
-                                              data-value="15">
-                                            <div class='fc-event-main'>15%</div>
+                                          <div class='fc-event' 
+                                              data-title="15%" data-value="15" data-bgcolor="#1c84c6">
+                                            <div class='fc-event-main' 
+                                                style="color: #fff; background: #1c84c6; border: 1px solid #1c84c6; border-radius: 3px; font-size: 1.5em;">15%</div>
                                           </div>
-                                          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event' 
-                                              data-title="20%" 
-                                              data-value="20">
-                                            <div class='fc-event-main'>20%</div>
+                                          <div class='fc-event' 
+                                              data-title="20%" data-value="20" data-bgcolor="#f8ac59">
+                                            <div class='fc-event-main' 
+                                                style="color: #fff; background: #f8ac59; border: 1px solid #f8ac59; border-radius: 3px; font-size: 1.5em;">20%</div>
                                           </div>
-                                          <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event' 
-                                              data-title="25%" 
-                                              data-value="25">
-                                            <div class='fc-event-main'>25%</div>
+                                          <div class='fc-event' 
+                                              data-title="25%" data-value="25" data-bgcolor="#23c6c8">
+                                            <div class='fc-event-main' 
+                                                style="color: #fff; background: #23c6c8; border: 1px solid #23c6c8; border-radius: 3px; font-size: 1.5em;">25%</div>
                                           </div>
                                         </div>
                                         <div id="calendar"></div>
@@ -386,10 +357,6 @@
 
     <!-- jQuery UI  -->
     <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
-
-    <!-- Full Calendar -->
-    <%--<script src="js/plugins/fullcalendar/fullcalendar.min.js"></script>--%>
-    <%--<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>--%>
 
     <!-- Date range picker -->
     <script src="js/plugins/daterangepicker/daterangepicker.js"></script>
@@ -485,13 +452,15 @@
 
     <script>
 
+        //Agrega días a una fecha
         function addDays(date, days) {
             var result = new Date(date);
             result.setDate(result.getDate() + days);
             return result;
         }
 
-        function getStartAndEndDateOfWeek(weekNumber, year) {
+        //Obtiene la fecha inicial y final de una semana especifica de un año específico
+        function obtenerFechaInicioFinSemana(weekNumber, year) {
             const simple = new Date(year, 0, 1 + (weekNumber - 1) * 7);
             const dayOfWeek = simple.getDay();
             const ISOweekStart = new Date(simple);
@@ -505,8 +474,9 @@
             return { start: ISOweekStart, end: ISOweekEnd };
         }
 
-        function sumarValoresDeSemana(calendar) {
-            const { start, end } = getStartAndEndDateOfWeek(27, 2025);
+        //Calcula la sumatoria de porcentajes de una semana
+        function sumarValoresDeSemana(weekNumber, calendar, yearNumber) {
+            const { start, end } = obtenerFechaInicioFinSemana(weekNumber, yearNumber);
 
             const eventosSemana = calendar.getEvents().filter(evento => {
                 return evento.start >= start && evento.start <= end;
@@ -516,7 +486,7 @@
                 return acum + (parseInt(evento.extendedProps.value) || 0);
             }, 0);
 
-            console.log(`Total de valores en la semana: ${total}`);
+            //console.log(`Total de valores en la semana: ${total}`);
             return total;
         }
 
@@ -538,7 +508,8 @@
                         //title: eventEl.innerText
                         title: eventEl.getAttribute('data-title'),
                         extendedProps: {
-                            value: eventEl.getAttribute('data-value')
+                            value: eventEl.getAttribute('data-value'),
+                            bgcolor: eventEl.getAttribute('data-bgcolor')
                         }
                     };
                 }
@@ -548,48 +519,29 @@
             // -----------------------------------------------------------------
 
             var calendar = new Calendar(calendarEl, {
-                eventClick: function (info) {
-                    let numero = parseInt(info.event.title);
-                    console.log(info.event.start);
-                    console.log(numero);
-                    info.jsEvent.preventDefault();
-
-                    const fechainicial = new Date(info.event.start);
-                    fechainicial.setHours(fechainicial.getHours() + 5);
-
-                    const formatter1 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
-                    const formattedTime1 = formatter1.format(fechainicial);
-
-                    const formatterdia = new Intl.DateTimeFormat('en-US', { day: '2-digit' });
-                    const formatteddiaini = formatterdia.format(fechainicial);
-
-                    const formattermes = new Intl.DateTimeFormat('es-US', { month: 'long' });
-                    const formattedmesini = formattermes.format(fechainicial)[0].toUpperCase() + formattermes.format(fechainicial).substring(1);
-
-                    const fechafinal = new Date(info.event.end);
-                    fechafinal.setHours(fechafinal.getHours() + 5);
-                    const formatter2 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
-                    const formattedTime2 = formatter2.format(fechafinal);
-
-                    if (info.event.id) {
-                        console.log(info.event.extendedProps);
-                        jQuery('.event-id').html(info.event.id);
-                        jQuery('.event-icon').html("<i class='fa fa-" + info.event.extendedProps.icon + "'></i>");
-                        jQuery('.event-title').html(info.event.title);
-                        jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />");
-                        jQuery('.event-description').html(info.event.extendedProps.description);
-                        var btn = document.getElementById("btnEliminar");
-                        btn.style.display = info.event.extendedProps.btnEliminar;
-                        jQuery('#modal-view-event').modal();
-                    }
-                },
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
+                eventContent: function (arg) {
+                    //console.log(arg);
+                    let backgroundColor = arg.event.extendedProps.bgcolor || '#fff'; // Color por defecto si no se define
+                    let italicEl = document.createElement('span')
+                    
+                    italicEl.innerHTML = arg.event.title;
+                    italicEl.className = "btn btn-lg";
+                    italicEl.style = `background: ${backgroundColor};`;
+                    console.log(backgroundColor);
+                    
+                    let arrayOfDomNodes = [italicEl]
+                    return { domNodes: arrayOfDomNodes }
+                },
                 editable: true,
                 weekNumbers: true,
+                fixedWeekCount: false,
+                showNonCurrentDates: false,
+                eventOverlap: false,
                 firstDay: 1,
                 allDayText: 'Todo\r\nel día',
                 slotMinTime: '06:00',
@@ -636,7 +588,7 @@
                         dayMaxEventRows: 6 // adjust to 6 only for timeGridWeek/timeGridDay
                     },
                 },
-                eventTimeFormat: { // like '14:30'
+                eventTimeFormat: { // De este modo '14:30'
                     hour: '2-digit',
                     minute: '2-digit',
                     hour12: false
@@ -649,34 +601,105 @@
                 droppable: true, // this allows things to be dropped onto the calendar
                 eventDrop: function (info) {
                     // Evento que se acaba de mover
-                    const allEvents = calendar.getEvents();
+                    //console.log('Entra por el eventDrop');
                     const weekNumber = moment(addDays(info.event.start, -1)).week();
-                    const { start, end } = getStartAndEndDateOfWeek(weekNumber, 2025);
+                    const yearNumber = info.event.start.getFullYear();
+                    const { start, end } = obtenerFechaInicioFinSemana(weekNumber, yearNumber);
 
-                    const eventsInWeek = calendar.getEvents().filter(event => {
-                        const eventStart = event.start;
-                        return eventStart >= start && eventStart <= end;
-                    });
-                    console.log(`Eventos en la semana ${weekNumber}:`, eventsInWeek);
+                    const fechaActual = new Date();
+                    const year = fechaActual.getFullYear();
+                    const month = fechaActual.getMonth();
+                    const { primerDia, ultimoDia } = getPrimerYUltimoDia(year, month);
 
-                    console.log('Se movió un evento. Todos los eventos:', allEvents);
+                    mostrarSemanasDelMes(primerDia, addDays(ultimoDia, 1), calendar);
                 },
                 eventReceive: function (info) {
                     // Aquí el evento ya ha sido agregado al calendario
+                    //console.log('Entra por el eventReceive');
+                    //let backgroundColor = info.event.extendedProps.bgcolor || '#fff'; // Color por defecto si no se define
+                    //    let zadr = `
+                    //        <div class="fc-event" style="background: ${backgroundColor}; color: #fff;">
+                    //          ${info.event.title}
+                    //        </div>
+                    //      `;
+                    //    return { html: zadr };
 
-                    //const weekNumber = moment(addDays(info.event.start, -1)).week();
-                    //const { start, end } = getStartAndEndDateOfWeek(weekNumber, 2025);
+                    const weekNumber = moment(addDays(info.event.start, -1)).week();
+                    const yearNumber = info.event.start.getFullYear();
+                    const { start, end } = obtenerFechaInicioFinSemana(weekNumber, yearNumber);
 
-                    const divPorcentaje = document.getElementById("porcentaje1");
-                    const totalSemana = sumarValoresDeSemana(calendar);
-                    divPorcentaje.innerHTML = totalSemana;
+                    const fechaActual = new Date();
+                    const year = fechaActual.getFullYear();
+                    const month = fechaActual.getMonth();
+                    const { primerDia, ultimoDia } = getPrimerYUltimoDia(year, month);
 
-                    //console.log('Se arrastró hacia el calendario. Todos los eventos:', allEvents);
+                    mostrarSemanasDelMes(primerDia, addDays(ultimoDia, 1), calendar);
+
+                },
+                eventClick: function (info) {
+                    console.log('Entra');
+                    var eventObj = info.event;
+                    if (eventObj) {
+                        eventObj.remove(); // Elimina el evento
+                    }
+
+                    const fechaActual = new Date();
+                    const year = fechaActual.getFullYear();
+                    const month = fechaActual.getMonth();
+                    const { primerDia, ultimoDia } = getPrimerYUltimoDia(year, month);
+                    mostrarSemanasDelMes(primerDia, addDays(ultimoDia, 1), calendar);
+
+                },
+                datesSet: function (info) {
+                    mostrarSemanasDelMes(info.start, info.end, calendar);
                 }
             });
 
             calendar.render();
         });
+
+        function getPrimerYUltimoDia(year, month) {
+            // Primer día del mes
+            const primerDia = new Date(year, month, 1);
+
+            // Último día del mes
+            const ultimoDia = new Date(year, month + 1, 0);
+
+            return { primerDia, ultimoDia };
+        }
+
+        function mostrarSemanasDelMes(startDate, endDate, calendar) {
+            //console.log(endDate);
+            const semanasDiv = document.getElementById('listaSemanas');
+            semanasDiv.innerHTML = ''; // limpiar lista anterior
+
+            let current = new Date(startDate);
+            let weekNumber = moment(addDays(startDate, -1)).week();
+            const yearNumber = startDate.getFullYear();
+            //let semanaIndex = 1;
+            let semanaIndex = weekNumber;
+
+            while (current < endDate) {
+                const startOfWeek = new Date(current);
+                const endOfWeek = new Date(current);
+                endOfWeek.setDate(current.getDate() + 6);
+
+                // Mostrar solo semanas que tengan algún día en el mes visible
+                if (startOfWeek.getMonth() === endDate.getMonth() - 1 || endOfWeek.getMonth() === endDate.getMonth() - 1) {
+                    const totalSemana = sumarValoresDeSemana(semanaIndex, calendar, yearNumber);
+                    //console.log(totalSemana)
+                    //semanasDiv.innerHTML += `<div>Semana ${semanaIndex}: ${formatearFecha(startOfWeek)} - ${formatearFecha(endOfWeek)}</div>`;
+                    semanasDiv.innerHTML += `<div>Semana ${semanaIndex}: ${totalSemana}%</div>`;
+                    semanaIndex++;
+                }
+
+                current.setDate(current.getDate() + 7); // siguiente semana
+            }
+        }
+
+        function formatearFecha(fecha) {
+            return fecha.toISOString().split('T')[0];
+        }
     </script>
 
 </body>
