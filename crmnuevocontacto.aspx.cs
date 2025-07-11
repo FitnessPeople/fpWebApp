@@ -144,7 +144,7 @@ namespace fpWebApp
                                     
                                     txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
                                     DateTime fecha = Convert.ToDateTime(row["FechaProximoCon"]);
-                                    
+
                                     if (fecha.Date == DateTime.Today)
                                     {
                                         ltProximoContacto.Text = "Hoy a las " + fecha.ToString("hh:mm tt", cultura);
@@ -157,10 +157,15 @@ namespace fpWebApp
                                         ltProximoContacto.Text = "Mañana " + fecha.ToString("d 'de' MMMM", cultura)
                                             + " a las " + hora + " " + ampm;
                                     }
-                                    else
+                                    else if (fecha.Date > DateTime.Today.AddDays(1))
                                     {
                                         ltProximoContacto.Text = "El próximo " + fecha.ToString("dddd dd MMM yyyy hh:mm tt", cultura);
                                     }
+                                    else
+                                    {                                        
+                                        ltProximoContacto.Text =   fecha.ToString("dddd dd MMM yyyy hh:mm tt", cultura);
+                                    }
+
 
                                     int ValorPropuesta = Convert.ToInt32(dt.Rows[0]["ValorPropuesta"]);
                                     //int ValorMes = Convert.ToInt32(dt.Rows[0]["ValorBase"]);
@@ -392,14 +397,10 @@ namespace fpWebApp
                     Text = row["NombreEstadoCRM"].ToString(),
                     Value = row["idEstadoCRM"].ToString()
                 };
-
-                item.Attributes["data-icon"] = row["IconoMinEstadoCRM"].ToString();  // ej: "fa-solid fa-handshake"
-                item.Attributes["data-color"] = row["ColorHexaCRM"].ToString();      // ej: "#1ab394"
-                item.Attributes["style"] = $"color: {row["ColorHexaCRM"]};";
-
                 ddlStatusLead.Items.Add(item);
             }
         }
+
         private void ListaTiposAfiliadosCRM()
         {
             clasesglobales cg = new clasesglobales();
@@ -499,35 +500,35 @@ namespace fpWebApp
 
 
                         // Validar campos requeridos
-                        if (string.IsNullOrWhiteSpace(nombre) ||
-                            string.IsNullOrWhiteSpace(apellido) ||
-                            string.IsNullOrWhiteSpace(telefono) ||
-                            string.IsNullOrWhiteSpace(correo) ||
-                            string.IsNullOrWhiteSpace(empresa) ||
-                            string.IsNullOrWhiteSpace(statusLead) ||
-                            string.IsNullOrWhiteSpace(fechaPrim) ||
-                            string.IsNullOrWhiteSpace(fechaProx) ||
-                            string.IsNullOrWhiteSpace(valorPropuestaTexto) ||
-                            string.IsNullOrWhiteSpace(statusLead) ||
-                            string.IsNullOrWhiteSpace(objetivo) ||
-                            string.IsNullOrWhiteSpace(tipoPago) ||
-                            string.IsNullOrWhiteSpace(tipoAfiliado) ||
-                            string.IsNullOrWhiteSpace(canalMarketing) ||
-                            string.IsNullOrWhiteSpace(observaciones) ||
-                            string.IsNullOrWhiteSpace(plan)
-                            )
-                            {
-                                mensajeValidacion = "Todos los campos son obligatorios.";
+                        //if (string.IsNullOrWhiteSpace(nombre) ||
+                        //    string.IsNullOrWhiteSpace(apellido) ||
+                        //    string.IsNullOrWhiteSpace(telefono) ||
+                        //    string.IsNullOrWhiteSpace(correo) ||
+                        //    string.IsNullOrWhiteSpace(empresa) ||
+                        //    string.IsNullOrWhiteSpace(statusLead) ||
+                        //    string.IsNullOrWhiteSpace(fechaPrim) ||
+                        //    string.IsNullOrWhiteSpace(fechaProx) ||
+                        //    string.IsNullOrWhiteSpace(valorPropuestaTexto) ||
+                        //    string.IsNullOrWhiteSpace(statusLead) ||
+                        //    string.IsNullOrWhiteSpace(objetivo) ||
+                        //    string.IsNullOrWhiteSpace(tipoPago) ||
+                        //    string.IsNullOrWhiteSpace(tipoAfiliado) ||
+                        //    string.IsNullOrWhiteSpace(canalMarketing) ||
+                        //    string.IsNullOrWhiteSpace(observaciones) ||
+                        //    string.IsNullOrWhiteSpace(plan)
+                        //    )
+                        //    {
+                        //        mensajeValidacion = "Todos los campos son obligatorios.";
 
-                            ltMensaje.Text = "<div class=\"ibox-content\">" +
-                             "<div class=\"alert alert-danger alert-dismissable\">" +
-                             "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                             "Todos los campos son obligatorios." +
-                             "</div></div>";
-                            return;
-                            }
-                        else
-                        {
+                        //    ltMensaje.Text = "<div class=\"ibox-content\">" +
+                        //     "<div class=\"alert alert-danger alert-dismissable\">" +
+                        //     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        //     "Todos los campos son obligatorios." +
+                        //     "</div></div>";
+                        //    return;
+                        //    }
+                       // else
+                       // {
                             respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.ToString().Trim().ToUpper(), 
                                     txbApellidoContacto.Value.ToString().Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), 
                                     txbCorreoContacto.Value.ToString().Trim().ToLower(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), 
@@ -570,7 +571,7 @@ namespace fpWebApp
                                 ";
                                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
                             }
-                        }
+                       // }
                     }
                     catch (Exception ex)
                     {

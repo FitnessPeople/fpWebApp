@@ -298,8 +298,9 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div></div>
-                                                        <div class="row">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
                                                         <div class="col-lg-12">
                                                             <div class="widget lazur-bg no-padding">
                                                                 <div class="p-m">
@@ -312,8 +313,9 @@
                                                                     <div class="flot-chart-content" id="flot-chart2"></div>
                                                                 </div>
                                                             </div>
-                                                        </div></div>
-                                                            <div class="row">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
                                                         <div class="col-lg-12">
                                                             <div class="widget yellw-bg no-padding">
                                                                 <div class="p-m">
@@ -329,7 +331,7 @@
                                                             </div>
                                                         </div>
 
-                      
+
                                                         <div class="col-lg-12">
                                                             <div class="widget navy-bg no-padding">
                                                                 <div class="p-m">
@@ -425,8 +427,8 @@
         var estadosLead = <%= EstadosCRM_Json %>;
     </script>
 
-            <!-- Mainly scripts -->
-<%--    <script src="js/jquery-3.1.1.min.js"></script>
+    <!-- Mainly scripts -->
+    <%--    <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>--%>
