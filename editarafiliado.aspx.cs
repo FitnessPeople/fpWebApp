@@ -319,7 +319,12 @@ namespace fpWebApp
 
         protected void btnActualizar_Click(object sender, EventArgs e)
         {
+            string mensaje = string.Empty;
             string strFilename = "";
+
+
+
+
             // Actualiza la tabla Afiliados
             if (ViewState["FotoAfiliado"] != null)
             {
@@ -356,24 +361,35 @@ namespace fpWebApp
             }
 
             string strInitData = TraerData();
+            int tipoDocumento = 0;
+            int EmpresaAfil = 0;
+
+
             try
             {
-                string strQuery = "UPDATE afiliados SET " +
-                "idTipoDocumento = " + ddlTipoDocumento.SelectedItem.Value.ToString() + ", NombreAfiliado = '" + txbNombre.Text.ToString().Replace("'", "").Replace("<", "").Replace(">", "").Trim() + "', " +
-                "ApellidoAfiliado = '" + txbApellido.Text.ToString() + "', CelularAfiliado = '" + txbTelefono.Text.ToString() + "', " +
-                "EmailAfiliado = '" + txbEmail.Text.ToString() + "', DireccionAfiliado = '" + txbDireccion.Text.ToString() + "', " +
-                "idCiudadAfiliado = " + ddlCiudadAfiliado.SelectedItem.Value.ToString() + ", FechaNacAfiliado = '" + txbFechaNac.Text.ToString() + "', " +
-                "FotoAfiliado = '" + strFilename + "', idGenero = " + ddlGenero.SelectedItem.Value.ToString() + ", " +
-                "idEstadoCivilAfiliado = " + ddlEstadoCivil.SelectedItem.Value.ToString() + ", idProfesion = " + ddlProfesiones.SelectedItem.Value.ToString() + ", " +
-                "idEmpresaAfil = " + ddlEmpresaConvenio.SelectedItem.Value.ToString() + ", " +
-                "idEps = " + ddlEps.SelectedItem.Value.ToString() + ", idSede = " + ddlSedes.SelectedItem.Value.ToString() + ", " +
-                "ResponsableAfiliado = '" + txbResponsable.Text.ToString() + "', Parentesco = '" + ddlParentesco.SelectedItem.Value.ToString() + "', " +
-                "ContactoAfiliado = '" + txbTelefonoContacto.Text.ToString() + "' " +
-                "WHERE idAfiliado = " + Request.QueryString["editid"].ToString();
+                //string strQuery = "UPDATE afiliados SET " +
+                //"idTipoDocumento = " + ddlTipoDocumento.SelectedItem.Value.ToString() + ", NombreAfiliado = '" + txbNombre.Text.ToString().Replace("'", "").Replace("<", "").Replace(">", "").Trim() + "', " +
+                //"ApellidoAfiliado = '" + txbApellido.Text.ToString() + "', CelularAfiliado = '" + txbTelefono.Text.ToString() + "', " +
+                //"EmailAfiliado = '" + txbEmail.Text.ToString() + "', DireccionAfiliado = '" + txbDireccion.Text.ToString() + "', " +
+                //"idCiudadAfiliado = " + ddlCiudadAfiliado.SelectedItem.Value.ToString() + ", FechaNacAfiliado = '" + txbFechaNac.Text.ToString() + "', " +
+                //"FotoAfiliado = '" + strFilename + "', idGenero = " + ddlGenero.SelectedItem.Value.ToString() + ", " +
+                //"idEstadoCivilAfiliado = " + ddlEstadoCivil.SelectedItem.Value.ToString() + ", idProfesion = " + ddlProfesiones.SelectedItem.Value.ToString() + ", " +
+                //"idEmpresaAfil = " + ddlEmpresaConvenio.SelectedItem.Value.ToString() + ", " +
+                //"idEps = " + ddlEps.SelectedItem.Value.ToString() + ", idSede = " + ddlSedes.SelectedItem.Value.ToString() + ", " +
+                //"ResponsableAfiliado = '" + txbResponsable.Text.ToString() + "', Parentesco = '" + ddlParentesco.SelectedItem.Value.ToString() + "', " +
+                //"ContactoAfiliado = '" + txbTelefonoContacto.Text.ToString() + "' " +
+                //"WHERE idAfiliado = " + Request.QueryString["editid"].ToString();
 
                 clasesglobales cg = new clasesglobales();
 
-                string mensaje = cg.TraerDatosStr(strQuery);
+                mensaje = cg.ActualizarAfiliado(Convert.ToInt32(Request.QueryString["editid"]), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value),
+                    txbNombre.Text.Trim().Replace("'", "").Replace("<", "").Replace(">", ""), txbApellido.Text.Trim(),
+                    txbTelefono.Text.Trim(), txbEmail.Text.Trim(), txbDireccion.Text.Trim(), Convert.ToInt32(ddlCiudadAfiliado.SelectedItem.Value),
+                    txbFechaNac.Text.Trim(), strFilename, Convert.ToInt32(ddlGenero.SelectedItem.Value),
+                    Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value), Convert.ToInt32(ddlProfesiones.SelectedItem.Value),
+                    Convert.ToInt32(ddlEmpresaConvenio.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEps.SelectedItem.Value), Convert.ToInt32(ddlSedes.SelectedItem.Value), 
+                    txbResponsable.Text.Trim(), ddlParentesco.SelectedItem.Value.Trim(),txbTelefonoContacto.Text.Trim()
+                );
 
                 if (mensaje == "OK")
                 {
@@ -389,15 +405,61 @@ namespace fpWebApp
                         //Actualiza usuario en Armatura
                         PostArmatura(txbDocumento.Text.ToString());
                     }
+
+                    string script = @"
+                                    Swal.fire({
+                                        title: '¡Afiliado actualizado correctamente!',
+                                        text: '',
+                                        icon: 'success',
+                                        timer: 3000, // 3 segundos
+                                        showConfirmButton: false,
+                                        timerProgressBar: true
+                                    }).then(() => {
+                                        window.location.href = 'afiliados';
+                                    });
+                                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                }
+                else
+                {
+                    string script = @"
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: 'Por favor contáctese con Sistemas Fitness People. Detalle: " + mensaje.Replace("'", "\\'") + @"',
+                                        icon: 'error'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            
+                                        }
+                                    });
+                                ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
                 }
             }
+
             catch (OdbcException ex)
             {
-                string mensaje = ex.Message;
+                mensaje = ex.Message;
+                string script = @"
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Por favor contáctese con Sistemas Fitness People. Detalle: " + mensaje.Replace("'", "\\'") + @"',
+                                    icon: 'error'
+                                }).then(() => {
+                                    window.location.href = 'editarafiliado';
+                                });
+                            ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);               
             }
-
-            Response.Redirect("afiliados");
         }
+
+
+
+
+
+
+
+
 
         private static string ConsultarPersona(string url)
         {

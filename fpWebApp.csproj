@@ -504,6 +504,7 @@
     <Content Include="img\empleados\nofoto.png" />
     <Content Include="img\especialistas\nofoto.png" />
     <Content Include="img\facial-recognition.png" />
+    <Content Include="img\fp-logo-lime-f-min.svg" />
     <Content Include="img\full_height.jpg" />
     <Content Include="img\gallery\1.jpg" />
     <Content Include="img\gallery\10.jpg" />

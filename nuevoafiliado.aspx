@@ -38,6 +38,8 @@
             element2.classList.remove("collapse");
         }
     </script>
+
+
 </head>
 
 <body onload="changeClass()">
@@ -133,6 +135,11 @@
 
                             <div class="row">
                                 <form role="form" id="form" enctype="multipart/form-data" runat="server">
+                                    <asp:ScriptManager ID="ScriptManager2" runat="server">
+                                        <Scripts>
+                                            <asp:ScriptReference Path="https://cdn.jsdelivr.net/npm/sweetalert2@11"></asp:ScriptReference>
+                                        </Scripts>
+                                    </asp:ScriptManager>
                                     <div class="col-sm-6 b-r">
                                         <div class="row">
                                             <div class="col-sm-6">
@@ -217,7 +224,7 @@
                                                     <asp:DropDownList ID="ddlEmpresaConvenio" runat="server"
                                                         AppendDataBoundItems="true" DataTextField="RazonSocial"
                                                         DataValueField="idEmpresaAfiliada" CssClass="form-control input-sm">
-                                                        <asp:ListItem Text="Ninguna" Value="null"></asp:ListItem>
+                                                        <asp:ListItem Text="Ninguna" Value="0"></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
@@ -332,14 +339,17 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div>
-                                            <button id="btnCancelar" class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='afiliados'" runat="server"><strong>Cancelar</strong></button>
-                                            <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
-                                            <asp:Button ID="btnVolver" runat="server" Text="Volver" class="btn btn-sm btn-primary pull-right m-t-n-xs" Visible="true" />
-                                            <asp:Button ID="btnAgregarYRedirigir" runat="server" Text="Guardar y vender plan" CssClass="btn btn-sm btn-success m-t-n-xs m-r-md pull-right" Visible="true"
-                                                 OnClick="btnAgregarYRedirigir_Click"/>
-                                        </div>
+                                        <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                                            <ContentTemplate>
+                                                <div>
+                                                    <button id="btnCancelar" class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='afiliados'" runat="server"><strong>Cancelar</strong></button>
+                                                    <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
+                                                    <asp:Button ID="btnVolver" runat="server" Text="Volver" class="btn btn-sm btn-primary pull-right m-t-n-xs" Visible="true" />
+                                                    <asp:Button ID="btnAgregarYRedirigir" runat="server" Text="Guardar y vender plan" CssClass="btn btn-sm btn-success m-t-n-xs m-r-md pull-right" Visible="true"
+                                                        OnClick="btnAgregarYRedirigir_Click" />
+                                                </div>
+                                            </ContentTemplate>
+                                        </asp:UpdatePanel>
                                     </div>
                                 </form>
                             </div>

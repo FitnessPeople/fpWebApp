@@ -30,6 +30,9 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
+        <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         function changeClass() {
             var element1 = document.querySelector("#afiliados1");
@@ -215,7 +218,7 @@
                                                     <asp:DropDownList ID="ddlEmpresaConvenio" runat="server"
                                                         AppendDataBoundItems="true" DataTextField="RazonSocial"
                                                         DataValueField="idEmpresaAfiliada" CssClass="form-control input-sm">
-                                                        <asp:ListItem Text="Ninguna" Value="null"></asp:ListItem>
+                                                        <asp:ListItem Text="Ninguna" Value="0"></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
