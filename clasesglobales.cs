@@ -7678,6 +7678,111 @@ namespace fpWebApp
             return respuesta;
         }
 
+        public string ActualizarAfiliado(int idAfiliado, int idTipoDocumento, string nombreAfiliado, string apellidoAfiliado,
+string celularAfiliado, string emailAfiliado, string dirAfiliado, int idCiudadAfiliado, string fechaNacAfiliado, string fotoAfiliado,
+int idGenero, int idEstadoCivilAfiliado, int idProfesion, int idEmpresaAfil, int idEps, int idSede, string responsableAfil,
+string parentesco, string contactoAfiliado)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_AFILIADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Parámetros de entrada (coinciden con el procedimiento en MySQL)
+                        cmd.Parameters.AddWithValue("@p_id_afiliado", idAfiliado);
+                        cmd.Parameters.AddWithValue("@p_id_tipo_documento", idTipoDocumento);
+                        cmd.Parameters.AddWithValue("@p_nombre_afiliado", nombreAfiliado);
+                        cmd.Parameters.AddWithValue("@p_apellido_afiliado", apellidoAfiliado);
+                        cmd.Parameters.AddWithValue("@p_celular_afiliado", celularAfiliado);
+                        cmd.Parameters.AddWithValue("@p_email_afiliado", emailAfiliado);
+                        cmd.Parameters.AddWithValue("@p_dir_afiliado", dirAfiliado);
+                        cmd.Parameters.AddWithValue("@p_id_ciudad_afiliado", idCiudadAfiliado);
+                        cmd.Parameters.AddWithValue("@p_fecha_nac_afiliado", fechaNacAfiliado);
+                        cmd.Parameters.AddWithValue("@p_foto_afiliado", fotoAfiliado);
+                        cmd.Parameters.AddWithValue("@p_id_genero", idGenero);
+                        cmd.Parameters.AddWithValue("@p_id_etado_civil_afiliado", idEstadoCivilAfiliado);
+                        cmd.Parameters.AddWithValue("@p_id_profesion", idProfesion);
+                        cmd.Parameters.AddWithValue("@p_id_empresa_afil", idEmpresaAfil);
+                        cmd.Parameters.AddWithValue("@p_id_eps", idEps);
+                        cmd.Parameters.AddWithValue("@p_id_sede", idSede);
+                        cmd.Parameters.AddWithValue("@p_responsable_afil", responsableAfil);
+                        cmd.Parameters.AddWithValue("@p_parentesco", parentesco);
+                        cmd.Parameters.AddWithValue("@p_contacto_afiliado", contactoAfiliado);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string InsertarAfiliado(string documentoAfiliado, int idTipoDocumento, string nombreAfiliado, string apellidoAfiliado, string celularAfiliado,
+        string emailAfiliado, string claveAfiliado, string dirAfiliado, int idCiudadAfiliado, string fechaNacAfiliado, string fotoAfiliado, int idGenero,
+        int idEstadoCivilAfiliado, int idProfesion, int idEmpresaAfil, int idEps, int idSede, string responsableAfil, string parentesco, string contactoAfiliado,
+        int idUsuario)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_AFILIADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_documento_afiliado", documentoAfiliado);
+                        cmd.Parameters.AddWithValue("@p_id_tipo_documento", idTipoDocumento);
+                        cmd.Parameters.AddWithValue("@p_nombre_afiliado", nombreAfiliado);
+                        cmd.Parameters.AddWithValue("@p_apellido_afiliado", apellidoAfiliado);
+                        cmd.Parameters.AddWithValue("@p_celular_afiliado", celularAfiliado);
+                        cmd.Parameters.AddWithValue("@p_email_afiliado", emailAfiliado);
+                        cmd.Parameters.AddWithValue("@p_clave_afiliado", claveAfiliado);
+                        cmd.Parameters.AddWithValue("@p_dir_afiliado", dirAfiliado);
+                        cmd.Parameters.AddWithValue("@p_id_ciudad_afiliado", idCiudadAfiliado);
+                        cmd.Parameters.AddWithValue("@p_fecha_nac_afiliado", fechaNacAfiliado);
+                        cmd.Parameters.AddWithValue("@p_foto_afiliado", fotoAfiliado);
+                        cmd.Parameters.AddWithValue("@p_id_genero", idGenero);
+                        cmd.Parameters.AddWithValue("@p_id_etado_civil", idEstadoCivilAfiliado);
+                        cmd.Parameters.AddWithValue("@p_id_profesion", idProfesion);
+                        cmd.Parameters.AddWithValue("@p_id_empresa_afil", idEmpresaAfil);
+                        cmd.Parameters.AddWithValue("@p_id_eps", idEps);
+                        cmd.Parameters.AddWithValue("@p_id_sede", idSede);
+                        cmd.Parameters.AddWithValue("@p_responsable_afil", responsableAfil);
+                        cmd.Parameters.AddWithValue("@p_parentesco", parentesco);
+                        cmd.Parameters.AddWithValue("@p_contacto_afiliado", contactoAfiliado);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
         #endregion
 
         #region Medios de pago

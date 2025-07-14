@@ -33,15 +33,6 @@ namespace fpWebApp
         protected global::fpWebApp.controles.header header1;
 
         /// <summary>
-        /// Control indicadoresusucrm.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::fpWebApp.controles.indicadoresusucrm indicadoresusucrm;
-
-        /// <summary>
         /// Control divMensaje.
         /// </summary>
         /// <remarks>
@@ -96,22 +87,22 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltMensaje;
 
         /// <summary>
-        /// Control txbAfiliado.
+        /// Control upAfiliado.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbAfiliado;
+        protected global::System.Web.UI.UpdatePanel upAfiliado;
 
         /// <summary>
-        /// Control btnAfiliado.
+        /// Control ddlAfiliadoOrigen.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAfiliado;
+        protected global::System.Web.UI.WebControls.DropDownList ddlAfiliadoOrigen;
 
         /// <summary>
         /// Control hfContador.
@@ -132,6 +123,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlTipoDocumento;
 
         /// <summary>
+        /// Control rfvTipoDoc.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTipoDoc;
+
+        /// <summary>
         /// Control txbDocumento.
         /// </summary>
         /// <remarks>
@@ -139,6 +139,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbDocumento;
+
+        /// <summary>
+        /// Control rfvNumDoc.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvNumDoc;
 
         /// <summary>
         /// Control txbNombreContacto.
@@ -150,6 +159,15 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlInputText txbNombreContacto;
 
         /// <summary>
+        /// Control rfvNombre.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvNombre;
+
+        /// <summary>
         /// Control txbApellidoContacto.
         /// </summary>
         /// <remarks>
@@ -159,6 +177,15 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlInputText txbApellidoContacto;
 
         /// <summary>
+        /// Control rfvApellido.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvApellido;
+
+        /// <summary>
         /// Control txbTelefonoContacto.
         /// </summary>
         /// <remarks>
@@ -166,6 +193,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText txbTelefonoContacto;
+
+        /// <summary>
+        /// Control rfvTelefono.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTelefono;
 
         /// <summary>
         /// Control txbCorreoContacto.
@@ -186,6 +222,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltError;
 
         /// <summary>
+        /// Control RequiredFieldValidator1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
+
+        /// <summary>
         /// Control ddlEmpresa.
         /// </summary>
         /// <remarks>
@@ -193,6 +238,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlEmpresa;
+
+        /// <summary>
+        /// Control rfvEmpresa.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEmpresa;
 
         /// <summary>
         /// Control ddlStatusLead.
@@ -204,6 +258,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlStatusLead;
 
         /// <summary>
+        /// Control rfvStatusLead.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvStatusLead;
+
+        /// <summary>
         /// Control ddlCanalesMarketing.
         /// </summary>
         /// <remarks>
@@ -213,6 +276,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlCanalesMarketing;
 
         /// <summary>
+        /// Control rfvCanalesMarketing.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCanalesMarketing;
+
+        /// <summary>
         /// Control ddlTiposAfiliado.
         /// </summary>
         /// <remarks>
@@ -220,6 +292,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlTiposAfiliado;
+
+        /// <summary>
+        /// Control rfvTipoAfiliado.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTipoAfiliado;
 
         /// <summary>
         /// Control txbFechaPrim.
@@ -258,6 +339,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlTipoPago;
 
         /// <summary>
+        /// Control rfvTipoPago.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTipoPago;
+
+        /// <summary>
         /// Control ddlObjetivos.
         /// </summary>
         /// <remarks>
@@ -265,6 +355,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlObjetivos;
+
+        /// <summary>
+        /// Control rfvObjetios.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvObjetios;
 
         /// <summary>
         /// Control UpdatePanel1.
@@ -285,6 +384,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlPlanes;
 
         /// <summary>
+        /// Control RequiredFieldValidator2.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
+
+        /// <summary>
         /// Control txbValorMes.
         /// </summary>
         /// <remarks>
@@ -303,6 +411,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbValorPropuesta;
 
         /// <summary>
+        /// Control rfvValorPropuesta.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvValorPropuesta;
+
+        /// <summary>
         /// Control ArchivoPropuesta.
         /// </summary>
         /// <remarks>
@@ -319,6 +436,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTextArea txaObservaciones;
+
+        /// <summary>
+        /// Control rfvObservaciones.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvObservaciones;
 
         /// <summary>
         /// Control btnAgregar.
@@ -393,13 +519,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Button btnActualizarYRedirigir;
 
         /// <summary>
-        /// Control ltPrimerContacto.
+        /// Control ltProximoContacto.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltPrimerContacto;
+        protected global::System.Web.UI.WebControls.Literal ltProximoContacto;
 
         /// <summary>
         /// Control ltTelefono.
@@ -411,15 +537,6 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltTelefono;
 
         /// <summary>
-        /// Control ltProximoContacto.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltProximoContacto;
-
-        /// <summary>
         /// Control ltPlan.
         /// </summary>
         /// <remarks>
@@ -427,6 +544,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltPlan;
+
+        /// <summary>
+        /// Control ltPrimerContacto.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltPrimerContacto;
 
         /// <summary>
         /// Control litHistorialHTML.

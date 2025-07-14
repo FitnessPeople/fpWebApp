@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using DocumentFormat.OpenXml.Presentation;
 
 namespace fpWebApp
 {
@@ -19,7 +23,7 @@ namespace fpWebApp
 
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Nuevo CRM");
+                    ValidarPermisos("Sedes");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -39,7 +43,7 @@ namespace fpWebApp
 
                         btnAgregar.Text = "Agregar";
 
-                        txbAfiliado.Enabled = true;
+                        ddlAfiliadoOrigen.Enabled = true;
                         txbNombreContacto.Disabled = false;
                         txbApellidoContacto.Disabled = false;
                         txbDocumento.Enabled = true;
@@ -77,6 +81,7 @@ namespace fpWebApp
                     ListaObjetivosfiliadoCRM();
                     CargarTipoDocumento();
                     ListaMediosDePago();
+                    CargarAfiliadosOrigen();
 
 
                     if (Request.QueryString.Count > 0)
@@ -85,7 +90,7 @@ namespace fpWebApp
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
-                            txbAfiliado.Enabled = false;
+                            ddlAfiliadoOrigen.Enabled = false;
                             txbNombreContacto.Disabled = false;
                             txbApellidoContacto.Disabled = false;
                             txbDocumento.Enabled = false;
@@ -152,10 +157,15 @@ namespace fpWebApp
                                         ltProximoContacto.Text = "Mañana " + fecha.ToString("d 'de' MMMM", cultura)
                                             + " a las " + hora + " " + ampm;
                                     }
-                                    else
+                                    else if (fecha.Date > DateTime.Today.AddDays(1))
                                     {
                                         ltProximoContacto.Text = "El próximo " + fecha.ToString("dddd dd MMM yyyy hh:mm tt", cultura);
                                     }
+                                    else
+                                    {
+                                        ltProximoContacto.Text = fecha.ToString("dddd dd MMM yyyy hh:mm tt", cultura);
+                                    }
+
 
                                     int ValorPropuesta = Convert.ToInt32(dt.Rows[0]["ValorPropuesta"]);
                                     //int ValorMes = Convert.ToInt32(dt.Rows[0]["ValorBase"]);
@@ -352,25 +362,45 @@ namespace fpWebApp
             //rpEmpresasCRM.DataBind();
             dt.Dispose();
         }
+        //private void ListaEstadosCRM()
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarEstadossCRM();
+        //    foreach (DataRow row in dt.Rows)
+        //    {
+        //        ListItem item = new ListItem
+        //        {
+        //            Text = $"<i class='{row["IconoMinEstadoCRM"]}'></i>{row["NombreEstadoCRM"]}",
+        //            Value = row["idEstadoCRM"].ToString()
+        //        };
+
+        //        item.Attributes["style"] = $"color: {row["ColorHexaCRM"]};";
+        //        item.Attributes["data-icon"] = $"{row["IconoMinEstadoCRM"]}";
+        //        item.Attributes["data-color"] = row["ColorHexaCRM"].ToString();
+
+        //        ddlStatusLead.Items.Add(item);
+        //    }
+        //}
+
         private void ListaEstadosCRM()
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarEstadossCRM();
+            ddlStatusLead.Items.Clear();
+
+            ddlStatusLead.Items.Add(new ListItem("Seleccione", ""));
+
             foreach (DataRow row in dt.Rows)
             {
                 ListItem item = new ListItem
                 {
-                    Text = $"<i class='{row["IconoMinEstadoCRM"]}'></i>{row["NombreEstadoCRM"]}",
+                    Text = row["NombreEstadoCRM"].ToString(),
                     Value = row["idEstadoCRM"].ToString()
                 };
-
-                item.Attributes["style"] = $"color: {row["ColorHexaCRM"]};";
-                item.Attributes["data-icon"] = $"{row["IconoMinEstadoCRM"]}";
-                item.Attributes["data-color"] = row["ColorHexaCRM"].ToString();
-
                 ddlStatusLead.Items.Add(item);
             }
         }
+
         private void ListaTiposAfiliadosCRM()
         {
             clasesglobales cg = new clasesglobales();
@@ -416,13 +446,35 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        private void CargarAfiliadosOrigen()
+        {
+            string strQuery = @"SELECT a.idAfiliado, a.DocumentoAfiliado,
+                CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado, ' - ', a.DocumentoAfiliado) AS DocNombreAfiliado 
+                FROM afiliados a";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            ddlAfiliadoOrigen.DataSource = dt;
+            ddlAfiliadoOrigen.DataBind();
+
+            dt.Dispose();
+        }
+
         #endregion
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
+            Session["IdCRM"] = string.Empty;
+            string idcrm = string.Empty;
+
             if (Request.QueryString.Count > 0)
             {
+                idcrm = Request.QueryString["editid"];
+                Session["IdCRM"] = idcrm;
+                string evento = Request.QueryString["evento"];
+                string documento = Request.QueryString["documento"];
+
                 if (Request.QueryString["editid"] != null)
                 {
                     bool salida = false;
@@ -437,100 +489,56 @@ namespace fpWebApp
 
                     try
                     {
-                        // Obtener y limpiar valores
-                        string nombre = txbNombreContacto.Value?.ToString().Trim();
-                        string apellido = txbApellidoContacto.Value?.ToString().Trim();
-                        string telefono = Regex.Replace(txbTelefonoContacto.Value?.ToString().Trim(), @"\D", "");
-                        string correo = txbCorreoContacto.Value?.ToString().Trim();
-                        string fechaPrim = txbFechaPrim?.Value?.ToString().Trim();
-                        string fechaProx = txbFechaProx?.Value?.ToString().Trim();
-                        string valorPropuestaTexto = Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "");
-                        string empresa = ddlEmpresa.SelectedItem?.Value;
-                        string statusLead = ddlStatusLead.SelectedItem?.Value;
-                        string objetivo = ddlObjetivos.SelectedItem?.Value;
-                        string tipoPago = ddlTipoPago.SelectedItem?.Value;
-                        string tipoAfiliado = ddlTiposAfiliado.SelectedItem?.Value;
-                        string canalMarketing = ddlCanalesMarketing.SelectedItem?.Value;
-                        string plan = ddlPlanes.SelectedItem?.Value;
-                        string observaciones = txaObservaciones.Value.ToString().Trim();
+                        respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.ToString().Trim().ToUpper(),
+                                txbApellidoContacto.Value.ToString().Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
+                                txbCorreoContacto.Value.ToString().Trim().ToLower(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(),
+                                Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "", txaObservaciones.Value.Trim(),
+                                Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
+                                Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, out salida, out mensaje);
 
-
-                        // Validar campos requeridos
-                        if (string.IsNullOrWhiteSpace(nombre) ||
-                            string.IsNullOrWhiteSpace(apellido) ||
-                            string.IsNullOrWhiteSpace(telefono) ||
-                            string.IsNullOrWhiteSpace(correo) ||
-                            string.IsNullOrWhiteSpace(empresa) ||
-                            string.IsNullOrWhiteSpace(statusLead) ||
-                            string.IsNullOrWhiteSpace(fechaPrim) ||
-                            string.IsNullOrWhiteSpace(fechaProx) ||
-                            string.IsNullOrWhiteSpace(valorPropuestaTexto) ||
-                            string.IsNullOrWhiteSpace(statusLead) ||
-                            string.IsNullOrWhiteSpace(objetivo) ||
-                            string.IsNullOrWhiteSpace(tipoPago) ||
-                            string.IsNullOrWhiteSpace(tipoAfiliado) ||
-                            string.IsNullOrWhiteSpace(canalMarketing) ||
-                            string.IsNullOrWhiteSpace(observaciones) ||
-                            string.IsNullOrWhiteSpace(plan)
-                            )
+                        if (salida)
                         {
-                            mensajeValidacion = "Todos los campos son obligatorios.";
+                            string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
 
-                            ltMensaje.Text = "<div class=\"ibox-content\">" +
-                             "<div class=\"alert alert-danger alert-dismissable\">" +
-                             "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                             "Todos los campos son obligatorios." +
-                             "</div></div>";
-                            return;
-                        }
-                        else
-                        {
-                            respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.ToString().Trim().ToUpper(),
-                                    txbApellidoContacto.Value.ToString().Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
-                                    txbCorreoContacto.Value.ToString().Trim().ToLower(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
-                                    Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(),
-                                    Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "", txaObservaciones.Value.Trim(),
-                                    Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
-                                    Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
-                                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
-                                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, out salida, out mensaje);
-
-                            if (salida)
-                            {
-                                string script = @"
+                            string script = @"
                                 Swal.fire({
-                                    title: 'El contacto CRM se actualizó de forma exitosa',
+                                    title: 'El contacto se actualizó correctamente',
                                     text: '" + mensaje.Replace("'", "\\'") + @"',
                                     icon: 'success',
                                     timer: 3000, // 3 segundos
                                     showConfirmButton: false,
                                     timerProgressBar: true
                                 }).then(() => {
-                                    window.location.href = 'crmnuevocontacto';
+                                    window.location.href = '" + urlRedirect + @"';
                                 });
                                 ";
 
-                                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                            }
-                            else
-                            {
-                                string script = @"
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                        }
+                        else
+                        {
+                            string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
+                            string script = @"
                                 Swal.fire({
                                     title: 'Error',
                                     text: '" + mensaje.Replace("'", "\\'") + @"',
                                     icon: 'error'
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        $('#ModalContacto').modal('show');
+                                       window.location.href = '"" + urlRedirect + @""';
                                     }
                                 });
                                 ";
-                                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-                            }
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
                         }
+
                     }
                     catch (Exception ex)
                     {
+                        string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
                         string script = @"
                         Swal.fire({
                         title: 'Error',
@@ -540,7 +548,7 @@ namespace fpWebApp
                 ";
                         ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                     }
-                    //Response.Redirect("crmnuevocontacto");
+
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -653,7 +661,7 @@ namespace fpWebApp
                     {
                         string script = @"
                         Swal.fire({
-                            title: 'El contacto se creó de forma exitosa',
+                            title: '«¡Creado correctamente!»',
                             text: '" + mensaje.Replace("'", "\\'") + @"',
                             icon: 'success',
                             timer: 3000, // 3 segundos
@@ -810,49 +818,49 @@ namespace fpWebApp
             public string IconoMinEstadoCRM { get; set; }
         }
 
-        protected void btnAfiliado_Click(object sender, EventArgs e)
-        {
+        //protected void /*btnAfiliado*/_Click(object sender, EventArgs e)
+        //{
 
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = new DataTable();
-            DataTable dt1 = new DataTable();
-            bool esAfiliado = false;
-            Session["esAfiliado"] = esAfiliado.ToString();
-            int documento = 0;
-            string[] strDocumento = txbAfiliado.Text.ToString().Split('-');
-            if (int.TryParse(strDocumento[0], out documento))
-            {
-                dt = cg.ConsultarAfiliadoPorDocumento(documento);
-            }
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = new DataTable();
+        //    DataTable dt1 = new DataTable();
+        //    bool esAfiliado = false;
+        //    Session["esAfiliado"] = esAfiliado.ToString();
+        //    int documento = 0;
+        //    string[] strDocumento = ddlAfiliadoOrigen.Text.ToString().Split('-');
+        //    if (int.TryParse(strDocumento[0], out documento))
+        //    {
+        //        dt = cg.ConsultarAfiliadoPorDocumento(documento);
+        //    }
 
-            dt1 = cg.ConsultarTipoAfiliadCRM();
+        //    dt1 = cg.ConsultarTipoAfiliadCRM();
 
-            try
-            {
-                if (dt.Rows.Count > 0)
-                {
-                    esAfiliado = true;
-                    Session["esAfiliado"] = esAfiliado.ToString();
-                    txbDocumento.Text = documento.ToString();
-                    ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
-                    txbNombreContacto.Value = dt.Rows[0]["NombreAfiliado"].ToString();
-                    txbApellidoContacto.Value = dt.Rows[0]["ApellidoAfiliado"].ToString();
-                    txbTelefonoContacto.Value = dt.Rows[0]["CelularAfiliado"].ToString();
-                    txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString();
-                    ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString())));
-                    ddlTiposAfiliado.SelectedValue = "2";//Afiliado en renovación
+        //    try
+        //    {
+        //        if (dt.Rows.Count > 0)
+        //        {
+        //            esAfiliado = true;
+        //            Session["esAfiliado"] = esAfiliado.ToString();
+        //            txbDocumento.Text = documento.ToString();
+        //            ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
+        //            txbNombreContacto.Value = dt.Rows[0]["NombreAfiliado"].ToString();
+        //            txbApellidoContacto.Value = dt.Rows[0]["ApellidoAfiliado"].ToString();
+        //            txbTelefonoContacto.Value = dt.Rows[0]["CelularAfiliado"].ToString();
+        //            txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString();
+        //            ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString())));
+        //            ddlTiposAfiliado.SelectedValue = "2";//Afiliado en renovación
 
-                    ListaEmpresasCRM();
-                    ListaMediosDePago();
-                }
-                dt.Dispose();
-            }
-            catch (Exception)
-            {
+        //            ListaEmpresasCRM();
+        //            ListaMediosDePago();
+        //        }
+        //        dt.Dispose();
+        //    }
+        //    catch (Exception)
+        //    {
 
-                throw;
-            }
-        }
+        //        throw;
+        //    }
+        //}
 
         //protected void ddlTiposAfiliado_SelectedIndexChanged(object sender, EventArgs e)
         //{
@@ -935,17 +943,63 @@ namespace fpWebApp
 
         protected void btnActualizarYRedirigir_Click(object sender, EventArgs e)
         {
-            //// 1️⃣ Obtén los valores necesarios: ID, fecha, estado, observaciones.
-            //int idContacto = Convert.ToInt32(hdnIdContacto.Value); // Por ejemplo en un HiddenField
-            //DateTime nuevaFechaProx = DateTime.Now.AddDays(1); // o lo que tengas en un input
-            //int nuevoEstadoId = Convert.ToInt32(ddlEstado.SelectedValue); // ejemplo: un DropDownList
-            //string nuevasObservaciones = txtObservaciones.Text.Trim(); // ejemplo: un TextBox
+            //if (Request.QueryString.Count > 0)
+            //{
+            //if (!string.IsNullOrEmpty(idcrm))
+            //{
+            //    DataTable dt1 = cg.ConsultarContactosCRMPorId(Convert.ToInt32(idcrm), out respuesta);
+            //    DataTable dt2 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(dt1.Rows[0]["DocumentoAfiliado"].ToString()));
+            //    parametro = dt2.Rows[0]["idAfiliado"].ToString();
 
-            //// 2️⃣ Ejecuta la actualización
-            //ActualizarContacto(idContacto, nuevaFechaProx, nuevoEstadoId, nuevasObservaciones);
+            string idcrm = "3";
 
-            //// 3️⃣ Redirige a la URL deseada
-            //Response.Redirect("crmnuevocontacto.aspx?editid=" + idContacto);
+            string url = $"editarafiliado.aspx?idcrm={idcrm}";
+
+            Response.Redirect(url);
+        }
+
+        protected void ddlAfiliadoOrigen_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlAfiliadoOrigen.SelectedItem.Value.ToString() != "")
+            {
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = new DataTable();
+                DataTable dt1 = new DataTable();
+                bool esAfiliado = false;
+                Session["esAfiliado"] = esAfiliado.ToString();
+                int documento = 0;
+                string[] strDocumento = ddlAfiliadoOrigen.SelectedItem.Value.ToString().Split('-');
+                if (int.TryParse(strDocumento[0], out documento))
+                {
+                    dt = cg.ConsultarAfiliadoPorDocumento(documento);
+                }
+
+                dt1 = cg.ConsultarTipoAfiliadCRM();
+
+                try
+                {
+                    if (dt.Rows.Count > 0)
+                    {
+                        esAfiliado = true;
+                        Session["esAfiliado"] = esAfiliado.ToString();
+                        txbDocumento.Text = documento.ToString();
+                        ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
+                        txbNombreContacto.Value = dt.Rows[0]["NombreAfiliado"].ToString();
+                        txbApellidoContacto.Value = dt.Rows[0]["ApellidoAfiliado"].ToString();
+                        txbTelefonoContacto.Value = dt.Rows[0]["CelularAfiliado"].ToString();
+                        txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString();
+                        ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString())));
+                        ddlTiposAfiliado.SelectedValue = "2";//Afiliado en renovación
+                    }
+                    dt.Dispose();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            ////////////////////////////////ANTERIOR/////////////////////////////////////////////////////////
         }
     }
 }
