@@ -255,11 +255,11 @@
     <Content Include="accesoafiliado.aspx" />
     <Content Include="afiliados.aspx" />
     <Content Include="agenda.aspx" />
-    <Content Include="agendacomercial.aspx" />
     <Content Include="agendacrm.aspx" />
     <Content Include="agendaespecialista.aspx" />
     <Content Include="agendagympass.aspx" />
     <Content Include="agendarcita.aspx" />
+    <Content Include="agregaragendacomercial.aspx" />
     <Content Include="arl.aspx" />
     <Content Include="asignarcita.aspx" />
     <Content Include="asistenciaagendagympass.aspx" />
@@ -440,7 +440,6 @@
     <Content Include="editarproductotienda.aspx" />
     <Content Include="editarusuario.aspx" />
     <Content Include="eliminarafiliado.aspx" />
-    <Content Include="eliminardisponibilidad.aspx" />
     <Content Include="eliminarempleado.aspx" />
     <Content Include="eliminarusuario.aspx" />
     <Content Include="embajadores.aspx" />
@@ -448,6 +447,7 @@
     <Content Include="empresasafiliadas.aspx" />
     <Content Include="eps.aspx" />
     <Content Include="especialistas.aspx" />
+    <Content Include="estacionalidad.aspx" />
     <Content Include="estadocivil.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -1025,13 +1025,6 @@
     <Compile Include="agenda.aspx.designer.cs">
       <DependentUpon>agenda.aspx</DependentUpon>
     </Compile>
-    <Compile Include="agendacomercial.aspx.cs">
-      <DependentUpon>agendacomercial.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="agendacomercial.aspx.designer.cs">
-      <DependentUpon>agendacomercial.aspx</DependentUpon>
-    </Compile>
     <Compile Include="agendacrm.aspx.cs">
       <DependentUpon>agendacrm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1059,6 +1052,13 @@
     </Compile>
     <Compile Include="agendarcita.aspx.designer.cs">
       <DependentUpon>agendarcita.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="agregaragendacomercial.aspx.cs">
+      <DependentUpon>agregaragendacomercial.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="agregaragendacomercial.aspx.designer.cs">
+      <DependentUpon>agregaragendacomercial.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="arl.aspx.cs">
@@ -1407,13 +1407,6 @@
     <Compile Include="eliminarafiliado.aspx.designer.cs">
       <DependentUpon>eliminarafiliado.aspx</DependentUpon>
     </Compile>
-    <Compile Include="eliminardisponibilidad.aspx.cs">
-      <DependentUpon>eliminardisponibilidad.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="eliminardisponibilidad.aspx.designer.cs">
-      <DependentUpon>eliminardisponibilidad.aspx</DependentUpon>
-    </Compile>
     <Compile Include="eliminarempleado.aspx.cs">
       <DependentUpon>eliminarempleado.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1462,6 +1455,13 @@
     </Compile>
     <Compile Include="especialistas.aspx.designer.cs">
       <DependentUpon>especialistas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="estacionalidad.aspx.cs">
+      <DependentUpon>estacionalidad.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="estacionalidad.aspx.designer.cs">
+      <DependentUpon>estacionalidad.aspx</DependentUpon>
     </Compile>
     <Compile Include="estadocivil.aspx.cs">
       <DependentUpon>estadocivil.aspx</DependentUpon>

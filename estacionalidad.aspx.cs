@@ -2,14 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Globalization;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
-    public partial class agendacomercial : System.Web.UI.Page
+    public partial class estacionalidad : System.Web.UI.Page
     {
         private string _strEventos;
         protected string strEventos { get { return this._strEventos; } }
@@ -26,7 +23,7 @@ namespace fpWebApp
         {
             List<Evento> eventos = new List<Evento>();
             clasesglobales cg = new clasesglobales();
-            
+
             string strQuery = "SELECT idDisponibilidad, DocumentoEmpleado, FechaHoraInicio, FechaHoraFinal FROM DisponibilidadEspecialistas";
             DataTable dt = cg.TraerDatos(strQuery);
 
@@ -46,7 +43,6 @@ namespace fpWebApp
 
             return JsonConvert.SerializeObject(eventos);
         }
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -62,7 +58,7 @@ namespace fpWebApp
                     }
                     if (ViewState["Consulta"].ToString() == "1")
                     {
-                        CargarSedes();
+                        //CargarSedes();
                     }
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
@@ -72,7 +68,7 @@ namespace fpWebApp
                         //txbFechaIni.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
                         //txbFechaFin.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
                         //divCrear.Visible = true;
-                        CargarSedes();
+                        //CargarSedes();
                         CargarAsesores();
                     }
                     if (ViewState["Borrar"].ToString() == "1")
@@ -114,7 +110,8 @@ namespace fpWebApp
         private void CargarAgenda()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultaCargarAgenda(int.Parse(ddlSedes.SelectedItem.Value.ToString()));
+            //DataTable dt = cg.ConsultaCargarAgenda(int.Parse(ddlSedes.SelectedItem.Value.ToString()));
+            DataTable dt = new DataTable();
 
             _strEventos = "events: [\r\n";
 
@@ -385,21 +382,21 @@ namespace fpWebApp
 
         private void CargarSedes()
         {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultaCargarSedes("Gimnasio");
+            //clasesglobales cg = new clasesglobales();
+            //DataTable dt = cg.ConsultaCargarSedes("Gimnasio");
 
-            ddlSedes.Items.Clear();
-            ddlSedes.DataSource = dt;
-            ddlSedes.DataBind();
+            //ddlSedes.Items.Clear();
+            //ddlSedes.DataSource = dt;
+            //ddlSedes.DataBind();
 
-            //ddlSedesCita.Items.Clear();
-            //ddlSedesCita.DataSource = dt;
-            //ddlSedesCita.DataBind();
+            ////ddlSedesCita.Items.Clear();
+            ////ddlSedesCita.DataSource = dt;
+            ////ddlSedesCita.DataBind();
 
-            dt.Dispose();
+            //dt.Dispose();
 
-            ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
-            CargarAgenda();
+            //ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
+            //CargarAgenda();
         }
 
         private void CargarAsesores()
@@ -413,14 +410,13 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (ddlSedes.SelectedItem.Value.ToString() != "")
-            {
-                ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
-                CargarAgenda();
-            }
-        }
-
+        //protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    if (ddlSedes.SelectedItem.Value.ToString() != "")
+        //    {
+        //        ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
+        //        CargarAgenda();
+        //    }
+        //}
     }
 }

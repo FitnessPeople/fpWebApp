@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="agendacomercial.aspx.cs" Inherits="fpWebApp.agendacomercial" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="estacionalidad.aspx.cs" Inherits="fpWebApp.estacionalidad" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
@@ -14,7 +14,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Agenda</title>
+    <title>Fitness People | Estacionalidad</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
@@ -67,10 +67,10 @@
             left: 20px;
         }
 
-        #external-events .fc-event {
-            cursor: move;
-            margin: 3px 0;
-        }
+            #external-events .fc-event {
+                cursor: move;
+                margin: 3px 0;
+            }
 
         /*.fc-event-title-container {
             background: #f8ac59;
@@ -143,11 +143,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-calendar-days text-success m-r-sm"></i>Agenda comercial</h2>
+                    <h2><i class="fa fa-calendar-days text-success m-r-sm"></i>Estacionalidad</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Comercial</li>
-                        <li class="active"><strong>Agenda comercial</strong></li>
+                        <li class="active"><strong>Estacionalidad</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -170,14 +170,66 @@
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                    <form runat="server" id="form">
-                        <div class="row animated fadeInDown" id="divContenido" runat="server">
-                            <div class="col-sm-12">
-                                <div class="row">
+                    <form runat="server" id="form" onsubmit="return false;">
+                        <div id="divContenido" runat="server">
+                        <div class="col-lg-3">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>Arrastra al calendario</h5>
+                                </div>
+                                <div id='external-events' class="ibox-content">
+                                    <div class='fc-event'
+                                        data-title="5%" data-value="5" data-bgcolor="#ed5565">
+                                        <div class='fc-event-main'
+                                            style="color: #fff; background: #ed5565; border: 1px solid #ed5565; border-radius: 3px; font-size: 1.5em;">
+                                            5%
+                                        </div>
+                                    </div>
+                                    <div class='fc-event'
+                                        data-title="10%" data-value="10" data-bgcolor="#1ab394">
+                                        <div class='fc-event-main'
+                                            style="color: #fff; background: #1ab394; border: 1px solid #1ab394; border-radius: 3px; font-size: 1.5em;">
+                                            10%
+                                        </div>
+                                    </div>
+                                    <div class='fc-event'
+                                        data-title="15%" data-value="15" data-bgcolor="#1c84c6">
+                                        <div class='fc-event-main'
+                                            style="color: #fff; background: #1c84c6; border: 1px solid #1c84c6; border-radius: 3px; font-size: 1.5em;">
+                                            15%
+                                        </div>
+                                    </div>
+                                    <div class='fc-event'
+                                        data-title="20%" data-value="20" data-bgcolor="#f8ac59">
+                                        <div class='fc-event-main'
+                                            style="color: #fff; background: #f8ac59; border: 1px solid #f8ac59; border-radius: 3px; font-size: 1.5em;">
+                                            20%
+                                        </div>
+                                    </div>
+                                    <div class='fc-event'
+                                        data-title="25%" data-value="25" data-bgcolor="#23c6c8">
+                                        <div class='fc-event-main'
+                                            style="color: #fff; background: #23c6c8; border: 1px solid #23c6c8; border-radius: 3px; font-size: 1.5em;">
+                                            25%
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-content">
+                                    <h2>FullCalendar</h2>
+                                    <div id="listaSemanas"></div>
+                   
+                                    <p>
+                                        <a href="http://arshaw.com/fullcalendar/" target="_blank">FullCalendar documentation</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <%--<div class="row">
                                     <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
-                                                <%--<span class="label label-success pull-right">Monthly</span>--%>
+                                                <%--<span class="label label-success pull-right">Monthly</span>
                                                 <h5>Arrastra al calendario</h5>
                                             </div>
                                             <div id='external-events' class="ibox-content">
@@ -222,12 +274,12 @@
                                     <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
-                                                <%--<span class="label label-info pull-right">Annual</span>--%>
+                                                <%--<span class="label label-info pull-right">Annual</span>
                                                 <h5>Meta por semana</h5>
                                             </div>
                                             <div class="ibox-content">
-                                                <input type="text" id="semana1" value="0" class="dial m-r-sm" data-fgColor="#1AB394" data-width="85" data-height="85" />
                                                 <div id="listaSemanas"></div>
+                                                <button class="btn btn-info" onclick="actualizarEventosDelMes()">Guardar mes</button>
                                             </div>
                                         </div>
                                     </div>
@@ -255,90 +307,32 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <%--<div class="col-lg-4">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title">
-                                                <h5>Monthly income</h5>
-                                                <div class="ibox-tools">
-                                                    <span class="label label-primary">Updated 12.2015</span>
-                                                </div>
-                                            </div>
-                                            <div class="ibox-content no-padding">
-                                                <div class="flot-chart m-t-lg" style="height: 55px;">
-                                                    <div class="flot-chart-content" id="flot-chart1"></div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>--%>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="ibox float-e-margins">
-                                    <div class="ibox-title">
-                                        <h5>Agenda
+                                </div>--%>
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>Estacionalidad 
                                             <asp:Literal ID="ltSede" runat="server"></asp:Literal></h5>
-                                    </div>
-                                    <div class="ibox-content">
-                                        <div class="form-horizontal">
-                                            <div class="form-group m-b-n-sm">
-                                                <label class="col-sm-2 col-sm-2 control-label">Sede</label>
-                                                <div class="col-sm-10">
-                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedes" runat="server"
-                                                        OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
-                                                        DataValueField="idSede" DataTextField="NombreSede"
-                                                        AutoPostBack="true" AppendDataBoundItems="true">
-                                                    </asp:DropDownList>
-                                                </div>
+                                </div>
+                                <div class="ibox-content">
+                                    <%--<div class="form-horizontal">
+                                        <div class="form-group m-b-n-sm">
+                                            <label class="col-sm-2 col-sm-2 control-label">Sede</label>
+                                            <div class="col-sm-10">
+                                                <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedes" runat="server"
+                                                    OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
+                                                    DataValueField="idSede" DataTextField="NombreSede"
+                                                    AutoPostBack="true" AppendDataBoundItems="true">
+                                                </asp:DropDownList>
                                             </div>
                                         </div>
-                                        <hr />
-                                        
-                                        <%--<div id='external-events'>
-                                            <p>
-                                                <strong>Arrastra al calendario</strong>
-                                            </p>
-
-                                            <div class='fc-event'
-                                                data-title="5%" data-value="5" data-bgcolor="#ed5565">
-                                                <div class='fc-event-main'
-                                                    style="color: #fff; background: #ed5565; border: 1px solid #ed5565; border-radius: 3px; font-size: 1.5em;">
-                                                    5%
-                                                </div>
-                                            </div>
-                                            <div class='fc-event'
-                                                data-title="10%" data-value="10" data-bgcolor="#1ab394">
-                                                <div class='fc-event-main'
-                                                    style="color: #fff; background: #1ab394; border: 1px solid #1ab394; border-radius: 3px; font-size: 1.5em;">
-                                                    10%
-                                                </div>
-                                            </div>
-                                            <div class='fc-event'
-                                                data-title="15%" data-value="15" data-bgcolor="#1c84c6">
-                                                <div class='fc-event-main'
-                                                    style="color: #fff; background: #1c84c6; border: 1px solid #1c84c6; border-radius: 3px; font-size: 1.5em;">
-                                                    15%
-                                                </div>
-                                            </div>
-                                            <div class='fc-event'
-                                                data-title="20%" data-value="20" data-bgcolor="#f8ac59">
-                                                <div class='fc-event-main'
-                                                    style="color: #fff; background: #f8ac59; border: 1px solid #f8ac59; border-radius: 3px; font-size: 1.5em;">
-                                                    20%
-                                                </div>
-                                            </div>
-                                            <div class='fc-event'
-                                                data-title="25%" data-value="25" data-bgcolor="#23c6c8">
-                                                <div class='fc-event-main'
-                                                    style="color: #fff; background: #23c6c8; border: 1px solid #23c6c8; border-radius: 3px; font-size: 1.5em;">
-                                                    25%
-                                                </div>
-                                            </div>
-                                        </div>--%>
-                                        <div id="calendar"></div>
                                     </div>
+                                    <hr />--%>
+                                    <div id="calendar"></div>
                                 </div>
                             </div>
+                        </div>
                         </div>
                     </form>
                     <%--Fin Contenido!!!!--%>
@@ -352,7 +346,7 @@
     </div>
 
     <!-- Mainly scripts -->
-   <script src="js/plugins/fullcalendar/moment.min.js"></script>
+    <script src="js/plugins/fullcalendar/moment.min.js"></script>
     <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
@@ -364,9 +358,6 @@
 
     <!-- jQuery UI  -->
     <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
-
-   <!-- JSKnob -->
-   <script src="js/plugins/jsKnob/jquery.knob.js"></script>
 
     <!-- Date range picker -->
     <script src="js/plugins/daterangepicker/daterangepicker.js"></script>
@@ -389,12 +380,10 @@
     <!-- Jquery Validate -->
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
-    
+
 
 
     <script>
-        $(".dial").knob();
-
         !(function (a) {
             a.fn.datepicker.dates.es = {
                 days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
@@ -439,6 +428,7 @@
     </script>
 
     <script>
+        var calendar; // declarada globalmente
 
         //Agrega días a una fecha
         function addDays(date, days) {
@@ -478,6 +468,56 @@
             return total;
         }
 
+        function actualizarEventosDelMes() {
+            let calendar;
+            console.log(calendar);
+            const eventos = calendar.getEvents();
+
+            // Obtener el mes actual visible en el calendario
+            const fechaInicio = calendar.view.currentStart;
+            const fechaFin = calendar.view.currentEnd;
+
+            // Filtrar los eventos que están dentro del rango de fechas visibles
+            const eventosMes = eventos.filter(ev => {
+                return ev.start >= fechaInicio && ev.start < fechaFin;
+            });
+
+            // Transformarlos a un formato JSON y enviarlos todos al backend
+            const eventosParaGuardar = eventosMes.map(ev => ({
+                id: ev.id,
+                title: ev.title,
+                start: ev.start.toISOString(),
+                end: ev.end ? ev.end.toISOString() : null,
+                allDay: ev.allDay
+            }));
+
+            //fetch('agregaragendacomercial.aspx', {
+            //    method: 'POST',
+            //    headers: { 'Content-Type': 'application/json' },
+            //    body: JSON.stringify(eventosParaGuardar)
+            //})
+            //    .then(res => {
+            //        if (!res.ok) {
+            //            alert('Error al actualizar eventos del mes');
+            //        }
+            //    });
+
+            console.log(datos);
+
+            //fetch('agregaragendacomercial.aspx', {
+            //    method: 'POST',
+            //    headers: {
+            //        'Content-Type': 'application/json'
+            //    },
+            //    body: JSON.stringify(datos)
+            //})
+            //    .then(res => {
+            //        if (!res.ok) {
+            //            alert('Error al actualizar el evento.');
+            //        }
+            //    });
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             var Calendar = FullCalendar.Calendar;
             var Draggable = FullCalendar.Draggable;
@@ -506,7 +546,7 @@
             // initialize the calendar
             // -----------------------------------------------------------------
 
-            var calendar = new Calendar(calendarEl, {
+            calendar = new Calendar(calendarEl, {
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
@@ -622,7 +662,6 @@
                     const { primerDia, ultimoDia } = getPrimerYUltimoDia(year, month);
 
                     mostrarSemanasDelMes(primerDia, addDays(ultimoDia, 1), calendar);
-
                 },
                 eventClick: function (info) {
                     console.log('Entra');
@@ -659,9 +698,7 @@
         function mostrarSemanasDelMes(startDate, endDate, calendar) {
             //console.log(endDate);
             const semanasDiv = document.getElementById('listaSemanas');
-            const knob1 = document.getElementById("semana1");
             semanasDiv.innerHTML = ''; // limpiar lista anterior
-            knob1.value = 0;
 
             let current = new Date(startDate);
             let weekNumber = moment(addDays(startDate, -1)).week();
@@ -679,8 +716,6 @@
                     const totalSemana = sumarValoresDeSemana(semanaIndex, calendar, yearNumber);
                     //console.log(`Semana ${semanaIndex}, Total semana: ${totalSemana}`);
                     //semanasDiv.innerHTML += `<div>Semana ${semanaIndex}: ${formatearFecha(startOfWeek)} - ${formatearFecha(endOfWeek)}</div>`;
-
-                    knob1.value = parseInt(totalSemana);
 
                     //semanasDiv.innerHTML += `<div class="m-r-md inline"><input type="text" value="${totalSemana}" class="dial m-r-sm" data-fgColor="#1AB394" data-width="85" data-height="85" /></div>`
                     if (parseInt(totalSemana) == 0) {
@@ -712,7 +747,7 @@
             return fecha.toISOString().split('T')[0];
         }
 
-        
+
     </script>
 
 </body>
