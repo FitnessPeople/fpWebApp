@@ -957,17 +957,25 @@ namespace fpWebApp
 
             clasesglobales cg = new clasesglobales();
 
+            bool rta = false;
+            int idAfil = 0;
             int idcrm = Convert.ToInt32( Request.QueryString["editid"]);
             Session["IdCRM"] = idcrm;
             string evento = Request.QueryString["evento"];
             string documento = Request.QueryString["documento"];
 
-            if (Request.QueryString["editid"] != null)
+            DataTable dt1 = cg.ConsultarContactosCRMPorId(Convert.ToInt32(idcrm), out rta);
+            DataTable dt2 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(dt1.Rows[0]["DocumentoAfiliado"].ToString()));
+            if(dt2.Rows.Count > 0)  idAfil = Convert.ToInt32( dt2.Rows[0]["IdAfiliado"].ToString());
+
+
+            if (idcrm > 0)
             {
                 bool salida = false;
                 string mensaje = string.Empty;
                 string respuesta = string.Empty;
                 string mensajeValidacion = string.Empty;
+                if (txaObservaciones.Value=="") txaObservaciones.Value = "Se redirige a proceso de afiliaciones";
 
                 if (ddlEmpresa.SelectedItem.Value != "")
                     ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
@@ -989,18 +997,26 @@ namespace fpWebApp
                     if (salida)
                     {
                         // eL cliente del crm es nuevo o el cliente es afiliado en renovación
-                        string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
+
+                        bool existe = false;
+
+                        if (!string.IsNullOrEmpty(documento))
+                        {                           
+                            DataTable dt = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(documento));
+                            existe = dt.Rows.Count > 0;
+                        }
+                        string urlRedirect = (existe) ? "editarafiliado" : "nuevoafiliado";
 
                         string script = @"
                                 Swal.fire({
                                     title: 'El contacto se actualizó correctamente',
-                                    text: '" + mensaje.Replace("'", "\\'") + @"',
+                                    text: 'Serás redirigido al formulario de edición.',
                                     icon: 'success',
-                                    timer: 3000, // 3 segundos
+                                    timer: 4000, // 4 segundos
                                     showConfirmButton: false,
                                     timerProgressBar: true
                                 }).then(() => {
-                                    window.location.href = '" + urlRedirect + @"';
+                                    window.location.href = '" + urlRedirect + @"?idcrm=" + idcrm + @"';
                                 });
                                 ";
 

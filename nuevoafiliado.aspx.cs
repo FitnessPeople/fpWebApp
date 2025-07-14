@@ -33,7 +33,7 @@ namespace fpWebApp
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
                         btnAgregarYRedirigir.Visible = false;
-                        btnVolver.Visible = false;
+                        //btnVolver.Visible = false;
                         DateTime dt14 = DateTime.Now.AddYears(-14);
                         DateTime dt100 = DateTime.Now.AddYears(-100);
                         txbFechaNac.Attributes.Add("min", dt100.Year.ToString() + "-" + string.Format("{0:MM}", dt100) + "-" + String.Format("{0:dd}", dt100));
@@ -67,7 +67,7 @@ namespace fpWebApp
                         btnAgregar.Visible = false;
                         btnCancelar.Visible = false;
                         btnAgregarYRedirigir.Visible = true;
-                        btnVolver.Visible = true;
+                        //btnVolver.Visible = true;
                         if (dt.Rows.Count > 0)
                         {
                             txbNombre.Text = dt.Rows[0]["NombreContacto"].ToString();

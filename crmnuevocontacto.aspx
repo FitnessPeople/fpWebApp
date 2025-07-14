@@ -1394,6 +1394,20 @@
                 $("#valorPropuestaYArchivo").hide();
                 $("#btnCancelar_").hide();
                 $("#btnVolverAgenda").show(); // Muestra el botón solo si viene del evento
+                const hoy = new Date().toLocaleDateString("es-CO"); // Formato local
+                const mensaje = `🗓️ Fecha de registro: ${hoy}\n✏️ Escribe tus observaciones aquí...`;
+                $("#txaObservaciones")
+                    .val(mensaje)
+                    .css({
+                        "font-family": "Segoe UI, sans-serif",
+                        "font-size": "14px",
+                        "padding": "8px",
+                        "border-radius": "6px",
+                        "border": "1px solid #ccc",
+                        "background-color": "#fdfdfd",
+                        "color": "#333"
+                    })
+                    .show();
 
             }
         });
