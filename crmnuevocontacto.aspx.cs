@@ -945,17 +945,99 @@ namespace fpWebApp
         {
             //if (Request.QueryString.Count > 0)
             //{
-                //if (!string.IsNullOrEmpty(idcrm))
-                //{
-                //    DataTable dt1 = cg.ConsultarContactosCRMPorId(Convert.ToInt32(idcrm), out respuesta);
-                //    DataTable dt2 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(dt1.Rows[0]["DocumentoAfiliado"].ToString()));
-                //    parametro = dt2.Rows[0]["idAfiliado"].ToString();
+            //if (!string.IsNullOrEmpty(idcrm))
+            //{
+            //    DataTable dt1 = cg.ConsultarContactosCRMPorId(Convert.ToInt32(idcrm), out respuesta);
+            //    DataTable dt2 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(dt1.Rows[0]["DocumentoAfiliado"].ToString()));
+            //    parametro = dt2.Rows[0]["idAfiliado"].ToString();
+            //        string idcrm = "3";
 
-                    string idcrm = "3";
+            //string url = $"editarafiliado.aspx?idcrm={idcrm}";
+            //Response.Redirect(url);
 
-            string url = $"editarafiliado.aspx?idcrm={idcrm}";
-           
-            Response.Redirect(url);
+            clasesglobales cg = new clasesglobales();
+
+            int idcrm = Convert.ToInt32( Request.QueryString["editid"]);
+            Session["IdCRM"] = idcrm;
+            string evento = Request.QueryString["evento"];
+            string documento = Request.QueryString["documento"];
+
+            if (Request.QueryString["editid"] != null)
+            {
+                bool salida = false;
+                string mensaje = string.Empty;
+                string respuesta = string.Empty;
+                string mensajeValidacion = string.Empty;
+
+                if (ddlEmpresa.SelectedItem.Value != "")
+                    ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
+                else
+                    ddlEmpresa.SelectedItem.Value = "0";
+
+                try
+                {
+                    respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.ToString().Trim().ToUpper(),
+                            txbApellidoContacto.Value.ToString().Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
+                            txbCorreoContacto.Value.ToString().Trim().ToLower(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
+                            Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(),
+                            Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "", txaObservaciones.Value.Trim(),
+                            Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
+                            Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
+                            Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
+                            Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, out salida, out mensaje);
+
+                    if (salida)
+                    {
+                        // eL cliente del crm es nuevo o el cliente es afiliado en renovación
+                        string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
+
+                        string script = @"
+                                Swal.fire({
+                                    title: 'El contacto se actualizó correctamente',
+                                    text: '" + mensaje.Replace("'", "\\'") + @"',
+                                    icon: 'success',
+                                    timer: 3000, // 3 segundos
+                                    showConfirmButton: false,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    window.location.href = '" + urlRedirect + @"';
+                                });
+                                ";
+
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                    }
+                    else
+                    {
+                        string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
+                        string script = @"
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: '" + mensaje.Replace("'", "\\'") + @"',
+                                    icon: 'error'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                       window.location.href = '"" + urlRedirect + @""';
+                                    }
+                                });
+                                ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
+                    string script = @"
+                        Swal.fire({
+                        title: 'Error',
+                        text: 'Ha ocurrido un error inesperado.',
+                        icon: 'error'
+                    });
+                ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                }
+
+            }
         }
 
         protected void ddlAfiliadoOrigen_SelectedIndexChanged(object sender, EventArgs e)
