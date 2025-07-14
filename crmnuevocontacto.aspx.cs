@@ -505,7 +505,7 @@ namespace fpWebApp
 
                             string script = @"
                                 Swal.fire({
-                                    title: 'El contacto CRM se actualizó de forma exitosa',
+                                    title: 'El contacto se actualizó correctamente',
                                     text: '" + mensaje.Replace("'", "\\'") + @"',
                                     icon: 'success',
                                     timer: 3000, // 3 segundos
@@ -661,7 +661,7 @@ namespace fpWebApp
                     {
                         string script = @"
                         Swal.fire({
-                            title: 'El contacto se creó de forma exitosa',
+                            title: '«¡Creado correctamente!»',
                             text: '" + mensaje.Replace("'", "\\'") + @"',
                             icon: 'success',
                             timer: 3000, // 3 segundos
@@ -942,8 +942,16 @@ namespace fpWebApp
         }
 
         protected void btnActualizarYRedirigir_Click(object sender, EventArgs e)
-        {           
-            string idcrm = Request.QueryString["editid"];
+        {
+            //if (Request.QueryString.Count > 0)
+            //{
+                //if (!string.IsNullOrEmpty(idcrm))
+                //{
+                //    DataTable dt1 = cg.ConsultarContactosCRMPorId(Convert.ToInt32(idcrm), out respuesta);
+                //    DataTable dt2 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(dt1.Rows[0]["DocumentoAfiliado"].ToString()));
+                //    parametro = dt2.Rows[0]["idAfiliado"].ToString();
+
+                    string idcrm = "3";
 
             string url = $"editarafiliado.aspx?idcrm={idcrm}";
            

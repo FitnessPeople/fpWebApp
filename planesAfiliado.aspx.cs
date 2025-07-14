@@ -161,6 +161,8 @@ namespace fpWebApp
         {
             if (Request.QueryString.Count > 0)
             {
+
+
                 string strQuery = "SELECT *, " +
                     "IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS label " +
                     "FROM afiliados a " +

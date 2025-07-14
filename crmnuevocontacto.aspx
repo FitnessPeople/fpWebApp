@@ -865,11 +865,10 @@
                                                                     <asp:Literal ID="ltTipoAfiliado" runat="server"></asp:Literal></br>
                                                                 Objetivo del afiliado:
                                                                 <asp:Literal ID="ltObjetivo" runat="server"></asp:Literal>
-                                                                </p>
-                                                                
+                                                                </p>                                                                
                                                              
-                                                                <asp:Button ID="btnActualizarYRedirigir" runat="server" Text="Ir a afiliaciones"
-                                                                    OnClick="btnActualizarYRedirigir_Click" class="btn btn-success btn-sm btn-block" />
+                                                            <asp:Button ID="btnActualizarYRedirigir" runat="server" Text="Ir a afiliaciones"
+                                                                OnClick="btnActualizarYRedirigir_Click" CssClass="btn btn-success btn-sm btn-block" />
                                                             </div>
                                                         </div>
                                                         <div class="client-detail">
@@ -1336,16 +1335,20 @@
             const idcrm = anchor.getAttribute("data-idcrm");
             const documento = anchor.getAttribute("data-documento");
             console.log("IDCRM:", idcrm, "DOCUMENTO:", documento);
+
             if (!documento) {
                 const url = `nuevoafiliado.aspx?idcrm=${encodeURIComponent(idcrm)}`;
-                window.location.href = url; // <-- Redirige de inmediato
-                return; // <-- Detiene el resto
+                window.location.href = url;
+                return;
             }
 
-            // Si hay documento, consulta si existe en el sistema
             $.getJSON("/obtenerafiliados?search=" + encodeURIComponent(documento), function (data) {
-                // Verificar si el documento está en la lista
+                console.log("Datos devueltos:", data);
+
+                // ✅ Usa la propiedad id porque así se llama en tu JSON
                 const existe = data.some(item => String(item.id) === String(documento));
+
+                console.log("¿Existe?:", existe);
 
                 const destino = existe ? "editarafiliado.aspx" : "nuevoafiliado.aspx";
                 const url = `${destino}?idcrm=${encodeURIComponent(idcrm)}`;
@@ -1358,13 +1361,12 @@
 
 
 
+
     <script>
         $(document).ready(function () {
-            // Escuchar clic en botones con historial
+
             $(document).on("click", ".btnVerHistorial", function () {
                 var historial = $(this).data("historial");
-
-                // Mostrar el historial en la zona izquierda
                 $("#historialHTMLVisual").html(historial);
             });
         });
