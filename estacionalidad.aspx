@@ -55,7 +55,7 @@
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.css" rel="stylesheet" />
+    <%--<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.css" rel="stylesheet" />--%>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.js"></script>
 
     <!-- SweetAlert2 CDN -->
@@ -470,48 +470,45 @@
         }
 
         function guardarEventosDelMes() {
-            const eventos = calendar.getEvents();
+            let eventos = calendar.getEvents();
+            let eventosMes = eventos
+                .filter(e => {
+                    const fechaInicio = new Date(e.start);
+                    const now = new Date();
+                    return fechaInicio.getMonth() === now.getMonth() && fechaInicio.getFullYear() === now.getFullYear();
+                })
+                .map(e => ({
+                    id: e.id || 0,
+                    title: e.title,
+                    start: e.start.toISOString(),
+                    end: e.end ? e.end.toISOString() : null,
+                    allDay: e.allDay
+                }));
 
-            // Obtener el mes actual visible en el calendario
-            const fechaInicio = calendar.view.currentStart;
-            const fechaFin = calendar.view.currentEnd;
-
-            // Filtrar los eventos que están dentro del rango de fechas visibles
-            const eventosMes = eventos.filter(ev => {
-                return ev.start >= fechaInicio && ev.start < fechaFin;
-            });
-
-            // Transformarlos a un formato JSON y enviarlos todos al backend
-            const eventosParaGuardar = eventosMes.map(ev => ({
-                id: ev.id,
-                title: ev.title,
-                start: ev.start.toISOString(),
-                end: ev.end ? ev.end.toISOString() : null,
-                allDay: ev.allDay
-            }));
-
-            fetch('agregaragendacomercial.aspx/GuardarEventos', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ eventos: eventosParaGuardar })
+            // Enviar a servidor por AJAX
+            fetch("agregaragendacomercial.aspx/GuardarEventos", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ eventos: eventosMes })
             })
-                .then(res => res.json())
-                .then(data => {
-                    alert('Eventos guardados: ' + data.id);
+                .then(response => {
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            alert("Tu sesión ha expirado. Por favor, vuelve a iniciar sesión.");
+                        } else {
+                            throw new Error("Error en la solicitud: " + response.status);
+                        }
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    alert("Eventos guardados correctamente.");
+                })
+                .catch(error => {
+                    console.error("Error al guardar eventos:", error);
                 });
-
-            //fetch('agregaragendacomercial.aspx', {
-            //    method: 'POST',
-            //    headers: {
-            //        'Content-Type': 'application/json'
-            //    },
-            //    body: JSON.stringify(datos)
-            //})
-            //    .then(res => {
-            //        if (!res.ok) {
-            //            alert('Error al actualizar el evento.');
-            //        }
-            //    });
         }
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -562,6 +559,7 @@
                     return { domNodes: arrayOfDomNodes }
                 },
                 editable: true,
+                events: 'obtenerestacionalidad.aspx',
                 weekNumbers: true,
                 fixedWeekCount: false,
                 showNonCurrentDates: false,
