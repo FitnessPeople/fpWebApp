@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="editarafiliado.aspx.cs" Inherits="fpWebApp.editarafiliado" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="editarafiliado.aspx.cs" Inherits="fpWebApp.editarafiliado"  %>
 
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
@@ -30,7 +30,7 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
-        <!-- SweetAlert2 CDN -->
+    <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
@@ -346,7 +346,11 @@
                                         <div>
                                             <button id="btnCancelar" class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" runat="server" onclick="window.location.href='afiliados'"><strong>Cancelar</strong></button>
                                             <asp:Button ID="btnActualizar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Actualizar" OnClick="btnActualizar_Click" />
-                                            <button id="btnVolver" class="btn btn-sm btn-info pull-right m-t-n-xs" type="button" runat="server" onclick="window.history.go(-1);"><strong>Volver</strong></button>
+                                            <a href="agendacrm.aspx" class="btn btn-sm btn-info pull-right m-t-n-xs"> Regresar a Agenda CRM </a>
+                                            <button id="btnVolver" runat="server" type="button" class="btn btn-info" onclick="window.location.href='agendacrm.aspx';">
+                                               Regresar a Agenda CRM
+                                            </button>
+
                                             <asp:Button ID="btnActualizaryVenderPlan" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
                                                 Text="Actualizar y Vender Plan" Visible="false" OnClick="btnActualizaryVenderPlan_Click" />
                                         </div>

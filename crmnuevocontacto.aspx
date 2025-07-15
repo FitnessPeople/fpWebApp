@@ -169,9 +169,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
 
     <script>
-      $(document).ready(function() {
-        $('.select2_demo_1').select2();
-      });
+        $(document).ready(function () {
+            $('.select2_demo_1').select2();
+        });
     </script>
 
 
@@ -867,8 +867,10 @@
                                                                 <asp:Literal ID="ltObjetivo" runat="server"></asp:Literal>
                                                                 </p>                                                                
                                                              
-                                                            <asp:Button ID="btnActualizarYRedirigir" runat="server" Text="Ir a afiliaciones"
-                                                                OnClick="btnActualizarYRedirigir_Click" CssClass="btn btn-success btn-sm btn-block" />
+                                                                <div class="text-left">
+                                                                    <asp:Button ID="btnActualizarYRedirigir" runat="server" Text="Ir a afiliaciones"
+                                                                        OnClick="btnActualizarYRedirigir_Click" CssClass="btn btn-success btn-sm" />
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="client-detail">

@@ -20,6 +20,7 @@ namespace fpWebApp
         {
             if (!IsPostBack)
             {
+
                 if (Session["idUsuario"] != null)
                 {
                     ValidarPermisos("Especialistas");
@@ -188,7 +189,7 @@ namespace fpWebApp
             btnActualizar.Visible = true;
             btnCancelar.Visible = true;
             btnActualizaryVenderPlan.Visible = false;            
-            btnVolver.Visible = false;
+            //btnVolver.Visible = false;
 
 
 
@@ -209,7 +210,7 @@ namespace fpWebApp
                         btnActualizar.Visible = false;
                         btnCancelar.Visible = false;
                         btnActualizaryVenderPlan.Visible = true;                        
-                        btnVolver.Visible = true;
+                        //btnVolver.Visible = true;
                         
                         Session["IdAfiliado"] = parametro.ToString();
                     }
@@ -678,9 +679,9 @@ namespace fpWebApp
                     string script = @"
                         Swal.fire({
                             title: '¡Afiliado actualizado correctamente!',
-                            text: '',
+                            text: 'Serás redirigido a los Planes comerciales',
                             icon: 'success',
-                            timer: 3000, // 3 segundos
+                            timer: 5000, // 3 segundos
                             showConfirmButton: false,
                             timerProgressBar: true
                         }).then(() => {
@@ -722,5 +723,9 @@ namespace fpWebApp
             }            
         }
 
+        protected void btnVolver_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("agendacrm.aspx");
+        }
     }
 }
