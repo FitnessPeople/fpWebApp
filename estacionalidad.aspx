@@ -218,10 +218,11 @@
                             <div class="ibox float-e-margins">
                                 <div class="ibox-content">
                                     <h2>FullCalendar</h2>
-                                    <div id="listaSemanas"></div>
-                   
                                     <p>
-                                        <a href="http://arshaw.com/fullcalendar/" target="_blank">FullCalendar documentation</a>
+                                        <div id="listaSemanas"></div>
+                                    </p>
+                                    <p>
+                                        <button class="btn btn-info" onclick="guardarEventosDelMes()">Guardar mes</button>
                                     </p>
                                 </div>
                             </div>
@@ -468,9 +469,7 @@
             return total;
         }
 
-        function actualizarEventosDelMes() {
-            let calendar;
-            console.log(calendar);
+        function guardarEventosDelMes() {
             const eventos = calendar.getEvents();
 
             // Obtener el mes actual visible en el calendario
@@ -491,18 +490,15 @@
                 allDay: ev.allDay
             }));
 
-            //fetch('agregaragendacomercial.aspx', {
-            //    method: 'POST',
-            //    headers: { 'Content-Type': 'application/json' },
-            //    body: JSON.stringify(eventosParaGuardar)
-            //})
-            //    .then(res => {
-            //        if (!res.ok) {
-            //            alert('Error al actualizar eventos del mes');
-            //        }
-            //    });
-
-            console.log(datos);
+            fetch('agregaragendacomercial.aspx/GuardarEventos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ eventos: eventosParaGuardar })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    alert('Eventos guardados: ' + data.id);
+                });
 
             //fetch('agregaragendacomercial.aspx', {
             //    method: 'POST',
@@ -629,7 +625,6 @@
                 droppable: true, // this allows things to be dropped onto the calendar
                 eventDrop: function (info) {
                     // Evento que se acaba de mover
-                    //console.log('Entra por el eventDrop');
                     const weekNumber = moment(addDays(info.event.start, -1)).week();
                     const yearNumber = info.event.start.getFullYear();
                     const { start, end } = obtenerFechaInicioFinSemana(weekNumber, yearNumber);
@@ -644,13 +639,8 @@
                 eventReceive: function (info) {
                     // Aquí el evento ya ha sido agregado al calendario
                     //console.log('Entra por el eventReceive');
-                    //let backgroundColor = info.event.extendedProps.bgcolor || '#fff'; // Color por defecto si no se define
-                    //    let zadr = `
-                    //        <div class="fc-event" style="background: ${backgroundColor}; color: #fff;">
-                    //          ${info.event.title}
-                    //        </div>
-                    //      `;
-                    //    return { html: zadr };
+                    let color = info.event.extendedProps.bgcolor;
+                    info.event.setProp('backgroundColor', color);
 
                     const weekNumber = moment(addDays(info.event.start, -1)).week();
                     const yearNumber = info.event.start.getFullYear();
@@ -664,7 +654,7 @@
                     mostrarSemanasDelMes(primerDia, addDays(ultimoDia, 1), calendar);
                 },
                 eventClick: function (info) {
-                    console.log('Entra');
+                    //console.log('Entra');
                     var eventObj = info.event;
                     if (eventObj) {
                         eventObj.remove(); // Elimina el evento
@@ -675,7 +665,6 @@
                     const month = fechaActual.getMonth();
                     const { primerDia, ultimoDia } = getPrimerYUltimoDia(year, month);
                     mostrarSemanasDelMes(primerDia, addDays(ultimoDia, 1), calendar);
-
                 },
                 datesSet: function (info) {
                     mostrarSemanasDelMes(info.start, info.end, calendar);
