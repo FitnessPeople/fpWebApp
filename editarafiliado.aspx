@@ -346,11 +346,8 @@
                                         <div>
                                             <button id="btnCancelar" class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" runat="server" onclick="window.location.href='afiliados'"><strong>Cancelar</strong></button>
                                             <asp:Button ID="btnActualizar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Actualizar" OnClick="btnActualizar_Click" />
-                                            <a href="agendacrm.aspx" class="btn btn-sm btn-info pull-right m-t-n-xs"> Regresar a Agenda CRM </a>
-                                            <button id="btnVolver" runat="server" type="button" class="btn btn-info" onclick="window.location.href='agendacrm.aspx';">
-                                               Regresar a Agenda CRM
-                                            </button>
-
+                                            <button id="btnVolver" runat="server" type="button" class="btn btn-sm btn-info pull-right m-t-n-xs" onclick="window.location.href='agendacrm.aspx';">
+                                               Regresar a Agenda CRM</button>
                                             <asp:Button ID="btnActualizaryVenderPlan" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
                                                 Text="Actualizar y Vender Plan" Visible="false" OnClick="btnActualizaryVenderPlan_Click" />
                                         </div>

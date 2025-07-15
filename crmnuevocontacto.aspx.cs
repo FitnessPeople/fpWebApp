@@ -1006,19 +1006,20 @@ namespace fpWebApp
                             existe = dt.Rows.Count > 0;
                         }
                         string urlRedirect = (existe) ? "editarafiliado" : "nuevoafiliado";
+                        string formulario = (existe) ? "de edición" : "nuevo afiliado";
 
                         string script = @"
-                                Swal.fire({
-                                    title: 'El contacto se actualizó correctamente',
-                                    text: 'Serás redirigido al formulario de edición.',
-                                    icon: 'success',
-                                    timer: 4000, // 4 segundos
-                                    showConfirmButton: false,
-                                    timerProgressBar: true
-                                }).then(() => {
-                                    window.location.href = '" + urlRedirect + @"?idcrm=" + idcrm + @"';
-                                });
-                                ";
+                            Swal.fire({
+                                title: 'Serás redirigido al formulario " + formulario + @"',
+                                text: 'Espera un momento...',
+                                icon: 'success',
+                                timer: 4000,
+                                showConfirmButton: false,
+                                timerProgressBar: true
+                            }).then(() => {
+                                window.location.href = '" + urlRedirect + @"?idcrm=" + idcrm + @"';
+                            });
+                        ";
 
                         ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
                     }

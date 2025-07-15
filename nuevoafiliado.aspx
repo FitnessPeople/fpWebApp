@@ -344,7 +344,8 @@
                                                 <div>
                                                     <button id="btnCancelar" class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='afiliados'" runat="server"><strong>Cancelar</strong></button>
                                                     <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
-
+                                                    <button id="btnVolver" runat="server" type="button" class="btn btn-sm btn-info pull-right m-t-n-xs" onclick="window.location.href='agendacrm.aspx';">
+                                                        Regresar a Agenda CRM</button>
                                                     <asp:Button ID="btnAgregarYRedirigir" runat="server" Text="Guardar y vender plan" CssClass="btn btn-sm btn-success m-t-n-xs m-r-md pull-right" Visible="true"
                                                         OnClick="btnAgregarYRedirigir_Click" />
                                                 </div>

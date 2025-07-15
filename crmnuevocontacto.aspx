@@ -752,7 +752,7 @@
                                                                     <i class="fas fa-pen text-info"></i>
                                                                     <label for="message-text" class="col-form-label">Contexto de la negociación:</label>
                                                                     <textarea id="txaObservaciones" runat="server" rows="3"
-                                                                        cssclass="form-control input-sm" class="form-control"></textarea>
+                                                                        cssclass="form-control input-sm" class="form-control" placeholder="Escribe tu comentario…"></textarea>
                                                                     <asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ControlToValidate="txaObservaciones"
                                                                         ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                                 </div>
@@ -1397,7 +1397,8 @@
                 $("#btnCancelar_").hide();
                 $("#btnVolverAgenda").show(); // Muestra el botón solo si viene del evento
                 const hoy = new Date().toLocaleDateString("es-CO"); // Formato local
-                const mensaje = `🗓️ Fecha de registro: ${hoy}\n✏️ Escribe tus observaciones aquí...`;
+                const mensaje = '✏️...';
+;
                 $("#txaObservaciones")
                     .val(mensaje)
                     .css({

@@ -189,7 +189,7 @@ namespace fpWebApp
             btnActualizar.Visible = true;
             btnCancelar.Visible = true;
             btnActualizaryVenderPlan.Visible = false;            
-            //btnVolver.Visible = false;
+            btnVolver.Visible = false;
 
 
 
@@ -210,7 +210,7 @@ namespace fpWebApp
                         btnActualizar.Visible = false;
                         btnCancelar.Visible = false;
                         btnActualizaryVenderPlan.Visible = true;                        
-                        //btnVolver.Visible = true;
+                        btnVolver.Visible = true;
                         
                         Session["IdAfiliado"] = parametro.ToString();
                     }
