@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.Web.Script.Services;
+using System.Web.Services;
 
 namespace fpWebApp
 {
@@ -105,6 +107,31 @@ namespace fpWebApp
             }
 
             dt.Dispose();
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string GuardarEvento(string title, string start, bool allDay, string bgcolor)
+        {
+            string dtInicio = Convert.ToDateTime(start).ToString("yyyy-MM-dd");
+            string dtFin = dtInicio;
+            string strQuery = "INSERT INTO estacionalidad (titulo, fecha_inicio, fecha_fin, todo_el_dia, bgcolor) " +
+            "VALUES ('" + title + "', '" + dtInicio + "', '" + dtFin + "', " + allDay + ", '" + bgcolor + "')";
+            clasesglobales cg = new clasesglobales();
+            cg.TraerDatosStr(strQuery);
+
+            return "Ok";
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string EliminarEvento(string id)
+        {
+            string strQuery = "DELETE FROM estacionalidad WHERE id = " + id;
+            clasesglobales cg = new clasesglobales();
+            cg.TraerDatosStr(strQuery);
+
+            return "Ok";
         }
 
         //private void CargarAgenda()

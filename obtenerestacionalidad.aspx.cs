@@ -23,7 +23,8 @@ namespace fpWebApp
                     title = row["titulo"],
                     start = row["fecha_inicio"],
                     end = row["fecha_fin"],
-                    allDay = row["todo_el_dia"]
+                    allDay = row["todo_el_dia"],
+                    backgroundColor = row["bgcolor"]
                 });
             }
 

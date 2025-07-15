@@ -259,7 +259,6 @@
     <Content Include="agendaespecialista.aspx" />
     <Content Include="agendagympass.aspx" />
     <Content Include="agendarcita.aspx" />
-    <Content Include="agregaragendacomercial.aspx" />
     <Content Include="arl.aspx" />
     <Content Include="asignarcita.aspx" />
     <Content Include="asistenciaagendagympass.aspx" />
@@ -1054,13 +1053,6 @@
     </Compile>
     <Compile Include="agendarcita.aspx.designer.cs">
       <DependentUpon>agendarcita.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="agregaragendacomercial.aspx.cs">
-      <DependentUpon>agregaragendacomercial.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="agregaragendacomercial.aspx.designer.cs">
-      <DependentUpon>agregaragendacomercial.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="arl.aspx.cs">

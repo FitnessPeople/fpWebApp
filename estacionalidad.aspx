@@ -179,35 +179,35 @@
                                 </div>
                                 <div id='external-events' class="ibox-content">
                                     <div class='fc-event'
-                                        data-title="5%" data-value="5" data-bgcolor="#ed5565">
+                                        data-title="5%" data-bgcolor="#ed5565">
                                         <div class='fc-event-main'
                                             style="color: #fff; background: #ed5565; border: 1px solid #ed5565; border-radius: 3px; font-size: 1.5em;">
                                             5%
                                         </div>
                                     </div>
                                     <div class='fc-event'
-                                        data-title="10%" data-value="10" data-bgcolor="#1ab394">
+                                        data-title="10%" data-bgcolor="#1ab394">
                                         <div class='fc-event-main'
                                             style="color: #fff; background: #1ab394; border: 1px solid #1ab394; border-radius: 3px; font-size: 1.5em;">
                                             10%
                                         </div>
                                     </div>
                                     <div class='fc-event'
-                                        data-title="15%" data-value="15" data-bgcolor="#1c84c6">
+                                        data-title="15%" data-bgcolor="#1c84c6">
                                         <div class='fc-event-main'
                                             style="color: #fff; background: #1c84c6; border: 1px solid #1c84c6; border-radius: 3px; font-size: 1.5em;">
                                             15%
                                         </div>
                                     </div>
                                     <div class='fc-event'
-                                        data-title="20%" data-value="20" data-bgcolor="#f8ac59">
+                                        data-title="20%" data-bgcolor="#f8ac59">
                                         <div class='fc-event-main'
                                             style="color: #fff; background: #f8ac59; border: 1px solid #f8ac59; border-radius: 3px; font-size: 1.5em;">
                                             20%
                                         </div>
                                     </div>
                                     <div class='fc-event'
-                                        data-title="25%" data-value="25" data-bgcolor="#23c6c8">
+                                        data-title="25%" data-bgcolor="#23c6c8">
                                         <div class='fc-event-main'
                                             style="color: #fff; background: #23c6c8; border: 1px solid #23c6c8; border-radius: 3px; font-size: 1.5em;">
                                             25%
@@ -217,12 +217,12 @@
                             </div>
                             <div class="ibox float-e-margins">
                                 <div class="ibox-content">
-                                    <h2>FullCalendar</h2>
+                                    <h2>Total por semana</h2>
                                     <p>
                                         <div id="listaSemanas"></div>
                                     </p>
                                     <p>
-                                        <button class="btn btn-info" onclick="guardarEventosDelMes()">Guardar mes</button>
+                                        <%--<button class="btn btn-info" onclick="guardarEventosDelMes()">Guardar mes</button>--%>
                                     </p>
                                 </div>
                             </div>
@@ -463,10 +463,77 @@
 
             const total = eventosSemana.reduce((acum, evento) => {
                 return acum + (parseInt(evento.extendedProps.value) || 0);
+                console.log(evento.extendedProps.value);
             }, 0);
 
             //console.log(`Total de valores en la semana: ${total}`);
             return total;
+        }
+
+        function realizarCalculosConExtendedProps(eventos) {
+            const semanasDiv = document.getElementById('listaSemanas');
+            semanasDiv.innerHTML = ''; // limpiar lista anterior
+
+
+            let sumaPorSemana = {};
+
+            eventos.forEach(evento => {
+                const fecha = new Date(evento.start);
+                const valor = parseFloat(evento.title);
+
+                if (isNaN(valor)) return;
+
+                // Calcular el año y número de semana
+                const semanaKey = obtenerClaveSemana(fecha);
+
+                if (!sumaPorSemana[semanaKey]) {
+                    sumaPorSemana[semanaKey] = 0;
+                }
+
+                sumaPorSemana[semanaKey] += valor;
+            });
+
+            let claves = Object.keys(sumaPorSemana); // claves = ["nombre", "color", "macho", "edad"]
+            for (let i = 0; i < claves.length; i++) {
+                let clave = claves[i];
+                //console.log(sumaPorSemana[clave]);
+                const totalSemana = sumaPorSemana[clave];
+                //semanasDiv.innerHTML += "<div>Semana " + clave + ": <span class='badge badge-danger'>" + sumaPorSemana[clave] + "%</span></div>";
+
+                if (parseInt(totalSemana) == 0) {
+                    semanasDiv.innerHTML += `<div>Semana ${clave}: <span class='badge badge-danger'>${totalSemana}%</span></div>`;
+                }
+                else {
+                    if (parseInt(totalSemana) < 100) {
+                        semanasDiv.innerHTML += `<div>Semana ${clave}: <span class='badge badge-warning'>${totalSemana}%</span></div>`;
+                    }
+                    else {
+                        if (parseInt(totalSemana) == 100) {
+                            semanasDiv.innerHTML += `<div>Semana ${clave}: <span class='badge badge-primary'>${totalSemana}%</span></div>`;
+                        }
+                        else {
+                            semanasDiv.innerHTML += `<div>Semana ${clave}: <span class='badge badge-danger'>${totalSemana}%</span></div>`;
+                        }
+                    }
+                }
+            }
+
+            //console.log('Suma por semana:', sumaPorSemana);
+            //semanasDiv.innerHTML += "<div>Semana X: <span class='badge badge-danger'>" + sumaPorSemana["W28"] + "%</span></div>";
+
+            // Aquí podrías mostrarlo en pantalla, actualizar el DOM, etc.
+            // document.getElementById('total').textContent = `Total: ${suma}`;
+        }
+
+        function obtenerClaveSemana(fecha) {
+            const temp = new Date(fecha.getTime());
+            temp.setHours(0, 0, 0, 0);
+            temp.setDate(temp.getDate() + 4 - (temp.getDay() || 7)); // Mover al jueves de la semana ISO
+
+            const yearStart = new Date(temp.getFullYear(), 0, 1);
+            const weekNo = Math.ceil((((temp - yearStart) / 86400000) + 1) / 7);
+
+            return `${String(weekNo).padStart(2, '0')}`;
         }
 
         function guardarEventosDelMes() {
@@ -508,6 +575,46 @@
                 })
                 .catch(error => {
                     console.error("Error al guardar eventos:", error);
+                });
+        }
+
+        function guardarEventoNuevo(evento) {
+            let data = evento;
+
+            // Enviar a servidor por AJAX
+            fetch("estacionalidad.aspx/GuardarEvento", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.text())
+                .then(data => {
+                    //console.log('Respuesta del servidor:', data);
+                })
+                .catch(error => {
+                    console.error('Error al guardar evento:', error);
+                });
+        }
+
+        function eliminarEvento(evento) {
+            let data = evento;
+
+            // Enviar a servidor por AJAX
+            fetch("estacionalidad.aspx/EliminarEvento", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.text())
+                .then(data => {
+                    //console.log('Respuesta del servidor:', data);
+                })
+                .catch(error => {
+                    console.error('Error al guardar evento:', error);
                 });
         }
 
@@ -558,8 +665,19 @@
                     let arrayOfDomNodes = [italicEl]
                     return { domNodes: arrayOfDomNodes }
                 },
-                editable: true,
-                events: 'obtenerestacionalidad.aspx',
+                editable: false,
+                //events: 'obtenerestacionalidad.aspx',
+                eventSources: [{
+                    url: 'obtenerestacionalidad.aspx',
+                    method: 'GET',
+                    failure: function () {
+                        alert('Error al cargar eventos.');
+                    },
+                    success: function (events) {
+                        // Aquí puedes hacer tu cálculo cuando todos los eventos hayan llegado
+                        realizarCalculosConExtendedProps(events);
+                    }
+                }],
                 weekNumbers: true,
                 fixedWeekCount: false,
                 showNonCurrentDates: false,
@@ -621,51 +739,77 @@
                     right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                 },
                 droppable: true, // this allows things to be dropped onto the calendar
-                eventDrop: function (info) {
-                    // Evento que se acaba de mover
-                    const weekNumber = moment(addDays(info.event.start, -1)).week();
-                    const yearNumber = info.event.start.getFullYear();
-                    const { start, end } = obtenerFechaInicioFinSemana(weekNumber, yearNumber);
+                //eventDrop: function (info) {
+                //    // Evento que se acaba de mover
+                //    const weekNumber = moment(addDays(info.event.start, -1)).week();
+                //    const yearNumber = info.event.start.getFullYear();
+                //    const { start, end } = obtenerFechaInicioFinSemana(weekNumber, yearNumber);
 
-                    const fechaActual = new Date();
-                    const year = fechaActual.getFullYear();
-                    const month = fechaActual.getMonth();
-                    const { primerDia, ultimoDia } = getPrimerYUltimoDia(year, month);
+                //    const fechaActual = new Date();
+                //    const year = fechaActual.getFullYear();
+                //    const month = fechaActual.getMonth();
+                //    const { primerDia, ultimoDia } = getPrimerYUltimoDia(year, month);
 
-                    mostrarSemanasDelMes(primerDia, addDays(ultimoDia, 1), calendar);
-                },
+                //    mostrarSemanasDelMes(primerDia, addDays(ultimoDia, 1), calendar);
+                //},
                 eventReceive: function (info) {
                     // Aquí el evento ya ha sido agregado al calendario
                     //console.log('Entra por el eventReceive');
                     let color = info.event.extendedProps.bgcolor;
                     info.event.setProp('backgroundColor', color);
+                    const evento = {
+                        title: info.event.title,
+                        start: info.event.start.toISOString(),
+                        allDay: info.event.allDay,
+                        bgcolor: info.event.backgroundColor
+                    };
+                    console.log(evento);
+                    guardarEventoNuevo(evento);
 
-                    const weekNumber = moment(addDays(info.event.start, -1)).week();
-                    const yearNumber = info.event.start.getFullYear();
-                    const { start, end } = obtenerFechaInicioFinSemana(weekNumber, yearNumber);
+                    realizarCalculosConExtendedProps(calendar.getEvents());
 
-                    const fechaActual = new Date();
-                    const year = fechaActual.getFullYear();
-                    const month = fechaActual.getMonth();
-                    const { primerDia, ultimoDia } = getPrimerYUltimoDia(year, month);
+                    //console.log(info);
+                    //const weekNumber = moment(addDays(info.event.start, -1)).week();
+                    //const yearNumber = info.event.start.getFullYear();
+                    //const { start, end } = obtenerFechaInicioFinSemana(weekNumber, yearNumber);
 
-                    mostrarSemanasDelMes(primerDia, addDays(ultimoDia, 1), calendar);
+                    //const fechaActual = new Date();
+                    //const year = fechaActual.getFullYear();
+                    //const month = fechaActual.getMonth();
+                    //const { primerDia, ultimoDia } = getPrimerYUltimoDia(year, month);
+
+                    //mostrarSemanasDelMes(primerDia, addDays(ultimoDia, 1), calendar);
                 },
                 eventClick: function (info) {
                     //console.log('Entra');
+
+                    const evento = {
+                        id: info.event.id
+                    };
+                    //console.log(evento);
+                    eliminarEvento(evento);
+
                     var eventObj = info.event;
                     if (eventObj) {
                         eventObj.remove(); // Elimina el evento
                     }
 
-                    const fechaActual = new Date();
-                    const year = fechaActual.getFullYear();
-                    const month = fechaActual.getMonth();
-                    const { primerDia, ultimoDia } = getPrimerYUltimoDia(year, month);
-                    mostrarSemanasDelMes(primerDia, addDays(ultimoDia, 1), calendar);
+                    realizarCalculosConExtendedProps(calendar.getEvents());
+
+                    //const fechaActual = new Date();
+                    //const year = fechaActual.getFullYear();
+                    //const month = fechaActual.getMonth();
+                    //const { primerDia, ultimoDia } = getPrimerYUltimoDia(year, month);
+                    //mostrarSemanasDelMes(primerDia, addDays(ultimoDia, 1), calendar);
                 },
                 datesSet: function (info) {
-                    mostrarSemanasDelMes(info.start, info.end, calendar);
+
+                    //const fechaActual = new Date();
+                    //const year = fechaActual.getFullYear();
+                    //const month = fechaActual.getMonth();
+                    //const { primerDia, ultimoDia } = getPrimerYUltimoDia(year, month);
+                    //mostrarSemanasDelMes(primerDia, addDays(ultimoDia, 1), calendar);
+                    //mostrarSemanasDelMes(info.start, info.end, calendar);
                 }
             });
 
@@ -683,7 +827,7 @@
         }
 
         function mostrarSemanasDelMes(startDate, endDate, calendar) {
-            //console.log(endDate);
+            //console.log(calendar.getEvents());
             const semanasDiv = document.getElementById('listaSemanas');
             semanasDiv.innerHTML = ''; // limpiar lista anterior
 
