@@ -679,7 +679,7 @@ namespace fpWebApp
                     string script = @"
                         Swal.fire({
                             title: '¡Afiliado actualizado correctamente!',
-                            text: 'Serás redirigido a los Planes comerciales',
+                            text: 'Serás redirigido a los planes comerciales',
                             icon: 'success',
                             timer: 5000, // 3 segundos
                             showConfirmButton: false,
