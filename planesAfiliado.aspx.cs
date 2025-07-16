@@ -160,10 +160,10 @@ namespace fpWebApp
             Session["IdAfiliado"] = string.Empty;
             Session["IdCRM"] = string.Empty;
             bool respuesta = false;
-            //btnActualizar.Visible = true;
-            //btnCancelar.Visible = true;
-            //btnActualizaryVenderPlan.Visible = false;
-            //btnVolver.Visible = false;
+            lbAgregarPlan.Visible = true;
+            btnCancelar.Visible = true;
+            //btnConfirmar.Visible = false;
+            btnVolver.Visible = false;
 
 
             clasesglobales cg = new clasesglobales();   
@@ -180,10 +180,10 @@ namespace fpWebApp
                     //DataTable dt1 = cg.ConsultarContactosCRMPorId(Convert.ToInt32(idcrm), out respuesta);
                     //DataTable dt2 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(dt1.Rows[0]["DocumentoAfiliado"].ToString()));
                     parametro = idAfil;
-                    //btnActualizar.Visible = false;
-                    //btnCancelar.Visible = false;
-                    //btnActualizaryVenderPlan.Visible = true;
-                    //btnVolver.Visible = true;
+                    //lbAgregarPlan.Visible = false;
+                    btnCancelar.Visible = false;
+                    //btnConfirmar.Visible = true;
+                    btnVolver.Visible = true;
 
                     Session["IdAfiliado"] = parametro.ToString();
                 }
@@ -720,7 +720,7 @@ namespace fpWebApp
                 {
                     // Consultar si este usuario tiene un plan activo y cual es su fecha de inicio y fecha final.
                     string strQuery = "SELECT * FROM AfiliadosPlanes " +
-                        "WHERE idAfiliado = " + Request.QueryString["id"].ToString() + " " +
+                        "WHERE idAfiliado = " + Session["IdAfiliado"].ToString() + " " +
                         "AND EstadoPlan = 'Activo'";
                     clasesglobales cg = new clasesglobales();
                     DataTable dt = cg.TraerDatos(strQuery);
@@ -783,7 +783,7 @@ namespace fpWebApp
                                     fechafinal = fechafinal.AddDays(Convert.ToInt16(ViewState["DiasCortesia"].ToString()));
                                     strQuery = "INSERT INTO AfiliadosPlanes " +
                                         "(idAfiliado, idPlan, FechaInicioPlan, FechaFinalPlan, EstadoPlan, Meses, Valor, ObservacionesPlan) " +
-                                        "VALUES (" + Request.QueryString["id"].ToString() + ", " + ViewState["idPlan"].ToString() + ", " +
+                                        "VALUES (" + Session["IdAfiliado"].ToString() + ", " + ViewState["idPlan"].ToString() + ", " +
                                         "'" + txbFechaInicio.Text.ToString() + "', '" + String.Format("{0:yyyy-MM-dd}", fechafinal) + "', 'Activo', " +
                                         "" + ViewState["meses"].ToString() + ", " + ViewState["precioTotal"].ToString() + ",  " +
                                         "'" + ViewState["observaciones"].ToString() + "') ";
@@ -847,7 +847,7 @@ namespace fpWebApp
                                         "" + Session["idUsuario"].ToString() + ") ";
                                     cg.TraerDatosStr(strQuery);
 
-                                    DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(int.Parse(Request.QueryString["id"].ToString()));
+                                    DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(int.Parse(Session["IdAfiliado"].ToString()));
 
                                     cg.InsertarLog(Session["idusuario"].ToString(), "afiliadosplanes", "Agrega", "El usuario agregó un nuevo plan al afiliado con documento: " + dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString() + ".", "", "");
 

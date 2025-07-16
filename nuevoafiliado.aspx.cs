@@ -462,7 +462,7 @@ namespace fpWebApp
                             showConfirmButton: false,
                             timerProgressBar: true
                         }).then(() => {
-                            window.location.href = 'planesAfiliado.aspx?idAfil='" + idAfil + @"';
+                            window.location.href = 'planesAfiliado.aspx?idAfil=" + idAfil + @"';
                         });
                     ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);

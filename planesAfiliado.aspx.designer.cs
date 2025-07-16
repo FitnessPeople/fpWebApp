@@ -483,13 +483,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbTotal;
 
         /// <summary>
-        /// Control lbAgregarPlan.
+        /// Control btnCancelar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbAgregarPlan;
+        protected global::System.Web.UI.HtmlControls.HtmlButton btnCancelar;
 
         /// <summary>
         /// Control btnVolver.
@@ -501,13 +501,13 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlButton btnVolver;
 
         /// <summary>
-        /// Control btnConfirmar.
+        /// Control lbAgregarPlan.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnConfirmar;
+        protected global::System.Web.UI.WebControls.LinkButton lbAgregarPlan;
 
         /// <summary>
         /// Control footer.

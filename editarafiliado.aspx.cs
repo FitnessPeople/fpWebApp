@@ -652,7 +652,7 @@ namespace fpWebApp
             {
                 clasesglobales cg = new clasesglobales();
 
-                mensaje = cg.ActualizarAfiliado(Convert.ToInt32(Request.QueryString["editid"]), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value),
+                mensaje = cg.ActualizarAfiliado(Convert.ToInt32(idAfil), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value),
                     txbNombre.Text.Trim().Replace("'", "").Replace("<", "").Replace(">", ""), txbApellido.Text.Trim(),
                     txbTelefono.Text.Trim(), txbEmail.Text.Trim(), txbDireccion.Text.Trim(), Convert.ToInt32(ddlCiudadAfiliado.SelectedItem.Value),
                     txbFechaNac.Text.Trim(), strFilename, Convert.ToInt32(ddlGenero.SelectedItem.Value),

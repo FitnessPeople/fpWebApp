@@ -277,7 +277,7 @@
                                                                     <thead>
                                                                         <tr>
                                                                             <th style="width: 100px;">Nombre</th>
-                                                                            <th data-breakpoints="xs" style="width: 600px;">Descripción</th>
+                                                                            <th data-breakpoints="xs" style="width: 500px;">Descripción</th>
                                                                             <th data-breakpoints="xs">Vigencia</th>
                                                                             <th data-breakpoints="xs" class="text-right">Precio</th>
                                                                         </tr>
@@ -445,7 +445,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-6"> 
                                                         <div class="form-group">
                                                             <div class="panel panel-default" runat="server" id="div1">
                                                                 <div class="panel-heading">
@@ -549,13 +549,14 @@
                                                 <%--<asp:Literal ID="ltMensaje" runat="server"></asp:Literal>--%>
 
                                                 <div>
-                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='afiliados'"><strong>Cancelar</strong></button>
+                                                    <button id="btnCancelar" class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='afiliados'" runat="server"><strong>Cancelar</strong></button>
+                                                    <button id="btnVolver" runat="server" type="button" class="btn btn-sm btn-info pull-right m-t-n-xs" onclick="window.location.href='agendacrm.aspx';">
+                                                         Regresar a Agenda CRM</button>
                                                     <asp:LinkButton ID="lbAgregarPlan" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" OnClick="lbAgregarPlan_Click">
                                                         <i class="fa fa-ticket"></i> Agregar plan</asp:LinkButton>
-                                                    <button id="btnVolver" runat="server" type="button" class="btn btn-sm btn-info pull-right m-t-n-xs" onclick="window.location.href='agendacrm.aspx';">
-                                                        Regresar a Agenda CRM</button>
-                                                    <asp:Button ID="btnConfirmar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
-                                                        Text="Confirmar venta" Visible="false"  />
+                                                       
+<%--                                                    <asp:Button ID="btnConfirmar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
+                                                        Text="Confirmar venta" Visible="false"  />--%>
                                                 </div>
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
