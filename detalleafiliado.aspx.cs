@@ -145,7 +145,8 @@ namespace fpWebApp
             {
                 for (int i = 0; i < dt2.Rows.Count; i++)
                 {
-                    strFila = listarDetalle(int.Parse(dt2.Rows[i]["idAfiliadoPlan"].ToString()));
+                    //strFila = listarDetalle(int.Parse(dt2.Rows[i]["idAfiliadoPlan"].ToString()));
+                    strFila = "";
                     ltDetalle.Text += strFila;
                 }
             }
@@ -246,21 +247,22 @@ namespace fpWebApp
 
         private void CargarParq(string idAfiliado)
         {
-            string strQuery = "SELECT *, " +
-                "IF(Respuesta1ParQ=0,'No','Si') AS respuesta1, " +
-                "IF(Respuesta1ParQ=0,'info','danger') AS label " +
-                "FROM ParQ p, ParqAfiliados pa " +
-                "WHERE p.idParq IN (SELECT idParQ FROM ParqAfiliados WHERE idAfiliado = " + idAfiliado + " GROUP BY idParQ) " +
-                "AND p.idParq = pa.idParq " +
-                "AND pa.FechaRespParQ = (SELECT FechaRespParQ " +
-                "FROM ParqAfiliados " +
-                "WHERE idAfiliado = " + idAfiliado + " " +
-                "GROUP BY FechaRespParQ " +
-                "ORDER BY FechaRespParQ DESC " +
-                "LIMIT 1) " +
-                "ORDER BY Orden ";
+            //string strQuery = "SELECT *, " +
+            //    "IF(Respuesta1ParQ=0,'No','Si') AS respuesta1, " +
+            //    "IF(Respuesta1ParQ=0,'info','danger') AS label " +
+            //    "FROM ParQ p, ParqAfiliados pa " +
+            //    "WHERE p.idParq IN (SELECT idParQ FROM ParqAfiliados WHERE idAfiliado = " + idAfiliado + " GROUP BY idParQ) " +
+            //    "AND p.idParq = pa.idParq " +
+            //    "AND pa.FechaRespParQ = (SELECT FechaRespParQ " +
+            //    "FROM ParqAfiliados " +
+            //    "WHERE idAfiliado = " + idAfiliado + " " +
+            //    "GROUP BY FechaRespParQ " +
+            //    "ORDER BY FechaRespParQ DESC " +
+            //    "LIMIT 1) " +
+            //    "ORDER BY Orden ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            //DataTable dt = cg.TraerDatos(strQuery); 
+            DataTable dt = cg.ConsultarPreguntasPARQporIdAfiliado(Convert.ToInt32(idAfiliado));
 
             if (dt.Rows.Count > 0)
             {

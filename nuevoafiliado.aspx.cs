@@ -133,11 +133,9 @@ namespace fpWebApp
         }
 
         private void CargarEmpresas()
-        {
-            string strQuery = "SELECT idEmpresaAfiliada, RazonSocial FROM EmpresasAfiliadas " +
-                "ORDER BY RazonSocial";
+        {            
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarEmpresasAfiliadas();
 
             ddlEmpresaConvenio.DataSource = dt;
             ddlEmpresaConvenio.DataBind();
@@ -202,10 +200,9 @@ namespace fpWebApp
 
         private bool ExisteDocumento(string strDocumento)
         {
-            bool rta = false;
-            string strQuery = "SELECT DocumentoAfiliado FROM Afiliados WHERE DocumentoAfiliado = '" + strDocumento + "' ";
+            bool rta = false;            
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarExisteDocdAfiliado(strDocumento);
 
             if (dt.Rows.Count > 0)
             {
@@ -266,34 +263,34 @@ namespace fpWebApp
                 return;
             }
 
-            if (ExisteEmail(txbEmail.Text.Trim()))
-            {
-                string script = @"
-                    Swal.fire({
-                    title: 'Este correo ya está registrado',
-                    text: 'Ya existe un afiliado con esta cuenta de correo electrónico.',
-                    icon: 'warning'
-                });
-                ";
-                ScriptManager.RegisterStartupScript(this, GetType(), "EmailDuplicado", script, true);
-                UpdatePanel1.Update();
-                return;
-            }
+            //if (ExisteEmail(txbEmail.Text.Trim()))
+            //{
+            //    string script = @"
+            //        Swal.fire({
+            //        title: 'Este correo ya está registrado',
+            //        text: 'Ya existe un afiliado con esta cuenta de correo electrónico.',
+            //        icon: 'warning'
+            //    });
+            //    ";
+            //    ScriptManager.RegisterStartupScript(this, GetType(), "EmailDuplicado", script, true);
+            //    UpdatePanel1.Update();
+            //    return;
+            //}
 
            
-            if (ExisteTelefono(txbTelefono.Text.Trim())) 
-            {
-                string script = @"
-                    Swal.fire({
-                    title: 'Este teléfono ya está registrado',
-                    text: 'Ya existe un afiliado con este número de teléfono.',
-                    icon: 'warning'
-                });
-                ";
-                ScriptManager.RegisterStartupScript(this, GetType(), "EmailDuplicado", script, true);
-                UpdatePanel1.Update();
-                return;
-            }
+            //if (ExisteTelefono(txbTelefono.Text.Trim())) 
+            //{
+            //    string script = @"
+            //        Swal.fire({
+            //        title: 'Este teléfono ya está registrado',
+            //        text: 'Ya existe un afiliado con este número de teléfono.',
+            //        icon: 'warning'
+            //    });
+            //    ";
+            //    ScriptManager.RegisterStartupScript(this, GetType(), "EmailDuplicado", script, true);
+            //    UpdatePanel1.Update();
+            //    return;
+            //}
 
             string strFilename = "nofoto.png";
             HttpPostedFile postedFile = Request.Files["fileFoto"];
@@ -322,13 +319,13 @@ namespace fpWebApp
                     cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Nuevo",
                         "El usuario creó un nuevo afiliado con documento: " + txbDocumento.Text, "", "");
 
-                    DataTable dt = cg.TraerDatos("SELECT idAfiliado FROM Afiliados WHERE DocumentoAfiliado = '" + txbDocumento.Text + "' ");
+                    //DataTable dt = cg.TraerDatos("SELECT idAfiliado FROM Afiliados WHERE DocumentoAfiliado = '" + txbDocumento.Text + "' ");
 
-                    string strMensaje = "Bienvenido a Fitness People \r\n\r\n";
-                    strMensaje += "Se ha registrado como afiliado en Fitness People. Por favor confirme sus datos en este enlace: \r\n";
-                    strMensaje += "https://fitnesspeoplecolombia.com/verificacion?id=" + dt.Rows[0]["idAfiliado"].ToString();
+                    //string strMensaje = "Bienvenido a Fitness People \r\n\r\n";
+                    //strMensaje += "Se ha registrado como afiliado en Fitness People. Por favor confirme sus datos en este enlace: \r\n";
+                    //strMensaje += "https://fitnesspeoplecolombia.com/verificacion?id=" + dt.Rows[0]["idAfiliado"].ToString();
 
-                    cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", txbEmail.Text, "Nuevo registro en Fitness People", strMensaje);
+                    //cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", txbEmail.Text, "Nuevo registro en Fitness People", strMensaje);
 
                     string script = @"
                         Swal.fire({
@@ -388,34 +385,34 @@ namespace fpWebApp
                 return;
             }
 
-            if (ExisteEmail(txbEmail.Text.Trim()))
-            {
-                string script = @"
-                    Swal.fire({
-                    title: 'Este correo ya está registrado',
-                    text: 'Ya existe un afiliado con esta cuenta de correo electrónico.',
-                    icon: 'warning'
-                });
-                ";
-                ScriptManager.RegisterStartupScript(this, GetType(), "EmailDuplicado", script, true);
-                UpdatePanel1.Update();
-                return;
-            }
+            //if (ExisteEmail(txbEmail.Text.Trim()))
+            //{
+            //    string script = @"
+            //        Swal.fire({
+            //        title: 'Este correo ya está registrado',
+            //        text: 'Ya existe un afiliado con esta cuenta de correo electrónico.',
+            //        icon: 'warning'
+            //    });
+            //    ";
+            //    ScriptManager.RegisterStartupScript(this, GetType(), "EmailDuplicado", script, true);
+            //    UpdatePanel1.Update();
+            //    return;
+            //}
 
 
-            if (ExisteTelefono(txbTelefono.Text.Trim()))
-            {
-                string script = @"
-                    Swal.fire({
-                    title: 'Este teléfono ya está registrado',
-                    text: 'Ya existe un afiliado con este número de teléfono.',
-                    icon: 'warning'
-                });
-                ";
-                ScriptManager.RegisterStartupScript(this, GetType(), "EmailDuplicado", script, true);
-                UpdatePanel1.Update();
-                return;
-            }
+            //if (ExisteTelefono(txbTelefono.Text.Trim()))
+            //{
+            //    string script = @"
+            //        Swal.fire({
+            //        title: 'Este teléfono ya está registrado',
+            //        text: 'Ya existe un afiliado con este número de teléfono.',
+            //        icon: 'warning'
+            //    });
+            //    ";
+            //    ScriptManager.RegisterStartupScript(this, GetType(), "EmailDuplicado", script, true);
+            //    UpdatePanel1.Update();
+            //    return;
+            //}
 
             string strFilename = "nofoto.png";
             HttpPostedFile postedFile = Request.Files["fileFoto"];
@@ -443,22 +440,23 @@ namespace fpWebApp
                 {
                     cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Nuevo",
                         "El usuario creó un nuevo afiliado con documento: " + txbDocumento.Text, "", "");
-
-                    DataTable dt = cg.TraerDatos("SELECT idAfiliado FROM Afiliados WHERE DocumentoAfiliado = '" + txbDocumento.Text + "' ");
-
+                                       
+                    DataTable dt = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(txbDocumento.Text));
                     string idAfil = dt.Rows[0]["idAfiliado"].ToString();
-                    string strMensaje = "Bienvenido a Fitness People \r\n\r\n";
-                    strMensaje += "Se ha registrado como afiliado en Fitness People. Por favor confirme sus datos en este enlace: \r\n";
-                    strMensaje += "https://fitnesspeoplecolombia.com/verificacion?id=" + idAfil;
+                    
+                    //DataTable dt = cg.TraerDatos("SELECT idAfiliado FROM Afiliados WHERE DocumentoAfiliado = '" + txbDocumento.Text + "' ");
+                    //string strMensaje = "Bienvenido a Fitness People \r\n\r\n";
+                    //strMensaje += "Se ha registrado como afiliado en Fitness People. Por favor confirme sus datos en este enlace: \r\n";
+                    //strMensaje += "https://fitnesspeoplecolombia.com/verificacion?id=" + idAfil;
 
-                    cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", txbEmail.Text, "Nuevo registro en Fitness People", strMensaje);
+                    //cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", txbEmail.Text, "Nuevo registro en Fitness People", strMensaje);
 
                     string script = @"
                         Swal.fire({
                             title: 'Afiliado registrado correctamente',
                             text: 'Se ha enviado una notificación al correo del afiliado para confirmar sus datos.',
                             icon: 'success',
-                            timer: 5000,
+                            timer: 4000,
                             showConfirmButton: false,
                             timerProgressBar: true
                         }).then(() => {

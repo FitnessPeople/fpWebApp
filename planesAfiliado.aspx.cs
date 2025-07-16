@@ -166,14 +166,14 @@ namespace fpWebApp
             btnVolver.Visible = false;
 
 
-            clasesglobales cg = new clasesglobales();   
-           
-                string editid = Request.QueryString["id"];
-                string idAfil = Request.QueryString["idAfil"];
+            clasesglobales cg = new clasesglobales();
+
+            string editid = Request.QueryString["id"];
+            string idAfil = Request.QueryString["idAfil"];
 
 
-                if (Request.QueryString.Count > 0)
-                {
+            if (Request.QueryString.Count > 0)
+            {
 
                 if (!string.IsNullOrEmpty(idAfil))
                 {
@@ -190,7 +190,7 @@ namespace fpWebApp
                 else if (!string.IsNullOrEmpty(editid))
                 {
                     parametro = editid;
-                    
+
                 }
                 Session["IdAfiliado"] = parametro.ToString();
 
@@ -850,6 +850,9 @@ namespace fpWebApp
                                     DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(int.Parse(Session["IdAfiliado"].ToString()));
 
                                     cg.InsertarLog(Session["idusuario"].ToString(), "afiliadosplanes", "Agrega", "El usuario agregó un nuevo plan al afiliado con documento: " + dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString() + ".", "", "");
+
+
+
 
                                     string script = @"
                                             Swal.fire({

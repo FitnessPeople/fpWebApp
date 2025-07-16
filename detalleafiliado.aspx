@@ -427,8 +427,8 @@
                                                         <div>
                                                             <small class="pull-right text-navy"><%# Eval("FechaRespParQ", "{0:dd MMM yyyy}") %></small>
                                                             <strong><%# Eval("Orden") %></strong>
-                                                            <div><%# Eval("PreguntaParQ") %></div>
-                                                            <small class="text-muted"><span class="label label-<%# Eval("label") %>"><%# Eval("respuesta1") %></span> <%# Eval("Respuesta2ParQ") %></small>
+                                                            <div><%# Eval("PreguntaParq") %></div>
+                                                            <small class="text-muted"><span class="label label-<%# Eval("label") %>"><%# Eval("Respuesta") %></span> <%# Eval("Argumento") %></small>
                                                         </div>
                                                     </div>
                                                 </ItemTemplate>
