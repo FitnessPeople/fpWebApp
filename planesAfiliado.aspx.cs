@@ -76,19 +76,19 @@ namespace fpWebApp
                         CargarAfiliado();
                         CargarPlanesAfiliado();
 
-                        if (ViewState["EstadoAfiliado"].ToString() != "Activo")
-                        {
-                            string script = @"
-                                Swal.fire({
-                                    title: 'Alerta',
-                                    text: 'El afiliado no se encuentra activo.',
-                                    icon: 'error'
-                                }).then(() => {
-                                    window.location.href = 'afiliados';
-                                });
-                                ";
-                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                        }
+                        //if (ViewState["EstadoAfiliado"].ToString() != "Activo")
+                        //{
+                        //    string script = @"
+                        //        Swal.fire({
+                        //            title: 'Alerta',
+                        //            text: 'El afiliado no se encuentra activo.',
+                        //            icon: 'error'
+                        //        }).then(() => {
+                        //            window.location.href = 'afiliados';
+                        //        });
+                        //        ";
+                        //    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                        //}
 
                         string strData = ListarDetalle();
                         ltDetalleWompi.Text = strData;
@@ -154,15 +154,56 @@ namespace fpWebApp
 
         private void CargarAfiliado()
         {
+            string idcrm = string.Empty;
+
+            string parametro = string.Empty;
+            Session["IdAfiliado"] = string.Empty;
+            Session["IdCRM"] = string.Empty;
+            bool respuesta = false;
+            lbAgregarPlan.Visible = true;
+            btnCancelar.Visible = true;
+            //btnConfirmar.Visible = false;
+            btnVolver.Visible = false;
+
+
+            clasesglobales cg = new clasesglobales();
+
+            string editid = Request.QueryString["id"];
+            string idAfil = Request.QueryString["idAfil"];
+
+
             if (Request.QueryString.Count > 0)
             {
+
+                if (!string.IsNullOrEmpty(idAfil))
+                {
+                    //DataTable dt1 = cg.ConsultarContactosCRMPorId(Convert.ToInt32(idcrm), out respuesta);
+                    //DataTable dt2 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(dt1.Rows[0]["DocumentoAfiliado"].ToString()));
+                    parametro = idAfil;
+                    //lbAgregarPlan.Visible = false;
+                    btnCancelar.Visible = false;
+                    //btnConfirmar.Visible = true;
+                    btnVolver.Visible = true;
+
+                    Session["IdAfiliado"] = parametro.ToString();
+                }
+                else if (!string.IsNullOrEmpty(editid))
+                {
+                    parametro = editid;
+
+                }
+                Session["IdAfiliado"] = parametro.ToString();
+
+
+
+
                 string strQuery = @"SELECT *, 
                     IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS label 
                     FROM afiliados a 
                     LEFT JOIN Sedes s ON a.idSede = s.idSede 
                     LEFT JOIN ciudades ON ciudades.idCiudad = a.idCiudadAfiliado 
-                    WHERE a.idAfiliado = " + Request.QueryString["id"].ToString();
-                clasesglobales cg = new clasesglobales();
+                    WHERE a.idAfiliado = " + parametro;
+                //clasesglobales cg = new clasesglobales();
 
                 DataTable dt = cg.TraerDatos(strQuery);
 
@@ -215,7 +256,7 @@ namespace fpWebApp
             if (Request.QueryString.Count > 0)
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.CargarPlanesAfiliado(Request.QueryString["id"].ToString(), "Activo");
+                DataTable dt = cg.CargarPlanesAfiliado(Session["IdAfiliado"].ToString(), "Activo");
                 rpPlanesAfiliado.DataSource = dt;
                 rpPlanesAfiliado.DataBind();
                 dt.Dispose();
@@ -679,7 +720,7 @@ namespace fpWebApp
                 {
                     // Consultar si este usuario tiene un plan activo y cual es su fecha de inicio y fecha final.
                     string strQuery = "SELECT * FROM AfiliadosPlanes " +
-                        "WHERE idAfiliado = " + Request.QueryString["id"].ToString() + " " +
+                        "WHERE idAfiliado = " + Session["IdAfiliado"].ToString() + " " +
                         "AND EstadoPlan = 'Activo'";
                     clasesglobales cg = new clasesglobales();
                     DataTable dt = cg.TraerDatos(strQuery);
@@ -715,7 +756,7 @@ namespace fpWebApp
                             ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                         }
                         else
-                        { 
+                        {
                             if (ViewState["precioTotal"].ToString() != Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")).ToString())
                             {
                                 string script = @"
@@ -742,12 +783,12 @@ namespace fpWebApp
                                     fechafinal = fechafinal.AddDays(Convert.ToInt16(ViewState["DiasCortesia"].ToString()));
                                     strQuery = "INSERT INTO AfiliadosPlanes " +
                                         "(idAfiliado, idPlan, FechaInicioPlan, FechaFinalPlan, EstadoPlan, Meses, Valor, ObservacionesPlan) " +
-                                        "VALUES (" + Request.QueryString["id"].ToString() + ", " + ViewState["idPlan"].ToString() + ", " +
+                                        "VALUES (" + Session["IdAfiliado"].ToString() + ", " + ViewState["idPlan"].ToString() + ", " +
                                         "'" + txbFechaInicio.Text.ToString() + "', '" + String.Format("{0:yyyy-MM-dd}", fechafinal) + "', 'Activo', " +
                                         "" + ViewState["meses"].ToString() + ", " + ViewState["precioTotal"].ToString() + ",  " +
                                         "'" + ViewState["observaciones"].ToString() + "') ";
                                     cg.TraerDatosStr(strQuery);
-                                    
+
 
                                     //if (txbWompi.Text.ToString() != "0")
                                     //{
@@ -805,8 +846,8 @@ namespace fpWebApp
                                         "NOW(), 'Aprobado', " +
                                         "" + Session["idUsuario"].ToString() + ") ";
                                     cg.TraerDatosStr(strQuery);
-                                    
-                                    DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(int.Parse(Request.QueryString["id"].ToString()));
+
+                                    DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(int.Parse(Session["IdAfiliado"].ToString()));
 
                                     cg.InsertarLog(Session["idusuario"].ToString(), "afiliadosplanes", "Agrega", "El usuario agregó un nuevo plan al afiliado con documento: " + dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString() + ".", "", "");
 
@@ -934,6 +975,11 @@ namespace fpWebApp
                     lnkPlan.Attributes.Add("class", "btn btn-outline btn-" + ((DataRowView)e.Item.DataItem).Row["NombreColorPlan"].ToString() + " btn-block btn-sm");
                 }
             }
+        }
+
+        protected void btnConfirmar_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

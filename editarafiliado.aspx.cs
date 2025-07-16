@@ -20,6 +20,7 @@ namespace fpWebApp
         {
             if (!IsPostBack)
             {
+
                 if (Session["idUsuario"] != null)
                 {
                     ValidarPermisos("Especialistas");
@@ -651,7 +652,7 @@ namespace fpWebApp
             {
                 clasesglobales cg = new clasesglobales();
 
-                mensaje = cg.ActualizarAfiliado(Convert.ToInt32(Request.QueryString["editid"]), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value),
+                mensaje = cg.ActualizarAfiliado(Convert.ToInt32(idAfil), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value),
                     txbNombre.Text.Trim().Replace("'", "").Replace("<", "").Replace(">", ""), txbApellido.Text.Trim(),
                     txbTelefono.Text.Trim(), txbEmail.Text.Trim(), txbDireccion.Text.Trim(), Convert.ToInt32(ddlCiudadAfiliado.SelectedItem.Value),
                     txbFechaNac.Text.Trim(), strFilename, Convert.ToInt32(ddlGenero.SelectedItem.Value),
@@ -678,9 +679,9 @@ namespace fpWebApp
                     string script = @"
                         Swal.fire({
                             title: '¡Afiliado actualizado correctamente!',
-                            text: '',
+                            text: 'Serás redirigido a los planes comerciales',
                             icon: 'success',
-                            timer: 3000, // 3 segundos
+                            timer: 5000, // 3 segundos
                             showConfirmButton: false,
                             timerProgressBar: true
                         }).then(() => {
@@ -722,5 +723,9 @@ namespace fpWebApp
             }
         }
 
+        protected void btnVolver_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("agendacrm.aspx");
+        }
     }
 }

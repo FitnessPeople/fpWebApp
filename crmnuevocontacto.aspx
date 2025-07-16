@@ -752,7 +752,7 @@
                                                                     <i class="fas fa-pen text-info"></i>
                                                                     <label for="message-text" class="col-form-label">Contexto de la negociación:</label>
                                                                     <textarea id="txaObservaciones" runat="server" rows="3"
-                                                                        cssclass="form-control input-sm" class="form-control"></textarea>
+                                                                        cssclass="form-control input-sm" class="form-control" placeholder="Escribe tu comentario…"></textarea>
                                                                     <asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ControlToValidate="txaObservaciones"
                                                                         ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                                 </div>
@@ -867,8 +867,10 @@
                                                                 <asp:Literal ID="ltObjetivo" runat="server"></asp:Literal>
                                                                 </p>                                                                
                                                              
-                                                            <asp:Button ID="btnActualizarYRedirigir" runat="server" Text="Ir a afiliaciones"
-                                                                OnClick="btnActualizarYRedirigir_Click" CssClass="btn btn-success btn-sm btn-block" />
+                                                                <div class="text-left">
+                                                                    <asp:Button ID="btnActualizarYRedirigir" runat="server" Text="Ir a afiliaciones"
+                                                                        OnClick="btnActualizarYRedirigir_Click" CssClass="btn btn-success btn-sm" />
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="client-detail">
@@ -1394,6 +1396,21 @@
                 $("#valorPropuestaYArchivo").hide();
                 $("#btnCancelar_").hide();
                 $("#btnVolverAgenda").show(); // Muestra el botón solo si viene del evento
+                const hoy = new Date().toLocaleDateString("es-CO"); // Formato local
+                const mensaje = '✏️...';
+;
+                $("#txaObservaciones")
+                    .val(mensaje)
+                    .css({
+                        "font-family": "Segoe UI, sans-serif",
+                        "font-size": "14px",
+                        "padding": "8px",
+                        "border-radius": "6px",
+                        "border": "1px solid #ccc",
+                        "background-color": "#fdfdfd",
+                        "color": "#333"
+                    })
+                    .show();
 
             }
         });

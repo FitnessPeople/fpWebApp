@@ -122,7 +122,8 @@
                 </div>
                 <div class="modal-body">
                     <p>
-                        <asp:Literal ID="ltDetalleWompi" runat="server"></asp:Literal></p>
+                        <asp:Literal ID="ltDetalleWompi" runat="server"></asp:Literal>
+                    </p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -198,11 +199,11 @@
                                     <tr>
                                         <td><strong><i class="fab fa-whatsapp"></i></strong>
                                             <asp:Literal ID="ltCelular" runat="server"></asp:Literal></td>
-                                        <td><strong><i class="fa fa-shield"></i></strong> Estado: 
+                                        <td><strong><i class="fa fa-shield"></i></strong>Estado: 
                                             <asp:Literal ID="ltEstado" runat="server"></asp:Literal></td>
                                     </tr>
                                     <tr>
-                                        <td><strong><i class="fa fa-building"></i></strong> Sede: 
+                                        <td><strong><i class="fa fa-building"></i></strong>Sede: 
                                             <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
                                         <td><strong>54</strong> Días asistidos</td>
                                     </tr>
@@ -275,8 +276,8 @@
                                                                     data-empty="Sin resultados">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th>Nombre</th>
-                                                                            <th data-breakpoints="xs">Descripción</th>
+                                                                            <th style="width: 100px;">Nombre</th>
+                                                                            <th data-breakpoints="xs" style="width: 500px;">Descripción</th>
                                                                             <th data-breakpoints="xs">Vigencia</th>
                                                                             <th data-breakpoints="xs" class="text-right">Precio</th>
                                                                         </tr>
@@ -286,7 +287,7 @@
                                                                             <ItemTemplate>
                                                                                 <tr class="feed-element">
                                                                                     <td>
-                                                                                        <asp:LinkButton runat="server" ID="btnSeleccionarPlan" CommandArgument='<%# Eval("idPlan") %>' 
+                                                                                        <asp:LinkButton runat="server" ID="btnSeleccionarPlan" CommandArgument='<%# Eval("idPlan") %>'
                                                                                             CommandName="SeleccionarPlan"><%# Eval("NombrePlan") %></asp:LinkButton>
                                                                                         <%--<asp:Button runat="server" ID="btnSeleccionarPlan" OnClick="btnSeleccionarPlan_Click" CommandArgument="" />--%></td>
                                                                                     <td><i class="fa fa-note-sticky m-r-xs font-bold"></i><%# Eval("DescripcionPlan") %></td>
@@ -359,8 +360,10 @@
                                                                                     <i class="fa fa-tag fa-3x" style="font-size: 2.3em"></i>
                                                                                 </div>
                                                                                 <div class="col-xs-9 text-right">
-                                                                                    <span>Descuento <asp:Literal ID="ltDescuento" runat="server"></asp:Literal></span>
-                                                                                    <h2 class="font-bold"><asp:Literal ID="ltConDescuento" runat="server"></asp:Literal></h2>
+                                                                                    <span>Descuento
+                                                                                        <asp:Literal ID="ltDescuento" runat="server"></asp:Literal></span>
+                                                                                    <h2 class="font-bold">
+                                                                                        <asp:Literal ID="ltConDescuento" runat="server"></asp:Literal></h2>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -442,11 +445,11 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-6"> 
                                                         <div class="form-group">
                                                             <div class="panel panel-default" runat="server" id="div1">
                                                                 <div class="panel-heading">
-                                                                    <i class="fa fa-money-bill"></i> Pago
+                                                                    <i class="fa fa-money-bill"></i>Pago
                                                                     <asp:Literal ID="Literal1" runat="server"></asp:Literal>
                                                                 </div>
                                                                 <div class="panel-body">
@@ -468,7 +471,7 @@
                                                                             <div class="col-lg-4">
                                                                                 <asp:TextBox ID="txbWompi" CssClass="form-control input-sm"
                                                                                     runat="server" OnTextChanged="txbWompi_TextChanged" Text="$0" onclick="if(this.value === '$0') this.value=''"
-                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" autocomplete="off" 
+                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" autocomplete="off"
                                                                                     onblur="if(this.value.replace(/\D/g, '') === '') this.value = '$0'; else keepFormatted(this);"
                                                                                     AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
@@ -484,8 +487,8 @@
                                                                             </div>
                                                                             <div class="col-lg-4">
                                                                                 <asp:TextBox ID="txbDatafono" CssClass="form-control input-sm"
-                                                                                    runat="server" OnTextChanged="txbDatafono_TextChanged" Text="$0" onclick="if(this.value === '$0') this.value=''" 
-                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" autocomplete="off" 
+                                                                                    runat="server" OnTextChanged="txbDatafono_TextChanged" Text="$0" onclick="if(this.value === '$0') this.value=''"
+                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" autocomplete="off"
                                                                                     onblur="if(this.value.replace(/\D/g, '') === '') this.value = '$0'; else keepFormatted(this);"
                                                                                     AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
@@ -500,7 +503,7 @@
                                                                             <div class="col-lg-4">
                                                                                 <asp:TextBox ID="txbEfectivo" CssClass="form-control input-sm"
                                                                                     runat="server" OnTextChanged="txbEfectivo_TextChanged" Text="$0" onclick="if(this.value === '$0') this.value=''"
-                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" autocomplete="off" 
+                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" autocomplete="off"
                                                                                     onblur="if(this.value.replace(/\D/g, '') === '') this.value = '$0'; else keepFormatted(this);"
                                                                                     AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
@@ -520,8 +523,8 @@
                                                                             </div>
                                                                             <div class="col-lg-4">
                                                                                 <asp:TextBox ID="txbTransferencia" CssClass="form-control input-sm"
-                                                                                    runat="server" OnTextChanged="txbTransferencia_TextChanged" Text="$0" onclick="if(this.value === '$0') this.value=''" 
-                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" autocomplete="off" 
+                                                                                    runat="server" OnTextChanged="txbTransferencia_TextChanged" Text="$0" onclick="if(this.value === '$0') this.value=''"
+                                                                                    placeholder="$0" onkeyup="formatCurrency(this)" autocomplete="off"
                                                                                     onblur="if(this.value.replace(/\D/g, '') === '') this.value = '$0'; else keepFormatted(this);"
                                                                                     AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                             </div>
@@ -529,7 +532,9 @@
                                                                     </div>
                                                                     <hr />
                                                                     <div class="form-group" style="margin-bottom: 5px;">
-                                                                        <h1><label class="col-lg-7 control-label">TOTAL
+                                                                        <h1>
+                                                                            <label class="col-lg-7 control-label">
+                                                                                TOTAL
                                                                             <asp:Literal ID="ltValorTotal" runat="server"></asp:Literal>:</label></h1>
                                                                         <div class="col-lg-5">
                                                                             <asp:TextBox ID="txbTotal" CssClass="form-control input-sm"
@@ -544,13 +549,14 @@
                                                 <%--<asp:Literal ID="ltMensaje" runat="server"></asp:Literal>--%>
 
                                                 <div>
-                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"
-                                                        onclick="window.location.href='afiliados'">
-                                                        <strong>Cancelar</strong></button>
-                                                    <asp:LinkButton ID="lbAgregarPlan" runat="server"
-                                                        CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
-                                                        OnClick="lbAgregarPlan_Click">
+                                                    <button id="btnCancelar" class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='afiliados'" runat="server"><strong>Cancelar</strong></button>
+                                                    <button id="btnVolver" runat="server" type="button" class="btn btn-sm btn-info pull-right m-t-n-xs" onclick="window.location.href='agendacrm.aspx';">
+                                                         Regresar a Agenda CRM</button>
+                                                    <asp:LinkButton ID="lbAgregarPlan" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" OnClick="lbAgregarPlan_Click">
                                                         <i class="fa fa-ticket"></i> Agregar plan</asp:LinkButton>
+                                                       
+<%--                                                    <asp:Button ID="btnConfirmar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
+                                                        Text="Confirmar venta" Visible="false"  />--%>
                                                 </div>
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
@@ -633,7 +639,7 @@
         ddlRegalos.setAttribute("disabled", true);
         check15.setAttribute("checked", false);
 
-        
+
 
         //$("#ionrange_1").ionRangeSlider({
         //    grid: true,
