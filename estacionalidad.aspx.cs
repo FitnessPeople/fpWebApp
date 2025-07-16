@@ -111,7 +111,7 @@ namespace fpWebApp
 
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public static string GuardarEvento(string title, string start, bool allDay, string bgcolor)
+        public static int GuardarEvento(string title, string start, bool allDay, string bgcolor)
         {
             string dtInicio = Convert.ToDateTime(start).ToString("yyyy-MM-dd");
             string dtFin = dtInicio;
@@ -120,7 +120,17 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             cg.TraerDatosStr(strQuery);
 
-            return "Ok";
+            strQuery = "SELECT LAST_INSERT_ID()";
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            if (dt.Rows.Count > 0)
+            {
+                return Convert.ToInt32(dt.Rows[0][0].ToString());
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         [WebMethod]

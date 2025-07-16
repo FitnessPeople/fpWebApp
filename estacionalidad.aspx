@@ -178,36 +178,31 @@
                                     <h5>Arrastra al calendario</h5>
                                 </div>
                                 <div id='external-events' class="ibox-content">
-                                    <div class='fc-event'
-                                        data-title="5%" data-bgcolor="#ed5565">
+                                    <div class='fc-event' data-title="5%" data-bgcolor="#ed5565">
                                         <div class='fc-event-main'
                                             style="color: #fff; background: #ed5565; border: 1px solid #ed5565; border-radius: 3px; font-size: 1.5em;">
                                             5%
                                         </div>
                                     </div>
-                                    <div class='fc-event'
-                                        data-title="10%" data-bgcolor="#1ab394">
+                                    <div class='fc-event' data-title="10%" data-bgcolor="#1ab394">
                                         <div class='fc-event-main'
                                             style="color: #fff; background: #1ab394; border: 1px solid #1ab394; border-radius: 3px; font-size: 1.5em;">
                                             10%
                                         </div>
                                     </div>
-                                    <div class='fc-event'
-                                        data-title="15%" data-bgcolor="#1c84c6">
+                                    <div class='fc-event' data-title="15%" data-bgcolor="#1c84c6">
                                         <div class='fc-event-main'
                                             style="color: #fff; background: #1c84c6; border: 1px solid #1c84c6; border-radius: 3px; font-size: 1.5em;">
                                             15%
                                         </div>
                                     </div>
-                                    <div class='fc-event'
-                                        data-title="20%" data-bgcolor="#f8ac59">
+                                    <div class='fc-event' data-title="20%" data-bgcolor="#f8ac59">
                                         <div class='fc-event-main'
                                             style="color: #fff; background: #f8ac59; border: 1px solid #f8ac59; border-radius: 3px; font-size: 1.5em;">
                                             20%
                                         </div>
                                     </div>
-                                    <div class='fc-event'
-                                        data-title="25%" data-bgcolor="#23c6c8">
+                                    <div class='fc-event' data-title="25%" data-bgcolor="#23c6c8">
                                         <div class='fc-event-main'
                                             style="color: #fff; background: #23c6c8; border: 1px solid #23c6c8; border-radius: 3px; font-size: 1.5em;">
                                             25%
@@ -463,7 +458,7 @@
 
             const total = eventosSemana.reduce((acum, evento) => {
                 return acum + (parseInt(evento.extendedProps.value) || 0);
-                console.log(evento.extendedProps.value);
+                //console.log(evento.extendedProps.value);
             }, 0);
 
             //console.log(`Total de valores en la semana: ${total}`);
@@ -578,26 +573,6 @@
                 });
         }
 
-        function guardarEventoNuevo(evento) {
-            let data = evento;
-
-            // Enviar a servidor por AJAX
-            fetch("estacionalidad.aspx/GuardarEvento", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-                .then(response => response.text())
-                .then(data => {
-                    //console.log('Respuesta del servidor:', data);
-                })
-                .catch(error => {
-                    console.error('Error al guardar evento:', error);
-                });
-        }
-
         function eliminarEvento(evento) {
             let data = evento;
 
@@ -614,7 +589,7 @@
                     //console.log('Respuesta del servidor:', data);
                 })
                 .catch(error => {
-                    console.error('Error al guardar evento:', error);
+                    console.error('Error al eliminar evento:', error);
                 });
         }
 
@@ -764,7 +739,29 @@
                         bgcolor: info.event.backgroundColor
                     };
                     console.log(evento);
-                    guardarEventoNuevo(evento);
+
+                    fetch('estacionalidad.aspx/GuardarEvento', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(evento)
+                    })
+                        .then(response => response.json())
+                        .then(result => {
+                            const idInsertado = result.d;
+                            if (idInsertado > 0) {
+                                // Asignar el id retornado al evento
+                                info.event.setProp('id', idInsertado);
+                            } else {
+                                alert('Error al guardar el evento.');
+                                info.revert(); // Revierte el evento si falla
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            info.revert();
+                        });
 
                     realizarCalculosConExtendedProps(calendar.getEvents());
 
@@ -781,17 +778,18 @@
                     //mostrarSemanasDelMes(primerDia, addDays(ultimoDia, 1), calendar);
                 },
                 eventClick: function (info) {
-                    //console.log('Entra');
+                    console.log(info.event.id);
+                    console.log(info.event);
 
                     const evento = {
                         id: info.event.id
                     };
-                    //console.log(evento);
-                    eliminarEvento(evento);
+                    //console.log(`Eliminando evento: ${evento}`);
+                    eliminarEvento(evento); // Elimina el evento de la base de datos
 
                     var eventObj = info.event;
                     if (eventObj) {
-                        eventObj.remove(); // Elimina el evento
+                        eventObj.remove(); // Elimina el evento del calendario
                     }
 
                     realizarCalculosConExtendedProps(calendar.getEvents());

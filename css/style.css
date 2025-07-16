@@ -4030,7 +4030,7 @@ table.table-mail tr td {
   color: inherit;
 }
 .unread td {
-  background-color: #f9f8f8;
+  background-color: #c3c3c3;
 }
 .ibox-content {
   clear: both;
