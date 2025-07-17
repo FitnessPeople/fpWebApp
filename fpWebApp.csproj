@@ -432,6 +432,7 @@
     <Content Include="dashboard_5.html" />
     <Content Include="Default.aspx" />
     <Content Include="detalleafiliado.aspx" />
+    <Content Include="detallecorreo.aspx" />
     <Content Include="editarafiliado.aspx" />
     <Content Include="editarempleado.aspx" />
     <Content Include="editarempresaafiliada.aspx" />
@@ -957,6 +958,7 @@
     <Content Include="nuevoempleado.aspx" />
     <Content Include="nuevoespecialista.aspx" />
     <Content Include="nuevoproductotienda.aspx" />
+    <Content Include="nuevoticketsoporte.aspx" />
     <Content Include="nuevousuario.aspx" />
     <Content Include="objetivosafiliado.aspx" />
     <Content Include="obteneraccesstokensiigo.aspx" />
@@ -977,6 +979,7 @@
     <Content Include="productostienda.aspx" />
     <Content Include="profesiones.aspx" />
     <Content Include="recuperacionclave.aspx" />
+    <Content Include="redactarcorreo.aspx" />
     <Content Include="reportepagos.aspx" />
     <Content Include="reportepagosmulticanal.aspx" />
     <Content Include="respuestaautorizacion.aspx" />
@@ -1352,6 +1355,13 @@
     <Compile Include="detalleafiliado.aspx.designer.cs">
       <DependentUpon>detalleafiliado.aspx</DependentUpon>
     </Compile>
+    <Compile Include="detallecorreo.aspx.cs">
+      <DependentUpon>detallecorreo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="detallecorreo.aspx.designer.cs">
+      <DependentUpon>detallecorreo.aspx</DependentUpon>
+    </Compile>
     <Compile Include="editarafiliado.aspx.cs">
       <DependentUpon>editarafiliado.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1726,6 +1736,13 @@
     <Compile Include="nuevoproductotienda.aspx.designer.cs">
       <DependentUpon>nuevoproductotienda.aspx</DependentUpon>
     </Compile>
+    <Compile Include="nuevoticketsoporte.aspx.cs">
+      <DependentUpon>nuevoticketsoporte.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="nuevoticketsoporte.aspx.designer.cs">
+      <DependentUpon>nuevoticketsoporte.aspx</DependentUpon>
+    </Compile>
     <Compile Include="nuevousuario.aspx.cs">
       <DependentUpon>nuevousuario.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1866,6 +1883,13 @@
     </Compile>
     <Compile Include="recuperacionclave.aspx.designer.cs">
       <DependentUpon>recuperacionclave.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="redactarcorreo.aspx.cs">
+      <DependentUpon>redactarcorreo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="redactarcorreo.aspx.designer.cs">
+      <DependentUpon>redactarcorreo.aspx</DependentUpon>
     </Compile>
     <Compile Include="reportepagos.aspx.cs">
       <DependentUpon>reportepagos.aspx</DependentUpon>

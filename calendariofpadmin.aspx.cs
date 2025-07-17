@@ -33,7 +33,7 @@ namespace fpWebApp
                         divCrear.Visible = true;
                         CargarCalendario();
                         DateTime fechaActual = DateTime.Now;
-                        DateTime fechaDestino = new DateTime(2025, 7, 19);
+                        DateTime fechaDestino = new DateTime(2025, 8, 29);
                         TimeSpan diferencia = fechaDestino - fechaActual;
                         ltDias.Text = Convert.ToInt32(diferencia.TotalDays).ToString();
 ;                    }

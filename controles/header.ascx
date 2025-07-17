@@ -107,7 +107,7 @@
                 <li class="divider"></li>
                 <li>
                     <div class="text-center link-block">
-                        <a href="#">
+                        <a href="correointerno">
                             <i class="fa fa-envelope m-r-sm"></i><strong>Leer todos los mensajes</strong>
                         </a>
                     </div>

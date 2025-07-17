@@ -97,7 +97,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fab fa-blogger text-success m-r-sm"></i>Blogs</h2>
+                    <h2><i class="fa fa-blog text-success m-r-sm"></i>Blogs</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Página Web</li>

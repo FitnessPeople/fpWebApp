@@ -46,7 +46,7 @@
 
         /* Fuerza que todas las celdas tengan igual alto */
         .fc .fc-daygrid-day {
-            height: 80px; /* ajusta este valor según tu diseño */
+            height: 60px; /* ajusta este valor según tu diseño */
             vertical-align: top;
             overflow: hidden;
         }
@@ -54,7 +54,7 @@
         /* Asegura que el contenido interno no estire la celda */
         .fc .fc-daygrid-day-frame {
             height: 100%;
-            display: flex;
+            /*display: flex;*/
             flex-direction: column;
             justify-content: flex-start;
 
@@ -161,7 +161,7 @@
                             <div class="col-lg-3">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Arrastra al calendario</h5>
+                                        <h5><i class="fa fa-arrow-turn-down text-danger"></i> Arrastra al calendario</h5>
                                     </div>
                                     <div id='external-events' class="ibox-content">
                                         <div class='fc-event' data-title="5%" data-bgcolor="#ed5565">
@@ -198,7 +198,7 @@
                                 </div>
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-content">
-                                        <h3>Total por semana</h3>
+                                        <h3><i class="fa fa-chart-simple text-danger"></i> Total por semana</h3>
                                         <div id="listaSemanas"></div>
                                     </div>
                                 </div>
@@ -206,7 +206,7 @@
                             <div class="col-lg-9">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Estacionalidad 
+                                        <h5><i class="fa fa-percent text-danger"></i> Estacionalidad 
                                             <asp:Literal ID="ltSede" runat="server"></asp:Literal></h5>
                                     </div>
                                     <div class="ibox-content">
@@ -491,17 +491,15 @@
 
                 },
                 eventClick: function (info) {
-                    //console.log(info.event.id);
-                    //console.log(info.event);
-
+                    // Evento que se activa cuando hacemos clic en un evento
                     if (info.event.rendering === 'background' || info.event.display === 'background') {
                         return; // Ignora el clic
-                      }
+                    }
 
                     const evento = {
                         id: info.event.id
                     };
-                    //console.log(`Eliminando evento: ${evento}`);
+                    
                     eliminarEvento(evento); // Elimina el evento de la base de datos
 
                     var eventObj = info.event;
@@ -511,8 +509,6 @@
 
                     realizarCalculosConExtendedProps(calendar.getEvents());
 
-                },
-                datesSet: function (info) {
                 },
                 dayCellDidMount: function(info) {
                     //console.log(info);
@@ -524,10 +520,6 @@
                         info.el.style.backgroundColor = '#F2F2F2'; // Color gris claro
                     }
 
-                    //const feriados = {
-                    //    '2025-12-25': 'Navidad',
-                    //    '2025-07-19': 'Feriado'
-                    //};
                     if (feriados[fechaCelda]) {
                         // Cambiar fondo
                         info.el.style.backgroundColor = '#FFE2DB';
