@@ -213,21 +213,21 @@ namespace fpWebApp
             return rta;
         }
 
-        private bool ExisteEmail(string strEmail)
-        {
-            bool rta = false;
-            string strQuery = "SELECT DocumentoAfiliado FROM Afiliados WHERE EmailAfiliado = '" + strEmail + "' ";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+        //private bool ExisteEmail(string strEmail)
+        //{
+        //    bool rta = false;
+        //    string strQuery = "SELECT DocumentoAfiliado FROM Afiliados WHERE EmailAfiliado = '" + strEmail + "' ";
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.TraerDatos(strQuery);
 
-            if (dt.Rows.Count > 0)
-            {
-                rta = true;
-            }
+        //    if (dt.Rows.Count > 0)
+        //    {
+        //        rta = true;
+        //    }
 
-            dt.Dispose();
-            return rta;
-        }
+        //    dt.Dispose();
+        //    return rta;
+        //}
 
         private bool ExisteTelefono(string strTelefono)
         {

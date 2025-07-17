@@ -215,9 +215,7 @@ namespace fpWebApp
                     }
 
                     if (!string.IsNullOrEmpty(parametro))
-                    {
-                        //string strQuery = "SELECT * FROM afiliados WHERE idAfiliado = " + parametro;
-
+                    {  
                         DataTable dt = cg .ConsultarAfiliadoPorId(Convert.ToInt32(parametro));
 
                         if (dt.Rows.Count > 0)
@@ -459,12 +457,12 @@ namespace fpWebApp
         private void PostArmatura(string strDocumento)
         {
             clasesglobales cg = new clasesglobales();
-            string strQuery = "SELECT * " +
-                              "FROM Afiliados a " +
-                              "LEFT JOIN AfiliadosPlanes ap ON a.idAfiliado = ap.idAfiliado " +
-                              "WHERE DocumentoAfiliado = '" + strDocumento + "'";
+            //string strQuery = "SELECT * " +
+            //                  "FROM Afiliados a " +
+            //                  "LEFT JOIN AfiliadosPlanes ap ON a.idAfiliado = ap.idAfiliado " +
+            //                  "WHERE DocumentoAfiliado = '" + strDocumento + "'";
 
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarAfiliadoPlanPorDocumento(strDocumento);
 
             if (dt.Rows.Count > 0)
             {
@@ -686,16 +684,16 @@ namespace fpWebApp
                 else
                 {
                     string script = @"
-                                    Swal.fire({
-                                        title: 'Error',
-                                        text: 'Por favor contáctese con Sistemas Fitness People. Detalle: " + mensaje.Replace("'", "\\'") + @"',
-                                        icon: 'error'
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Por favor contáctese con Sistemas Fitness People. Detalle: " + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
                                             
-                                        }
-                                    });
-                                ";
+                                }
+                            });
+                        ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
                 }
             }
@@ -704,14 +702,14 @@ namespace fpWebApp
             {
                 mensaje = ex.Message;
                 string script = @"
-                                Swal.fire({
-                                    title: 'Error',
-                                    text: 'Por favor contáctese con Sistemas Fitness People. Detalle: " + mensaje.Replace("'", "\\'") + @"',
-                                    icon: 'error'
-                                }).then(() => {
-                                    window.location.href = 'editarafiliado';
-                                });
-                            ";
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Por favor contáctese con Sistemas Fitness People. Detalle: " + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            }).then(() => {
+                                window.location.href = 'editarafiliado';
+                            });
+                        ";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
             }            
         }

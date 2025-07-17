@@ -471,11 +471,11 @@ namespace fpWebApp
 
         private void btn_Click(object sender, CommandEventArgs e)
         {
-            string strQuery = "SELECT * " +
-                "FROM Planes " +
-                "WHERE idPlan = " + e.CommandArgument;
+            //string strQuery = "SELECT * " +
+            //    "FROM Planes " +
+            //    "WHERE idPlan = " + e.CommandArgument;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarPlanPorId(Convert.ToInt32(e.CommandArgument));
 
             ViewState["idPlan"] = dt.Rows[0]["idPlan"].ToString();
             ViewState["nombrePlan"] = dt.Rows[0]["NombrePlan"].ToString();
