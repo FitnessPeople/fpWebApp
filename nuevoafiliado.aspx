@@ -146,20 +146,20 @@
                                                 <div class="form-group">
                                                     <label>Nombre(s):</label>
                                                     <asp:TextBox ID="txbNombre" CssClass="form-control input-sm" runat="server"
-                                                        placeholder="Nombre(s)" TabIndex="4"></asp:TextBox>
+                                                        placeholder="Nombre(s)" TabIndex="4" autocomplete="off" spellcheck="false"></asp:TextBox>
                                                     <asp:TextBox ID="txbNombre2" runat="server" TabIndex="5"
                                                         Style="opacity: 0; position: absolute;"
-                                                        onchange="pasaNombre(this)"></asp:TextBox>
+                                                        onchange="pasaNombre(this)" autocomplete="off" spellcheck="false"></asp:TextBox>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Apellido(s):</label>
                                                     <asp:TextBox ID="txbApellido" CssClass="form-control input-sm" runat="server"
-                                                        placeholder="Apellido(s)" TabIndex="2"></asp:TextBox>
+                                                        placeholder="Apellido(s)" TabIndex="2" autocomplete="off" spellcheck="false"></asp:TextBox>
                                                     <asp:TextBox ID="txbApellido2" runat="server" TabIndex="3"
                                                         Style="opacity: 0; position: absolute;"
-                                                        onchange="pasaApellido(this)"></asp:TextBox>
+                                                        onchange="pasaApellido(this)" autocomplete="off" spellcheck="false"></asp:TextBox>
                                                 </div>
                                             </div>
                                         </div>
@@ -169,7 +169,7 @@
                                                 <div class="form-group">
                                                     <label>Nro. de Documento:</label>
                                                     <asp:TextBox ID="txbDocumento" CssClass="form-control input-sm" runat="server" placeholder="Documento" 
-                                                        TabIndex="1" autocomplete="off" ></asp:TextBox>
+                                                        TabIndex="1" autocomplete="off" spellcheck="false" ></asp:TextBox>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
@@ -189,14 +189,14 @@
                                                 <div class="form-group">
                                                     <label>Teléfono:</label>
                                                     <asp:TextBox ID="txbTelefono" CssClass="form-control input-sm" runat="server" placeholder="Teléfono" 
-                                                        autocomplete="off"></asp:TextBox>
+                                                        autocomplete="off" spellcheck="false"></asp:TextBox>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Email:</label>
                                                     <asp:TextBox ID="txbEmail" CssClass="form-control input-sm" runat="server" 
-                                                        placeholder="Email" autocomplete="off"></asp:TextBox>
+                                                        placeholder="Email" autocomplete="off" spellcheck="false"></asp:TextBox>
                                                 </div>
                                             </div>
                                         </div>
@@ -206,7 +206,7 @@
                                                 <div class="form-group">
                                                     <label>Dirección:</label>
                                                     <asp:TextBox ID="txbDireccion" CssClass="form-control input-sm" runat="server" placeholder="Dirección"
-                                                         autocomplete="off"></asp:TextBox>
+                                                         autocomplete="off" spellcheck="false"></asp:TextBox>
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
@@ -285,7 +285,7 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label>Profesión:</label>
+                                                    <label>Profesión/Oficio:</label>
                                                     <asp:DropDownList ID="ddlProfesiones" runat="server" AppendDataBoundItems="true"
                                                         DataTextField="Profesion" DataValueField="idProfesion" CssClass="chosen-select form-control input-sm m-b">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
@@ -318,7 +318,7 @@
                                         <div class="form-group">
                                             <label>Persona responsable:</label>
                                             <asp:TextBox ID="txbResponsable" CssClass="form-control input-sm" runat="server" 
-                                                placeholder="Nombre responsable" autocomplete="off"></asp:TextBox>
+                                                placeholder="Nombre responsable" autocomplete="off" spellcheck="false"></asp:TextBox>
                                         </div>
 
                                         <div class="row">
@@ -341,7 +341,7 @@
                                                 <div class="form-group">
                                                     <label>Teléfono de contacto:</label>
                                                     <asp:TextBox ID="txbTelefonoContacto" CssClass="form-control input-sm" runat="server" placeholder="Teléfono" 
-                                                        autocomplete="off"></asp:TextBox>
+                                                        autocomplete="off" spellcheck="false"></asp:TextBox>
                                                 </div>
                                             </div>
                                         </div>
