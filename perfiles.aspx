@@ -228,7 +228,7 @@
                                                                 <asp:Repeater ID="rpPaginasPermisos" runat="server" OnItemDataBound="rpPaginasPermisos_ItemDataBound">
                                                                     <ItemTemplate>
                                                                         <tr class="feed-element">
-                                                                            <td style="vertical-align: middle;"><%# Eval("Nombre") %> / <%# Eval("Pagina") %></td>
+                                                                            <td style="vertical-align: middle;"><%# Eval("NombreCategoriaPagina") %> / <%# Eval("Pagina") %></td>
                                                                             <td class="text-center">
                                                                                 <asp:LinkButton ID="lb1" runat="server" OnClick="lb1_Click" ClientIDMode="AutoID"><%# Eval("SinPermiso") %></asp:LinkButton></td>
                                                                             <td class="text-center">

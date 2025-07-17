@@ -1,6 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
+using NPOI.OpenXmlFormats.Spreadsheet;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Globalization;
 using System.Web.Script.Services;
@@ -10,41 +13,6 @@ namespace fpWebApp
 {
     public partial class estacionalidad : System.Web.UI.Page
     {
-        //private string _strEventos;
-        //protected string strEventos { get { return this._strEventos; } }
-
-        //public class Evento
-        //{
-        //    public string id { get; set; }
-        //    public string title { get; set; }
-        //    public string start { get; set; }
-        //    public string end { get; set; }
-        //}
-
-        //public static string GetEventos()
-        //{
-        //    List<Evento> eventos = new List<Evento>();
-        //    clasesglobales cg = new clasesglobales();
-
-        //    string strQuery = "SELECT idDisponibilidad, DocumentoEmpleado, FechaHoraInicio, FechaHoraFinal FROM DisponibilidadEspecialistas";
-        //    DataTable dt = cg.TraerDatos(strQuery);
-
-        //    if (dt.Rows.Count > 0)
-        //    {
-        //        for (int i = 0; i < dt.Rows.Count; i++)
-        //        {
-        //            eventos.Add(new Evento
-        //            {
-        //                id = dt.Rows[i]["idDisponibilidad"].ToString(),
-        //                title = dt.Rows[i]["DocumentoEmpleado"].ToString(),
-        //                start = Convert.ToDateTime(dt.Rows[i]["FechaHoraInicio"]).ToString("yyyy-MM-ddTHH:mm:ss"),
-        //                end = dt.Rows[i]["FechaHoraFinal"] == DBNull.Value ? null : Convert.ToDateTime(dt.Rows[i]["FechaHoraFinal"]).ToString("yyyy-MM-ddTHH:mm:ss")
-        //            });
-        //        }
-        //    }
-
-        //    return JsonConvert.SerializeObject(eventos);
-        //}
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -65,12 +33,6 @@ namespace fpWebApp
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
                         DateTime dtHoy = DateTime.Now;
-                        //txbFechaIni.Attributes.Add("type", "date");
-                        //txbFechaFin.Attributes.Add("type", "date");
-                        //txbFechaIni.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
-                        //txbFechaFin.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
-                        //divCrear.Visible = true;
-                        //CargarSedes();
                         CargarAsesores();
                     }
                     if (ViewState["Borrar"].ToString() == "1")
@@ -115,7 +77,7 @@ namespace fpWebApp
         {
             string dtInicio = Convert.ToDateTime(start).ToString("yyyy-MM-dd");
             string dtFin = dtInicio;
-            string strQuery = "INSERT INTO estacionalidad (titulo, fecha_inicio, fecha_fin, todo_el_dia, bgcolor) " +
+            string strQuery = "INSERT INTO estacionalidad (Titulo, FechaInicio, FechaFin, TodoElDia, Color) " +
             "VALUES ('" + title + "', '" + dtInicio + "', '" + dtFin + "', " + allDay + ", '" + bgcolor + "')";
             clasesglobales cg = new clasesglobales();
             cg.TraerDatosStr(strQuery);
@@ -137,11 +99,38 @@ namespace fpWebApp
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public static string EliminarEvento(string id)
         {
-            string strQuery = "DELETE FROM estacionalidad WHERE id = " + id;
+            string strQuery = "DELETE FROM estacionalidad WHERE idEstacionalidad = " + id;
             clasesglobales cg = new clasesglobales();
             cg.TraerDatosStr(strQuery);
 
             return "Ok";
+        }
+
+        [WebMethod]
+        public static List<Feriado> ObtenerFeriados()
+        {
+            List<Feriado> lista = new List<Feriado>();
+
+            string strQuery = "SELECT * FROM festivos";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                lista.Add(new Feriado
+                {
+                    fecha = Convert.ToDateTime(dt.Rows[i]["Fecha"]).ToString("yyyy-MM-dd"),
+                    descripcion = dt.Rows[i]["Titulo"].ToString()
+                });
+            }
+
+            return lista;
+        }
+
+        public class Feriado
+        {
+            public string fecha { get; set; }
+            public string descripcion { get; set; }
         }
 
         //private void CargarAgenda()

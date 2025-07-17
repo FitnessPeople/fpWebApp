@@ -145,7 +145,7 @@
                                                 <div class="form-group">
                                                     <label>Categoría a la que pertenece la página:</label>
                                                     <asp:DropDownList CssClass="form-control required" ID="ddlCategorias" runat="server"
-                                                                      DataValueField="idCategoria" DataTextField="NombreCategoria"
+                                                                      DataValueField="idCategoriaPagina" DataTextField="NombreCategoriaPagina"
                                                                       AppendDataBoundItems="true" />
                                                 </div>
                                                 <div class="form-group">
@@ -225,7 +225,7 @@
                                                         <tr class="feed-element">
                                                             <td><%# Eval("Pagina") %></td>
                                                             <td><%# Eval("NombreAspx") %></td>
-                                                            <td><%# Eval("Nombre") %></td>
+                                                            <td><%# Eval("NombreCategoriaPagina") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>

@@ -44,7 +44,7 @@
                     <asp:Repeater ID="rpPaginas" runat="server">
                         <ItemTemplate>
                             <tr>
-                                <td><a href="<%# Eval("NombreAspx") %>"><%# Eval("Nombre") %> / <%# Eval("Pagina") %></a></td>
+                                <td><a href="<%# Eval("NombreAspx") %>"><%# Eval("NombreCategoriaPagina") %> / <%# Eval("Pagina") %></a></td>
                             </tr>
                         </ItemTemplate>
                     </asp:Repeater>

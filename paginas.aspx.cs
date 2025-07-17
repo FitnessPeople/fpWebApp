@@ -247,8 +247,8 @@ namespace fpWebApp
             if (dt != null && dt.Rows.Count > 0)
             {
                 ddlCategorias.DataSource = dt;
-                ddlCategorias.DataValueField = "idCategoria";
-                ddlCategorias.DataTextField = "Nombre";
+                ddlCategorias.DataValueField = "idCategoriaPagina";
+                ddlCategorias.DataTextField = "NombreCategoriaPagina";
                 ddlCategorias.DataBind();
             }
 

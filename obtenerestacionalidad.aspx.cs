@@ -9,7 +9,7 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string strQuery = "SELECT * FROM estacionalidad ";
+            string strQuery = "SELECT * FROM estacionalidad";
 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
@@ -19,12 +19,15 @@ namespace fpWebApp
             {
                 lista.Add(new
                 {
-                    id = row["id"],
-                    title = row["titulo"],
-                    start = row["fecha_inicio"],
-                    end = row["fecha_fin"],
-                    allDay = row["todo_el_dia"],
-                    backgroundColor = row["bgcolor"]
+                    id = row["idEstacionalidad"],
+                    title = row["Titulo"],
+                    start = row["FechaInicio"],
+                    end = row["FechaFin"],
+                    rendering = row["Renderizado"],
+                    color = row["Color"],
+                    allDay = row["TodoElDia"],
+                    backgroundColor = row["Color"],
+                    display = row["Mostrar"]
                 });
             }
 

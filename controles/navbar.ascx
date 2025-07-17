@@ -39,7 +39,8 @@
             <li id="inicio" class="old">
                 <a href="inicio"><i class="fa fa-house"></i><span class="nav-label">Inicio</span></a>
             </li>
-            <li>
+            <asp:Literal ID="ltMenu" runat="server"></asp:Literal>
+            <%--<li>
                 <a href="#"><i class="fa fa-id-card"></i><span class="nav-label">Afiliados</span><span class="fa arrow"></span></a>
                 <ul id="afiliados2" class="nav nav-second-level collapse">
                     <li id="afiliados1" class="old">
@@ -122,7 +123,7 @@
                     <li><a href="#">Unificar afiliados</a></li>
                     <li id="logactividades" class="old"><a href="logactividades"><i class="fa fa-location-crosshairs"></i>Flujo de Actividades</a></li>
                 </ul>
-            </li>
+            </li>--%>
             <%--<li>
                 <a href="#"><i class="fa fa-cog"></i><span class="nav-label">Configuración</span><span class="fa arrow"></span></a>
                 <ul id="configuracion" class="nav nav-second-level collapse">
@@ -147,7 +148,7 @@
                     <li id="procedimientosalmacenados" class="old"><a href="procedimientosalmacenados"><i class="fa-solid fa-database"></i>Procedimientos almacenados</a></li>
                 </ul>
             </li>--%>
-            <li>
+            <%--<li>
                 <a href="#"><i class="fa fa-user-gear"></i><span class="nav-label">Configuración</span><span class="fa arrow"></span></a>
                 <ul id="configuracion" class="nav nav-second-level collapse">
                     <li id="profesiones" class="old"><a href="profesiones"><i class="fa fa-briefcase"></i>Profesiones</a></li>
@@ -203,7 +204,7 @@
                     <li id="embajadores" class="old"><a href="embajadores"><i class="fa fa-person-rays"></i>Embajadores</a></li>
                     <li id="planesweb" class="old"><a href="planesweb"><i class="fa fa-ticket"></i>Planes</a></li>
                 </ul>
-            </li>
+            </li>--%>
             <li class="special_link">
                 <a href="calendariofpadmin"><i class="fa fa-calendar"></i><span class="nav-label">Calendario FP+ Admin</span></a>
             </li>

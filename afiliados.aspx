@@ -38,7 +38,7 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#afiliados1");
+            var element1 = document.querySelector("#afiliados");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#afiliados2");
             element2.classList.remove("collapse");
