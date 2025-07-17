@@ -261,6 +261,7 @@
     <Content Include="agendarcita.aspx" />
     <Content Include="arl.aspx" />
     <Content Include="asignarcita.aspx" />
+    <Content Include="asignartecnicoticket.aspx" />
     <Content Include="asistenciaagendagympass.aspx" />
     <Content Include="autorizaciones.aspx" />
     <Content Include="biodispositivos.aspx" />
@@ -997,6 +998,7 @@
     <Content Include="sedes.aspx" />
     <Content Include="soporte.aspx" />
     <Content Include="tablasbd.aspx" />
+    <Content Include="ticketsoporte.aspx" />
     <Content Include="tiposdocumento.aspx" />
     <Content Include="tiposincapacidades.aspx" />
     <Content Include="traspasos.aspx" />
@@ -1071,6 +1073,13 @@
     </Compile>
     <Compile Include="asignarcita.aspx.designer.cs">
       <DependentUpon>asignarcita.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="asignartecnicoticket.aspx.cs">
+      <DependentUpon>asignartecnicoticket.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="asignartecnicoticket.aspx.designer.cs">
+      <DependentUpon>asignartecnicoticket.aspx</DependentUpon>
     </Compile>
     <Compile Include="asistenciaagendagympass.aspx.cs">
       <DependentUpon>asistenciaagendagympass.aspx</DependentUpon>
@@ -1932,6 +1941,13 @@
     </Compile>
     <Compile Include="tablasbd.aspx.designer.cs">
       <DependentUpon>tablasbd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ticketsoporte.aspx.cs">
+      <DependentUpon>ticketsoporte.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ticketsoporte.aspx.designer.cs">
+      <DependentUpon>ticketsoporte.aspx</DependentUpon>
     </Compile>
     <Compile Include="tiposdocumento.aspx.cs">
       <DependentUpon>tiposdocumento.aspx</DependentUpon>
