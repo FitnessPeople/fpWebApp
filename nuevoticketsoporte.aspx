@@ -29,9 +29,9 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#nuevousuario");
+            var element1 = document.querySelector("#nuevoticketsoporte");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#sistema");
+            var element2 = document.querySelector("#mantenimiento");
             element2.classList.remove("collapse");
         }
     </script>

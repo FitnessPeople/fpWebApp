@@ -18,7 +18,6 @@
     <title>Fitness People | Tickets soporte</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
-    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <link href="css/plugins/dataTables/datatables.min.css" rel="stylesheet" />
@@ -40,9 +39,9 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#usuarios");
+            var element1 = document.querySelector("#ticketsoporte");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#sistema");
+            var element2 = document.querySelector("#mantenimiento");
             element2.classList.remove("collapse");
         }
     </script>
@@ -212,7 +211,9 @@
                                                     <th data-sortable="false" data-breakpoints="xs sm md">Descripción</th>
                                                     <th data-breakpoints="xs sm md">Estado</th>
                                                     <th data-breakpoints="xs sm md">Prioridad</th>
+                                                    <th class="text-nowrap" data-breakpoints="xs">Reportado por</th>
                                                     <th class="text-nowrap" data-breakpoints="xs">Fecha</th>
+                                                    <th class="text-nowrap" data-breakpoints="xs">Sede</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
@@ -227,9 +228,11 @@
                                                             <td><%# Eval("DescripcionTicket") %></td>
                                                             <td><span class="badge badge-<%# Eval("badge") %>"><%# Eval("EstadoTicket") %></span></td>
                                                             <td><i class="fa fa-circle text-<%# Eval("badge2") %>"></i> <%# Eval("PrioridadTicket") %></td>
+                                                            <td><%# Eval("NombreUsuario") %></td>
                                                             <td><%# Eval("FechaCreacionTicket", "{0:dd MMM yyyy hh:mm:ss}") %> (<asp:Literal ID="ltTiempoTranscurrido" runat="server"></asp:Literal>)</td>
+                                                            <td><%# Eval("NombreSede") %></td>
                                                             <td>
-                                                                <a runat="server" id="btnAsignar" href="#" class="btn btn-outline btn-warning pull-right m-r-xs"
+                                                                <a runat="server" id="btnAsignar" href="asignartecnicoticket" class="btn btn-outline btn-warning pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"><i class="fa fa-user-plus"></i></a>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>

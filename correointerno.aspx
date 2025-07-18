@@ -131,11 +131,11 @@
                                         <div class="space-25"></div>
                                         <h5>Carpetas</h5>
                                         <ul class="folder-list m-b-md" style="padding: 0">
-                                            <li><a href="mailbox.html"><i class="fa fa-inbox "></i>Bandeja de entrada<span class="label label-warning pull-right">16</span> </a></li>
-                                            <li><a href="mailbox.html"><i class="fa fa-envelope"></i>Enviados</a></li>
-                                            <li><a href="mailbox.html"><i class="fa fa-certificate"></i>Importantes</a></li>
-                                            <li><a href="mailbox.html"><i class="fa fa-file-text"></i>Documentos <span class="label label-danger pull-right">2</span></a></li>
-                                            <li><a href="mailbox.html"><i class="fa fa-trash"></i>Papelera</a></li>
+                                            <li><a href="correointerno"><i class="fa fa-inbox "></i>Bandeja de entrada<span class="label label-warning pull-right">16</span> </a></li>
+                                            <li><a href="#"><i class="fa fa-envelope"></i>Enviados</a></li>
+                                            <li><a href="#"><i class="fa fa-certificate"></i>Importantes</a></li>
+                                            <li><a href="#"><i class="fa fa-file-text"></i>Documentos <span class="label label-danger pull-right">2</span></a></li>
+                                            <li><a href="#"><i class="fa fa-trash"></i>Papelera</a></li>
                                         </ul>
                                         <h5>Categorías</h5>
                                         <ul class="category-list" style="padding: 0">
@@ -145,14 +145,13 @@
                                             <li><a href="#"><i class="fa fa-circle text-info"></i>Procesos</a></li>
                                             <li><a href="#"><i class="fa fa-circle text-warning"></i>Gerencia</a></li>
                                         </ul>
-
                                         <h5 class="tag-title">Etiquetas</h5>
                                         <ul class="tag-list" style="padding: 0">
-                                            <li><a href=""><i class="fa fa-tag"></i> Afiliado</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i> Prospecto</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i> Pendiente</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i> Confirmado</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i> Festivo</a></li>
+                                            <li><a href=""><i class="fa fa-tag"></i>Afiliado</a></li>
+                                            <li><a href=""><i class="fa fa-tag"></i>Prospecto</a></li>
+                                            <li><a href=""><i class="fa fa-tag"></i>Pendiente</a></li>
+                                            <li><a href=""><i class="fa fa-tag"></i>Confirmado</a></li>
+                                            <li><a href=""><i class="fa fa-tag"></i>Festivo</a></li>
                                         </ul>
                                         <div class="clearfix"></div>
                                     </div>
@@ -161,8 +160,7 @@
                         </div>
                         <div class="col-lg-9 animated fadeInRight">
                             <div class="mail-box-header">
-
-                                <form method="get" action="index.html" class="pull-right mail-search">
+                                <form class="pull-right mail-search">
                                     <div class="input-group">
                                         <input type="text" class="form-control input-sm" name="search" placeholder="Buscar correo">
                                         <div class="input-group-btn">
@@ -173,14 +171,13 @@
                                     </div>
                                 </form>
                                 <h2>Bandeja de entrada (16)
-                </h2>
+                                </h2>
                                 <div class="mail-tools tooltip-demo m-t-md">
                                     <div class="btn-group pull-right">
                                         <button class="btn btn-white btn-sm"><i class="fa fa-arrow-left"></i></button>
                                         <button class="btn btn-white btn-sm"><i class="fa fa-arrow-right"></i></button>
-
                                     </div>
-                                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refrescar"><i class="fa fa-refresh"></i> Refrescar</button>
+                                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refrescar"><i class="fa fa-refresh"></i>Refrescar</button>
                                     <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Marcar como leído"><i class="fa fa-eye"></i></button>
                                     <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Marcar como importante"><i class="fa fa-exclamation"></i></button>
                                     <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mover a la papelera"><i class="fa fa-trash"></i></button>
@@ -188,7 +185,6 @@
                                 </div>
                             </div>
                             <div class="mail-box">
-
                                 <table class="table table-hover table-mail">
                                     <tbody>
                                         <tr class="unread">
@@ -272,33 +268,6 @@
                                             <td class=""></td>
                                             <td class="text-right mail-date">Ene 16, 8:40 am</td>
                                         </tr>
-                                        <%--<tr class="read">
-                                            <td class="check-mail">
-                                                <input type="checkbox" class="i-checks">
-                                            </td>
-                                            <td class="mail-ontact"><a href="detallecorreo">Damien Ritz</a></td>
-                                            <td class="mail-subject"><a href="detallecorreo">Oor Lorem Ipsum is that it has a more-or-less normal.</a></td>
-                                            <td class=""></td>
-                                            <td class="text-right mail-date">Jun 11</td>
-                                        </tr>
-                                        <tr class="read">
-                                            <td class="check-mail">
-                                                <input type="checkbox" class="i-checks">
-                                            </td>
-                                            <td class="mail-ontact"><a href="detallecorreo">Anna Smith</a></td>
-                                            <td class="mail-subject"><a href="detallecorreo">Lorem ipsum dolor noretek imit set.</a></td>
-                                            <td class=""><i class="fa fa-paperclip"></i></td>
-                                            <td class="text-right mail-date">6.10 AM</td>
-                                        </tr>
-                                        <tr class="read">
-                                            <td class="check-mail">
-                                                <input type="checkbox" class="i-checks">
-                                            </td>
-                                            <td class="mail-ontact"><a href="detallecorreo">Jack Nowak</a></td>
-                                            <td class="mail-subject"><a href="detallecorreo">Aldus PageMaker including versions of Lorem Ipsum.</a></td>
-                                            <td class=""></td>
-                                            <td class="text-right mail-date">8.22 PM</td>
-                                        </tr>--%>
                                         <tr class="read">
                                             <td class="check-mail">
                                                 <input type="checkbox" class="i-checks">
@@ -317,66 +286,15 @@
                                             <td class=""><i class="fa fa-paperclip"></i></td>
                                             <td class="text-right mail-date">Ene 16, 8:40 am</td>
                                         </tr>
-                                        <%--<tr class="read">
-                                            <td class="check-mail">
-                                                <input type="checkbox" class="i-checks">
-                                            </td>
-                                            <td class="mail-ontact"><a href="detallecorreo">Monica Ryther</a></td>
-                                            <td class="mail-subject"><a href="detallecorreo">The standard chunk of Lorem Ipsum used.</a></td>
-                                            <td class=""></td>
-                                            <td class="text-right mail-date">Jun 12</td>
-                                        </tr>
-                                        <tr class="read">
-                                            <td class="check-mail">
-                                                <input type="checkbox" class="i-checks">
-                                            </td>
-                                            <td class="mail-ontact"><a href="detallecorreo">Sandra Derick</a></td>
-                                            <td class="mail-subject"><a href="detallecorreo">Contrary to popular belief.</a></td>
-                                            <td class=""></td>
-                                            <td class="text-right mail-date">May 28</td>
-                                        </tr>
-                                        <tr class="read">
-                                            <td class="check-mail">
-                                                <input type="checkbox" class="i-checks">
-                                            </td>
-                                            <td class="mail-ontact"><a href="detallecorreo">Patrick Pertners</a> </td>
-                                            <td class="mail-subject"><a href="detallecorreo">If you are going to use a passage of Lorem </a></td>
-                                            <td class=""></td>
-                                            <td class="text-right mail-date">May 28</td>
-                                        </tr>
-                                        <tr class="read">
-                                            <td class="check-mail">
-                                                <input type="checkbox" class="i-checks">
-                                            </td>
-                                            <td class="mail-ontact"><a href="detallecorreo">Michael Fox</a></td>
-                                            <td class="mail-subject"><a href="detallecorreo">Humour, or non-characteristic words etc.</a></td>
-                                            <td class=""></td>
-                                            <td class="text-right mail-date">Dec 9</td>
-                                        </tr>
-                                        <tr class="read">
-                                            <td class="check-mail">
-                                                <input type="checkbox" class="i-checks">
-                                            </td>
-                                            <td class="mail-ontact"><a href="detallecorreo">Damien Ritz</a></td>
-                                            <td class="mail-subject"><a href="detallecorreo">Oor Lorem Ipsum is that it has a more-or-less normal.</a></td>
-                                            <td class=""></td>
-                                            <td class="text-right mail-date">Jun 11</td>
-                                        </tr>--%>
                                     </tbody>
                                 </table>
-
-
                             </div>
                         </div>
-
                     </div>
-
                     <%--Fin Contenido!!!!--%>
                 </div>
             </div>
-
             <uc1:footer runat="server" ID="footer" />
-
         </div>
         <uc1:rightsidebar runat="server" ID="rightsidebar" />
     </div>

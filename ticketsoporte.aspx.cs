@@ -13,7 +13,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Usuarios");
+                    ValidarPermisos("Tickets soporte");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -57,11 +57,14 @@ namespace fpWebApp
 
             string strQuery = "SELECT t.idTicketSoporte, af.NombreActivoFijo, af.CodigoInterno, af.ImagenActivo, " +
                 "t.DescripcionTicket, t.EstadoTicket, t.PrioridadTicket, t.FechaCreacionTicket, ca.NombreCategoriaActivo, " +
+                "u.NombreUsuario, s.NombreSede, " +
                 "IF(t.EstadoTicket='Pendiente','warning',IF(t.EstadoTicket='En proceso','info',IF(t.EstadoTicket='Resuelto','primary','default'))) AS badge, " +
                 "IF(t.PrioridadTicket='Baja','info',IF(t.PrioridadTicket='Media','warning','danger')) AS badge2 " +
                 "FROM TicketSoporte t " +
                 "INNER JOIN ActivosFijos af ON t.idActivoFijo = af.idActivoFijo " +
                 "INNER JOIN CategoriasActivos ca ON af.idCategoriaActivo = ca.idCategoriaActivo " +
+                "INNER JOIN Usuarios u ON t.idReportadoPor = u.idUsuario " +
+                "INNER JOIN Sedes s ON af.idSede = s.idSede " +
                 "WHERE('" + estado + "' = '' OR t.EstadoTicket = '" + estado + "') " +
                 "AND('" + prioridad + "' = '' OR t.PrioridadTicket = '" + prioridad + "') " +
                 "ORDER BY t.FechaCreacionTicket DESC";

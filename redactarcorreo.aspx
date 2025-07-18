@@ -19,17 +19,67 @@
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
-    <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
-    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
+    <link href="css/plugins/dropzone/basic.css" rel="stylesheet" />
+    <link href="css/plugins/dropzone/dropzone.css" rel="stylesheet" />
+    <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet" />
+    <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet" />
+
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
-
-    <link href="css/plugins/summernote/summernote.css" rel="stylesheet">
-    <link href="css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
-
     <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
+
+    <!-- CSS de Quill -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+    <!-- JS de Quill -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+    <script>
+        var editorContenido = document.querySelector(".ql-editor");
+        console.log(editorContenido);
+        //editorContenido.style.height = "600";
+        //editorContenido.style.height = editorContenido.scrollHeight + "px";
+
+        var quill;
+        document.addEventListener("DOMContentLoaded", function () {
+            quill = new Quill("#editor", {
+                theme: "snow",
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold', 'strike'], // Negrita y Tachado
+                        ['italic', 'underline'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'align': [] }],
+                        ['link', 'image', 'video'],
+                    ]
+                }
+            });
+            //function ajustarAlturaEditor() {
+            //    var editorContenido = document.querySelector(".ql-editor");
+            //    editorContenido.style.height = "auto";
+            //    editorContenido.style.height = editorContenido.scrollHeight + "px";
+            //}
+            //quill.on("text-change", ajustarAlturaEditor);
+
+            var contenidoGuardado = document.getElementById('<%= hiddenEditor.ClientID %>').value;
+        if (contenidoGuardado.trim() !== "") {
+            quill.root.innerHTML = contenidoGuardado;
+        }
+    });
+    function guardarContenidoEditor() {
+        var contenido = quill.root.innerHTML;
+        document.getElementById('<%= hiddenEditor.ClientID %>').value = contenido;
+        }
+    </script>
+
+    <style type="text/css" media="print">
+        body {
+            visibility: hidden;
+            display: none
+        }
+    </style>
 
     <script>
         function changeClass() {
@@ -133,11 +183,11 @@
                                         <div class="space-25"></div>
                                         <h5>Carpetas</h5>
                                         <ul class="folder-list m-b-md" style="padding: 0">
-                                            <li><a href="mailbox.html"><i class="fa fa-inbox "></i>Bandeja de entrada<span class="label label-warning pull-right">16</span> </a></li>
-                                            <li><a href="mailbox.html"><i class="fa fa-envelope"></i>Enviados</a></li>
-                                            <li><a href="mailbox.html"><i class="fa fa-certificate"></i>Importantes</a></li>
-                                            <li><a href="mailbox.html"><i class="fa fa-file-text"></i>Documentos <span class="label label-danger pull-right">2</span></a></li>
-                                            <li><a href="mailbox.html"><i class="fa fa-trash"></i>Papelera</a></li>
+                                            <li><a href="correointerno"><i class="fa fa-inbox "></i>Bandeja de entrada<span class="label label-warning pull-right">16</span> </a></li>
+                                            <li><a href="#"><i class="fa fa-envelope"></i>Enviados</a></li>
+                                            <li><a href="#"><i class="fa fa-certificate"></i>Importantes</a></li>
+                                            <li><a href="#"><i class="fa fa-file-text"></i>Documentos <span class="label label-danger pull-right">2</span></a></li>
+                                            <li><a href="#"><i class="fa fa-trash"></i>Papelera</a></li>
                                         </ul>
                                         <h5>Categorías</h5>
                                         <ul class="category-list" style="padding: 0">
@@ -147,7 +197,6 @@
                                             <li><a href="#"><i class="fa fa-circle text-info"></i>Procesos</a></li>
                                             <li><a href="#"><i class="fa fa-circle text-warning"></i>Gerencia</a></li>
                                         </ul>
-
                                         <h5 class="tag-title">Etiquetas</h5>
                                         <ul class="tag-list" style="padding: 0">
                                             <li><a href=""><i class="fa fa-tag"></i>Afiliado</a></li>
@@ -162,83 +211,88 @@
                             </div>
                         </div>
                         <div class="col-lg-9 animated fadeInRight">
-
                             <div class="mail-box-header">
-                                <div class="pull-right tooltip-demo">
-                                    <a href="#" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mover a la carpeta Borradores"><i class="fa fa-pencil"></i> Borrador</a>
-                                    <a href="correointerno" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Descartar correo"><i class="fa fa-times"></i> Descartar</a>
-                                </div>
-                                <h2>Redactar correo</h2>
+                                <h2>Redactar mensaje</h2>
                             </div>
-                            <div class="mail-box">
-
-
-                                <div class="mail-body">
-
-                                    <form class="form-horizontal" method="get">
-                                        <div class="form-group">
-                                            <label class="col-sm-2 control-label">Para:</label>
-
-                                            <div class="col-sm-10">
-                                                <select class="select2_demo_2 form-control" multiple="multiple">
-                                                    <option value="Javier">Javier Galvan</option>
-                                                    <option value="Carlos">Carlos Rivera</option>
-                                                    <option value="Silvia">Silvia Pardo</option>
-                                                    <option value="Monica">Mónica Suarez</option>
-                                                    <option value="Yerson">Yerson Suarez</option>
-                                                    <option value="Freddy">Freddy Suarez</option>
-                                                    <option value="Nancy">Nancy Suarez</option>
-                                                </select>
+                            <form runat="server" id="form1">
+                                <div class="mail-box">
+                                    <div class="mail-body">
+                                        <div class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Para:</label>
+                                                <div class="col-sm-10">
+                                                    <asp:DropDownList ID="ddlUsuarios" runat="server"
+                                                        CssClass="form-control select2_demo_2 form-control"
+                                                        multiple="multiple">
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Asunto:</label>
+                                                <div class="col-sm-10">
+                                                    <asp:TextBox ID="txbAsunto" runat="server" CssClass="form-control"></asp:TextBox>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-2 control-label">Asunto:</label>
-
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" value=""></div>
+                                    </div>
+                                    <div class="mail-text h-200">
+                                        <div class="form-horizontal">
+                                            <div class="form-group">
+                                                <div class="col-sm-12">
+                                                <div id="editor" cssclass="form-control input-sm">
+                                                    <p>&nbsp;</p>
+                                                    <p>&nbsp;</p>
+                                                    <p>&nbsp;</p>
+                                                    <p>&nbsp;</p>
+                                                    <p>&nbsp;</p>
+                                                </div>
+                                                <asp:HiddenField ID="hiddenEditor" runat="server" />
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
                                         </div>
-                                    </form>
-
-                                </div>
-
-                                <div class="mail-text h-200">
-
-                                    <div class="summernote">
-                                        <h3>Hello Jonathan! </h3>
-                                        dummy text of the printing and typesetting industry. <strong>Lorem Ipsum has been the industry's</strong> standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic
-                            typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with
-                           
-                                        <br />
-                                        <br />
-
+                                    </div>
+                                    <div class="mail-body">
+                                        <div class="form-horizontal">
+                                            <div class="form-group m-b-n-xs">
+                                                <label>Adjunto:</label>
+                                                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                    <div class="form-control input-sm" data-trigger="fileinput">
+                                                        <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                        <span class="fileinput-filename"></span>
+                                                    </div>
+                                                    <span class="input-group-addon btn btn-success btn-file input-sm">
+                                                        <span class="fileinput-new input-sm">Seleccionar banner</span>
+                                                        <span class="fileinput-exists input-sm">Cambiar</span>
+                                                        <input type="file" name="fileBanner" id="fileBanner" accept="image/*">
+                                                    </span>
+                                                    <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm" 
+                                                        data-dismiss="fileinput">Quitar</a>
+                                                </div>
+                                                <asp:Literal ID="ltBanner" runat="server"></asp:Literal>
+                                                <%--<asp:RequiredFieldValidator ID="rfvBanner" runat="server" ErrorMessage="* Campo requerido"
+                                                    ControlToValidate="txbDescripcion" ValidationGroup="agregar"
+                                                    CssClass="font-bold text-danger"></asp:RequiredFieldValidator>--%>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mail-body text-right tooltip-demo">
+                                        <asp:LinkButton ID="lbEnviar" runat="server" 
+                                            CssClass="btn btn-sm btn-primary" data-toggle="tooltip" 
+                                            data-placement="top" title="Enviar" OnClick="lbEnviar_Click"><i class="fa fa-reply"></i> Enviar</asp:LinkButton>
+                                        <a href="correointerno" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Descartar"><i class="fa fa-times"></i> Descartar</a>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
-                                <div class="mail-body text-right tooltip-demo">
-                                    <a href="#" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Send"><i class="fa fa-reply"></i> Enviar</a>
-                                    <a href="#" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Descartar correo"><i class="fa fa-times"></i> Descartar</a>
-                                    <a href="#" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mover a la carpeta Borradores"><i class="fa fa-pencil"></i> Borrador</a>
-                                </div>
-                                <div class="clearfix"></div>
-
-
-
-                            </div>
+                            </form>
                         </div>
-
                     </div>
-
+                    <%--Fin Contenido!!!!--%>
                 </div>
-
-                <%--Fin Contenido!!!!--%>
             </div>
+            <uc1:footer runat="server" ID="footer" />
         </div>
-
-        <uc1:footer runat="server" ID="footer" />
-
-    </div>
-    <uc1:rightsidebar runat="server" ID="rightsidebar" />
+        <uc1:rightsidebar runat="server" ID="rightsidebar" />
     </div>
 
     <!-- Mainly scripts -->
@@ -251,25 +305,27 @@
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
-    <!-- Chosen -->
-    <script src="js/plugins/chosen/chosen.jquery.js"></script>
-
-    <!-- iCheck -->
-    <script src="js/plugins/iCheck/icheck.min.js"></script>
-
-    <!-- SUMMERNOTE -->
-    <script src="js/plugins/summernote/summernote.min.js"></script>
-
     <!-- Select2 -->
     <script src="js/plugins/select2/select2.full.min.js"></script>
 
+    <!-- Chosen -->
+    <script src="js/plugins/chosen/chosen.jquery.js"></script>
+
+    <!-- Jquery Validate -->
+    <script src="js/plugins/validate/jquery.validate.min.js"></script>
+
+    <!-- Jasny -->
+    <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
+
+    <!-- Page-Level Scripts -->
     <script>
-        $(document).ready(function () {
-
-            $('.summernote').summernote();
-            $(".select2_demo_2").select2();
+        $('.select2_demo_2').select2({
+            language: {
+                noResults: function () {
+                    return "No se encontraron usuarios";
+                }
+            }
         });
-
     </script>
 
 </body>

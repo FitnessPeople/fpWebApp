@@ -16,7 +16,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Usuarios");
+                    ValidarPermisos("Nuevo ticket soporte");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         divMensaje.Visible = true;
@@ -109,7 +109,8 @@ namespace fpWebApp
         private void CargarActivos()
         {
             clasesglobales cg = new clasesglobales();
-            string strQuery = "SELECT * FROM ActivosFijos WHERE idSede = " + ddlSedes.SelectedItem.Value.ToString();
+            string strQuery = "SELECT idActivoFijo, CONCAT(NombreActivoFijo, ' ◾ ', CodigoInterno) AS NombreActivoFijo " +
+                "FROM ActivosFijos WHERE idSede = " + ddlSedes.SelectedItem.Value.ToString();
 
             DataTable dt = cg.TraerDatos(strQuery);
 

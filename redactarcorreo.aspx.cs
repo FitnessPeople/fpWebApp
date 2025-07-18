@@ -20,7 +20,7 @@ namespace fpWebApp
                     }
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
-
+                        CargarUsuarios();
                     }
                     else
                     {
@@ -57,6 +57,26 @@ namespace fpWebApp
             }
 
             dt.Dispose();
+        }
+
+        private void CargarUsuarios()
+        {
+            clasesglobales cg = new clasesglobales();
+            string strQuery = "SELECT * " +
+                "FROM usuarios " +
+                "WHERE idUsuario <> " + Session["idUsuario"].ToString() + " ORDER BY NombreUsuario ";
+
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            ddlUsuarios.DataSource = dt;
+            ddlUsuarios.DataValueField = "idUsuario";
+            ddlUsuarios.DataTextField = "NombreUsuario";
+            ddlUsuarios.DataBind();
+        }
+
+        protected void lbEnviar_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -11,26 +11,35 @@ namespace fpWebApp
 {
 
 
-    public partial class asignartecnicoticket
+    public partial class activosfijos
     {
 
         /// <summary>
-        /// Control navbar.
+        /// Control navbar1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.navbar navbar;
+        protected global::fpWebApp.controles.navbar navbar1;
 
         /// <summary>
-        /// Control header.
+        /// Control header1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.header header;
+        protected global::fpWebApp.controles.header header1;
+
+        /// <summary>
+        /// Control indicadores04.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::fpWebApp.controles.indicadores04 indicadores04;
 
         /// <summary>
         /// Control divMensaje.
@@ -60,21 +69,21 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContenido;
 
         /// <summary>
-        /// Control footer.
+        /// Control footer1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.footer footer;
+        protected global::fpWebApp.controles.footer footer1;
 
         /// <summary>
-        /// Control rightsidebar.
+        /// Control rightsidebar1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.rightsidebar rightsidebar;
+        protected global::fpWebApp.controles.rightsidebar rightsidebar1;
     }
 }
