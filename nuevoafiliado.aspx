@@ -217,6 +217,8 @@
                                                         DataValueField="idCiudad" CssClass="chosen-select form-control input-sm">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
+                                                    <asp:RequiredFieldValidator ID="rfvCiudad" runat="server" ControlToValidate="ddlCiudadAfiliado" 
+                                                        ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                 </div>
                                             </div>
                                         </div>
@@ -340,7 +342,7 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Teléfono de contacto:</label>
-                                                    <asp:TextBox ID="txbTelefonoContacto" CssClass="form-control input-sm" runat="server" placeholder="Teléfono" 
+                                                    <asp:TextBox ID="txbTelefonoContacto" CssClass="form-control input-sm" runat="server" placeholder="Teléfono"
                                                         autocomplete="off" spellcheck="false"></asp:TextBox>
                                                 </div>
                                             </div>

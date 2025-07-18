@@ -289,7 +289,6 @@
                                                                                     <td>
                                                                                         <asp:LinkButton runat="server" ID="btnSeleccionarPlan" CommandArgument='<%# Eval("idPlan") %>'
                                                                                             CommandName="SeleccionarPlan"><%# Eval("NombrePlan") %></asp:LinkButton>
-                                                                                        <%--<asp:Button runat="server" ID="btnSeleccionarPlan" OnClick="btnSeleccionarPlan_Click" CommandArgument="" />--%></td>
                                                                                     <td><i class="fa fa-note-sticky m-r-xs font-bold"></i><%# Eval("DescripcionPlan") %></td>
                                                                                     <td><%# Eval("Vigencia") %></td>
                                                                                     <td style="text-align: right;">$<%# Eval("PrecioTotal","{0:N0}") %></td>
@@ -314,8 +313,6 @@
                                                                 <asp:Button ID="btn90dias" runat="server" Text="90" CssClass="btn btn-info dim btn-large-dim btn-outline"
                                                                     Style="width: 70px; font-size: 30px; height: 70px;" OnClick="btn90dias_Click" Enabled="false" />
 
-                                                                <%--<div class="i-checks"><label for="check15"> <input type="checkbox" id="check15" name="check15"> 15 dias </label></div>--%>
-                                                                <%--<asp:CheckBox ID="check15" runat="server" />--%>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -445,7 +442,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-sm-6"> 
+                                                    <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <div class="panel panel-default" runat="server" id="div1">
                                                                 <div class="panel-heading">
@@ -455,9 +452,7 @@
                                                                 <div class="panel-body">
                                                                     <div class="form-group" style="margin-bottom: 5px;">
                                                                         <label>Fecha de inicio:</label>
-                                                                        <%--<div class="col-lg-7">--%>
                                                                         <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm" runat="server" name="txbFechaInicio"></asp:TextBox>
-                                                                        <%--</div>--%>
                                                                     </div>
 
                                                                     <div class="form-group" style="margin-bottom: 5px;">
@@ -465,8 +460,6 @@
                                                                         <div class="row">
                                                                             <div class="col-lg-8">
                                                                                 <a class="dropdown-toggle count-info" data-toggle="modal" href="#" data-target="#ModalDetalleWompi">Verificar pago...</a>
-                                                                                <%--<asp:LinkButton ID="lkVerificarPago" 
-                                                                                    runat="server" OnClick="lkVerificarPago_Click">Verificar pago...</asp:LinkButton>--%>
                                                                             </div>
                                                                             <div class="col-lg-4">
                                                                                 <asp:TextBox ID="txbWompi" CssClass="form-control input-sm"
@@ -546,32 +539,17 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <%--<asp:Literal ID="ltMensaje" runat="server"></asp:Literal>--%>
 
                                                 <div>
                                                     <button id="btnCancelar" class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='afiliados'" runat="server"><strong>Cancelar</strong></button>
                                                     <button id="btnVolver" runat="server" type="button" class="btn btn-sm btn-info pull-right m-t-n-xs" onclick="window.location.href='agendacrm.aspx';">
-                                                         Regresar a Agenda CRM</button>
+                                                        Regresar a Agenda CRM</button>
                                                     <asp:LinkButton ID="lbAgregarPlan" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" OnClick="lbAgregarPlan_Click">
                                                         <i class="fa fa-ticket"></i> Agregar plan</asp:LinkButton>
-                                                       
-<%--                                                    <asp:Button ID="btnConfirmar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
-                                                        Text="Confirmar venta" Visible="false"  />--%>
+
                                                 </div>
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
-
-                                        <%--<div>
-                                            <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button"
-                                                onclick="window.location.href='afiliados'">
-                                                <strong>Cancelar</strong></button>
-                                            <asp:LinkButton ID="lbAgregarPlan" runat="server"
-                                                CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
-                                                OnClick="lbAgregarPlan_Click">
-                                                <i class="fa fa-ticket"></i> Agregar plan</asp:LinkButton>
-                                            <asp:Button ID="btnAgregarPlan" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
-                                                Text="Agregar Plan" OnClick="btnAgregarPlan_Click" />
-                                        </div>--%>
                                     </div>
                                 </form>
                             </div>

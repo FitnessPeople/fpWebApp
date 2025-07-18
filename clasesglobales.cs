@@ -7915,7 +7915,7 @@ namespace fpWebApp
                 {
                     mysqlConexion.Open();
 
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_AFILIADO_PLAN", mysqlConexion))
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_PAGO_PLAN_AFILIADO", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
