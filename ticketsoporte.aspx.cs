@@ -37,8 +37,16 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-                            //CargarEquipos();
+                            ddlUsuarios.Enabled = false;
                             CargarTickets();
+
+                            if(Request.QueryString.Count > 0)
+                            {
+                                if (Request.QueryString["asignarid"] != null)
+                                {
+                                    CargarAsignacion();
+                                }
+                            }
                         }
                     }
                 }
@@ -47,34 +55,6 @@ namespace fpWebApp
                     Response.Redirect("logout.aspx");
                 }
             }
-        }
-
-        private void CargarTickets()
-        {
-            string estado = ddlEstado.SelectedValue;
-            string prioridad = ddlFiltroPrioridad.SelectedValue;
-            //string activo = ddlActivos.SelectedValue;
-
-            string strQuery = "SELECT t.idTicketSoporte, af.NombreActivoFijo, af.CodigoInterno, af.ImagenActivo, " +
-                "t.DescripcionTicket, t.EstadoTicket, t.PrioridadTicket, t.FechaCreacionTicket, ca.NombreCategoriaActivo, " +
-                "u.NombreUsuario, s.NombreSede, " +
-                "IF(t.EstadoTicket='Pendiente','warning',IF(t.EstadoTicket='En proceso','info',IF(t.EstadoTicket='Resuelto','primary','default'))) AS badge, " +
-                "IF(t.PrioridadTicket='Baja','info',IF(t.PrioridadTicket='Media','warning','danger')) AS badge2 " +
-                "FROM TicketSoporte t " +
-                "INNER JOIN ActivosFijos af ON t.idActivoFijo = af.idActivoFijo " +
-                "INNER JOIN CategoriasActivos ca ON af.idCategoriaActivo = ca.idCategoriaActivo " +
-                "INNER JOIN Usuarios u ON t.idReportadoPor = u.idUsuario " +
-                "INNER JOIN Sedes s ON af.idSede = s.idSede " +
-                "WHERE('" + estado + "' = '' OR t.EstadoTicket = '" + estado + "') " +
-                "AND('" + prioridad + "' = '' OR t.PrioridadTicket = '" + prioridad + "') " +
-                "ORDER BY t.FechaCreacionTicket DESC";
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
-
-            rpTickets.DataSource = dt;
-            rpTickets.DataBind();
-
-            dt.Dispose();
         }
 
         private void ValidarPermisos(string strPagina)
@@ -96,6 +76,79 @@ namespace fpWebApp
                 ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
                 ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
             }
+
+            dt.Dispose();
+        }
+
+        private void CargarTickets()
+        {
+            string estado = ddlEstado.SelectedValue;
+            string prioridad = ddlFiltroPrioridad.SelectedValue;
+            //string activo = ddlActivos.SelectedValue;
+
+            string strQuery = "SELECT t.idTicketSoporte, af.NombreActivoFijo, af.CodigoInterno, af.ImagenActivo, " +
+                "t.DescripcionTicket, t.EstadoTicket, t.PrioridadTicket, t.FechaCreacionTicket, ca.NombreCategoriaActivo, " +
+                "u.NombreUsuario, s.NombreSede, " +
+                "IF(t.EstadoTicket='Pendiente','warning',IF(t.EstadoTicket='En proceso','info',IF(t.EstadoTicket='Resuelto','primary','default'))) AS badge, " +
+                "IF(t.PrioridadTicket='Baja','info',IF(t.PrioridadTicket='Media','warning','danger')) AS badge2 " +
+                "FROM TicketSoporte t " +
+                "INNER JOIN ActivosFijos af ON t.idActivoFijo = af.idActivoFijo " +
+                "INNER JOIN CategoriasActivos ca ON af.idCategoriaActivo = ca.idCategoriaActivo " +
+                "INNER JOIN Usuarios u ON t.idReportadoPor = u.idUsuario " +
+                "INNER JOIN Sedes s ON af.idSede = s.idSede " +
+                "WHERE ('" + estado + "' = '' OR t.EstadoTicket = '" + estado + "') " +
+                "AND ('" + prioridad + "' = '' OR t.PrioridadTicket = '" + prioridad + "') " +
+                "ORDER BY t.FechaCreacionTicket DESC";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            rpTickets.DataSource = dt;
+            rpTickets.DataBind();   
+
+            dt.Dispose();
+        }
+
+        private void CargarAsignacion()
+        {
+            string strQuery = "SELECT t.idTicketSoporte, af.NombreActivoFijo, af.CodigoInterno, af.ImagenActivo, " +
+                "t.DescripcionTicket, t.EstadoTicket, t.PrioridadTicket, t.FechaCreacionTicket, ca.NombreCategoriaActivo, " +
+                "u.NombreUsuario, s.NombreSede, " +
+                "IF(t.EstadoTicket='Pendiente','warning',IF(t.EstadoTicket='En proceso','info',IF(t.EstadoTicket='Resuelto','primary','default'))) AS badge, " +
+                "IF(t.PrioridadTicket='Baja','info',IF(t.PrioridadTicket='Media','warning','danger')) AS badge2 " +
+                "FROM TicketSoporte t " +
+                "INNER JOIN ActivosFijos af ON t.idActivoFijo = af.idActivoFijo " +
+                "INNER JOIN CategoriasActivos ca ON af.idCategoriaActivo = ca.idCategoriaActivo " +
+                "INNER JOIN Usuarios u ON t.idReportadoPor = u.idUsuario " +
+                "INNER JOIN Sedes s ON af.idSede = s.idSede " +
+                "WHERE t.idTicketSoporte = " + Request.QueryString["asignarid"].ToString();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            if (dt.Rows.Count > 0)
+            {
+                ltActivo.Text = dt.Rows[0]["NombreActivoFijo"].ToString();
+                ltDescripcion.Text = dt.Rows[0]["DescripcionTicket"].ToString();
+            }
+
+            dt.Dispose();
+
+            ddlUsuarios.Enabled = true;
+            CargarTecnicos();
+        }
+
+        private void CargarTecnicos()
+        {
+            string strQuery = "SELECT * " +
+                "FROM usuarios " +
+                "WHERE idPerfil = 22 " +
+                "ORDER BY NombreUsuario " ;
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            ddlUsuarios.DataSource = dt;
+            ddlUsuarios.DataValueField = "idUsuario";
+            ddlUsuarios.DataTextField = "NombreUsuario";
+            ddlUsuarios.DataBind();
 
             dt.Dispose();
         }
@@ -146,24 +199,28 @@ namespace fpWebApp
             }
         }
 
-        protected void rpTickets_ItemDataBound(object sender, System.Web.UI.WebControls.RepeaterItemEventArgs e)
+        protected void rpTickets_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                DataRowView row = (DataRowView)e.Item.DataItem;
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
-                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "ticketsoporte?asignar=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    HtmlButton btnEditar = (HtmlButton)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("onClick", "window.location.href='ticketsoporte?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
                     btnEditar.Visible = true;
+
+                    HtmlButton btnAsignar = (HtmlButton)e.Item.FindControl("btnAsignar");
+                    btnAsignar.Attributes.Add("onClick", "window.location.href='ticketsoporte?asignarid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnAsignar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
-                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "ticketsoporte?cancelar=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    HtmlButton btnEliminar = (HtmlButton)e.Item.FindControl("btnEliminar");
+                    btnEliminar.Attributes.Add("onClick", "window.location.href='ticketsoporte?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
                     btnEliminar.Visible = true;
                 }
 
+                DataRowView row = (DataRowView)e.Item.DataItem;
                 //  ltTiempoTranscurrido: Hace X minutos
                 if (row["FechaCreacionTicket"] != DBNull.Value)
                 {
@@ -199,6 +256,11 @@ namespace fpWebApp
                 }
 
             }
+        }
+
+        protected void btnAgregar_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -117,7 +117,7 @@
 
                     <form role="form" id="form1" runat="server">
                         <div class="row" id="divContenido" runat="server">
-                            <div class="col-lg-4">
+                            <div class="col-lg-12">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5>Agregar ticket de soporte</h5>
@@ -180,7 +180,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-8">
+                            <div class="col-lg-12">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5>Lista de mis tickets</h5>
