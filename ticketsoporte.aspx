@@ -135,25 +135,25 @@
 
                     <div class="row" id="divContenido" runat="server">
                         <form runat="server" id="form1">
-                        <div class="col-lg-8">
-                            <div class="ibox float-e-margins">
-                                <div class="ibox-title">
-                                    <h5><i class="fas fa-clipboard-list text-success m-r-sm"></i>Lista de Tickets</h5>
-                                    <div class="ibox-tools">
-                                        <a class="collapse-link">
-                                            <i class="fa fa-chevron-up"></i>
-                                        </a>
+                            <div class="col-lg-8">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5><i class="fas fa-clipboard-list text-success m-r-sm"></i>Lista de Tickets</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="ibox-content">
-                                    <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
+                                    <div class="ibox-content">
+                                        <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
                                             <div class="col-lg-10">
                                                 <div class="form-group">
                                                     <div class="row">
-                                                        <div class="col-md-4">
-                                                            <div class="form-group" id="filter-form-container" style="margin-left: 18px;"></div>
+                                                        <div class="col-md-3" style="padding-left: 10px; padding-right: 0px;">
+                                                            <div class="form-group" id="filter-form-container"></div>
                                                         </div>
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-3" style="padding-left: 10px; padding-right: 0px;">
                                                             <div class="form-group form-horizontal">
                                                                 <label class="col-lg-3 control-label">Estado</label>
                                                                 <div class="col-lg-9">
@@ -168,7 +168,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-4">
+                                                        <div class="col-md-3" style="padding-left: 10px; padding-right: 0px;">
                                                             <div class="form-group form-horizontal">
                                                                 <label class="col-lg-4 control-label">Prioridad</label>
                                                                 <div class="col-lg-8">
@@ -182,7 +182,17 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
+                                                        <div class="col-md-3" style="padding-left: 10px; padding-right: 0px;">
+                                                            <div class="form-group form-horizontal">
+                                                                <label class="col-lg-4 control-label">Sede</label>
+                                                                <div class="col-lg-8">
+                                                                    <asp:DropDownList ID="ddlSedes" runat="server" AutoPostBack="true" 
+                                                                        OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged" 
+                                                                        CssClass="form-control input-sm">
+                                                                    </asp:DropDownList>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -193,134 +203,133 @@
                                                     <i class="fa fa-file-excel"></i> EXCEL
                                                 </asp:LinkButton>
                                             </div>
-                                    </div>
-
-                                    <table class="footable table table-striped list-group-item-text" data-paging-size="10"
-                                        data-filter-min="3" data-filter-placeholder="Buscar"
-                                        data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
-                                        data-paging-limit="10" data-filtering="true"
-                                        data-filter-container="#filter-form-container" data-filter-delay="300"
-                                        data-filter-dropdown-title="Buscar en:" data-filter-position="left"
-                                        data-empty="Sin resultados">
-                                        <thead>
-                                            <tr>
-                                                <th data-sortable="false" data-breakpoints="xs"></th>
-                                                <th data-sortable="true" data-breakpoints="xs">Activo</th>
-                                                <th data-sortable="true" data-breakpoints="xs">Categoría</th>
-                                                <th data-breakpoints="all" data-title="Info"></th>
-                                                <th data-breakpoints="xs sm md">Estado</th>
-                                                <th data-breakpoints="xs sm md">Prioridad</th>
-                                                <th class="text-nowrap" data-breakpoints="xs">Fecha</th>
-                                                <th class="text-nowrap" data-breakpoints="xs">Sede</th>
-                                                <th data-sortable="false" class="text-right" style="width: 95px;">Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <asp:Repeater ID="rpTickets" runat="server" OnItemDataBound="rpTickets_ItemDataBound">
-                                                <ItemTemplate>
-                                                    <tr>
-                                                        <td></td>
-                                                        <%--<td class="client-avatar"><img alt="image" src="img/activos/<%# Eval("ImagenActivo") %>"></td>--%>
-                                                        <td><%# Eval("NombreActivoFijo") %><br />
-                                                            <%# Eval("CodigoInterno") %></td>
-                                                        <td><%# Eval("NombreCategoriaActivo") %></td>
-                                                        <td>
-                                                            <table class="table table-bordered table-striped">
-                                                                <tr>
-                                                                    <th width="70%"><i class="fa fa-message m-r-xs"></i>Descripción</th>
-                                                                    <th width="30%"><i class="fa fa-user m-r-xs"></i>Reportado por</th>
-                                                                    <%--<th width="33%" class="text-nowrap"><i class="fa fa-venus-mars m-r-xs"></i>Genero</th>--%>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><%# Eval("DescripcionTicket") %></td>
-                                                                    <td><%# Eval("NombreUsuario") %></td>
-                                                                    <%--<td><%# Eval("Genero") %></td>--%>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                        <td><span class="badge badge-<%# Eval("badge") %>"><%# Eval("EstadoTicket") %></span></td>
-                                                        <td><i class="fa fa-circle m-r-sm text-<%# Eval("badge2") %>"></i><%# Eval("PrioridadTicket") %></td>
-                                                        <td><%# Eval("FechaCreacionTicket", "{0:dd MMM yyyy hh:mm:ss}") %><br />
-                                                            <asp:Literal ID="ltTiempoTranscurrido" runat="server"></asp:Literal></td>
-                                                        <td><%# Eval("NombreSede") %></td>
-                                                        <td>
-                                                            <button type="button" runat="server" id="btnEditar" class="btn btn-outline btn-primary pull-left m-r-xs"
-                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"
-                                                                title="Editar">
-                                                                <i class="fa fa-edit"></i>
-                                                            </button>
-                                                            <button type="button" runat="server" id="btnEliminar" class="btn btn-outline btn-danger pull-left m-r-xs"
-                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"
-                                                                title="Eliminar">
-                                                                <i class="fa fa-trash"></i>
-                                                            </button>
-                                                            <button type="button" runat="server" id="btnAsignar" class="btn btn-outline btn-warning pull-left m-r-xs"
-                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
-                                                                title="Asignar técnico">
-                                                                <i class="fa fa-user-plus"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                </ItemTemplate>
-                                            </asp:Repeater>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="ibox float-e-margins">
-                                <div class="ibox-title">
-                                    <h5><i class="fas fa-user-plus text-success m-r-sm"></i>Asignación de responsable</h5>
-                                    <div class="ibox-tools">
-                                        <a class="collapse-link">
-                                            <i class="fa fa-chevron-up"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="ibox-content">
-
-                                        <h4><asp:Literal ID="ltActivo" runat="server"></asp:Literal></h4>
-                                        <img src="img/activos/caminadora_cybex.jpg" width="150px" class="img-responsive">
-                                        <p class="small">
-                                            <asp:Literal ID="ltDescripcion" runat="server"></asp:Literal>
-                                        </p>
-                                        <p class="small font-bold">
-                                            <span><i class="fa fa-circle text-warning"></i> High priority</span>
-                                        </p>
-                                        <h5>Project tag</h5>
-                                        <ul class="tag-list" style="padding: 0">
-                                            <li><a href=""><i class="fa fa-tag"></i> Zender</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i> Lorem ipsum</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i> Passages</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i> Variations</a></li>
-                                        </ul>
-                                        <h5>Project files</h5>
-                                        <ul class="list-unstyled project-files">
-                                            <li><a href=""><i class="fa fa-file"></i> Project_document.docx</a></li>
-                                            <li><a href=""><i class="fa fa-file-picture-o"></i> Logo_zender_company.jpg</a></li>
-                                            <li><a href=""><i class="fa fa-stack-exchange"></i> Email_from_Alex.mln</a></li>
-                                            <li><a href=""><i class="fa fa-file"></i> Contract_20_11_2014.docx</a></li>
-                                        </ul>
-                                        <div class="text-center m-t-md">
-                                            <a href="#" class="btn btn-xs btn-primary">Add files</a>
-                                            <a href="#" class="btn btn-xs btn-primary">Report contact</a>
-
                                         </div>
 
-                                    <div class="form-group">
-                                        <label">Responsable</label>
-                                        <asp:DropDownList ID="ddlUsuarios" runat="server" CssClass="form-control input-sm">
-                                        </asp:DropDownList>
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                            data-filter-min="3" data-filter-placeholder="Buscar"
+                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
+                                            data-paging-limit="10" data-filtering="true"
+                                            data-filter-container="#filter-form-container" data-filter-delay="300"
+                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left"
+                                            data-empty="Sin resultados">
+                                            <thead>
+                                                <tr>
+                                                    <th data-sortable="false" data-breakpoints="xs"></th>
+                                                    <th data-sortable="true" data-breakpoints="xs">Activo</th>
+                                                    <%--<th data-sortable="true" data-breakpoints="xs">Categoría</th>--%>
+                                                    <th data-breakpoints="all" data-title="Info"></th>
+                                                    <th data-breakpoints="xs sm md">Estado</th>
+                                                    <th data-breakpoints="xs sm md">Prioridad</th>
+                                                    <th class="text-nowrap" data-breakpoints="xs">Fecha</th>
+                                                    <th class="text-nowrap" data-breakpoints="xs">Sede</th>
+                                                    <th class="text-nowrap" data-breakpoints="xs">Responsable</th>
+                                                    <th data-sortable="false" class="text-right" style="width: 95px;">Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:Repeater ID="rpTickets" runat="server" OnItemDataBound="rpTickets_ItemDataBound">
+                                                    <ItemTemplate>
+                                                        <tr>
+                                                            <td></td>
+                                                            <%--<td class="client-avatar"><img alt="image" src="img/activos/<%# Eval("ImagenActivo") %>"></td>--%>
+                                                            <td><%# Eval("NombreActivoFijo") %><br />
+                                                                <%# Eval("CodigoInterno") %></td>
+                                                            <%--<td><%# Eval("NombreCategoriaActivo") %></td>--%>
+                                                            <td>
+                                                                <table class="table table-bordered table-striped">
+                                                                    <tr>
+                                                                        <th width="70%"><i class="fa fa-message m-r-xs"></i>Descripción</th>
+                                                                        <th width="30%"><i class="fa fa-user m-r-xs"></i>Reportado por</th>
+                                                                        <%--<th width="33%" class="text-nowrap"><i class="fa fa-venus-mars m-r-xs"></i>Genero</th>--%>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><%# Eval("DescripcionTicket") %></td>
+                                                                        <td><%# Eval("NombreUsuario") %></td>
+                                                                        <%--<td><%# Eval("Genero") %></td>--%>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <td><span class="badge badge-<%# Eval("badge") %>"><%# Eval("EstadoTicket") %></span></td>
+                                                            <td><i class="fa fa-circle m-r-sm text-<%# Eval("badge2") %>"></i><%# Eval("PrioridadTicket") %></td>
+                                                            <td><%# Eval("FechaCreacionTicket", "{0:dd MMM yyyy hh:mm:ss}") %><br />
+                                                                <asp:Literal ID="ltTiempoTranscurrido" runat="server"></asp:Literal></td>
+                                                            <td><%# Eval("NombreSede") %></td>
+                                                            <td><%# Eval("Responsable") %></td>
+                                                            <td>
+                                                                <button type="button" runat="server" id="btnVerDetalles"
+                                                                    class="btn btn-outline btn-primary pull-left m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"
+                                                                    title="Ver detalles">
+                                                                    <i class="fa fa-circle-info"></i>
+                                                                </button>
+                                                                <button type="button" runat="server" id="btnAsignar"
+                                                                    class="btn btn-outline btn-warning pull-left m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
+                                                                    title="Asignar técnico">
+                                                                    <i class="fa fa-user-plus"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <div class="form-group">
-                                        <asp:Button ID="btnAgregar" runat="server" Text="Agregar" OnClick="btnAgregar_Click" 
-                                            CssClass="btn btn-sm btn-primary m-t-n-xs pull-right" ValidationGroup="agregar" />
-                                    </div>
-                                    <br />
                                 </div>
                             </div>
-                        </div>
+                            <div class="col-lg-4">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5><i class="fas fa-user-plus text-success m-r-sm"></i>Asignación de responsable</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <h4>
+                                                    <asp:Literal ID="ltActivo" runat="server"></asp:Literal><br />
+                                                    <asp:Literal ID="ltCodigo" runat="server"></asp:Literal>
+                                                </h4>
+                                                <img src="img/activos/caminadora_cybex.jpg" width="120px" class="img-responsive">
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <p class="small">
+                                                    <b>Descripción:</b><br />
+                                                    <asp:Literal ID="ltDescripcion" runat="server"></asp:Literal>
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <p class="small font-bold">
+                                            Prioridad: 
+                                                <span>
+                                                    <asp:Literal ID="ltCirculoPrioridad" runat="server"></asp:Literal>
+                                                    <%--<i class="fa fa-circle text-warning m-r-sm"></i>--%>
+                                                    <asp:Literal ID="ltPrioridad" runat="server"></asp:Literal>
+                                                </span>
+                                        </p>
+
+                                        <div runat="server" id="divAsignacion">
+                                            <div class="form-group">
+                                                <label>Responsable</label>
+                                                <asp:DropDownList ID="ddlUsuarios" runat="server" CssClass="form-control input-sm">
+                                                </asp:DropDownList>
+                                            </div>
+                                            <div class="form-group">
+                                                <asp:Button ID="btnAgregar" runat="server" Text="Agregar" OnClick="btnAgregar_Click"
+                                                    CssClass="btn btn-sm btn-primary m-t-n-xs pull-right" ValidationGroup="agregar" />
+                                            </div>
+                                            <br />
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

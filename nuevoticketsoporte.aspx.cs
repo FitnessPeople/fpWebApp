@@ -71,13 +71,15 @@ namespace fpWebApp
             string estado = ddlEstado.SelectedValue;
             string prioridad = ddlFiltroPrioridad.SelectedValue;
 
-            string strQuery = "SELECT t.idTicketSoporte, af.NombreActivoFijo, t.DescripcionTicket, " +
-                "t.EstadoTicket, t.PrioridadTicket, t.FechaCreacionTicket, " +
+            string strQuery = "SELECT t.idTicketSoporte, af.NombreActivoFijo, af.CodigoInterno, t.DescripcionTicket, " +
+                "t.EstadoTicket, t.PrioridadTicket, t.FechaCreacionTicket, u1.NombreUsuario as Responsable, " +
                 "IF(t.EstadoTicket='Pendiente','warning',IF(t.EstadoTicket='En proceso','info',IF(t.EstadoTicket='Resuelto','primary','default'))) AS badge, " +
                 "IF(t.PrioridadTicket='Baja','info',IF(t.PrioridadTicket='Media','warning','danger')) AS badge2 " +
                 "FROM TicketSoporte t " +
                 "INNER JOIN ActivosFijos af ON t.idActivoFijo = af.idActivoFijo " +
                 "INNER JOIN Usuarios u ON u.idUsuario = t.idReportadoPor AND u.idUsuario = " + Session["idUsuario"].ToString() + " " +
+                "LEFT JOIN AsignacionesTickets at ON at.idTicket = t.idTicketSoporte " +
+                "LEFT JOIN Usuarios u1 ON at.idTecnico = u1.idUsuario " +
                 "WHERE('" + estado + "' = '' OR t.EstadoTicket = '" + estado + "') " +
                 "AND('" + prioridad + "' = '' OR t.PrioridadTicket = '" + prioridad + "') " +
                 "ORDER BY t.FechaCreacionTicket DESC";
@@ -133,6 +135,8 @@ namespace fpWebApp
 
             clasesglobales cg = new clasesglobales();
             cg.TraerDatosStr(strQuery);
+
+            Response.Redirect("nuevoticketsoporte");
 
         }
 

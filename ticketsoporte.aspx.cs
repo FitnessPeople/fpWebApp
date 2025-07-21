@@ -38,13 +38,23 @@ namespace fpWebApp
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             ddlUsuarios.Enabled = false;
+                            divAsignacion.Visible = false;
                             CargarTickets();
 
                             if(Request.QueryString.Count > 0)
                             {
+                                bool boolMostrarResponsable = false;
                                 if (Request.QueryString["asignarid"] != null)
                                 {
-                                    CargarAsignacion();
+                                    divAsignacion.Visible = true;
+                                    boolMostrarResponsable = true;
+                                    CargarAsignacion(boolMostrarResponsable, Request.QueryString["asignarid"].ToString());
+                                }
+                                if (Request.QueryString["detailid"] != null)
+                                {
+                                    divAsignacion.Visible = false;
+                                    boolMostrarResponsable = false;
+                                    CargarAsignacion(boolMostrarResponsable, Request.QueryString["detailid"].ToString());
                                 }
                             }
                         }
@@ -88,7 +98,7 @@ namespace fpWebApp
 
             string strQuery = "SELECT t.idTicketSoporte, af.NombreActivoFijo, af.CodigoInterno, af.ImagenActivo, " +
                 "t.DescripcionTicket, t.EstadoTicket, t.PrioridadTicket, t.FechaCreacionTicket, ca.NombreCategoriaActivo, " +
-                "u.NombreUsuario, s.NombreSede, " +
+                "u.NombreUsuario, s.NombreSede, u1.NombreUsuario as Responsable, " +
                 "IF(t.EstadoTicket='Pendiente','warning',IF(t.EstadoTicket='En proceso','info',IF(t.EstadoTicket='Resuelto','primary','default'))) AS badge, " +
                 "IF(t.PrioridadTicket='Baja','info',IF(t.PrioridadTicket='Media','warning','danger')) AS badge2 " +
                 "FROM TicketSoporte t " +
@@ -96,6 +106,8 @@ namespace fpWebApp
                 "INNER JOIN CategoriasActivos ca ON af.idCategoriaActivo = ca.idCategoriaActivo " +
                 "INNER JOIN Usuarios u ON t.idReportadoPor = u.idUsuario " +
                 "INNER JOIN Sedes s ON af.idSede = s.idSede " +
+                "LEFT JOIN AsignacionesTickets at ON at.idTicket = t.idTicketSoporte " +
+                "LEFT JOIN Usuarios u1 ON at.idTecnico = u1.idUsuario " +
                 "WHERE ('" + estado + "' = '' OR t.EstadoTicket = '" + estado + "') " +
                 "AND ('" + prioridad + "' = '' OR t.PrioridadTicket = '" + prioridad + "') " +
                 "ORDER BY t.FechaCreacionTicket DESC";
@@ -108,7 +120,7 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void CargarAsignacion()
+        private void CargarAsignacion(bool mostrarResponsable, string idTicketSoporte)
         {
             string strQuery = "SELECT t.idTicketSoporte, af.NombreActivoFijo, af.CodigoInterno, af.ImagenActivo, " +
                 "t.DescripcionTicket, t.EstadoTicket, t.PrioridadTicket, t.FechaCreacionTicket, ca.NombreCategoriaActivo, " +
@@ -120,20 +132,28 @@ namespace fpWebApp
                 "INNER JOIN CategoriasActivos ca ON af.idCategoriaActivo = ca.idCategoriaActivo " +
                 "INNER JOIN Usuarios u ON t.idReportadoPor = u.idUsuario " +
                 "INNER JOIN Sedes s ON af.idSede = s.idSede " +
-                "WHERE t.idTicketSoporte = " + Request.QueryString["asignarid"].ToString();
+                "WHERE t.idTicketSoporte = " + idTicketSoporte;
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
             if (dt.Rows.Count > 0)
             {
+                ViewState.Add("idTicket", dt.Rows[0]["idTicketSoporte"].ToString());
                 ltActivo.Text = dt.Rows[0]["NombreActivoFijo"].ToString();
+                ltCodigo.Text = dt.Rows[0]["CodigoInterno"].ToString();
                 ltDescripcion.Text = dt.Rows[0]["DescripcionTicket"].ToString();
+                ltPrioridad.Text = dt.Rows[0]["PrioridadTicket"].ToString();
+                ltCirculoPrioridad.Text = "<i class=\"fa fa-circle text-" + dt.Rows[0]["badge2"].ToString() + " m-r-sm\"></i>";
             }
 
             dt.Dispose();
 
-            ddlUsuarios.Enabled = true;
-            CargarTecnicos();
+            if (mostrarResponsable)
+            {
+                ddlUsuarios.Enabled = true;
+                CargarTecnicos();
+            }
+
         }
 
         private void CargarTecnicos()
@@ -141,6 +161,7 @@ namespace fpWebApp
             string strQuery = "SELECT * " +
                 "FROM usuarios " +
                 "WHERE idPerfil = 22 " +
+                "AND EstadoUsuario = 'Activo' " +
                 "ORDER BY NombreUsuario " ;
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
@@ -205,19 +226,21 @@ namespace fpWebApp
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
-                    HtmlButton btnEditar = (HtmlButton)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("onClick", "window.location.href='ticketsoporte?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
-                    btnEditar.Visible = true;
+                    HtmlButton btnVerDetalles = (HtmlButton)e.Item.FindControl("btnVerDetalles");
+                    btnVerDetalles.Attributes.Add("onClick", "window.location.href='ticketsoporte?detailid=" + ((DataRowView)e.Item.DataItem).Row["idTicketSoporte"].ToString() + "'");
+                    btnVerDetalles.Visible = true;
 
                     HtmlButton btnAsignar = (HtmlButton)e.Item.FindControl("btnAsignar");
-                    btnAsignar.Attributes.Add("onClick", "window.location.href='ticketsoporte?asignarid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
-                    btnAsignar.Visible = true;
-                }
-                if (ViewState["Borrar"].ToString() == "1")
-                {
-                    HtmlButton btnEliminar = (HtmlButton)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("onClick", "window.location.href='ticketsoporte?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
-                    btnEliminar.Visible = true;
+                    btnAsignar.Attributes.Add("onClick", "window.location.href='ticketsoporte?asignarid=" + ((DataRowView)e.Item.DataItem).Row["idTicketSoporte"].ToString() + "'");
+
+                    if (((DataRowView)e.Item.DataItem).Row["EstadoTicket"].ToString() == "En Proceso")
+                    {
+                        btnAsignar.Visible = false;
+                    }
+                    else
+                    {
+                        btnAsignar.Visible = true;
+                    }
                 }
 
                 DataRowView row = (DataRowView)e.Item.DataItem;
@@ -259,6 +282,22 @@ namespace fpWebApp
         }
 
         protected void btnAgregar_Click(object sender, EventArgs e)
+        {
+            // Inserta la asignación de responsable en la tabla AsignacionesTickets
+            string strResponsable = ddlUsuarios.SelectedItem.Value.ToString();
+            string strQuery = "INSERT INTO AsignacionesTickets (idTicket, idTecnico, FechaAsignacion) " +
+                "VALUES (" + ViewState["idTicket"].ToString() + ", " + strResponsable + ", NOW())";
+            clasesglobales cg = new clasesglobales();
+            cg.TraerDatosStr(strQuery);
+
+            // Actualiza el estado del ticket en la tabla TicketSoporte
+            strQuery = "UPDATE TicketSoporte SET EstadoTicket = 'En Proceso' WHERE idTicketSoporte = " + ViewState["idTicket"].ToString();
+            cg.TraerDatosStr(strQuery);
+
+            Response.Redirect("ticketsoporte");
+        }
+
+        protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

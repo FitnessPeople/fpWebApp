@@ -105,6 +105,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlFiltroPrioridad;
 
         /// <summary>
+        /// Control ddlSedes.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlSedes;
+
+        /// <summary>
         /// Control lbExportarExcel.
         /// </summary>
         /// <remarks>
@@ -132,6 +141,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltActivo;
 
         /// <summary>
+        /// Control ltCodigo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltCodigo;
+
+        /// <summary>
         /// Control ltDescripcion.
         /// </summary>
         /// <remarks>
@@ -139,6 +157,33 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltDescripcion;
+
+        /// <summary>
+        /// Control ltCirculoPrioridad.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltCirculoPrioridad;
+
+        /// <summary>
+        /// Control ltPrioridad.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltPrioridad;
+
+        /// <summary>
+        /// Control divAsignacion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divAsignacion;
 
         /// <summary>
         /// Control ddlUsuarios.
