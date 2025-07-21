@@ -108,10 +108,8 @@ namespace fpWebApp
 
         private void CargarEmpresas()
         {
-            string strQuery = "SELECT idEmpresaAfiliada, RazonSocial FROM EmpresasAfiliadas " +
-                "ORDER BY RazonSocial";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarEmpresasAfiliadas();
 
             ddlEmpresaConvenio.DataSource = dt;
             ddlEmpresaConvenio.DataBind();
@@ -121,9 +119,8 @@ namespace fpWebApp
 
         private void CargarEstadoCivil()
         {
-            string strQuery = "SELECT * FROM estadocivil";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarEstadosCiviles();
 
             ddlEstadoCivil.DataSource = dt;
             ddlEstadoCivil.DataBind();
@@ -133,9 +130,8 @@ namespace fpWebApp
 
         private void CargarEps()
         {
-            string strQuery = "SELECT * FROM eps";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarEpss();
 
             ddlEps.DataSource = dt;
             ddlEps.DataBind();
@@ -145,9 +141,8 @@ namespace fpWebApp
 
         private void CargarProfesiones()
         {
-            string strQuery = "SELECT * FROM profesiones";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarProfesiones();
 
             ddlProfesiones.DataSource = dt;
             ddlProfesiones.DataBind();
@@ -168,9 +163,8 @@ namespace fpWebApp
 
         private void CargarGeneros()
         {
-            string strQuery = "SELECT * FROM generos ORDER BY idGenero";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarGeneros();
 
             ddlGenero.DataSource = dt;
             ddlGenero.DataBind();
@@ -222,9 +216,7 @@ namespace fpWebApp
 
                     if (!string.IsNullOrEmpty(parametro))
                     {
-                        string strQuery = "SELECT * FROM afiliados WHERE idAfiliado = " + parametro;
-
-                        DataTable dt = cg.TraerDatos(strQuery);
+                        DataTable dt = cg.ConsultarAfiliadoPorId(Convert.ToInt32(parametro));
 
                         if (dt.Rows.Count > 0)
                         {
@@ -465,12 +457,7 @@ namespace fpWebApp
         private void PostArmatura(string strDocumento)
         {
             clasesglobales cg = new clasesglobales();
-            string strQuery = "SELECT * " +
-                              "FROM Afiliados a " +
-                              "LEFT JOIN AfiliadosPlanes ap ON a.idAfiliado = ap.idAfiliado " +
-                              "WHERE DocumentoAfiliado = '" + strDocumento + "'";
-
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarAfiliadoPlanPorDocumento(strDocumento);
 
             if (dt.Rows.Count > 0)
             {
@@ -528,7 +515,6 @@ namespace fpWebApp
                 }
             }
         }
-
 
         public static string EnviarPeticion(string url, string contenido)
         {
@@ -591,9 +577,8 @@ namespace fpWebApp
 
         private string TraerData()
         {
-            string strQuery = "SELECT * FROM afiliados WHERE idAfiliado = " + Session["IdAfiliado"];
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarAfiliadoPorId(Convert.ToInt32(Session["IdAfiliado"]));
 
             string strData = "";
             foreach (DataColumn column in dt.Columns)
@@ -608,6 +593,7 @@ namespace fpWebApp
         protected void btnActualizaryVenderPlan_Click(object sender, EventArgs e)
         {
             string idAfil = Session["IdAfiliado"].ToString();
+            string idcrm = Session["idcrm"].ToString();
             string mensaje = string.Empty;
             string strFilename = "";
 
@@ -684,8 +670,8 @@ namespace fpWebApp
                             timer: 5000, // 3 segundos
                             showConfirmButton: false,
                             timerProgressBar: true
-                        }).then(() => {
-                            window.location.href = 'planesAfiliado?idAfil=" + idAfil + @"';
+                        }).then(() => {                           
+                            window.location.href = 'planesAfiliado.aspx?idAfil=" + idAfil + "&idcrm=" + idcrm + @"';
                         });
                     ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
@@ -693,16 +679,16 @@ namespace fpWebApp
                 else
                 {
                     string script = @"
-                                    Swal.fire({
-                                        title: 'Error',
-                                        text: 'Por favor contáctese con Sistemas Fitness People. Detalle: " + mensaje.Replace("'", "\\'") + @"',
-                                        icon: 'error'
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Por favor contáctese con Sistemas Fitness People. Detalle: " + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
                                             
-                                        }
-                                    });
-                                ";
+                                }
+                            });
+                        ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
                 }
             }
@@ -711,14 +697,14 @@ namespace fpWebApp
             {
                 mensaje = ex.Message;
                 string script = @"
-                                Swal.fire({
-                                    title: 'Error',
-                                    text: 'Por favor contáctese con Sistemas Fitness People. Detalle: " + mensaje.Replace("'", "\\'") + @"',
-                                    icon: 'error'
-                                }).then(() => {
-                                    window.location.href = 'editarafiliado';
-                                });
-                            ";
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Por favor contáctese con Sistemas Fitness People. Detalle: " + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            }).then(() => {
+                                window.location.href = 'editarafiliado';
+                            });
+                        ";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
             }
         }

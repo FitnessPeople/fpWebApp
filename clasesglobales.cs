@@ -5058,6 +5058,229 @@ namespace fpWebApp
             return respuesta;
         }
 
+        public DataTable ConsultarPlanesVigencias()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PLANES_VIGENCIAS", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarUltimoAfilEnAfiliadosPlan()
+
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_ULTIMO_AFILIADO_EN_AFILIADOS_PLAN", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+            return dt;
+        }
+
+        public string InsertarAfiliadoPlan(int idAfiliado, int idPlan, string fechaInicio, string fechaFin, int meses,
+int valor, string observaciones, string estado)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_AFILIADO_PLAN", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_id_afiliado", idAfiliado);
+                        cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
+                        cmd.Parameters.AddWithValue("@p_fecha_inicio", fechaInicio);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", fechaFin);
+                        cmd.Parameters.AddWithValue("@p_meses", meses);
+                        cmd.Parameters.AddWithValue("@p_valor", valor);
+                        cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
+                        cmd.Parameters.AddWithValue("@p_estado", estado);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public DataTable ConsultarAfiliadoPlanPorDocumento(string nroDocumento)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_AFILIADO_PLAN_POR_DOCUMENTO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_documento_afiliado", nroDocumento);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+            return dt;
+        }
+
+        public DataTable ConsultarPreguntasPARQporIdAfiliado(int idAfiliado)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PREGUNTAS_PARQ_POR_ID_AFILIADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_afiliado", idAfiliado);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+            return dt;
+        }
+
+        public DataTable ConsultarEmpresasAfiliadas()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_EMPRESAS_AFILIADAS", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarExisteDocdAfiliado(string docAfiliado)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_EXISTE_DOCUMENTO_AFILIADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_documento_afiliado", docAfiliado);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+            return dt;
+        }
+
+
         #endregion
 
         #region Agenda
@@ -7262,6 +7485,38 @@ namespace fpWebApp
             return dt;
         }
 
+        public string ActualizarEstadoCRMPagoPlan(int idcrm, string nombrePlan, int precioTotal, int idUsuario, int idEstadoCRM)
+        {
+
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_ESTADO_CRM_PAGO_PLAN", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_contacto", idcrm);
+                        cmd.Parameters.AddWithValue("@p_nompre_plan", nombrePlan);
+                        cmd.Parameters.AddWithValue("@p_precio_total", precioTotal);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_id_estado", idEstadoCRM);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
 
         #endregion
 
@@ -7679,9 +7934,9 @@ namespace fpWebApp
         }
 
         public string ActualizarAfiliado(int idAfiliado, int idTipoDocumento, string nombreAfiliado, string apellidoAfiliado,
-string celularAfiliado, string emailAfiliado, string dirAfiliado, int idCiudadAfiliado, string fechaNacAfiliado, string fotoAfiliado,
-int idGenero, int idEstadoCivilAfiliado, int idProfesion, int idEmpresaAfil, int idEps, int idSede, string responsableAfil,
-string parentesco, string contactoAfiliado)
+        string celularAfiliado, string emailAfiliado, string dirAfiliado, int idCiudadAfiliado, string fechaNacAfiliado, string fotoAfiliado,
+        int idGenero, int idEstadoCivilAfiliado, int idProfesion, int idEmpresaAfil, int idEps, int idSede, string responsableAfil,
+        string parentesco, string contactoAfiliado)
         {
             string respuesta = string.Empty;
             try
@@ -7781,6 +8036,108 @@ string parentesco, string contactoAfiliado)
             }
 
             return respuesta;
+        }
+
+        public string InsertarPagoPlanAfiliado(int idAfiliadoPlan, int valor, int idMedioPago, string idReferencia, string banco,
+        int idUsuario, string estado, string idSiigoFactura, int idCanalVenta, int idcrm)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_PAGO_PLAN_AFILIADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_id_afiliado_plan", idAfiliadoPlan);
+                        cmd.Parameters.AddWithValue("@p_valor", valor);
+                        cmd.Parameters.AddWithValue("@p_id_medio_pago", idMedioPago);
+                        cmd.Parameters.AddWithValue("@p_id_referencia", idReferencia);
+                        cmd.Parameters.AddWithValue("@p_banco", banco);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_estado", estado);
+                        cmd.Parameters.AddWithValue("@p_id_siigo_factura", idSiigoFactura);
+                        cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);
+                        cmd.Parameters.AddWithValue("@p_id_contacto", idcrm);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public DataTable ConsultarAfiliadoEstadoActivo(int idAfiliado)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_AFILIADO_CON_PLAN_ACTIVO ", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_afiliado", idAfiliado);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+            return dt;
+        }
+
+        public DataTable ConsultarAfiliadoSede(int idAfiliado)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_AFILIADO_SEDE", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_afiliado", idAfiliado);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+            return dt;
         }
 
         #endregion

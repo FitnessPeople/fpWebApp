@@ -1,9 +1,17 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NPOI.OpenXmlFormats.Spreadsheet;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
+using System.Net;
 using System.Text;
+using System.Web;
+using System.Web.Services.Description;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using static fpWebApp.editarafiliado;
 
 namespace fpWebApp
 {
@@ -25,10 +33,35 @@ namespace fpWebApp
                     if (ViewState["Consulta"].ToString() == "1")
                     {
                         divContenido.Visible = true;
+                        btnVolver.Visible = true;
                         string strDocumento = "";
+                        string idcrm = "0";
+                        Session["idcrm"] = idcrm;
+                        clasesglobales cg = new clasesglobales();
+
                         if (Request.QueryString.Count > 0)
                         {
-                            strDocumento = Request.QueryString["search"].ToString();
+                            if (!string.IsNullOrEmpty(Request.QueryString["search"]))
+                                strDocumento = Request.QueryString["search"].ToString();
+
+                            if (!string.IsNullOrEmpty(Request.QueryString["idcrm"]))
+                                idcrm = Request.QueryString["idcrm"].ToString();
+                            if (idcrm == "0")
+                            {
+                                btnVolver.Visible = false;
+                                DataTable dt1 = cg.ConsultarAfiliadoPlanPorDocumento(strDocumento);
+                                string strQuery = "SELECT * " +
+                                    "FROM AfiliadosPlanes ap, PagosPlanAfiliado ppa " +
+                                    "WHERE ap.idAfiliado = " + dt1.Rows[0]["idAfiliado"].ToString() + " " +
+                                    "AND ap.idAfiliadoPlan = ppa.idAfiliadoPlan " +
+                                    "AND ppa.EstadoPago = 'Aprobado'";
+                                DataTable dt2 = cg.TraerDatos(strQuery);
+                                idcrm = dt2.Rows[0]["idContacto"].ToString();
+
+                                if (!string.IsNullOrEmpty(idcrm)) ltCRM.Text = "No existen resgistros de CRM";
+                            }
+
+                            Session["idcrm"] = idcrm;
                         }
                         else
                         {
@@ -88,6 +121,7 @@ namespace fpWebApp
             CargarIncapacidades(dt.Rows[0]["idAfiliado"].ToString());
             CargarCortesias(dt.Rows[0]["idAfiliado"].ToString());
             CargarParq(dt.Rows[0]["idAfiliado"].ToString());
+            CargarCRM(Convert.ToInt32(Session["idcrm"]));
 
             ViewState["DocumentoAfiliado"] = dt.Rows[0]["DocumentoAfiliado"].ToString();
             ltNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
@@ -138,7 +172,8 @@ namespace fpWebApp
             {
                 for (int i = 0; i < dt2.Rows.Count; i++)
                 {
-                    strFila = listarDetalle(int.Parse(dt2.Rows[i]["idAfiliadoPlan"].ToString()));
+                    //strFila = listarDetalle(int.Parse(dt2.Rows[i]["idAfiliadoPlan"].ToString()));
+                    strFila = "";
                     ltDetalle.Text += strFila;
                 }
             }
@@ -146,35 +181,35 @@ namespace fpWebApp
 
 
             // Consulta en Armatura la existencia de los datos biométricos
-            //int idempresa = 2; //2 Armatura tabla integraciones
-            //string parametro = string.Empty;
-            //DataTable dti = cg.ConsultarUrl(idempresa);
-            //string urlServicio = dti.Rows[0]["urlTest"].ToString() + parametro;
-            //if (dt.Rows.Count > 0)
-            //{
-            //    parametro = dti.Rows[0]["urlServicioAd1"].ToString();
-            //}
-            //string mensaje = "falso";
-            //string url = urlServicio + strDocumento + parametro;
-            //string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
+            int idempresa = 2; //2 Armatura tabla integraciones
+            string parametro = string.Empty;
+            DataTable dti = cg.ConsultarUrl(idempresa);
+            string urlServicio = dti.Rows[0]["urlTest"].ToString() + parametro;
+            if (dt.Rows.Count > 0)
+            {
+                parametro = dti.Rows[0]["urlServicioAd1"].ToString();
+            }
+            string mensaje = "falso";
+            string url = urlServicio + strDocumento + parametro;
+            string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
 
-            //ltImagen.Text = "<img src=\"img/facial-recognition.png\" width=\"100px\" />";
-            //if (mensaje=="Ok")
-            //{
-            //    if (respuesta[1] == "success")
-            //    {
-            //        ltMensaje.Text = "Con acceso biométrico";
-            //        divAcceso.Visible = false;
-            //    }
-            //    else
-            //    {
-            //        ltMensaje.Text = "Sin acceso biométrico";
-            //    }
-            //}
-            //else
-            //{
-            //    ltMensaje.Text = respuesta[0];
-            //}
+            ltImagen.Text = "<img src=\"img/facial-recognition.png\" width=\"100px\" />";
+            if (mensaje == "Ok")
+            {
+                if (respuesta[1] == "success")
+                {
+                    ltMensaje.Text = "Con acceso biométrico";
+                    divAcceso.Visible = false;
+                }
+                else
+                {
+                    ltMensaje.Text = "Sin acceso biométrico";
+                }
+            }
+            else
+            {
+                ltMensaje.Text = respuesta[0];
+            }
         }
 
         private void CargarCongelaciones(string idAfiliado)
@@ -239,28 +274,27 @@ namespace fpWebApp
 
         private void CargarParq(string idAfiliado)
         {
-            string strQuery = "SELECT *, " +
-                "IF(Respuesta=0,'No','Si') AS respuesta1, " +
-                "IF(Respuesta=0,'info','danger') AS label " +
-                "FROM ParQ p, ParqAfiliados pa " +
-                "WHERE p.idParq IN (SELECT idParQ FROM ParqAfiliados WHERE idAfiliado = " + idAfiliado + " GROUP BY idParQ) " +
-                "AND p.idParq = pa.idParq " +
-                "AND pa.FechaRespParQ = (SELECT FechaRespParQ " +
-                "FROM ParqAfiliados " +
-                "WHERE idAfiliado = " + idAfiliado + " " +
-                "GROUP BY FechaRespParQ " +
-                "ORDER BY FechaRespParQ DESC " +
-                "LIMIT 1) " +
-                "ORDER BY Orden ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarPreguntasPARQporIdAfiliado(Convert.ToInt32(idAfiliado));
 
             if (dt.Rows.Count > 0)
             {
                 rpParq.DataSource = dt;
                 rpParq.DataBind();
             }
+            dt.Dispose();
+        }
 
+        private void CargarCRM(int idcrm)
+        {
+            bool respuesta = false;
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarContactosCRMPorId(idcrm, out respuesta);
+
+            if (dt.Rows.Count > 0)
+            {
+                ltCRM.Text = dt.Rows[0]["HistorialHTML2"].ToString();
+            }
             dt.Dispose();
         }
 
@@ -325,19 +359,18 @@ namespace fpWebApp
                             MetodoPago = jsonData["data"]["payment_method_type"]?.ToString(),
                             Estado = jsonData["data"]["status"]?.ToString(),
                             Referencia = jsonData["data"]["reference"]?.ToString(),
-                            //NombreTarjeta = jsonData["data"]["payment_method"]["extra"]["name"]?.ToString(),
-                            //UltimosDigitos = jsonData["data"]["payment_method"]["extra"]["last_four"]?.ToString(),
-                            //MarcaTarjeta = jsonData["data"]["payment_method"]["extra"]["brand"]?.ToString(),
-                            //TipoTarjeta = jsonData["data"]["payment_method"]["extra"]["card_type"]?.ToString(),
+                            NombreTarjeta = jsonData["data"]["payment_method"]["extra"]["name"]?.ToString(),
+                            UltimosDigitos = jsonData["data"]["payment_method"]["extra"]["last_four"]?.ToString(),
+                            MarcaTarjeta = jsonData["data"]["payment_method"]["extra"]["brand"]?.ToString(),
+                            TipoTarjeta = jsonData["data"]["payment_method"]["extra"]["card_type"]?.ToString(),
                             NombreComercio = jsonData["data"]["merchant"]["name"]?.ToString(),
                             ContactoComercio = jsonData["data"]["merchant"]["contact_name"]?.ToString(),
                             TelefonoComercio = jsonData["data"]["merchant"]["phone_number"]?.ToString(),
                             URLRedireccion = jsonData["data"]["redirect_url"]?.ToString(),
                             PaymentLinkId = jsonData["data"]["payment_link_id"]?.ToString(),
                             PublicKeyComercio = jsonData["data"]["merchant"]["public_key"]?.ToString(),
-                            EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString()
-                            //Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()
-                        }
+                            EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString(),
+                            Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
                     };
 
                 StringBuilder sb = new StringBuilder();
@@ -370,66 +403,62 @@ namespace fpWebApp
 
         protected void lbDarAcceso_Click(object sender, EventArgs e)
         {
-            //PostArmatura(ViewState["DocumentoAfiliado"].ToString());
+            PostArmatura(ViewState["DocumentoAfiliado"].ToString());
             Response.Redirect("detalleafiliado?search=" + Request.QueryString["search"].ToString());
         }
 
-        /// <summary>
-        /// Agrega y/o actualiza el afiliado en la base de datos de Armatura a través de API
-        /// </summary>
-        /// <param name="strDocumento"></param>
-        //private void PostArmatura(string strDocumento)
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    string strQuery = "SELECT * " +
-        //        "FROM Afiliados a, AfiliadosPlanes ap " +
-        //        "WHERE a.DocumentoAfiliado = '" + strDocumento + "' " +
-        //        "AND a.idAfiliado = ap.idAfiliado " +
-        //        "AND ap.EstadoPlan = 'Activo'";
-        //    DataTable dt = cg.TraerDatos(strQuery);
+        private void PostArmatura(string strDocumento)
+        {
+            clasesglobales cg = new clasesglobales();
+            string strQuery = "SELECT * " +
+                "FROM Afiliados a, AfiliadosPlanes ap " +
+                "WHERE a.DocumentoAfiliado = '" + strDocumento + "' " +
+                "AND a.idAfiliado = ap.idAfiliado " +
+                "AND ap.EstadoPlan = 'Activo'";
+            DataTable dt = cg.TraerDatos(strQuery);
 
-        //    if (dt.Rows.Count > 0)
-        //    {
-        //        string strGenero = "";
-        //        if (dt.Rows[0]["idGenero"].ToString() == "1")
-        //        {
-        //            strGenero = "M";
-        //        }
-        //        if (dt.Rows[0]["idGenero"].ToString() == "2")
-        //        {
-        //            strGenero = "F";
-        //        }
+            if (dt.Rows.Count > 0)
+            {
+                string strGenero = "";
+                if (dt.Rows[0]["idGenero"].ToString() == "1")
+                {
+                    strGenero = "M";
+                }
+                if (dt.Rows[0]["idGenero"].ToString() == "2")
+                {
+                    strGenero = "F";
+                }
 
-        //        Persona oPersona = new Persona()
-        //        {
-        //            pin = "" + dt.Rows[0]["DocumentoAfiliado"].ToString() + "",
-        //            name = "" + dt.Rows[0]["NombreAfiliado"].ToString() + "",
-        //            lastName = "" + dt.Rows[0]["ApellidoAfiliado"].ToString() + "",
-        //            gender = strGenero,
-        //            personPhoto = "",
-        //            certType = "",
-        //            certNumber = "",
-        //            mobilePhone = "" + dt.Rows[0]["CelularAfiliado"].ToString() + "",
-        //            personPwd = "",
-        //            birthday = "" + String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"].ToString())) + "",
-        //            isSendMail = "false",
-        //            email = "" + dt.Rows[0]["EmailAfiliado"].ToString() + "",
-        //            deptCode = "01",
-        //            ssn = "",
-        //            cardNo = "",
-        //            supplyCards = "",
-        //            carPlate = "",
-        //            accStartTime = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaInicioPlan"].ToString())) + " 05:00:00",
-        //            accEndTime = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaFinalPlan"].ToString())) + " 23:00:00",
-        //            accLevelIds = "402883f08df57ba4018df57cddf70490",
-        //            hireDate = ""
-        //        };
+                Persona oPersona = new Persona()
+                {
+                    pin = "" + dt.Rows[0]["DocumentoAfiliado"].ToString() + "",
+                    name = "" + dt.Rows[0]["NombreAfiliado"].ToString() + "",
+                    lastName = "" + dt.Rows[0]["ApellidoAfiliado"].ToString() + "",
+                    gender = strGenero,
+                    personPhoto = "",
+                    certType = "",
+                    certNumber = "",
+                    mobilePhone = "" + dt.Rows[0]["CelularAfiliado"].ToString() + "",
+                    personPwd = "",
+                    birthday = "" + String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"].ToString())) + "",
+                    isSendMail = "false",
+                    email = "" + dt.Rows[0]["EmailAfiliado"].ToString() + "",
+                    deptCode = "01",
+                    ssn = "",
+                    cardNo = "",
+                    supplyCards = "",
+                    carPlate = "",
+                    accStartTime = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaInicioPlan"].ToString())) + " 05:00:00",
+                    accEndTime = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[0]["FechaFinalPlan"].ToString())) + " 23:00:00",
+                    accLevelIds = "402883f08df57ba4018df57cddf70490",
+                    hireDate = ""
+                };
 
-        //        string contenido = JsonConvert.SerializeObject(oPersona, Formatting.Indented);
+                string contenido = JsonConvert.SerializeObject(oPersona, Formatting.Indented);
 
-        //        string url = "https://aone.armaturacolombia.co/api/person/add/?access_token=D2BCF6E6BD09DECAA1266D9F684FFE3F5310AD447D107A29974F71E1989AABDB";
-        //        string rta = EnviarPeticion(url, contenido);
-        //    }
-        //}
+                string url = "https://aone.armaturacolombia.co/api/person/add/?access_token=D2BCF6E6BD09DECAA1266D9F684FFE3F5310AD447D107A29974F71E1989AABDB";
+                string rta = EnviarPeticion(url, contenido);
+            }
+        }
     }
 }
