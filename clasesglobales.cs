@@ -20,6 +20,7 @@ using NPOI.XSSF.UserModel;
 using System.Security.Cryptography;
 using Npgsql;
 using System.Diagnostics;
+using System.Web.Services.Description;
 
 namespace fpWebApp
 {
@@ -7224,6 +7225,38 @@ namespace fpWebApp
             return dt;
         }
 
+        public string ActualizarEstadoCRMPagoPlan(int idcrm, string nombrePlan, int precioTotal, int idUsuario, int idEstadoCRM)
+        {
+            
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_ESTADO_CRM_PAGO_PLAN", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_contacto", idcrm);
+                        cmd.Parameters.AddWithValue("@p_nompre_plan", nombrePlan);
+                        cmd.Parameters.AddWithValue("@p_precio_total", precioTotal);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_id_estado", idEstadoCRM);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {               
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
         #endregion
 
         #region GymPass
@@ -7904,7 +7937,7 @@ namespace fpWebApp
         }
 
         public string InsertarPagoPlanAfiliado(int idAfiliadoPlan, int valor, int idMedioPago, string idReferencia, string banco,
-        int idUsuario, string estado, string idSiigoFactura, int idCanalVenta)
+        int idUsuario, string estado, string idSiigoFactura, int idCanalVenta, int idcrm)
         {
             string respuesta = string.Empty;
             try
@@ -7928,6 +7961,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_estado", estado);
                         cmd.Parameters.AddWithValue("@p_id_siigo_factura", idSiigoFactura);
                         cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);
+                        cmd.Parameters.AddWithValue("@p_id_contacto", idcrm);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";

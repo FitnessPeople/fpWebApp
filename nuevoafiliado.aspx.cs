@@ -60,8 +60,10 @@ namespace fpWebApp
                     }
                     if (Request.QueryString.Count > 0)
                     {
-                        bool respuesta = false;
+                        bool respuesta = false;                        
                         int idCRM = Convert.ToInt32(Request.QueryString["idcrm"].ToString());
+                        Session["idcrm"] = "0";
+
                         clasesglobales cg = new clasesglobales();
                         DataTable dt = cg.ConsultarContactosCRMPorId(idCRM, out respuesta);
                         btnAgregar.Visible = false;
@@ -77,6 +79,7 @@ namespace fpWebApp
                             txbTelefono.Text = dt.Rows[0]["TelefonoContacto"].ToString();
                             txbEmail.Text = dt.Rows[0]["EmailContacto"].ToString();
                             ddlEmpresaConvenio.SelectedValue = dt.Rows[0]["idEmpresaCRM"].ToString();
+                            Session["idcrm"] = dt.Rows[0]["idContacto"].ToString();
                         }                       
                     }
                 }
@@ -319,18 +322,10 @@ namespace fpWebApp
                     cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Nuevo",
                         "El usuario creó un nuevo afiliado con documento: " + txbDocumento.Text, "", "");
 
-                    //DataTable dt = cg.TraerDatos("SELECT idAfiliado FROM Afiliados WHERE DocumentoAfiliado = '" + txbDocumento.Text + "' ");
-
-                    //string strMensaje = "Bienvenido a Fitness People \r\n\r\n";
-                    //strMensaje += "Se ha registrado como afiliado en Fitness People. Por favor confirme sus datos en este enlace: \r\n";
-                    //strMensaje += "https://fitnesspeoplecolombia.com/verificacion?id=" + dt.Rows[0]["idAfiliado"].ToString();
-
-                    //cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", txbEmail.Text, "Nuevo registro en Fitness People", strMensaje);
-
                     string script = @"
                         Swal.fire({
                             title: 'Afiliado registrado',
-                            text: 'Se ha enviado una notificación al correo del afiliado para confirmar sus datos.',
+                            text: '',
                             icon: 'success',
                             timer: 5000,
                             showConfirmButton: false,
@@ -370,6 +365,7 @@ namespace fpWebApp
         protected void btnAgregarYRedirigir_Click(object sender, EventArgs e)
         {
             string mensaje = string.Empty;
+            string idcrm = Session["idcrm"].ToString();
 
             if (ExisteDocumento(txbDocumento.Text.Trim()))
             {
@@ -442,25 +438,18 @@ namespace fpWebApp
                         "El usuario creó un nuevo afiliado con documento: " + txbDocumento.Text, "", "");
                                        
                     DataTable dt = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(txbDocumento.Text));
-                    string idAfil = dt.Rows[0]["idAfiliado"].ToString();
-                    
-                    //DataTable dt = cg.TraerDatos("SELECT idAfiliado FROM Afiliados WHERE DocumentoAfiliado = '" + txbDocumento.Text + "' ");
-                    //string strMensaje = "Bienvenido a Fitness People \r\n\r\n";
-                    //strMensaje += "Se ha registrado como afiliado en Fitness People. Por favor confirme sus datos en este enlace: \r\n";
-                    //strMensaje += "https://fitnesspeoplecolombia.com/verificacion?id=" + idAfil;
-
-                    //cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", txbEmail.Text, "Nuevo registro en Fitness People", strMensaje);
+                    string idAfil = dt.Rows[0]["idAfiliado"].ToString();                   
 
                     string script = @"
                         Swal.fire({
                             title: 'Afiliado registrado correctamente',
-                            text: 'Se ha enviado una notificación al correo del afiliado para confirmar sus datos.',
+                            text: 'Serás redirigido a los planes comerciales',
                             icon: 'success',
                             timer: 4000,
                             showConfirmButton: false,
                             timerProgressBar: true
-                        }).then(() => {
-                            window.location.href = 'planesAfiliado.aspx?idAfil=" + idAfil + @"';
+                        }).then(() => {                            
+                            window.location.href = 'planesAfiliado.aspx?idAfil=" + idAfil + "&idcrm=" + idcrm + @"';
                         });
                     ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);

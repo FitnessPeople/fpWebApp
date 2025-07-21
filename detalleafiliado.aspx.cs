@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NPOI.OpenXmlFormats.Spreadsheet;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -32,10 +33,34 @@ namespace fpWebApp
                     if (ViewState["Consulta"].ToString() == "1")
                     {
                         divContenido.Visible = true;
+                        btnVolver.Visible = true;
                         string strDocumento = "";
+                        string idcrm = "0";
+                        Session["idcrm"] = idcrm;
+                        clasesglobales cg = new clasesglobales();
+
                         if (Request.QueryString.Count > 0)
                         {
-                            strDocumento = Request.QueryString["search"].ToString();
+                            if (!string.IsNullOrEmpty(Request.QueryString["search"]))
+                                strDocumento = Request.QueryString["search"].ToString();
+
+                            if (!string.IsNullOrEmpty(Request.QueryString["idcrm"]))
+                                idcrm = Request.QueryString["idcrm"].ToString();
+                            if (idcrm == "0")
+                            {
+                                btnVolver.Visible = false;
+                                DataTable dt1 = cg.ConsultarAfiliadoPlanPorDocumento(strDocumento);
+                                string strQuery = "SELECT * " +
+                                    "FROM AfiliadosPlanes ap, PagosPlanAfiliado ppa " +
+                                    "WHERE ap.idAfiliado = " + dt1.Rows[0]["idAfiliado"].ToString() + " " +
+                                    "AND ap.idAfiliadoPlan = ppa.idAfiliadoPlan " +
+                                    "AND ppa.EstadoPago = 'Aprobado'"; 
+
+                                DataTable dt2 = cg.TraerDatos(strQuery);
+                                idcrm = dt2.Rows[0]["idContacto"].ToString();
+                            }
+
+                            Session["idcrm"] = idcrm;
                         }
                         else
                         {
@@ -95,6 +120,7 @@ namespace fpWebApp
             CargarIncapacidades(dt.Rows[0]["idAfiliado"].ToString());
             CargarCortesias(dt.Rows[0]["idAfiliado"].ToString());
             CargarParq(dt.Rows[0]["idAfiliado"].ToString());
+            CargarCRM(Convert.ToInt32(Session["idcrm"]));
 
             ViewState["DocumentoAfiliado"] = dt.Rows[0]["DocumentoAfiliado"].ToString();
             ltNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
@@ -247,21 +273,7 @@ namespace fpWebApp
 
         private void CargarParq(string idAfiliado)
         {
-            //string strQuery = "SELECT *, " +
-            //    "IF(Respuesta1ParQ=0,'No','Si') AS respuesta1, " +
-            //    "IF(Respuesta1ParQ=0,'info','danger') AS label " +
-            //    "FROM ParQ p, ParqAfiliados pa " +
-            //    "WHERE p.idParq IN (SELECT idParQ FROM ParqAfiliados WHERE idAfiliado = " + idAfiliado + " GROUP BY idParQ) " +
-            //    "AND p.idParq = pa.idParq " +
-            //    "AND pa.FechaRespParQ = (SELECT FechaRespParQ " +
-            //    "FROM ParqAfiliados " +
-            //    "WHERE idAfiliado = " + idAfiliado + " " +
-            //    "GROUP BY FechaRespParQ " +
-            //    "ORDER BY FechaRespParQ DESC " +
-            //    "LIMIT 1) " +
-            //    "ORDER BY Orden ";
             clasesglobales cg = new clasesglobales();
-            //DataTable dt = cg.TraerDatos(strQuery); 
             DataTable dt = cg.ConsultarPreguntasPARQporIdAfiliado(Convert.ToInt32(idAfiliado));
 
             if (dt.Rows.Count > 0)
@@ -269,7 +281,19 @@ namespace fpWebApp
                 rpParq.DataSource = dt;
                 rpParq.DataBind();
             }
+            dt.Dispose();
+        }
 
+        private void CargarCRM(int idcrm)
+        {
+            bool respuesta = false;
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarContactosCRMPorId(idcrm, out respuesta);
+
+            if (dt.Rows.Count > 0)
+            {
+                ltCRM.Text = dt.Rows[0]["HistorialHTML2"].ToString() ;
+            }
             dt.Dispose();
         }
 

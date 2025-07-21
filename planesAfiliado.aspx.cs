@@ -85,7 +85,7 @@ namespace fpWebApp
 
             string parametro = string.Empty;
             Session["IdAfiliado"] = string.Empty;
-            Session["IdCRM"] = string.Empty;
+            Session["IdCRM"] = "0";
             lbAgregarPlan.Visible = true;
             btnCancelar.Visible = true;
             btnVolver.Visible = false;
@@ -93,6 +93,7 @@ namespace fpWebApp
 
             string editid = Request.QueryString["id"];
             string idAfil = Request.QueryString["idAfil"];
+            idcrm = Request.QueryString["idcrm"];
 
             if (Request.QueryString.Count > 0)
             {
@@ -104,6 +105,7 @@ namespace fpWebApp
                     btnCancelar.Visible = false;
                     btnVolver.Visible = true;
                     Session["IdAfiliado"] = parametro.ToString();
+                    Session["idcrm"] =idcrm;
                 }
                 else if (!string.IsNullOrEmpty(editid))
                 {
@@ -623,6 +625,8 @@ namespace fpWebApp
                             {
                                 try
                                 {
+                                    string DocAfiliado = string.Empty;
+                                    string idcrm = Session["idcrm"].ToString();
                                     DateTime fechainicio = Convert.ToDateTime(txbFechaInicio.Text.ToString());
                                     DateTime fechafinal = fechainicio.AddMonths(Convert.ToInt16(ViewState["meses"].ToString()));
                                     fechafinal = fechafinal.AddDays(Convert.ToInt16(ViewState["DiasCortesia"].ToString()));
@@ -671,42 +675,47 @@ namespace fpWebApp
                                             strBanco = rblBancos.SelectedItem.Value.ToString();
                                         }
 
+
+
                                         string respuesta = cg.InsertarPagoPlanAfiliado(idAfiliado, Convert.ToInt32(ViewState["precioTotal"].ToString()),
-                                            Convert.ToInt32(strTipoPago), strReferencia, strBanco, Convert.ToInt32(Session["idUsuario"].ToString()), "Aprobado", "", 0);
+                                            Convert.ToInt32(strTipoPago), strReferencia, strBanco, Convert.ToInt32(Session["idUsuario"].ToString()), "Aprobado", "", 0, Convert.ToInt32(Session["idcrm"]));
 
+                                        DataTable dt3 = cg.ConsultarAfiliadoEstadoActivo(Convert.ToInt32(dt1.Rows[0]["idAfiliado"].ToString()));
+                                        string respuesta1 = cg.ActualizarEstadoCRMPagoPlan(Convert.ToInt32(Session["idcrm"].ToString()), dt3.Rows[0]["NombrePlan"].ToString(), Convert.ToInt32( dt3.Rows[0]["PrecioTotal"].ToString()),Convert.ToInt32(Session["idUsuario"].ToString()),3);
 
-                                        if (respuesta == "OK")
+                                        if (respuesta == "OK" && respuesta1=="OK" )
                                         {
                                             DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(int.Parse(Session["IdAfiliado"].ToString()));
-
-                                            cg.InsertarLog(Session["idusuario"].ToString(), "afiliadosplanes", "Agrega", "El usuario agregó un nuevo plan al afiliado con documento: " + dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString() + ".", "", "");
+                                            DocAfiliado = dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString();
+                                            cg.InsertarLog(Session["idusuario"].ToString(), "afiliadosplanes", "Agrega", "El usuario agregó un nuevo plan al afiliado con documento: " + dt3.Rows[0]["PrecioTotal"].ToString() + ".", "", "");
 
                                             string script = @"
                                             Swal.fire({
-                                                title: '¡Compra confirmada!',
-                                                text: 'Se envió un correo al comprador para completar sus datos y responder el cuestionario Par-Q.',
+                                                title: '¡Venta registrada con éxito!',
+                                                text: 'Hemos enviado un correo al comprador para que complete sus datos y responda el formulario de salud (Par-Q).',
                                                 icon: 'success',
-                                                timer: 3000, // 3 segundos
+                                                timer: 5000, // 5 segundos
                                                 showConfirmButton: false,
                                                 timerProgressBar: true
                                             }).then(() => {
-                                                window.location.href = 'detalleafiliado?search=" + dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString() + @"';
+                                                window.location.href = 'detalleafiliado?search=" + DocAfiliado + @"&idcrm=" + idcrm + @"';
                                             });
                                             ";
                                             ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
 
                                             /////////////////////////////// ENVÍO DE CORREO ///////////////////////////////////////////////////////////////////////////////////////////
 
-                                            //string strString = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + ViewState["precio"].ToString()));
+                                            string strString = Convert.ToBase64String(Encoding.Unicode.GetBytes(dt3.Rows[0]["DocumentoAfiliado"].ToString() + "_" + dt3.Rows[0]["precio"].ToString()));
 
-                                            //string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
-                                            //strMensaje += "Descripción del plan.\r\n\r\n";
-                                            //strMensaje += "Por favor, agradecemos realice el pago a través del siguiente enlace: \r\n";
-                                            //strMensaje += "https://fitnesspeoplecolombia.com/wompiplan?code=" + strString;
+                                            string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
+                                            strMensaje += "Descripción del plan.\r\n\r\n";
+                                            strMensaje += "Por favor, agradecemos realice el pago a través del siguiente enlace: \r\n";
+                                            strMensaje += "https://fitnesspeoplecolombia.com/wompiplan?code=" + strString;
 
-                                            //cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", ViewState["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
+                                            cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", dt3.Rows[0]["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
 
                                             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
                                         }
                                         else
                                         {
@@ -778,7 +787,7 @@ namespace fpWebApp
             }
             //}
         }
-
+         
         /// <summary>
         /// Evento que se ejecuta al interactuar con un ítem del Repeater de planes.
         /// Procesa el comando "SeleccionarPlan" para cargar los datos del plan seleccionado
