@@ -238,14 +238,14 @@
                                                             <td>
                                                                 <table class="table table-bordered table-striped">
                                                                     <tr>
-                                                                        <th width="70%"><i class="fa fa-message m-r-xs"></i>Descripción</th>
-                                                                        <th width="30%"><i class="fa fa-user m-r-xs"></i>Reportado por</th>
-                                                                        <%--<th width="33%" class="text-nowrap"><i class="fa fa-venus-mars m-r-xs"></i>Genero</th>--%>
+                                                                        <th width="25%"><i class="fa fa-dumbbell m-r-xs"></i>Activo</th>
+                                                                        <th width="50%"><i class="fa fa-message m-r-xs"></i>Descripción</th>
+                                                                        <th width="25%"><i class="fa fa-user m-r-xs"></i>Reportado por</th>
                                                                     </tr>
                                                                     <tr>
+                                                                        <td><img src='img/activos/<%# Eval("ImagenActivo") %>' class="img-responsive" width="100px" /></td>
                                                                         <td><%# Eval("DescripcionTicket") %></td>
                                                                         <td><%# Eval("NombreUsuario") %></td>
-                                                                        <%--<td><%# Eval("Genero") %></td>--%>
                                                                     </tr>
                                                                 </table>
                                                             </td>
