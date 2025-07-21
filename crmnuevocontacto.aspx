@@ -286,23 +286,6 @@
                 <div class="row animated fadeInDown">
                     <%--Inicio Contenido!!!!--%>
 
-
-                    <%--     <uc2:indicadoresusucrm runat="server" ID="indicadoresusucrm" />--%>
-                    <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
-                        <div class="p-xs">
-                            <div class="pull-left m-r-md">
-                                <i class="fa fa-triangle-exclamation text-danger mid-icon"></i>
-                            </div>
-                            <h2>Acceso Denegado</h2>
-                            <span>Lamentablemente, no tienes permiso para acceder a esta página. Por favor, verifica que estás usando una cuenta con los permisos adecuados o contacta a nuestro soporte técnico para más información. Si crees que esto es un error, no dudes en ponerte en contacto con nosotros para resolver cualquier problema. Gracias por tu comprensión.</span>
-                        </div>
-                    </div>
-                    <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
-
-                    <form role="form" id="form" runat="server">
-                        <asp:ScriptManager ID="ScriptManager1" runat="server" />
-                        <div class="row" id="divContenido" runat="server">
-
                             <%-- //////////////////////////////////GRÁFICAS//////////////////////////////////////////////////--%>
 
                             <%--Gráfica asesor--%>
@@ -447,6 +430,25 @@
 
 
                             <%-- ////////////////////////////////////////////////////////////////////////////////////////////--%>
+
+
+                    <%--     <uc2:indicadoresusucrm runat="server" ID="indicadoresusucrm" />--%>
+                    <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
+                        <div class="p-xs">
+                            <div class="pull-left m-r-md">
+                                <i class="fa fa-triangle-exclamation text-danger mid-icon"></i>
+                            </div>
+                            <h2>Acceso Denegado</h2>
+                            <span>Lamentablemente, no tienes permiso para acceder a esta página. Por favor, verifica que estás usando una cuenta con los permisos adecuados o contacta a nuestro soporte técnico para más información. Si crees que esto es un error, no dudes en ponerte en contacto con nosotros para resolver cualquier problema. Gracias por tu comprensión.</span>
+                        </div>
+                    </div>
+                    <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
+
+                    <form role="form" id="form" runat="server">
+                        <asp:ScriptManager ID="ScriptManager1" runat="server" />
+                        <div class="row" id="divContenido" runat="server">
+
+
 
 
                             <div class="col-lg-12">
