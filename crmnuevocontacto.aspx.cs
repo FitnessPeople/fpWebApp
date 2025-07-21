@@ -465,13 +465,13 @@ namespace fpWebApp
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
-            Session["IdCRM"] = string.Empty;
+            Session["idcrm"] = string.Empty;
             string idcrm = string.Empty;
 
             if (Request.QueryString.Count > 0)
             {                
                 idcrm = Request.QueryString["editid"];
-                Session["IdCRM"] = idcrm;
+                Session["idcrm"] = idcrm;
                 string evento = Request.QueryString["evento"];
                 string documento = Request.QueryString["documento"];
 
@@ -818,83 +818,6 @@ namespace fpWebApp
             public string IconoMinEstadoCRM { get; set; }
         }
 
-        //protected void /*btnAfiliado*/_Click(object sender, EventArgs e)
-        //{
-
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = new DataTable();
-        //    DataTable dt1 = new DataTable();
-        //    bool esAfiliado = false;
-        //    Session["esAfiliado"] = esAfiliado.ToString();
-        //    int documento = 0;
-        //    string[] strDocumento = ddlAfiliadoOrigen.Text.ToString().Split('-');
-        //    if (int.TryParse(strDocumento[0], out documento))
-        //    {
-        //        dt = cg.ConsultarAfiliadoPorDocumento(documento);
-        //    }
-
-        //    dt1 = cg.ConsultarTipoAfiliadCRM();
-
-        //    try
-        //    {
-        //        if (dt.Rows.Count > 0)
-        //        {
-        //            esAfiliado = true;
-        //            Session["esAfiliado"] = esAfiliado.ToString();
-        //            txbDocumento.Text = documento.ToString();
-        //            ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
-        //            txbNombreContacto.Value = dt.Rows[0]["NombreAfiliado"].ToString();
-        //            txbApellidoContacto.Value = dt.Rows[0]["ApellidoAfiliado"].ToString();
-        //            txbTelefonoContacto.Value = dt.Rows[0]["CelularAfiliado"].ToString();
-        //            txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString();
-        //            ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString())));
-        //            ddlTiposAfiliado.SelectedValue = "2";//Afiliado en renovación
-
-        //            ListaEmpresasCRM();
-        //            ListaMediosDePago();
-        //        }
-        //        dt.Dispose();
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
-
-        //protected void ddlTiposAfiliado_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    // Validar si seleccionaron la opción "Afiliado Nuevo"
-        //    if (ddlTiposAfiliado.SelectedValue == "1")
-        //    {
-        //        string documento = txbDocumento.Text.Trim();
-        //        string tipoDocumento = ddlTipoDocumento.SelectedValue;
-        //        string nombreContacto = txbNombreContacto.Value.Trim();
-
-        //        // Verificar que todos los campos requeridos tengan datos
-        //        if (!string.IsNullOrEmpty(documento) &&
-        //            !string.IsNullOrEmpty(tipoDocumento) &&
-        //            !string.IsNullOrEmpty(nombreContacto))
-        //        {
-        //            // Construir URL con los parámetros
-        //            string url = $"nuevoafiliado.aspx?doc={HttpUtility.UrlEncode(documento)}&tipo={HttpUtility.UrlEncode(tipoDocumento)}&nombre={HttpUtility.UrlEncode(nombreContacto)}";
-
-        //            // Mostrar y configurar el enlace
-        //            lnkNuevoAfiliado.NavigateUrl = url;
-        //            lnkNuevoAfiliado.Visible = true;
-        //        }
-        //        else
-        //        {
-        //            // Si falta algún dato, no mostrar el enlace
-        //            lnkNuevoAfiliado.Visible = false;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        // Si no se selecciona "Afiliado Nuevo", ocultar el enlace
-        //        lnkNuevoAfiliado.Visible = false;
-        //    }
-        //}
         public class verificarafiliado : IHttpHandler
         {
             public void ProcessRequest(HttpContext context)
@@ -960,7 +883,7 @@ namespace fpWebApp
             bool rta = false;
             int idAfil = 0;
             int idcrm = Convert.ToInt32( Request.QueryString["editid"]);
-            Session["IdCRM"] = idcrm;
+            Session["idcrm"] = idcrm;
             string evento = Request.QueryString["evento"];
             string documento = Request.QueryString["documento"];
 
@@ -1098,7 +1021,7 @@ namespace fpWebApp
                     throw;
                 }
             }
-            ////////////////////////////////ANTERIOR/////////////////////////////////////////////////////////
+            
         }
     }
 }

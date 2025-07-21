@@ -55,9 +55,10 @@ namespace fpWebApp
                                     "WHERE ap.idAfiliado = " + dt1.Rows[0]["idAfiliado"].ToString() + " " +
                                     "AND ap.idAfiliadoPlan = ppa.idAfiliadoPlan " +
                                     "AND ppa.EstadoPago = 'Aprobado'"; 
-
                                 DataTable dt2 = cg.TraerDatos(strQuery);
                                 idcrm = dt2.Rows[0]["idContacto"].ToString();
+
+                                if (!string.IsNullOrEmpty(idcrm))   ltCRM.Text = "No existen resgistros de CRM";
                             }
 
                             Session["idcrm"] = idcrm;

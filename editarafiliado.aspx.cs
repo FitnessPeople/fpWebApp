@@ -457,11 +457,6 @@ namespace fpWebApp
         private void PostArmatura(string strDocumento)
         {
             clasesglobales cg = new clasesglobales();
-            //string strQuery = "SELECT * " +
-            //                  "FROM Afiliados a " +
-            //                  "LEFT JOIN AfiliadosPlanes ap ON a.idAfiliado = ap.idAfiliado " +
-            //                  "WHERE DocumentoAfiliado = '" + strDocumento + "'";
-
             DataTable dt = cg.ConsultarAfiliadoPlanPorDocumento(strDocumento);
 
             if (dt.Rows.Count > 0)
@@ -520,7 +515,6 @@ namespace fpWebApp
                 }
             }
         }
-
 
         public static string EnviarPeticion(string url, string contenido)
         {
@@ -598,7 +592,8 @@ namespace fpWebApp
 
         protected void btnActualizaryVenderPlan_Click(object sender, EventArgs e)
         {
-            string idAfil = Session["IdAfiliado"].ToString(); 
+            string idAfil = Session["IdAfiliado"].ToString();
+            string idcrm = Session["idcrm"].ToString();
             string mensaje = string.Empty;
             string strFilename = "";
 
@@ -675,8 +670,8 @@ namespace fpWebApp
                             timer: 5000, // 3 segundos
                             showConfirmButton: false,
                             timerProgressBar: true
-                        }).then(() => {
-                            window.location.href = 'planesAfiliado?idAfil=" + idAfil + @"';
+                        }).then(() => {                           
+                            window.location.href = 'planesAfiliado.aspx?idAfil=" + idAfil + "&idcrm=" + idcrm + @"';
                         });
                     ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
