@@ -484,17 +484,6 @@
                                                                             </asp:DropDownList>
                                                                         </div>
                                                                     </div>
-                                                                    <!-- Consultar Afiliado -->
-                                                                    <%--                                                            <div class="crm-align-cell" style="width: 80%;" id="btnAfiliadoBus">
-                                                                <div class="form-group">
-                                                                    <label>Consultar:</label>
-                                                                    <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server"
-                                                                        placeholder="Nombre / Cédula / Email / Celular " autocomplete="off"></asp:TextBox>
-                                                                    <asp:Button ID="btnAfiliado" runat="server" Text=""
-                                                                        Style="display: none;" OnClick="btnAfiliado_Click" />
-                                                                </div>
-                                                            </div>--%>
-
                                                                     <!-- Contador -->
                                                                     <div class="crm-align-cell" style="width: 10%;">
                                                                         <div class="form-group">
