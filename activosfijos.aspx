@@ -5,7 +5,6 @@
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
-<%@ Register Src="~/controles/indicadores04.ascx" TagPrefix="uc1" TagName="indicadores04" %>
 
 <!DOCTYPE html>
 <html>
@@ -119,8 +118,6 @@
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row animated fadeInDown">
 
-                    <uc1:indicadores04 runat="server" ID="indicadores04" />
-
                     <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
                         <div class="p-xs">
                             <div class="pull-left m-r-md">
@@ -133,1266 +130,214 @@
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                    <div class="row" id="divContenido" runat="server">
-                        <div class="col-sm-8">
-                            <div class="ibox">
-                                <div class="ibox-content">
-                                    <span class="text-muted small pull-right">Last modification: <i class="fa fa-clock-o"></i>2:10 pm - 12.06.2014</span>
-                                    <h2>Activos fijos</h2>
-                                    <p>
-                                        All clients need to be verified before you can send email and set a project.
-                           
-                                    </p>
-                                    <div class="input-group">
-                                        <input type="text" placeholder="Search client " class="input form-control">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn btn-primary"><i class="fa fa-search"></i>Search</button>
-                                        </span>
+                    <form role="form" id="form" runat="server">
+                        <div class="row" id="divContenido" runat="server">
+                            <div class="col-lg-4">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>
+                                            <asp:Literal ID="ltTitulo" runat="server"></asp:Literal></h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div class="clients-list">
-                                        <ul class="nav nav-tabs">
-                                            <span class="pull-right small text-muted">1406 Elements</span>
-                                            <li class="active"><a data-toggle="tab" href="#tab-1"><i class="fa fa-user"></i>Contacts</a></li>
-                                            <li class=""><a data-toggle="tab" href="#tab-2"><i class="fa fa-briefcase"></i>Companies</a></li>
-                                        </ul>
-                                        <div class="tab-content">
-                                            <div id="tab-1" class="tab-pane active">
-                                                <div class="full-height-scroll">
-                                                    <div class="table-responsive">
-                                                        <table class="table table-striped table-hover">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td class="client-avatar">
-                                                                        <img alt="image" src="img/a2.jpg">
-                                                                    </td>
-                                                                    <td><a data-toggle="tab" href="#contact-1" class="client-link">Anthony Jackson</a></td>
-                                                                    <td>Tellus Institute</td>
-                                                                    <td class="contact-type"><i class="fa fa-envelope"></i></td>
-                                                                    <td>gravida@rbisit.com</td>
-                                                                    <td class="client-status"><span class="label label-primary">Active</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar">
-                                                                        <img alt="image" src="img/a3.jpg">
-                                                                    </td>
-                                                                    <td><a data-toggle="tab" href="#contact-2" class="client-link">Rooney Lindsay</a></td>
-                                                                    <td>Proin Limited</td>
-                                                                    <td class="contact-type"><i class="fa fa-envelope"></i></td>
-                                                                    <td>rooney@proin.com</td>
-                                                                    <td class="client-status"><span class="label label-primary">Active</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar">
-                                                                        <img alt="image" src="img/a4.jpg">
-                                                                    </td>
-                                                                    <td><a data-toggle="tab" href="#contact-3" class="client-link">Lionel Mcmillan</a></td>
-                                                                    <td>Et Industries</td>
-                                                                    <td class="contact-type"><i class="fa fa-phone"></i></td>
-                                                                    <td>+432 955 908</td>
-                                                                    <td class="client-status"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar"><a href="">
-                                                                        <img alt="image" src="img/a5.jpg"></a> </td>
-                                                                    <td><a data-toggle="tab" href="#contact-4" class="client-link">Edan Randall</a></td>
-                                                                    <td>Integer Sem Corp.</td>
-                                                                    <td class="contact-type"><i class="fa fa-phone"></i></td>
-                                                                    <td>+422 600 213</td>
-                                                                    <td class="client-status"><span class="label label-warning">Waiting</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar"><a href="">
-                                                                        <img alt="image" src="img/a6.jpg"></a> </td>
-                                                                    <td><a data-toggle="tab" href="#contact-2" class="client-link">Jasper Carson</a></td>
-                                                                    <td>Mone Industries</td>
-                                                                    <td class="contact-type"><i class="fa fa-phone"></i></td>
-                                                                    <td>+400 468 921</td>
-                                                                    <td class="client-status"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar"><a href="">
-                                                                        <img alt="image" src="img/a7.jpg"></a> </td>
-                                                                    <td><a data-toggle="tab" href="#contact-3" class="client-link">Reuben Pacheco</a></td>
-                                                                    <td>Magna Associates</td>
-                                                                    <td class="contact-type"><i class="fa fa-envelope"></i></td>
-                                                                    <td>pacheco@manga.com</td>
-                                                                    <td class="client-status"><span class="label label-info">Phoned</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar"><a href="">
-                                                                        <img alt="image" src="img/a1.jpg"></a> </td>
-                                                                    <td><a data-toggle="tab" href="#contact-1" class="client-link">Simon Carson</a></td>
-                                                                    <td>Erat Corp.</td>
-                                                                    <td class="contact-type"><i class="fa fa-envelope"></i></td>
-                                                                    <td>Simon@erta.com</td>
-                                                                    <td class="client-status"><span class="label label-primary">Active</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar"><a href="">
-                                                                        <img alt="image" src="img/a3.jpg"></a> </td>
-                                                                    <td><a data-toggle="tab" href="#contact-2" class="client-link">Rooney Lindsay</a></td>
-                                                                    <td>Proin Limited</td>
-                                                                    <td class="contact-type"><i class="fa fa-envelope"></i></td>
-                                                                    <td>rooney@proin.com</td>
-                                                                    <td class="client-status"><span class="label label-warning">Waiting</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar"><a href="">
-                                                                        <img alt="image" src="img/a4.jpg"></a> </td>
-                                                                    <td><a data-toggle="tab" href="#contact-3" class="client-link">Lionel Mcmillan</a></td>
-                                                                    <td>Et Industries</td>
-                                                                    <td class="contact-type"><i class="fa fa-phone"></i></td>
-                                                                    <td>+432 955 908</td>
-                                                                    <td class="client-status"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar"><a href="">
-                                                                        <img alt="image" src="img/a5.jpg"></a> </td>
-                                                                    <td><a data-toggle="tab" href="#contact-4" class="client-link">Edan Randall</a></td>
-                                                                    <td>Integer Sem Corp.</td>
-                                                                    <td class="contact-type"><i class="fa fa-phone"></i></td>
-                                                                    <td>+422 600 213</td>
-                                                                    <td class="client-status"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar"><a href="">
-                                                                        <img alt="image" src="img/a2.jpg"></a> </td>
-                                                                    <td><a data-toggle="tab" href="#contact-1" class="client-link">Anthony Jackson</a></td>
-                                                                    <td>Tellus Institute</td>
-                                                                    <td class="contact-type"><i class="fa fa-envelope"></i></td>
-                                                                    <td>gravida@rbisit.com</td>
-                                                                    <td class="client-status"><span class="label label-danger">Deleted</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar"><a href="">
-                                                                        <img alt="image" src="img/a7.jpg"></a> </td>
-                                                                    <td><a data-toggle="tab" href="#contact-2" class="client-link">Reuben Pacheco</a></td>
-                                                                    <td>Magna Associates</td>
-                                                                    <td class="contact-type"><i class="fa fa-envelope"></i></td>
-                                                                    <td>pacheco@manga.com</td>
-                                                                    <td class="client-status"><span class="label label-primary">Active</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar"><a href="">
-                                                                        <img alt="image" src="img/a5.jpg"></a> </td>
-                                                                    <td><a data-toggle="tab" href="#contact-3" class="client-link">Edan Randall</a></td>
-                                                                    <td>Integer Sem Corp.</td>
-                                                                    <td class="contact-type"><i class="fa fa-phone"></i></td>
-                                                                    <td>+422 600 213</td>
-                                                                    <td class="client-status"><span class="label label-info">Phoned</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar"><a href="">
-                                                                        <img alt="image" src="img/a6.jpg"></a> </td>
-                                                                    <td><a data-toggle="tab" href="#contact-4" class="client-link">Jasper Carson</a></td>
-                                                                    <td>Mone Industries</td>
-                                                                    <td class="contact-type"><i class="fa fa-phone"></i></td>
-                                                                    <td>+400 468 921</td>
-                                                                    <td class="client-status"><span class="label label-primary">Active</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar"><a href="">
-                                                                        <img alt="image" src="img/a7.jpg"></a> </td>
-                                                                    <td><a data-toggle="tab" href="#contact-2" class="client-link">Reuben Pacheco</a></td>
-                                                                    <td>Magna Associates</td>
-                                                                    <td class="contact-type"><i class="fa fa-envelope"></i></td>
-                                                                    <td>pacheco@manga.com</td>
-                                                                    <td class="client-status"><span class="label label-primary">Active</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar"><a href="">
-                                                                        <img alt="image" src="img/a1.jpg"></a> </td>
-                                                                    <td><a data-toggle="tab" href="#contact-1" class="client-link">Simon Carson</a></td>
-                                                                    <td>Erat Corp.</td>
-                                                                    <td class="contact-type"><i class="fa fa-envelope"></i></td>
-                                                                    <td>Simon@erta.com</td>
-                                                                    <td class="client-status"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar"><a href="">
-                                                                        <img alt="image" src="img/a3.jpg"></a> </td>
-                                                                    <td><a data-toggle="tab" href="#contact-3" class="client-link">Rooney Lindsay</a></td>
-                                                                    <td>Proin Limited</td>
-                                                                    <td class="contact-type"><i class="fa fa-envelope"></i></td>
-                                                                    <td>rooney@proin.com</td>
-                                                                    <td class="client-status"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar"><a href="">
-                                                                        <img alt="image" src="img/a4.jpg"></a> </td>
-                                                                    <td><a data-toggle="tab" href="#contact-4" class="client-link">Lionel Mcmillan</a></td>
-                                                                    <td>Et Industries</td>
-                                                                    <td class="contact-type"><i class="fa fa-phone"></i></td>
-                                                                    <td>+432 955 908</td>
-                                                                    <td class="client-status"><span class="label label-primary">Active</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar"><a href="">
-                                                                        <img alt="image" src="img/a5.jpg"></a> </td>
-                                                                    <td><a data-toggle="tab" href="#contact-1" class="client-link">Edan Randall</a></td>
-                                                                    <td>Integer Sem Corp.</td>
-                                                                    <td class="contact-type"><i class="fa fa-phone"></i></td>
-                                                                    <td>+422 600 213</td>
-                                                                    <td class="client-status"><span class="label label-info">Phoned</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar"><a href="">
-                                                                        <img alt="image" src="img/a2.jpg"></a> </td>
-                                                                    <td><a data-toggle="tab" href="#contact-2" class="client-link">Anthony Jackson</a></td>
-                                                                    <td>Tellus Institute</td>
-                                                                    <td class="contact-type"><i class="fa fa-envelope"></i></td>
-                                                                    <td>gravida@rbisit.com</td>
-                                                                    <td class="client-status"><span class="label label-warning">Waiting</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="client-avatar"><a href="">
-                                                                        <img alt="image" src="img/a7.jpg"></a> </td>
-                                                                    <td><a data-toggle="tab" href="#contact-4" class="client-link">Reuben Pacheco</a></td>
-                                                                    <td>Magna Associates</td>
-                                                                    <td class="contact-type"><i class="fa fa-envelope"></i></td>
-                                                                    <td>pacheco@manga.com</td>
-                                                                    <td class="client-status"></td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
+                                    <div class="ibox-content">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>Nombre Activo:</label>
+                                                    <asp:TextBox ID="txbActivo" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="rfvActivo" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="txbActivo" ValidationGroup="agregar"
+                                                        CssClass="font-bold text-danger">
+                                                    </asp:RequiredFieldValidator>
+                                                </div>
+                                                <%--<div class="form-group">
+                                                    <label>Dirección:</label>
+                                                    <asp:TextBox ID="txbDireccion" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="rfvDirSede" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="txbDireccion" ValidationGroup="agregar"
+                                                        CssClass="font-bold text-danger" InitialValue="">
+                                                    </asp:RequiredFieldValidator>
+                                                </div>--%>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Categoría:</label>
+                                                            <asp:DropDownList ID="ddlCategoria" runat="server" CssClass="form-control input-sm"
+                                                                DataTextField="NombreCiudadSede" DataValueField="idCiudadSede" AppendDataBoundItems="true">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                            <asp:RequiredFieldValidator ID="rfvCategoria" runat="server" ErrorMessage="* Campo requerido"
+                                                                ControlToValidate="ddlCategoria" ValidationGroup="agregar"
+                                                                CssClass="font-bold text-danger" InitialValue="">
+                                                            </asp:RequiredFieldValidator>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div id="tab-2" class="tab-pane">
-                                                <div class="full-height-scroll">
-                                                    <div class="table-responsive">
-                                                        <table class="table table-striped table-hover">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-1" class="client-link">Tellus Institute</a></td>
-                                                                    <td>Rexton</td>
-                                                                    <td><i class="fa fa-flag"></i>Angola</td>
-                                                                    <td class="client-status"><span class="label label-primary">Active</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-2" class="client-link">Velit Industries</a></td>
-                                                                    <td>Maglie</td>
-                                                                    <td><i class="fa fa-flag"></i>Luxembourg</td>
-                                                                    <td class="client-status"><span class="label label-primary">Active</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-3" class="client-link">Art Limited</a></td>
-                                                                    <td>Sooke</td>
-                                                                    <td><i class="fa fa-flag"></i>Philippines</td>
-                                                                    <td class="client-status"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-1" class="client-link">Tempor Arcu Corp.</a></td>
-                                                                    <td>Eisden</td>
-                                                                    <td><i class="fa fa-flag"></i>Korea, North</td>
-                                                                    <td class="client-status"><span class="label label-warning">Waiting</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-2" class="client-link">Penatibus Consulting</a></td>
-                                                                    <td>Tribogna</td>
-                                                                    <td><i class="fa fa-flag"></i>Montserrat</td>
-                                                                    <td class="client-status"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-3" class="client-link">Ultrices Incorporated</a></td>
-                                                                    <td>Basingstoke</td>
-                                                                    <td><i class="fa fa-flag"></i>Tunisia</td>
-                                                                    <td class="client-status"><span class="label label-primary">Active</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-2" class="client-link">Et Arcu Inc.</a></td>
-                                                                    <td>Sioux City</td>
-                                                                    <td><i class="fa fa-flag"></i>Burundi</td>
-                                                                    <td class="client-status"><span class="label label-primary">Active</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-1" class="client-link">Tellus Institute</a></td>
-                                                                    <td>Rexton</td>
-                                                                    <td><i class="fa fa-flag"></i>Angola</td>
-                                                                    <td class="client-status"><span class="label label-primary">Active</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-2" class="client-link">Velit Industries</a></td>
-                                                                    <td>Maglie</td>
-                                                                    <td><i class="fa fa-flag"></i>Luxembourg</td>
-                                                                    <td class="client-status"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-3" class="client-link">Art Limited</a></td>
-                                                                    <td>Sooke</td>
-                                                                    <td><i class="fa fa-flag"></i>Philippines</td>
-                                                                    <td class="client-status"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-1" class="client-link">Tempor Arcu Corp.</a></td>
-                                                                    <td>Eisden</td>
-                                                                    <td><i class="fa fa-flag"></i>Korea, North</td>
-                                                                    <td class="client-status"><span class="label label-warning">Waiting</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-2" class="client-link">Penatibus Consulting</a></td>
-                                                                    <td>Tribogna</td>
-                                                                    <td><i class="fa fa-flag"></i>Montserrat</td>
-                                                                    <td class="client-status"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-3" class="client-link">Ultrices Incorporated</a></td>
-                                                                    <td>Basingstoke</td>
-                                                                    <td><i class="fa fa-flag"></i>Tunisia</td>
-                                                                    <td class="client-status"><span class="label label-primary">Active</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-2" class="client-link">Et Arcu Inc.</a></td>
-                                                                    <td>Sioux City</td>
-                                                                    <td><i class="fa fa-flag"></i>Burundi</td>
-                                                                    <td class="client-status"><span class="label label-primary">Active</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-1" class="client-link">Tellus Institute</a></td>
-                                                                    <td>Rexton</td>
-                                                                    <td><i class="fa fa-flag"></i>Angola</td>
-                                                                    <td class="client-status"><span class="label label-primary">Active</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-2" class="client-link">Velit Industries</a></td>
-                                                                    <td>Maglie</td>
-                                                                    <td><i class="fa fa-flag"></i>Luxembourg</td>
-                                                                    <td class="client-status"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-3" class="client-link">Art Limited</a></td>
-                                                                    <td>Sooke</td>
-                                                                    <td><i class="fa fa-flag"></i>Philippines</td>
-                                                                    <td class="client-status"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-1" class="client-link">Tempor Arcu Corp.</a></td>
-                                                                    <td>Eisden</td>
-                                                                    <td><i class="fa fa-flag"></i>Korea, North</td>
-                                                                    <td class="client-status"><span class="label label-warning">Waiting</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-2" class="client-link">Penatibus Consulting</a></td>
-                                                                    <td>Tribogna</td>
-                                                                    <td><i class="fa fa-flag"></i>Montserrat</td>
-                                                                    <td class="client-status"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-3" class="client-link">Ultrices Incorporated</a></td>
-                                                                    <td>Basingstoke</td>
-                                                                    <td><i class="fa fa-flag"></i>Tunisia</td>
-                                                                    <td class="client-status"><span class="label label-primary">Active</span></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a data-toggle="tab" href="#company-2" class="client-link">Et Arcu Inc.</a></td>
-                                                                    <td>Sioux City</td>
-                                                                    <td><i class="fa fa-flag"></i>Burundi</td>
-                                                                    <td class="client-status"><span class="label label-primary">Active</span></td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="ibox ">
-
-                                <div class="ibox-content">
-                                    <div class="tab-content">
-                                        <div id="contact-1" class="tab-pane active">
-                                            <div class="row m-b-lg">
-                                                <div class="col-lg-4 text-center">
-                                                    <h2>Caminadora</h2>
-
-                                                    <div class="m-b-sm">
-                                                        <img alt="image" class="img-circle" src="img/activos/caminadora_cybex.jpg"
-                                                            style="width: 62px">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-8">
-                                                    <strong>FPCB-C-01
-                                            </strong>
-
-                                                    <p>
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                tempor incididunt ut labore et dolore magna aliqua.
-                                           
-                                                    </p>
-                                                    <button type="button" class="btn btn-primary btn-sm btn-block">
-                                                        <i
-                                                            class="fa fa-layer-group"></i> Boton
-                                           
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="client-detail">
-                                                <div class="full-height-scroll">
-
-                                                    <strong>Last activity</strong>
-
-                                                    <ul class="list-group clear-list">
-                                                        <li class="list-group-item fist-item">
-                                                            <span class="pull-right">09:00 pm </span>
-                                                            Please contact me
-                                            </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right">10:16 am </span>
-                                                            Sign a contract
-                                            </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right">08:22 pm </span>
-                                                            Open new shop
-                                            </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right">11:06 pm </span>
-                                                            Call back to Sylvia
-                                            </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right">12:00 am </span>
-                                                            Write a letter to Sandra
-                                            </li>
-                                                    </ul>
-                                                    <strong>Notes</strong>
-                                                    <p>
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                            tempor incididunt ut labore et dolore magna aliqua.
-                                       
-                                                    </p>
-                                                    <hr />
-                                                    <strong>Timeline activity</strong>
-                                                    <div id="vertical-timeline" class="vertical-container dark-timeline">
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-coffee"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Conference on the sales results for the previous year.
-                                                   
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-briefcase"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Many desktop publishing packages and web page editors now use Lorem.
-                                                   
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-bolt"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    There are many variations of passages of Lorem Ipsum available.
-                                                   
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">06:10 pm - 11.03.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon navy-bg">
-                                                                <i class="fa fa-warning"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    The generated Lorem Ipsum is therefore.
-                                                   
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">02:50 pm - 03.10.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-coffee"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Conference on the sales results for the previous year.
-                                                   
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-briefcase"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Many desktop publishing packages and web page editors now use Lorem.
-                                                   
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                            </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Codigo Interno:</label>
+                                                            <asp:TextBox ID="txbCodigoInterno" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                            <asp:RequiredFieldValidator ID="rfvCodigoInterno" runat="server" ErrorMessage="* Campo requerido"
+                                                                ControlToValidate="txbCodigoInterno" ValidationGroup="agregar"
+                                                                CssClass="font-bold text-danger">
+                                                            </asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div id="contact-2" class="tab-pane">
-                                            <div class="row m-b-lg">
-                                                <div class="col-lg-4 text-center">
-                                                    <h2>Edan Randall</h2>
-
-                                                    <div class="m-b-sm">
-                                                        <img alt="image" class="img-circle" src="img/a3.jpg"
-                                                            style="width: 62px">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Marca:</label>
+                                                            <asp:TextBox ID="txbMarca" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                            <asp:RequiredFieldValidator ID="rfvMarca" runat="server" ErrorMessage="* Campo requerido"
+                                                                ControlToValidate="txbMarca" ValidationGroup="agregar"
+                                                                CssClass="font-bold text-danger">
+                                                            </asp:RequiredFieldValidator>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-lg-8">
-                                                    <strong>About me
-                                            </strong>
-
-                                                    <p>
-                                                        Many desktop publishing packages and web page editors now use Lorem Ipsum as their default tempor incididunt model text.
-                                           
-                                                    </p>
-                                                    <button type="button" class="btn btn-primary btn-sm btn-block">
-                                                        <i
-                                                            class="fa fa-envelope"></i>Send Message
-                                           
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="client-detail">
-                                                <div class="full-height-scroll">
-
-                                                    <strong>Last activity</strong>
-
-                                                    <ul class="list-group clear-list">
-                                                        <li class="list-group-item fist-item">
-                                                            <span class="pull-right">09:00 pm </span>
-                                                            Lorem Ipsum available
-                                                </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right">10:16 am </span>
-                                                            Latin words, combined
-                                                </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right">08:22 pm </span>
-                                                            Open new shop
-                                                </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right">11:06 pm </span>
-                                                            The generated Lorem Ipsum
-                                                </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right">12:00 am </span>
-                                                            Content here, content here
-                                                </li>
-                                                    </ul>
-                                                    <strong>Notes</strong>
-                                                    <p>
-                                                        There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words.
-                                           
-                                                    </p>
-                                                    <hr />
-                                                    <strong>Timeline activity</strong>
-                                                    <div id="vertical-timeline" class="vertical-container dark-timeline">
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-briefcase"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Many desktop publishing packages and web page editors now use Lorem.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-bolt"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    There are many variations of passages of Lorem Ipsum available.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">06:10 pm - 11.03.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon navy-bg">
-                                                                <i class="fa fa-warning"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    The generated Lorem Ipsum is therefore.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">02:50 pm - 03.10.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-coffee"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Conference on the sales results for the previous year.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-briefcase"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Many desktop publishing packages and web page editors now use Lorem.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                            </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Proveedor:</label>
+                                                            <asp:TextBox ID="txbProveedor" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                            <asp:RequiredFieldValidator ID="rfvProveedor" runat="server" ErrorMessage="* Campo requerido"
+                                                                ControlToValidate="txbProveedor" ValidationGroup="agregar"
+                                                                CssClass="font-bold text-danger">
+                                                            </asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div id="contact-3" class="tab-pane">
-                                            <div class="row m-b-lg">
-                                                <div class="col-lg-4 text-center">
-                                                    <h2>Jasper Carson</h2>
-
-                                                    <div class="m-b-sm">
-                                                        <img alt="image" class="img-circle" src="img/a4.jpg"
-                                                            style="width: 62px">
-                                                    </div>
+                                                
+                                                <div class="form-group">
+                                                    <a href="activosfijos" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
+                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar"/>
                                                 </div>
-                                                <div class="col-lg-8">
-                                                    <strong>About me
-                                            </strong>
-
-                                                    <p>
-                                                        Latin professor at Hampden-Sydney College in Virginia, looked  embarrassing hidden in the middle.
-                                           
-                                                    </p>
-                                                    <button type="button" class="btn btn-primary btn-sm btn-block">
-                                                        <i
-                                                            class="fa fa-envelope"></i>Send Message
-                                           
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="client-detail">
-                                                <div class="full-height-scroll">
-
-                                                    <strong>Last activity</strong>
-
-                                                    <ul class="list-group clear-list">
-                                                        <li class="list-group-item fist-item">
-                                                            <span class="pull-right">09:00 pm </span>
-                                                            Aldus PageMaker including
-                                                </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right">10:16 am </span>
-                                                            Finibus Bonorum et Malorum
-                                                </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right">08:22 pm </span>
-                                                            Write a letter to Sandra
-                                                </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right">11:06 pm </span>
-                                                            Standard chunk of Lorem
-                                                </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right">12:00 am </span>
-                                                            Open new shop
-                                                </li>
-                                                    </ul>
-                                                    <strong>Notes</strong>
-                                                    <p>
-                                                        Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.
-                                           
-                                                    </p>
-                                                    <hr />
-                                                    <strong>Timeline activity</strong>
-                                                    <div id="vertical-timeline" class="vertical-container dark-timeline">
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-coffee"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Conference on the sales results for the previous year.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-briefcase"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Many desktop publishing packages and web page editors now use Lorem.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-bolt"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    There are many variations of passages of Lorem Ipsum available.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">06:10 pm - 11.03.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon navy-bg">
-                                                                <i class="fa fa-warning"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    The generated Lorem Ipsum is therefore.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">02:50 pm - 03.10.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-coffee"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Conference on the sales results for the previous year.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-briefcase"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Many desktop publishing packages and web page editors now use Lorem.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="contact-4" class="tab-pane">
-                                            <div class="row m-b-lg">
-                                                <div class="col-lg-4 text-center">
-                                                    <h2>Reuben Pacheco</h2>
-
-                                                    <div class="m-b-sm">
-                                                        <img alt="image" class="img-circle" src="img/a5.jpg"
-                                                            style="width: 62px">
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-8">
-                                                    <strong>About me
-                                            </strong>
-
-                                                    <p>
-                                                        Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero,written in 45 BC. This book is a treatise on.
-                                           
-                                                    </p>
-                                                    <button type="button" class="btn btn-primary btn-sm btn-block">
-                                                        <i
-                                                            class="fa fa-envelope"></i>Send Message
-                                           
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="client-detail">
-                                                <div class="full-height-scroll">
-
-                                                    <strong>Last activity</strong>
-
-                                                    <ul class="list-group clear-list">
-                                                        <li class="list-group-item fist-item">
-                                                            <span class="pull-right">09:00 pm </span>
-                                                            The point of using
-                                                </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right">10:16 am </span>
-                                                            Lorem Ipsum is that it has
-                                                </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right">08:22 pm </span>
-                                                            Text, and a search for 'lorem ipsum'
-                                                </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right">11:06 pm </span>
-                                                            Passages of Lorem Ipsum
-                                                </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right">12:00 am </span>
-                                                            If you are going
-                                                </li>
-                                                    </ul>
-                                                    <strong>Notes</strong>
-                                                    <p>
-                                                        Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
-                                           
-                                                    </p>
-                                                    <hr />
-                                                    <strong>Timeline activity</strong>
-                                                    <div id="vertical-timeline" class="vertical-container dark-timeline">
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-coffee"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Conference on the sales results for the previous year.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-briefcase"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Many desktop publishing packages and web page editors now use Lorem.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-bolt"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    There are many variations of passages of Lorem Ipsum available.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">06:10 pm - 11.03.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon navy-bg">
-                                                                <i class="fa fa-warning"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    The generated Lorem Ipsum is therefore.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">02:50 pm - 03.10.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-coffee"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Conference on the sales results for the previous year.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-briefcase"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Many desktop publishing packages and web page editors now use Lorem.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="company-1" class="tab-pane">
-                                            <div class="m-b-lg">
-                                                <h2>Tellus Institute</h2>
-
-                                                <p>
-                                                    Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero,written in 45 BC. This book is a treatise on.
-                                           
-                                                </p>
-                                                <div>
-                                                    <small>Active project completion with: 48%</small>
-                                                    <div class="progress progress-mini">
-                                                        <div style="width: 48%;" class="progress-bar"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="client-detail">
-                                                <div class="full-height-scroll">
-
-                                                    <strong>Last activity</strong>
-
-                                                    <ul class="list-group clear-list">
-                                                        <li class="list-group-item fist-item">
-                                                            <span class="pull-right"><span class="label label-primary">NEW</span> </span>
-                                                            The point of using
-                                                </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right"><span class="label label-warning">WAITING</span></span>
-                                                            Lorem Ipsum is that it has
-                                                </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right"><span class="label label-danger">BLOCKED</span> </span>
-                                                            If you are going
-                                                </li>
-                                                    </ul>
-                                                    <strong>Notes</strong>
-                                                    <p>
-                                                        Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
-                                           
-                                                    </p>
-                                                    <hr />
-                                                    <strong>Timeline activity</strong>
-                                                    <div id="vertical-timeline" class="vertical-container dark-timeline">
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-coffee"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Conference on the sales results for the previous year.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-briefcase"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Many desktop publishing packages and web page editors now use Lorem.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-bolt"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    There are many variations of passages of Lorem Ipsum available.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">06:10 pm - 11.03.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon navy-bg">
-                                                                <i class="fa fa-warning"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    The generated Lorem Ipsum is therefore.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">02:50 pm - 03.10.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-coffee"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Conference on the sales results for the previous year.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-briefcase"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Many desktop publishing packages and web page editors now use Lorem.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="company-2" class="tab-pane">
-                                            <div class="m-b-lg">
-                                                <h2>Penatibus Consulting</h2>
-
-                                                <p>
-                                                    There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some.
-                                       
-                                                </p>
-                                                <div>
-                                                    <small>Active project completion with: 22%</small>
-                                                    <div class="progress progress-mini">
-                                                        <div style="width: 22%;" class="progress-bar"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="client-detail">
-                                                <div class="full-height-scroll">
-
-                                                    <strong>Last activity</strong>
-
-                                                    <ul class="list-group clear-list">
-                                                        <li class="list-group-item fist-item">
-                                                            <span class="pull-right"><span class="label label-warning">WAITING</span> </span>
-                                                            Aldus PageMaker
-                                                </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right"><span class="label label-primary">NEW</span> </span>
-                                                            Lorem Ipsum, you need to be sure
-                                                </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right"><span class="label label-danger">BLOCKED</span> </span>
-                                                            The generated Lorem Ipsum
-                                                </li>
-                                                    </ul>
-                                                    <strong>Notes</strong>
-                                                    <p>
-                                                        Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
-                                           
-                                                    </p>
-                                                    <hr />
-                                                    <strong>Timeline activity</strong>
-                                                    <div id="vertical-timeline" class="vertical-container dark-timeline">
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-coffee"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Conference on the sales results for the previous year.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-briefcase"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Many desktop publishing packages and web page editors now use Lorem.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-bolt"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    There are many variations of passages of Lorem Ipsum available.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">06:10 pm - 11.03.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon navy-bg">
-                                                                <i class="fa fa-warning"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    The generated Lorem Ipsum is therefore.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">02:50 pm - 03.10.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-coffee"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Conference on the sales results for the previous year.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-briefcase"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Many desktop publishing packages and web page editors now use Lorem.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="company-3" class="tab-pane">
-                                            <div class="m-b-lg">
-                                                <h2>Ultrices Incorporated</h2>
-
-                                                <p>
-                                                    Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text.
-                                       
-                                                </p>
-                                                <div>
-                                                    <small>Active project completion with: 72%</small>
-                                                    <div class="progress progress-mini">
-                                                        <div style="width: 72%;" class="progress-bar"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="client-detail">
-                                                <div class="full-height-scroll">
-
-                                                    <strong>Last activity</strong>
-
-                                                    <ul class="list-group clear-list">
-                                                        <li class="list-group-item fist-item">
-                                                            <span class="pull-right"><span class="label label-danger">BLOCKED</span> </span>
-                                                            Hidden in the middle of text
-                                                </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right"><span class="label label-primary">NEW</span> </span>
-                                                            Non-characteristic words etc.
-                                                </li>
-                                                        <li class="list-group-item">
-                                                            <span class="pull-right"><span class="label label-warning">WAITING</span> </span>
-                                                            Bonorum et Malorum
-                                                </li>
-                                                    </ul>
-                                                    <strong>Notes</strong>
-                                                    <p>
-                                                        There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.
-                                           
-                                                    </p>
-                                                    <hr />
-                                                    <strong>Timeline activity</strong>
-                                                    <div id="vertical-timeline" class="vertical-container dark-timeline">
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-briefcase"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Many desktop publishing packages and web page editors now use Lorem.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-bolt"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    There are many variations of passages of Lorem Ipsum available.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">06:10 pm - 11.03.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon navy-bg">
-                                                                <i class="fa fa-warning"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    The generated Lorem Ipsum is therefore.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">02:50 pm - 03.10.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-coffee"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Conference on the sales results for the previous year.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="vertical-timeline-block">
-                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                <i class="fa fa-briefcase"></i>
-                                                            </div>
-                                                            <div class="vertical-timeline-content">
-                                                                <p>
-                                                                    Many desktop publishing packages and web page editors now use Lorem.
-                                                       
-                                                                </p>
-                                                                <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                <br />
+                                                <br />
+                                                <div class="form-group">
+                                                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-lg-8">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Lista de Activos Fijos</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+
+                                        <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
+                                            <div class="col-lg-10">
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group" id="filter-form-container" style="margin-left: 18px;"></div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group form-horizontal">
+                                                                <label class="col-lg-3 control-label">Sede</label>
+                                                                <div class="col-lg-9">
+                                                                    <asp:DropDownList ID="ddlSedes" runat="server" AutoPostBack="true"
+                                                                        OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
+                                                                        CssClass="form-control input-sm" AppendDataBoundItems="true">
+                                                                        <asp:ListItem Text="Todas" Value="" />
+                                                                    </asp:DropDownList>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group form-horizontal">
+                                                                <label class="col-lg-4 control-label">Categoría</label>
+                                                                <div class="col-lg-8">
+                                                                    <asp:DropDownList ID="ddlCategorias" runat="server" AutoPostBack="true"
+                                                                        OnSelectedIndexChanged="ddlCategorias_SelectedIndexChanged"
+                                                                        CssClass="form-control input-sm" AppendDataBoundItems="true">
+                                                                        <asp:ListItem Text="Todas" Value="" />
+                                                                    </asp:DropDownList>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-2">
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
+                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
+                                                    OnClick="lbExportarExcel_Click">
+                                                    <i class="fa fa-file-excel"></i> EXCEL
+                                                </asp:LinkButton>
+                                            </div>
+                                        </div>
+
+                                        <table class="footable table table-striped" data-paging-size="10"
+                                            data-filter-min="3" data-filter-placeholder="Buscar"
+                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
+                                            data-paging-limit="10" data-filtering="true"
+                                            data-filter-container="#filter-form-container" data-filter-delay="300"
+                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left"
+                                            data-empty="Sin resultados">
+                                            <thead>
+                                                <tr>
+                                                    <th data-sortable="false" data-breakpoints="xs"></th>
+                                                    <th data-sortable="true" data-breakpoints="xs">Activo</th>
+                                                    <th data-sortable="true" data-breakpoints="xs">Categoría</th>
+                                                    <th data-sortable="false" data-breakpoints="xs sm md">Estado</th>
+                                                    <th data-breakpoints="xs sm md">Código interno</th>
+                                                    <th data-breakpoints="xs sm md">Marca</th>
+                                                    <th class="text-nowrap" data-breakpoints="xs">Proveedor</th>
+                                                    <th class="text-nowrap" data-breakpoints="xs" width="150px">Fecha ingreso</th>
+                                                    <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:Repeater ID="rpActivosFijos" runat="server" OnItemDataBound="rpActivosFijos_ItemDataBound">
+                                                    <ItemTemplate>
+                                                        <tr>
+                                                            <td>
+                                                                <img src='img/activos/<%# Eval("ImagenActivo") %>' alt="imagen" class="img-responsive" width="120px" /></td>
+                                                            <td><%# Eval("NombreActivoFijo") %></td>
+                                                            <td><%# Eval("NombreCategoriaActivo") %></td>
+                                                            <td><%# Eval("EstadoActivoFijo") %></td>
+                                                            <td><%# Eval("CodigoInterno") %></td>
+                                                            <td><%# Eval("Marca") %></td>
+                                                            <td><%# Eval("Proveedor") %></td>
+                                                            <td><%# Eval("FechaIngreso", "{0:dd MMM yyyy}") %></td>
+                                                            <td>
+                                                                <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                                <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </form>
+                </div>
             </div>
+
+            <uc1:footer runat="server" ID="footer1" />
+
         </div>
-
-        <uc1:footer runat="server" ID="footer1" />
-
-    </div>
-    <uc1:rightsidebar runat="server" ID="rightsidebar1" />
+        <uc1:rightsidebar runat="server" ID="rightsidebar1" />
     </div>
 
     <!-- Mainly scripts -->

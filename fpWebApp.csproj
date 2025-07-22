@@ -295,6 +295,7 @@
     <Content Include="controles\indicadoresacceso.ascx" />
     <Content Include="controles\indicadoresgympass.ascx" />
     <Content Include="controles\indicadoresmedico.ascx" />
+    <Content Include="controles\indicadoressoporte.ascx" />
     <Content Include="controles\indicadoresusucrm.ascx" />
     <Content Include="controles\navbar.ascx" />
     <Content Include="controles\paginasperfil.ascx" />
@@ -1301,6 +1302,13 @@
     </Compile>
     <Compile Include="controles\indicadoresmedico.ascx.designer.cs">
       <DependentUpon>indicadoresmedico.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="controles\indicadoressoporte.ascx.cs">
+      <DependentUpon>indicadoressoporte.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadoressoporte.ascx.designer.cs">
+      <DependentUpon>indicadoressoporte.ascx</DependentUpon>
     </Compile>
     <Compile Include="controles\indicadoresusucrm.ascx.cs">
       <DependentUpon>indicadoresusucrm.ascx</DependentUpon>

@@ -133,7 +133,12 @@
                                                 <div class="row">
                                                     <div class="col-lg-6 form-horizontal">
                                                         <div class="form-group" style="margin-left: 0px;">
-                                                            <label class="col-lg-2 control-label">Sede</label>
+                                                            <label class="col-lg-2 control-label">Sede: 
+                                                                <asp:RequiredFieldValidator ID="rfvSedes" runat="server" ErrorMessage="*"
+                                                                    ControlToValidate="ddlSedes" ValidationGroup="agregar"
+                                                                    CssClass="font-bold text-danger" InitialValue="">
+                                                                </asp:RequiredFieldValidator>
+                                                            </label>
                                                             <div class="col-lg-10">
                                                                 <asp:DropDownList ID="ddlSedes" CssClass="form-control input-sm" runat="server"
                                                                     AppendDataBoundItems="true" OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
@@ -143,7 +148,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group" style="margin-left: 0px;">
-                                                            <label class="col-lg-2 control-label">Prioridad</label>
+                                                            <label class="col-lg-2 control-label">Prioridad:</label>
                                                             <div class="col-lg-10">
                                                                 <asp:DropDownList ID="ddlPrioridad" runat="server" CssClass="form-control input-sm">
                                                                     <asp:ListItem Text="Baja" Value="Baja" />
@@ -153,7 +158,12 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group" style="margin-left: 0px;">
-                                                            <label class="col-lg-2 control-label">Categoría</label>
+                                                            <label class="col-lg-2 control-label">Categoría:
+                                                                <asp:RequiredFieldValidator ID="rfvCategorias" runat="server" ErrorMessage="*"
+                                                                    ControlToValidate="ddlCategoriasActivos" ValidationGroup="agregar"
+                                                                    CssClass="font-bold text-danger" InitialValue="">
+                                                                </asp:RequiredFieldValidator>
+                                                            </label>
                                                             <div class="col-lg-10">
                                                                 <asp:DropDownList ID="ddlCategoriasActivos"
                                                                     CssClass="form-control input-sm" runat="server"
@@ -164,7 +174,12 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group" style="margin-left: 0px;">
-                                                            <label class="col-lg-2 control-label">Activo</label>
+                                                            <label class="col-lg-2 control-label">Activo:
+                                                                <asp:RequiredFieldValidator ID="rfvActivo" runat="server" ErrorMessage="*"
+                                                                    ControlToValidate="ddlActivosFijos" ValidationGroup="agregar"
+                                                                    CssClass="font-bold text-danger" InitialValue="">
+                                                                </asp:RequiredFieldValidator>
+                                                            </label>
                                                             <div class="col-lg-10">
                                                                 <asp:DropDownList ID="ddlActivosFijos" CssClass="form-control input-sm" runat="server" />
                                                             </div>
@@ -175,10 +190,14 @@
                                                             <label>Descripción:</label>
                                                             <asp:TextBox ID="txtDescripcion" runat="server" CssClass="form-control input-sm" TextMode="MultiLine"
                                                                 Rows="4" />
+                                                            <asp:RequiredFieldValidator ID="rfvDescripcion" runat="server" ErrorMessage="* Campo requerido"
+                                                                ControlToValidate="txtDescripcion" ValidationGroup="agregar" 
+                                                                CssClass="font-bold text-danger">
+                                                            </asp:RequiredFieldValidator>
                                                         </div>
                                                         <div class="form-group">
                                                             <asp:Button ID="btnAgregar" runat="server" Text="Agregar" OnClick="btnAgregar_Click"
-                                                                CssClass="btn btn-sm btn-primary m-t-n-xs pull-right" />
+                                                                CssClass="btn btn-sm btn-primary m-t-n-xs pull-right" ValidationGroup="agregar" />
                                                         </div>
                                                         <br />
                                                     </div>
@@ -319,9 +338,6 @@
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
-    <!-- Jquery Validate -->
-    <script src="js/plugins/validate/jquery.validate.min.js"></script>
-
     <!-- FooTable -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
@@ -329,24 +345,6 @@
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
     <script>
-        $("#form").validate({
-            rules: {
-                ddlSedes: {
-                    required: true,
-                },
-                ddlCategoriasActivos: {
-                    required: true,
-                },
-                ddlActivosFijos: {
-                    required: true
-                },
-                txtDescripcion: {
-                    required: true,
-                    minlength: 30
-                },
-            }
-        });
-
         $('.footable').footable();
     </script>
 

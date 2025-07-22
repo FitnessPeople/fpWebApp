@@ -33,13 +33,13 @@ namespace fpWebApp
         protected global::fpWebApp.controles.header header1;
 
         /// <summary>
-        /// Control indicadores04.
+        /// Control indicadoressoporte.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.indicadores04 indicadores04;
+        protected global::fpWebApp.controles.indicadoressoporte indicadoressoporte;
 
         /// <summary>
         /// Control divMensaje.
@@ -132,6 +132,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Repeater rpTickets;
 
         /// <summary>
+        /// Control divAsignacion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divAsignacion;
+
+        /// <summary>
         /// Control ltActivo.
         /// </summary>
         /// <remarks>
@@ -177,15 +186,6 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltPrioridad;
 
         /// <summary>
-        /// Control divAsignacion.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divAsignacion;
-
-        /// <summary>
         /// Control ddlUsuarios.
         /// </summary>
         /// <remarks>
@@ -193,6 +193,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlUsuarios;
+
+        /// <summary>
+        /// Control rfvUsuarios.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvUsuarios;
 
         /// <summary>
         /// Control btnAgregar.

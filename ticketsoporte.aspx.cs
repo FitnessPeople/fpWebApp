@@ -39,9 +39,11 @@ namespace fpWebApp
                         {
                             ddlUsuarios.Enabled = false;
                             divAsignacion.Visible = false;
+
+                            CargarSedes();
                             CargarTickets();
 
-                            if(Request.QueryString.Count > 0)
+                            if (Request.QueryString.Count > 0)
                             {
                                 bool boolMostrarResponsable = false;
                                 if (Request.QueryString["asignarid"] != null)
@@ -94,6 +96,7 @@ namespace fpWebApp
         {
             string estado = ddlEstado.SelectedValue;
             string prioridad = ddlFiltroPrioridad.SelectedValue;
+            string sede = ddlSedes.SelectedValue;
             //string activo = ddlActivos.SelectedValue;
 
             string strQuery = "SELECT t.idTicketSoporte, af.NombreActivoFijo, af.CodigoInterno, af.ImagenActivo, " +
@@ -110,6 +113,7 @@ namespace fpWebApp
                 "LEFT JOIN Usuarios u1 ON at.idTecnico = u1.idUsuario " +
                 "WHERE ('" + estado + "' = '' OR t.EstadoTicket = '" + estado + "') " +
                 "AND ('" + prioridad + "' = '' OR t.PrioridadTicket = '" + prioridad + "') " +
+                "AND ('" + sede + "' = '' OR af.idSede = '" + sede + "') " +
                 "ORDER BY t.FechaCreacionTicket DESC";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
@@ -118,6 +122,21 @@ namespace fpWebApp
             rpTickets.DataBind();   
 
             dt.Dispose();
+        }
+
+        private void CargarSedes()
+        {
+            clasesglobales cg = new clasesglobales();
+            string strQuery = "SELECT s.idSede, CONCAT(s.NombreSede, ' - ', cs.NombreCiudadSede) AS NombreSedeCiudad " +
+                "FROM Sedes s, CiudadesSedes cs " +
+                "WHERE s.idCiudadSede = cs.idCiudadSede ";
+
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            ddlSedes.DataSource = dt;
+            ddlSedes.DataValueField = "idSede";
+            ddlSedes.DataTextField = "NombreSedeCiudad";
+            ddlSedes.DataBind();
         }
 
         private void CargarAsignacion(bool mostrarResponsable, string idTicketSoporte)
@@ -174,16 +193,6 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        protected void ddlEstado_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            CargarTickets();
-        }
-
-        protected void ddlFiltroPrioridad_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            CargarTickets();
-        }
-
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
             try
@@ -226,10 +235,6 @@ namespace fpWebApp
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
-                    HtmlButton btnVerDetalles = (HtmlButton)e.Item.FindControl("btnVerDetalles");
-                    btnVerDetalles.Attributes.Add("onClick", "window.location.href='ticketsoporte?detailid=" + ((DataRowView)e.Item.DataItem).Row["idTicketSoporte"].ToString() + "'");
-                    btnVerDetalles.Visible = true;
-
                     HtmlButton btnAsignar = (HtmlButton)e.Item.FindControl("btnAsignar");
                     btnAsignar.Attributes.Add("onClick", "window.location.href='ticketsoporte?asignarid=" + ((DataRowView)e.Item.DataItem).Row["idTicketSoporte"].ToString() + "'");
 
@@ -253,22 +258,25 @@ namespace fpWebApp
                     string leyenda = "";
                     if (diferencia.TotalMinutes < 1)
                     {
-                        leyenda = "Hace menos de un minuto";
+                        leyenda = "<i class=\"fa fa-hourglass-half m-r-sm\"></i>Hace menos de un minuto";
                     }
                     else if (diferencia.TotalMinutes < 60)
                     {
                         int min = (int)Math.Floor(diferencia.TotalMinutes);
                         leyenda = $"Hace {min} minuto" + (min == 1 ? "" : "s");
+                        leyenda = "<i class=\"fa fa-hourglass-half m-r-sm\"></i>" + leyenda;
                     }
                     else if (diferencia.TotalHours < 24)
                     {
                         int hrs = (int)Math.Floor(diferencia.TotalHours);
                         leyenda = $"Hace {hrs} hora" + (hrs == 1 ? "" : "s");
+                        leyenda = "<i class=\"fa fa-clock m-r-sm\"></i>" + leyenda;
                     }
                     else
                     {
                         int dias = (int)Math.Floor(diferencia.TotalDays);
                         leyenda = $"Hace {dias} día" + (dias == 1 ? "" : "s");
+                        leyenda = "<i class=\"fa fa-calendar-days m-r-sm\"></i>" + leyenda;
                     }
 
                     Literal ltTiempo = (Literal)e.Item.FindControl("ltTiempoTranscurrido");
@@ -297,9 +305,19 @@ namespace fpWebApp
             Response.Redirect("ticketsoporte");
         }
 
+        protected void ddlEstado_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CargarTickets();
+        }
+
+        protected void ddlFiltroPrioridad_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CargarTickets();
+        }
+
         protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            CargarTickets();
         }
     }
 }

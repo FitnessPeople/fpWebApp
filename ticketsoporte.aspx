@@ -5,7 +5,8 @@
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
-<%@ Register Src="~/controles/indicadores04.ascx" TagPrefix="uc1" TagName="indicadores04" %>
+<%@ Register Src="~/controles/indicadoressoporte.ascx" TagPrefix="uc1" TagName="indicadoressoporte" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -119,7 +120,7 @@
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row animated fadeInDown">
 
-                    <uc1:indicadores04 runat="server" ID="indicadores04" />
+                    <uc1:indicadoressoporte runat="server" id="indicadoressoporte" />
 
                     <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
                         <div class="p-xs">
@@ -173,7 +174,8 @@
                                                                 <label class="col-lg-4 control-label">Prioridad</label>
                                                                 <div class="col-lg-8">
                                                                     <asp:DropDownList ID="ddlFiltroPrioridad" runat="server" AutoPostBack="true"
-                                                                        OnSelectedIndexChanged="ddlFiltroPrioridad_SelectedIndexChanged" CssClass="form-control input-sm">
+                                                                        OnSelectedIndexChanged="ddlFiltroPrioridad_SelectedIndexChanged" 
+                                                                        CssClass="form-control input-sm">
                                                                         <asp:ListItem Text="Todas" Value="" />
                                                                         <asp:ListItem Text="Alta" Value="Alta" />
                                                                         <asp:ListItem Text="Media" Value="Media" />
@@ -188,7 +190,8 @@
                                                                 <div class="col-lg-8">
                                                                     <asp:DropDownList ID="ddlSedes" runat="server" AutoPostBack="true" 
                                                                         OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged" 
-                                                                        CssClass="form-control input-sm">
+                                                                        CssClass="form-control input-sm" AppendDataBoundItems="true">
+                                                                        <asp:ListItem Text="Todas" Value="" />
                                                                     </asp:DropDownList>
                                                                 </div>
                                                             </div>
@@ -220,10 +223,11 @@
                                                     <th data-breakpoints="all" data-title="Info"></th>
                                                     <th data-breakpoints="xs sm md">Estado</th>
                                                     <th data-breakpoints="xs sm md">Prioridad</th>
-                                                    <th class="text-nowrap" data-breakpoints="xs">Fecha</th>
+                                                    <th class="text-nowrap" data-breakpoints="xs" width="150px">Fecha</th>
+                                                    <th class="text-nowrap" data-breakpoints="xs" width="150px">Hace cuánto?</th>
                                                     <th class="text-nowrap" data-breakpoints="xs">Sede</th>
                                                     <th class="text-nowrap" data-breakpoints="xs">Responsable</th>
-                                                    <th data-sortable="false" class="text-right" style="width: 95px;">Acciones</th>
+                                                    <th data-sortable="false" class="text-right" >Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -251,19 +255,16 @@
                                                             </td>
                                                             <td><span class="badge badge-<%# Eval("badge") %>"><%# Eval("EstadoTicket") %></span></td>
                                                             <td><i class="fa fa-circle m-r-sm text-<%# Eval("badge2") %>"></i><%# Eval("PrioridadTicket") %></td>
-                                                            <td><%# Eval("FechaCreacionTicket", "{0:dd MMM yyyy hh:mm:ss}") %><br />
+                                                            <td><%# Eval("FechaCreacionTicket", "{0:dd MMM yyyy}") %></br>
+                                                                    <%# Eval("FechaCreacionTicket", "{0:hh:mm:ss}") %>
+                                                            </td>
+                                                            <td>
                                                                 <asp:Literal ID="ltTiempoTranscurrido" runat="server"></asp:Literal></td>
                                                             <td><%# Eval("NombreSede") %></td>
                                                             <td><%# Eval("Responsable") %></td>
                                                             <td>
-                                                                <button type="button" runat="server" id="btnVerDetalles"
-                                                                    class="btn btn-outline btn-primary pull-left m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"
-                                                                    title="Ver detalles">
-                                                                    <i class="fa fa-circle-info"></i>
-                                                                </button>
                                                                 <button type="button" runat="server" id="btnAsignar"
-                                                                    class="btn btn-outline btn-warning pull-left m-r-xs"
+                                                                    class="btn btn-outline btn-warning pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
                                                                     title="Asignar técnico">
                                                                     <i class="fa fa-user-plus"></i>
@@ -287,7 +288,7 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="ibox-content">
+                                    <div class="ibox-content" runat="server" id="divAsignacion">
 
                                         <div class="row">
                                             <div class="col-lg-4">
@@ -314,19 +315,23 @@
                                                 </span>
                                         </p>
 
-                                        <div runat="server" id="divAsignacion">
-                                            <div class="form-group">
-                                                <label>Responsable</label>
-                                                <asp:DropDownList ID="ddlUsuarios" runat="server" CssClass="form-control input-sm">
-                                                </asp:DropDownList>
-                                            </div>
-                                            <div class="form-group">
-                                                <asp:Button ID="btnAgregar" runat="server" Text="Agregar" OnClick="btnAgregar_Click"
-                                                    CssClass="btn btn-sm btn-primary m-t-n-xs pull-right" ValidationGroup="agregar" />
-                                            </div>
-                                            <br />
-
+                                        <div class="form-group">
+                                            <label>Responsable</label>
+                                            <asp:DropDownList ID="ddlUsuarios" runat="server" CssClass="form-control input-sm" 
+                                                AppendDataBoundItems="true">
+                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                            </asp:DropDownList>
+                                            <asp:RequiredFieldValidator ID="rfvUsuarios" runat="server" ErrorMessage="* Campo requerido"
+                                                ControlToValidate="ddlUsuarios" ValidationGroup="agregar"
+                                                CssClass="font-bold text-danger" InitialValue="">
+                                            </asp:RequiredFieldValidator>
                                         </div>
+                                        <div class="form-group">
+                                            <asp:Button ID="btnAgregar" runat="server" Text="Agregar" OnClick="btnAgregar_Click"
+                                                CssClass="btn btn-sm btn-primary m-t-n-xs pull-right" ValidationGroup="agregar" />
+                                        </div>
+                                        <br />
+
                                     </div>
                                 </div>
                             </div>

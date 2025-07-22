@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Data;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
@@ -22,20 +24,52 @@ namespace fpWebApp
                     else
                     {
                         //Si tiene acceso a esta página
-                        //divBotonesLista.Visible = false;
+                        divBotonesLista.Visible = false;
+                        btnAgregar.Visible = false;
                         if (ViewState["Consulta"].ToString() == "1")
                         {
-                            //divBotonesLista.Visible = true;
-                            //lbExportarExcel.Visible = false;
+                            divBotonesLista.Visible = true;
+                            lbExportarExcel.Visible = false;
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
-                            //divBotonesLista.Visible = true;
-                            //lbExportarExcel.Visible = true;
+                            divBotonesLista.Visible = true;
+                            lbExportarExcel.Visible = true;
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-                            //CargarActivos();
+                            CargarSedes();
+                            CargarCategorias();
+                            CargarActivos();
+                            btnAgregar.Visible = true;
+                        }
+                    }
+
+                    ltTitulo.Text = "Agregar sede";
+
+                    if (Request.QueryString.Count > 0)
+                    {
+                        rpActivosFijos.Visible = false;
+                        if (Request.QueryString["editid"] != null)
+                        {
+                            //Editar
+                            clasesglobales cg = new clasesglobales();
+                            string strQuery = "SELECT * FROM ActivosFijos WHERE idActivoFijo = " + Request.QueryString["editid"].ToString();
+                            //DataTable dt = cg.ConsultarSedePorId(int.Parse(Request.QueryString["editid"].ToString()));
+                            DataTable dt = cg.TraerDatos(strQuery);
+                            if (dt.Rows.Count > 0)
+                            {
+                                txbActivo.Text = dt.Rows[0]["NombreActivoFijo"].ToString();
+                                txbCodigoInterno.Text = dt.Rows[0]["CodigoInterno"].ToString();
+                                txbMarca.Text = dt.Rows[0]["Marca"].ToString();
+                                txbProveedor.Text = dt.Rows[0]["Proveedor"].ToString();
+                                btnAgregar.Text = "Actualizar";
+                                ltTitulo.Text = "Actualizar sede";
+                            }
+                        }
+                        if (Request.QueryString["deleteid"] != null)
+                        {
+                            //Borrar
                         }
                     }
                 }
@@ -67,6 +101,54 @@ namespace fpWebApp
             }
 
             dt.Dispose();
+        }
+
+        private void CargarActivos()
+        {
+            string sede = ddlSedes.SelectedValue;
+            string categoria = ddlCategorias.SelectedValue;
+
+            clasesglobales cg = new clasesglobales();
+            string strQuery = "SELECT * " +
+                "FROM ActivosFijos af " +
+                "INNER JOIN Sedes s ON s.idSede = af.idSede " +
+                "INNER JOIN CategoriasActivos ca ON ca.idCategoriaActivo = af.idCategoriaActivo " +
+                "WHERE ('" + sede + "' = '' OR af.idSede = '" + sede + "') " +
+                "AND ('" + categoria + "' = '' OR af.idCategoriaActivo = '" + categoria + "') ";
+
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            rpActivosFijos.DataSource = dt;
+            rpActivosFijos.DataBind();
+        }
+
+        private void CargarSedes()
+        {
+            clasesglobales cg = new clasesglobales();
+            string strQuery = "SELECT s.idSede, CONCAT(s.NombreSede, ' - ', cs.NombreCiudadSede) AS NombreSedeCiudad " +
+                "FROM Sedes s, CiudadesSedes cs " +
+                "WHERE s.idCiudadSede = cs.idCiudadSede ";
+
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            ddlSedes.DataSource = dt;
+            ddlSedes.DataValueField = "idSede";
+            ddlSedes.DataTextField = "NombreSedeCiudad";
+            ddlSedes.DataBind();
+        }
+
+        private void CargarCategorias()
+        {
+            clasesglobales cg = new clasesglobales();
+            string strQuery = "SELECT * " +
+                "FROM CategoriasActivos ";
+
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            ddlCategorias.DataSource = dt;
+            ddlCategorias.DataValueField = "idCategoriaActivo";
+            ddlCategorias.DataTextField = "NombreCategoriaActivo";
+            ddlCategorias.DataBind();
         }
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
@@ -102,6 +184,35 @@ namespace fpWebApp
             catch (Exception ex)
             {
                 Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+            }
+        }
+
+        protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CargarActivos();
+        }
+
+        protected void ddlCategorias_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CargarActivos();
+        }
+
+        protected void rpActivosFijos_ItemDataBound(object sender, System.Web.UI.WebControls.RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                if (ViewState["CrearModificar"].ToString() == "1")
+                {
+                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("href", "activosfijos?editid=" + ((DataRowView)e.Item.DataItem).Row["idActivoFijo"].ToString());
+                    btnEditar.Visible = true;
+                }
+                if (ViewState["Borrar"].ToString() == "1")
+                {
+                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                    btnEliminar.Attributes.Add("href", "activosfijos?deleteid=" + ((DataRowView)e.Item.DataItem).Row["idActivoFijo"].ToString());
+                    btnEliminar.Visible = true;
+                }
             }
         }
     }
