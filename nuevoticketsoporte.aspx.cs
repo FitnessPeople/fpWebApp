@@ -26,7 +26,9 @@ namespace fpWebApp
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
                         CargarSedes();
+                        CargarCategorias();
                         ddlActivosFijos.Enabled = false;
+                        ddlCategoriasActivos.Enabled = false;
                         CargarTickets();
                     }
                     else
@@ -108,11 +110,31 @@ namespace fpWebApp
 
         }
 
+        private void CargarCategorias()
+        {
+            ddlCategoriasActivos.Items.Clear();
+            ListItem li = new ListItem("Seleccione", "");
+            ddlCategoriasActivos.Items.Add(li);
+            clasesglobales cg = new clasesglobales();
+            string strQuery = "SELECT idCategoriaActivo, NombreCategoriaActivo " +
+                "FROM CategoriasActivos ";
+
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            ddlCategoriasActivos.DataSource = dt;
+            ddlCategoriasActivos.DataValueField = "idCategoriaActivo";
+            ddlCategoriasActivos.DataTextField = "NombreCategoriaActivo";
+            ddlCategoriasActivos.DataBind();
+
+        }
+
         private void CargarActivos()
         {
             clasesglobales cg = new clasesglobales();
             string strQuery = "SELECT idActivoFijo, CONCAT(NombreActivoFijo, ' ◾ ', CodigoInterno) AS NombreActivoFijo " +
-                "FROM ActivosFijos WHERE idSede = " + ddlSedes.SelectedItem.Value.ToString();
+                "FROM ActivosFijos " +
+                "WHERE idSede = " + ddlSedes.SelectedItem.Value.ToString() + " " +
+                "AND idCategoriaActivo = " + ddlCategoriasActivos.SelectedItem.Value.ToString();
 
             DataTable dt = cg.TraerDatos(strQuery);
 
@@ -200,22 +222,25 @@ namespace fpWebApp
                     string leyenda = "";
                     if (diferencia.TotalMinutes < 1)
                     {
-                        leyenda = "Hace menos de un minuto";
+                        leyenda = "<i class=\"fa fa-hourglass-half m-r-sm\"></i>Hace menos de un minuto";
                     }
                     else if (diferencia.TotalMinutes < 60)
                     {
                         int min = (int)Math.Floor(diferencia.TotalMinutes);
                         leyenda = $"Hace {min} minuto" + (min == 1 ? "" : "s");
+                        leyenda = "<i class=\"fa fa-hourglass-half m-r-sm\"></i>" + leyenda;
                     }
                     else if (diferencia.TotalHours < 24)
                     {
                         int hrs = (int)Math.Floor(diferencia.TotalHours);
                         leyenda = $"Hace {hrs} hora" + (hrs == 1 ? "" : "s");
+                        leyenda = "<i class=\"fa fa-clock m-r-sm\"></i>" + leyenda;
                     }
                     else
                     {
                         int dias = (int)Math.Floor(diferencia.TotalDays);
                         leyenda = $"Hace {dias} día" + (dias == 1 ? "" : "s");
+                        leyenda = "<i class=\"fa fa-calendar-days m-r-sm\"></i>" + leyenda;
                     }
 
                     Literal ltTiempo = (Literal)e.Item.FindControl("ltTiempoTranscurrido");
@@ -229,6 +254,12 @@ namespace fpWebApp
         }
 
         protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ddlCategoriasActivos.Enabled = true;
+            CargarCategorias();
+        }
+
+        protected void ddlCategoriasActivos_SelectedIndexChanged(object sender, EventArgs e)
         {
             ddlActivosFijos.Enabled = true;
             CargarActivos();
