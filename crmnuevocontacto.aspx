@@ -804,7 +804,7 @@
                                                                         <td>
                                                                             <span title='<%# Eval("NombreEstadoCRM") %>' style='color: <%# Eval("ColorHexaCRM") %>'>
                                                                                 <%# Eval("IconoMinEstadoCRM") %>
-                                                                            </span>
+                                                                            </span> <%# Eval("NombreEstadoCRM") %>
                                                                         </td>
 
                                                                         <td>

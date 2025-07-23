@@ -75,7 +75,7 @@ namespace fpWebApp
                     ListaEstadosCRM();
                     rpContactosCRM.ItemDataBound += rpContactosCRM_ItemDataBound;
                     ListaContactosPorUsuario();
-                    ListaTiposAfiliadosCRM();
+                    ConsultarTipoAfiliado();
                     CargarPlanes();
                     ListaCanalesMarketingCRM();
                     ListaObjetivosfiliadoCRM();
@@ -99,9 +99,6 @@ namespace fpWebApp
                             txbCorreoContacto.Disabled = true;
                             txbFechaPrim.Disabled = true;
                             btnAgregar.Text = "Actualizar";
-
-
-
 
                             bool respuesta = false;
                             clasesglobales cg = new clasesglobales();
@@ -363,25 +360,6 @@ namespace fpWebApp
             //rpEmpresasCRM.DataBind();
             dt.Dispose();
         }
-        //private void ListaEstadosCRM()
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.ConsultarEstadossCRM();
-        //    foreach (DataRow row in dt.Rows)
-        //    {
-        //        ListItem item = new ListItem
-        //        {
-        //            Text = $"<i class='{row["IconoMinEstadoCRM"]}'></i>{row["NombreEstadoCRM"]}",
-        //            Value = row["idEstadoCRM"].ToString()
-        //        };
-
-        //        item.Attributes["style"] = $"color: {row["ColorHexaCRM"]};";
-        //        item.Attributes["data-icon"] = $"{row["IconoMinEstadoCRM"]}";
-        //        item.Attributes["data-color"] = row["ColorHexaCRM"].ToString();
-
-        //        ddlStatusLead.Items.Add(item);
-        //    }
-        //}
 
         private void ListaEstadosCRM()
         {
@@ -402,10 +380,10 @@ namespace fpWebApp
             }
         }
 
-        private void ListaTiposAfiliadosCRM()
+        private void ConsultarTipoAfiliado()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarTipoAfiliadCRM();
+            DataTable dt = cg.ConsultarTipoAfiliadoBasico();
 
             ddlTiposAfiliado.DataSource = dt;
             ddlTiposAfiliado.DataBind();
@@ -414,7 +392,7 @@ namespace fpWebApp
         private void CargarPlanes()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanes();
+            DataTable dt = cg.ConsultarPlanesVigencias();
 
             ddlPlanes.DataSource = dt;
             ddlPlanes.DataBind();
@@ -1047,6 +1025,8 @@ namespace fpWebApp
         //    }
         //}
 
+
+
         protected void btnActualizarYRedirigir_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
@@ -1069,6 +1049,13 @@ namespace fpWebApp
                 DataTable dtActivo = cg.ConsultarAfiliadoEstadoActivo(idAfil);
                 if (dtActivo.Rows.Count > 0)
                 {
+                    btnAgregar.Enabled = false;
+                    txaObservaciones.Disabled = true;
+                    txbFechaProx.Disabled = true;
+                    txbHoraIni.Disabled = true;
+                    ddlStatusLead.Enabled = false;
+                    hfContador.Visible = false;
+
                     string script = @"
                         Swal.fire({
                             title: 'Afiliado ya tiene plan activo',
@@ -1180,7 +1167,7 @@ namespace fpWebApp
                     dt = cg.ConsultarAfiliadoPorDocumento(documento);
                 }
 
-                dt1 = cg.ConsultarTipoAfiliadCRM();
+                dt1 = cg.ConsultarTipoAfiliadoBasico();
 
                 try
                 {
