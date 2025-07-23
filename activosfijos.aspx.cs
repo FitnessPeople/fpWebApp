@@ -234,6 +234,13 @@ namespace fpWebApp
         {
             string mensaje = string.Empty;
 
+            string strFechaIngreseso = "2000-01-01";
+
+            if (txbFechaIngreso.Text.ToString() != "")
+            {
+                strFechaIngreseso = txbFechaIngreso.Text.ToString();
+            }
+
             string strFilename = "no-image.jpg";
             HttpPostedFile postedFile = Request.Files["fileFoto"];
             if (postedFile != null && postedFile.ContentLength > 0)
@@ -250,7 +257,7 @@ namespace fpWebApp
                 mensaje = cg.InsertarActivo(Convert.ToInt32(ddlSede.SelectedItem.Value.ToString()),
                     Convert.ToInt32(ddlCategoria.SelectedItem.Value.ToString()), 
                     txbActivo.Text.ToString(), "Activo", txbCodigoInterno.Text.ToString(), txbMarca.Text.ToString(), 
-                    txbProveedor.Text.ToString(), txbFechaIngreso.Text.ToString(), strFilename);
+                    txbProveedor.Text.ToString(), strFechaIngreseso, strFilename);
 
                 if (mensaje == "OK")
                 {

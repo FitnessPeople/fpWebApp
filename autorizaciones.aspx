@@ -58,18 +58,18 @@
                     <p>
                         <b>¿Cómo funciona?</b><br />
                         El sistema muestra <b>4 tablas independientes</b>, una para cada tipo de autorización. En cada una encontrarás:<br />
-                        <i class="fa fa-gift" style="color: #0D6EFD;"></i> <b>Tabla de Cortesías</b><br />
-                        <i class="fa fa-right-left" style="color: #F8AC59;"></i> <b>Tabla de Traspasos</b><br />
-                        <i class="fa fa-snowflake" style="color: #0D6EFD;"></i> <b>Tabla de Congelaciones</b><br />
-                        <i class="fa fa-head-side-mask" style="color: #1AB394;"></i> <b>Tabla de Incapacidades</b>
-                    <br />
+                        <i class="fa fa-gift" style="color: #0D6EFD;"></i><b>Tabla de Cortesías</b><br />
+                        <i class="fa fa-right-left" style="color: #F8AC59;"></i><b>Tabla de Traspasos</b><br />
+                        <i class="fa fa-snowflake" style="color: #0D6EFD;"></i><b>Tabla de Congelaciones</b><br />
+                        <i class="fa fa-head-side-mask" style="color: #1AB394;"></i><b>Tabla de Incapacidades</b>
+                        <br />
                         <br />
                         Cada una de las tablas y registros tienen un apartado llamado <b>Acciones</b>, en donde pódrás:<br />
-                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Aprobar:</b> Autorizar si lo deseas.<br />
-                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Rechazar:</b> Cancelar si lo precisas.
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i><b>Aprobar:</b> Autorizar si lo deseas.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i><b>Rechazar:</b> Cancelar si lo precisas.
                    <br />
                         <br />
-                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i>Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -124,7 +124,7 @@
 
                                 <div class="ibox">
                                     <div class="ibox-title bg-info">
-                                        <h5><i class="fa fa-gift"></i> Cortesías</h5>
+                                        <h5><i class="fa fa-gift m-r-xs"></i>Cortesías</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up text-white"></i>
@@ -135,34 +135,54 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="footable table table-striped" data-paging-size="10" 
-                                            data-paging="true" data-paging-count-format="{CP} de {TP}" 
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                            data-paging="true" data-paging-count-format="{CP} de {TP}"
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
+                                                    <th data-sortable="false">ID</th>
                                                     <th data-sortable="false">Afiliado</th>
                                                     <th data-sortable="false">Días de Cortesía</th>
-                                                    <th data-sortable="false">Observaciones</th>
+                                                    <%--<th data-sortable="false">Observaciones</th>
                                                     <th data-sortable="false">Usuario</th>
-                                                    <th data-sortable="false">Fecha</th>
+                                                    <th data-sortable="false">Fecha</th>--%>
                                                     <th data-sortable="false">Acciones</th>
+                                                    <th data-breakpoints="all" data-title="Info"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <asp:Repeater ID="rpCortesias" runat="server">
                                                     <ItemTemplate>
                                                         <tr>
+                                                            <td><%# Eval("IdCortesia") %></td>
                                                             <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
                                                             <td><%# Eval("DiasCortesia") %> días</td>
-                                                            <td><%# Eval("ObservacionesCortesia") %></td>
+                                                            <%--<td><%# Eval("ObservacionesCortesia") %></td>
                                                             <td><%# Eval("NombreUsuario") %></td>
-                                                            <td style="vertical-align:central;">
-                                                                <span class="<%# Eval("badge") %>" ><%# Eval("hacecuanto") %>/15</span> 
+                                                            <td style="vertical-align: central;">
+                                                                <span class="<%# Eval("badge") %>"><%# Eval("hacecuanto") %>/15</span>
                                                                 <%# Eval("FechaHoraCortesia", "{0:dd MMM yyyy}") %>
-                                                            </td>
+                                                            </td>--%>
                                                             <%--<td><a href="#" data-toggle="modal" data-target="#myModalRespuesta" 
                                                                 data-id="<%# Eval("idCortesia") %>"><span class="label label-primary">Responder</span></a></td>--%>
                                                             <td><a href="respuestaautorizacion?idCortesia=<%# Eval("idCortesia") %>"><span class="label label-primary">Responder</span></a></td>
+                                                            <td>
+                                                                <table class="table table-bordered table-striped">
+                                                                    <tr>
+                                                                        <th width="50%"><i class="fa fa-message m-r-xs"></i>Observaciones</th>
+                                                                        <th width="25%"><i class="fa fa-user m-r-xs"></i>Usuario</th>
+                                                                        <th width="25%"><i class="fa fa-calendar m-r-xs"></i>Fecha</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><%# Eval("ObservacionesCortesia") %></td>
+                                                                        <td><%# Eval("NombreUsuario") %></td>
+                                                                        <td style="vertical-align: central;">
+                                                                            <span class="<%# Eval("badge") %>"><%# Eval("hacecuanto") %>/15</span>
+                                                                            <%# Eval("FechaHoraCortesia", "{0:dd MMM yyyy}") %>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
@@ -182,7 +202,7 @@
 
                                 <div class="ibox">
                                     <div class="ibox-title bg-success">
-                                        <h5><i class="fa fa-right-left"></i> Traspasos</h5>
+                                        <h5><i class="fa fa-right-left m-r-xs"></i>Traspasos</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up text-white"></i>
@@ -193,11 +213,12 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="footable table table-striped" data-paging-size="10" 
-                                            data-paging="true" data-paging-count-format="{CP} de {TP}" 
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                            data-paging="true" data-paging-count-format="{CP} de {TP}"
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
+                                                    <th data-sortable="false">ID</th>
                                                     <th data-sortable="false">Afiliado Origen</th>
                                                     <th data-sortable="false">Afiliado Destino</th>
                                                     <th data-sortable="false">Observaciones</th>
@@ -210,12 +231,13 @@
                                                 <asp:Repeater ID="rpTraspasos" runat="server">
                                                     <ItemTemplate>
                                                         <tr>
+                                                            <td><%# Eval("idTraspaso") %></td>
                                                             <td><%# Eval("nomAfilOrigen") %></td>
                                                             <td><%# Eval("nomAfilDestino") %></td>
                                                             <td><%# Eval("Observaciones") %></td>
                                                             <td><%# Eval("NombreUsuario") %></td>
-                                                            <td style="vertical-align:central;">
-                                                                <span class="<%# Eval("badge") %>" ><%# Eval("hacecuanto") %>/15</span> 
+                                                            <td style="vertical-align: central;">
+                                                                <span class="<%# Eval("badge") %>"><%# Eval("hacecuanto") %>/15</span>
                                                                 <%# Eval("FechaTraspaso", "{0:dd MMM yyyy}") %>
                                                             </td>
                                                             <%--<td><a href="#" data-toggle="modal" data-target="#myModalRespuesta" 
@@ -243,7 +265,7 @@
 
                                 <div class="ibox">
                                     <div class="ibox-title bg-warning">
-                                        <h5><i class="fa fa-snowflake"></i> Congelaciones</h5>
+                                        <h5><i class="fa fa-snowflake m-r-xs"></i>Congelaciones</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up text-white"></i>
@@ -254,11 +276,12 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="footable table table-striped" data-paging-size="10" 
-                                            data-paging="true" data-paging-count-format="{CP} de {TP}" 
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                            data-paging="true" data-paging-count-format="{CP} de {TP}"
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
+                                                    <th data-sortable="false">ID</th>
                                                     <th data-sortable="false">Afiliado</th>
                                                     <th data-sortable="false">Días de congelación</th>
                                                     <th data-sortable="false">Observaciones</th>
@@ -271,12 +294,13 @@
                                                 <asp:Repeater ID="rpCongelaciones" runat="server">
                                                     <ItemTemplate>
                                                         <tr>
+                                                            <td><%# Eval("idCongelacion") %></td>
                                                             <td><%# Eval("NombreCompletoAfiliado") %></td>
                                                             <td><%# Eval("Dias") %></td>
                                                             <td><%# Eval("Observaciones") %></td>
                                                             <td><%# Eval("NombreUsuario") %></td>
-                                                            <td style="vertical-align:central;">
-                                                                <span class="<%# Eval("badge") %>" ><%# Eval("hacecuanto") %>/15</span> 
+                                                            <td style="vertical-align: central;">
+                                                                <span class="<%# Eval("badge") %>"><%# Eval("hacecuanto") %>/15</span>
                                                                 <%# Eval("Fecha", "{0:dd MMM yyyy}") %>
                                                             </td>
                                                             <td><a href="respuestaautorizacion?idCongelacion=<%# Eval("idCongelacion") %>"><span class="label label-primary">Responder</span></a></td>
@@ -299,7 +323,7 @@
 
                                 <div class="ibox">
                                     <div class="ibox-title bg-info">
-                                        <h5><i class="fa fa-head-side-mask"></i> Incapacidades</h5>
+                                        <h5><i class="fa fa-head-side-mask m-r-xs"></i>Incapacidades</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up text-white"></i>
@@ -310,32 +334,52 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="footable table table-striped" data-paging-size="10" 
-                                            data-paging="true" data-paging-count-format="{CP} de {TP}" 
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                            data-paging="true" data-paging-count-format="{CP} de {TP}"
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
+                                                    <th data-sortable="false">ID</th>
                                                     <th data-sortable="false">Afiliado</th>
                                                     <th data-sortable="false">Días de incapacidad</th>
-                                                    <th data-sortable="false">Observaciones</th>
+                                                    <%--<th data-sortable="false">Observaciones</th>
                                                     <th data-sortable="false">Usuario</th>
-                                                    <th data-sortable="false">Fecha</th>
+                                                    <th data-sortable="false">Fecha</th>--%>
                                                     <th data-sortable="false">Acciones</th>
+                                                    <th data-breakpoints="all" data-title="Info"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <asp:Repeater ID="rpIncapacidades" runat="server">
                                                     <ItemTemplate>
                                                         <tr>
+                                                            <td><%# Eval("idIncapacidad") %></td>
                                                             <td><%# Eval("NombreCompletoAfiliado") %></td>
                                                             <td><%# Eval("Dias") %></td>
-                                                            <td><%# Eval("Observaciones") %></td>
+                                                            <%--<td><%# Eval("Observaciones") %></td>
                                                             <td><%# Eval("NombreUsuario") %></td>
-                                                            <td style="vertical-align:central;">
-                                                                <span class="<%# Eval("badge") %>" ><%# Eval("hacecuanto") %>/15</span> 
+                                                            <td style="vertical-align: central;">
+                                                                <span class="<%# Eval("badge") %>"><%# Eval("hacecuanto") %>/15</span>
                                                                 <%# Eval("Fecha", "{0:dd MMM yyyy}") %>
-                                                            </td>
+                                                            </td>--%>
                                                             <td><a href="respuestaautorizacion?idIncapacidad=<%# Eval("idIncapacidad") %>"><span class="label label-primary">Responder</span></a></td>
+                                                            <td>
+                                                                <table class="table table-bordered table-striped">
+                                                                    <tr>
+                                                                        <th width="50%"><i class="fa fa-message m-r-xs"></i>Observaciones</th>
+                                                                        <th width="25%"><i class="fa fa-user m-r-xs"></i>Usuario</th>
+                                                                        <th width="25%"><i class="fa fa-calendar m-r-xs"></i>Fecha</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><%# Eval("Observaciones") %></td>
+                                                                        <td><%# Eval("NombreUsuario") %></td>
+                                                                        <td style="vertical-align: central;">
+                                                                            <span class="<%# Eval("badge") %>"><%# Eval("hacecuanto") %>/15</span>
+                                                                            <%# Eval("Fecha", "{0:dd MMM yyyy}") %>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
@@ -350,7 +394,7 @@
                                     </div>
                                 </div>
                             </div>
-                        
+
                         </div>
                     </div>
 

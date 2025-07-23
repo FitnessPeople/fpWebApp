@@ -56,9 +56,13 @@ namespace fpWebApp
                                     "AND ap.idAfiliadoPlan = ppa.idAfiliadoPlan " +
                                     "AND ppa.EstadoPago = 'Aprobado'";
                                 DataTable dt2 = cg.TraerDatos(strQuery);
-                                idcrm = dt2.Rows[0]["idContacto"].ToString();
 
-                                if (!string.IsNullOrEmpty(idcrm)) ltCRM.Text = "No existen resgistros de CRM";
+                                if (dt2.Rows.Count > 0)
+                                { 
+                                    idcrm = dt2.Rows[0]["idContacto"].ToString();
+                                }
+
+                                if (!string.IsNullOrEmpty(idcrm)) ltCRM.Text = "No existen registros de CRM";
                             }
 
                             Session["idcrm"] = idcrm;
@@ -110,7 +114,7 @@ namespace fpWebApp
             string strQuery = "SELECT *, " +
                 "IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS label " +
                 "FROM Afiliados a " +
-                "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +
+                "LEFT JOIN Sedes s ON a.idSede = s.idSede " +
                 "LEFT JOIN ciudades ON ciudades.idCiudad = a.idCiudadAfiliado " +
                 "WHERE DocumentoAfiliado = '" + strDocumento + "' ";
             clasesglobales cg = new clasesglobales();

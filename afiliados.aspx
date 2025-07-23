@@ -376,8 +376,8 @@
         });
 
         $(document).on("click", ".dropdown-toggle", function () {
-            /*var url = 'https://pqrdsuperargo.supersalud.gov.co/api/api/adres/0/';*/
-            var url = 'consultaadres?id';
+            var url = 'https://pqrdsuperargo.supersalud.gov.co/api/api/adres/0/';
+            /*var url = 'consultaadres?id';*/
             url = url + $(this).data('documento');
             //console.log(url);
 

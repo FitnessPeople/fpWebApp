@@ -19,9 +19,7 @@
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
-    <link href="css/plugins/dataTables/datatables.min.css" rel="stylesheet" />
-    <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
-    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
+    <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet" />
 
     <!-- FooTable -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
@@ -386,6 +384,12 @@
 
     <!-- FooTable -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
+
+    <!-- Jquery Validate -->
+    <script src="js/plugins/validate/jquery.validate.min.js"></script>
+
+    <!-- Jasny -->
+    <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>

@@ -73,21 +73,28 @@ namespace fpWebApp
         /// </summary>
         private void ConsultarSedes()
         {
-            int idSedeUsuario = Convert.ToInt32(Session["idSede"]);
-
-            clasesglobales cg = new clasesglobales();
-
-            int? idSede = (idSedeUsuario == 11) ? (int?)null : idSedeUsuario;
-
-            DataTable dt = cg.ConsultaCargarSedesPorId(idSede, "Gimnasio");
-
-            if (idSedeUsuario == 11)
+            if (Session["idSede"].ToString() != "")
             {
-                ltSede.Text = "todas las sedes.";
+                int idSedeUsuario = Convert.ToInt32(Session["idSede"]);
+
+                clasesglobales cg = new clasesglobales();
+
+                int? idSede = (idSedeUsuario == 11) ? (int?)null : idSedeUsuario;
+
+                DataTable dt = cg.ConsultaCargarSedesPorId(idSede, "Gimnasio");
+
+                if (idSedeUsuario == 11)
+                {
+                    ltSede.Text = "todas las sedes.";
+                }
+                else
+                {
+                    ltSede.Text = "Sede " + dt.Rows[0]["NombreSede"].ToString();
+                }
             }
             else
             {
-                ltSede.Text = "Sede " + dt.Rows[0]["NombreSede"].ToString();
+                Response.Redirect("afiliados");
             }
         }
 
