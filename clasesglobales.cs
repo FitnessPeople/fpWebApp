@@ -8174,6 +8174,154 @@ int valor, string observaciones, string estado)
         }
 
         #endregion
+
+        #region Activos Fijos
+
+        public DataTable ConsultarActivoPorId(int idActivo)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_ACTIVO_POR_ID", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_activo", idActivo);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+            return dt;
+        }
+
+        public string EliminarActivo(int idActivo, string estado)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open(); // Abrir conexión antes de usarla
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ELIMINAR_ACTIVO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Parámetros de entrada
+                        cmd.Parameters.AddWithValue("@p_id_activo", idActivo);
+                        cmd.Parameters.AddWithValue("@p_estado", estado);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarActivo(int idActivo, int idSede, int idCategoria, string nombreActivo,
+        string estadoActivo, string codigoInterno, string marca, string proveedor, string fechaIngreso, string imagenActivo)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_ACTIVO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Parámetros de entrada (coinciden con el procedimiento en MySQL)
+                        cmd.Parameters.AddWithValue("@p_id_activo", idActivo);
+                        cmd.Parameters.AddWithValue("@p_id_sede", idSede);
+                        cmd.Parameters.AddWithValue("@p_id_categoria", idCategoria);
+                        cmd.Parameters.AddWithValue("@p_nombre_activo", nombreActivo);
+                        cmd.Parameters.AddWithValue("@p_estado_activo", estadoActivo);
+                        cmd.Parameters.AddWithValue("@p_codigo_interno", codigoInterno);
+                        cmd.Parameters.AddWithValue("@p_marca", marca);
+                        cmd.Parameters.AddWithValue("@p_proveedor", proveedor);
+                        cmd.Parameters.AddWithValue("@p_fecha_ingreso", fechaIngreso);
+                        cmd.Parameters.AddWithValue("@p_imagen_activo", imagenActivo);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string InsertarActivo(int idSede, int idCategoria, string nombreActivo,
+        string estadoActivo, string codigoInterno, string marca, string proveedor, string fechaIngreso, string imagenActivo)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_ACTIVO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_id_sede", idSede);
+                        cmd.Parameters.AddWithValue("@p_id_categoria", idCategoria);
+                        cmd.Parameters.AddWithValue("@p_nombre_activo", nombreActivo);
+                        cmd.Parameters.AddWithValue("@p_estado_activo", estadoActivo);
+                        cmd.Parameters.AddWithValue("@p_codigo_interno", codigoInterno);
+                        cmd.Parameters.AddWithValue("@p_marca", marca);
+                        cmd.Parameters.AddWithValue("@p_proveedor", proveedor);
+                        cmd.Parameters.AddWithValue("@p_fecha_ingreso", fechaIngreso);
+                        cmd.Parameters.AddWithValue("@p_imagen_activo", imagenActivo);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        #endregion
+
     }
 
     #region Modelos

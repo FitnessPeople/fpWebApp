@@ -130,7 +130,7 @@
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                    <form role="form" id="form" runat="server">
+                    <form role="form" id="form" runat="server" enctype="multipart/form-data" >
                         <div class="row" id="divContenido" runat="server">
                             <div class="col-lg-4">
                                 <div class="ibox float-e-margins">
@@ -209,10 +209,48 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Sede:</label>
+                                                            <asp:DropDownList ID="ddlSede" runat="server" 
+                                                                CssClass="form-control input-sm" AppendDataBoundItems="true">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                            <asp:RequiredFieldValidator ID="rfvSede" runat="server" ErrorMessage="* Campo requerido"
+                                                                ControlToValidate="ddlSede" ValidationGroup="agregar"
+                                                                CssClass="font-bold text-danger" InitialValue="">
+                                                            </asp:RequiredFieldValidator>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Fecha de ingreso:</label>
+                                                            <asp:TextBox ID="txbFechaIngreso" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Imagen:</label>
+                                                    <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                        <div class="form-control input-sm" data-trigger="fileinput">
+                                                            <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                            <span class="fileinput-filename"></span>
+                                                        </div>
+                                                        <span class="input-group-addon btn btn-success btn-file input-sm">
+                                                            <span class="fileinput-new input-sm">Seleccionar imagen</span>
+                                                            <span class="fileinput-exists input-sm">Cambiar</span>
+                                                            <input type="file" name="fileFoto" id="fileFoto" accept="image/*">
+                                                        </span>
+                                                        <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm"
+                                                            data-dismiss="fileinput">Quitar</a>
+                                                    </div>
+                                                    <asp:Image runat="server" CssClass="img-rounded" ID="imgFoto" Width="150px" />
+                                                </div>
                                                 
                                                 <div class="form-group">
                                                     <a href="activosfijos" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
+                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar" OnClick="btnAgregar_Click"
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar"/>
                                                 </div>
                                                 <br />

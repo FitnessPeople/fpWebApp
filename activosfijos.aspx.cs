@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Data;
+using System.Web;
+using System.IO;
+using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -38,6 +41,7 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
+                            txbFechaIngreso.Attributes.Add("type", "date");
                             CargarSedes();
                             CargarCategorias();
                             CargarActivos();
@@ -135,6 +139,11 @@ namespace fpWebApp
             ddlSedes.DataValueField = "idSede";
             ddlSedes.DataTextField = "NombreSedeCiudad";
             ddlSedes.DataBind();
+
+            ddlSede.DataSource = dt;
+            ddlSede.DataValueField = "idSede";
+            ddlSede.DataTextField = "NombreSedeCiudad";
+            ddlSede.DataBind();
         }
 
         private void CargarCategorias()
@@ -149,6 +158,11 @@ namespace fpWebApp
             ddlCategorias.DataValueField = "idCategoriaActivo";
             ddlCategorias.DataTextField = "NombreCategoriaActivo";
             ddlCategorias.DataBind();
+
+            ddlCategoria.DataSource = dt;
+            ddlCategoria.DataValueField = "idCategoriaActivo";
+            ddlCategoria.DataTextField = "NombreCategoriaActivo";
+            ddlCategoria.DataBind();
         }
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
@@ -213,6 +227,72 @@ namespace fpWebApp
                     btnEliminar.Attributes.Add("href", "activosfijos?deleteid=" + ((DataRowView)e.Item.DataItem).Row["idActivoFijo"].ToString());
                     btnEliminar.Visible = true;
                 }
+            }
+        }
+
+        protected void btnAgregar_Click(object sender, EventArgs e)
+        {
+            string mensaje = string.Empty;
+
+            string strFilename = "no-image.jpg";
+            HttpPostedFile postedFile = Request.Files["fileFoto"];
+            if (postedFile != null && postedFile.ContentLength > 0)
+            {
+                string filePath = Server.MapPath("img//activos//") + Path.GetFileName(postedFile.FileName);
+                postedFile.SaveAs(filePath);
+                strFilename = postedFile.FileName;
+            }
+
+            clasesglobales cg = new clasesglobales();
+
+            try
+            {
+                mensaje = cg.InsertarActivo(Convert.ToInt32(ddlSede.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(ddlCategoria.SelectedItem.Value.ToString()), 
+                    txbActivo.Text.ToString(), "Activo", txbCodigoInterno.Text.ToString(), txbMarca.Text.ToString(), 
+                    txbProveedor.Text.ToString(), txbFechaIngreso.Text.ToString(), strFilename);
+
+                if (mensaje == "OK")
+                {
+                    cg.InsertarLog(Session["idusuario"].ToString(), "activosfijos", "Nuevo",
+                        "El usuario creó un nuevo activo fijo: " + txbActivo.Text.ToString() + " - " + txbCodigoInterno.Text.ToString(), "", "");
+
+                    string script = @"
+                        Swal.fire({
+                            title: 'Activo registrado',
+                            text: '',
+                            icon: 'success',
+                            timer: 5000,
+                            showConfirmButton: false,
+                            timerProgressBar: true
+                        }).then(() => {
+                            window.location.href = 'activosfijos';
+                        });
+                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                }
+                else
+                {
+                    string script = @"
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se pudo registrar. Detalle: " + mensaje.Replace("'", "\\'") + @"',
+                            icon: 'error'
+                        });
+                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                string script = @"
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Ocurrió un error inesperado. Detalle: " + ex.Message.Replace("'", "\\'") + @"',
+                        icon: 'error'
+                    });
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
             }
         }
     }
