@@ -139,12 +139,12 @@
                         </div>
                         <div class="ibox-content">
                             <div class="row">
-                                <form role="form" id="form" enctype="multipart/form-data" runat="server">
+                                <form role="form" id="form" runat="server">
                                     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
                                     <asp:UpdatePanel ID="upAcceso" runat="server" UpdateMode="Always">
                                         <ContentTemplate>
                                             <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                                            <div class="col-sm-6 b-r">
+                                            <div class="col-sm-4 b-r">
 
                                                 <div class="row">
                                                     <div class="col-sm-12">
@@ -158,7 +158,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-8">
                                                 <div class="row">
                                                     <table class="footable table table-striped list-group-item-text" data-paging-size="10"
                                                         data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
@@ -168,6 +168,7 @@
                                                                 <th data-sortable="false" data-breakpoints="xs">Afiliado</th>
                                                                 <th data-sortable="false" data-breakpoints="xs">Sede</th>
                                                                 <th class="text-nowrap" data-breakpoints="xs">Fecha Hora</th>
+                                                                <th class="text-nowrap" data-breakpoints="xs">Días para terminar el plan</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -177,6 +178,7 @@
                                                                         <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
                                                                         <td><%# Eval("NombreSede") %></td>
                                                                         <td><%# Eval("FechaHoraIngreso","{0:dd MMM yyyy HH:mm:ss}") %></td>
+                                                                        <td><%# Eval("diasquefaltan") %></td>
                                                                     </tr>
                                                                 </ItemTemplate>
                                                             </asp:Repeater>

@@ -237,7 +237,7 @@
                                                 <td><a href="detalleafiliado?search=<%# Eval("DocumentoAfiliado") %>"><%# Eval("DocumentoAfiliado") %></a></td>
                                                 <%--<td><%# Eval("DocumentoAfiliado") %></td>--%>
                                                 <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
-                                                <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("CelularAfiliado") %>" target="_blank"><%# Eval("CelularAfiliado") %></a></td>
+                                                <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/<%# Eval("CelularAfiliado") %>" target="_blank"><%# Eval("CelularAfiliado") %></a></td>
                                                 <td style="white-space: nowrap;"><i class="fa fa-envelope m-r-xs font-bold"></i><%# Eval("EmailAfiliado") %></td>
                                                 <td style="white-space: nowrap;"><i class="fa fa-cake m-r-xs font-bold"></i><span class="text-<%# Eval("badge") %> font-bold"><%# Eval("FechaNacAfiliado", "{0:dd MMM yyyy}") %> <%# Eval("edad") %> <i class="fa fa-<%# Eval("age") %>"></i></span></td>
                                                 <td><span class="badge badge-<%# Eval("badge2") %>"><%# Eval("EstadoAfiliado") %></span></td>

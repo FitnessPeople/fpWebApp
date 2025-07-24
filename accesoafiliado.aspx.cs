@@ -105,10 +105,12 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (idSedeUsuario == 11)
             {
-                strQuery = @"SELECT * 
-                    FROM AccesoAfiliado aa, Afiliados a, Sedes s 
+                strQuery = @"SELECT *, DATEDIFF(ap.FechaFinalPlan, CURDATE()) diasquefaltan 
+                    FROM AccesoAfiliado aa, Afiliados a, Sedes s, AfiliadosPlanes ap  
                     WHERE aa.idAfiliado = a.idAfiliado 
                     AND aa.idSede = s.idSede 
+                    AND aa.idAfiliado = ap.idAfiliado 
+                    AND ap.EstadoPlan = 'Activo' 
                     ORDER BY FechaHoraIngreso DESC";
             }
             else

@@ -289,7 +289,7 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="footable table table-striped" data-paging-size="10"
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
                                             data-paging="true" data-paging-count-format="{CP} de {TP}"
                                             data-empty="Sin registros">
                                             <thead>
@@ -309,7 +309,7 @@
                                                             <td style="vertical-align: central;">
                                                                 <%# Eval("FechaHoraCortesia", "{0:dd MMM yyyy}") %>
                                                             </td>
-                                                            <td><%# Eval("Estado") %></td>
+                                                            <td><%# Eval("EstadoCortesia") %></td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
@@ -331,7 +331,7 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="footable table table-striped" data-paging-size="10"
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
                                             data-paging="true" data-paging-count-format="{CP} de {TP}"
                                             data-empty="Sin registros">
                                             <thead>
@@ -373,7 +373,7 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="footable table table-striped" data-paging-size="10"
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
                                             data-paging="true" data-paging-count-format="{CP} de {TP}"
                                             data-empty="Sin registros">
                                             <thead>
