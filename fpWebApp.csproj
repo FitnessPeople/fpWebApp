@@ -453,6 +453,7 @@
     <Content Include="especialistas.aspx" />
     <Content Include="estacionalidad.aspx" />
     <Content Include="estadocivil.aspx" />
+    <Content Include="estadoscrm.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="genero.aspx" />
@@ -1505,6 +1506,13 @@
     </Compile>
     <Compile Include="estadocivil.aspx.designer.cs">
       <DependentUpon>estadocivil.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="estadoscrm.aspx.cs">
+      <DependentUpon>estadoscrm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="estadoscrm.aspx.designer.cs">
+      <DependentUpon>estadoscrm.aspx</DependentUpon>
     </Compile>
     <Compile Include="genero.aspx.cs">
       <DependentUpon>genero.aspx</DependentUpon>
