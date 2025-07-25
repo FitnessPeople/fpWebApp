@@ -670,6 +670,15 @@ namespace fpWebApp
                                         {
                                             strBanco = "No aplica";
                                         }
+                                        decimal total = 0;
+
+                                        if (rblMetodoPago.SelectedValue == "combinado")
+                                        {
+                                            total += Convert.ToDecimal(txbCombinadoEfectivo.Text.Replace("$", "").Replace(",", ""));
+                                            total += Convert.ToDecimal(txbCombinadoWompi.Text.Replace("$", "").Replace(",", ""));
+                                            total += Convert.ToDecimal(txbCombinadoTransferencia.Text.Replace("$", "").Replace(",", ""));
+                                            total += Convert.ToDecimal(txbCombinadoDatafono.Text.Replace("$", "").Replace(",", ""));
+                                        }
                                         else
                                         {
                                             strBanco = rblBancos.SelectedItem.Value.ToString();
@@ -765,7 +774,7 @@ namespace fpWebApp
                     string script = @"
                         Swal.fire({
                             title: 'Validación',
-                            text: 'Elija la fecha de inicio del plan.',
+                            text: 'Por favor, selecciona la fecha de inicio del plan.',
                             icon: 'error'
                         }).then(() => {
                         });
@@ -778,8 +787,8 @@ namespace fpWebApp
                 string script = @"
                     Swal.fire({
                         title: 'Validación',
-                        text: 'Elija el tipo de plan.',
-                        icon: 'error'
+                        text: 'Debes seleccionar un tipo de plan para continuar.',
+                        icon: 'warning'
                     }).then(() => {
                     });
                     ";
