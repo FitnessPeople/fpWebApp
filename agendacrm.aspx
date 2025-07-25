@@ -23,8 +23,8 @@
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
-    <link href="css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet" />
-    <link href="css/plugins/fullcalendar/fullcalendar.print.css" rel='stylesheet' media='print' />
+    <%--<link href="css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet" />
+    <link href="css/plugins/fullcalendar/fullcalendar.print.css" rel='stylesheet' media='print' />--%>
 
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
 
@@ -428,13 +428,17 @@
     </script>
 
     <!-- Mainly scripts -->
-    <%--    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/plugins/fullcalendar/moment.min.js"></script>
+    <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>--%>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- jquery UI -->
     <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <!-- Full Calendar -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
 
     <!-- Touch Punch - Touch Event Support for jQuery UI -->
     <script src="js/plugins/touchpunch/jquery.ui.touch-punch.min.js"></script>
@@ -609,29 +613,23 @@
         });
     </script>
 
-    <script>
-        $(document).ready(function () {
+    <%--<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
 
-            /* initialize the calendar
-             -----------------------------------------------------------------*/
-            var date = new Date();
-            var d = date.getDate();
-            var m = date.getMonth();
-            var y = date.getFullYear();
-
-            $('#calendar').fullCalendar({
+            var calendar = new FullCalendar.Calendar(calendarEl, {
                 firstDay: 1,
-                timeFormat: 'H:mm',
-                defaultView: 'month',
-                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb'],
-                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'],
-                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                header: {
-                    left: 'prev, next, today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay,listWeek'
-                },
+                //timeFormat: 'H:mm',
+                //defaultView: 'month',
+                //dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb'],
+                //dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'],
+                //monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                //monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                //header: {
+                //    left: 'prev, next, today',
+                //    center: 'title',
+                //    right: 'month,agendaWeek,agendaDay,listWeek'
+                //},
                 businessHours: true,
                 businessHours: [ // specify an array instead
                     {
@@ -677,10 +675,89 @@
             });
         });
 
+    </script>--%>
+
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                eventClick: function (event, jsEvent, view) {
+                    $('.modal').modal('hide');
+                    var documento = $('#hdnDocumentoAfiliado').val() || '';
+                    window.location.href = 'crmnuevocontacto.aspx?editid=' + encodeURIComponent(event.id) + '&evento=1' + '&documento=' + encodeURIComponent(event.doc);
+                },
+                height: 700,
+                initialView: 'dayGridMonth',
+                firstDay: 1,
+                allDayText: 'Todo\r\nel día',
+                moreLinkContent: function (args) {
+                    return '+' + args.num + ' eventos más';
+                },
+                slotMinTime: '06:00',
+                slotMaxTime: '22:00',
+                //weekends: false,
+                //hiddenDays: [0],
+                //slotDuration: '00:25:00',
+                //slotLabelInterval: '00:30',
+                slotLabelFormat: {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    omitZeroMinute: false,
+                    meridiem: 'short'
+                },
+                locale: 'es',
+                buttonText: {
+                    prev: '',
+                    next: '',
+                    prevYear: 'Año anterior',
+                    nextYear: 'Año siguiente',
+                    year: 'Año',
+                    today: 'Hoy',
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Día',
+                    list: 'Lista',
+                    listWeek: 'Lista',
+                },
+                businessHours: true,
+                businessHours: [ // specify an array instead
+                    {
+                        daysOfWeek: [1, 2, 3, 4, 5], // Lunes, martes, miercoles, jueves y viernes
+                        startTime: '06:00',
+                        endTime: '21:00'
+                    },
+                    {
+                        daysOfWeek: [6], // Sabado
+                        startTime: '7:00',
+                        endTime: '18:00'
+                    }
+                ],
+                dayMaxEventRows: true, // for all non-TimeGrid views
+                views: {
+                    timeGrid: {
+                        dayMaxEventRows: 6 // adjust to 6 only for timeGridWeek/timeGridDay
+                    },
+                },
+                eventTimeFormat: { // like '14:30'
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                },
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+        <%=strEventos%>
+        });
+
+        calendar.render();
+    });
+
     </script>
-
-
-
 
 
 </body>
