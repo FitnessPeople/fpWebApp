@@ -52,8 +52,6 @@ namespace fpWebApp
                         txbCorreoContacto.Disabled = false;
                         txbFechaPrim.Disabled = false;
 
-
-
                         divBotonesLista.Visible = false;
                         btnAgregar.Visible = false;
                         if (ViewState["Consulta"].ToString() == "1")
@@ -76,12 +74,13 @@ namespace fpWebApp
                     rpContactosCRM.ItemDataBound += rpContactosCRM_ItemDataBound;
                     ListaContactosPorUsuario();
                     ConsultarTipoAfiliado();
-                    CargarPlanes();
+                    CargarPlanes();                   
                     ListaCanalesMarketingCRM();
                     ListaObjetivosfiliadoCRM();
                     CargarTipoDocumento();
                     ListaMediosDePago();
                     CargarAfiliadosOrigen();
+
 
 
                     if (Request.QueryString.Count > 0)
@@ -398,6 +397,36 @@ namespace fpWebApp
             ddlPlanes.DataBind();
             dt.Dispose();
         }
+        private void CargarPlanesAfiliado(string strIdAfiliado)
+        {
+            string strQuery = "SELECT *, " +
+                "IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,'danger','info') AS label1, " +
+                "IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,CONCAT(DATEDIFF(FechaFinalPlan, CURDATE())*(-1),' días vencidos'),CONCAT(DATEDIFF(FechaFinalPlan, CURDATE()),' días disponibles')) AS diasquefaltan, " +
+                "DATEDIFF(CURDATE(), FechaInicioPlan) AS diasconsumidos, " +
+                "DATEDIFF(FechaFinalPlan, FechaInicioPlan) AS diastotales, " +
+                "ROUND(DATEDIFF(CURDATE(), FechaInicioPlan) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje1, " +
+                "ROUND(DATEDIFF(FechaFinalPlan, CURDATE()) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje2 " +
+                "FROM afiliadosPlanes ap, Afiliados a, Planes p " +
+                "WHERE a.idAfiliado = " + strIdAfiliado + " " +
+                "AND ap.idAfiliado = a.idAfiliado " +
+                "AND ap.idPlan = p.idPlan ";
+            //"AND ap.EstadoPlan = 'Activo'";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            if (dt.Rows.Count > 0)
+            {
+                rpPlanesAfiliado.DataSource = dt;
+                rpPlanesAfiliado.DataBind();
+                pnlPlanesAfiliado.Visible = true;
+            }
+            else
+            {
+                pnlPlanesAfiliado.Visible = false;
+            }
+
+            dt.Dispose();
+        }
         private void ListaObjetivosfiliadoCRM()
         {
             clasesglobales cg = new clasesglobales();
@@ -424,7 +453,6 @@ namespace fpWebApp
             ddlTipoDocumento.DataBind();
             dt.Dispose();
         }
-
         private void CargarAfiliadosOrigen()
         {
             string strQuery = @"SELECT a.idAfiliado, a.DocumentoAfiliado,
@@ -921,112 +949,6 @@ namespace fpWebApp
                    $"<i class='{icono} m-r-xs font-bold' style='color:{color};'></i> {telefonoFormateado}</a>";
         }
 
-        //protected void btnActualizarYRedirigir_Click(object sender, EventArgs e)
-        //{
-        //    clasesglobales cg = new clasesglobales();
-
-        //    bool rta = false;
-        //    int idAfil = 0;
-        //    int idcrm = Convert.ToInt32( Request.QueryString["editid"]);
-        //    Session["idcrm"] = idcrm;
-        //    string evento = Request.QueryString["evento"];
-        //    string documento = Request.QueryString["documento"];
-
-        //    DataTable dt1 = cg.ConsultarContactosCRMPorId(Convert.ToInt32(idcrm), out rta);
-        //    DataTable dt2 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(dt1.Rows[0]["DocumentoAfiliado"].ToString()));
-        //    if(dt2.Rows.Count > 0)  idAfil = Convert.ToInt32( dt2.Rows[0]["IdAfiliado"].ToString());
-
-
-        //    if (idcrm > 0)
-        //    {
-        //        bool salida = false;
-        //        string mensaje = string.Empty;
-        //        string respuesta = string.Empty;
-        //        string mensajeValidacion = string.Empty;
-        //        if (txaObservaciones.Value=="") txaObservaciones.Value = "Se redirige a proceso de afiliaciones";
-
-        //        if (ddlEmpresa.SelectedItem.Value != "")
-        //            ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
-        //        else
-        //            ddlEmpresa.SelectedItem.Value = "0";
-
-        //        try
-        //        {
-        //            respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.ToString().Trim().ToUpper(),
-        //                    txbApellidoContacto.Value.ToString().Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
-        //                    txbCorreoContacto.Value.ToString().Trim().ToLower(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
-        //                    Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(),
-        //                    Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "", txaObservaciones.Value.Trim(),
-        //                    Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
-        //                    Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
-        //                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
-        //                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, out salida, out mensaje);
-
-        //            if (salida)
-        //            {
-        //                // eL cliente del crm es nuevo o el cliente es afiliado en renovación
-
-        //                bool existe = false;
-
-        //                if (!string.IsNullOrEmpty(documento))
-        //                {                           
-        //                    DataTable dt = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(documento));
-        //                    existe = dt.Rows.Count > 0;
-        //                }
-        //                string urlRedirect = (existe) ? "editarafiliado" : "nuevoafiliado";
-        //                string formulario = (existe) ? "de edición" : "nuevo afiliado";
-
-        //                string script = @"
-        //                    Swal.fire({
-        //                        title: 'Serás redirigido al formulario " + formulario + @"',
-        //                        text: 'Espera un momento...',
-        //                        icon: 'success',
-        //                        timer: 4000,
-        //                        showConfirmButton: false,
-        //                        timerProgressBar: true
-        //                    }).then(() => {
-        //                        window.location.href = '" + urlRedirect + @"?idcrm=" + idcrm + @"';
-        //                    });
-        //                ";
-
-        //                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-        //            }
-        //            else
-        //            {
-        //                string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
-        //                string script = @"
-        //                        Swal.fire({
-        //                            title: 'Error',
-        //                            text: '" + mensaje.Replace("'", "\\'") + @"',
-        //                            icon: 'error'
-        //                        }).then((result) => {
-        //                            if (result.isConfirmed) {
-        //                               window.location.href = '"" + urlRedirect + @""';
-        //                            }
-        //                        });
-        //                        ";
-        //                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-        //            }
-
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
-        //            string script = @"
-        //                Swal.fire({
-        //                title: 'Error',
-        //                text: 'Ha ocurrido un error inesperado.',
-        //                icon: 'error'
-        //            });
-        //        ";
-        //            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-        //        }
-
-        //    }
-        //}
-
-
-
         protected void btnActualizarYRedirigir_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
@@ -1183,6 +1105,7 @@ namespace fpWebApp
                         txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString();
                         ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString())));
                         ddlTiposAfiliado.SelectedValue = "2";//Afiliado en renovación
+                        CargarPlanesAfiliado(dt.Rows[0]["idAfiliado"].ToString());
                     }
                     dt.Dispose();
                 }
