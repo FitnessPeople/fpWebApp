@@ -552,7 +552,7 @@
                                                                     <div class="col-sm-6">
                                                                         <div class="form-group">
                                                                             <label>Nro. de Documento</label>
-                                                                            <asp:TextBox ID="txbDocumento" CssClass="form-control input-sm" runat="server" placeholder="#"></asp:TextBox>
+                                                                            <asp:TextBox ID="txbDocumento" ClientIDMode="Static" CssClass="form-control input-sm" runat="server" placeholder="#"></asp:TextBox>
                                                                             <asp:RequiredFieldValidator ID="rfvNumDoc" runat="server" ControlToValidate="txbDocumento"
                                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic">
                                                                             </asp:RequiredFieldValidator>
@@ -1566,6 +1566,87 @@
             }
         });
     </script>
+
+    
+    <!-- Page-Level Scripts -->
+<%--    <script>
+        $('.footable').footable();
+
+        document.querySelector("input#txbBuscar").addEventListener("input", function () {
+            const allowedCharacters = "0123456789azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBNzáéíóúñÁÉÍÓÚÑ@. "; // You can add any other character in the same way
+
+            this.value = this.value.split('').filter(char => allowedCharacters.includes(char)).join('')
+        });
+
+        $(document).ready(function () {
+            $('#txbBuscar').keypress(function (e) {
+                if (e.keyCode == 13)
+                    $('#btnBuscar').click();
+            });
+        });
+
+        $(document).on("click", ".dropdown-toggle", function () {
+            var url = 'https://pqrdsuperargo.supersalud.gov.co/api/api/adres/0/';
+            /*var url = 'consultaadres?id';*/
+            url = url + $(this).data('documento');
+            //console.log(url);
+
+            document.getElementById('titulo').innerHTML = $(this).data('documento');
+            document.getElementById('objEmbed').src = url;
+        });
+
+    </script>--%>
+
+<script>
+    $(document).ready(function () {
+        $('#txbDocumento').on('change blur', function () {
+            var documento = $(this).val().trim();
+            if (documento.length === 0) return;
+
+            var url = 'https://pqrdsuperargo.supersalud.gov.co/api/api/adres/0/' + documento;
+
+            // Limpia primero los campos
+            $('#txbNombreContacto').val('');
+            $('#txbApellidoContacto').val('');
+            $('#txaObservaciones').val('Consultando...');
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function (data) {
+                    // Nombres
+                    var nombreCompleto = [data.nombre, data.s_nombre].filter(Boolean).join(' ').toUpperCase();
+                    var apellidoCompleto = [data.apellido, data.s_apellido].filter(Boolean).join(' ').toUpperCase();
+
+                    $('#txbNombreContacto').val(nombreCompleto);
+                    $('#txbApellidoContacto').val(apellidoCompleto);
+
+                    // Campos restantes (omitimos nombre y apellidos)
+                    var observaciones = `
+                        Nro. Documento: ${data.numero_doc}
+                        Fecha Nacimiento: ${data.fecha_nacimiento}
+                        Edad: ${data.edad}
+                        Sexo: ${data.sexo == 1 ? 'Masculino' : 'Femenino'}
+                        Correo: ${data.correo || '-'}
+                        Municipio ID: ${data.municipio_id}
+                        Departamento ID: ${data.departamento_id}
+                        EPS: ${data.eps}
+                        Tipo de Afiliado: ${data.tipo_de_afiliado}
+                        Estado Afiliación: ${data.estado_afiliacion}
+                    `   .trim();
+
+                    $('#txaObservaciones').val(observaciones);
+                },
+                error: function (xhr, status, error) {
+                    $('#txaObservaciones').val('Error al consultar la información.');
+                    console.error("Error:", error);
+                }
+            });
+        });
+    });
+</script>
+
+
 
 
 </body>
