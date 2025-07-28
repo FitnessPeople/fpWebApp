@@ -456,42 +456,6 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbTransferencia;
 
         /// <summary>
-        /// Control txbCombinadoEfectivo.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbCombinadoEfectivo;
-
-        /// <summary>
-        /// Control txbCombinadoWompi.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbCombinadoWompi;
-
-        /// <summary>
-        /// Control txbCombinadoTransferencia.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbCombinadoTransferencia;
-
-        /// <summary>
-        /// Control txbCombinadoDatafono.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbCombinadoDatafono;
-
-        /// <summary>
         /// Control ltValorTotal.
         /// </summary>
         /// <remarks>

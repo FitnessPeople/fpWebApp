@@ -366,7 +366,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-12">
-                                                                        <div class="widget style1 yellow-bg">
+                                                                        <div class="widget style1 bg-success">
                                                                             <div class="row vertical-align">
                                                                                 <div class="col-xs-3">
                                                                                     <i class="fa fa-cart-shopping fa-3x" style="font-size: 2.3em"></i>
@@ -380,7 +380,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-12">
-                                                                        <div class="widget style1 bg-success">
+                                                                        <div class="widget style1 yellow-bg">
                                                                             <div class="row vertical-align">
                                                                                 <div class="col-xs-3">
                                                                                     <i class="fa fa-hand-holding-dollar fa-3x" style="font-size: 2.3em"></i>
@@ -452,17 +452,17 @@
                                                             </div>
                                                             <label><strong>Seleccione un método de pago:</strong></label>
                                                             <asp:RadioButtonList ID="rblMetodoPago" runat="server" RepeatDirection="Horizontal" CssClass="form-control input-sm" onchange="mostrarMetodoSeleccionado(this)">
-                                                                <asp:ListItem Text="Wompi" Value="wompi" />
+                                                                <asp:ListItem Text="Pago en línea" Value="wompi" />
                                                                 <asp:ListItem Text="Datafono" Value="datafono" />
                                                                 <asp:ListItem Text="Efectivo" Value="efectivo" />
                                                                 <asp:ListItem Text="Transferencia" Value="transferencia" />
-                                                                <asp:ListItem Text="Pago mixto" Value="combinado" />
+                                                                <%--<asp:ListItem Text="Pago mixto" Value="combinado" />--%>
                                                             </asp:RadioButtonList>
                                                         </div>
 
                                                         <!-- Contenedor Wompi -->
                                                         <div id="divWompi" class="form-group metodo-pago" style="display: none;">
-                                                            <label><i class="fa fa-credit-card"></i>Pago por Wompi:</label>
+                                                            <label><i class="fa fa-credit-card"></i>Pago en línea:</label>
                                                             <div class="row">
                                                                 <div class="col-lg-8">
                                                                     <a class="dropdown-toggle count-info" data-toggle="modal" href="#" data-target="#ModalDetalleWompi">Verificar pago...</a>
@@ -537,7 +537,7 @@
                                                         </div>
 
                                                         <!-- Contenedor Pago Combinado -->
-                                                        <div id="divCombinado" class="form-group metodo-pago" style="display: none;">
+<%--                                                        <div id="divCombinado" class="form-group metodo-pago" style="display: none;">
                                                             <label><i class="fa fa-random"></i>Seleccione los métodos y montos:</label>
 
                                                             <!-- Puedes incluir los métodos reutilizando los mismos controles o duplicando en este div -->
@@ -582,7 +582,7 @@
                                                                         AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div>--%>
 
                                                         <hr />
 
