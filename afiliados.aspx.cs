@@ -95,7 +95,8 @@ namespace fpWebApp
                 "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 14,'danger',IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 14,'success',IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 60,'info','warning'))) AS badge, " +
                 "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 14,'baby',IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) >= 60,'person-walking-with-cane','')) AS age, " +
                 "IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS badge2, " +
-                "IF(EstadoPlan='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS badge3 " +
+                "IF(EstadoPlan='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS badge3, " +
+                "DATEDIFF(FechaFinalPlan, CURDATE()) AS diasquefaltan " +
                 "FROM Afiliados a " +
                 "LEFT JOIN generos g ON g.idGenero = a.idGenero " +
                 "LEFT JOIN sedes s ON s.idSede = a.idSede " +
@@ -167,8 +168,19 @@ namespace fpWebApp
 
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
-            string strParam = txbBuscar.Value.ToString();
-            listaAfiliados(strParam, ddlSedes.SelectedItem.Value.ToString());
+            //string strParam = txbBuscar.Value.ToString();
+            //listaAfiliados(strParam, ddlSedes.SelectedItem.Value.ToString());
+
+            foreach (RepeaterItem item in rpAfiliados.Items)
+            {
+                // Buscar controles dentro de cada item del repeater
+                CheckBox chbSeleccion = (CheckBox)item.FindControl("chbSeleccion");
+
+                if (chbSeleccion != null)
+                {
+                    //string strIdAfiliado = item.DataItem[]
+                }
+            }
         }
 
         protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)

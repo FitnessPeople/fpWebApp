@@ -115,10 +115,12 @@ namespace fpWebApp
             }
             else
             {
-                strQuery = @"SELECT * 
-                    FROM AccesoAfiliado aa, Afiliados a, Sedes s 
+                strQuery = @"SELECT *, DATEDIFF(ap.FechaFinalPlan, CURDATE()) diasquefaltan 
+                    FROM AccesoAfiliado aa, Afiliados a, Sedes s, AfiliadosPlanes ap
                     WHERE aa.idAfiliado = a.idAfiliado 
                     AND aa.idSede = s.idSede 
+                    AND aa.idAfiliado = ap.idAfiliado 
+                    AND ap.EstadoPlan = 'Activo' 
                     AND s.idSede = " + idSedeUsuario.ToString() + @"
                     ORDER BY FechaHoraIngreso DESC";
             }

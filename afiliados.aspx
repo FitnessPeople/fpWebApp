@@ -60,36 +60,36 @@
                     <p>
                         <b>Paso 1: Busca y filtra afiliados</b><br />
                         Usa el buscador para <b>encontrar</b> afiliados específicos.<br />
-                        <i class="fa-solid fa-magnifying-glass"></i> Filtra por: 
-                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre</b>, 
-                        <i class="fa-solid fa-address-card" style="color: #0D6EFD;"></i> <b>Cédula</b>, 
-                        <i class="fa-solid fa-envelope" style="color: #0D6EFD;"></i> <b>Correo</b> o 
-                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i> <b>Celular.</b><br />
-                        Además, selecciona una <i class="fa-solid fa-map-pin" style="color: #DC3545;"></i> Sede en el menú desplegable para <b>filtrar</b> por ubicación.<br />
-                        <i class="fa-solid fa-star" style="color: #FECE32;"></i> Tip: ¡<b>Combina</b> filtros para resultados más precisos!
+                        <i class="fa-solid fa-magnifying-glass"></i>Filtra por: 
+                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i><b>Nombre</b>, 
+                        <i class="fa-solid fa-address-card" style="color: #0D6EFD;"></i><b>Cédula</b>, 
+                        <i class="fa-solid fa-envelope" style="color: #0D6EFD;"></i><b>Correo</b> o 
+                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i><b>Celular.</b><br />
+                        Además, selecciona una <i class="fa-solid fa-map-pin" style="color: #DC3545;"></i>Sede en el menú desplegable para <b>filtrar</b> por ubicación.<br />
+                        <i class="fa-solid fa-star" style="color: #FECE32;"></i>Tip: ¡<b>Combina</b> filtros para resultados más precisos!
                     <br />
                         <br />
                         <b>Paso 2: Revisa la tabla de resultados</b><br />
                         La tabla muestra toda la <b>información clave</b> de cada afiliado.<br />
                         En la columna <b>Acciones</b> encontrarás estas opciones:<br />
-                        <i class="fa fa-edit" style="color: #1AB394;"></i> <b>Editar:</b> Modifica los <b>datos</b> del afiliado.<br />
-                        <i class="fa fa-trash" style="color: #DC3545;"></i> <b>Eliminar:</b> Da de <b>baja</b> al afiliado.<br />
-                        <i class="fa fa-ticket" style="color: #23C6C8;"></i> <b>Asignar Plan:</b> Selecciona o <b>cambia</b> su plan actual.<br />
-                        <i class="fa fa-right-left" style="color: #F8AC59;"></i> <b>Traspaso:</b> Transfiere el plan <b>de un afiliado a otro</b>.<br />
-                        <i class="fa fa-gift" style="color: #0D6EFD;"></i> <b>Cortesía:</b> Asigna <b>beneficios</b> especiales.<br />
-                        <i class="fa fa-head-side-mask" style="color: #1AB394;"></i> <b>Incapacidad:</b> Registra una incapacidad <b>médica</b>.<br />
-                        <i class="fa fa-snowflake" style="color: #0D6EFD;"></i> <b>Congelación:</b> Pausa <b>temporalmente</b> su membresía.
+                        <i class="fa fa-edit" style="color: #1AB394;"></i><b>Editar:</b> Modifica los <b>datos</b> del afiliado.<br />
+                        <i class="fa fa-trash" style="color: #DC3545;"></i><b>Eliminar:</b> Da de <b>baja</b> al afiliado.<br />
+                        <i class="fa fa-ticket" style="color: #23C6C8;"></i><b>Asignar Plan:</b> Selecciona o <b>cambia</b> su plan actual.<br />
+                        <i class="fa fa-right-left" style="color: #F8AC59;"></i><b>Traspaso:</b> Transfiere el plan <b>de un afiliado a otro</b>.<br />
+                        <i class="fa fa-gift" style="color: #0D6EFD;"></i><b>Cortesía:</b> Asigna <b>beneficios</b> especiales.<br />
+                        <i class="fa fa-head-side-mask" style="color: #1AB394;"></i><b>Incapacidad:</b> Registra una incapacidad <b>médica</b>.<br />
+                        <i class="fa fa-snowflake" style="color: #0D6EFD;"></i><b>Congelación:</b> Pausa <b>temporalmente</b> su membresía.
                     <br />
                         <br />
                         <b>Paso 3: Acciones adicionales</b><br />
                         Al lado opuesto del buscador <b>encontrarás</b> dos botones útiles:<br />
-                        <i class="fa-solid fa-file-excel fa-lg" style="color: #23C6C8;"></i> <b>Excel:</b> 
+                        <i class="fa-solid fa-file-excel fa-lg" style="color: #23C6C8;"></i><b>Excel:</b>
                         Genera un archivo Excel con los <b>datos</b> visibles en la tabla.<br />
-                        <i class="fa-solid fa-square-plus fa-lg" style="color: #1A7BB9;"></i> <b>Nuevo:</b> 
+                        <i class="fa-solid fa-square-plus fa-lg" style="color: #1A7BB9;"></i><b>Nuevo:</b>
                         Te lleva a un formulario para <b>registrar</b> un nuevo afiliado.
                    <br />
                         <br />
-                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i>Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -108,9 +108,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="text-center m-t-md">
-                        <iframe id="objEmbed" title="Frame" width="300" height="200" src="">
-                        </iframe>
-                    </div>            
+                        <iframe id="objEmbed" title="Frame" width="300" height="200" src=""></iframe>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
@@ -143,7 +142,7 @@
             </div>
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row animated fadeInDown">
-                    
+
                     <%--Inicio Contenido!!!!--%>
                     <uc1:indicadores02 runat="server" ID="indicadores02" />
 
@@ -169,9 +168,9 @@
                             </div>
                         </div>
                         <div class="ibox-content">
-
+                            <form runat="server" id="form1">
                             <div class="row">
-                                <form runat="server" id="form1">
+                                
                                     <div class="col-lg-4 form-horizontal">
                                         <div class="input-group">
                                             <input type="text" placeholder="Nombre / Cédula / Email / Móvil" class="input form-control input-sm" name="txbBuscar" id="txbBuscar" runat="server" />
@@ -183,37 +182,49 @@
 
                                     <div class="col-lg-4 form-horizontal">
                                         <div class="form-group">
-                                        <label class="col-lg-2 control-label">Sede:</label>
-                                        <div class="col-lg-10">
-                                        <asp:DropDownList ID="ddlSedes" runat="server" AppendDataBoundItems="true" 
-                                            DataTextField="NombreSede" DataValueField="idSede" 
-                                            CssClass="form-control input-sm m-b" OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged" 
-                                            AutoPostBack="true">
-                                            <asp:ListItem Text="Todas" Value="todas"></asp:ListItem>
-                                        </asp:DropDownList>
+                                            <label class="col-lg-2 control-label">Sede:</label>
+                                            <div class="col-lg-10">
+                                                <asp:DropDownList ID="ddlSedes" runat="server" AppendDataBoundItems="true"
+                                                    DataTextField="NombreSede" DataValueField="idSede"
+                                                    CssClass="form-control input-sm m-b" OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
+                                                    AutoPostBack="true">
+                                                    <asp:ListItem Text="Todas" Value="todas"></asp:ListItem>
+                                                </asp:DropDownList>
+                                            </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label">Días:</label>
+                                            <div class="col-lg-10">
+                                                <asp:DropDownList ID="ddlDias" runat="server" AppendDataBoundItems="true" 
+                                                    CssClass="form-control input-sm m-b" 
+                                                    AutoPostBack="true">
+                                                    <asp:ListItem Text="1-10 días" Value="10"></asp:ListItem>
+                                                    <asp:ListItem Text="10-30 días" Value="30"></asp:ListItem>
+                                                    <asp:ListItem Text="2 meses" Value="60"></asp:ListItem>
+                                                </asp:DropDownList>
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-4 form-horizontal">
                                         <label class="control-label">&nbsp;</label>
-                                        <a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;" 
-                                            href="nuevoafiliado" title="Agregar afiliado" 
+                                        <a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;"
+                                            href="nuevoafiliado" title="Agregar afiliado"
                                             runat="server" id="btnAgregar" visible="false">
-                                                <i class="fa fa-square-plus"></i> NUEVO
+                                            <i class="fa fa-square-plus"></i>NUEVO
                                         </a>
-                                        <a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
-                                            target="_blank" runat="server" id="btnExportar" 
+                                        <a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px;"
+                                            target="_blank" runat="server" id="btnExportar"
                                             href="imprimirafiliados" visible="false" title="Exportar">
-                                                <i class="fa fa-file-excel"></i> EXCEL
+                                            <i class="fa fa-file-excel"></i>EXCEL
                                         </a>
                                     </div>
-                                </form>
+                                
                             </div>
 
                             <%--<table class="footable table toggle-arrow-small list-group-item-text" data-page-size="10">--%>
-                            <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
-                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10" 
+                            <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
                                 data-empty="Sin resultados" data-toggle-column="first">
                                 <thead>
                                     <tr>
@@ -225,6 +236,8 @@
                                         <th data-type="date" data-breakpoints="xs sm md">Fecha nacimiento</th>
                                         <th class="text-nowrap" data-breakpoints="xs">Estado Afiliado</th>
                                         <th class="text-nowrap" data-breakpoints="xs">Estado Plan</th>
+                                        <th class="text-nowrap" data-breakpoints="xs" data-type="number">Días Plan</th>
+                                        <th class="text-nowrap" data-breakpoints="xs">Seleccionar</th>
                                         <th data-breakpoints="all" data-title="Info"></th>
                                         <th data-sortable="false" class="text-right" style="width: 206px;">Acciones</th>
                                     </tr>
@@ -242,6 +255,9 @@
                                                 <td style="white-space: nowrap;"><i class="fa fa-cake m-r-xs font-bold"></i><span class="text-<%# Eval("badge") %> font-bold"><%# Eval("FechaNacAfiliado", "{0:dd MMM yyyy}") %> <%# Eval("edad") %> <i class="fa fa-<%# Eval("age") %>"></i></span></td>
                                                 <td><span class="badge badge-<%# Eval("badge2") %>"><%# Eval("EstadoAfiliado") %></span></td>
                                                 <td><span class="badge badge-<%# Eval("badge3") %>"><%# Eval("EstadoPlan") %></span></td>
+                                                <td><%# Eval("diasquefaltan") %></td>
+                                                <td>
+                                                    <asp:CheckBox ID="chbSeleccion" runat="server" /></td>
                                                 <td>
                                                     <table class="table table-bordered table-striped">
                                                         <tr>
@@ -325,7 +341,7 @@
                                     </asp:Repeater>
                                 </tbody>
                             </table>
-
+                        </form>
                         </div>
                     </div>
                     <%--Fin Contenido!!!!--%>
