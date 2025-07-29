@@ -80,6 +80,9 @@ namespace fpWebApp
                     CargarTipoDocumento();
                     ListaMediosDePago();
                     CargarAfiliadosOrigen();
+                    CargarGeneros();
+                    CargarEstadosVentas();
+                    CargarEstrategiasMarketing();
 
 
 
@@ -377,6 +380,33 @@ namespace fpWebApp
                 };
                 ddlStatusLead.Items.Add(item);
             }
+        }
+
+        private void CargarGeneros()
+        {
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.ConsultarGeneros();
+            ddlGenero.DataSource = dt;
+            ddlGenero.DataBind();
+            dt.Dispose();
+        }
+
+        private void CargarEstadosVentas()
+        {
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.ConsultarEstadosVenta();
+            ddlEstadoVenta.DataSource = dt;
+            ddlEstadoVenta.DataBind();
+            dt.Dispose();
+        }
+
+        private void CargarEstrategiasMarketing()
+        {
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.ConsultarEstrategiasMarketing();
+            ddlEstrategia.DataSource = dt;
+            ddlEstrategia.DataBind();
+            dt.Dispose();
         }
 
         private void ConsultarTipoAfiliado()
