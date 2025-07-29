@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
-    public partial class eliminardisponibilidad : System.Web.UI.Page
+    public partial class redactarcorreo : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -17,26 +11,27 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Agenda");
+                    ValidarPermisos("Afiliados");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
-                        Response.Redirect("agenda");
+                        divMensaje.Visible = true;
+                        paginasperfil.Visible = true;
+                        divContenido.Visible = false;
                     }
-                    if (ViewState["Borrar"].ToString() == "1")
+                    if (ViewState["CrearModificar"].ToString() == "1")
                     {
-                        try
-                        {
-                            string strQuery = "DELETE FROM DisponibilidadEspecialistas " +
-                                " WHERE idDisponibilidad = " + Request.QueryString["id"].ToString();
-                            clasesglobales cg = new clasesglobales();
-                            string mensaje = cg.TraerDatosStr(strQuery);
-                        }
-                        catch (SqlException ex)
-                        {
-                            string mensaje = ex.Message;
-                        }
+                        CargarUsuarios();
                     }
-                    Response.Redirect("agenda");
+                    else
+                    {
+                        divMensaje.Visible = true;
+                        paginasperfil.Visible = true;
+                        divContenido.Visible = false;
+                    }
+                }
+                else
+                {
+                    Response.Redirect("logout");
                 }
             }
         }
@@ -62,6 +57,26 @@ namespace fpWebApp
             }
 
             dt.Dispose();
+        }
+
+        private void CargarUsuarios()
+        {
+            clasesglobales cg = new clasesglobales();
+            string strQuery = "SELECT * " +
+                "FROM usuarios " +
+                "WHERE idUsuario <> " + Session["idUsuario"].ToString() + " ORDER BY NombreUsuario ";
+
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            ddlUsuarios.DataSource = dt;
+            ddlUsuarios.DataValueField = "idUsuario";
+            ddlUsuarios.DataTextField = "NombreUsuario";
+            ddlUsuarios.DataBind();
+        }
+
+        protected void lbEnviar_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

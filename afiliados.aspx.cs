@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Net;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -116,8 +111,8 @@ namespace fpWebApp
                 "OR CelularAfiliado like '%" + strParam + "%') " + strQueryAdd + " " +
                 "ORDER BY a.idAfiliado DESC " +
                 "LIMIT " + strLimit + "";
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
 
             rpAfiliados.DataSource = dt;
             rpAfiliados.DataBind();
@@ -132,39 +127,39 @@ namespace fpWebApp
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
                     HtmlButton btnEditar = (HtmlButton)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("onClick", "window.location.href='editarafiliado?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnEditar.Attributes.Add("onClick", "window.location.href='editarafiliado?editid=" + ((DataRowView)e.Item.DataItem).Row["idAfiliado"].ToString() + "'");
                     btnEditar.Visible = true;
 
                     HtmlButton btnPlan = (HtmlButton)e.Item.FindControl("btnPlan");
-                    btnPlan.Attributes.Add("onClick", "window.location.href='planesAfiliado?id=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnPlan.Attributes.Add("onClick", "window.location.href='planesAfiliado?id=" + ((DataRowView)e.Item.DataItem).Row["idAfiliado"].ToString() + "'");
                     btnPlan.Visible = true;
 
                     HtmlButton btnTraspaso = (HtmlButton)e.Item.FindControl("btnTraspaso");
-                    btnTraspaso.Attributes.Add("onClick", "window.location.href='traspasosAfil?id=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnTraspaso.Attributes.Add("onClick", "window.location.href='traspasosAfil?id=" + ((DataRowView)e.Item.DataItem).Row["idAfiliado"].ToString() + "'");
                     btnTraspaso.Visible = true;
 
                     HtmlButton btnCortesia = (HtmlButton)e.Item.FindControl("btnCortesia");
-                    btnCortesia.Attributes.Add("onClick", "window.location.href='cortesiasAfil?id=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnCortesia.Attributes.Add("onClick", "window.location.href='cortesiasAfil?id=" + ((DataRowView)e.Item.DataItem).Row["idAfiliado"].ToString() + "'");
                     btnCortesia.Visible = true;
 
                     HtmlButton btnIncapacidad = (HtmlButton)e.Item.FindControl("btnIncapacidad");
-                    btnIncapacidad.Attributes.Add("onClick", "window.location.href='incapacidadesAfil?id=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnIncapacidad.Attributes.Add("onClick", "window.location.href='incapacidadesAfil?id=" + ((DataRowView)e.Item.DataItem).Row["idAfiliado"].ToString() + "'");
                     btnIncapacidad.Visible = true;
 
                     HtmlButton btnCongelacion = (HtmlButton)e.Item.FindControl("btnCongelacion");
-                    btnCongelacion.Attributes.Add("onClick", "window.location.href='congelacionesAfil?id=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnCongelacion.Attributes.Add("onClick", "window.location.href='congelacionesAfil?id=" + ((DataRowView)e.Item.DataItem).Row["idAfiliado"].ToString() + "'");
                     btnCongelacion.Visible = true;
 
                     HtmlButton btnAdres = (HtmlButton)e.Item.FindControl("btnAdres");
                     btnAdres.Attributes.Add("data-toggle", "modal");
                     btnAdres.Attributes.Add("data-target", "#myModal2");
-                    btnAdres.Attributes.Add("data-documento", "" + ((DataRowView)e.Item.DataItem).Row[1].ToString() + "");
+                    btnAdres.Attributes.Add("data-documento", "" + ((DataRowView)e.Item.DataItem).Row["DocumentoAfiliado"].ToString() + "");
                     btnAdres.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
                     HtmlButton btnEliminar = (HtmlButton)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("onClick", "window.location.href='eliminarafiliado?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
+                    btnEliminar.Attributes.Add("onClick", "window.location.href='eliminarafiliado?deleteid=" + ((DataRowView)e.Item.DataItem).Row["idAfiliado"].ToString() + "'");
                     btnEliminar.Visible = true;
                 }
             }

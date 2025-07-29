@@ -23,8 +23,8 @@
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
-    <link href="css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet" />
-    <link href="css/plugins/fullcalendar/fullcalendar.print.css" rel='stylesheet' media='print' />
+    <%--<link href="css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet" />
+    <link href="css/plugins/fullcalendar/fullcalendar.print.css" rel='stylesheet' media='print' />--%>
 
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
 
@@ -279,11 +279,76 @@
                                     <div class="col-xxl-2 col-lg-3 col-md-5 col-sm-6 col-xs-12">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
-                                                <h5>Planes para afiliado</h5>
+                                                <h5>Información de gestión del asesor</h5>
                                             </div>
                                             <div class="ibox-content">
 
                                                 <div class="tab-content">
+
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="widget style1">
+                                                                <div class="row">
+                                                                    <div class="col-xs-4 text-center">
+                                                                        <i class="fa fa-trophy fa-5x"></i>
+                                                                    </div>
+                                                                    <div class="col-xs-8 text-right">
+                                                                        <span>Vendido hoy </span>
+                                                                        <h2 class="font-bold">$ 456,000</h2>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="widget lazur-bg no-padding">
+                                                                <div class="p-m">
+                                                                    <h1 class="m-xs">$ 210,660</h1>
+                                                                    <h3 class="font-bold no-margins">Meta mensual
+                                                                    </h3>
+                                                                    <small>Income form project Beta.</small>
+                                                                </div>
+                                                                <div class="flot-chart">
+                                                                    <div class="flot-chart-content" id="flot-chart2"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="widget yellw-bg no-padding">
+                                                                <div class="p-m">
+                                                                    <h1 class="m-xs">$ 50,992</h1>
+
+                                                                    <h3 class="font-bold no-margins">Total venta semeste
+                                                                    </h3>
+                                                                    <small>Sales marketing.</small>
+                                                                </div>
+                                                                <div class="flot-chart">
+                                                                    <div class="flot-chart-content" id="flot-chart3"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-lg-12">
+                                                            <div class="widget navy-bg no-padding">
+                                                                <div class="p-m">
+                                                                    <h1 class="m-xs">$ 1,540</h1>
+
+                                                                    <h3 class="font-bold no-margins">Ventas en el año
+                                                                    </h3>
+                                                                    <small>Income form project Alpha.</small>
+                                                                </div>
+                                                                <div class="flot-chart">
+                                                                    <div class="flot-chart-content" id="flot-chart1"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -362,29 +427,209 @@
         var estadosLead = <%= EstadosCRM_Json %>;
     </script>
 
+    <!-- Mainly scripts -->
+    <script src="js/plugins/fullcalendar/moment.min.js"></script>
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- jquery UI -->
+    <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <!-- Full Calendar -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
+
+    <!-- Touch Punch - Touch Event Support for jQuery UI -->
+    <script src="js/plugins/touchpunch/jquery.ui.touch-punch.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js/inspinia.js"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="js/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Jvectormap -->
+    <script src="js/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
+    <script src="js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+
+    <!-- Flot -->
+    <script src="js/plugins/flot/jquery.flot.js"></script>
+    <script src="js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="js/plugins/flot/jquery.flot.resize.js"></script>
     <script>
         $(document).ready(function () {
+            var d1 = [[1262304000000, 6], [1264982400000, 3057], [1267401600000, 20434], [1270080000000, 31982], [1272672000000, 26602], [1275350400000, 27826], [1277942400000, 24302], [1280620800000, 24237], [1283299200000, 21004], [1285891200000, 12144], [1288569600000, 10577], [1291161600000, 10295]];
+            var d2 = [[1262304000000, 5], [1264982400000, 200], [1267401600000, 1605], [1270080000000, 6129], [1272672000000, 11643], [1275350400000, 19055], [1277942400000, 30062], [1280620800000, 39197], [1283299200000, 37000], [1285891200000, 27000], [1288569600000, 21000], [1291161600000, 17000]];
 
-            /* initialize the calendar
-             -----------------------------------------------------------------*/
-            var date = new Date();
-            var d = date.getDate();
-            var m = date.getMonth();
-            var y = date.getFullYear();
-
-            $('#calendar').fullCalendar({
-                firstDay: 1,
-                timeFormat: 'H:mm',
-                defaultView: 'month',
-                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb'],
-                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'],
-                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                header: {
-                    left: 'prev, next, today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay,listWeek'
+            var data1 = [
+                { label: "Data 1", data: d1, color: '#17a084' },
+                { label: "Data 2", data: d2, color: '#127e68' }
+            ];
+            $.plot($("#flot-chart1"), data1, {
+                xaxis: {
+                    tickDecimals: 0
                 },
+                series: {
+                    lines: {
+                        show: true,
+                        fill: true,
+                        fillColor: {
+                            colors: [{
+                                opacity: 1
+                            }, {
+                                opacity: 1
+                            }]
+                        }
+                    },
+                    points: {
+                        width: 0.1,
+                        show: false
+                    }
+                },
+                grid: {
+                    show: false,
+                    borderWidth: 0
+                },
+                legend: {
+                    show: false
+                }
+            });
+
+            var data2 = [
+                { label: "Data 1", data: d1, color: '#19a0a1' }
+            ];
+            $.plot($("#flot-chart2"), data2, {
+                xaxis: {
+                    tickDecimals: 0
+                },
+                series: {
+                    lines: {
+                        show: true,
+                        fill: true,
+                        fillColor: {
+                            colors: [{
+                                opacity: 1
+                            }, {
+                                opacity: 1
+                            }]
+                        }
+                    },
+                    points: {
+                        width: 0.1,
+                        show: false
+                    }
+                },
+                grid: {
+                    show: false,
+                    borderWidth: 0
+                },
+                legend: {
+                    show: false
+                }
+            });
+
+            var data3 = [
+                { label: "Data 1", data: d1, color: '#fbbe7b' },
+                { label: "Data 2", data: d2, color: '#f8ac59' }
+            ];
+            $.plot($("#flot-chart3"), data3, {
+                xaxis: {
+                    tickDecimals: 0
+                },
+                series: {
+                    lines: {
+                        show: true,
+                        fill: true,
+                        fillColor: {
+                            colors: [{
+                                opacity: 1
+                            }, {
+                                opacity: 1
+                            }]
+                        }
+                    },
+                    points: {
+                        width: 0.1,
+                        show: false
+                    }
+                },
+                grid: {
+                    show: false,
+                    borderWidth: 0
+                },
+                legend: {
+                    show: false
+                }
+            });
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+            $(".todo-list").sortable({
+                placeholder: "sort-highlight",
+                handle: ".handle",
+                forcePlaceholderSize: true,
+                zIndex: 999999
+            }).disableSelection();
+
+            var mapData = {
+                "US": 498,
+                "SA": 200,
+                "CA": 1300,
+                "DE": 220,
+                "FR": 540,
+                "CN": 120,
+                "AU": 760,
+                "BR": 550,
+                "IN": 200,
+                "GB": 120,
+                "RU": 2000
+            };
+
+            $('#world-map').vectorMap({
+                map: 'world_mill_en',
+                backgroundColor: "transparent",
+                regionStyle: {
+                    initial: {
+                        fill: '#e4e4e4',
+                        "fill-opacity": 1,
+                        stroke: 'none',
+                        "stroke-width": 0,
+                        "stroke-opacity": 0
+                    }
+                },
+                series: {
+                    regions: [{
+                        values: mapData,
+                        scale: ["#1ab394", "#22d6b1"],
+                        normalizeFunction: 'polynomial'
+                    }]
+                }
+            });
+        });
+    </script>
+
+    <%--<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                firstDay: 1,
+                //timeFormat: 'H:mm',
+                //defaultView: 'month',
+                //dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sáb'],
+                //dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'],
+                //monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                //monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                //header: {
+                //    left: 'prev, next, today',
+                //    center: 'title',
+                //    right: 'month,agendaWeek,agendaDay,listWeek'
+                //},
                 businessHours: true,
                 businessHours: [ // specify an array instead
                     {
@@ -423,20 +668,98 @@
                 },
                 <%=strEventos%>
                 eventClick: function (event, jsEvent, view) {
-                    $('.modal').modal('hide');                  
-                    var documento = $('#hdnDocumentoAfiliado').val() || '';                   
+                    $('.modal').modal('hide');
+                    var documento = $('#hdnDocumentoAfiliado').val() || '';
                     window.location.href = 'crmnuevocontacto.aspx?editid=' + encodeURIComponent(event.id) + '&evento=1' + '&documento=' + encodeURIComponent(event.doc);
                 },
             });
         });
 
-    </script>
+    </script>--%>
+
 
     <script>
-        $('#modal-view-event').on('hidden.bs.modal', function () {
-            location.reload();
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                eventClick: function (event, jsEvent, view) {
+                    $('.modal').modal('hide');
+                    var documento = $('#hdnDocumentoAfiliado').val() || '';
+                    window.location.href = 'crmnuevocontacto.aspx?editid=' + encodeURIComponent(event.id) + '&evento=1' + '&documento=' + encodeURIComponent(event.doc);
+                },
+                height: 700,
+                initialView: 'dayGridMonth',
+                firstDay: 1,
+                allDayText: 'Todo\r\nel día',
+                moreLinkContent: function (args) {
+                    return '+' + args.num + ' eventos más';
+                },
+                slotMinTime: '06:00',
+                slotMaxTime: '22:00',
+                //weekends: false,
+                //hiddenDays: [0],
+                //slotDuration: '00:25:00',
+                //slotLabelInterval: '00:30',
+                slotLabelFormat: {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    omitZeroMinute: false,
+                    meridiem: 'short'
+                },
+                locale: 'es',
+                buttonText: {
+                    prev: '',
+                    next: '',
+                    prevYear: 'Año anterior',
+                    nextYear: 'Año siguiente',
+                    year: 'Año',
+                    today: 'Hoy',
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Día',
+                    list: 'Lista',
+                    listWeek: 'Lista',
+                },
+                businessHours: true,
+                businessHours: [ // specify an array instead
+                    {
+                        daysOfWeek: [1, 2, 3, 4, 5], // Lunes, martes, miercoles, jueves y viernes
+                        startTime: '06:00',
+                        endTime: '21:00'
+                    },
+                    {
+                        daysOfWeek: [6], // Sabado
+                        startTime: '7:00',
+                        endTime: '18:00'
+                    }
+                ],
+                dayMaxEventRows: true, // for all non-TimeGrid views
+                views: {
+                    timeGrid: {
+                        dayMaxEventRows: 6 // adjust to 6 only for timeGridWeek/timeGridDay
+                    },
+                },
+                eventTimeFormat: { // like '14:30'
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                },
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+        <%=strEventos%>
         });
+
+        calendar.render();
+    });
+
     </script>
+
+
 </body>
 
 </html>

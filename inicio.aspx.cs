@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
@@ -17,14 +12,14 @@ namespace fpWebApp
         {
             if (!IsPostBack)
             {
-                //Session["idUsuario"] = 1;
-                //Session["NombreUsuario"] = "Christian Morales";
-                //Session["idEmpresa"] = 1;
-                //Session["Cargo"] = "WebMaster";
-                //Session["Foto"] = "chrismo.jpg";
-                //Session["idPerfil"] = 1;
-                //Session["usuario"] = "sistemas@fitnesspeoplecmd.com";
-                //Session["idSede"] = "11";
+                Session["idUsuario"] = 147;
+                Session["NombreUsuario"] = "Christian Morales";
+                Session["idEmpresa"] = 1;
+                Session["Cargo"] = "WebMaster";
+                Session["Foto"] = "chrismo.jpg";
+                Session["idPerfil"] = 1;
+                Session["usuario"] = "sistemas@fitnesspeoplecmd.com";
+                Session["idSede"] = "11";
 
                 if (Request.QueryString["idPerfil"] != null)
                 {
@@ -36,7 +31,7 @@ namespace fpWebApp
                 }
 
                 DateTime fechaActual = DateTime.Now;
-                DateTime fechaDestino = new DateTime(2025, 7, 19);
+                DateTime fechaDestino = new DateTime(2025, 8, 29);
                 TimeSpan diferencia = fechaDestino - fechaActual;
                 _strDiaZero = Convert.ToInt32(diferencia.TotalDays).ToString();
 

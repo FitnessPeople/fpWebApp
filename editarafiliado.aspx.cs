@@ -20,6 +20,7 @@ namespace fpWebApp
         {
             if (!IsPostBack)
             {
+
                 if (Session["idUsuario"] != null)
                 {
                     ValidarPermisos("Especialistas");
@@ -34,6 +35,8 @@ namespace fpWebApp
                         txbDocumento.Attributes.Add("type", "number");
                         txbTelefono.Attributes.Add("type", "number");
                         txbTelefonoContacto.Attributes.Add("type", "number");
+                        btnCancelar.Visible = true;
+
                         CargarTipoDocumento();
                         CargarCiudad();
                         CargarEmpresas();
@@ -105,10 +108,8 @@ namespace fpWebApp
 
         private void CargarEmpresas()
         {
-            string strQuery = "SELECT idEmpresaAfiliada, RazonSocial FROM EmpresasAfiliadas " +
-                "ORDER BY RazonSocial";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarEmpresasAfiliadas();
 
             ddlEmpresaConvenio.DataSource = dt;
             ddlEmpresaConvenio.DataBind();
@@ -118,9 +119,8 @@ namespace fpWebApp
 
         private void CargarEstadoCivil()
         {
-            string strQuery = "SELECT * FROM estadocivil";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarEstadosCiviles();
 
             ddlEstadoCivil.DataSource = dt;
             ddlEstadoCivil.DataBind();
@@ -130,9 +130,8 @@ namespace fpWebApp
 
         private void CargarEps()
         {
-            string strQuery = "SELECT * FROM eps";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarEpss();
 
             ddlEps.DataSource = dt;
             ddlEps.DataBind();
@@ -142,9 +141,8 @@ namespace fpWebApp
 
         private void CargarProfesiones()
         {
-            string strQuery = "SELECT * FROM profesiones";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarProfesiones();
 
             ddlProfesiones.DataSource = dt;
             ddlProfesiones.DataBind();
@@ -165,9 +163,8 @@ namespace fpWebApp
 
         private void CargarGeneros()
         {
-            string strQuery = "SELECT * FROM generos ORDER BY idGenero";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarGeneros();
 
             ddlGenero.DataSource = dt;
             ddlGenero.DataBind();
@@ -177,20 +174,26 @@ namespace fpWebApp
 
         private void CargarAfiliado()
         {
-            string idcrm = Request.QueryString["idcrm"];
-            string editid = Request.QueryString["editid"];
+            string idcrm = string.Empty;
+
             string parametro = string.Empty;
             Session["IdAfiliado"] = string.Empty;
+            Session["IdCRM"] = string.Empty;
             bool respuesta = false;
             btnActualizar.Visible = true;
+            btnCancelar.Visible = true;
             btnActualizaryVenderPlan.Visible = false;
-
+            btnVolver.Visible = false;
 
 
 
             clasesglobales cg = new clasesglobales();
             try
             {
+                idcrm = Request.QueryString["idcrm"];
+                Session["IdCRM"] = idcrm;
+                string editid = Request.QueryString["editid"];
+
                 if (Request.QueryString.Count > 0)
                 {
                     if (!string.IsNullOrEmpty(idcrm))
@@ -199,7 +202,10 @@ namespace fpWebApp
                         DataTable dt2 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(dt1.Rows[0]["DocumentoAfiliado"].ToString()));
                         parametro = dt2.Rows[0]["idAfiliado"].ToString();
                         btnActualizar.Visible = false;
+                        btnCancelar.Visible = false;
                         btnActualizaryVenderPlan.Visible = true;
+                        btnVolver.Visible = true;
+
                         Session["IdAfiliado"] = parametro.ToString();
                     }
                     else if (!string.IsNullOrEmpty(editid))
@@ -210,9 +216,7 @@ namespace fpWebApp
 
                     if (!string.IsNullOrEmpty(parametro))
                     {
-                        string strQuery = "SELECT * FROM afiliados WHERE idAfiliado = " + parametro;
-
-                        DataTable dt = cg.TraerDatos(strQuery);
+                        DataTable dt = cg.ConsultarAfiliadoPorId(Convert.ToInt32(parametro));
 
                         if (dt.Rows.Count > 0)
                         {
@@ -309,7 +313,9 @@ namespace fpWebApp
 
         protected void btnActualizar_Click(object sender, EventArgs e)
         {
+            string mensaje = string.Empty;
             string strFilename = "";
+
             // Actualiza la tabla Afiliados
             if (ViewState["FotoAfiliado"] != null)
             {
@@ -346,24 +352,19 @@ namespace fpWebApp
             }
 
             string strInitData = TraerData();
+
             try
             {
-                string strQuery = "UPDATE afiliados SET " +
-                "idTipoDocumento = " + ddlTipoDocumento.SelectedItem.Value.ToString() + ", NombreAfiliado = '" + txbNombre.Text.ToString().Replace("'", "").Replace("<", "").Replace(">", "").Trim() + "', " +
-                "ApellidoAfiliado = '" + txbApellido.Text.ToString() + "', CelularAfiliado = '" + txbTelefono.Text.ToString() + "', " +
-                "EmailAfiliado = '" + txbEmail.Text.ToString() + "', DireccionAfiliado = '" + txbDireccion.Text.ToString() + "', " +
-                "idCiudadAfiliado = " + ddlCiudadAfiliado.SelectedItem.Value.ToString() + ", FechaNacAfiliado = '" + txbFechaNac.Text.ToString() + "', " +
-                "FotoAfiliado = '" + strFilename + "', idGenero = " + ddlGenero.SelectedItem.Value.ToString() + ", " +
-                "idEstadoCivilAfiliado = " + ddlEstadoCivil.SelectedItem.Value.ToString() + ", idProfesion = " + ddlProfesiones.SelectedItem.Value.ToString() + ", " +
-                "idEmpresaAfil = " + ddlEmpresaConvenio.SelectedItem.Value.ToString() + ", " +
-                "idEps = " + ddlEps.SelectedItem.Value.ToString() + ", idSede = " + ddlSedes.SelectedItem.Value.ToString() + ", " +
-                "ResponsableAfiliado = '" + txbResponsable.Text.ToString() + "', Parentesco = '" + ddlParentesco.SelectedItem.Value.ToString() + "', " +
-                "ContactoAfiliado = '" + txbTelefonoContacto.Text.ToString() + "' " +
-                "WHERE idAfiliado = " + Request.QueryString["editid"].ToString();
-
                 clasesglobales cg = new clasesglobales();
 
-                string mensaje = cg.TraerDatosStr(strQuery);
+                mensaje = cg.ActualizarAfiliado(Convert.ToInt32(Request.QueryString["editid"]), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value),
+                    txbNombre.Text.Trim().Replace("'", "").Replace("<", "").Replace(">", ""), txbApellido.Text.Trim(),
+                    txbTelefono.Text.Trim(), txbEmail.Text.Trim(), txbDireccion.Text.Trim(), Convert.ToInt32(ddlCiudadAfiliado.SelectedItem.Value),
+                    txbFechaNac.Text.Trim(), strFilename, Convert.ToInt32(ddlGenero.SelectedItem.Value),
+                    Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value), Convert.ToInt32(ddlProfesiones.SelectedItem.Value),
+                    Convert.ToInt32(ddlEmpresaConvenio.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEps.SelectedItem.Value), Convert.ToInt32(ddlSedes.SelectedItem.Value),
+                    txbResponsable.Text.Trim(), ddlParentesco.SelectedItem.Value.Trim(), txbTelefonoContacto.Text.Trim()
+                );
 
                 if (mensaje == "OK")
                 {
@@ -379,14 +380,52 @@ namespace fpWebApp
                         //Actualiza usuario en Armatura
                         PostArmatura(txbDocumento.Text.ToString());
                     }
+
+                    string script = @"
+                                    Swal.fire({
+                                        title: '¡Afiliado actualizado correctamente!',
+                                        text: '',
+                                        icon: 'success',
+                                        timer: 3000, // 3 segundos
+                                        showConfirmButton: false,
+                                        timerProgressBar: true
+                                    }).then(() => {
+                                        window.location.href = 'afiliados';
+                                    });
+                                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                }
+                else
+                {
+                    string script = @"
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: 'Por favor contáctese con Sistemas Fitness People. Detalle: " + mensaje.Replace("'", "\\'") + @"',
+                                        icon: 'error'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            
+                                        }
+                                    });
+                                ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
                 }
             }
+
             catch (OdbcException ex)
             {
-                string mensaje = ex.Message;
+                mensaje = ex.Message;
+                string script = @"
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Por favor contáctese con Sistemas Fitness People. Detalle: " + mensaje.Replace("'", "\\'") + @"',
+                                    icon: 'error'
+                                }).then(() => {
+                                    window.location.href = 'editarafiliado';
+                                });
+                            ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
             }
-
-            Response.Redirect("afiliados");
         }
 
         private static string ConsultarPersona(string url)
@@ -418,48 +457,47 @@ namespace fpWebApp
         private void PostArmatura(string strDocumento)
         {
             clasesglobales cg = new clasesglobales();
-            string strQuery = "SELECT * " +
-                "FROM Afiliados a " +
-                "LEFT JOIN AfiliadosPlanes ap ON a.idAfiliado = ap.idAfiliado " +
-                "WHERE DocumentoAfiliado = '" + strDocumento + "'";
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarAfiliadoPlanPorDocumento(strDocumento);
 
             if (dt.Rows.Count > 0)
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     string strGenero = "";
-                    string strFechaInicio = "";
-                    string strFechaFinal = "";
+                    string strFechaInicio = string.Empty;
+                    string strFechaFinal = string.Empty;
+
                     if (dt.Rows[i]["idGenero"].ToString() == "1")
-                    {
                         strGenero = "M";
-                    }
                     if (dt.Rows[i]["idGenero"].ToString() == "2")
-                    {
                         strGenero = "F";
-                    }
 
                     if (dt.Rows[i]["EstadoPlan"].ToString() != "Archivado")
                     {
-                        strFechaInicio = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[i]["FechaInicioPlan"].ToString())) + " 15:00:00";
-                        strFechaFinal = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[i]["FechaFinalPlan"].ToString())) + " 23:00:00";
+                        if (!string.IsNullOrEmpty(dt.Rows[i]["FechaInicioPlan"].ToString()))
+                        {
+                            strFechaInicio = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[i]["FechaInicioPlan"])) + " 15:00:00";
+                        }
+                        if (!string.IsNullOrEmpty(dt.Rows[i]["FechaFinalPlan"].ToString()))
+                        {
+                            strFechaFinal = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[i]["FechaFinalPlan"])) + " 23:00:00";
+                        }
                     }
 
                     Persona oPersona = new Persona()
                     {
-                        pin = "" + dt.Rows[i]["DocumentoAfiliado"].ToString() + "",
-                        name = "" + dt.Rows[i]["NombreAfiliado"].ToString() + "",
-                        lastName = "" + dt.Rows[i]["ApellidoAfiliado"].ToString() + "",
+                        pin = dt.Rows[i]["DocumentoAfiliado"].ToString(),
+                        name = dt.Rows[i]["NombreAfiliado"].ToString(),
+                        lastName = dt.Rows[i]["ApellidoAfiliado"].ToString(),
                         gender = strGenero,
-                        personPhoto = "",
+                        personPhoto = "", // ¿Debes incluirlo?
                         certType = "",
                         certNumber = "",
-                        mobilePhone = "" + dt.Rows[i]["CelularAfiliado"].ToString() + "",
+                        mobilePhone = dt.Rows[i]["CelularAfiliado"].ToString(),
                         personPwd = "",
-                        birthday = "" + String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[i]["FechaNacAfiliado"].ToString())) + "",
+                        birthday = String.Format("{0:yyyy-MM-dd}", Convert.ToDateTime(dt.Rows[i]["FechaNacAfiliado"])),
                         isSendMail = "false",
-                        email = "" + dt.Rows[i]["EmailAfiliado"].ToString() + "",
+                        email = dt.Rows[i]["EmailAfiliado"].ToString(),
                         deptCode = "01",
                         ssn = "",
                         cardNo = "",
@@ -472,7 +510,6 @@ namespace fpWebApp
                     };
 
                     string contenido = JsonConvert.SerializeObject(oPersona, Formatting.Indented);
-
                     string url = "https://aone.armaturacolombia.co/api/person/add/?access_token=D2BCF6E6BD09DECAA1266D9F684FFE3F5310AD447D107A29974F71E1989AABDB";
                     EnviarPeticion(url, contenido);
                 }
@@ -540,9 +577,8 @@ namespace fpWebApp
 
         private string TraerData()
         {
-            string strQuery = "SELECT * FROM afiliados WHERE idAfiliado = " + Request.QueryString["editid"].ToString();
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarAfiliadoPorId(Convert.ToInt32(Session["IdAfiliado"]));
 
             string strData = "";
             foreach (DataColumn column in dt.Columns)
@@ -556,9 +592,126 @@ namespace fpWebApp
 
         protected void btnActualizaryVenderPlan_Click(object sender, EventArgs e)
         {
-            int id = Convert.ToInt32(Session["idAfiliado"].ToString());
-            Response.Redirect("planesAfiliado.aspx?id=" + id);
+            string idAfil = Session["IdAfiliado"].ToString();
+            string idcrm = Session["idcrm"].ToString();
+            string mensaje = string.Empty;
+            string strFilename = "";
+
+            // Actualiza la tabla Afiliados
+            if (ViewState["FotoAfiliado"] != null)
+            {
+                strFilename = ViewState["FotoAfiliado"].ToString();
+            }
+            else
+            {
+                strFilename = "nofoto.png";
+            }
+
+            HttpPostedFile postedFile = Request.Files["fileFoto"];
+
+            if (postedFile != null && postedFile.ContentLength > 0)
+            {
+                //Borrar la foto del afiliado si tiene una.
+                if (ViewState["FotoAfiliado"] != null)
+                {
+                    if (ViewState["FotoAfiliado"].ToString() != "nofoto.png")
+                    {
+                        string strPhysicalFolder = Server.MapPath("img//afiliados//");
+                        string strFileFullPath = strPhysicalFolder + ViewState["FotoAfiliado"].ToString();
+
+                        if (File.Exists(strFileFullPath))
+                        {
+                            File.Delete(strFileFullPath);
+                        }
+                    }
+                }
+
+                //Guardar la foto del afiliado
+                string filePath = Server.MapPath("img//afiliados//") + Path.GetFileName(postedFile.FileName);
+                postedFile.SaveAs(filePath);
+                strFilename = postedFile.FileName;
+            }
+
+            string strInitData = TraerData();
+
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+
+                mensaje = cg.ActualizarAfiliado(Convert.ToInt32(idAfil), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value),
+                    txbNombre.Text.Trim().Replace("'", "").Replace("<", "").Replace(">", ""), txbApellido.Text.Trim(),
+                    txbTelefono.Text.Trim(), txbEmail.Text.Trim(), txbDireccion.Text.Trim(), Convert.ToInt32(ddlCiudadAfiliado.SelectedItem.Value),
+                    txbFechaNac.Text.Trim(), strFilename, Convert.ToInt32(ddlGenero.SelectedItem.Value),
+                    Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value), Convert.ToInt32(ddlProfesiones.SelectedItem.Value),
+                    Convert.ToInt32(ddlEmpresaConvenio.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEps.SelectedItem.Value), Convert.ToInt32(ddlSedes.SelectedItem.Value),
+                    txbResponsable.Text.Trim(), ddlParentesco.SelectedItem.Value.Trim(), txbTelefonoContacto.Text.Trim()
+                );
+
+                if (mensaje == "OK")
+                {
+                    string strNewData = TraerData();
+                    cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Modifica", "El usuario modificó datos del afiliado con documento: " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
+
+                    //Consulta si existe el afiliado en Armatura y lo actualiza
+                    string url = "https://aone.armaturacolombia.co/api/person/get/" + txbDocumento.Text.ToString() + "?access_token=D2BCF6E6BD09DECAA1266D9F684FFE3F5310AD447D107A29974F71E1989AABDB";
+                    string respuesta = ConsultarPersona(url);
+
+                    if (respuesta == "success")
+                    {
+                        //Actualiza usuario en Armatura
+                        PostArmatura(txbDocumento.Text.ToString());
+                    }
+
+                    string script = @"
+                        Swal.fire({
+                            title: '¡Afiliado actualizado correctamente!',
+                            text: 'Serás redirigido a los planes comerciales',
+                            icon: 'success',
+                            timer: 5000, // 3 segundos
+                            showConfirmButton: false,
+                            timerProgressBar: true
+                        }).then(() => {                           
+                            window.location.href = 'planesAfiliado.aspx?idAfil=" + idAfil + "&idcrm=" + idcrm + @"';
+                        });
+                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                }
+                else
+                {
+                    string script = @"
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Por favor contáctese con Sistemas Fitness People. Detalle: " + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                            
+                                }
+                            });
+                        ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                }
+            }
+
+            catch (OdbcException ex)
+            {
+                mensaje = ex.Message;
+                string script = @"
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Por favor contáctese con Sistemas Fitness People. Detalle: " + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            }).then(() => {
+                                window.location.href = 'editarafiliado';
+                            });
+                        ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+            }
         }
 
+        protected void btnVolver_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("agendacrm.aspx");
+        }
     }
 }

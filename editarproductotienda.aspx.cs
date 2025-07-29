@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Web;
-using System.Web.Configuration;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using MySql.Data.MySqlClient;
 
 namespace fpWebApp
 {
@@ -194,68 +188,31 @@ namespace fpWebApp
             else
             {
                 string strInitData = TraerData();
-                try
-                {
-                    string strQuery = "UPDATE productos SET " +
-                       "idCategoria = " + ddlCategorias.SelectedItem.Value.ToString() + ", " +
-                       "CodigoProd = '" + txbCodigo.Text.ToString() + "', " +
-                       "NombreProd = '" + txbNombre.Text.ToString() + "', " +
-                       "PrecioPublicoProd = " + txbPrecio.Text.ToString() + ", " +
-                       "DetalleProd = '" + txbDetalle.Text.ToString() + "', " +
-                       "DescripcionProd = '" + txbDescripcion.Text.ToString() + "', " +
-                       "CaracteristicasProd = '" + txbCaracteristicas.Text.ToString() + "', " +
-                       "BeneficiosProd = '" + txbBeneficios.Text.ToString() + "', " +
-                       "Imagen1Prod = '" + strFilename1 + "', " +
-                       "Imagen2Prod = '" + strFilename2 + "', " +
-                       "Imagen3Prod = '" + strFilename3 + "', " +
-                       "Imagen4Prod = '" + strFilename4 + "'" +
-                       "WHERE idProducto = " + Request.QueryString["id"].ToString();
-
-                    string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-
-                    using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
-                    {
-                        mysqlConexion.Open();
-                        using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
-                        {
-                            cmd.CommandType = CommandType.Text;
-                            cmd.ExecuteNonQuery();
-                        }
-                        mysqlConexion.Close();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    string respuesta = "ERROR: " + ex.Message;
-                }
+                clasesglobales cg = new clasesglobales();
+                string strQuery = "UPDATE productos SET " +
+                    "idCategoria = " + ddlCategorias.SelectedItem.Value.ToString() + ", " +
+                    "CodigoProd = '" + txbCodigo.Text.ToString() + "', " +
+                    "NombreProd = '" + txbNombre.Text.ToString() + "', " +
+                    "PrecioPublicoProd = " + txbPrecio.Text.ToString() + ", " +
+                    "DetalleProd = '" + txbDetalle.Text.ToString() + "', " +
+                    "DescripcionProd = '" + txbDescripcion.Text.ToString() + "', " +
+                    "CaracteristicasProd = '" + txbCaracteristicas.Text.ToString() + "', " +
+                    "BeneficiosProd = '" + txbBeneficios.Text.ToString() + "', " +
+                    "Imagen1Prod = '" + strFilename1 + "', " +
+                    "Imagen2Prod = '" + strFilename2 + "', " +
+                    "Imagen3Prod = '" + strFilename3 + "', " +
+                    "Imagen4Prod = '" + strFilename4 + "'" +
+                    "WHERE idProducto = " + Request.QueryString["id"].ToString();
+                cg.TraerDatosStr(strQuery);
 
                 string strNewData = TraerData();
-                clasesglobales cg = new clasesglobales();
                 cg.InsertarLog(Session["idusuario"].ToString(), "productos", "Modifica", "El usuario modificó datos al producto con código: " + txbCodigo.Text.ToString() + ".", strInitData, strNewData);
 
-                try
-                {
-                    string strQuery = "UPDATE inventario SET " +
-                       "stock = " + txbStock.Text.ToString() + " " + 
-                       "WHERE idProducto = " + Request.QueryString["id"].ToString();
 
-                    string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-
-                    using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
-                    {
-                        mysqlConexion.Open();
-                        using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
-                        {
-                            cmd.CommandType = CommandType.Text;
-                            cmd.ExecuteNonQuery();
-                        }
-                        mysqlConexion.Close();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    string respuesta = "ERROR: " + ex.Message;
-                }
+                strQuery = "UPDATE inventario SET " +
+                    "stock = " + txbStock.Text.ToString() + " " + 
+                    "WHERE idProducto = " + Request.QueryString["id"].ToString();
+                cg.TraerDatosStr(strQuery);
             }
             Response.Redirect("editarproductotienda?id=" + Request.QueryString["id"].ToString());
         }

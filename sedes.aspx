@@ -57,7 +57,9 @@
         }
     </script>
 
-    <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
+    <%--<link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />--%>
+    <!-- FooTable -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />

@@ -19,7 +19,7 @@
             <ul class="dropdown-menu dropdown-messages">
                 <li>
                     <div class="dropdown-messages-box">
-                        <a href="inicio?idPerfil=1&idUsuario=1">
+                        <a href="inicio?idPerfil=1&idUsuario=147">
                             <div>
                                 Cambiar a perfil <strong>Gerencial</strong>.
                             </div>
@@ -29,7 +29,7 @@
                 <li class="divider"></li>
                 <li>
                     <div class="dropdown-messages-box">
-                        <a href="inicio?idPerfil=8&idUsuario=11">
+                        <a href="inicio?idPerfil=8&idUsuario=37">
                             <div>
                                 Cambiar a perfil <strong>Fisioterapeuta</strong>.
                             </div>
@@ -107,7 +107,7 @@
                 <li class="divider"></li>
                 <li>
                     <div class="text-center link-block">
-                        <a href="#">
+                        <a href="correointerno">
                             <i class="fa fa-envelope m-r-sm"></i><strong>Leer todos los mensajes</strong>
                         </a>
                     </div>

@@ -64,35 +64,35 @@
                     <p>
                         <b>Paso 1: Busca al afiliado origen</b><br />
                         Usa el buscador izquierdo para encontrar al afiliado que cede el plan:<br />
-                        <i class="fa-solid fa-magnifying-glass"></i> Filtra por: 
-                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre</b>, 
-                        <i class="fa-solid fa-address-card" style="color: #0D6EFD;"></i> <b>Cédula</b>, 
-                        <i class="fa-solid fa-envelope" style="color: #0D6EFD;"></i> <b>Correo</b> o 
-                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i> <b>Celular.</b><br />
+                        <i class="fa-solid fa-magnifying-glass"></i>Filtra por: 
+                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i><b>Nombre</b>, 
+                        <i class="fa-solid fa-address-card" style="color: #0D6EFD;"></i><b>Cédula</b>, 
+                        <i class="fa-solid fa-envelope" style="color: #0D6EFD;"></i><b>Correo</b> o 
+                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i><b>Celular.</b><br />
                         Selecciona al afiliado para ver sus planes actuales.
                     <br />
                         <br />
                         <b>Paso 2: Busca al afiliado destino</b><br />
                         Usa el buscador derecho para ubicar al afiliado que recibirá el plan:<br />
-                        <i class="fa-solid fa-magnifying-glass"></i> Filtra por: 
-                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre</b>, 
-                        <i class="fa-solid fa-address-card" style="color: #0D6EFD;"></i> <b>Cédula</b>, 
-                        <i class="fa-solid fa-envelope" style="color: #0D6EFD;"></i> <b>Correo</b> o 
-                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i> <b>Celular.</b><br />
+                        <i class="fa-solid fa-magnifying-glass"></i>Filtra por: 
+                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i><b>Nombre</b>, 
+                        <i class="fa-solid fa-address-card" style="color: #0D6EFD;"></i><b>Cédula</b>, 
+                        <i class="fa-solid fa-envelope" style="color: #0D6EFD;"></i><b>Correo</b> o 
+                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i><b>Celular.</b><br />
                         Verifica que sus datos sean correctos.
                     <br />
                         <br />
                         <b>Paso 3: Confirma el traspaso o cancela</b><br />
-                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Traspasar: </b> Realiza la acción y finaliza el proceso.<br />
-                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar modificaciones.
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i><b>Traspasar: </b>Realiza la acción y finaliza el proceso.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i><b>Cancelar:</b> Si necesitas volver atrás sin guardar modificaciones.
                     <br />
                         <br />
-                        <i class="fa-solid fa-triangle-exclamation" style="color: #FFC107;"></i> <b>Importante</b><br />
-                        <i class="fa-solid fa-check"></i> El afiliado origen <b>perderá acceso</b> al plan traspasado.<br />
-                        <i class="fa-solid fa-check"></i> El afiliado destino <b>debe cumplir</b> con los requisitos del nuevo plan (si aplica).
+                        <i class="fa-solid fa-triangle-exclamation" style="color: #FFC107;"></i><b>Importante</b><br />
+                        <i class="fa-solid fa-check"></i>El afiliado origen <b>perderá acceso</b> al plan traspasado.<br />
+                        <i class="fa-solid fa-check"></i>El afiliado destino <b>debe cumplir</b> con los requisitos del nuevo plan (si aplica).
                    <br />
                         <br />
-                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i>Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -156,172 +156,173 @@
                                     <asp:ScriptManager ID="sm1" runat="server"></asp:ScriptManager>
                                     <asp:UpdatePanel ID="upBusqueda" runat="server" UpdateMode="Always" ChildrenAsTriggers="true">
                                         <ContentTemplate>
-                                    <div class="col-sm-5 b-r">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <label>Afiliado origen</label>
-                                                    <asp:DropDownList ID="ddlAfiliadoOrigen" name="ddlAfiliadoOrigen" runat="server" 
-                                                        DataTextField="DocNombreAfiliado" AppendDataBoundItems="true" 
-                                                        DataValueField="idAfiliado" CssClass="chosen-select form-control input-sm"  
-                                                        OnSelectedIndexChanged="ddlAfiliadoOrigen_SelectedIndexChanged" 
-                                                        AutoPostBack="true" >
-                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-
-                                                <div class="contact-box navy-bg" runat="server" id="divAfiliadoOrigen">
-                                                    <div class="col-sm-4">
-                                                        <div class="text-center">
-                                                            <asp:Literal ID="ltFotoAfiliadoOrigen" runat="server"></asp:Literal>
+                                            <div class="col-sm-5 b-r">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Afiliado origen</label>
+                                                            <asp:DropDownList ID="ddlAfiliadoOrigen" name="ddlAfiliadoOrigen" runat="server"
+                                                                DataTextField="DocNombreAfiliado" AppendDataBoundItems="true"
+                                                                DataValueField="idAfiliado" CssClass="chosen-select form-control input-sm"
+                                                                OnSelectedIndexChanged="ddlAfiliadoOrigen_SelectedIndexChanged"
+                                                                AutoPostBack="true">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-8">
-                                                        <h3><strong><asp:Literal ID="ltNombreAfiliadoOrigen" runat="server"></asp:Literal> <asp:Literal ID="ltApellidoAfiliadoOrigen" runat="server"></asp:Literal></strong></h3>
-                                                        <p><i class="fa fa-envelope"></i> <asp:Literal ID="ltEmailAfiliadoOrigen" runat="server"></asp:Literal></p>
-                                                        <address>
-                                                            <i class="fa fa-mobile"></i>
-                                                            <asp:Literal ID="ltCelularAfiliadoOrigen" runat="server"></asp:Literal><br />
-                                                            <i class="fa fa-building"></i> Sede: 
-                                                            <asp:Literal ID="ltSedeAfiliadoOrigen" runat="server"></asp:Literal><br />
-                                                            <i class="fa fa-cake"></i>
-                                                            <asp:Literal ID="ltCumpleAfiliadoOrigen" runat="server"></asp:Literal>
-                                                        </address>
-                                                    </div>
-                                                    <div class="clearfix"></div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="row m-xs" runat="server" id="divPlanes">
-                                                    <h4>Planes</h4>
-                                                    <%--<asp:Literal ID="ltNoPlanes" runat="server"></asp:Literal>--%>
-                                                    <ul class="todo-list m-t small-list">
-                                                        <asp:Repeater ID="rpPlanesAfiliado" runat="server">
-                                                            <ItemTemplate>
-                                                                <li>
-                                                                    <div class="i-checks">
-                                                                        <small class="label label-primary pull-right"><%# Eval("DiasQueFaltan") %> días disponibles</small>
-                                                                        <label>
-                                                                            <input type="radio" value="<%# Eval("idPlan") %>" name="planes">
-                                                                            <i></i><%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
-                                                                        </label>
-                                                                        <br />
-                                                                        <div class="progress progress-striped active">
-                                                                            <div style='width: <%# Eval("Porcentaje1") %>%' class="progress-bar progress-bar-success"></div>
-                                                                            <div style='width: <%# Eval("Porcentaje2") %>%' class="progress-bar progress-bar-warning"></div>
-                                                                        </div>
-                                                                        <small class="text-muted"><%# Eval("FechaInicioPlan", "{0:dd MMM yyyy}") %> - <%# Eval("FechaFinalPlan", "{0:dd MMM yyyy}") %></small>
-                                                                    </div>
-                                                                </li>
-                                                            </ItemTemplate>
-                                                        </asp:Repeater>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-2" runat="server" id="divArrow">
-                                        <p class="text-center"><i class="fa fa-angles-right big-icon"></i></p>
-                                    </div>
-
-                                    <div class="col-sm-5 border-left">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <label>Afiliado destino</label>
-                                                    <asp:DropDownList ID="ddlAfiliadoDestino" name="ddlAfiliadoDestino" runat="server" 
-                                                        DataTextField="DocNombreAfiliado" AppendDataBoundItems="true" 
-                                                        DataValueField="idAfiliado" CssClass="chosen-select form-control input-sm"  
-                                                        OnSelectedIndexChanged="ddlAfiliadoDestino_SelectedIndexChanged" 
-                                                        AutoPostBack="true">
-                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row" runat="server" id="divAfiliadoDestino" visible="false">
-                                            <div class="col-md-12">
-
-                                                <div class="contact-box bg-success">
-                                                    <div class="col-sm-4">
-                                                        <div class="text-center">
-                                                            <asp:Literal ID="ltFotoAfiliadoDestino" runat="server"></asp:Literal>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-8">
-                                                        <h3><strong><asp:Literal ID="ltNombreAfiliadoDestino" runat="server"></asp:Literal> <asp:Literal ID="ltApellidoAfiliadoDestino" runat="server"></asp:Literal></strong></h3>
-                                                        <p><i class="fa fa-envelope"></i> <asp:Literal ID="ltEmailAfiliadoDestino" runat="server"></asp:Literal></p>
-                                                        <address>
-                                                            <i class="fa fa-mobile"></i>
-                                                            <asp:Literal ID="ltCelularAfiliadoDestino" runat="server"></asp:Literal><br />
-                                                            <i class="fa fa-building"></i> Sede: 
-                                                            <asp:Literal ID="ltSedeAfiliadoDestino" runat="server"></asp:Literal><br />
-                                                            <i class="fa fa-calendar"></i> Afiliado desde: 
-                                                            <asp:Literal ID="ltFechaAfiliacion" runat="server"></asp:Literal>
-                                                            <%--<i class="fa fa-ticket"></i> Plan activo: 
-                                                            <asp:Literal ID="ltPlanActivo" runat="server"></asp:Literal>--%>
-                                                        </address>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label>Documento de traspaso</label><br />
-                                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                                                                <div class="form-control input-sm" data-trigger="fileinput">
-                                                                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
-                                                                    <span class="fileinput-filename"></span>
+
+                                                        <div class="contact-box navy-bg" runat="server" id="divAfiliadoOrigen">
+                                                            <div class="col-sm-4">
+                                                                <div class="text-center">
+                                                                    <asp:Literal ID="ltFotoAfiliadoOrigen" runat="server"></asp:Literal>
                                                                 </div>
-                                                                <span class="input-group-addon btn btn-success btn-file input-sm">
-                                                                    <span class="fileinput-new input-sm">Seleccionar archivo</span>
-                                                                    <span class="fileinput-exists input-sm">Cambiar</span>
-                                                                    <input type="file" name="documento" id="documento" accept="application/pdf">
-                                                                </span>
-                                                                <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm" 
-                                                                    data-dismiss="fileinput">Quitar</a>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <h3><strong>
+                                                                    <asp:Literal ID="ltNombreAfiliadoOrigen" runat="server"></asp:Literal>
+                                                                    <asp:Literal ID="ltApellidoAfiliadoOrigen" runat="server"></asp:Literal></strong></h3>
+                                                                <p><i class="fa fa-envelope"></i>
+                                                                    <asp:Literal ID="ltEmailAfiliadoOrigen" runat="server"></asp:Literal></p>
+                                                                <address>
+                                                                    <i class="fa fa-mobile"></i>
+                                                                    <asp:Literal ID="ltCelularAfiliadoOrigen" runat="server"></asp:Literal><br />
+                                                                    <i class="fa fa-building"></i>Sede: 
+                                                            <asp:Literal ID="ltSedeAfiliadoOrigen" runat="server"></asp:Literal><br />
+                                                                    <i class="fa fa-cake"></i>
+                                                                    <asp:Literal ID="ltCumpleAfiliadoOrigen" runat="server"></asp:Literal>
+                                                                </address>
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="row m-xs" runat="server" id="divPlanes">
+                                                            <h4>Planes</h4>
+                                                            <%--<asp:Literal ID="ltNoPlanes" runat="server"></asp:Literal>--%>
+                                                            <ul class="todo-list m-t small-list">
+                                                                <asp:Repeater ID="rpPlanesAfiliado" runat="server">
+                                                                    <ItemTemplate>
+                                                                        <li>
+                                                                            <div class="i-checks">
+                                                                                <small class="label label-primary pull-right"><%# Eval("DiasQueFaltan") %> días disponibles</small>
+                                                                                <label>
+                                                                                    <input type="radio" value="<%# Eval("idPlan") %>" name="planes">
+                                                                                    <i></i><%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
+                                                                                </label>
+                                                                                <br />
+                                                                                <div class="progress progress-striped active">
+                                                                                    <div style='width: <%# Eval("Porcentaje1") %>%' class="progress-bar progress-bar-success"></div>
+                                                                                    <div style='width: <%# Eval("Porcentaje2") %>%' class="progress-bar progress-bar-warning"></div>
+                                                                                </div>
+                                                                                <small class="text-muted"><%# Eval("FechaInicioPlan", "{0:dd MMM yyyy}") %> - <%# Eval("FechaFinalPlan", "{0:dd MMM yyyy}") %></small>
+                                                                            </div>
+                                                                        </li>
+                                                                    </ItemTemplate>
+                                                                </asp:Repeater>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-2" runat="server" id="divArrow">
+                                                <p class="text-center"><i class="fa fa-angles-right big-icon"></i></p>
+                                            </div>
+
+                                            <div class="col-sm-5 border-left">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Afiliado destino</label>
+                                                            <asp:DropDownList ID="ddlAfiliadoDestino" name="ddlAfiliadoDestino" runat="server"
+                                                                DataTextField="DocNombreAfiliado" AppendDataBoundItems="true"
+                                                                DataValueField="idAfiliado" CssClass="chosen-select form-control input-sm"
+                                                                OnSelectedIndexChanged="ddlAfiliadoDestino_SelectedIndexChanged"
+                                                                AutoPostBack="true">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" runat="server" id="divAfiliadoDestino" visible="false">
+                                                    <div class="col-md-12">
+
+                                                        <div class="contact-box bg-success">
+                                                            <div class="col-sm-4">
+                                                                <div class="text-center">
+                                                                    <asp:Literal ID="ltFotoAfiliadoDestino" runat="server"></asp:Literal>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-8">
+                                                                <h3><strong>
+                                                                    <asp:Literal ID="ltNombreAfiliadoDestino" runat="server"></asp:Literal>
+                                                                    <asp:Literal ID="ltApellidoAfiliadoDestino" runat="server"></asp:Literal></strong></h3>
+                                                                <p><i class="fa fa-envelope"></i>
+                                                                    <asp:Literal ID="ltEmailAfiliadoDestino" runat="server"></asp:Literal></p>
+                                                                <address>
+                                                                    <i class="fa fa-mobile"></i>
+                                                                    <asp:Literal ID="ltCelularAfiliadoDestino" runat="server"></asp:Literal><br />
+                                                                    <i class="fa fa-building"></i>Sede: 
+                                                            <asp:Literal ID="ltSedeAfiliadoDestino" runat="server"></asp:Literal><br />
+                                                                    <i class="fa fa-calendar"></i>Afiliado desde: 
+                                                            <asp:Literal ID="ltFechaAfiliacion" runat="server"></asp:Literal>
+                                                                    <%--<i class="fa fa-ticket"></i> Plan activo: 
+                                                            <asp:Literal ID="ltPlanActivo" runat="server"></asp:Literal>--%>
+                                                                </address>
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label>Documento de traspaso</label><br />
+                                                                    <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                                        <div class="form-control input-sm" data-trigger="fileinput">
+                                                                            <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                                            <span class="fileinput-filename"></span>
+                                                                        </div>
+                                                                        <span class="input-group-addon btn btn-success btn-file input-sm">
+                                                                            <span class="fileinput-new input-sm">Seleccionar archivo</span>
+                                                                            <span class="fileinput-exists input-sm">Cambiar</span>
+                                                                            <input type="file" name="documento" id="documento" accept="application/pdf">
+                                                                        </span>
+                                                                        <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm"
+                                                                            data-dismiss="fileinput">Quitar</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label>Fecha inicio del plan</label>
+                                                                    <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label>Observaciones</label>
+                                                                    <asp:TextBox ID="txbObservaciones" CssClass="form-control input-sm" runat="server" TextMode="MultiLine" Rows="3"></asp:TextBox>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label>Fecha inicio del plan</label>
-                                                            <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm" runat="server"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label>Observaciones</label>
-                                                            <asp:TextBox ID="txbObservaciones" CssClass="form-control input-sm" runat="server" TextMode="MultiLine" Rows="3"></asp:TextBox>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div>
+                                                            <%--<asp:Literal ID="ltMensaje" runat="server"></asp:Literal>--%>
+                                                            <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='afiliados'"><strong>Cancelar</strong></button>
+                                                            <asp:Button ID="btnTraspasar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Traspasar" OnClick="btnTraspasar_Click" />
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div>
-                                                    <%--<asp:Literal ID="ltMensaje" runat="server"></asp:Literal>--%>
-                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='afiliados'"><strong>Cancelar</strong></button>
-                                                    <asp:Button ID="btnTraspasar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Traspasar" OnClick="btnTraspasar_Click"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
+
                                         </ContentTemplate>
-                                        <Triggers>
-                                            <asp:PostBackTrigger ControlID="btnTraspasar" />
-                                            <%--<asp:PostBackTrigger ControlID="btnAfiliadoDestino" />
-                                            <asp:PostBackTrigger ControlID="btnAfiliadoOrigen" />--%>
-                                       </Triggers>
                                     </asp:UpdatePanel>
                                 </form>
                             </div>
@@ -354,6 +355,9 @@
     <!-- Jasny -->
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
+    <!-- Chosen -->
+    <script src="js/plugins/chosen/chosen.jquery.js"></script>
+
     <script>
 
         $("#form").validate({
@@ -373,6 +377,10 @@
                 documento: "*",
             }
         });
+
+        function pageLoad() {
+            $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
+        }
     </script>
 
 </body>

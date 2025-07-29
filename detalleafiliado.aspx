@@ -103,7 +103,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-id-card text-success m-r-sm"></i>Detalle afiliado</h2>
+                    <h2><i class="fa fa-id-card text-success m-r-xs"></i>Detalle afiliado</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Afiliados</li>
@@ -157,18 +157,18 @@
                                 <table class="table small m-b-xs">
                                     <tbody>
                                         <tr>
-                                            <td><strong><i class="fab fa-whatsapp"></i></strong>
+                                            <td><strong><i class="fab fa-whatsapp m-r-xs"></i></strong>
                                                 <asp:Literal ID="ltCelular" runat="server"></asp:Literal></td>
-                                            <td><strong><i class="fa fa-shield"></i></strong> Estado: 
+                                            <td><strong><i class="fa fa-shield m-r-xs"></i></strong>Estado: 
                                                 <asp:Literal ID="ltEstado" runat="server"></asp:Literal></td>
                                         </tr>
                                         <tr>
-                                            <td><strong><i class="fa fa-building"></i></strong> Sede:
+                                            <td><strong><i class="fa fa-building m-r-xs"></i></strong>Sede:
                                                 <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
                                             <td><strong>54</strong> Días asistidos</td>
                                         </tr>
                                         <tr>
-                                            <td><strong><i class="fa fa-cake"></i></strong>
+                                            <td><strong><i class="fa fa-cake m-r-xs"></i></strong>
                                                 <asp:Literal ID="ltCumple" runat="server"></asp:Literal></td>
                                             <td><strong>2</strong> Congelaciones</td>
                                         </tr>
@@ -204,7 +204,7 @@
 
                                 <div class="ibox">
                                     <div class="ibox-title bg-primary">
-                                        <h5><i class="fa fa-ticket"></i> Planes</h5>
+                                        <h5><i class="fa fa-ticket m-r-xs"></i>Planes</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -261,7 +261,7 @@
 
                                 <div class="ibox">
                                     <div class="ibox-title bg-info">
-                                        <h5><i class="fa fa-credit-card"></i> Pagos</h5>
+                                        <h5><i class="fa fa-credit-card m-r-xs"></i>Pagos</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up text-white"></i>
@@ -278,7 +278,7 @@
 
                                 <div class="ibox">
                                     <div class="ibox-title bg-success">
-                                        <h5><i class="fa fa-gift"></i> Cortesías</h5>
+                                        <h5><i class="fa fa-gift m-r-xs"></i>Cortesías</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up text-white"></i>
@@ -289,8 +289,8 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="footable table table-striped" data-paging-size="10" 
-                                            data-paging="true" data-paging-count-format="{CP} de {TP}" 
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                            data-paging="true" data-paging-count-format="{CP} de {TP}"
                                             data-empty="Sin registros">
                                             <thead>
                                                 <tr>
@@ -306,10 +306,10 @@
                                                         <tr>
                                                             <td><%# Eval("DiasCortesia") %> días</td>
                                                             <td><%# Eval("ObservacionesCortesia") %></td>
-                                                            <td style="vertical-align:central;">
+                                                            <td style="vertical-align: central;">
                                                                 <%# Eval("FechaHoraCortesia", "{0:dd MMM yyyy}") %>
                                                             </td>
-                                                            <td><%# Eval("Estado") %></td>
+                                                            <td><%# Eval("EstadoCortesia") %></td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
@@ -320,7 +320,7 @@
 
                                 <div class="ibox">
                                     <div class="ibox-title bg-warning">
-                                        <h5><i class="fa fa-snowflake"></i> Congelaciones</h5>
+                                        <h5><i class="fa fa-snowflake m-r-xs"></i>Congelaciones</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up text-white"></i>
@@ -331,8 +331,8 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="footable table table-striped" data-paging-size="10" 
-                                            data-paging="true" data-paging-count-format="{CP} de {TP}" 
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                            data-paging="true" data-paging-count-format="{CP} de {TP}"
                                             data-empty="Sin registros">
                                             <thead>
                                                 <tr>
@@ -348,7 +348,7 @@
                                                         <tr>
                                                             <td><%# Eval("Dias") %></td>
                                                             <td><%# Eval("Observaciones") %></td>
-                                                            <td style="vertical-align:central;">
+                                                            <td style="vertical-align: central;">
                                                                 <%# Eval("Fecha", "{0:dd MMM yyyy}") %>
                                                             </td>
                                                             <td><%# Eval("Estado") %></td>
@@ -362,7 +362,7 @@
 
                                 <div class="ibox">
                                     <div class="ibox-title bg-info">
-                                        <h5><i class="fa fa-head-side-mask"></i> Incapacidades</h5>
+                                        <h5><i class="fa fa-head-side-mask m-r-xs"></i>Incapacidades</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up text-white"></i>
@@ -373,8 +373,8 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="footable table table-striped" data-paging-size="10" 
-                                            data-paging="true" data-paging-count-format="{CP} de {TP}" 
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                            data-paging="true" data-paging-count-format="{CP} de {TP}"
                                             data-empty="Sin registros">
                                             <thead>
                                                 <tr>
@@ -390,7 +390,7 @@
                                                         <tr>
                                                             <td><%# Eval("Dias") %></td>
                                                             <td><%# Eval("Observaciones") %></td>
-                                                            <td style="vertical-align:central;">
+                                                            <td style="vertical-align: central;">
                                                                 <%# Eval("Fecha", "{0:dd MMM yyyy}") %>
                                                             </td>
                                                             <td><%# Eval("Estado") %></td>
@@ -408,7 +408,7 @@
 
                                 <div class="ibox">
                                     <div class="ibox-title bg-warning">
-                                        <h5><i class="fa fa-person-circle-question"></i> ParQ</h5>
+                                        <h5><i class="fa fa-person-circle-question m-r-xs"></i>ParQ</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up text-white"></i>
@@ -427,8 +427,8 @@
                                                         <div>
                                                             <small class="pull-right text-navy"><%# Eval("FechaRespParQ", "{0:dd MMM yyyy}") %></small>
                                                             <strong><%# Eval("Orden") %></strong>
-                                                            <div><%# Eval("PreguntaParQ") %></div>
-                                                            <small class="text-muted"><span class="label label-<%# Eval("label") %>"><%# Eval("respuesta1") %></span> <%# Eval("Respuesta2ParQ") %></small>
+                                                            <div><%# Eval("PreguntaParq") %></div>
+                                                            <small class="text-muted"><span class="label label-<%# Eval("label") %>"><%# Eval("Respuesta1") %></span> <%# Eval("Argumento") %></small>
                                                         </div>
                                                     </div>
                                                 </ItemTemplate>
@@ -445,7 +445,7 @@
 
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title bg-info">
-                                        <h5><i class="fa fa-circle-info"></i> Información adicional</h5>
+                                        <h5><i class="fa fa-circle-info m-r-xs"></i>Información CRM</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -456,119 +456,27 @@
 
                                         <div class="timeline-item">
                                             <div class="row">
-                                                <div class="col-xs-3 date">
-                                                    <i class="fa fa-briefcase"></i>
-                                                    6:00 am
-                                                <br />
-                                                    <small class="text-navy">2 hour ago</small>
-                                                </div>
-                                                <div class="col-xs-7 content no-top-border">
-                                                    <p class="m-b-xs"><strong>Citas</strong></p>
-
-                                                    <p>
-                                                        Conference on the sales results for the previous year. Monica please examine sales trends in marketing and products. Below please find the current status of the
-                                                    sale.
-                                                    </p>
-
-                                                </div>
+                                                <asp:Literal ID="ltCRM" runat="server"></asp:Literal>
                                             </div>
                                         </div>
-                                        <div class="timeline-item">
-                                            <div class="row">
-                                                <div class="col-xs-3 date">
-                                                    <i class="fa fa-file-text"></i>
-                                                    7:00 am
-                                                <br />
-                                                    <small class="text-navy">3 hour ago</small>
-                                                </div>
-                                                <div class="col-xs-7 content">
-                                                    <p class="m-b-xs"><strong>Rutinas</strong></p>
-                                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="timeline-item">
-                                            <div class="row">
-                                                <div class="col-xs-3 date">
-                                                    <i class="fa fa-coffee"></i>
-                                                    8:00 am
-                                                <br />
-                                                </div>
-                                                <div class="col-xs-7 content">
-                                                    <p class="m-b-xs"><strong>Clases</strong></p>
-                                                    <p>
-                                                        Go to shop and find some products.
-                                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="timeline-item">
-                                            <div class="row">
-                                                <div class="col-xs-3 date">
-                                                    <i class="fa fa-phone"></i>
-                                                    11:00 am
-                                                <br />
-                                                    <small class="text-navy">21 hour ago</small>
-                                                </div>
-                                                <div class="col-xs-7 content">
-                                                    <p class="m-b-xs"><strong>Productos</strong></p>
-                                                    <p>
-                                                        Lorem Ipsum has been the industry's standard dummy text ever since.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="timeline-item">
-                                            <div class="row">
-                                                <div class="col-xs-3 date">
-                                                    <i class="fa fa-user-md"></i>
-                                                    09:00 pm
-                                                <br />
-                                                    <small>21 hour ago</small>
-                                                </div>
-                                                <div class="col-xs-7 content">
-                                                    <p class="m-b-xs"><strong>Go to the doctor dr Smith</strong></p>
-                                                    <p>
-                                                        Find some issue and go to doctor.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="timeline-item">
-                                            <div class="row">
-                                                <div class="col-xs-3 date">
-                                                    <i class="fa fa-comments"></i>
-                                                    12:50 pm
-                                                <br />
-                                                    <small class="text-navy">48 hour ago</small>
-                                                </div>
-                                                <div class="col-xs-7 content">
-                                                    <p class="m-b-xs"><strong>Chat with Monica and Sandra</strong></p>
-                                                    <p>
-                                                        Web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-
                                     </div>
                                 </div>
 
                                 <div class="ibox">
                                     <div class="ibox-content">
-                                        <h3><i class="fa fa-folder-open"></i> Documentos</h3>
+                                        <h3><i class="fa fa-folder-open m-r-xs"></i>Documentos</h3>
                                         <ul class="list-unstyled file-list">
-                                            <li><a href=""><i class="fa fa-file"></i> Project_document.docx</a></li>
-                                            <li><a href=""><i class="fa fa-file-image"></i> Logo_zender_company.jpg</a></li>
-                                            <li><a href=""><i class="fab fa-stack-exchange"></i> Email_from_Alex.mln</a></li>
-                                            <li><a href=""><i class="fa fa-file"></i> Contract_20_11_2014.docx</a></li>
-                                            <li><a href=""><i class="fa fa-file-powerpoint"></i> Presentation.pptx</a></li>
-                                            <li><a href=""><i class="fa fa-file"></i> 10_08_2015.docx</a></li>
+                                            <li><a href=""><i class="fa fa-file m-r-xs"></i>Project_document.docx</a></li>
+                                            <li><a href=""><i class="fa fa-file-image m-r-xs"></i>Logo_zender_company.jpg</a></li>
+                                            <li><a href=""><i class="fab fa-stack-exchange m-r-xs"></i>Email_from_Alex.mln</a></li>
+                                            <li><a href=""><i class="fa fa-file m-r-xs"></i>Contract_20_11_2014.docx</a></li>
+                                            <li><a href=""><i class="fa fa-file-powerpoint m-r-xs"></i>Presentation.pptx</a></li>
+                                            <li><a href=""><i class="fa fa-file m-r-xs"></i>10_08_2015.docx</a></li>
                                         </ul>
                                     </div>
                                 </div>
-
+                                <button id="btnVolver" runat="server" type="button" class="btn btn-sm btn-info pull-right m-t-n-xs" onclick="window.location.href='agendacrm.aspx';">
+                                    Regresar a Agenda CRM</button>
                             </div>
 
                         </div>

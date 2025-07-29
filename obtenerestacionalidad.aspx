@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="eliminardisponibilidad.aspx.cs" Inherits="fpWebApp.eliminardisponibilidad" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="obtenerestacionalidad.aspx.cs" Inherits="fpWebApp.obtenerestacionalidad" %>
 
 <!DOCTYPE html>
 

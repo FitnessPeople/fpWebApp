@@ -250,6 +250,7 @@
     <Content Include="404.html" />
     <Content Include="500.html" />
     <Content Include="accesoafiliado.aspx" />
+    <Content Include="activosfijos.aspx" />
     <Content Include="afiliados.aspx" />
     <Content Include="agenda.aspx" />
     <Content Include="agendacrm.aspx" />
@@ -258,6 +259,7 @@
     <Content Include="agendarcita.aspx" />
     <Content Include="arl.aspx" />
     <Content Include="asignarcita.aspx" />
+    <Content Include="asignartecnicoticket.aspx" />
     <Content Include="asistenciaagendagympass.aspx" />
     <Content Include="autorizaciones.aspx" />
     <Content Include="biodispositivos.aspx" />
@@ -290,10 +292,12 @@
     <Content Include="controles\indicadoresacceso.ascx" />
     <Content Include="controles\indicadoresgympass.ascx" />
     <Content Include="controles\indicadoresmedico.ascx" />
+    <Content Include="controles\indicadoressoporte.ascx" />
     <Content Include="controles\indicadoresusucrm.ascx" />
     <Content Include="controles\navbar.ascx" />
     <Content Include="controles\paginasperfil.ascx" />
     <Content Include="controles\rightsidebar.ascx" />
+    <Content Include="correointerno.aspx" />
     <Content Include="cortesias.aspx" />
     <Content Include="cortesiasAfil.aspx" />
     <Content Include="crmnuevocontacto.aspx" />
@@ -428,6 +432,7 @@
     <Content Include="dashboard_5.html" />
     <Content Include="Default.aspx" />
     <Content Include="detalleafiliado.aspx" />
+    <Content Include="detallecorreo.aspx" />
     <Content Include="editarafiliado.aspx" />
     <Content Include="editarempleado.aspx" />
     <Content Include="editarempresaafiliada.aspx" />
@@ -436,7 +441,6 @@
     <Content Include="editarproductotienda.aspx" />
     <Content Include="editarusuario.aspx" />
     <Content Include="eliminarafiliado.aspx" />
-    <Content Include="eliminardisponibilidad.aspx" />
     <Content Include="eliminarempleado.aspx" />
     <Content Include="eliminarusuario.aspx" />
     <Content Include="embajadores.aspx" />
@@ -444,7 +448,9 @@
     <Content Include="empresasafiliadas.aspx" />
     <Content Include="eps.aspx" />
     <Content Include="especialistas.aspx" />
+    <Content Include="estacionalidad.aspx" />
     <Content Include="estadocivil.aspx" />
+    <Content Include="estadoscrm.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="genero.aspx" />
@@ -953,11 +959,13 @@
     <Content Include="nuevoempleado.aspx" />
     <Content Include="nuevoespecialista.aspx" />
     <Content Include="nuevoproductotienda.aspx" />
+    <Content Include="nuevoticketsoporte.aspx" />
     <Content Include="nuevousuario.aspx" />
     <Content Include="objetivosafiliado.aspx" />
     <Content Include="obteneraccesstokensiigo.aspx" />
     <Content Include="obtenerafiliados.aspx" />
     <Content Include="obtenerciudades.aspx" />
+    <Content Include="obtenerestacionalidad.aspx" />
     <Content Include="olvidoclave.aspx" />
     <Content Include="paginas.aspx" />
     <Content Include="pantallabloqueo.aspx" />
@@ -972,6 +980,7 @@
     <Content Include="productostienda.aspx" />
     <Content Include="profesiones.aspx" />
     <Content Include="recuperacionclave.aspx" />
+    <Content Include="redactarcorreo.aspx" />
     <Content Include="reportepagos.aspx" />
     <Content Include="reportepagosmulticanal.aspx" />
     <Content Include="respuestaautorizacion.aspx" />
@@ -989,6 +998,7 @@
     <Content Include="sedes.aspx" />
     <Content Include="soporte.aspx" />
     <Content Include="tablasbd.aspx" />
+    <Content Include="ticketsoporte.aspx" />
     <Content Include="tiposdocumento.aspx" />
     <Content Include="tiposincapacidades.aspx" />
     <Content Include="traspasos.aspx" />
@@ -1006,6 +1016,13 @@
     </Compile>
     <Compile Include="accesoafiliado.aspx.designer.cs">
       <DependentUpon>accesoafiliado.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="activosfijos.aspx.cs">
+      <DependentUpon>activosfijos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="activosfijos.aspx.designer.cs">
+      <DependentUpon>activosfijos.aspx</DependentUpon>
     </Compile>
     <Compile Include="afiliados.aspx.cs">
       <DependentUpon>afiliados.aspx</DependentUpon>
@@ -1063,6 +1080,13 @@
     </Compile>
     <Compile Include="asignarcita.aspx.designer.cs">
       <DependentUpon>asignarcita.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="asignartecnicoticket.aspx.cs">
+      <DependentUpon>asignartecnicoticket.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="asignartecnicoticket.aspx.designer.cs">
+      <DependentUpon>asignartecnicoticket.aspx</DependentUpon>
     </Compile>
     <Compile Include="asistenciaagendagympass.aspx.cs">
       <DependentUpon>asistenciaagendagympass.aspx</DependentUpon>
@@ -1277,6 +1301,13 @@
     <Compile Include="controles\indicadoresmedico.ascx.designer.cs">
       <DependentUpon>indicadoresmedico.ascx</DependentUpon>
     </Compile>
+    <Compile Include="controles\indicadoressoporte.ascx.cs">
+      <DependentUpon>indicadoressoporte.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadoressoporte.ascx.designer.cs">
+      <DependentUpon>indicadoressoporte.ascx</DependentUpon>
+    </Compile>
     <Compile Include="controles\indicadoresusucrm.ascx.cs">
       <DependentUpon>indicadoresusucrm.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1304,6 +1335,13 @@
     </Compile>
     <Compile Include="controles\rightsidebar.ascx.designer.cs">
       <DependentUpon>rightsidebar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="correointerno.aspx.cs">
+      <DependentUpon>correointerno.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="correointerno.aspx.designer.cs">
+      <DependentUpon>correointerno.aspx</DependentUpon>
     </Compile>
     <Compile Include="cortesias.aspx.cs">
       <DependentUpon>cortesias.aspx</DependentUpon>
@@ -1339,6 +1377,13 @@
     </Compile>
     <Compile Include="detalleafiliado.aspx.designer.cs">
       <DependentUpon>detalleafiliado.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="detallecorreo.aspx.cs">
+      <DependentUpon>detallecorreo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="detallecorreo.aspx.designer.cs">
+      <DependentUpon>detallecorreo.aspx</DependentUpon>
     </Compile>
     <Compile Include="editarafiliado.aspx.cs">
       <DependentUpon>editarafiliado.aspx</DependentUpon>
@@ -1396,13 +1441,6 @@
     <Compile Include="eliminarafiliado.aspx.designer.cs">
       <DependentUpon>eliminarafiliado.aspx</DependentUpon>
     </Compile>
-    <Compile Include="eliminardisponibilidad.aspx.cs">
-      <DependentUpon>eliminardisponibilidad.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="eliminardisponibilidad.aspx.designer.cs">
-      <DependentUpon>eliminardisponibilidad.aspx</DependentUpon>
-    </Compile>
     <Compile Include="eliminarempleado.aspx.cs">
       <DependentUpon>eliminarempleado.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1452,12 +1490,26 @@
     <Compile Include="especialistas.aspx.designer.cs">
       <DependentUpon>especialistas.aspx</DependentUpon>
     </Compile>
+    <Compile Include="estacionalidad.aspx.cs">
+      <DependentUpon>estacionalidad.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="estacionalidad.aspx.designer.cs">
+      <DependentUpon>estacionalidad.aspx</DependentUpon>
+    </Compile>
     <Compile Include="estadocivil.aspx.cs">
       <DependentUpon>estadocivil.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="estadocivil.aspx.designer.cs">
       <DependentUpon>estadocivil.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="estadoscrm.aspx.cs">
+      <DependentUpon>estadoscrm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="estadoscrm.aspx.designer.cs">
+      <DependentUpon>estadoscrm.aspx</DependentUpon>
     </Compile>
     <Compile Include="genero.aspx.cs">
       <DependentUpon>genero.aspx</DependentUpon>
@@ -1714,6 +1766,13 @@
     <Compile Include="nuevoproductotienda.aspx.designer.cs">
       <DependentUpon>nuevoproductotienda.aspx</DependentUpon>
     </Compile>
+    <Compile Include="nuevoticketsoporte.aspx.cs">
+      <DependentUpon>nuevoticketsoporte.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="nuevoticketsoporte.aspx.designer.cs">
+      <DependentUpon>nuevoticketsoporte.aspx</DependentUpon>
+    </Compile>
     <Compile Include="nuevousuario.aspx.cs">
       <DependentUpon>nuevousuario.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1748,6 +1807,13 @@
     </Compile>
     <Compile Include="obtenerciudades.aspx.designer.cs">
       <DependentUpon>obtenerciudades.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="obtenerestacionalidad.aspx.cs">
+      <DependentUpon>obtenerestacionalidad.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="obtenerestacionalidad.aspx.designer.cs">
+      <DependentUpon>obtenerestacionalidad.aspx</DependentUpon>
     </Compile>
     <Compile Include="olvidoclave.aspx.cs">
       <DependentUpon>olvidoclave.aspx</DependentUpon>
@@ -1848,6 +1914,13 @@
     <Compile Include="recuperacionclave.aspx.designer.cs">
       <DependentUpon>recuperacionclave.aspx</DependentUpon>
     </Compile>
+    <Compile Include="redactarcorreo.aspx.cs">
+      <DependentUpon>redactarcorreo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="redactarcorreo.aspx.designer.cs">
+      <DependentUpon>redactarcorreo.aspx</DependentUpon>
+    </Compile>
     <Compile Include="reportepagos.aspx.cs">
       <DependentUpon>reportepagos.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1889,6 +1962,13 @@
     </Compile>
     <Compile Include="tablasbd.aspx.designer.cs">
       <DependentUpon>tablasbd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ticketsoporte.aspx.cs">
+      <DependentUpon>ticketsoporte.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ticketsoporte.aspx.designer.cs">
+      <DependentUpon>ticketsoporte.aspx</DependentUpon>
     </Compile>
     <Compile Include="tiposdocumento.aspx.cs">
       <DependentUpon>tiposdocumento.aspx</DependentUpon>

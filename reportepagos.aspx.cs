@@ -3,19 +3,11 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
-using System.Net;
 using System.Text;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Globalization;
-using DocumentFormat.OpenXml.InkML;
-using OfficeOpenXml;
-using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
-using NPOI.SS.Formula.Functions;
 
 namespace fpWebApp
 {
@@ -105,7 +97,7 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void listaTransaccionesPorFecha(string tipoPago, string fechaIni, string fechaFin)
+        private void listaTransaccionesPorFecha(int tipoPago, string fechaIni, string fechaFin)
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
@@ -400,7 +392,7 @@ namespace fpWebApp
 
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
-            listaTransaccionesPorFecha(ddlTipoPago.SelectedValue.ToString(), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+            listaTransaccionesPorFecha(Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
         }
     }
 }

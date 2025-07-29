@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
-using System.IO;
-using System.Text;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -253,8 +247,8 @@ namespace fpWebApp
             if (dt != null && dt.Rows.Count > 0)
             {
                 ddlCategorias.DataSource = dt;
-                ddlCategorias.DataValueField = "idCategoria";
-                ddlCategorias.DataTextField = "Nombre";
+                ddlCategorias.DataValueField = "idCategoriaPagina";
+                ddlCategorias.DataTextField = "NombreCategoriaPagina";
                 ddlCategorias.DataBind();
             }
 

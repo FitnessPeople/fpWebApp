@@ -1,12 +1,6 @@
-﻿using fpWebApp.controles;
-using NPOI.OpenXmlFormats.Spreadsheet;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
 using System.Globalization;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
@@ -39,7 +33,7 @@ namespace fpWebApp
                         divCrear.Visible = true;
                         CargarCalendario();
                         DateTime fechaActual = DateTime.Now;
-                        DateTime fechaDestino = new DateTime(2025, 7, 19);
+                        DateTime fechaDestino = new DateTime(2025, 8, 29);
                         TimeSpan diferencia = fechaDestino - fechaActual;
                         ltDias.Text = Convert.ToInt32(diferencia.TotalDays).ToString();
 ;                    }

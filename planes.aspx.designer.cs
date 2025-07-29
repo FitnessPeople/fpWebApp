@@ -15,22 +15,22 @@ namespace fpWebApp
     {
 
         /// <summary>
-        /// Control navbar1.
+        /// Control navbar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.navbar navbar1;
+        protected global::fpWebApp.controles.navbar navbar;
 
         /// <summary>
-        /// Control header1.
+        /// Control header.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.header header1;
+        protected global::fpWebApp.controles.header header;
 
         /// <summary>
         /// Control divMensaje.
@@ -321,21 +321,21 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Repeater rpPlanes;
 
         /// <summary>
-        /// Control footer1.
+        /// Control footer.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.footer footer1;
+        protected global::fpWebApp.controles.footer footer;
 
         /// <summary>
-        /// Control rightsidebar1.
+        /// Control rightsidebar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.rightsidebar rightsidebar1;
+        protected global::fpWebApp.controles.rightsidebar rightsidebar;
     }
 }

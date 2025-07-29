@@ -39,7 +39,8 @@
             <li id="inicio" class="old">
                 <a href="inicio"><i class="fa fa-house"></i><span class="nav-label">Inicio</span></a>
             </li>
-            <li>
+            <asp:Literal ID="ltMenu" runat="server"></asp:Literal>
+            <%--<li>
                 <a href="#"><i class="fa fa-id-card"></i><span class="nav-label">Afiliados</span><span class="fa arrow"></span></a>
                 <ul id="afiliados2" class="nav nav-second-level collapse">
                     <li id="afiliados1" class="old">
@@ -122,32 +123,8 @@
                     <li><a href="#">Unificar afiliados</a></li>
                     <li id="logactividades" class="old"><a href="logactividades"><i class="fa fa-location-crosshairs"></i>Flujo de Actividades</a></li>
                 </ul>
-            </li>
-            <%--<li>
-                <a href="#"><i class="fa fa-cog"></i><span class="nav-label">Configuración</span><span class="fa arrow"></span></a>
-                <ul id="configuracion" class="nav nav-second-level collapse">
-                    <li id="paginas" class="old"><a href="paginas"><i class="fa fa-file-code"></i>Páginas</a></li>
-                    <li id="perfiles" class="old"><a href="perfiles"><i class="fa fa-id-badge"></i>Perfiles</a></li>
-                    <li id="profesiones" class="old"><a href="profesiones"><i class="fa fa-briefcase"></i>Profesiones</a></li>
-                    <li id="eps" class="old"><a href="eps"><i class="fa fa-house-medical"></i>EPS's</a></li>
-                    <li id="pension" class="old"><a href="pension"><i class="fa fa-sack-dollar"></i>Fondos de pensión</a></li>
-                    <li id="cajas" class="old"><a href="cajascomp"><i class="fa fa-piggy-bank"></i>Cajas de compensación</a></li>
-                    <li id="arl" class="old"><a href="arl"><i class="fa fa-person-falling-burst"></i>ARL's</a></li>
-                    <li id="cesantias" class="old"><a href="cesantias"><i class="fa fa-hand-holding-dollar"></i>Fondos de cesantías</a></li>
-                    <li id="ciudades" class="old"><a href="ciudades"><i class="fa fa-city"></i>Ciudades</a></li>
-                    <li id="ciudadessedes" class="old"><a href="ciudadessedes"><i class="fa fa-building-user"></i>Ciudades sedes</a></li>
-                    <li id="tiposdocumento" class="old"><a href="tiposdocumento"><i class="fa fa-id-card"></i>Tipos de documento</a></li>
-                    <li id="genero" class="old"><a href="genero"><i class="fa fa-children"></i>Género</a></li>
-                    <li id="estadocivil" class="old"><a href="estadocivil"><i class="fa fa-people-pulling"></i>Estado civil</a></li>
-                    <li id="objetivosafiliado" class="old"><a href="objetivosafiliado"><i class="fa fa-bullseye"></i>Objetivos afiliado</a></li>
-                    <li id="parq" class="old"><a href="parq"><i class="fa fa-person-circle-question"></i>ParQ</a></li>
-                    <li id="tiposincapacidades" class="old"><a href="tiposincapacidades"><i class="fa fa-hospital-user"></i>Tipos de incapacidad</a></li>
-                    <li id="canalesventa" class="old"><a href="canalesventa"><i class="fa-solid fa-list-ul"></i>Canales de venta</a></li>
-                    <li id="tablasbd" class="old"><a href="tablasbd"><i class="fa-solid fa-table"></i>Tablas BD</a></li>
-                    <li id="procedimientosalmacenados" class="old"><a href="procedimientosalmacenados"><i class="fa-solid fa-database"></i>Procedimientos almacenados</a></li>
-                </ul>
             </li>--%>
-            <li>
+            <%--<li>
                 <a href="#"><i class="fa fa-user-gear"></i><span class="nav-label">Configuración</span><span class="fa arrow"></span></a>
                 <ul id="configuracion" class="nav nav-second-level collapse">
                     <li id="profesiones" class="old"><a href="profesiones"><i class="fa fa-briefcase"></i>Profesiones</a></li>
@@ -203,7 +180,7 @@
                     <li id="embajadores" class="old"><a href="embajadores"><i class="fa fa-person-rays"></i>Embajadores</a></li>
                     <li id="planesweb" class="old"><a href="planesweb"><i class="fa fa-ticket"></i>Planes</a></li>
                 </ul>
-            </li>
+            </li>--%>
             <li class="special_link">
                 <a href="calendariofpadmin"><i class="fa fa-calendar"></i><span class="nav-label">Calendario FP+ Admin</span></a>
             </li>

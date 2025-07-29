@@ -197,10 +197,10 @@
                                                     <asp:DropDownList ID="ddlTipoPago" runat="server" AppendDataBoundItems="true"
                                                         DataTextField="TipoDocumento" DataValueField="idTipoDoc" CssClass="form-control input-sm">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                        <asp:ListItem Text="Efectivo" Value="Efectivo"></asp:ListItem>
-                                                        <asp:ListItem Text="Transferencia" Value="Transferencia"></asp:ListItem>
-                                                        <asp:ListItem Text="Datafono" Value="Datafono"></asp:ListItem>
-                                                        <asp:ListItem Text="Wompi" Value="Wompi"></asp:ListItem>
+                                                        <asp:ListItem Text="Efectivo" Value="1"></asp:ListItem>
+                                                        <asp:ListItem Text="Transferencia" Value="2"></asp:ListItem>
+                                                        <asp:ListItem Text="Datafono" Value="4"></asp:ListItem>
+                                                        <asp:ListItem Text="Wompi" Value="5"></asp:ListItem>
                                                  </asp:DropDownList>
                                                 </div>
                                             </div>

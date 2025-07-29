@@ -1,13 +1,7 @@
-﻿using Microsoft.Ajax.Utilities;
-using NPOI.OpenXmlFormats.Spreadsheet;
-using NPOI.OpenXmlFormats.Wordprocessing;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {

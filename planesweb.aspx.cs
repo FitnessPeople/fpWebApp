@@ -1,12 +1,7 @@
-﻿using NPOI.OpenXmlFormats.Dml.Chart;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
-using System.Globalization;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Web;
-using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -22,7 +17,7 @@ namespace fpWebApp
                 {
                     if (Session["idUsuario"] != null)
                     {
-                        ValidarPermisos("Planes");
+                        ValidarPermisos("Planes web");
                         if (ViewState["SinPermiso"].ToString() == "1")
                         {
                             //No tiene acceso a esta página

@@ -198,7 +198,6 @@
     <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
 
     <!-- Full Calendar -->
-    <%--<script src="js/plugins/fullcalendar/fullcalendar.min.js"></script>--%>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
 
     <!-- Date range picker -->

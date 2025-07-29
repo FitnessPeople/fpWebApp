@@ -204,7 +204,8 @@
                                         <th data-sortable="false" data-breakpoints="xs">Nombre Comercial</th>
                                         <th data-breakpoints="xs sm md">Celular</th>
                                         <th data-breakpoints="xs sm md">Correo</th>
-                                        <th data-type="date" data-breakpoints="xs sm md">Fecha Convenio</th>
+                                        <th data-type="date" data-breakpoints="xs sm md">Fecha Inicio Convenio</th>
+                                        <th data-type="date" data-breakpoints="xs sm md">Fecha Fin Convenio</th>
                                         <th class="text-nowrap" data-breakpoints="xs">Estado</th>
                                         <th data-breakpoints="all" data-title="Info"></th>
                                         <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
@@ -219,6 +220,7 @@
                                                 <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("CelularEmpresa") %>" target="_blank"><%# Eval("CelularEmpresa") %></a></td>
                                                 <td><i class="fa fa-envelope m-r-xs font-bold"></i><%# Eval("CorreoEmpresa") %></td>
                                                 <td><%# Eval("FechaConvenio", "{0:dd MMM yyyy}") %></td>
+                                                <td><%# Eval("FechaFinConvenio", "{0:dd MMM yyyy}") %></td>
                                                 <td><span class="badge badge-<%# Eval("badge") %>"><%# Eval("EstadoEmpresa") %></span></td>
                                                 <td>
                                                     <table class="table table-bordered">

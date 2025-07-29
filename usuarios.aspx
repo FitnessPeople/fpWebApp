@@ -179,7 +179,7 @@
                                         <thead>
                                             <tr>
                                                 <th data-sortable="false" data-breakpoints="xs">Nombre</th>
-                                                <th data-sortable="false" data-breakpoints="xs">Cargo</th>
+                                                <th data-sortable="true" data-breakpoints="xs">Cargo</th>
                                                 <th data-sortable="false" data-breakpoints="xs sm md">Empleado</th>
                                                 <th data-breakpoints="xs sm md">Correo</th>
                                                 <%--<th data-sortable="false" data-breakpoints="xs sm md">Clave</th>--%>

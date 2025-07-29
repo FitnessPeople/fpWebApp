@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -46,6 +43,25 @@ namespace fpWebApp
                     {
                         btnEliminar.Visible = true;
                     }
+                    if (Request.QueryString.Count > 0)
+                    {
+                        if (Request.QueryString["deleteid"] != null)
+                        {
+                            try
+                            {
+                                string strQuery = "DELETE FROM DisponibilidadEspecialistas " +
+                                    " WHERE idDisponibilidad = " + Request.QueryString["deleteid"].ToString();
+                                clasesglobales cg = new clasesglobales();
+                                string mensaje = cg.TraerDatosStr(strQuery);
+                            }
+                            catch (SqlException ex)
+                            {
+                                string mensaje = ex.Message;
+                            }
+                            Response.Redirect("agenda");
+                        }
+                    }
+
                     //indicadores01.Visible = false;
                 }
                 else

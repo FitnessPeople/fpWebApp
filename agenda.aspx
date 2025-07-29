@@ -103,7 +103,7 @@
                 <div class="modal-footer">
                     <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
                     <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'agenda.aspx?deleteid=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>
                 </div>
             </div>
@@ -231,6 +231,7 @@
                                                         <div class="col-sm-8">
                                                             <asp:DropDownList CssClass="form-control input-sm required" ID="ddlDuracion" runat="server"
                                                                 AppendDataBoundItems="true">
+                                                                <asp:ListItem Text="20 minutos" Value="20"></asp:ListItem>
                                                                 <asp:ListItem Text="30 minutos" Value="30"></asp:ListItem>
                                                                 <asp:ListItem Text="40 minutos" Value="40"></asp:ListItem>
                                                                 <asp:ListItem Text="45 minutos" Value="45"></asp:ListItem>
@@ -438,10 +439,11 @@
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 eventClick: function (info) {
+                    console.log(info.event.id);
                     info.jsEvent.preventDefault();
 
                     const fechainicial = new Date(info.event.start);
-                    fechainicial.setHours(fechainicial.getHours() + 5);
+                    //fechainicial.setHours(fechainicial.getHours() + 5);
 
                     const formatter1 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
                     const formattedTime1 = formatter1.format(fechainicial);
@@ -453,7 +455,7 @@
                     const formattedmesini = formattermes.format(fechainicial)[0].toUpperCase() + formattermes.format(fechainicial).substring(1);
 
                     const fechafinal = new Date(info.event.end);
-                    fechafinal.setHours(fechafinal.getHours() + 5);
+                    //fechafinal.setHours(fechafinal.getHours() + 5);
                     const formatter2 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
                     const formattedTime2 = formatter2.format(fechafinal);
 

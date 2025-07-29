@@ -1,19 +1,12 @@
-﻿using Microsoft.Ajax.Utilities;
-using MySql.Data.MySqlClient;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.IO;
-using System.Text;
 using System.Web;
-using System.Web.Configuration;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
@@ -46,13 +39,13 @@ namespace fpWebApp
                             txbFechaFin.Attributes.Add("type", "date");
                             txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
 
-                            listaTransaccionesEfectivo("Efectivo", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
+                            listaTransaccionesEfectivo(1, (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
 
-                            listaTransaccionesDatafono("Datafono", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
+                            listaTransaccionesDatafono(4, (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
 
-                            listaTransaccionesTransferencia("Transferencia", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
+                            listaTransaccionesTransferencia(2, (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
 
-                            listaTransaccionesWompi("Wompi", (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
+                            listaTransaccionesWompi(5, (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
 
                         }
                     }
@@ -87,7 +80,7 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void listaTransaccionesEfectivo(string tipoPago, string fechaIni, string fechaFin)
+        private void listaTransaccionesEfectivo(int tipoPago, string fechaIni, string fechaFin)
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
@@ -97,7 +90,7 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void listaTransaccionesDatafono(string tipoPago, string fechaIni, string fechaFin)
+        private void listaTransaccionesDatafono(int tipoPago, string fechaIni, string fechaFin)
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
@@ -107,7 +100,7 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void listaTransaccionesTransferencia(string tipoPago, string fechaIni, string fechaFin)
+        private void listaTransaccionesTransferencia(int tipoPago, string fechaIni, string fechaFin)
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
@@ -117,7 +110,7 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void listaTransaccionesWompi(string tipoPago, string fechaIni, string fechaFin)
+        private void listaTransaccionesWompi(int tipoPago, string fechaIni, string fechaFin)
         {
             bool rtaStatus = false;
             clasesglobales cg = new clasesglobales();
@@ -225,17 +218,17 @@ namespace fpWebApp
 
         protected void btnFiltrar_Click(object sender, EventArgs e)
         {
-            listaTransaccionesEfectivo("Efectivo", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
-            listaTransaccionesDatafono("Datafono", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
-            listaTransaccionesTransferencia("Transferencia", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
-            listaTransaccionesWompi("Wompi", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+            listaTransaccionesEfectivo(1, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+            listaTransaccionesDatafono(4, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+            listaTransaccionesTransferencia(2, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+            listaTransaccionesWompi(5, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
         }
         protected void btnExportarEfe_Click(object sender, EventArgs e)
         {
             try
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarPagosPorTipo("Efectivo", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+                DataTable dt = cg.ConsultarPagosPorTipo(1, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
                 string nombreArchivo = $"Efectivo_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
@@ -297,7 +290,7 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarPagosPorTipo("Datafono", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+                DataTable dt = cg.ConsultarPagosPorTipo(4, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
                 string nombreArchivo = $"Datafono_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
@@ -359,7 +352,7 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarPagosPorTipo("Transferencia", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+                DataTable dt = cg.ConsultarPagosPorTipo(2, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
                 string nombreArchivo = $"Transferencia_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

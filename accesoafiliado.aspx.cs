@@ -1,13 +1,8 @@
-﻿using NPOI.OpenXmlFormats.Spreadsheet;
-using Org.BouncyCastle.Asn1.Ocsp;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
 using System.IO.Ports;
-using System.Web;
-using System.Web.Services.Description;
+using System.Threading;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
@@ -78,21 +73,28 @@ namespace fpWebApp
         /// </summary>
         private void ConsultarSedes()
         {
-            int idSedeUsuario = Convert.ToInt32(Session["idSede"]);
-
-            clasesglobales cg = new clasesglobales();
-
-            int? idSede = (idSedeUsuario == 11) ? (int?)null : idSedeUsuario;
-
-            DataTable dt = cg.ConsultaCargarSedesPorId(idSede, "Gimnasio");
-
-            if (idSedeUsuario == 11)
+            if (Session["idSede"].ToString() != "")
             {
-                ltSede.Text = "todas las sedes.";
+                int idSedeUsuario = Convert.ToInt32(Session["idSede"]);
+
+                clasesglobales cg = new clasesglobales();
+
+                int? idSede = (idSedeUsuario == 11) ? (int?)null : idSedeUsuario;
+
+                DataTable dt = cg.ConsultaCargarSedesPorId(idSede, "Gimnasio");
+
+                if (idSedeUsuario == 11)
+                {
+                    ltSede.Text = "todas las sedes.";
+                }
+                else
+                {
+                    ltSede.Text = "Sede " + dt.Rows[0]["NombreSede"].ToString();
+                }
             }
             else
             {
-                ltSede.Text = "Sede " + dt.Rows[0]["NombreSede"].ToString();
+                Response.Redirect("afiliados");
             }
         }
 
@@ -103,10 +105,12 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (idSedeUsuario == 11)
             {
-                strQuery = @"SELECT * 
-                    FROM AccesoAfiliado aa, Afiliados a, Sedes s 
+                strQuery = @"SELECT *, DATEDIFF(ap.FechaFinalPlan, CURDATE()) diasquefaltan 
+                    FROM AccesoAfiliado aa, Afiliados a, Sedes s, AfiliadosPlanes ap  
                     WHERE aa.idAfiliado = a.idAfiliado 
                     AND aa.idSede = s.idSede 
+                    AND aa.idAfiliado = ap.idAfiliado 
+                    AND ap.EstadoPlan = 'Activo' 
                     ORDER BY FechaHoraIngreso DESC";
             }
             else
@@ -141,12 +145,6 @@ namespace fpWebApp
                 //txbNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
 
                 //Cargar Planes del Afiliado
-                serialController = new SerialController("COM1"); // Reemplaza con tu puerto
-                serialController.Open();
-
-                serialController.SendData("ON");
-
-                serialController.Close();
 
                 strQuery = @"INSERT INTO AccesoAfiliado 
                     (idAfiliado, idSede, FechaHoraIngreso) 
@@ -178,6 +176,8 @@ namespace fpWebApp
                     });
                     ";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+
+                AbrirTorniquete();
             }
             else
             {
@@ -201,6 +201,20 @@ namespace fpWebApp
                     ";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
             }
+        }
+
+        public void AbrirTorniquete()
+        {
+            serialController = new SerialController("COM3"); // Reemplaza con tu puerto
+            serialController.Open();
+
+            serialController.SendData("1");
+
+            Thread.Sleep(1000);
+
+            serialController.SendData("0");
+
+            serialController.Close();
         }
 
         public class SerialController

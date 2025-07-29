@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace fpWebApp.controles
 {
@@ -69,7 +64,7 @@ namespace fpWebApp.controles
 
         private void CuantasSedes()
         {
-            string strQuery = "SELECT COUNT(*) AS cuantos FROM Sedes";
+            string strQuery = "SELECT COUNT(*) AS cuantos FROM Sedes WHERE idSede <> 11";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 

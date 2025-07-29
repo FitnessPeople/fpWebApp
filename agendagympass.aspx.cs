@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace fpWebApp
@@ -35,29 +32,36 @@ namespace fpWebApp
                     }
                     if (ViewState["Consulta"].ToString() == "1" || ViewState["CrearModificar"].ToString() == "1")
                     {
-                        int idSedeUsuario = Convert.ToInt32(Session["idSede"]);
-
-                        if (idSedeUsuario != 11)
+                        if (Session["idSede"].ToString() != "")
                         {
-                            clasesglobales cg = new clasesglobales();
+                            int idSedeUsuario = Convert.ToInt32(Session["idSede"]);
 
-                            int? idSede = (idSedeUsuario == 11) ? (int?)null : idSedeUsuario;
+                            if (idSedeUsuario != 11)
+                            {
+                                clasesglobales cg = new clasesglobales();
 
-                            DataTable dt = cg.ConsultaCargarSedesPorId(idSede, "Gimnasio");
+                                int? idSede = (idSedeUsuario == 11) ? (int?)null : idSedeUsuario;
 
-                            ltSede.Text = $"Sede {dt.Rows[0]["NombreSede"]}";
+                                DataTable dt = cg.ConsultaCargarSedesPorId(idSede, "Gimnasio");
 
-                            dt.Dispose();
-                        } 
+                                ltSede.Text = $"Sede {dt.Rows[0]["NombreSede"]}";
+
+                                dt.Dispose();
+                            }
+                            else
+                            {
+                                ltSede.Text = "de todas las sedes";
+                            }
+
+                            divFiltroSede.Visible = (idSedeUsuario == 11);
+                            CargarSedes();
+                            CargarEstados();
+                            CargarAgenda();
+                        }
                         else
                         {
-                            ltSede.Text = "de todas las sedes";
+                            Response.Redirect("gympass");
                         }
-
-                        divFiltroSede.Visible = (idSedeUsuario == 11);
-                        CargarSedes();
-                        CargarEstados();
-                        CargarAgenda();
                     }
                     if (ViewState["Borrar"].ToString() == "1")
                     {

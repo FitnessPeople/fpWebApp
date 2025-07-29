@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Configuration;
 using System.Data;
+using System.Data.Odbc;
 using System.IO;
 using System.Web;
 using System.Web.Configuration;
+using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
@@ -30,6 +32,8 @@ namespace fpWebApp
 
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
+                        btnAgregarYRedirigir.Visible = false;
+                        btnVolver.Visible = false;
                         DateTime dt14 = DateTime.Now.AddYears(-14);
                         DateTime dt100 = DateTime.Now.AddYears(-100);
                         txbFechaNac.Attributes.Add("min", dt100.Year.ToString() + "-" + string.Format("{0:MM}", dt100) + "-" + String.Format("{0:dd}", dt100));
@@ -58,8 +62,14 @@ namespace fpWebApp
                     {
                         bool respuesta = false;
                         int idCRM = Convert.ToInt32(Request.QueryString["idcrm"].ToString());
+                        Session["idcrm"] = "0";
+
                         clasesglobales cg = new clasesglobales();
                         DataTable dt = cg.ConsultarContactosCRMPorId(idCRM, out respuesta);
+                        btnAgregar.Visible = false;
+                        btnCancelar.Visible = false;
+                        btnAgregarYRedirigir.Visible = true;
+                        btnVolver.Visible = true;
                         if (dt.Rows.Count > 0)
                         {
                             txbNombre.Text = dt.Rows[0]["NombreContacto"].ToString();
@@ -69,10 +79,8 @@ namespace fpWebApp
                             txbTelefono.Text = dt.Rows[0]["TelefonoContacto"].ToString();
                             txbEmail.Text = dt.Rows[0]["EmailContacto"].ToString();
                             ddlEmpresaConvenio.SelectedValue = dt.Rows[0]["idEmpresaCRM"].ToString();
+                            Session["idcrm"] = dt.Rows[0]["idContacto"].ToString();
                         }
-
-
-                        // txbNombre.Text = Request.QueryString["idcrm"].ToString();   
                     }
                 }
                 else
@@ -129,10 +137,8 @@ namespace fpWebApp
 
         private void CargarEmpresas()
         {
-            string strQuery = "SELECT idEmpresaAfiliada, RazonSocial FROM EmpresasAfiliadas " +
-                "ORDER BY RazonSocial";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarEmpresasAfiliadas();
 
             ddlEmpresaConvenio.DataSource = dt;
             ddlEmpresaConvenio.DataBind();
@@ -142,9 +148,8 @@ namespace fpWebApp
 
         private void CargarEstadoCivil()
         {
-            string strQuery = "SELECT * FROM estadocivil";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarEstadosCiviles();
 
             ddlEstadoCivil.DataSource = dt;
             ddlEstadoCivil.DataBind();
@@ -154,9 +159,8 @@ namespace fpWebApp
 
         private void CargarEps()
         {
-            string strQuery = "SELECT * FROM eps";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarEpss();
 
             ddlEps.DataSource = dt;
             ddlEps.DataBind();
@@ -166,9 +170,8 @@ namespace fpWebApp
 
         private void CargarProfesiones()
         {
-            string strQuery = "SELECT * FROM profesiones";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarProfesiones();
 
             ddlProfesiones.DataSource = dt;
             ddlProfesiones.DataBind();
@@ -189,9 +192,8 @@ namespace fpWebApp
 
         private void CargarGeneros()
         {
-            string strQuery = "SELECT * FROM generos ORDER BY idGenero";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarGeneros();
 
             ddlGenero.DataSource = dt;
             ddlGenero.DataBind();
@@ -202,9 +204,8 @@ namespace fpWebApp
         private bool ExisteDocumento(string strDocumento)
         {
             bool rta = false;
-            string strQuery = "SELECT DocumentoAfiliado FROM Afiliados WHERE DocumentoAfiliado = '" + strDocumento + "' ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarExisteDocdAfiliado(strDocumento);
 
             if (dt.Rows.Count > 0)
             {
@@ -215,21 +216,21 @@ namespace fpWebApp
             return rta;
         }
 
-        private bool ExisteEmail(string strEmail)
-        {
-            bool rta = false;
-            string strQuery = "SELECT DocumentoAfiliado FROM Afiliados WHERE EmailAfiliado = '" + strEmail + "' ";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+        //private bool ExisteEmail(string strEmail)
+        //{
+        //    bool rta = false;
+        //    string strQuery = "SELECT DocumentoAfiliado FROM Afiliados WHERE EmailAfiliado = '" + strEmail + "' ";
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.TraerDatos(strQuery);
 
-            if (dt.Rows.Count > 0)
-            {
-                rta = true;
-            }
+        //    if (dt.Rows.Count > 0)
+        //    {
+        //        rta = true;
+        //    }
 
-            dt.Dispose();
-            return rta;
-        }
+        //    dt.Dispose();
+        //    return rta;
+        //}
 
         private bool ExisteTelefono(string strTelefono)
         {
@@ -249,98 +250,232 @@ namespace fpWebApp
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            // Validar si existe por Cedula, Email y/o Telefono
-            if (ExisteDocumento(txbDocumento.Text.ToString().Trim()))
+            string mensaje = string.Empty;
+
+            if (ExisteDocumento(txbDocumento.Text.Trim()))
             {
-                ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    "Un afiliado con este documento ya existe!" +
-                    "</div>";
+                string script = @"
+                    Swal.fire({
+                        title: 'Este documento ya está registrado',
+                        text: 'Ya existe un afiliado con este número de identificación.',
+                        icon: 'warning'
+                    });
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "DocumentoDuplicado", script, true);
+                UpdatePanel1.Update();
+                return;
             }
-            else
+
+            //if (ExisteEmail(txbEmail.Text.Trim()))
+            //{
+            //    string script = @"
+            //        Swal.fire({
+            //        title: 'Este correo ya está registrado',
+            //        text: 'Ya existe un afiliado con esta cuenta de correo electrónico.',
+            //        icon: 'warning'
+            //    });
+            //    ";
+            //    ScriptManager.RegisterStartupScript(this, GetType(), "EmailDuplicado", script, true);
+            //    UpdatePanel1.Update();
+            //    return;
+            //}
+
+
+            //if (ExisteTelefono(txbTelefono.Text.Trim())) 
+            //{
+            //    string script = @"
+            //        Swal.fire({
+            //        title: 'Este teléfono ya está registrado',
+            //        text: 'Ya existe un afiliado con este número de teléfono.',
+            //        icon: 'warning'
+            //    });
+            //    ";
+            //    ScriptManager.RegisterStartupScript(this, GetType(), "EmailDuplicado", script, true);
+            //    UpdatePanel1.Update();
+            //    return;
+            //}
+
+            string strFilename = "nofoto.png";
+            HttpPostedFile postedFile = Request.Files["fileFoto"];
+            if (postedFile != null && postedFile.ContentLength > 0)
             {
-                if (ExisteEmail(txbEmail.Text.ToString().Trim()))
+                string filePath = Server.MapPath("img//afiliados//") + Path.GetFileName(postedFile.FileName);
+                postedFile.SaveAs(filePath);
+                strFilename = postedFile.FileName;
+            }
+
+            clasesglobales cg = new clasesglobales();
+
+            try
+            {
+                string strClave = cg.CreatePassword(8);
+
+                mensaje = cg.InsertarAfiliado(txbDocumento.Text.Trim(), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value), txbNombre.Text.Trim(),
+                    txbApellido.Text.Trim(), txbTelefono.Text.Trim(), txbEmail.Text.Trim(), strClave, txbDireccion.Text.Trim(), Convert.ToInt32(ddlCiudadAfiliado.SelectedItem.Value),
+                    txbFechaNac.Text.Trim(), strFilename, Convert.ToInt32(ddlGenero.SelectedItem.Value), Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value),
+                    Convert.ToInt32(ddlProfesiones.SelectedItem.Value), Convert.ToInt32(ddlEmpresaConvenio.SelectedItem.Value), Convert.ToInt32(ddlEps.SelectedItem.Value),
+                    Convert.ToInt32(ddlSedes.SelectedItem.Value), txbResponsable.Text.Trim(), ddlParentesco.SelectedItem.Value.Trim(),
+                    txbTelefonoContacto.Text.Trim(), Convert.ToInt32(Session["idusuario"]));
+
+                if (mensaje == "OK")
                 {
-                    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Un afiliado con este correo electronico ya existe!" +
-                        "</div>";
+                    cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Nuevo",
+                        "El usuario creó un nuevo afiliado con documento: " + txbDocumento.Text, "", "");
+
+                    string script = @"
+                        Swal.fire({
+                            title: 'Afiliado registrado',
+                            text: '',
+                            icon: 'success',
+                            timer: 5000,
+                            showConfirmButton: false,
+                            timerProgressBar: true
+                        }).then(() => {
+                            window.location.href = 'afiliados';
+                        });
+                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
                 }
                 else
                 {
-                    if (ExisteTelefono(txbTelefono.Text.ToString().Trim()))
-                    {
-                        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Un afiliado con este teléfono ya existe!" +
-                        "</div>";
-                    }
-                    else
-                    {
-                        // Inserta en la tabla Afiliados
-                        string strFilename = "nofoto.png";
-                        HttpPostedFile postedFile = Request.Files["fileFoto"];
-
-                        if (postedFile != null && postedFile.ContentLength > 0)
-                        {
-                            //Save the File.
-                            string filePath = Server.MapPath("img//afiliados//") + Path.GetFileName(postedFile.FileName);
-                            postedFile.SaveAs(filePath);
-                            strFilename = postedFile.FileName;
-                        }
-
-                        clasesglobales cg = new clasesglobales();
-                        string strClave = cg.CreatePassword(8);
-
-                        string strQuery = "INSERT INTO afiliados " +
-                        "(DocumentoAfiliado, idTipoDocumento, NombreAfiliado, ApellidoAfiliado, CelularAfiliado, EmailAfiliado, ClaveAfiliado, " +
-                        "DireccionAfiliado, idCiudadAfiliado, FechaNacAfiliado, FotoAfiliado, idGenero, idEstadoCivilAfiliado, idEmpresaAfil, idProfesion, " +
-                        "idEps, idSede, ResponsableAfiliado, Parentesco, ContactoAfiliado, EstadoAfiliado, FechaAfiliacion, idUsuario) " +
-                        "VALUES ('" + txbDocumento.Text.ToString() + "', " + ddlTipoDocumento.SelectedItem.Value.ToString() + ", " +
-                        "'" + txbNombre.Text.ToString() + "', '" + txbApellido.Text.ToString() + "', " +
-                        "'" + txbTelefono.Text.ToString() + "', '" + txbEmail.Text.ToString() + "', '" + strClave + "', " +
-                        "'" + txbDireccion.Text.ToString() + "', " + ddlCiudadAfiliado.SelectedItem.Value.ToString() + ", " +
-                        "'" + txbFechaNac.Text.ToString() + "', '" + strFilename + "', " +
-                        "" + ddlGenero.SelectedItem.Value.ToString() + ", " + ddlEstadoCivil.SelectedItem.Value.ToString() + ", " +
-                        "" + ddlEmpresaConvenio.SelectedItem.Value.ToString() + ", " +
-                        "" + ddlProfesiones.SelectedItem.Value.ToString() + ", " + ddlEps.SelectedItem.Value.ToString() + ", " +
-                        "" + ddlSedes.SelectedItem.Value.ToString() + ", '" + txbResponsable.Text.ToString() + "', " +
-                        "'" + ddlParentesco.SelectedItem.Value.ToString() + "', '" + txbTelefonoContacto.Text.ToString() + "', " +
-                        "'Pendiente', CURDATE(), " + Session["idusuario"].ToString() + ") ";
-
-                        try
-                        {
-                            string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-
-                            using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
-                            {
-                                mysqlConexion.Open();
-                                using (MySqlCommand cmd = new MySqlCommand(strQuery, mysqlConexion))
-                                {
-                                    cmd.CommandType = CommandType.Text;
-                                    cmd.ExecuteNonQuery();
-                                }
-                                mysqlConexion.Close();
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            string respuesta = "ERROR: " + ex.Message;
-                        }
-
-                        cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Nuevo", "El usuario creó un nuevo afiliado con documento: " + txbDocumento.Text.ToString() + ".", "", "");
-
-                        DataTable dt = cg.TraerDatos("SELECT idAfiliado FROM Afiliados WHERE DocumentoAfiliado = '" + txbDocumento.Text.ToString() + "' ");
-
-                        string strMensaje = "Bienvenido a Fitness People \r\n\r\n";
-                        strMensaje += "Se ha registrado como afiliado en Fitness People. Por favor, agradecemos confirme sus datos a través de este enlace: \r\n";
-                        strMensaje += "https://fitnesspeoplecolombia.com/verificacion?id=" + dt.Rows[0]["idAfiliado"].ToString();
-
-                        cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", txbEmail.Text.ToString(), "Nuevo registro en Fitness People", strMensaje);
-
-                        Response.Redirect("afiliados");
-                    }
+                    string script = @"
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se pudo registrar. Detalle: " + mensaje.Replace("'", "\\'") + @"',
+                            icon: 'error'
+                        });
+                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
                 }
+            }
+            catch (Exception ex)
+            {
+                string script = @"
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Ocurrió un error inesperado. Detalle: " + ex.Message.Replace("'", "\\'") + @"',
+                        icon: 'error'
+                    });
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+            }
+        }
+
+
+        protected void btnAgregarYRedirigir_Click(object sender, EventArgs e)
+        {
+            string mensaje = string.Empty;
+            string idcrm = Session["idcrm"].ToString();
+
+            if (ExisteDocumento(txbDocumento.Text.Trim()))
+            {
+                string script = @"
+                    Swal.fire({
+                        title: 'Este documento ya está registrado',
+                        text: 'Ya existe un afiliado con este número de identificación.',
+                        icon: 'warning'
+                    });
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "DocumentoDuplicado", script, true);
+                UpdatePanel1.Update();
+                return;
+            }
+
+            //if (ExisteEmail(txbEmail.Text.Trim()))
+            //{
+            //    string script = @"
+            //        Swal.fire({
+            //        title: 'Este correo ya está registrado',
+            //        text: 'Ya existe un afiliado con esta cuenta de correo electrónico.',
+            //        icon: 'warning'
+            //    });
+            //    ";
+            //    ScriptManager.RegisterStartupScript(this, GetType(), "EmailDuplicado", script, true);
+            //    UpdatePanel1.Update();
+            //    return;
+            //}
+
+
+            //if (ExisteTelefono(txbTelefono.Text.Trim()))
+            //{
+            //    string script = @"
+            //        Swal.fire({
+            //        title: 'Este teléfono ya está registrado',
+            //        text: 'Ya existe un afiliado con este número de teléfono.',
+            //        icon: 'warning'
+            //    });
+            //    ";
+            //    ScriptManager.RegisterStartupScript(this, GetType(), "EmailDuplicado", script, true);
+            //    UpdatePanel1.Update();
+            //    return;
+            //}
+
+            string strFilename = "nofoto.png";
+            HttpPostedFile postedFile = Request.Files["fileFoto"];
+            if (postedFile != null && postedFile.ContentLength > 0)
+            {
+                string filePath = Server.MapPath("img//afiliados//") + Path.GetFileName(postedFile.FileName);
+                postedFile.SaveAs(filePath);
+                strFilename = postedFile.FileName;
+            }
+
+            clasesglobales cg = new clasesglobales();
+
+            try
+            {
+                string strClave = cg.CreatePassword(8);
+
+                mensaje = cg.InsertarAfiliado(txbDocumento.Text.Trim(), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value), txbNombre.Text.Trim(),
+                    txbApellido.Text.Trim(), txbTelefono.Text.Trim(), txbEmail.Text.Trim(), strClave, txbDireccion.Text.Trim(), Convert.ToInt32(ddlCiudadAfiliado.SelectedItem.Value),
+                    txbFechaNac.Text.Trim(), strFilename, Convert.ToInt32(ddlGenero.SelectedItem.Value), Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value),
+                    Convert.ToInt32(ddlProfesiones.SelectedItem.Value), Convert.ToInt32(ddlEmpresaConvenio.SelectedItem.Value), Convert.ToInt32(ddlEps.SelectedItem.Value),
+                    Convert.ToInt32(ddlSedes.SelectedItem.Value), txbResponsable.Text.Trim(), ddlParentesco.SelectedItem.Value.Trim(),
+                    txbTelefonoContacto.Text.Trim(), Convert.ToInt32(Session["idusuario"]));
+
+                if (mensaje == "OK")
+                {
+                    cg.InsertarLog(Session["idusuario"].ToString(), "afiliados", "Nuevo",
+                        "El usuario creó un nuevo afiliado con documento: " + txbDocumento.Text, "", "");
+
+                    DataTable dt = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(txbDocumento.Text));
+                    string idAfil = dt.Rows[0]["idAfiliado"].ToString();
+
+                    string script = @"
+                        Swal.fire({
+                            title: 'Afiliado registrado correctamente',
+                            text: 'Serás redirigido a los planes comerciales',
+                            icon: 'success',
+                            timer: 4000,
+                            showConfirmButton: false,
+                            timerProgressBar: true
+                        }).then(() => {                            
+                            window.location.href = 'planesAfiliado.aspx?idAfil=" + idAfil + "&idcrm=" + idcrm + @"';
+                        });
+                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                }
+                else
+                {
+                    string script = @"
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se pudo registrar. Detalle: " + mensaje.Replace("'", "\\'") + @"',
+                            icon: 'error'
+                        });
+                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                string script = @"
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Ocurrió un error inesperado. Detalle: " + ex.Message.Replace("'", "\\'") + @"',
+                        icon: 'error'
+                    });
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
             }
         }
     }

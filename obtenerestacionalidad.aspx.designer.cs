@@ -11,7 +11,7 @@ namespace fpWebApp
 {
 
 
-    public partial class eliminardisponibilidad
+    public partial class obtenerestacionalidad
     {
 
         /// <summary>
