@@ -169,6 +169,7 @@
       <HintPath>packages\System.Configuration.ConfigurationManager.9.0.1\lib\net462\System.Configuration.ConfigurationManager.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=9.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Diagnostics.DiagnosticSource.9.0.1\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
@@ -221,6 +222,7 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
@@ -451,6 +453,7 @@
     <Content Include="estacionalidad.aspx" />
     <Content Include="estadocivil.aspx" />
     <Content Include="estadoscrm.aspx" />
+    <Content Include="estudiafit.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="genero.aspx" />
@@ -1510,6 +1513,13 @@
     </Compile>
     <Compile Include="estadoscrm.aspx.designer.cs">
       <DependentUpon>estadoscrm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="estudiafit.aspx.cs">
+      <DependentUpon>estudiafit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="estudiafit.aspx.designer.cs">
+      <DependentUpon>estudiafit.aspx</DependentUpon>
     </Compile>
     <Compile Include="genero.aspx.cs">
       <DependentUpon>genero.aspx</DependentUpon>

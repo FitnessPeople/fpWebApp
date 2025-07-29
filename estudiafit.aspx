@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="gympass.aspx.cs" Inherits="fpWebApp.gympass" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="estudiafit.aspx.cs" Inherits="fpWebApp.estudiafit" %>
 
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
@@ -15,7 +15,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Gym Pass</title>
+    <title>Fitness People | Estudiafit</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
@@ -45,7 +45,7 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#gympass");
+            var element1 = document.querySelector("#estudiafit");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#sistema");
             element2.classList.remove("collapse");
@@ -122,11 +122,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-user-tag text-success m-r-sm"></i>Gym Pass</h2>
+                    <h2><i class="fa fa-user-graduate text-success m-r-sm"></i>Estudiafit</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Sistema</li>
-                        <li class="active"><strong>Gym Pass</strong></li>
+                        <li class="active"><strong>Estudiafit</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -137,7 +137,7 @@
                 <div class="row animated fadeInDown">
                     <%--Inicio Contenido!!!!--%>
 
-                    <uc1:indicadoresgympass runat="server" ID="indicadoresgympass" />
+                    <%--<uc1:indicadoresgympass runat="server" ID="indicadoresgympass" />--%>
 
                     <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
                         <div class="p-xs">
@@ -242,7 +242,7 @@
                                     </tbody>
                                 </table>
 
-                                <div class="modal fade" id="modal-agendar-info" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+                                <%--<div class="modal fade" id="modal-agendar-info" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -285,10 +285,6 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <asp:Button ID="btnAgendarGymPass" class="btn btn-success m-b-none" runat="server" Text="Agendar" OnClick="btnAgendarGymPass_Click" />
-                                                <%--<button type="submit" class="btn btn-primary">Agendar</button>--%>
-                                                <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
-                                                <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
-                                                <%--<button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>--%>
                                                 <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>
                                             </div>
                                         </div>
@@ -323,10 +319,6 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <asp:Button ID="btnEliminarAgendaGymPass" class="btn btn-danger" runat="server" Text="Aceptar" OnClick="btnEliminarAgendaGymPass_Click" />
-                                                <%--<button type="submit" class="btn btn-primary">Agendar</button>--%>
-                                                <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
-                                                <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
-                                                <%--<button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'eliminardisponibilidad.aspx?id=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>--%>
                                                 <button type="button" class="btn btn-success" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cancelar</button>
                                             </div>
                                         </div>
@@ -372,11 +364,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>--%>
                             </form>
                         </div>
                     </div>
-
                     <%--Fin Contenido!!!!--%>
                 </div>
             </div>
