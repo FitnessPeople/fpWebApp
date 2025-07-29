@@ -6794,7 +6794,8 @@ int valor, string observaciones, string estado)
         public string InsertarContactoCRM(string nombreContacto, string apellidoContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
         int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
         int idUsuario, int idObjetivo, int tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, int idTipoDoc,
-        string DocumentoAfiliado, string tiempoAtencion, out bool respuesta, out string mensaje)
+        string DocumentoAfiliado, string tiempoAtencion, int idGenero, int edad, string fechaNac, int idEstadoVenta, int idEstrategia,
+        out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -6828,6 +6829,11 @@ int valor, string observaciones, string estado)
                         cmd.Parameters.AddWithValue("@p_id_tipo_doc", idTipoDoc);
                         cmd.Parameters.AddWithValue("@p_documento_afiliado", DocumentoAfiliado);
                         cmd.Parameters.AddWithValue("@p_tiempo_atencion", tiempoAtencion);
+                        cmd.Parameters.AddWithValue("@p_genero", idGenero);
+                        cmd.Parameters.AddWithValue("@p_edad", edad);
+                        cmd.Parameters.AddWithValue("@p_fec_nac", fechaNac);
+                        cmd.Parameters.AddWithValue("@p_estado_venta", idEstadoVenta);
+                        cmd.Parameters.AddWithValue("@p_estrategia", idEstrategia);
 
 
                         // Parámetro de salida
@@ -6855,7 +6861,7 @@ int valor, string observaciones, string estado)
         public string ActualizarContactoCRM(int idContactoCMR, string nombreContacto, string apellidoContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
         int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
         int idUsuario, int idObjetivo, int tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, int idTipoDoc, string DocumentoAfiliado,
-        out bool respuesta, out string mensaje)
+        int idGenero, int edad, string fechaNac, int idEstadoVenta, int idEstrategia, out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -6889,6 +6895,11 @@ int valor, string observaciones, string estado)
                         cmd.Parameters.AddWithValue("@p_meses_plan", mesesPlan);
                         cmd.Parameters.AddWithValue("@p_id_tipo_doc", idTipoDoc);
                         cmd.Parameters.AddWithValue("@p_documento_afiliado", DocumentoAfiliado);
+                        cmd.Parameters.AddWithValue("@p_genero", idGenero);
+                        cmd.Parameters.AddWithValue("@p_edad", edad);
+                        cmd.Parameters.AddWithValue("@p_fec_nac", fechaNac);
+                        cmd.Parameters.AddWithValue("@p_estado_venta", idEstadoVenta);
+                        cmd.Parameters.AddWithValue("@p_estrategia", idEstrategia);
 
                         cmd.ExecuteNonQuery();
                         respuesta = true;

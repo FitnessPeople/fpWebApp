@@ -597,15 +597,15 @@
                                                                     <div class="col-sm-3">
                                                                         <div class="form-group">
                                                                             <i class="fa-solid fa-arrow-up-9-1 text-info"></i>
-                                                                            <label for="Estrategia" class="col-form-label">Edad:</label>
+                                                                            <label for="Edad" class="col-form-label">Edad:</label>
                                                                               <asp:TextBox ID="txbEdad" ClientIDMode="Static" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-sm-4">
                                                                         <div class="form-group">
                                                                             <i class="fa-solid fa-calendar-days text-info"></i>
-                                                                            <label for="Estrategia" class="col-form-label">F. Nacimiento:</label>
-                                                                             <input type="text" runat="server" id="txbFecNac" class="form-control input-sm datepicker" disabled />
+                                                                            <label for="FechaNac" class="col-form-label">F. Nacimiento:</label>
+                                                                            <asp:TextBox ID="txbFecNac" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>                                                                           
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -868,6 +868,8 @@
                                                             <tr>
                                                                 <th data-sortable="false" data-breakpoints="xs" style="width: 300px;">Nombre</th>
                                                                 <th data-breakpoints="xs">Teléfono</th>
+                                                                <th data-breakpoints="xs">Estado</th>
+                                                                <th data-breakpoints="xs">Plan</th>
                                                                 <th data-breakpoints="xs">HaceCuanto</th>
                                                                 <th data-breakpoints="xs">Lead</th>
                                                                 <th data-breakpoints="all" data-title="Info"></th>
@@ -880,6 +882,8 @@
                                                                     <tr class="feed-element">
                                                                         <td><%# Eval("NombreContacto") %> <%# Eval("ApellidoContacto") %></td>
                                                                         <td><%# Eval("TelefonoContacto") %></td>
+                                                                        <td>Caliente</td>
+                                                                        <td><%# Eval("NombrePlan") %></td>
                                                                         <td>
                                                                             <asp:Literal ID="ltTiempoTranscurrido" runat="server"></asp:Literal></td>
                                                                         <td>
@@ -1662,7 +1666,7 @@
                 // Limpia primero los campos
                 $('#txbNombreContacto').val('');
                 $('#txbApellidoContacto').val('');
-                $('#txaObservaciones').val('Consultando...');
+               // $('#txaObservaciones').val('Consultando...');
 
                 $.ajax({
                     url: url,

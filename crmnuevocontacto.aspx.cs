@@ -534,7 +534,9 @@ namespace fpWebApp
                                 Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
                                 Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
                                 Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
-                                Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, out salida, out mensaje);
+                                Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(txbEdad.Text), txbFecNac.Text, Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()), 
+                                Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()), out salida, out mensaje);
 
                         if (salida)
                         {
@@ -668,8 +670,14 @@ namespace fpWebApp
                 string mensajeValidacion = string.Empty;
                 string respuesta = string.Empty;
 
-                // Parseamos la fecha y la hora
-                DateTime fecha = DateTime.Parse(txbFechaProx.Value);
+                if (string.IsNullOrEmpty(txbFecNac.Text))
+                {
+                    txbFecNac.Text = null;
+                }
+
+
+                    // Parseamos la fecha y la hora
+                    DateTime fecha = DateTime.Parse(txbFechaProx.Value);
                 TimeSpan hora = TimeSpan.Parse(txbHoraIni.Value);
                 DateTime fechaHora = fecha.Date + hora;
                 string fechaHoraMySQL = fechaHora.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
@@ -692,7 +700,8 @@ namespace fpWebApp
                     txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
                     Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
                     Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
-                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, tiempo.ToString(), out salida, out mensaje);
+                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, tiempo.ToString(), Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(txbEdad.Text), txbFecNac.Text, Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()), out salida, out mensaje);
 
                     if (salida)
                     {
@@ -1043,7 +1052,9 @@ namespace fpWebApp
                         Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value),
                         Convert.ToInt32(ddlTipoPago.SelectedItem.Value), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value),
                         Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value), Convert.ToInt32(ddlPlanes.SelectedItem.Value), 0,
-                        Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value), txbDocumento.Text, out salida, out mensaje);
+                        Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value), txbDocumento.Text, Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(txbEdad.Text), txbFecNac.Text, Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()), 
+                        Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()), out salida, out mensaje);
 
                     if (salida)
                     {
