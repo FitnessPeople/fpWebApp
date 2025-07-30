@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using System;
 using System.Data;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -81,6 +82,7 @@ namespace fpWebApp
         private void listaAfiliados(string strParam, string strSede)
         {
             string strQueryAdd = "";
+            string strQueryAdd2 = "";
             string strLimit = "100";
             if (strSede != "todas")
             {
@@ -90,13 +92,30 @@ namespace fpWebApp
             {
                 strLimit = "1000";
             }
+
+            if (ddlDias.SelectedItem.Value.ToString() == "-30")
+            {
+                strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) <= -30 ";
+            }
+
+            if (ddlDias.SelectedItem.Value.ToString() == "30")
+            {
+                strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) > -30 AND DATEDIFF(FechaFinalPlan, CURDATE()) < 30 ";
+            }
+
+            if (ddlDias.SelectedItem.Value.ToString() == "31")
+            {
+                strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) > 31 ";
+            }
+
             string strQuery = "SELECT *, " +
                 "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) IS NOT NULL, CONCAT('(',TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()),')'),'<i class=\"fa fa-circle-question m-r-lg m-l-lg\"></i>') AS edad, " +
                 "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 14,'danger',IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 14,'success',IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 60,'info','warning'))) AS badge, " +
                 "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 14,'baby',IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) >= 60,'person-walking-with-cane','')) AS age, " +
                 "IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS badge2, " +
                 "IF(EstadoPlan='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS badge3, " +
-                "DATEDIFF(FechaFinalPlan, CURDATE()) AS diasquefaltan " +
+                "DATEDIFF(FechaFinalPlan, CURDATE()) AS diasquefaltan, " +
+                "IF(DATEDIFF(FechaFinalPlan, CURDATE()) < 30 AND DATEDIFF(FechaFinalPlan, CURDATE()) > -30,'1',IF(DATEDIFF(FechaFinalPlan, CURDATE()) < -30,'2','')) AS TipoGestion " +
                 "FROM Afiliados a " +
                 "LEFT JOIN generos g ON g.idGenero = a.idGenero " +
                 "LEFT JOIN sedes s ON s.idSede = a.idSede " +
@@ -109,7 +128,7 @@ namespace fpWebApp
                 "WHERE (DocumentoAfiliado like '%" + strParam + "%' " +
                 "OR NombreAfiliado like '%" + strParam + "%' " +
                 "OR EmailAfiliado like '%" + strParam + "%' " +
-                "OR CelularAfiliado like '%" + strParam + "%') " + strQueryAdd + " " +
+                "OR CelularAfiliado like '%" + strParam + "%') " + strQueryAdd + " " + strQueryAdd2 + " " +
                 "ORDER BY a.idAfiliado DESC " +
                 "LIMIT " + strLimit + "";
             clasesglobales cg = new clasesglobales();
@@ -174,11 +193,25 @@ namespace fpWebApp
             foreach (RepeaterItem item in rpAfiliados.Items)
             {
                 // Buscar controles dentro de cada item del repeater
-                CheckBox chbSeleccion = (CheckBox)item.FindControl("chbSeleccion");
+                HtmlInputCheckBox chbSeleccion = (HtmlInputCheckBox)item.FindControl("chbSeleccion");
+                HiddenField hfNombreAfiliado = (HiddenField)item.FindControl("hfNombreAfiliado");
+                HiddenField hfApellidoAfiliado = (HiddenField)item.FindControl("hfApellidoAfiliado");
+                HiddenField hfDocumentoAfiliado = (HiddenField)item.FindControl("hfDocumentoAfiliado");
+                HiddenField hfidTipoDocumento = (HiddenField)item.FindControl("hfidTipoDocumento");
+                HiddenField hfCelularAfiliado = (HiddenField)item.FindControl("hfCelularAfiliado");
+                HiddenField hfTipoGestion = (HiddenField)item.FindControl("hfTipoGestion");
 
-                if (chbSeleccion != null)
+                if (chbSeleccion != null && chbSeleccion.Checked && hfDocumentoAfiliado != null)
                 {
                     //string strIdAfiliado = item.DataItem[]
+                    string strQuery = "INSERT INTO pregestioncrm (FechaHoraPregestion, NombreContacto, ApellidoContacto, " +
+                        "DocumentoContacto, idTipoDocumentoContacto, CelularContacto, idTipoGestion) " +
+                        "VALUES (NOW(), '" + hfNombreAfiliado.Value.ToString() + "', " +
+                        "'" + hfApellidoAfiliado.Value.ToString() + "', " +
+                        "'" + hfDocumentoAfiliado.Value.ToString() + "', " +
+                        "" + hfidTipoDocumento.Value.ToString() + ", " +
+                        "'" + hfCelularAfiliado.Value.ToString() + "', " +
+                        "" + hfTipoGestion.Value.ToString() + ") ";
                 }
             }
         }
@@ -187,6 +220,11 @@ namespace fpWebApp
         {
             string strParam = txbBuscar.Value.ToString();
             listaAfiliados(strParam, ddlSedes.SelectedItem.Value.ToString());
+        }
+
+        protected void ddlDias_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            listaAfiliados("", "todas");
         }
     }
 }

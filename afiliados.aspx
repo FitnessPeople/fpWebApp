@@ -196,11 +196,11 @@
                                             <label class="col-lg-2 control-label">Días:</label>
                                             <div class="col-lg-10">
                                                 <asp:DropDownList ID="ddlDias" runat="server" AppendDataBoundItems="true" 
-                                                    CssClass="form-control input-sm m-b" 
+                                                    CssClass="form-control input-sm m-b" OnSelectedIndexChanged="ddlDias_SelectedIndexChanged" 
                                                     AutoPostBack="true">
-                                                    <asp:ListItem Text="1-10 días" Value="10"></asp:ListItem>
-                                                    <asp:ListItem Text="10-30 días" Value="30"></asp:ListItem>
-                                                    <asp:ListItem Text="2 meses" Value="60"></asp:ListItem>
+                                                    <asp:ListItem Text="Más de 30 días vencido" Value="-30"></asp:ListItem>
+                                                    <asp:ListItem Text="Menos de 30 días vencido" Value="30"></asp:ListItem>
+                                                    <asp:ListItem Text="Más de 30 días por vencer" Value="31"></asp:ListItem>
                                                 </asp:DropDownList>
                                             </div>
                                         </div>
@@ -211,21 +211,21 @@
                                         <a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;"
                                             href="nuevoafiliado" title="Agregar afiliado"
                                             runat="server" id="btnAgregar" visible="false">
-                                            <i class="fa fa-square-plus"></i>NUEVO
+                                            <i class="fa fa-square-plus m-r-xs"></i>NUEVO
                                         </a>
                                         <a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px;"
                                             target="_blank" runat="server" id="btnExportar"
                                             href="imprimirafiliados" visible="false" title="Exportar">
-                                            <i class="fa fa-file-excel"></i>EXCEL
+                                            <i class="fa fa-file-excel m-r-xs"></i>EXCEL
                                         </a>
                                     </div>
                                 
                             </div>
 
                             <%--<table class="footable table toggle-arrow-small list-group-item-text" data-page-size="10">--%>
-                            <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                            <table class="footable table table-striped list-group-item-text" 
                                 data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
-                                data-empty="Sin resultados" data-toggle-column="first">
+                                data-empty="Sin resultados" data-toggle-column="first" id="foo_table">
                                 <thead>
                                     <tr>
                                         <%--<th data-sort-ignore="true">ID</th>--%>
@@ -237,7 +237,7 @@
                                         <th class="text-nowrap" data-breakpoints="xs">Estado Afiliado</th>
                                         <th class="text-nowrap" data-breakpoints="xs">Estado Plan</th>
                                         <th class="text-nowrap" data-breakpoints="xs" data-type="number">Días Plan</th>
-                                        <th class="text-nowrap" data-breakpoints="xs">Seleccionar</th>
+                                        <th data-sortable="false" data-breakpoints="xs"><input type="checkbox" id="selectAllRows" />Seleccionar</th>
                                         <th data-breakpoints="all" data-title="Info"></th>
                                         <th data-sortable="false" class="text-right" style="width: 206px;">Acciones</th>
                                     </tr>
@@ -257,7 +257,15 @@
                                                 <td><span class="badge badge-<%# Eval("badge3") %>"><%# Eval("EstadoPlan") %></span></td>
                                                 <td><%# Eval("diasquefaltan") %></td>
                                                 <td>
-                                                    <asp:CheckBox ID="chbSeleccion" runat="server" /></td>
+                                                    <%--<asp:CheckBox ID="chbSeleccion" runat="server" class="chkItem" />--%>
+                                                    <input type="checkbox" class="rowCheckbox" runat="server" id="chbSeleccion" />
+                                                    <asp:HiddenField runat="server" ID="hfNombreAfiliado" Value='<%# Eval("NombreAfiliado") %>' />
+                                                    <asp:HiddenField runat="server" ID="hfApellidoAfiliado" Value='<%# Eval("ApellidoAfiliado") %>' />
+                                                    <asp:HiddenField runat="server" ID="hfDocumentoAfiliado" Value='<%# Eval("DocumentoAfiliado") %>' />
+                                                    <asp:HiddenField runat="server" ID="hfidTipoDocumento" Value='<%# Eval("idTipoDocumento") %>' />
+                                                    <asp:HiddenField runat="server" ID="hfCelularAfiliado" Value='<%# Eval("CelularAfiliado") %>' />
+                                                    <asp:HiddenField runat="server" ID="hfTipoGestion" Value='<%# Eval("TipoGestion") %>' />
+                                                </td>
                                                 <td>
                                                     <table class="table table-bordered table-striped">
                                                         <tr>
@@ -376,7 +384,19 @@
 
     <!-- Page-Level Scripts -->
     <script>
-        $('.footable').footable();
+        $('.footable').footable({
+            "paging": {
+                "size": 10
+            }
+        });
+
+        $(document).ready(function () {
+            $('#selectAllRows').on('change', function () {
+                console.log('Entra');
+                var isChecked = $(this).is(':checked');
+                $('#foo_table .rowCheckbox').prop('checked', isChecked);
+            });
+        });
 
         document.querySelector("input#txbBuscar").addEventListener("input", function () {
             const allowedCharacters = "0123456789azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBNzáéíóúñÁÉÍÓÚÑ@. "; // You can add any other character in the same way
@@ -400,6 +420,14 @@
             document.getElementById('titulo').innerHTML = $(this).data('documento');
             document.getElementById('objEmbed').src = url;
         });
+
+        var table = FooTable.get(".footable"); // Reemplaza con el ID o selector de tu tabla
+
+        if (table) {
+            console.log(table);
+            table.options.paging.limit = 20; // Cambia el valor a lo que necesites
+            table.draw(); // Redibuja la tabla con la nueva configuración
+        }
 
     </script>
 

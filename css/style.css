@@ -4092,20 +4092,36 @@ table.table-mail tr td {
   background-color: #1c84c6;
   color: #ffffff;
 }
+.bg-success1 {
+    background-color: #691270;
+    color: #ffffff;
+}
 .navy-bg,
 .bg-primary {
   background-color: #1ab394;
   color: #ffffff;
+}
+.bg-primary1 {
+    background-color: #691270;
+    color: #ffffff;
 }
 .lazur-bg,
 .bg-info {
   background-color: #23c6c8;
   color: #ffffff;
 }
+.bg-info1 {
+    background-color: #C4D302;
+    color: #ffffff;
+}
 .yellow-bg,
 .bg-warning {
   background-color: #f8ac59;
   color: #ffffff;
+}
+.bg-warning1 {
+    background-color: #333333;
+    color: #ffffff;
 }
 .yellowfp-bg,
 .bg-warning {
