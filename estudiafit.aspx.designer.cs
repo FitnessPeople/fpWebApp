@@ -87,13 +87,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.LinkButton lbExportarExcel;
 
         /// <summary>
-        /// Control rpInscritos.
+        /// Control rpEstudiafit.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpInscritos;
+        protected global::System.Web.UI.WebControls.Repeater rpEstudiafit;
 
         /// <summary>
         /// Control footer1.

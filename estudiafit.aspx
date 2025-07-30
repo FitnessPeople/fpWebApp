@@ -174,10 +174,6 @@
                                     </div>
 
                                     <div class="col-lg-6 form-horizontal">
-                                        <%--<a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;" 
-                                                    href="nuevoempleado" title="Agregar empleado" 
-                                                    runat="server" id="btnAgregar" visible="false"><i class="fa fa-square-plus"></i> NUEVO
-                                                </a>--%>
                                         <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
                                             CssClass="btn btn-info pull-right dim m-l-md" style="font-size: 12px;"
                                             OnClick="lbExportarExcel_Click">
@@ -196,175 +192,24 @@
                                     <thead>
                                         <tr>
                                             <th data-sortable="false" data-breakpoints="xs">Documento</th>
-                                            <th data-breakpoints="xs">Nombre</th>
-                                            <th data-breakpoints="xs">Apellidos</th>
-                                            <th data-breakpoints="xs">Email</th>
-                                            <th data-breakpoints="xs">Celular</th>
-                                            <th data-breakpoints="xs">Ciudad</th>
-                                            <th data-breakpoints="xs">Sede</th>
-                                            <th data-type="date" data-breakpoints="xs">Fecha asistencia</th>
-                                            <th data-type="date" data-breakpoints="xs">Fecha inscripción</th>
-                                            <th data-type="date" data-breakpoints="xs">Fecha agendada</th>
-                                            <th data-breakpoints="xs">Estado</th>
-                                            <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
+                                            <th data-breakpoints="xs">Nombre de Universidad</th>
+                                            <th data-breakpoints="xs">Código</th>
+                                            <th data-breakpoints="xs">Fecha de Registro</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <asp:Repeater ID="rpInscritos" runat="server">
+                                        <asp:Repeater ID="rpEstudiafit" runat="server">
                                             <ItemTemplate>
                                                 <tr>
-                                                    <td><%# Eval("NroDocumento") %></td>
-                                                    <td><%# Eval("Nombres") %></td>
-                                                    <td><%# Eval("Apellidos") %></td>
-                                                    <td><%# Eval("Email") %></td>
-                                                    <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("Celular") %>" target="_blank"><%# Eval("Celular") %></a></td>
-                                                    <td><%# Eval("NombreCiudadSede") %></td>
-                                                    <td><%# Eval("NombreSede") %></td>
-                                                    <td><%# Eval("FechaAsistencia", "{0:dd MMM yyyy}") %></td>
-                                                    <td><%# Eval("FechaInscripcion", "{0:dd MMM yyyy, HH:mm}") %></td>
-                                                    <td><%# Eval("FechaHora", "{0:dd MMM yyyy, HH:mm}") %></td>
-                                                    <td>
-                                                        <asp:Literal ID="litEstado" runat="server"></asp:Literal>
-                                                    </td>
-                                                    <td>
-                                                        <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
-                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
-                                                        <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
-                                                        <a runat="server" id="btnAgendar" href="#" title="Agendar" class="btn btn-outline btn-success pull-right m-r-xs"
-                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="true"><i class="fa fa-calendar-day"></i></a>
-                                                        <a runat="server" id="btnEliminarAgenda" href="#" title="Eliminar Agenda" class="btn btn-outline btn-danger pull-right m-r-xs"
-                                                           style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-calendar-check"></i></a>
-                                                    </td>
+                                                    <td><%# Eval("documento") %></td>
+                                                    <td><%# Eval("nombre") %></td>
+                                                    <td><%# Eval("codigo") %></td>
+                                                    <td><%# Eval("fechaHora") %></td>
                                                 </tr>
                                             </ItemTemplate>
                                         </asp:Repeater>
                                     </tbody>
                                 </table>
-
-                                <%--<div class="modal fade" id="modal-agendar-info" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <h4 class="modal-title" id="modalLabelAgendar">Agendar Gym Pass</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <label>Nro. de Documento</label>
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control input-sm" id="infoDoc" name="txbNroDocumento" runat="server" readonly /> 
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 m-b-md">
-                                                        <label>Nombre</label>
-                                                        <div class="form-groupp">
-                                                            <input type="text" class="form-control input-sm" id="infoNombre" name="txbNombres" runat="server" readonly />
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <label>Fecha</label>
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control input-sm" id="txbFechaAgenda" name="txbFechaAgenda" runat="server" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 m-b-md">
-                                                        <label>Hora</label>
-                                                        <div class="input-group clockpicker" data-autoclose="true">
-                                                            <input type="text" class="form-control input-sm" value="08:00" id="txbHoraAgenda" name="txbHoraAgenda" runat="server" />
-                                                            <span class="input-group-addon">
-                                                                <span class="fa fa-clock"></span>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <asp:Button ID="btnAgendarGymPass" class="btn btn-success m-b-none" runat="server" Text="Agendar" OnClick="btnAgendarGymPass_Click" />
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="modal fade" id="modal-eliminar-agenda" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                <h4 class="modal-title" id="modalLabelEliminar">Eliminar Agenda Gym Pass</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <p>¿Deseas eliminar la Agenda Gym Pass de...?</p>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <label>Nro. de Documento</label>
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control input-sm" id="infoDocEli" name="txbNroDocumento" runat="server" readonly /> 
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6 m-b-md">
-                                                        <label>Nombre</label>
-                                                        <div class="form-groupp">
-                                                            <input type="text" class="form-control input-sm" id="infoNombreEli" name="txbNombres" runat="server" readonly />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <asp:Button ID="btnEliminarAgendaGymPass" class="btn btn-danger" runat="server" Text="Aceptar" OnClick="btnEliminarAgendaGymPass_Click" />
-                                                <button type="button" class="btn btn-success" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cancelar</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="wrapper wrapper-content animated fadeInRight">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="ibox float-e-margins">
-                                                <div class="ibox-title">
-                                                    <h5>Estado de Agendas por Sede</h5>
-                                                </div>
-                                                <div class="ibox-content">
-                                                    <div id="barras"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="ibox float-e-margins">
-                                                <div class="ibox-title">
-                                                    <h5>Cantidad de Agendas por Estado</h5>
-                                                </div>
-                                                <div class="ibox-content">
-                                                    <div>
-                                                        <canvas id="doughnutChart" height="140"></canvas>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="ibox float-e-margins">
-                                                <div class="ibox-title">
-                                                    <h5>Porcentaje de Agendas por Estado</h5>
-                                                </div>
-                                                <div class="ibox-content">
-                                                    <div>
-                                                        <div id="pie"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>--%>
                             </form>
                         </div>
                     </div>
@@ -419,86 +264,6 @@
     <!-- Page-Level Scripts -->
     <script>
         $('.footable').footable();
-    </script>
-
-    <%--Modal para Agendar Gym Pass--%>
-    <script>
-        $(document).ready(function () {
-            // Delegación para manejar clics incluso si los botones se generan dinámicamente
-            $('table').on('click', 'a[id*="btnAgendar"]', function (e) {
-                e.preventDefault();
-
-                // Encuentra la fila donde se hizo clic
-                var row = $(this).closest('tr');
-                var cells = row.find('td');
-
-                // Extrae el texto de cada celda y lo coloca en el modal
-                $('#infoDoc').val(cells.eq(0).text().trim());
-                $('#infoNombre').val(cells.eq(1).text().trim());
-                $('#infoSede').val(cells.eq(6).text().trim());
-
-                // Muestra el modal con Bootstrap 3
-                $('#modal-agendar-info').modal('show');
-            });
-
-            $('#data_1 .input-group.date').datepicker({
-                language: "es",
-                daysOfWeekDisabled: "0",
-                todayBtn: "linked",
-                todayHighlight: true,
-                keyboardNavigation: false,
-                forceParse: false,
-                autoclose: true,
-            });
-
-            $('.clockpicker').clockpicker();
-        });
-    </script>
-
-    <%--Eliminar Agenda Gym Pass--%>
-    <script>
-        $(document).ready(function () {
-            // Delegación para manejar clics incluso si los botones se generan dinámicamente
-            $('table').on('click', 'a[id*="btnEliminarAgenda"]', function (e) {
-                e.preventDefault();
-
-                // Encuentra la fila donde se hizo clic
-                var row = $(this).closest('tr');
-                var cells = row.find('td');
-
-                // Extrae el texto de cada celda y lo coloca en el modal
-                $('#infoDocEli').val(cells.eq(0).text().trim());
-                $('#infoNombreEli').val(cells.eq(1).text().trim());
-
-                // Muestra el modal con Bootstrap 3
-                $('#modal-eliminar-agenda').modal('show');
-            });
-        });
-    </script>
-
-    <script>
-
-        $(function () {
-
-            var doughnutData = {
-                labels: ["Agendados", "Asistieron", "No Asistieron", "Cancelados"],
-                datasets: [{
-                    data: [cantidadAgendado, cantidadAsistio, cantidadNoAsistio, cantidadCancelado],
-                    backgroundColor: ["#1AB394", "#1C84C6", "#ED5565", "#F8AC59"]
-                }]
-            };
-
-
-            var doughnutOptions = {
-                responsive: true
-            };
-
-
-            var ctx4 = document.getElementById("doughnutChart").getContext("2d");
-            new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
-
-        });
-
     </script>
 
     <script>

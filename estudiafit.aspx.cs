@@ -31,20 +31,20 @@ namespace fpWebApp
                         divBotonesLista.Visible = false;
                         if (ViewState["Consulta"].ToString() == "1")
                         {
+                            divBotonesLista.Visible = true;
                             lbExportarExcel.Visible = false;
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
+                            divBotonesLista.Visible = true;
                             lbExportarExcel.Visible = true;
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-                            CargarGraficaBarrasPorSede();
-                            //btnAgregar.Visible = true;
+                            CargarGraficaBarras();
                         }
                     }
 
-                    rpInscritos.ItemDataBound += rpInscritos_ItemDataBound;
                     listaInscritos();
                 }
                 else
@@ -80,74 +80,19 @@ namespace fpWebApp
         private void listaInscritos()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarGymPass();
-            rpInscritos.DataSource = dt;
-            rpInscritos.DataBind();
+            DataTable dt = cg.ConsultarEstudiafit();
+            rpEstudiafit.DataSource = dt;
+            rpEstudiafit.DataBind();
             dt.Dispose();
         }
 
-        protected void rpInscritos_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        private void CargarGraficaBarras()
         {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                // 1. Obtén el documento del usuario en esta fila
-                string nroDocumento = DataBinder.Eval(e.Item.DataItem, "NroDocumento").ToString();
-
-                // 2. Consulta si ya tiene Agenda GymPass
-                clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarGymPassAgendaPorDocumento(nroDocumento);
-
-                // 3. Accede al control dentro de la fila
-                HtmlAnchor btnAgendar = (HtmlAnchor)e.Item.FindControl("btnAgendar");
-                HtmlAnchor btnEliminarAgenda = (HtmlAnchor)e.Item.FindControl("btnEliminarAgenda");
-
-                // 4. Deshabilita u oculta el botón si ya tiene Agenda GymPass
-                if (dt.Rows.Count > 0 && dt.Rows[0]["idAgenda"] != DBNull.Value)
-                {
-                    btnAgendar.Visible = false;
-                    btnEliminarAgenda.Visible = true;
-                    //btnAgendar.Attributes.Add("class", "btn btn-outline btn-warning pull-right m-r-xs");
-                    //btnAgendar.Attributes.Add("style", "padding: 1px 2px 1px 2px; margin-bottom: 0px; pointer-events:none;");
-                    //btnAgendar.InnerHtml = "<i class='fa-solid fa-calendar-check'></i>";
-                }
-
-                dt.Dispose();
-
-                Literal litEstado = (Literal)e.Item.FindControl("litEstado");
-                string estado = DataBinder.Eval(e.Item.DataItem, "Estado").ToString();
-                string estadoHtml = "";
-
-                switch (estado)
-                {
-                    case "Agendado":
-                        estadoHtml = "<p style='margin-bottom: 0;'><span style='font-size: 1.2rem; color: #fff; font-weight: bold;' class='label label-primary'>Agendado</span></p>";
-                        break;
-                    case "Asistió":
-                        estadoHtml = "<p style='margin-bottom: 0;'><span style='font-size: 1.2rem; color: #fff; font-weight: bold;' class='label label-success'>Asistió</span></p>";
-                        break;
-                    case "No Asistió":
-                        estadoHtml = "<p style='margin-bottom: 0;'><span style='font-size: 1.2rem; color: #fff; font-weight: bold;' class='label label-danger'>No Asistió</span></p>";
-                        break;
-                    case "Cancelado":
-                        estadoHtml = "<p style='margin-bottom: 0;'><span style='font-size: 1.2rem; color: #fff; font-weight: bold;' class='label label-warning'>Cancelado</span></p>";
-                        break;
-                    default:
-                        estadoHtml = $"<p style='margin-bottom: 0;'><span style='font-size: 1.2rem; color: #fff; font-weight: bold;' class='label label-danger'>{estado}</span></p>";
-                        break;
-                }
-
-                litEstado.Text = estadoHtml;
-            }
-        }
-
-        private void CargarGraficaBarrasPorSede()
-        {
-            string query = @"SELECT CONCAT(s.NombreSede, ' - ', cs.NombreCiudadSede) AS SedeCiudad, gpa.Estado, COUNT(*) AS Cantidad
-                             FROM GymPass gp
-                             INNER JOIN Sedes s ON gp.idSede = s.idSede
-                             INNER JOIN GymPassAgenda gpa ON gpa.idGymPass = gp.idGymPass 
-                             LEFT JOIN CiudadesSedes cs ON s.idCiudadSede = cs.idCiudadSede
-                             GROUP BY SedeCiudad, gpa.Estado";
+            string query = @"SELECT eu.nombre AS 'Nombre de Universidad', COUNT(*) AS Cantidad
+                            FROM Estudiafit e 
+                            INNER JOIN EstudiafitUni eu 
+                            ON e.idUni = eu.idUni 
+                            GROUP BY eu.nombre;";
 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(query);
