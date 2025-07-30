@@ -10,6 +10,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using DocumentFormat.OpenXml.Presentation;
+using NPOI.SS.Formula.Functions;
 
 namespace fpWebApp
 {
@@ -23,7 +24,7 @@ namespace fpWebApp
 
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Sedes");
+                    ValidarPermisos("Nuevo CRM");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -403,7 +404,7 @@ namespace fpWebApp
         private void CargarEstrategiasMarketing()
         {
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarEstrategiasMarketing();
+            DataTable dt = cg1.ConsultarEstrategiasMarketingVigentes();
             ddlEstrategia.DataSource = dt;
             ddlEstrategia.DataBind();
             dt.Dispose();
@@ -518,6 +519,34 @@ namespace fpWebApp
                     string mensaje = string.Empty;
                     string respuesta = string.Empty;
                     string mensajeValidacion = string.Empty;
+
+                    DateTime fecNacCli;
+                    string textoEdad = txbEdad.Text.Trim();
+                    System.Text.RegularExpressions.Match match = Regex.Match(textoEdad, @"\d+");
+
+                    int edad;
+
+                    if (match.Success && int.TryParse(match.Value, out edad))
+                    {
+                        txbEdad.Text = edad.ToString(); // Deja solo el número limpio en la caja
+                    }
+                    else
+                    {
+                        edad = 0;
+                        txbEdad.Text = "0";
+                    }
+
+                    if (string.IsNullOrEmpty(txbFecNac.Text))
+                    {
+                        fecNacCli = new DateTime(1900, 1, 1);
+                        txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
+                    }
+                    else
+                    {
+                        fecNacCli = DateTime.Parse(txbFecNac.Text);
+                    }
+
+                    txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
 
                     if (ddlEmpresa.SelectedItem.Value != "")
                         ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
@@ -669,15 +698,36 @@ namespace fpWebApp
                 string mensaje = string.Empty;
                 string mensajeValidacion = string.Empty;
                 string respuesta = string.Empty;
+                DateTime fecNacCli;
+                string textoEdad = txbEdad.Text.Trim();
+                System.Text.RegularExpressions.Match match = Regex.Match(textoEdad, @"\d+");
+
+                int edad;
+
+                if (match.Success && int.TryParse(match.Value, out edad))
+                {
+                    txbEdad.Text = edad.ToString(); // Deja solo el número limpio en la caja
+                }
+                else
+                {
+                    edad = 0;
+                    txbEdad.Text = "0";
+                }
 
                 if (string.IsNullOrEmpty(txbFecNac.Text))
                 {
-                    txbFecNac.Text = null;
+                    fecNacCli = new DateTime(1900, 1, 1);
+                    txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    fecNacCli = DateTime.Parse(txbFecNac.Text);
                 }
 
+                txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
 
-                    // Parseamos la fecha y la hora
-                    DateTime fecha = DateTime.Parse(txbFechaProx.Value);
+                // Parseamos la fecha y la hora
+                DateTime fecha = DateTime.Parse(txbFechaProx.Value);
                 TimeSpan hora = TimeSpan.Parse(txbHoraIni.Value);
                 DateTime fechaHora = fecha.Date + hora;
                 string fechaHoraMySQL = fechaHora.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
@@ -812,6 +862,9 @@ namespace fpWebApp
             {
                 DataRowView row = (DataRowView)e.Item.DataItem;
 
+                HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+
                 // Obtener documento del afiliado desde el campo del Repeater
                 int documentoAfiliado;
                 if (int.TryParse(row["DocumentoAfiliado"].ToString(), out documentoAfiliado))
@@ -825,8 +878,8 @@ namespace fpWebApp
                         DataTable dtEstadoActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
 
                         // Encontrar los tres botones
-                        HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                        HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                        //HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                        //HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
                         HtmlAnchor btnNuevoAfiliado = (HtmlAnchor)e.Item.FindControl("btnNuevoAfiliado");
 
                         // Si el afiliado tiene plan activo, ocultar todos los botones
