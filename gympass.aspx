@@ -529,9 +529,9 @@
                 },
                 axis: {
                     x: {
-                    type: 'category',
-                    categories: categoriasJS,
-                    height: 60
+                        type: 'category',
+                        categories: categoriasJS,
+                        height: 60
                     }
                 }
             });

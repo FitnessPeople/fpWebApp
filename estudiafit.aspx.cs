@@ -88,7 +88,7 @@ namespace fpWebApp
 
         private void CargarGraficaBarras()
         {
-            string query = @"SELECT eu.nombre AS 'Nombre de Universidad', COUNT(*) AS Cantidad
+            string query = @"SELECT eu.nombre AS 'NombreUniversidad', COUNT(*) AS Cantidad
                             FROM Estudiafit e 
                             INNER JOIN EstudiafitUni eu 
                             ON e.idUni = eu.idUni 
@@ -97,40 +97,14 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(query);
 
-            var sedes = dt.AsEnumerable().Select(r => r.Field<string>("SedeCiudad")).Distinct().ToList();
+            // Extraer nombres de universidad y cantidades
+            var universidades = dt.AsEnumerable().Select(r => r.Field<string>("NombreUniversidad")).ToList();
+            var cantidades = dt.AsEnumerable().Select(r => r["Cantidad"] != DBNull.Value ? Convert.ToInt32(r["Cantidad"]) : 0).ToList();
 
-            // Inicializamos estructura
-            var estados = new[] { "Agendado", "Asistió", "No Asistió", "Cancelado" };
-            Dictionary<string, List<int>> estadoDatos = estados.ToDictionary(e => e, e => new List<int>());
+            string columnasJS = $"['Estudiantes', {string.Join(",", cantidades)}]";
+            string categoriasJS = string.Join(",", universidades.Select(u => $"\"{u}\""));
 
-            foreach (var sede in sedes)
-            {
-                foreach (var estado in estados)
-                {
-                    var cantidad = dt.AsEnumerable()
-                        .Where(r => r.Field<string>("SedeCiudad") == sede && r.Field<string>("Estado") == estado)
-                        .Select(r => Convert.ToInt32(r["Cantidad"]))
-                        .FirstOrDefault();
-
-                    estadoDatos[estado].Add(cantidad);
-                }
-            }
-
-            // Cálculo del total por sede
-            List<int> totalPorSede = estadoDatos.First().Value
-                .Select((_, i) => estadoDatos.Sum(kvp => kvp.Value[i]))
-                .ToList();
-
-            string totalSerie = $"['Total', {string.Join(",", totalPorSede)}]";
-
-            // Armar arrays para JS
-            string columnasJS = string.Join(",", estadoDatos.Select(kvp =>
-                $"['{kvp.Key}', {string.Join(",", kvp.Value)}]"
-            ));
-
-            string categoriasJS = string.Join(",", sedes.Select(s => $"\"{s}\""));
-
-            //ClientScript.RegisterStartupScript(this.GetType(), "graficaBarrasSedes", script, true);
+            // Pasar los valores como variables JS al front
             ClientScript.RegisterStartupScript(this.GetType(), "setVars",
                 $"var columnasJS = [{columnasJS}]; var categoriasJS = [{categoriasJS}];", true);
         }
@@ -139,23 +113,10 @@ namespace fpWebApp
         {
             try
             {
-                string consultaSQL = @"SELECT CONCAT(TRIM(Nombres), ' ', TRIM(Apellidos)) AS 'Nombre',
-                                       g.Email AS 'Correo', g.Celular AS 'Celular', g.NroDocumento AS 'Nro. de Documento', 
-                                       c.NombreCiudadSede AS 'Ciudad', s.NombreSede AS 'Sede',
-                                       g.FechaAsistencia AS 'Fecha Asistencia', g.FechaInscripcion AS 'Fecha Inscripción', 
-                                       gpa.FechaHora AS 'Fecha Agendada', gpa.Estado AS 'Estado' 
-                                       FROM GymPass g
-                                       INNER JOIN sedes s 
-                                       ON s.IdSede = g.idSede 
-                                       INNER JOIN ciudadessedes c 
-                                       ON c.idCiudadSede = s.idCiudadSede 
-                                       LEFT JOIN GymPassAgenda gpa 
-                                       ON gpa.idGymPass = g.idGymPass 
-                                       ORDER BY FechaInscripcion DESC;";
-
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.TraerDatos(consultaSQL);
-                string nombreArchivo = $"Inscritos_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+                DataTable dt = cg.ConsultarEstudiafitExcel();
+
+                string nombreArchivo = $"Estudiafit_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
                 {
