@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using DocumentFormat.OpenXml.Presentation;
 
 namespace fpWebApp
 {
@@ -44,11 +45,21 @@ namespace fpWebApp
                         {
                             btnAgregar.Visible = true;
                         }
-                    }
+                        txbFechaIni.Attributes.Add("type", "date");
+                        //txbFechaIni.Attributes.Add("min", DateTime.Now.ToString("yyyy-MM-dd"));
+                        txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-dd");
 
+                        txbFechaFin.Attributes.Add("type", "date");
+                        txbFechaFin.Attributes.Add("min", DateTime.Now.ToString("yyyy-MM-dd"));
+                        txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd");
+                    }
+                    CargarDiccionarios();
                     listaEstrategias();
                     CargartiposEstrategias();
-                    //listaCiudades();
+                    CargarPlanes();
+                    ListaCanalesDeVenta();
+                   
+                    
                     ltTitulo.Text = "Agregar estrategia";
 
                     if (Request.QueryString.Count > 0)
@@ -62,7 +73,7 @@ namespace fpWebApp
                             if (dt.Rows.Count > 0)
                             {
                                 string contenidoEditor = hiddenEditor.Value;
-                                txbSede.Text = dt.Rows[0]["NombreSede"].ToString();
+                                txbNombreEstrategia.Text = dt.Rows[0]["NombreSede"].ToString();
                                 //txbDireccion.Text = dt.Rows[0]["DireccionSede"].ToString();
                                // ddlCiudadSede.SelectedIndex = Convert.ToInt16(ddlCiudadSede.Items.IndexOf(ddlCiudadSede.Items.FindByValue(dt.Rows[0]["idCiudadSede"].ToString())));
                                 //txbTelefono.Text = dt.Rows[0]["TelefonoSede"].ToString();
@@ -90,30 +101,80 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarEstrategiasMarketing();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                row["Planes"] = ConvertirIdsANombres(row["Planes"].ToString(), dicPlanes);
+                row["CanalesVenta"] = ConvertirIdsANombres(row["CanalesVenta"].ToString(), dicCanales);
+            }
+
             rpEstrategias.DataSource = dt;
             rpEstrategias.DataBind();
 
             dt.Dispose();
         }
 
+
+
+
         private void CargarPlanes()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanesVigencias();
+            DataTable dt = cg.ConsultarPlanesVigentes();
 
-            //ddlPlanes.DataSource = dt;
-            //ddlPlanes.DataBind();
+            chblPlanes.DataSource = dt;
+            chblPlanes.DataTextField = "NombrePlan";
+            chblPlanes.DataValueField = "idPlan";
+            chblPlanes.DataBind();
+
             dt.Dispose();
         }
 
-        //private void listaCiudades()
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.ConsultarCiudadesSedes();
-        //    ddlCiudadSede.DataSource = dt;
-        //    ddlCiudadSede.DataBind();
-        //    dt.Dispose();
-        //}
+
+        private void ListaCanalesDeVenta()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCanalesVenta();
+
+            chblCanales.DataSource = dt;
+            chblCanales.DataTextField = "NombreCanalVenta";
+            chblCanales.DataValueField = "idCanalVenta";
+            chblCanales.DataBind();
+            dt.Dispose();
+        }
+
+        private string ConvertirIdsANombres(string ids, Dictionary<int, string> diccionario)
+        {
+            if (string.IsNullOrEmpty(ids)) return "";
+
+            var nombres = ids.Split(',')
+                             .Select(id => int.TryParse(id.Trim(), out int parsedId) && diccionario.ContainsKey(parsedId)
+                                 ? diccionario[parsedId]
+                                 : $"(ID {id})") // por si el id no existe
+                             .ToList();
+
+            return string.Join(", ", nombres);
+        }
+
+
+        private Dictionary<int, string> dicPlanes;
+        private Dictionary<int, string> dicCanales;
+
+        private void CargarDiccionarios()
+        {
+            clasesglobales cg = new clasesglobales();            
+            DataTable dtCanales = cg.ConsultarCanalesVenta();
+                      
+            DataTable dtPlanes = cg.ConsultarPlanesVigentes();
+
+            dicCanales = dtCanales.AsEnumerable()
+                .ToDictionary(row => Convert.ToInt32(row["idCanalVenta"]), row => row["NombreCanalVenta"].ToString());
+
+
+            dicPlanes = dtPlanes.AsEnumerable()
+                .ToDictionary(row => Convert.ToInt32(row["idPlan"]), row => row["NombrePlan"].ToString());
+        }
+
 
         private void CargartiposEstrategias()
         {
@@ -165,12 +226,43 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             string contenidoEditor = hiddenEditor.Value;
+            bool salida = false;
+            string mensaje = string.Empty;
+            string planesObtenidos = string.Empty;
+            string canalesObtenidos = string.Empty;
 
             if (Request.QueryString.Count > 0)
             {
                 if (Request.QueryString["editid"] != null)
                 {
-                    //string strInitData = TraerData();
+
+                    //List<int> planesSeleccionados = new List<int>();
+
+                    //foreach (ListItem item in chblPlanes.Items)
+                    //{
+                    //    if (item.Selected)
+                    //    {
+                    //        int idPlan = int.Parse(item.Value);
+                    //        planesSeleccionados.Add(idPlan);
+                    //    }
+                    //}
+                    //planesObtenidos = string.Join(",", planesSeleccionados);
+
+                    //List<int> canalesSeleccionados = new List<int>();
+
+                    //foreach (ListItem item in chblCanales.Items)
+                    //{
+                    //    if (item.Selected)
+                    //    {
+                    //        int idCanalVenta = int.Parse(item.Value);
+                    //        canalesSeleccionados.Add(idCanalVenta);
+                    //    }
+                    //}
+                    //canalesObtenidos = string.Join(",", canalesSeleccionados);
+
+
+
+                    string strInitData = TraerData();
                     //try
                     //{
                     //    string respuesta = cg.ActualizarSede(int.Parse(Request.QueryString["editid"].ToString()), txbSede.Text.ToString().Trim(), txbDireccion.Text.ToString().Trim(), int.Parse(ddlCiudadSede.SelectedItem.Value.ToString()), txbTelefono.Text.ToString().Trim(), contenidoEditor, rblTipoSede.SelectedValue.ToString(), rblClaseSede.SelectedValue.ToString());
@@ -183,30 +275,93 @@ namespace fpWebApp
                     //    string mensaje = ex.Message;
                     //}
 
-                    //Response.Redirect("sedes");
+                    Response.Redirect("estrategiasmarketing");
                 }
             }
             else
             {
-                if (!ValidarSede(txbSede.Text.ToString()))
+                if (!ValidarSede(txbNombreEstrategia.Text.ToString()))
                 {
-                    //try
-                    //{
-                    //    string respuesta = cg.InsertarSede(txbSede.Text.ToString().Trim(), txbDireccion.Text.ToString().Trim(), int.Parse(ddlCiudadSede.SelectedItem.Value.ToString()), txbTelefono.Text.ToString().Trim(), contenidoEditor, "", rblTipoSede.SelectedValue.ToString(), rblClaseSede.SelectedValue.ToString());
-                    //    cg.InsertarLog(Session["idusuario"].ToString(), "sedes", "Agrega", "El usuario agregó una nueva sede: " + txbSede.Text.ToString() + ".", "", "");
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    string mensaje = ex.Message;
-                    //}
+                    List<int> planesSeleccionados = new List<int>();
 
-                    //Response.Redirect("sedes");
+                    foreach (ListItem item in chblPlanes.Items)
+                    {
+                        if (item.Selected)
+                        {
+                            int idPlan = int.Parse(item.Value);
+                            planesSeleccionados.Add(idPlan);
+                        }
+                    }
+                    planesObtenidos = string.Join(",", planesSeleccionados);
+
+                    List<int> canalesSeleccionados = new List<int>();
+
+                    foreach (ListItem item in chblCanales.Items)
+                    {
+                        if (item.Selected)
+                        {
+                            int idCanalVenta = int.Parse(item.Value);
+                            canalesSeleccionados.Add(idCanalVenta);
+                        }
+                    }
+                    canalesObtenidos = string.Join(",", canalesSeleccionados);
+
+
+
+                    try
+                    {
+                        string respuesta = cg.InsertarEstrategiaMarketing(txbNombreEstrategia.Text, contenidoEditor,txbFechaIni.Value, txbFechaFin.Value,canalesObtenidos,
+                             Convert.ToInt32(ddlTipoEstrategias.SelectedItem.Value.ToString()), planesObtenidos, Convert.ToInt32(Session["idUsuario"].ToString()), out salida, out mensaje);
+                        if (salida)
+                        {
+                            string script = @"
+                            Swal.fire({
+                                title: '«¡Creado correctamente!»',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'success',
+                                timer: 3000, // 3 segundos
+                                showConfirmButton: false,
+                                timerProgressBar: true
+                            }).then(() => {
+                                window.location.href = 'estrategiasmarketing';
+                            });
+                        ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                        }
+                        else
+                        {
+                            string script = @"
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: '" + mensaje.Replace("'", "\\'") + @"',
+                                    icon: 'error'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                      window.location.href = 'estrategiasmarketing';
+                                    }
+                                });
+                            ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        mensaje = ex.Message.ToString();
+                        string script = @"
+                            Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            });
+                        ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                    }
                 }
                 else
                 {
                     ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
                         "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Ya existe una sede con ese nombre." +
+                        "Ya existe una estrategia con ese nombre." +
                         "</div>";
                 }
             }
@@ -226,24 +381,7 @@ namespace fpWebApp
             return strData;
         }
 
-        protected void rpSedes_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                if (ViewState["CrearModificar"].ToString() == "1")
-                {
-                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "sedes?editid=" + ((DataRowView)e.Item.DataItem).Row["idSede"].ToString());
-                    btnEditar.Visible = true;
-                }
-                if (ViewState["Borrar"].ToString() == "1")
-                {
-                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "sedes?deleteid=" + ((DataRowView)e.Item.DataItem).Row["idSede"].ToString());
-                    btnEliminar.Visible = true;
-                }
-            }
-        }
+
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
@@ -277,7 +415,22 @@ namespace fpWebApp
 
         protected void rpEstrategias_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                if (ViewState["CrearModificar"].ToString() == "1")
+                {
+                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("href", "estrategiasmarketing?editid=" + ((DataRowView)e.Item.DataItem).Row["idEstrategia"].ToString());
+                    btnEditar.Visible = true;
+                }
+                if (ViewState["Borrar"].ToString() == "1")
+                {
+                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                    btnEliminar.Attributes.Add("href", "estrategiasmarketing?deleteid=" + ((DataRowView)e.Item.DataItem).Row["idEstrategia"].ToString());
+                    btnEliminar.Visible = true;
+                }
 
+            }
         }
     }
 }

@@ -422,7 +422,7 @@ namespace fpWebApp
         private void CargarPlanes()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanesVigencias();
+            DataTable dt = cg.ConsultarPlanesVigentes();
 
             ddlPlanes.DataSource = dt;
             ddlPlanes.DataBind();

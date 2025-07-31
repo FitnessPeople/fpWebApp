@@ -73,7 +73,7 @@ namespace fpWebApp
         private void ListaPlanes()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanesVigencias();
+            DataTable dt = cg.ConsultarPlanesVigentes();
             rpPlanes.DataSource = dt;
             rpPlanes.DataBind();
             dt.Dispose();

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="estrategiasmarketing.aspx.cs" Inherits="fpWebApp.estrategiasmarketing" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="estrategiasmarketing.aspx.cs" Inherits="fpWebApp.estrategiasmarketing" ValidateRequest="false" %>
 
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
@@ -56,6 +56,14 @@
             document.getElementById('<%= hiddenEditor.ClientID %>').value = contenido;
         }
     </script>
+
+        <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+
+
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <%--<link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />--%>
     <!-- FooTable -->
@@ -177,22 +185,22 @@
                                     <div class="ibox-content">
                                         <div class="row">
                                             <div class="col-lg-12">
+
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label>Nombre:</label>
-                                                    <asp:TextBox ID="txbSede" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                    <asp:TextBox ID="txbNombreEstrategia" runat="server" CssClass="form-control input-sm"></asp:TextBox>
                                                     <asp:RequiredFieldValidator ID="rfvSede" runat="server" ErrorMessage="* Campo requerido"
-                                                        ControlToValidate="txbSede" ValidationGroup="agregar"
+                                                        ControlToValidate="txbNombreEstrategia" ValidationGroup="agregar"
                                                         CssClass="font-bold text-danger">
                                                     </asp:RequiredFieldValidator>
                                                 </div>
+                                                    </div>
+                                                     
 
-                                                <div class="form-group">
-                                                    <label>Descripción de la estrategia:</label>
-                                                    <div id="editor" cssclass="form-control input-sm"></div>
-                                                    <asp:HiddenField ID="hiddenEditor" runat="server" />
-                                                </div>
-
-                                                <div class="row">
+                                              
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Tipos de estrategia:</label>
@@ -208,26 +216,55 @@
                                                     </div>
                                                 </div>
 
+                                                   
+
+                                                <div class="form-group">
+                                                    <label>Descripción de la estrategia:</label>
+                                                    <div id="editor" cssclass="form-control input-sm"></div>
+                                                    <asp:HiddenField ID="hiddenEditor" runat="server" />
+                                                </div>
+
+
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <i class="fa-solid fa-hand-point-up text-info"></i>
+                                                            <i class="fa-solid fa-calendar-days text-info"></i>
                                                             <label for="txbFechaIni" class="col-form-label">Fecha inicio:</label>
-                                                            <input type="text" runat="server" id="txbFechaPrim" class="form-control input-sm datepicker" />
+                                                            <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker" />
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <i class="fas fa-angle-right"></i>
                                                             <label for="txbFechaFin" class="col-form-label">Fecha fin</label>
-                                                            <input type="text" runat="server" id="txbFechaProx" class="form-control input-sm datepicker" />
+                                                            <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker" />
                                                         </div>
                                                     </div>
                                                 </div>
 
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                           
+                                                            <label for="chblPlanes" class="col-form-label">Elija los planes a aplicar estrategia:</label>
+                                                            <br />
+                                                            <asp:CheckBoxList ID="chblPlanes" runat="server" RepeatDirection="Vertical" CssClass="todo-list m-t">
+                                                            </asp:CheckBoxList>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                           
+                                                            <label for="chblCanales" class="col-form-label">Elija los canales de venta a aplicar:</label>
+                                                            <br />
+                                                            <asp:CheckBoxList ID="chblCanales" runat="server" RepeatDirection="Vertical" CssClass="todo-list m-t">
+                                                            </asp:CheckBoxList>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
                                                 <div class="form-group">
-                                                    <a href="sedes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <a href="estrategiasmarketing" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar"
                                                         OnClick="btnAgregar_Click" OnClientClick="guardarContenidoEditor()" />
@@ -280,9 +317,9 @@
                                             <thead>
                                                 <tr>
                                                     <th data-sortable="false" data-breakpoints="xs" style="width: 200px;">Nombre</th>
-                                                    <th data-breakpoints="xs">Fecha Inicio</th>
-                                                    <th data-breakpoints="xs">Fecha Fin</th>
                                                     <th data-breakpoints="xs">Tipo Estrategia</th>
+                                                    <th data-breakpoints="xs">Fecha Inicio</th>
+                                                    <th data-breakpoints="xs">Fecha Fin</th>                                                    
                                                     <th data-breakpoints="all" data-title="Info"></th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
@@ -292,9 +329,10 @@
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
                                                             <td><%# Eval("NombreEstrategia") %></td>
-                                                            <td><%# Eval("FechaInicio") %></td>
-                                                            <td><%# Eval("FechaFin") %></td>
-                                                            <td><%# Eval("NombreTipoEstrategia") %></td>                                                           
+                                                            <td><%# Eval("NombreTipoEstrategia") %></td>
+                                                            <td><%# Convert.ToDateTime(Eval("FechaInicio")).ToString("dd/MM/yyyy") %></td>
+                                                            <td><%# Convert.ToDateTime(Eval("FechaFin")).ToString("dd/MM/yyyy") %></td>
+                                                     
                                                             <td>
                                                                 <table class="table table-bordered table-striped">
                                                                     <tr>

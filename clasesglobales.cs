@@ -5058,7 +5058,7 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public DataTable ConsultarPlanesVigencias()
+        public DataTable ConsultarPlanesVigentes()
         {
             DataTable dt = new DataTable();
 
@@ -7678,6 +7678,52 @@ int valor, string observaciones, string estado)
             }
 
             return dt;
+        }
+
+        public string InsertarEstrategiaMarketing(string nombreEstrategia, string descripcionEstrategia, string fechaInicio, string fechaFin,
+        string canalesVenta, int idTipoEstrategia, string planes, int idUsuario,  out bool respuesta, out string mensaje)
+        {
+            mensaje = string.Empty;
+            respuesta = false;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_ESTRATEGIA_MARKETING", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_nombre_estrategia", nombreEstrategia);
+                        cmd.Parameters.AddWithValue("@p_descripcion_estrategia", descripcionEstrategia);
+                        cmd.Parameters.AddWithValue("@p_fecha_inicio", fechaInicio);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", fechaFin);
+                        cmd.Parameters.AddWithValue("@p_canales_venta", canalesVenta);
+                        cmd.Parameters.AddWithValue("@p_id_tipo_estrategia", idTipoEstrategia);
+                        cmd.Parameters.AddWithValue("@p_planes", planes);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+
+                        // Parámetro de salida
+                        MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
+                        pMensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pMensaje);
+
+                        cmd.ExecuteNonQuery();
+                        mensaje = pMensaje.Value?.ToString();
+
+                        if (mensaje == "OK") respuesta = true;
+                        else respuesta = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
         }
 
         #endregion
