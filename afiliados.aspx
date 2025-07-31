@@ -99,7 +99,7 @@
         </div>
     </div>
 
-    <div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
+    <%--<div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
@@ -116,7 +116,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>--%>
 
     <div id="wrapper">
 
@@ -188,7 +188,7 @@
                                                     DataTextField="NombreSede" DataValueField="idSede"
                                                     CssClass="form-control input-sm m-b" OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
                                                     AutoPostBack="true">
-                                                    <asp:ListItem Text="Todas" Value="todas"></asp:ListItem>
+                                                    <asp:ListItem Text="Todas" Value="Todos"></asp:ListItem>
                                                 </asp:DropDownList>
                                             </div>
                                         </div>
@@ -198,6 +198,7 @@
                                                 <asp:DropDownList ID="ddlDias" runat="server" AppendDataBoundItems="true" 
                                                     CssClass="form-control input-sm m-b" OnSelectedIndexChanged="ddlDias_SelectedIndexChanged" 
                                                     AutoPostBack="true">
+                                                    <asp:ListItem Text="Todos" Value=""></asp:ListItem>
                                                     <asp:ListItem Text="Más de 30 días vencido" Value="-30"></asp:ListItem>
                                                     <asp:ListItem Text="Menos de 30 días vencido" Value="30"></asp:ListItem>
                                                     <asp:ListItem Text="Más de 30 días por vencer" Value="31"></asp:ListItem>
@@ -218,6 +219,11 @@
                                             href="imprimirafiliados" visible="false" title="Exportar">
                                             <i class="fa fa-file-excel m-r-xs"></i>EXCEL
                                         </a>
+                                        <asp:LinkButton ID="lnkAsignar" runat="server" style="font-size: 12px;" 
+                                            CssClass="btn btn-primary pull-right dim m-l-md" visible="true" 
+                                            OnClick="lnkAsignar_Click">
+                                            <i class="fa fa-user-plus m-r-xs"></i>ASIGNAR
+                                        </asp:LinkButton>
                                     </div>
                                 
                             </div>
@@ -236,8 +242,8 @@
                                         <th data-type="date" data-breakpoints="xs sm md">Fecha nacimiento</th>
                                         <th class="text-nowrap" data-breakpoints="xs">Estado Afiliado</th>
                                         <th class="text-nowrap" data-breakpoints="xs">Estado Plan</th>
-                                        <th class="text-nowrap" data-breakpoints="xs" data-type="number">Días Plan</th>
-                                        <th data-sortable="false" data-breakpoints="xs"><input type="checkbox" id="selectAllRows" />Seleccionar</th>
+                                        <%--<th class="text-nowrap" data-breakpoints="xs" data-type="number">Días Plan</th>
+                                        <th data-sortable="false" data-breakpoints="xs"><input type="checkbox" id="selectAllRows" />Seleccionar</th>--%>
                                         <th data-breakpoints="all" data-title="Info"></th>
                                         <th data-sortable="false" class="text-right" style="width: 206px;">Acciones</th>
                                     </tr>
@@ -255,9 +261,8 @@
                                                 <td style="white-space: nowrap;"><i class="fa fa-cake m-r-xs font-bold"></i><span class="text-<%# Eval("badge") %> font-bold"><%# Eval("FechaNacAfiliado", "{0:dd MMM yyyy}") %> <%# Eval("edad") %> <i class="fa fa-<%# Eval("age") %>"></i></span></td>
                                                 <td><span class="badge badge-<%# Eval("badge2") %>"><%# Eval("EstadoAfiliado") %></span></td>
                                                 <td><span class="badge badge-<%# Eval("badge3") %>"><%# Eval("EstadoPlan") %></span></td>
-                                                <td><%# Eval("diasquefaltan") %></td>
+                                                <%--<td><%# Eval("diasquefaltan") %></td>
                                                 <td>
-                                                    <%--<asp:CheckBox ID="chbSeleccion" runat="server" class="chkItem" />--%>
                                                     <input type="checkbox" class="rowCheckbox" runat="server" id="chbSeleccion" />
                                                     <asp:HiddenField runat="server" ID="hfNombreAfiliado" Value='<%# Eval("NombreAfiliado") %>' />
                                                     <asp:HiddenField runat="server" ID="hfApellidoAfiliado" Value='<%# Eval("ApellidoAfiliado") %>' />
@@ -265,7 +270,7 @@
                                                     <asp:HiddenField runat="server" ID="hfidTipoDocumento" Value='<%# Eval("idTipoDocumento") %>' />
                                                     <asp:HiddenField runat="server" ID="hfCelularAfiliado" Value='<%# Eval("CelularAfiliado") %>' />
                                                     <asp:HiddenField runat="server" ID="hfTipoGestion" Value='<%# Eval("TipoGestion") %>' />
-                                                </td>
+                                                </td>--%>
                                                 <td>
                                                     <table class="table table-bordered table-striped">
                                                         <tr>
@@ -338,11 +343,11 @@
                                                         title="Congelación" visible="false">
                                                         <i class="fa fa-snowflake"></i>
                                                     </button>
-                                                    <button runat="server" id="btnAdres" class="btn btn-outline btn-success pull-left dropdown-toggle"
+                                                    <%--<button runat="server" id="btnAdres" class="btn btn-outline btn-success pull-left dropdown-toggle"
                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
                                                         title="Adres" visible="false">
                                                         <i class="fa fa-id-badge"></i>
-                                                    </button>
+                                                    </button>--%>
                                                 </td>
                                             </tr>
                                         </ItemTemplate>
@@ -411,15 +416,15 @@
             });
         });
 
-        $(document).on("click", ".dropdown-toggle", function () {
-            var url = 'https://pqrdsuperargo.supersalud.gov.co/api/api/adres/0/';
-            /*var url = 'consultaadres?id';*/
-            url = url + $(this).data('documento');
-            //console.log(url);
+        //$(document).on("click", ".dropdown-toggle", function () {
+        //    var url = 'https://pqrdsuperargo.supersalud.gov.co/api/api/adres/0/';
+        //    /*var url = 'consultaadres?id';*/
+        //    url = url + $(this).data('documento');
+        //    //console.log(url);
 
-            document.getElementById('titulo').innerHTML = $(this).data('documento');
-            document.getElementById('objEmbed').src = url;
-        });
+        //    document.getElementById('titulo').innerHTML = $(this).data('documento');
+        //    document.getElementById('objEmbed').src = url;
+        //});
 
         var table = FooTable.get(".footable"); // Reemplaza con el ID o selector de tu tabla
 

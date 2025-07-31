@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
-using System;
+﻿using System;
 using System.Data;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -24,8 +23,15 @@ namespace fpWebApp
                     if (ViewState["Consulta"].ToString() == "1")
                     {
                         string strParam = "";
-                        CargarSedes();
-                        listaAfiliados(strParam, "todas");
+                        if (Session["idSede"].ToString() == "11")
+                        {
+                            CargarSedes(11, "Todos");
+                        }
+                        else
+                        {
+                            CargarSedes(Convert.ToInt32(Session["idSede"].ToString()), "Gimnasio");
+                        }
+                        listaAfiliados(strParam, ddlSedes.SelectedItem.Value.ToString());
 
                         if (ViewState["Exportar"].ToString() == "1")
                         {
@@ -67,11 +73,10 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void CargarSedes()
+        private void CargarSedes(int idSede, string clase)
         {
-
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultaCargarSedes("Gimnasio");
+            DataTable dt = cg.ConsultaCargarSedesPorId(Convert.ToInt32(idSede), clase);
 
             ddlSedes.DataSource = dt;
             ddlSedes.DataBind();
@@ -84,7 +89,7 @@ namespace fpWebApp
             string strQueryAdd = "";
             string strQueryAdd2 = "";
             string strLimit = "100";
-            if (strSede != "todas")
+            if (strSede != "Todos")
             {
                 strQueryAdd = "AND a.idSede = " + strSede;
             }
@@ -147,34 +152,40 @@ namespace fpWebApp
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
                     HtmlButton btnEditar = (HtmlButton)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("type", "button");
                     btnEditar.Attributes.Add("onClick", "window.location.href='editarafiliado?editid=" + ((DataRowView)e.Item.DataItem).Row["idAfiliado"].ToString() + "'");
                     btnEditar.Visible = true;
 
                     HtmlButton btnPlan = (HtmlButton)e.Item.FindControl("btnPlan");
+                    btnPlan.Attributes.Add("type", "button");
                     btnPlan.Attributes.Add("onClick", "window.location.href='planesAfiliado?id=" + ((DataRowView)e.Item.DataItem).Row["idAfiliado"].ToString() + "'");
                     btnPlan.Visible = true;
 
                     HtmlButton btnTraspaso = (HtmlButton)e.Item.FindControl("btnTraspaso");
+                    btnTraspaso.Attributes.Add("type", "button");
                     btnTraspaso.Attributes.Add("onClick", "window.location.href='traspasosAfil?id=" + ((DataRowView)e.Item.DataItem).Row["idAfiliado"].ToString() + "'");
                     btnTraspaso.Visible = true;
 
                     HtmlButton btnCortesia = (HtmlButton)e.Item.FindControl("btnCortesia");
+                    btnCortesia.Attributes.Add("type", "button");
                     btnCortesia.Attributes.Add("onClick", "window.location.href='cortesiasAfil?id=" + ((DataRowView)e.Item.DataItem).Row["idAfiliado"].ToString() + "'");
                     btnCortesia.Visible = true;
 
                     HtmlButton btnIncapacidad = (HtmlButton)e.Item.FindControl("btnIncapacidad");
+                    btnIncapacidad.Attributes.Add("type", "button");
                     btnIncapacidad.Attributes.Add("onClick", "window.location.href='incapacidadesAfil?id=" + ((DataRowView)e.Item.DataItem).Row["idAfiliado"].ToString() + "'");
                     btnIncapacidad.Visible = true;
 
                     HtmlButton btnCongelacion = (HtmlButton)e.Item.FindControl("btnCongelacion");
+                    btnCongelacion.Attributes.Add("type", "button");
                     btnCongelacion.Attributes.Add("onClick", "window.location.href='congelacionesAfil?id=" + ((DataRowView)e.Item.DataItem).Row["idAfiliado"].ToString() + "'");
                     btnCongelacion.Visible = true;
 
-                    HtmlButton btnAdres = (HtmlButton)e.Item.FindControl("btnAdres");
-                    btnAdres.Attributes.Add("data-toggle", "modal");
-                    btnAdres.Attributes.Add("data-target", "#myModal2");
-                    btnAdres.Attributes.Add("data-documento", "" + ((DataRowView)e.Item.DataItem).Row["DocumentoAfiliado"].ToString() + "");
-                    btnAdres.Visible = true;
+                    //HtmlButton btnAdres = (HtmlButton)e.Item.FindControl("btnAdres");
+                    //btnAdres.Attributes.Add("data-toggle", "modal");
+                    //btnAdres.Attributes.Add("data-target", "#myModal2");
+                    //btnAdres.Attributes.Add("data-documento", "" + ((DataRowView)e.Item.DataItem).Row["DocumentoAfiliado"].ToString() + "");
+                    //btnAdres.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
@@ -187,9 +198,23 @@ namespace fpWebApp
 
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
-            //string strParam = txbBuscar.Value.ToString();
-            //listaAfiliados(strParam, ddlSedes.SelectedItem.Value.ToString());
+            string strParam = txbBuscar.Value.ToString();
+            listaAfiliados(strParam, ddlSedes.SelectedItem.Value.ToString());
+        }
 
+        protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string strParam = txbBuscar.Value.ToString();
+            listaAfiliados(strParam, ddlSedes.SelectedItem.Value.ToString());
+        }
+
+        protected void ddlDias_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            listaAfiliados("", "todas");
+        }
+
+        protected void lnkAsignar_Click(object sender, EventArgs e)
+        {
             foreach (RepeaterItem item in rpAfiliados.Items)
             {
                 // Buscar controles dentro de cada item del repeater
@@ -214,17 +239,6 @@ namespace fpWebApp
                         "" + hfTipoGestion.Value.ToString() + ") ";
                 }
             }
-        }
-
-        protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string strParam = txbBuscar.Value.ToString();
-            listaAfiliados(strParam, ddlSedes.SelectedItem.Value.ToString());
-        }
-
-        protected void ddlDias_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            listaAfiliados("", "todas");
         }
     }
 }

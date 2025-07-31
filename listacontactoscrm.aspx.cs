@@ -66,7 +66,7 @@ namespace fpWebApp
                 // Validar usuario y permisos
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Historias clinicas");
+                    ValidarPermisos("Lista contactos CRM");
 
                     if (ViewState["SinPermiso"]?.ToString() == "1")
                     {
