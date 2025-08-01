@@ -89,25 +89,73 @@ namespace fpWebApp
         private void CargarGraficaBarras()
         {
             string query = @"SELECT eu.nombre AS 'NombreUniversidad', COUNT(*) AS Cantidad
-                            FROM Estudiafit e 
-                            INNER JOIN EstudiafitUni eu 
-                            ON e.idUni = eu.idUni 
-                            GROUP BY eu.nombre;";
+                    FROM Estudiafit e 
+                    INNER JOIN EstudiafitUni eu 
+                    ON e.idUni = eu.idUni 
+                    GROUP BY eu.nombre;";
 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(query);
 
-            // Extraer nombres de universidad y cantidades
-            var universidades = dt.AsEnumerable().Select(r => r.Field<string>("NombreUniversidad")).ToList();
-            var cantidades = dt.AsEnumerable().Select(r => r["Cantidad"] != DBNull.Value ? Convert.ToInt32(r["Cantidad"]) : 0).ToList();
+            var columnas = new List<string>();
+            var coloresUsados = new Dictionary<string, string>();
 
-            string columnasJS = $"['Estudiantes', {string.Join(",", cantidades)}]";
-            string categoriasJS = string.Join(",", universidades.Select(u => $"\"{u}\""));
+            foreach (DataRow row in dt.Rows)
+            {
+                string universidad = row["NombreUniversidad"].ToString();
+                int cantidad = Convert.ToInt32(row["Cantidad"]);
 
-            // Pasar los valores como variables JS al front
+                columnas.Add($"['{universidad}', {cantidad}]");
+
+                if (coloresFijos.ContainsKey(universidad))
+                {
+                    coloresUsados[universidad] = coloresFijos[universidad];
+                }
+                else
+                {
+                    // Color por defecto si no está en la lista
+                    coloresUsados[universidad] = "#7f7f7f";
+                }
+            }
+
+            string columnasJS = string.Join(",", columnas);
+            string coloresJS = string.Join(",", coloresUsados.Select(kv => $"'{kv.Key}': '{kv.Value}'"));
+
             ClientScript.RegisterStartupScript(this.GetType(), "setVars",
-                $"var columnasJS = [{columnasJS}]; var categoriasJS = [{categoriasJS}];", true);
+                $"var columnasJS = [{columnasJS}]; var coloresJS = {{{coloresJS}}};", true);
+
+
+            // Gráfica de chartjs
+            string labelsJS = string.Join(",", dt.Rows.Cast<DataRow>()
+                .Select(row => $"'{row["NombreUniversidad"].ToString()}'"));
+
+            string dataJS = string.Join(",", dt.Rows.Cast<DataRow>()
+                .Select(row => row["Cantidad"].ToString()));
+
+            string backgroundColorsJS = string.Join(",", dt.Rows.Cast<DataRow>()
+                .Select(row =>
+                {
+                    string universidad = row["NombreUniversidad"].ToString();
+                    return $"'{(coloresFijos.ContainsKey(universidad) ? coloresFijos[universidad] : "#7f7f7f")}'";
+                }));
+
+            ClientScript.RegisterStartupScript(this.GetType(), "chartjsVars", $@"
+                var chartLabels = [{labelsJS}];
+                var chartData = [{dataJS}];
+                var chartColors = [{backgroundColorsJS}];
+            ", true);
         }
+
+        Dictionary<string, string> coloresFijos = new Dictionary<string, string>
+        {
+            { "Universidad 1", "#1f77b4" },
+            { "Universidad 2", "#ff7f0e" },
+            { "Universidad 3", "#2ca02c" },
+            { "Universidad 4", "#d62728" },
+            { "Universidad 5", "#7401a0" },
+            { "Universidad 6", "#8c564b" },
+            { "Universidad 7", "#e377c2" }
+        };
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {

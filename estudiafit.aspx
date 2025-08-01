@@ -224,7 +224,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <%--<div class="row">
+                                    <div class="row">
                                         <div class="col-lg-6">
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
@@ -249,7 +249,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>--%>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -295,7 +295,7 @@
     <!-- Gráficas -->
     <!-- ChartJS-->
     <script src="js/plugins/chartJs/Chart.min.js"></script>
-    <%--<script src="js/demo/chartjs-demo.js"></script>--%>
+    <script src="js/demo/chartjs-demo.js"></script>
 
     <!-- d3 and c3 charts -->
     <script src="js/plugins/d3/d3.min.js"></script>
@@ -315,40 +315,73 @@
                 bindto: '#barras',
                 data: {
                     columns: columnasJS,
-                    type: 'bar'
+                    type: 'bar',
+                    colors: coloresJS
                 },
                 axis: {
                     x: {
                         type: 'category',
-                        categories: categoriasJS,
-                        height: 60
+                        categories: [""]
+                    },
+                    y: {
+                        tick: {
+                            format: d3.format("d")
+                        }
                     }
                 },
-                color: {
-                    pattern: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'],
-                    // Usa el índice de la categoría para asignar color a cada barra
-                    by: 'index'
+                tooltip: {
+                    format: {
+                        title: function () { return 'Universidades'; }
+                    }
                 }
             });
 
-            //c3.generate({
-            //    bindto: '#pie',
-            //    data: {
-            //        columns: [
-            //            ['Agendados', cantidadAgendado],
-            //            ['Asistieron', cantidadAsistio],
-            //            ['No Asistieron', cantidadNoAsistio],
-            //            ['Cancelados', cantidadCancelado]
-            //        ],
-            //        colors: {
-            //            Agendados: '#1AB394',
-            //            Asistieron: '#1C84C6',
-            //            'No Asistieron': '#ED5565',
-            //            Cancelados: '#F8AC59'
-            //        },
-            //        type: 'pie'
-            //    }
-            //});
+            c3.generate({
+                bindto: '#pie',
+                data: {
+                    columns: columnasJS,
+                    type: 'pie',
+                    colors: coloresJS
+                },
+                tooltip: {
+                    format: {
+                        title: function () { return 'Universidades'; }
+                    }
+                }
+            });
+
+        });
+
+        $(function () {
+
+            var ctx = document.getElementById('doughnutChart').getContext('2d');
+            var myPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        data: chartData,
+                        backgroundColor: chartColors
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    let label = context.label || '';
+                                    let value = context.parsed || 0;
+                                    return label + ': ' + value + ' estudiantes';
+                                }
+                            }
+                        },
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
 
         });
 
