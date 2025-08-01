@@ -39,7 +39,7 @@
     <style type="text/css" media="print">
         body {
             visibility: hidden;
-            display: none
+            display: none;
         }
     </style>
 
@@ -529,9 +529,9 @@
                 },
                 axis: {
                     x: {
-                    type: 'category',
-                    categories: categoriasJS,
-                    height: 60
+                        type: 'category',
+                        categories: categoriasJS,
+                        height: 60
                     }
                 }
             });
