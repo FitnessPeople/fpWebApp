@@ -95,25 +95,6 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        //protected void rpInscritos_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        //{
-        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-        //    {
-        //        if (ViewState["CrearModificar"].ToString() == "1")
-        //        {
-        //            HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-        //            btnEditar.Attributes.Add("href", "editarempleado?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-        //            btnEditar.Visible = false;
-        //        }
-        //        if (ViewState["Borrar"].ToString() == "1")
-        //        {
-        //            HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-        //            btnEliminar.Attributes.Add("href", "eliminarempleado?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-        //            btnEliminar.Visible = false;
-        //        }
-        //    }
-        //}
-
         protected void rpInscritos_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
@@ -134,9 +115,6 @@ namespace fpWebApp
                 {
                     btnAgendar.Visible = false;
                     btnEliminarAgenda.Visible = true;
-                    //btnAgendar.Attributes.Add("class", "btn btn-outline btn-warning pull-right m-r-xs");
-                    //btnAgendar.Attributes.Add("style", "padding: 1px 2px 1px 2px; margin-bottom: 0px; pointer-events:none;");
-                    //btnAgendar.InnerHtml = "<i class='fa-solid fa-calendar-check'></i>";
                 }
 
                 dt.Dispose();
