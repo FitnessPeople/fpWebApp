@@ -87,13 +87,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbNombreEstrategia;
 
         /// <summary>
-        /// Control rfvSede.
+        /// Control rfvNombreEstrategia.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvSede;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvNombreEstrategia;
 
         /// <summary>
         /// Control ddlTipoEstrategias.
@@ -132,6 +132,15 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlInputText txbFechaIni;
 
         /// <summary>
+        /// Control rfvFechaIni.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvFechaIni;
+
+        /// <summary>
         /// Control txbFechaFin.
         /// </summary>
         /// <remarks>
@@ -141,6 +150,15 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlInputText txbFechaFin;
 
         /// <summary>
+        /// Control rfvFechaFin.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvFechaFin;
+
+        /// <summary>
         /// Control chblPlanes.
         /// </summary>
         /// <remarks>
@@ -148,6 +166,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBoxList chblPlanes;
+
+        /// <summary>
+        /// Control cvPlanes.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CustomValidator cvPlanes;
 
         /// <summary>
         /// Control chblCanales.

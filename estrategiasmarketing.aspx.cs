@@ -65,25 +65,68 @@ namespace fpWebApp
                     if (Request.QueryString.Count > 0)
                     {
                         rpEstrategias.Visible = false;
+                        //if (Request.QueryString["editid"] != null)
+                        //{
+                        //    //Editar
+                        //    clasesglobales cg = new clasesglobales();
+                        //    DataTable dt = cg.ConsultarEstrategiaMarketingPorId(int.Parse(Request.QueryString["editid"].ToString()));
+                        //    if (dt.Rows.Count > 0)
+                        //    {
+                        //        txbNombreEstrategia.Text = dt.Rows[0]["NombreEstrategia"].ToString();
+                        //        ddlTipoEstrategias.SelectedIndex = Convert.ToInt32(ddlTipoEstrategias.Items.IndexOf(ddlTipoEstrategias.Items.FindByValue(dt.Rows[0]["idTipoEstrategia"].ToString())));
+                        //        string contenidoEditor = hiddenEditor.Value;
+                        //        hiddenEditor.Value = dt.Rows[0]["DescripcionEstrategia"].ToString();
+                        //        txbFechaIni.Value = dt.Rows[0]["FechaInicio"].ToString();
+                        //        txbFechaFin.Value = dt.Rows[0]["FechaFin"].ToString();
+                        //        chblPlanes.SelectedIndex = Convert.ToInt32(chblPlanes.Items.IndexOf(chblPlanes.Items.
+
+
+
+                        //        btnAgregar.Text = "Actualizar";
+                        //        ltTitulo.Text = "Actualizar sede";
+                        //    }
+                        //}
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ConsultarSedePorId(int.Parse(Request.QueryString["editid"].ToString()));
+                            DataTable dt = cg.ConsultarEstrategiaMarketingPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                string contenidoEditor = hiddenEditor.Value;
-                                txbNombreEstrategia.Text = dt.Rows[0]["NombreSede"].ToString();
-                                //txbDireccion.Text = dt.Rows[0]["DireccionSede"].ToString();
-                               // ddlCiudadSede.SelectedIndex = Convert.ToInt16(ddlCiudadSede.Items.IndexOf(ddlCiudadSede.Items.FindByValue(dt.Rows[0]["idCiudadSede"].ToString())));
-                                //txbTelefono.Text = dt.Rows[0]["TelefonoSede"].ToString();
-                                hiddenEditor.Value = dt.Rows[0]["HorarioSede"].ToString();
-                                //rblTipoSede.SelectedValue = dt.Rows[0]["TipoSede"].ToString();
-                                //rblClaseSede.SelectedValue = dt.Rows[0]["ClaseSede"].ToString();
+                                txbNombreEstrategia.Text = dt.Rows[0]["NombreEstrategia"].ToString();
+                                ddlTipoEstrategias.SelectedIndex = ddlTipoEstrategias.Items.IndexOf(ddlTipoEstrategias.Items.FindByValue(dt.Rows[0]["idTipoEstrategia"].ToString()));
+
+                                hiddenEditor.Value = dt.Rows[0]["DescripcionEstrategia"].ToString();
+                                txbFechaIni.Value = Convert.ToDateTime(dt.Rows[0]["FechaInicio"]).ToString("yyyy-MM-dd");
+                                txbFechaFin.Value = Convert.ToDateTime(dt.Rows[0]["FechaFin"]).ToString("yyyy-MM-dd");
+
+                                // SELECCIONAR PLANES
+                                string[] planesSeleccionados = dt.Rows[0]["Planes"].ToString().Split(',');
+                                foreach (string planId in planesSeleccionados)
+                                {
+                                    ListItem item = chblPlanes.Items.FindByValue(planId.Trim());
+                                    if (item != null)
+                                    {
+                                        item.Selected = true;
+                                    }
+                                }
+
+                                // SELECCIONAR CANALES
+                                string[] canalesSeleccionados = dt.Rows[0]["CanalesVenta"].ToString().Split(',');
+                                foreach (string canalId in canalesSeleccionados)
+                                {
+                                    ListItem item = chblCanales.Items.FindByValue(canalId.Trim());
+                                    if (item != null)
+                                    {
+                                        item.Selected = true;
+                                    }
+                                }
+
                                 btnAgregar.Text = "Actualizar";
-                                ltTitulo.Text = "Actualizar sede";
+                                ltTitulo.Text = "Actualizar estrategia";
                             }
                         }
+
                         if (Request.QueryString["deleteid"] != null)
                         {
                             //Borrar
@@ -235,136 +278,138 @@ namespace fpWebApp
             {
                 if (Request.QueryString["editid"] != null)
                 {
+                    if (!ValidarSede(txbNombreEstrategia.Text.ToString()))
+                    {
+                        List<int> planesSeleccionados = new List<int>();
 
-                    //List<int> planesSeleccionados = new List<int>();
+                        foreach (ListItem item in chblPlanes.Items)
+                        {
+                            if (item.Selected)
+                            {
+                                int idPlan = int.Parse(item.Value);
+                                planesSeleccionados.Add(idPlan);
+                            }
+                        }
+                        planesObtenidos = string.Join(",", planesSeleccionados);
 
-                    //foreach (ListItem item in chblPlanes.Items)
-                    //{
-                    //    if (item.Selected)
-                    //    {
-                    //        int idPlan = int.Parse(item.Value);
-                    //        planesSeleccionados.Add(idPlan);
-                    //    }
-                    //}
-                    //planesObtenidos = string.Join(",", planesSeleccionados);
+                        List<int> canalesSeleccionados = new List<int>();
 
-                    //List<int> canalesSeleccionados = new List<int>();
-
-                    //foreach (ListItem item in chblCanales.Items)
-                    //{
-                    //    if (item.Selected)
-                    //    {
-                    //        int idCanalVenta = int.Parse(item.Value);
-                    //        canalesSeleccionados.Add(idCanalVenta);
-                    //    }
-                    //}
-                    //canalesObtenidos = string.Join(",", canalesSeleccionados);
+                        foreach (ListItem item in chblCanales.Items)
+                        {
+                            if (item.Selected)
+                            {
+                                int idCanalVenta = int.Parse(item.Value);
+                                canalesSeleccionados.Add(idCanalVenta);
+                            }
+                        }
+                        canalesObtenidos = string.Join(",", canalesSeleccionados);
 
 
+                        string strInitData = TraerData();
+                        try
+                        {
+                            string respuesta = cg.ActualizarEstrategiaMarketing(Convert.ToInt32(Request.QueryString["editid"].ToString()), txbNombreEstrategia.Text, contenidoEditor, txbFechaIni.Value, txbFechaFin.Value, canalesObtenidos, Convert.ToInt32(ddlTipoEstrategias.SelectedItem.Value.ToString()), planesObtenidos, out salida, out mensaje);
+                            string strNewData = TraerData();
 
-                    string strInitData = TraerData();
-                    //try
-                    //{
-                    //    string respuesta = cg.ActualizarSede(int.Parse(Request.QueryString["editid"].ToString()), txbSede.Text.ToString().Trim(), txbDireccion.Text.ToString().Trim(), int.Parse(ddlCiudadSede.SelectedItem.Value.ToString()), txbTelefono.Text.ToString().Trim(), contenidoEditor, rblTipoSede.SelectedValue.ToString(), rblClaseSede.SelectedValue.ToString());
-                    //    string strNewData = TraerData();
+                            cg.InsertarLog(Session["idusuario"].ToString(), "estrategiaasmarketing", "Modifica", "El usuario modificó datos a la estrategia " + txbNombreEstrategia.Text.ToString() + ".", strInitData, strNewData);
+                        }
+                        catch (Exception ex)
+                        {
+                            mensaje = ex.Message;
+                        }
 
-                    //    cg.InsertarLog(Session["idusuario"].ToString(), "sedes", "Modifica", "El usuario modificó datos a la sede " + txbSede.Text.ToString() + ".", strInitData, strNewData);
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    string mensaje = ex.Message;
-                    //}
-
-                    Response.Redirect("estrategiasmarketing");
+                        Response.Redirect("estrategiasmarketing");
+                    }
                 }
             }
-            else
-            {
-                if (!ValidarSede(txbNombreEstrategia.Text.ToString()))
+                else
                 {
-                    List<int> planesSeleccionados = new List<int>();
-
-                    foreach (ListItem item in chblPlanes.Items)
+                    if (!ValidarSede(txbNombreEstrategia.Text.ToString()))
                     {
-                        if (item.Selected)
+                        List<int> planesSeleccionados = new List<int>();
+
+                        foreach (ListItem item in chblPlanes.Items)
                         {
-                            int idPlan = int.Parse(item.Value);
-                            planesSeleccionados.Add(idPlan);
+                            if (item.Selected)
+                            {
+                                int idPlan = int.Parse(item.Value);
+                                planesSeleccionados.Add(idPlan);
+                            }
                         }
-                    }
-                    planesObtenidos = string.Join(",", planesSeleccionados);
+                        planesObtenidos = string.Join(",", planesSeleccionados);
 
-                    List<int> canalesSeleccionados = new List<int>();
+                        List<int> canalesSeleccionados = new List<int>();
 
-                    foreach (ListItem item in chblCanales.Items)
-                    {
-                        if (item.Selected)
+                        foreach (ListItem item in chblCanales.Items)
                         {
-                            int idCanalVenta = int.Parse(item.Value);
-                            canalesSeleccionados.Add(idCanalVenta);
+                            if (item.Selected)
+                            {
+                                int idCanalVenta = int.Parse(item.Value);
+                                canalesSeleccionados.Add(idCanalVenta);
+                            }
                         }
-                    }
-                    canalesObtenidos = string.Join(",", canalesSeleccionados);
+                        canalesObtenidos = string.Join(",", canalesSeleccionados);
 
 
 
-                    try
-                    {
-                        string respuesta = cg.InsertarEstrategiaMarketing(txbNombreEstrategia.Text, contenidoEditor,txbFechaIni.Value, txbFechaFin.Value,canalesObtenidos,
-                             Convert.ToInt32(ddlTipoEstrategias.SelectedItem.Value.ToString()), planesObtenidos, Convert.ToInt32(Session["idUsuario"].ToString()), out salida, out mensaje);
-                        if (salida)
+                        try
                         {
+                            string respuesta = cg.InsertarEstrategiaMarketing(txbNombreEstrategia.Text, contenidoEditor, txbFechaIni.Value, txbFechaFin.Value, canalesObtenidos,
+                                 Convert.ToInt32(ddlTipoEstrategias.SelectedItem.Value.ToString()), planesObtenidos, Convert.ToInt32(Session["idUsuario"].ToString()), out salida, out mensaje);
+                            if (salida)
+                            {
+                                string script = @"
+                                    Swal.fire({
+                                        title: '«¡Creado correctamente!»',
+                                        text: '" + mensaje.Replace("'", "\\'") + @"',
+                                        icon: 'success',
+                                        timer: 3000, // 3 segundos
+                                        showConfirmButton: false,
+                                        timerProgressBar: true
+                                    }).then(() => {
+                                        window.location.href = 'estrategiasmarketing';
+                                    });
+                                    ";
+                                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                            }
+                            else
+                            {
+                                string script = @"
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: '" + mensaje.Replace("'", "\\'") + @"',
+                                        icon: 'error'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                          window.location.href = 'estrategiasmarketing';
+                                        }
+                                    });
+                                ";
+                                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            mensaje = ex.Message.ToString();
                             string script = @"
-                            Swal.fire({
-                                title: '«¡Creado correctamente!»',
-                                text: '" + mensaje.Replace("'", "\\'") + @"',
-                                icon: 'success',
-                                timer: 3000, // 3 segundos
-                                showConfirmButton: false,
-                                timerProgressBar: true
-                            }).then(() => {
-                                window.location.href = 'estrategiasmarketing';
-                            });
-                        ";
-                            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                        }
-                        else
-                        {
-                            string script = @"
-                                Swal.fire({
-                                    title: 'Error',
-                                    text: '" + mensaje.Replace("'", "\\'") + @"',
-                                    icon: 'error'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                      window.location.href = 'estrategiasmarketing';
-                                    }
-                                });
-                            ";
-                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        mensaje = ex.Message.ToString();
-                        string script = @"
                             Swal.fire({
                                 title: 'Error',
                                 text: '" + mensaje.Replace("'", "\\'") + @"',
                                 icon: 'error'
                             });
                         ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                        }
+                    }
+                    else
+                    {
+                        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                            "Ya existe una estrategia con ese nombre." +
+                            "</div>";
                     }
                 }
-                else
-                {
-                    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Ya existe una estrategia con ese nombre." +
-                        "</div>";
-                }
-            }
+            
         }
 
         private string TraerData()
@@ -381,6 +426,11 @@ namespace fpWebApp
             return strData;
         }
 
+        protected void cvPlanes_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            // Verifica que al menos un ítem esté seleccionado
+            args.IsValid = chblPlanes.Items.Cast<ListItem>().Any(li => li.Selected);
+        }
 
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)

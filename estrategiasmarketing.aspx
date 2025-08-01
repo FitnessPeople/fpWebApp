@@ -57,7 +57,7 @@
         }
     </script>
 
-        <!-- Sweet Alert -->
+    <!-- Sweet Alert -->
     <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 
 
@@ -189,18 +189,18 @@
 
                                                 <div class="row">
                                                     <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label>Nombre:</label>
-                                                    <asp:TextBox ID="txbNombreEstrategia" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="rfvSede" runat="server" ErrorMessage="* Campo requerido"
-                                                        ControlToValidate="txbNombreEstrategia" ValidationGroup="agregar"
-                                                        CssClass="font-bold text-danger">
-                                                    </asp:RequiredFieldValidator>
-                                                </div>
+                                                        <div class="form-group">
+                                                            <label>Nombre:</label>
+                                                            <asp:TextBox ID="txbNombreEstrategia" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                            <asp:RequiredFieldValidator ID="rfvNombreEstrategia" runat="server" ErrorMessage="* Campo requerido"
+                                                                ControlToValidate="txbNombreEstrategia" ValidationGroup="agregar"
+                                                                CssClass="font-bold text-danger" Display="Dynamic">
+                                                            </asp:RequiredFieldValidator>
+                                                        </div>
                                                     </div>
-                                                     
 
-                                              
+
+
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Tipos de estrategia:</label>
@@ -210,13 +210,13 @@
                                                             </asp:DropDownList>
                                                             <asp:RequiredFieldValidator ID="rfvTipoEstrategia" runat="server" ErrorMessage="* Campo requerido"
                                                                 ControlToValidate="ddlTipoEstrategias" ValidationGroup="agregar"
-                                                                CssClass="font-bold text-danger" InitialValue="">
+                                                                CssClass="font-bold text-danger" Display="Dynamic">
                                                             </asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                   
+
 
                                                 <div class="form-group">
                                                     <label>Descripción de la estrategia:</label>
@@ -224,13 +224,15 @@
                                                     <asp:HiddenField ID="hiddenEditor" runat="server" />
                                                 </div>
 
-
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <i class="fa-solid fa-calendar-days text-info"></i>
                                                             <label for="txbFechaIni" class="col-form-label">Fecha inicio:</label>
                                                             <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker" />
+                                                             <asp:RequiredFieldValidator ID="rfvFechaIni" runat="server" ControlToValidate="txbFechaIni"
+                                                             ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic">
+                                                         </asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
@@ -238,6 +240,9 @@
                                                             <i class="fas fa-angle-right"></i>
                                                             <label for="txbFechaFin" class="col-form-label">Fecha fin</label>
                                                             <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker" />
+                                                             <asp:RequiredFieldValidator ID="rfvFechaFin" runat="server" ControlToValidate="txbFechaFin"
+                                                             ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic">
+                                                         </asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -245,20 +250,30 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                           
+
                                                             <label for="chblPlanes" class="col-form-label">Elija los planes a aplicar estrategia:</label>
                                                             <br />
                                                             <asp:CheckBoxList ID="chblPlanes" runat="server" RepeatDirection="Vertical" CssClass="todo-list m-t">
                                                             </asp:CheckBoxList>
+                                                            <asp:CustomValidator ID="cvPlanes" runat="server"
+                                                                ErrorMessage="* Seleccione al menos un plan"
+                                                                CssClass="font-bold text-danger"
+                                                                Display="Dynamic"
+                                                                OnServerValidate="cvPlanes_ServerValidate" />
+
+
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                           
+
                                                             <label for="chblCanales" class="col-form-label">Elija los canales de venta a aplicar:</label>
                                                             <br />
                                                             <asp:CheckBoxList ID="chblCanales" runat="server" RepeatDirection="Vertical" CssClass="todo-list m-t">
                                                             </asp:CheckBoxList>
+<%--                                                            <asp:RequiredFieldValidator ID="rfvCanales" runat="server" ControlToValidate="chblCanales"
+                                                                ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic">
+                                                            </asp:RequiredFieldValidator>--%>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -319,7 +334,7 @@
                                                     <th data-sortable="false" data-breakpoints="xs" style="width: 200px;">Nombre</th>
                                                     <th data-breakpoints="xs">Tipo Estrategia</th>
                                                     <th data-breakpoints="xs">Fecha Inicio</th>
-                                                    <th data-breakpoints="xs">Fecha Fin</th>                                                    
+                                                    <th data-breakpoints="xs">Fecha Fin</th>
                                                     <th data-breakpoints="all" data-title="Info"></th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
@@ -332,7 +347,7 @@
                                                             <td><%# Eval("NombreTipoEstrategia") %></td>
                                                             <td><%# Convert.ToDateTime(Eval("FechaInicio")).ToString("dd/MM/yyyy") %></td>
                                                             <td><%# Convert.ToDateTime(Eval("FechaFin")).ToString("dd/MM/yyyy") %></td>
-                                                     
+
                                                             <td>
                                                                 <table class="table table-bordered table-striped">
                                                                     <tr>
