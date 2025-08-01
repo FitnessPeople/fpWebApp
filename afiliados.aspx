@@ -188,7 +188,6 @@
                                                     DataTextField="NombreSede" DataValueField="idSede"
                                                     CssClass="form-control input-sm m-b" OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
                                                     AutoPostBack="true">
-                                                    <asp:ListItem Text="Todas" Value="Todos"></asp:ListItem>
                                                 </asp:DropDownList>
                                             </div>
                                         </div>

@@ -25,7 +25,7 @@ namespace fpWebApp
                         string strParam = "";
                         if (Session["idSede"].ToString() == "11")
                         {
-                            CargarSedes(11, "Todos");
+                            CargarSedes(11, "Todas");
                         }
                         else
                         {
@@ -77,6 +77,12 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultaCargarSedesPorId(Convert.ToInt32(idSede), clase);
+            
+            if (clase == "Todas")
+            {
+                ListItem li = new ListItem("Todas", "Todas");
+                ddlSedes.Items.Add(li);
+            }
 
             ddlSedes.DataSource = dt;
             ddlSedes.DataBind();
@@ -89,7 +95,7 @@ namespace fpWebApp
             string strQueryAdd = "";
             string strQueryAdd2 = "";
             string strLimit = "100";
-            if (strSede != "Todos")
+            if (strSede != "Todas")
             {
                 strQueryAdd = "AND a.idSede = " + strSede;
             }
@@ -97,7 +103,7 @@ namespace fpWebApp
             {
                 strLimit = "1000";
             }
-
+            
             if (ddlDias.SelectedItem.Value.ToString() == "-30")
             {
                 strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) <= -30 ";
@@ -210,7 +216,7 @@ namespace fpWebApp
 
         protected void ddlDias_SelectedIndexChanged(object sender, EventArgs e)
         {
-            listaAfiliados("", "todas");
+            listaAfiliados("", "Todas");
         }
 
         protected void lnkAsignar_Click(object sender, EventArgs e)
