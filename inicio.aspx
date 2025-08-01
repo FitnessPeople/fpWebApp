@@ -429,10 +429,20 @@
                     closeButton: true,
                     progressBar: true,
                     showMethod: 'slideDown',
-                    timeOut: 4000
+                    timeOut: 1000
                 };
                 toastr.error('<%=strDiaZero%> días y contando...', 'DIA ZERO');
             }, 1300);
+
+            setTimeout(function () {
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    showMethod: 'slideDown',
+                    timeOut: 3000
+                };
+                toastr.success('Puedes usar CTRL+L para bloquear la aplicación', 'Píldora');
+            }, 2600);
         });
     </script>
 

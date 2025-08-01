@@ -181,9 +181,7 @@
                     <li id="planesweb" class="old"><a href="planesweb"><i class="fa fa-ticket"></i>Planes</a></li>
                 </ul>
             </li>--%>
-            <li class="special_link">
-                <a href="calendariofpadmin"><i class="fa fa-calendar"></i><span class="nav-label">Calendario FP+ Admin</span></a>
-            </li>
+            <asp:Literal ID="ltMenuCalendario" runat="server"></asp:Literal>
             <li class="special_link">
                 <a href="https://fitnesspeoplecolombia.com" target="_blank"><i class="fa fa-star"></i><span class="nav-label">Fitness People WebPage</span></a>
             </li>

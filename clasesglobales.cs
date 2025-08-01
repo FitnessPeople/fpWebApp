@@ -2027,7 +2027,7 @@ namespace fpWebApp
 
         #region Paginas
 
-        public string InsertarPagina(string Pagina, string Aspx, int idCategoria)
+        public string InsertarPagina(string Pagina, string Aspx, int idCategoria, string IconoFA)
         {
             string respuesta = string.Empty;
             try
@@ -2042,6 +2042,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_pagina", Pagina);
                         cmd.Parameters.AddWithValue("@p_pagina_aspx", Aspx);
                         cmd.Parameters.AddWithValue("@p_id_categoria", idCategoria);
+                        cmd.Parameters.AddWithValue("@p_icono_pagina", IconoFA);
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
                     }
@@ -2085,7 +2086,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public string ActualizarPagina(int idPagina, string nombrePagina, string nombreAspx, int idCategoria)
+        public string ActualizarPagina(int idPagina, string nombrePagina, string nombreAspx, int idCategoria, string iconoPagina)
         {
             string respuesta = string.Empty;
             try
@@ -2105,6 +2106,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_pagina_aspx", nombreAspx);
                         cmd.Parameters.AddWithValue("@p_id_categoria", idCategoria);
                         cmd.Parameters.AddWithValue("@p_id_pagina", idPagina);
+                        cmd.Parameters.AddWithValue("@p_icono_pagina", iconoPagina);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";

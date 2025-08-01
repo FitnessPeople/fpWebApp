@@ -18,12 +18,12 @@
     <title>Fitness People | Perfiles</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
-    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
+
+    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -206,8 +206,10 @@
                                                     <div class="col-lg-12">
                                                         <div class="form-group">
                                                             <label>Perfil</label>
-                                                            <asp:DropDownList CssClass="form-control input-sm m-b required" ID="ddlPerfiles" runat="server"
-                                                                OnSelectedIndexChanged="ddlPerfiles_SelectedIndexChanged" DataValueField="idPerfil" DataTextField="Perfil"
+                                                            <asp:DropDownList CssClass="chosen-select form-control input-sm m-b required" 
+                                                                ID="ddlPerfiles" runat="server"
+                                                                OnSelectedIndexChanged="ddlPerfiles_SelectedIndexChanged" 
+                                                                DataValueField="idPerfil" DataTextField="Perfil"
                                                                 AutoPostBack="true" AppendDataBoundItems="true">
                                                             </asp:DropDownList>
                                                         </div>
@@ -284,10 +286,18 @@
     <!-- Chosen -->
     <script src="js/plugins/chosen/chosen.jquery.js"></script>
 
+    <!-- Jquery Validate -->
+    <script src="js/plugins/validate/jquery.validate.min.js"></script>
+
+    <!-- Jasny -->
+    <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
+
     <!-- Page-Level Scripts -->
     <script>
         $('.footable1').footable();
         $('.footable2').footable();
+        $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" });
+        $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
     </script>
 
 </body>

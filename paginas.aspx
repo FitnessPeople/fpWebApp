@@ -163,6 +163,13 @@
                                                         CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label>Icono Font Awesome (<a href="https://fontawesome.com/search?ic=free&o=r" target="_blank">Iconos</a>):</label>
+                                                    <asp:TextBox ID="txbIconoFA" name="txbAspx" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
+                                                        ErrorMessage="* Campo requerido" ControlToValidate="txbIconoFA" 
+                                                        CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
+                                                </div>
+                                                <div class="form-group">
                                                     <a href="paginas" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar" 
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" 
@@ -215,7 +222,8 @@
                                                 <tr>
                                                     <th width="25%">Página</th>
                                                     <th width="25%">ASPX</th>
-                                                    <th width="30%">Categoría</th>
+                                                    <th width="20%">Categoría</th>
+                                                    <th width="20%">Icono FA</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
@@ -226,6 +234,7 @@
                                                             <td><%# Eval("Pagina") %></td>
                                                             <td><%# Eval("NombreAspx") %></td>
                                                             <td><%# Eval("NombreCategoriaPagina") %></td>
+                                                            <td><i class='fa fa-<%# Eval("IconoFA") %> m-r-sm'></i><%# Eval("IconoFA") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>

@@ -26,6 +26,13 @@ namespace fpWebApp.controles
                 //totalUsuarios();
                 //totalInscritos();
 
+                if (Session["idSede"].ToString() == "11")
+                {
+                    ltMenuCalendario.Text = "<li class=\"special_link\">";
+                    ltMenuCalendario.Text += "<a href=\"calendariofpadmin\"><i class=\"fa fa-calendar\"></i><span class=\"nav-label\">Calendario FP+ Admin</span></a>";
+                    ltMenuCalendario.Text += "</li>";
+                }
+                
                 cargarMenu();
             }
             else

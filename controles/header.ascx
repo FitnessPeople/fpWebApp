@@ -198,7 +198,7 @@
     // Evento keydown
     document.addEventListener('keydown', (event) => {
         teclasPresionadas[event.key] = true; // Guardar que la tecla está presionada
-        if (teclasPresionadas['Control'] && event.key === 'l') { // Detectar Ctrl+C
+        if (teclasPresionadas['Control'] && event.key === 'l') { // Detectar Ctrl+L
             console.log('Ctrl+l detectado');
             window.location.href = "pantallabloqueo?page=" + url;
         }

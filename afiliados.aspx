@@ -259,7 +259,7 @@
                                                 <td style="white-space: nowrap;"><i class="fa fa-envelope m-r-xs font-bold"></i><%# Eval("EmailAfiliado") %></td>
                                                 <td style="white-space: nowrap;"><i class="fa fa-cake m-r-xs font-bold"></i><span class="text-<%# Eval("badge") %> font-bold"><%# Eval("FechaNacAfiliado", "{0:dd MMM yyyy}") %> <%# Eval("edad") %> <i class="fa fa-<%# Eval("age") %>"></i></span></td>
                                                 <td><span class="badge badge-<%# Eval("badge2") %>"><%# Eval("EstadoAfiliado") %></span></td>
-                                                <td><span class="badge badge-<%# Eval("badge3") %>"><%# Eval("EstadoPlan") %></span></td>
+                                                <td><span class="badge badge-<%# Eval("badge3") %>"><%# Eval("EstadoPlan") %> <%# Eval("diasquefaltan") %></span></td>
                                                 <%--<td><%# Eval("diasquefaltan") %></td>
                                                 <td>
                                                     <input type="checkbox" class="rowCheckbox" runat="server" id="chbSeleccion" />

@@ -59,6 +59,7 @@ namespace fpWebApp
                             {
                                 txbPagina.Text = dt.Rows[0]["Pagina"].ToString();
                                 txbAspx.Text = dt.Rows[0]["NombreAspx"].ToString();
+                                txbIconoFA.Text = dt.Rows[0]["IconoFA"].ToString();
                                 ddlCategorias.SelectedIndex = Convert.ToInt16(ddlCategorias.Items.IndexOf(ddlCategorias.Items.FindByValue(dt.Rows[0]["idCategoria"].ToString())));
 
                                 btnAgregar.Text = "Actualizar";
@@ -81,6 +82,10 @@ namespace fpWebApp
                             {
                                 txbPagina.Text = dt.Rows[0]["Pagina"].ToString();
                                 txbPagina.Enabled = false;
+                                txbAspx.Text = dt.Rows[0]["NombreAspx"].ToString();
+                                txbAspx.Enabled = false;
+                                txbIconoFA.Text = dt.Rows[0]["IconoFA"].ToString();
+                                txbIconoFA.Enabled = false;
                                 ddlCategorias.SelectedIndex = Convert.ToInt16(ddlCategorias.Items.IndexOf(ddlCategorias.Items.FindByValue(dt.Rows[0]["idCategoria"].ToString())));
                                 ddlCategorias.Enabled = false;
                                 btnAgregar.Text = "⚠ Confirmar borrado ❗";
@@ -170,7 +175,7 @@ namespace fpWebApp
 
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarPagina(int.Parse(Request.QueryString["editid"].ToString()), txbPagina.Text.ToString().Trim(), txbAspx.Text.ToString().Trim(), Convert.ToInt32(ddlCategorias.SelectedItem.Value));
+                    string respuesta = cg.ActualizarPagina(int.Parse(Request.QueryString["editid"].ToString()), txbPagina.Text.ToString().Trim(), txbAspx.Text.ToString().Trim(), Convert.ToInt32(ddlCategorias.SelectedItem.Value), txbIconoFA.Text.ToString().Trim());
 
                     string strNewData = TraerData();
                     cg.InsertarLog(Session["idusuario"].ToString(), "paginas", "Modifica", "El usuario modificó la página: " + txbPagina.Text.ToString() + ".", strInitData, strNewData);
@@ -188,7 +193,7 @@ namespace fpWebApp
                 {
                     try
                     {
-                        string respuesta = cg.InsertarPagina(txbPagina.Text.ToString().Trim(), txbAspx.Text.ToString().Trim(), Convert.ToInt32(ddlCategorias.SelectedItem.Value.ToString()));
+                        string respuesta = cg.InsertarPagina(txbPagina.Text.ToString().Trim(), txbAspx.Text.ToString().Trim(), Convert.ToInt32(ddlCategorias.SelectedItem.Value.ToString()), txbIconoFA.Text.ToString().Trim());
 
                         cg.InsertarLog(Session["idusuario"].ToString(), "paginas", "Agrega", "El usuario agregó una nueva página: " + txbPagina.Text.ToString() + ".", "", "");
 
