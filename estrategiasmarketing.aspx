@@ -146,7 +146,7 @@
                     <h2><i class="fa fa-school-flag text-success m-r-sm"></i>Estrategias de Marketing</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>Sistema</li>
+                        <li>CRM</li>
                         <li class="active"><strong>Estrategias de Marketing</strong></li>
                     </ol>
                 </div>
@@ -248,9 +248,9 @@
                                                 </div>
 
                                                 <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-
+                                                  
+                                                    <div class="col-sm-6">                                                        
+                                                        <div class="form-group">                                                            
                                                             <label for="chblPlanes" class="col-form-label">Elija los planes a aplicar estrategia:</label>
                                                             <br />
                                                             <asp:CheckBoxList ID="chblPlanes" runat="server" RepeatDirection="Vertical" CssClass="todo-list m-t">
@@ -259,9 +259,7 @@
                                                                 ErrorMessage="* Seleccione al menos un plan"
                                                                 CssClass="font-bold text-danger"
                                                                 Display="Dynamic"
-                                                                OnServerValidate="cvPlanes_ServerValidate" />
-
-
+                                                                OnServerValidate="cvPlanes_ServerValidate" />                                                           
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">

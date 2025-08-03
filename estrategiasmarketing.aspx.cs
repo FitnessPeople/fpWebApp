@@ -45,10 +45,9 @@ namespace fpWebApp
                         {
                             btnAgregar.Visible = true;
                         }
-                        txbFechaIni.Attributes.Add("type", "date");
-                        //txbFechaIni.Attributes.Add("min", DateTime.Now.ToString("yyyy-MM-dd"));
-                        txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-dd");
 
+                        txbFechaIni.Attributes.Add("type", "date");                        
+                        txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-dd");
                         txbFechaFin.Attributes.Add("type", "date");
                         txbFechaFin.Attributes.Add("min", DateTime.Now.ToString("yyyy-MM-dd"));
                         txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd");
@@ -65,27 +64,6 @@ namespace fpWebApp
                     if (Request.QueryString.Count > 0)
                     {
                         rpEstrategias.Visible = false;
-                        //if (Request.QueryString["editid"] != null)
-                        //{
-                        //    //Editar
-                        //    clasesglobales cg = new clasesglobales();
-                        //    DataTable dt = cg.ConsultarEstrategiaMarketingPorId(int.Parse(Request.QueryString["editid"].ToString()));
-                        //    if (dt.Rows.Count > 0)
-                        //    {
-                        //        txbNombreEstrategia.Text = dt.Rows[0]["NombreEstrategia"].ToString();
-                        //        ddlTipoEstrategias.SelectedIndex = Convert.ToInt32(ddlTipoEstrategias.Items.IndexOf(ddlTipoEstrategias.Items.FindByValue(dt.Rows[0]["idTipoEstrategia"].ToString())));
-                        //        string contenidoEditor = hiddenEditor.Value;
-                        //        hiddenEditor.Value = dt.Rows[0]["DescripcionEstrategia"].ToString();
-                        //        txbFechaIni.Value = dt.Rows[0]["FechaInicio"].ToString();
-                        //        txbFechaFin.Value = dt.Rows[0]["FechaFin"].ToString();
-                        //        chblPlanes.SelectedIndex = Convert.ToInt32(chblPlanes.Items.IndexOf(chblPlanes.Items.
-
-
-
-                        //        btnAgregar.Text = "Actualizar";
-                        //        ltTitulo.Text = "Actualizar sede";
-                        //    }
-                        //}
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
@@ -129,7 +107,85 @@ namespace fpWebApp
 
                         if (Request.QueryString["deleteid"] != null)
                         {
-                            //Borrar
+                            clasesglobales cg = new clasesglobales();
+                            DataTable dt = cg.ValidarEstrategiaMarketingTablas(int.Parse(Request.QueryString["deleteid"].ToString()));
+                            if (dt.Rows.Count > 0)
+                            {
+                                ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                    "Esta estrategia no se puede borrar, hay registros asociados a ella." +
+                                    "</div></div>";
+
+                                DataTable dt1 = new DataTable();
+                                dt1 = cg.ConsultarEstrategiaMarketingPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                if (dt1.Rows.Count > 0)
+                                {
+                                    txbNombreEstrategia.Text = dt1.Rows[0]["NombreEstrategia"].ToString();
+                                    txbNombreEstrategia.Enabled = false;
+                                    ddlTipoEstrategias.Enabled = false;                                   
+                                    txbFechaIni.Disabled = true;
+                                    txbFechaFin.Disabled = true;
+                                    chblPlanes.Enabled = false;
+                                    chblCanales.Enabled = false;
+                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                                    btnAgregar.Enabled = false;
+                                    ltTitulo.Text = "Borrar Estrategia";
+                                }
+                                dt1.Dispose();
+                            }
+                            else
+                            {
+                                //Borrar
+                                DataTable dt1 = new DataTable();
+                                dt1 = cg.ConsultarEstrategiaMarketingPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                if (dt1.Rows.Count > 0)
+                                {
+                                    txbNombreEstrategia.Text = dt1.Rows[0]["NombreEstrategia"].ToString();
+                                    txbNombreEstrategia.Enabled = false;
+                                    
+                                    ddlTipoEstrategias.SelectedIndex = ddlTipoEstrategias.Items.IndexOf(ddlTipoEstrategias.Items.FindByValue(dt1.Rows[0]["idTipoEstrategia"].ToString()));
+                                    ddlTipoEstrategias.Enabled = false;
+
+                                    hiddenEditor.Value = dt1.Rows[0]["DescripcionEstrategia"].ToString();
+
+                                    txbFechaIni.Value = Convert.ToDateTime(dt1.Rows[0]["FechaInicio"]).ToString("yyyy-MM-dd");
+                                    txbFechaIni.Disabled = true;
+
+                                    txbFechaFin.Value = Convert.ToDateTime(dt1.Rows[0]["FechaFin"]).ToString("yyyy-MM-dd");
+                                    txbFechaFin.Disabled = true;                                        
+                                    
+                                    // SELECCIONAR PLANES
+                                    string[] planesSeleccionados = dt1.Rows[0]["Planes"].ToString().Split(',');
+                                    foreach (string planId in planesSeleccionados)
+                                    {
+                                        ListItem item = chblPlanes.Items.FindByValue(planId.Trim());
+                                        if (item != null)
+                                        {
+                                            item.Selected = true;
+                                        }
+                                    }
+                                    chblPlanes.Enabled = false;
+
+                                    // SELECCIONAR CANALES
+                                    string[] canalesSeleccionados = dt1.Rows[0]["CanalesVenta"].ToString().Split(',');
+                                    foreach (string canalId in canalesSeleccionados)
+                                    {
+                                        ListItem item = chblCanales.Items.FindByValue(canalId.Trim());
+                                        if (item != null)
+                                        {
+                                            item.Selected = true;
+                                        }
+                                    }
+                                    chblCanales.Enabled = false;
+                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                                    btnAgregar.Enabled = true;
+                                    ltTitulo.Text = "Borrar Estrategia";
+
+                                }
+                                dt1.Dispose();
+
+                            }
                         }
                     }
                 }
@@ -157,9 +213,6 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-
-
-
         private void CargarPlanes()
         {
             clasesglobales cg = new clasesglobales();
@@ -172,8 +225,6 @@ namespace fpWebApp
 
             dt.Dispose();
         }
-
-
         private void ListaCanalesDeVenta()
         {
             clasesglobales cg = new clasesglobales();
@@ -183,6 +234,7 @@ namespace fpWebApp
             chblCanales.DataTextField = "NombreCanalVenta";
             chblCanales.DataValueField = "idCanalVenta";
             chblCanales.DataBind();
+
             dt.Dispose();
         }
 
@@ -251,11 +303,11 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private bool ValidarSede(string strNombre)
+        private bool ValidarEstrategia(string strNombre)
         {
             bool bExiste = false;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarSedePorNombre(strNombre.ToString().Trim());
+            DataTable dt = cg.ConsultarEstrategiaMarketingPorNombre(strNombre.ToString().Trim());
 
             if (dt.Rows.Count > 0)
             {
@@ -277,9 +329,7 @@ namespace fpWebApp
             if (Request.QueryString.Count > 0)
             {
                 if (Request.QueryString["editid"] != null)
-                {
-                    if (!ValidarSede(txbNombreEstrategia.Text.ToString()))
-                    {
+                {                    
                         List<int> planesSeleccionados = new List<int>();
 
                         foreach (ListItem item in chblPlanes.Items)
@@ -303,28 +353,116 @@ namespace fpWebApp
                             }
                         }
                         canalesObtenidos = string.Join(",", canalesSeleccionados);
-
 
                         string strInitData = TraerData();
                         try
                         {
                             string respuesta = cg.ActualizarEstrategiaMarketing(Convert.ToInt32(Request.QueryString["editid"].ToString()), txbNombreEstrategia.Text, contenidoEditor, txbFechaIni.Value, txbFechaFin.Value, canalesObtenidos, Convert.ToInt32(ddlTipoEstrategias.SelectedItem.Value.ToString()), planesObtenidos, out salida, out mensaje);
-                            string strNewData = TraerData();
 
-                            cg.InsertarLog(Session["idusuario"].ToString(), "estrategiaasmarketing", "Modifica", "El usuario modificó datos a la estrategia " + txbNombreEstrategia.Text.ToString() + ".", strInitData, strNewData);
+                            if (salida)
+                            {
+                                string script = @"
+                                    Swal.fire({
+                                        title: '«¡Actualizada correctamente!»',
+                                        text: '" + mensaje.Replace("'", "\\'") + @"',
+                                        icon: 'success',
+                                        timer: 3000, // 3 segundos
+                                        showConfirmButton: false,
+                                        timerProgressBar: true
+                                    }).then(() => {
+                                        window.location.href = 'estrategiasmarketing';
+                                    });
+                                    ";
+                                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                            }
+                            else
+                            {
+                                string script = @"
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: '" + mensaje.Replace("'", "\\'") + @"',
+                                        icon: 'error'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                          window.location.href = 'estrategiasmarketing';
+                                        }
+                                    });
+                                ";
+                                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                            }
                         }
                         catch (Exception ex)
                         {
-                            mensaje = ex.Message;
+                            mensaje = ex.Message.ToString();
+                            string script = @"
+                            Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            });
+                        ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                         }
+                            string strNewData = TraerData();
+                            cg.InsertarLog(Session["idusuario"].ToString(), "estrategiaasmarketing", "Modifica", "El usuario modificó datos a la estrategia " + txbNombreEstrategia.Text.ToString() + ".", strInitData, strNewData);
+                 
+                }
+                if (Request.QueryString["deleteid"] != null)
+                {
+                    try
+                    {
+                        string respuesta = cg.EliminarEstrategiaMarketing(int.Parse(Request.QueryString["deleteid"].ToString()));
 
-                        Response.Redirect("estrategiasmarketing");
+                        if (respuesta== "OK")
+                        {
+                            string script = @"
+                                    Swal.fire({
+                                        title: '«¡Eliminada correctamente!»',
+                                        text: '" + mensaje.Replace("'", "\\'") + @"',
+                                        icon: 'success',
+                                        timer: 3000, // 3 segundos
+                                        showConfirmButton: false,
+                                        timerProgressBar: true
+                                    }).then(() => {
+                                        window.location.href = 'estrategiasmarketing';
+                                    });
+                                    ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                        }
+                        else
+                        {
+                            string script = @"
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: '" + mensaje.Replace("'", "\\'") + @"',
+                                        icon: 'error'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                          window.location.href = 'estrategiasmarketing';
+                                        }
+                                    });
+                                ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        mensaje = ex.Message.ToString();
+                        string script = @"
+                            Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            });
+                        ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                     }
                 }
+                
             }
                 else
                 {
-                    if (!ValidarSede(txbNombreEstrategia.Text.ToString()))
+                    if (!ValidarEstrategia(txbNombreEstrategia.Text.ToString()))
                     {
                         List<int> planesSeleccionados = new List<int>();
 
@@ -349,8 +487,6 @@ namespace fpWebApp
                             }
                         }
                         canalesObtenidos = string.Join(",", canalesSeleccionados);
-
-
 
                         try
                         {
@@ -360,7 +496,7 @@ namespace fpWebApp
                             {
                                 string script = @"
                                     Swal.fire({
-                                        title: '«¡Creado correctamente!»',
+                                        title: '«¡Creada correctamente!»',
                                         text: '" + mensaje.Replace("'", "\\'") + @"',
                                         icon: 'success',
                                         timer: 3000, // 3 segundos
@@ -403,19 +539,19 @@ namespace fpWebApp
                     }
                     else
                     {
-                        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                            "Ya existe una estrategia con ese nombre." +
-                            "</div>";
-                    }
+                    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        "Ya existe una estrategia con ese nombre." +
+                        "</div>";
                 }
+            }
             
         }
 
         private string TraerData()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarSedePorId(int.Parse(Request.QueryString["editid"].ToString()));
+            DataTable dt = cg.ConsultarEstrategiaMarketingPorId(int.Parse(Request.QueryString["editid"].ToString()));
 
             string strData = "";
             foreach (DataColumn column in dt.Columns)
