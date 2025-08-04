@@ -173,6 +173,9 @@
                         <div class="row" id="divContenido" runat="server">
                             <div class="col-lg-4">
                                 <div class="ibox float-e-margins">
+                                    <div class="form-group">
+                                        <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                    </div>
                                     <div class="ibox-title">
                                         <h5>
                                             <asp:Literal ID="ltTitulo" runat="server"></asp:Literal></h5>
@@ -230,9 +233,9 @@
                                                             <i class="fa-solid fa-calendar-days text-info"></i>
                                                             <label for="txbFechaIni" class="col-form-label">Fecha inicio:</label>
                                                             <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker" />
-                                                             <asp:RequiredFieldValidator ID="rfvFechaIni" runat="server" ControlToValidate="txbFechaIni"
-                                                             ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic">
-                                                         </asp:RequiredFieldValidator>
+                                                            <asp:RequiredFieldValidator ID="rfvFechaIni" runat="server" ControlToValidate="txbFechaIni"
+                                                                ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic">
+                                                            </asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
@@ -240,17 +243,17 @@
                                                             <i class="fas fa-angle-right"></i>
                                                             <label for="txbFechaFin" class="col-form-label">Fecha fin</label>
                                                             <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker" />
-                                                             <asp:RequiredFieldValidator ID="rfvFechaFin" runat="server" ControlToValidate="txbFechaFin"
-                                                             ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic">
-                                                         </asp:RequiredFieldValidator>
+                                                            <asp:RequiredFieldValidator ID="rfvFechaFin" runat="server" ControlToValidate="txbFechaFin"
+                                                                ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic">
+                                                            </asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="row">
-                                                  
-                                                    <div class="col-sm-6">                                                        
-                                                        <div class="form-group">                                                            
+
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
                                                             <label for="chblPlanes" class="col-form-label">Elija los planes a aplicar estrategia:</label>
                                                             <br />
                                                             <asp:CheckBoxList ID="chblPlanes" runat="server" RepeatDirection="Vertical" CssClass="todo-list m-t">
@@ -259,7 +262,7 @@
                                                                 ErrorMessage="* Seleccione al menos un plan"
                                                                 CssClass="font-bold text-danger"
                                                                 Display="Dynamic"
-                                                                OnServerValidate="cvPlanes_ServerValidate" />                                                           
+                                                                OnServerValidate="cvPlanes_ServerValidate" />
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
@@ -269,7 +272,7 @@
                                                             <br />
                                                             <asp:CheckBoxList ID="chblCanales" runat="server" RepeatDirection="Vertical" CssClass="todo-list m-t">
                                                             </asp:CheckBoxList>
-<%--                                                            <asp:RequiredFieldValidator ID="rfvCanales" runat="server" ControlToValidate="chblCanales"
+                                                            <%--                                                            <asp:RequiredFieldValidator ID="rfvCanales" runat="server" ControlToValidate="chblCanales"
                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic">
                                                             </asp:RequiredFieldValidator>--%>
                                                         </div>
@@ -284,9 +287,7 @@
                                                 </div>
                                                 <br />
                                                 <br />
-                                                <div class="form-group">
-                                                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                                                </div>
+
                                             </div>
                                         </div>
                                     </div>

@@ -123,11 +123,42 @@ namespace fpWebApp
                                 {
                                     txbNombreEstrategia.Text = dt1.Rows[0]["NombreEstrategia"].ToString();
                                     txbNombreEstrategia.Enabled = false;
-                                    ddlTipoEstrategias.Enabled = false;                                   
+
+                                    ddlTipoEstrategias.SelectedIndex = ddlTipoEstrategias.Items.IndexOf(ddlTipoEstrategias.Items.FindByValue(dt1.Rows[0]["idTipoEstrategia"].ToString()));
+                                    ddlTipoEstrategias.Enabled = false;
+
+                                    hiddenEditor.Value = dt1.Rows[0]["DescripcionEstrategia"].ToString();
+
+                                    txbFechaIni.Value = Convert.ToDateTime(dt1.Rows[0]["FechaInicio"]).ToString("yyyy-MM-dd");
                                     txbFechaIni.Disabled = true;
+
+                                    txbFechaFin.Value = Convert.ToDateTime(dt1.Rows[0]["FechaFin"]).ToString("yyyy-MM-dd");
                                     txbFechaFin.Disabled = true;
+
+                                    // SELECCIONAR PLANES
+                                    string[] planesSeleccionados = dt1.Rows[0]["Planes"].ToString().Split(',');
+                                    foreach (string planId in planesSeleccionados)
+                                    {
+                                        ListItem item = chblPlanes.Items.FindByValue(planId.Trim());
+                                        if (item != null)
+                                        {
+                                            item.Selected = true;
+                                        }
+                                    }
                                     chblPlanes.Enabled = false;
+
+                                    // SELECCIONAR CANALES
+                                    string[] canalesSeleccionados = dt1.Rows[0]["CanalesVenta"].ToString().Split(',');
+                                    foreach (string canalId in canalesSeleccionados)
+                                    {
+                                        ListItem item = chblCanales.Items.FindByValue(canalId.Trim());
+                                        if (item != null)
+                                        {
+                                            item.Selected = true;
+                                        }
+                                    }
                                     chblCanales.Enabled = false;
+
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     btnAgregar.Enabled = false;
                                     ltTitulo.Text = "Borrar Estrategia";
