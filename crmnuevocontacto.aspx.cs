@@ -10,6 +10,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using DocumentFormat.OpenXml.Presentation;
+using NPOI.SS.Formula.Functions;
 
 namespace fpWebApp
 {
@@ -80,6 +81,9 @@ namespace fpWebApp
                     CargarTipoDocumento();
                     ListaMediosDePago();
                     CargarAfiliadosOrigen();
+                    CargarGeneros();
+                    CargarEstadosVentas();
+                    CargarEstrategiasMarketing();
 
 
 
@@ -379,6 +383,33 @@ namespace fpWebApp
             }
         }
 
+        private void CargarGeneros()
+        {
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.ConsultarGeneros();
+            ddlGenero.DataSource = dt;
+            ddlGenero.DataBind();
+            dt.Dispose();
+        }
+
+        private void CargarEstadosVentas()
+        {
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.ConsultarEstadosVenta();
+            ddlEstadoVenta.DataSource = dt;
+            ddlEstadoVenta.DataBind();
+            dt.Dispose();
+        }
+
+        private void CargarEstrategiasMarketing()
+        {
+            clasesglobales cg1 = new clasesglobales();
+            DataTable dt = cg1.ConsultarEstrategiasMarketingVigentes();
+            ddlEstrategia.DataSource = dt;
+            ddlEstrategia.DataBind();
+            dt.Dispose();
+        }
+
         private void ConsultarTipoAfiliado()
         {
             clasesglobales cg = new clasesglobales();
@@ -391,7 +422,7 @@ namespace fpWebApp
         private void CargarPlanes()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanesVigencias();
+            DataTable dt = cg.ConsultarPlanesVigentes();
 
             ddlPlanes.DataSource = dt;
             ddlPlanes.DataBind();
@@ -489,6 +520,34 @@ namespace fpWebApp
                     string respuesta = string.Empty;
                     string mensajeValidacion = string.Empty;
 
+                    DateTime fecNacCli;
+                    string textoEdad = txbEdad.Text.Trim();
+                    System.Text.RegularExpressions.Match match = Regex.Match(textoEdad, @"\d+");
+
+                    int edad;
+
+                    if (match.Success && int.TryParse(match.Value, out edad))
+                    {
+                        txbEdad.Text = edad.ToString(); // Deja solo el número limpio en la caja
+                    }
+                    else
+                    {
+                        edad = 0;
+                        txbEdad.Text = "0";
+                    }
+
+                    if (string.IsNullOrEmpty(txbFecNac.Text))
+                    {
+                        fecNacCli = new DateTime(1900, 1, 1);
+                        txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
+                    }
+                    else
+                    {
+                        fecNacCli = DateTime.Parse(txbFecNac.Text);
+                    }
+
+                    txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
+
                     if (ddlEmpresa.SelectedItem.Value != "")
                         ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
                     else
@@ -504,7 +563,9 @@ namespace fpWebApp
                                 Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
                                 Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
                                 Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
-                                Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, out salida, out mensaje);
+                                Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(txbEdad.Text), txbFecNac.Text, Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()), out salida, out mensaje);
 
                         if (salida)
                         {
@@ -637,6 +698,33 @@ namespace fpWebApp
                 string mensaje = string.Empty;
                 string mensajeValidacion = string.Empty;
                 string respuesta = string.Empty;
+                DateTime fecNacCli;
+                string textoEdad = txbEdad.Text.Trim();
+                System.Text.RegularExpressions.Match match = Regex.Match(textoEdad, @"\d+");
+
+                int edad;
+
+                if (match.Success && int.TryParse(match.Value, out edad))
+                {
+                    txbEdad.Text = edad.ToString(); // Deja solo el número limpio en la caja
+                }
+                else
+                {
+                    edad = 0;
+                    txbEdad.Text = "0";
+                }
+
+                if (string.IsNullOrEmpty(txbFecNac.Text))
+                {
+                    fecNacCli = new DateTime(1900, 1, 1);
+                    txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    fecNacCli = DateTime.Parse(txbFecNac.Text);
+                }
+
+                txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
 
                 // Parseamos la fecha y la hora
                 DateTime fecha = DateTime.Parse(txbFechaProx.Value);
@@ -662,7 +750,8 @@ namespace fpWebApp
                     txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
                     Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
                     Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
-                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, tiempo.ToString(), out salida, out mensaje);
+                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, tiempo.ToString(), Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(txbEdad.Text), txbFecNac.Text, Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()), out salida, out mensaje);
 
                     if (salida)
                     {
@@ -773,6 +862,9 @@ namespace fpWebApp
             {
                 DataRowView row = (DataRowView)e.Item.DataItem;
 
+                HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+
                 // Obtener documento del afiliado desde el campo del Repeater
                 int documentoAfiliado;
                 if (int.TryParse(row["DocumentoAfiliado"].ToString(), out documentoAfiliado))
@@ -786,8 +878,8 @@ namespace fpWebApp
                         DataTable dtEstadoActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
 
                         // Encontrar los tres botones
-                        HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                        HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                        //HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                        //HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
                         HtmlAnchor btnNuevoAfiliado = (HtmlAnchor)e.Item.FindControl("btnNuevoAfiliado");
 
                         // Si el afiliado tiene plan activo, ocultar todos los botones
@@ -1013,7 +1105,9 @@ namespace fpWebApp
                         Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value),
                         Convert.ToInt32(ddlTipoPago.SelectedItem.Value), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value),
                         Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value), Convert.ToInt32(ddlPlanes.SelectedItem.Value), 0,
-                        Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value), txbDocumento.Text, out salida, out mensaje);
+                        Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value), txbDocumento.Text, Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(txbEdad.Text), txbFecNac.Text, Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()), out salida, out mensaje);
 
                     if (salida)
                     {

@@ -5060,7 +5060,7 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public DataTable ConsultarPlanesVigencias()
+        public DataTable ConsultarPlanesVigentes()
         {
             DataTable dt = new DataTable();
 
@@ -6796,7 +6796,8 @@ int valor, string observaciones, string estado)
         public string InsertarContactoCRM(string nombreContacto, string apellidoContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
         int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
         int idUsuario, int idObjetivo, int tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, int idTipoDoc,
-        string DocumentoAfiliado, string tiempoAtencion, out bool respuesta, out string mensaje)
+        string DocumentoAfiliado, string tiempoAtencion, int idGenero, int edad, string fechaNac, int idEstadoVenta, int idEstrategia,
+        out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -6830,6 +6831,11 @@ int valor, string observaciones, string estado)
                         cmd.Parameters.AddWithValue("@p_id_tipo_doc", idTipoDoc);
                         cmd.Parameters.AddWithValue("@p_documento_afiliado", DocumentoAfiliado);
                         cmd.Parameters.AddWithValue("@p_tiempo_atencion", tiempoAtencion);
+                        cmd.Parameters.AddWithValue("@p_genero", idGenero);
+                        cmd.Parameters.AddWithValue("@p_edad", edad);
+                        cmd.Parameters.AddWithValue("@p_fec_nac", fechaNac);
+                        cmd.Parameters.AddWithValue("@p_estado_venta", idEstadoVenta);
+                        cmd.Parameters.AddWithValue("@p_estrategia", idEstrategia);
 
 
                         // Parámetro de salida
@@ -6857,7 +6863,7 @@ int valor, string observaciones, string estado)
         public string ActualizarContactoCRM(int idContactoCMR, string nombreContacto, string apellidoContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
         int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
         int idUsuario, int idObjetivo, int tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, int idTipoDoc, string DocumentoAfiliado,
-        out bool respuesta, out string mensaje)
+        int idGenero, int edad, string fechaNac, int idEstadoVenta, int idEstrategia, out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -6891,6 +6897,11 @@ int valor, string observaciones, string estado)
                         cmd.Parameters.AddWithValue("@p_meses_plan", mesesPlan);
                         cmd.Parameters.AddWithValue("@p_id_tipo_doc", idTipoDoc);
                         cmd.Parameters.AddWithValue("@p_documento_afiliado", DocumentoAfiliado);
+                        cmd.Parameters.AddWithValue("@p_genero", idGenero);
+                        cmd.Parameters.AddWithValue("@p_edad", edad);
+                        cmd.Parameters.AddWithValue("@p_fec_nac", fechaNac);
+                        cmd.Parameters.AddWithValue("@p_estado_venta", idEstadoVenta);
+                        cmd.Parameters.AddWithValue("@p_estrategia", idEstrategia);
 
                         cmd.ExecuteNonQuery();
                         respuesta = true;
@@ -7549,6 +7560,343 @@ int valor, string observaciones, string estado)
 
             return respuesta;
         }
+
+        public DataTable ConsultarEstrategiasMarketing()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_ESTRATEGIAS_MARKETING", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarEstrategiasMarketingVigentes()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_ESTRATEGIAS_MARKETING_VIGENTES", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarTiposEstrategiasMarketing()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_TIPOS_ESTRATEGIAS_MARKETING", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public string InsertarEstrategiaMarketing(string nombreEstrategia, string descripcionEstrategia, string fechaInicio, string fechaFin,
+        string canalesVenta, int idTipoEstrategia, string planes, int idUsuario, out bool respuesta, out string mensaje)
+        {
+            mensaje = string.Empty;
+            respuesta = false;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_ESTRATEGIA_MARKETING", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_nombre_estrategia", nombreEstrategia);
+                        cmd.Parameters.AddWithValue("@p_descripcion_estrategia", descripcionEstrategia);
+                        cmd.Parameters.AddWithValue("@p_fecha_inicio", fechaInicio);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", fechaFin);
+                        cmd.Parameters.AddWithValue("@p_canales_venta", canalesVenta);
+                        cmd.Parameters.AddWithValue("@p_id_tipo_estrategia", idTipoEstrategia);
+                        cmd.Parameters.AddWithValue("@p_planes", planes);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+
+                        // Parámetro de salida
+                        MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
+                        pMensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pMensaje);
+
+                        cmd.ExecuteNonQuery();
+                        mensaje = pMensaje.Value?.ToString();
+
+                        if (mensaje == "OK") respuesta = true;
+                        else respuesta = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
+        }
+
+        public string ActualizarEstrategiaMarketing(int idEstrategia, string nombreEstrategia, string descripcionEstrategia, string fechaInicio, string fechaFin,
+        string canalesVenta, int idTipoEstrategia, string planes, out bool respuesta, out string mensaje)
+        {
+            mensaje = string.Empty;
+            respuesta = false;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_ESTRATEGIA_MARKETING", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_estrategia", idEstrategia);
+                        cmd.Parameters.AddWithValue("@p_nombre_estrategia", nombreEstrategia);
+                        cmd.Parameters.AddWithValue("@p_descripcion_estrategia", descripcionEstrategia);
+                        cmd.Parameters.AddWithValue("@p_fecha_inicio", fechaInicio);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", fechaFin);
+                        cmd.Parameters.AddWithValue("@p_canales", canalesVenta);
+                        cmd.Parameters.AddWithValue("@p_id_tipo_estrategia", idTipoEstrategia);
+                        cmd.Parameters.AddWithValue("@p_planes", planes);
+
+                        // Parámetro de salida
+                        MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
+                        pMensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pMensaje);
+
+                        cmd.ExecuteNonQuery();
+                        mensaje = pMensaje.Value?.ToString();
+
+                        if (mensaje == "OK") respuesta = true;
+                        else respuesta = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
+        }
+
+        public DataTable ConsultarEstrategiaMarketingPorId(int idEstrategia)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_ESTRATEGIA_MARKETING_POR_ID", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_estrategia", idEstrategia);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ValidarEstrategiaMarketingTablas(int idEstrategia)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_VALIDAR_ESTRATEGIA_TABLAS", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_estrategia", idEstrategia);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public string EliminarEstrategiaMarketing(int idEstategia)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ELIMINAR_ESTRATEGIA_MARKETING", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_estrategia", idEstategia);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public DataTable ConsultarEstrategiaMarketingPorNombre(string nombreEstategia)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_ESTRATEGIA_MARKETING_POR_NOMBRE", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_nombre_estrategia", nombreEstategia);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            dataAdapter.Fill(dt); // ← ¡ya no se vuelve a abrir la conexión!
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarEstadosVenta()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_ESTADOS_VENTA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
 
 
         #endregion
