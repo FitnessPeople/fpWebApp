@@ -152,10 +152,10 @@
                                                 <a href="#">
                                                     <img alt="member" class="img-circle" src="img/a6.jpg"></a>
                                             </div>
-                                            <h4>Info about Design Team</h4>
+                                            <h4>Resumen de desempeño y métricas clave del equipo</h4>
                                             <p>
-                                                It is a long established fact that a reader will be distracted by the readable content
-                                of a page when looking at its layout. The point of using Lorem Ipsum is that it has.
+                                                “Enfocados en resultados, el Team Online ha logrado posicionarse en el Top 5, 
+                                                impulsando 12 estrategias activos con una excelente gestión de recursos.”
                                             </p>
                                             <div>
                                                 <span>Estado actual de ventas:</span>
@@ -166,7 +166,7 @@
                                             </div>
                                             <div class="row  m-t-sm">
                                                 <div class="col-sm-4">
-                                                    <div class="font-bold">PROJECTS</div>
+                                                    <div class="font-bold">ESTRATEGIAS</div>
                                                     12
                                                 </div>
                                                 <div class="col-sm-4">
@@ -174,7 +174,7 @@
                                                     4th
                                                 </div>
                                                 <div class="col-sm-4 text-right">
-                                                    <div class="font-bold">BUDGET</div>
+                                                    <div class="font-bold">PRESUPUESTO</div>
                                                     $200,913 <i class="fa fa-level-up text-navy"></i>
                                                 </div>
                                             </div>
@@ -203,7 +203,7 @@
                                                             <h4>46.11%</h4>
                                                         </div>
                                                         <div class="col-xs-4">
-                                                            <small class="stats-label">Proyección venta mañana</small>
+                                                            <small class="stats-label">Ventas mañana</small>
                                                             <h4>$432.021</h4>
                                                         </div>
                                                     </div>
@@ -260,31 +260,25 @@
                                                 <div class="ibox-content">
                                                     <ul class="todo-list m-t small-list">
                                                         <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-check-square"></i></a>
-                                                            <span class="m-l-xs todo-completed">Daniel Angarita.</span>
+                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                            <span class="m-l-xs">1. Sara Uribe.</span>
 
                                                         </li>
                                                         <li>
                                                             <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">Sara Uribe.</span>
-
+                                                            <span class="m-l-xs">2. Adrian Cubaque</span>                                                            
                                                         </li>
                                                         <li>
                                                             <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">Adrian Cubaque</span>
-                                                            <small class="label label-primary"><i class="fa fa-clock-o"></i>1 mins</small>
+                                                            <span class="m-l-xs">3. Kendy Leal</span>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="check-link"><i class="fa fa-check-o"></i></a>
+                                                            <span class="m-l-xs">4. Karina Coronel</span>
                                                         </li>
                                                         <li>
                                                             <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">Kendy Leal</span>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-check-square"></i></a>
-                                                            <span class="m-l-xs todo-completed">Karina Coronel</span>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">Create Nuevas stuff</span>
+                                                            <span class="m-l-xs">5. Create Nuevas stuff</span>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -368,10 +362,10 @@
                                 <span>Valor vendido $61.000.000</span>
                             </div>
                         </div>
-                        <div class="widget-text-box">
+<%--                        <div class="widget-text-box">
                             <h4 class="media-heading">Alex Smith</h4>
                             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                        </div>
+                        </div>--%>
                 </div>
                             </div>
                         </div>
