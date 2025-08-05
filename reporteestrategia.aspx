@@ -155,7 +155,7 @@
                                             <h4>Resumen de desempeño y métricas clave del equipo</h4>
                                             <p>
                                                 “Enfocados en resultados, el Team Online ha logrado posicionarse en el Top 5, 
-                                                impulsando 12 estrategias activos con una excelente gestión de recursos.”
+                                                impulsando 12 estrategias activas con una excelente gestión de recursos.”
                                             </p>
                                             <div>
                                                 <span>Estado actual de ventas:</span>
@@ -189,7 +189,7 @@
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
                                                     <span class="label label-warning pull-right">Datos actualizados</span>
-                                                    <h5>Actividad del sistema</h5>
+                                                    <h5>Estados de la venta</h5>
                                                 </div>
                                                 <div class="ibox-content">
                                                     <div class="row">
@@ -278,7 +278,7 @@
                                                         </li>
                                                         <li>
                                                             <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">5. Create Nuevas stuff</span>
+                                                            <span class="m-l-xs">5. Javier Galvan</span>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -357,7 +357,7 @@
                             </div>
                             <img src="img/a4.jpg" class="img-circle circle-border m-b-md" alt="profile">
                             <div>
-                                <span>Team online</span> |
+                                <span>Equipo online</span> |
                                 <span>Cantidad de leads 600</span> |
                                 <span>Valor vendido $61.000.000</span>
                             </div>
