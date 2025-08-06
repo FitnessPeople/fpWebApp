@@ -428,6 +428,7 @@
     <Content Include="css\plugins\toastr\toastr.min.css" />
     <Content Include="css\plugins\touchspin\jquery.bootstrap-touchspin.min.css" />
     <Content Include="css\style.css" />
+    <Content Include="dashboardcrmmarketing.aspx" />
     <Content Include="dashboard_2.html" />
     <Content Include="dashboard_3.html" />
     <Content Include="dashboard_4.html" />
@@ -436,6 +437,7 @@
     <Content Include="Default.aspx" />
     <Content Include="detalleafiliado.aspx" />
     <Content Include="detallecorreo.aspx" />
+    <Content Include="detallereportemarketing.aspx" />
     <Content Include="editarafiliado.aspx" />
     <Content Include="editarempleado.aspx" />
     <Content Include="editarempresaafiliada.aspx" />
@@ -985,9 +987,9 @@
     <Content Include="profesiones.aspx" />
     <Content Include="recuperacionclave.aspx" />
     <Content Include="redactarcorreo.aspx" />
+    <Content Include="reporteestrategiascrmmarketing.aspx" />
     <Content Include="reportepagos.aspx" />
     <Content Include="reportepagosmulticanal.aspx" />
-    <Content Include="reporteestrategia.aspx" />
     <Content Include="respuestaautorizacion.aspx" />
     <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjax.js" />
     <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxApplicationServices.js" />
@@ -1369,6 +1371,13 @@
     <Compile Include="crmnuevocontacto.aspx.designer.cs">
       <DependentUpon>crmnuevocontacto.aspx</DependentUpon>
     </Compile>
+    <Compile Include="dashboardcrmmarketing.aspx.cs">
+      <DependentUpon>dashboardcrmmarketing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="dashboardcrmmarketing.aspx.designer.cs">
+      <DependentUpon>dashboardcrmmarketing.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1389,6 +1398,13 @@
     </Compile>
     <Compile Include="detallecorreo.aspx.designer.cs">
       <DependentUpon>detallecorreo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="detallereportemarketing.aspx.cs">
+      <DependentUpon>detallereportemarketing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="detallereportemarketing.aspx.designer.cs">
+      <DependentUpon>detallereportemarketing.aspx</DependentUpon>
     </Compile>
     <Compile Include="editarafiliado.aspx.cs">
       <DependentUpon>editarafiliado.aspx</DependentUpon>
@@ -1933,6 +1949,13 @@
     <Compile Include="redactarcorreo.aspx.designer.cs">
       <DependentUpon>redactarcorreo.aspx</DependentUpon>
     </Compile>
+    <Compile Include="reporteestrategiascrmmarketing.aspx.cs">
+      <DependentUpon>reporteestrategiascrmmarketing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="reporteestrategiascrmmarketing.aspx.designer.cs">
+      <DependentUpon>reporteestrategiascrmmarketing.aspx</DependentUpon>
+    </Compile>
     <Compile Include="reportepagos.aspx.cs">
       <DependentUpon>reportepagos.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1946,13 +1969,6 @@
     </Compile>
     <Compile Include="reportepagosmulticanal.aspx.designer.cs">
       <DependentUpon>reportepagosmulticanal.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="reporteestrategia.aspx.cs">
-      <DependentUpon>reporteestrategia.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="reporteestrategia.aspx.designer.cs">
-      <DependentUpon>reporteestrategia.aspx</DependentUpon>
     </Compile>
     <Compile Include="respuestaautorizacion.aspx.cs">
       <DependentUpon>respuestaautorizacion.aspx</DependentUpon>

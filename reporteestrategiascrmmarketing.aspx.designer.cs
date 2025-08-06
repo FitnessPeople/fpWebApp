@@ -11,7 +11,7 @@ namespace fpWebApp
 {
 
 
-    public partial class resporteestrategia
+    public partial class reporteestrategiascrmmarketing
     {
 
         /// <summary>

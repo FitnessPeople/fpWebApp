@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
-    public partial class resporteestrategia : System.Web.UI.Page
+    public partial class reporteestrategiascrmmarketing : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
