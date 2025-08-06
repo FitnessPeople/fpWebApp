@@ -116,6 +116,7 @@ namespace fpWebApp
                 "FROM Afiliados a " +
                 "LEFT JOIN Sedes s ON a.idSede = s.idSede " +
                 "LEFT JOIN ciudades ON ciudades.idCiudad = a.idCiudadAfiliado " +
+                "LEFT JOIN tiposdocumento td ON td.idTipoDoc = a.idTipoDocumento " +
                 "WHERE DocumentoAfiliado = '" + strDocumento + "' ";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
@@ -131,6 +132,8 @@ namespace fpWebApp
             ltNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
             ltApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
             ltEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
+            ltDocumento.Text = dt.Rows[0]["DocumentoAfiliado"].ToString();
+            ltTipoDoc.Text = dt.Rows[0]["SiglaDocumento"].ToString();
             ltCelular.Text = dt.Rows[0]["CelularAfiliado"].ToString();
             ltSede.Text = dt.Rows[0]["NombreSede"].ToString();
             ltDireccion.Text = dt.Rows[0]["DireccionAfiliado"].ToString();

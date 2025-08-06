@@ -87,6 +87,24 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltApellido;
 
         /// <summary>
+        /// Control ltTipoDoc.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltTipoDoc;
+
+        /// <summary>
+        /// Control ltDocumento.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltDocumento;
+
+        /// <summary>
         /// Control ltEmail.
         /// </summary>
         /// <remarks>

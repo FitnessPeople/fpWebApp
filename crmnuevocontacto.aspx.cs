@@ -606,11 +606,11 @@ namespace fpWebApp
                     }
                     catch (Exception ex)
                     {
-                        string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
+                        //string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
                         string script = @"
                         Swal.fire({
                         title: 'Error',
-                        text: 'Ha ocurrido un error inesperado.',
+                        text: 'Ha ocurrido un error inesperado. " + ex.Message.ToString() + @"',
                         icon: 'error'
                     });
                 ";
@@ -1154,11 +1154,11 @@ namespace fpWebApp
                 }
                 catch (Exception ex)
                 {
-                    string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
+                    //string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
                     string script = @"
                         Swal.fire({
                             title: 'Error',
-                            text: 'Ha ocurrido un error inesperado.',
+                            text: 'Ha ocurrido un error inesperado." + ex.Message.ToString() + @"',
                             icon: 'error'
                         });";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);

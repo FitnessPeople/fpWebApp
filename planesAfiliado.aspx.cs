@@ -670,7 +670,7 @@ namespace fpWebApp
                                         {
                                             strBanco = "No aplica";
                                         }
-                                        decimal total = 0;
+                                        //decimal total = 0;
 
                                         //if (rblMetodoPago.SelectedValue == "combinado")
                                         //{

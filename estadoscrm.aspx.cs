@@ -354,7 +354,7 @@ namespace fpWebApp
                         string script = @"
                         Swal.fire({
                         title: 'Error',
-                        text: 'Ha ocurrido un error inesperado.',
+                        text: 'Ha ocurrido un error inesperado." + ex.Message.ToString() + @"',
                         icon: 'error'
                     });
                     ";

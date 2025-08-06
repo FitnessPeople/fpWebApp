@@ -152,7 +152,7 @@
       <HintPath>packages\SixLabors.Fonts.1.0.1\lib\netstandard2.0\SixLabors.Fonts.dll</HintPath>
     </Reference>
     <Reference Include="SixLabors.ImageSharp, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d998eea7b14cab13, processorArchitecture=MSIL">
-      <HintPath>packages\SixLabors.ImageSharp.2.1.10\lib\net472\SixLabors.ImageSharp.dll</HintPath>
+      <HintPath>packages\SixLabors.ImageSharp.2.1.11\lib\net472\SixLabors.ImageSharp.dll</HintPath>
     </Reference>
     <Reference Include="System.Buffers, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Buffers.4.6.0\lib\net462\System.Buffers.dll</HintPath>
@@ -260,6 +260,7 @@
     <Content Include="agendagympass.aspx" />
     <Content Include="agendarcita.aspx" />
     <Content Include="arl.aspx" />
+    <Content Include="asignacionescrm.aspx" />
     <Content Include="asignarcita.aspx" />
     <Content Include="asignartecnicoticket.aspx" />
     <Content Include="asistenciaagendagympass.aspx" />
@@ -1077,6 +1078,13 @@
     </Compile>
     <Compile Include="arl.aspx.designer.cs">
       <DependentUpon>arl.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="asignacionescrm.aspx.cs">
+      <DependentUpon>asignacionescrm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="asignacionescrm.aspx.designer.cs">
+      <DependentUpon>asignacionescrm.aspx</DependentUpon>
     </Compile>
     <Compile Include="asignarcita.aspx.cs">
       <DependentUpon>asignarcita.aspx</DependentUpon>
