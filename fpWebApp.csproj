@@ -985,6 +985,7 @@
     <Content Include="profesiones.aspx" />
     <Content Include="recuperacionclave.aspx" />
     <Content Include="redactarcorreo.aspx" />
+    <Content Include="reporteestrategiascrmmarketing.aspx" />
     <Content Include="reportepagos.aspx" />
     <Content Include="reportepagosmulticanal.aspx" />
     <Content Include="respuestaautorizacion.aspx" />
@@ -1938,6 +1939,13 @@
     </Compile>
     <Compile Include="redactarcorreo.aspx.designer.cs">
       <DependentUpon>redactarcorreo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="reporteestrategiascrmmarketing.aspx.cs">
+      <DependentUpon>reporteestrategiascrmmarketing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="reporteestrategiascrmmarketing.aspx.designer.cs">
+      <DependentUpon>reporteestrategiascrmmarketing.aspx</DependentUpon>
     </Compile>
     <Compile Include="reportepagos.aspx.cs">
       <DependentUpon>reportepagos.aspx</DependentUpon>
