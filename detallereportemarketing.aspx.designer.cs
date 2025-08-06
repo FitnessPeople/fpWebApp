@@ -11,26 +11,26 @@ namespace fpWebApp
 {
 
 
-    public partial class reporteestrategiascrmmarketing
+    public partial class detallereportemarketing
     {
 
         /// <summary>
-        /// Control navbar1.
+        /// Control navbar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.navbar navbar1;
+        protected global::fpWebApp.controles.navbar navbar;
 
         /// <summary>
-        /// Control header1.
+        /// Control header.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.header header1;
+        protected global::fpWebApp.controles.header header;
 
         /// <summary>
         /// Control divMensaje.
@@ -51,21 +51,39 @@ namespace fpWebApp
         protected global::fpWebApp.controles.paginasperfil paginasperfil;
 
         /// <summary>
-        /// Control form.
+        /// Control form1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// Control rightsidebar1.
+        /// Control divContenido.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.rightsidebar rightsidebar1;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContenido;
+
+        /// <summary>
+        /// Control footer.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::fpWebApp.controles.footer footer;
+
+        /// <summary>
+        /// Control rightsidebar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::fpWebApp.controles.rightsidebar rightsidebar;
     }
 }

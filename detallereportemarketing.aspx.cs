@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
-    public partial class reporteestrategiascrmmarketing : System.Web.UI.Page
+    public partial class detallereportemarketing : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -17,13 +17,13 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Reporte estrategias marketing");
+                    ValidarPermisos("Cargos");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
                         divMensaje.Visible = true;
                         paginasperfil.Visible = true;
-                       // divContenido.Visible = false;
+                        divContenido.Visible = false;
                     }
                     else
                     {
