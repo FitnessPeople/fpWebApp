@@ -408,7 +408,7 @@
                                                                     <small>Created 14.08.2014</small>
                                                                 </td>
                                                                 <td class="project-completion">
-                                                                    <small>Completion with: 48%</small>
+                                                                    <small><strong>Eficiencia</strong> :48%</small>
                                                                     <div class="progress progress-mini">
                                                                         <div style="width: 48%;" class="progress-bar"></div>
                                                                     </div>
@@ -548,7 +548,7 @@
                                                                     <small>Created 14.08.2014</small>
                                                                 </td>
                                                                 <td class="project-completion">
-                                                                    <small>Completion with: 48%</small>
+                                                                    <small> leads comprados vs presupuesto estimado (eficiencia): 48%</small>
                                                                     <div class="progress progress-mini">
                                                                         <div style="width: 48%;" class="progress-bar"></div>
                                                                     </div>
