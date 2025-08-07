@@ -257,7 +257,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="ibox-content">
-                                                    <ul class="todo-list m-t small-list">
+                                                    <%--                                                    <ul class="todo-list m-t small-list">
                                                         <li>
                                                             <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
                                                             <span class="m-l-xs">1. Sara Uribe.</span>
@@ -279,7 +279,26 @@
                                                             <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
                                                             <span class="m-l-xs">5. Javier Galvan</span>
                                                         </li>
-                                                    </ul>
+                                                    </ul>--%>
+                                                    <asp:Repeater ID="rptRankingAsesores" runat="server">
+                                                        <HeaderTemplate>
+                                                            <ul class="todo-list m-t small-list">
+                                                        </HeaderTemplate>
+                                                        <ItemTemplate>
+                                                            <li>
+                                                                <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                                <span class="m-l-xs">
+                                                                    <%# Container.ItemIndex + 1 %>. <%# Eval("Asesor") %> - 
+                                                                    $<%# String.Format("{0:N0}", Eval("TotalVendido")) %> - 
+                                                                    <%# Eval("CanalVenta") %>  (<%# Eval("CantidadPlanesVendidos") %>) Planes
+                                                                </span>
+                                                            </li>
+                                                        </ItemTemplate>
+                                                        <FooterTemplate>
+                                                            </ul>
+                                                        </FooterTemplate>
+                                                    </asp:Repeater>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -548,7 +567,7 @@
                                                                     <small>Created 14.08.2014</small>
                                                                 </td>
                                                                 <td class="project-completion">
-                                                                    <small> leads comprados vs presupuesto estimado (eficiencia): 48%</small>
+                                                                    <small>leads comprados vs presupuesto estimado (eficiencia): 48%</small>
                                                                     <div class="progress progress-mini">
                                                                         <div style="width: 48%;" class="progress-bar"></div>
                                                                     </div>
@@ -844,7 +863,7 @@
         });
     </script>
 
-        <!-- EayPIE -->
+    <!-- EayPIE -->
     <script src="js/plugins/easypiechart/jquery.easypiechart.js"></script>
 
     <!-- Sparkline -->
