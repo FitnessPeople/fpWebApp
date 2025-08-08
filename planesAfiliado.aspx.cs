@@ -668,23 +668,8 @@ namespace fpWebApp
 
                                         if (rblBancos.SelectedItem == null)
                                         {
-                                            strBanco = "No aplica";
+                                            strBanco = "Ninguno";
                                         }
-                                        //decimal total = 0;
-
-                                        //if (rblMetodoPago.SelectedValue == "combinado")
-                                        //{
-                                        //    total += Convert.ToDecimal(txbCombinadoEfectivo.Text.Replace("$", "").Replace(",", ""));
-                                        //    total += Convert.ToDecimal(txbCombinadoWompi.Text.Replace("$", "").Replace(",", ""));
-                                        //    total += Convert.ToDecimal(txbCombinadoTransferencia.Text.Replace("$", "").Replace(",", ""));
-                                        //    total += Convert.ToDecimal(txbCombinadoDatafono.Text.Replace("$", "").Replace(",", ""));
-                                        //}
-                                        //else
-                                        //{
-                                        //    strBanco = rblBancos.SelectedItem.Value.ToString();
-                                        //}
-
-
 
                                         string respuesta = cg.InsertarPagoPlanAfiliado(idAfiliado, Convert.ToInt32(ViewState["precioTotal"].ToString()),
                                             Convert.ToInt32(strTipoPago), strReferencia, strBanco, Convert.ToInt32(Session["idUsuario"].ToString()), "Aprobado", "", 0, Convert.ToInt32(Session["idcrm"]));
