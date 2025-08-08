@@ -135,8 +135,9 @@
                                 <div class="col-lg-4">
                                     <div class="ibox">
                                         <div class="ibox-title">
-                                            <span class="label label-primary pull-right">NEW</span>
-                                            <h5>Team Online</h5>
+                                            <span class="label label-primary pull-right">Nuevo</span>
+                                            <h5>
+                                                <asp:Literal ID="ltTeam" runat="server"></asp:Literal></h5>
                                         </div>
                                         <div class="ibox-content">
                                             <div class="team-members">
@@ -153,8 +154,7 @@
                                             </div>
                                             <h4>Resumen de desempeño y métricas clave del equipo</h4>
                                             <p>
-                                                “Enfocados en resultados, el Team Online ha logrado posicionarse en el Top 5, 
-                                                impulsando 12 estrategias activas con una excelente gestión de recursos.”
+                                                <asp:Literal ID="ltDescripcion" runat="server"></asp:Literal>
                                             </p>
                                             <%--                                            <div>
                                                 <span>Estado actual de ventas:</span>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -51,45 +52,8 @@ namespace fpWebApp
 
                     ListaRankingAsesores();
                     ListaEstadosVentaLeads();
+                    ListaRankingCanalesVentaMesVigente();
                     clasesglobales cg = new clasesglobales();
-                    DataTable dt3 = cg.ConsultarRankingCanalesVentaPorVenta();
-
-                    DataRow canal = null;
-
-                    // Buscar la primera fila que no sea idCanalVenta = 1
-                    foreach (DataRow row in dt3.Rows)
-                    {
-                        if (Convert.ToInt32(row["idCanalVenta"]) != 1)
-                        {
-                            canal = row;
-                            break; // Salimos porque ya encontramos la primera válida
-                        }
-                    }
-
-                    if (canal != null)
-                    {
-                        decimal ventas = Convert.ToDecimal(canal["Ventas"]);
-                        int estrategias = Convert.ToInt32(canal["Estrategias"]);
-                        string ranking = canal["Ranking"].ToString();
-
-                        decimal meta = 1000000m; // Meta de ejemplo
-                        decimal porcentaje = ventas > 0 ? (ventas / meta * 100) : 0;
-
-                        lblEstadoVentas.InnerText = $"{porcentaje:0}%";
-                        progressBar.Style["width"] = $"{porcentaje:0}%";
-                        lblEstrategias.Text = estrategias.ToString();
-                        lblRanking.Text = string.IsNullOrEmpty(ranking) ? "-" : ranking;
-                        lblVentas.Text = ventas.ToString("C0");
-                    }
-                    else
-                    {
-                        lblEstadoVentas.InnerText = "0%";
-                        progressBar.Style["width"] = "0%";
-                        lblEstrategias.Text = "0";
-                        lblRanking.Text = "-";
-                        lblVentas.Text = "$0";
-                    }
-
                     //ltTitulo.Text = "Agregar cargo";
 
                     if (Request.QueryString.Count > 0)
@@ -229,6 +193,46 @@ namespace fpWebApp
                     }
                 }
             }
+        }
+
+        private void ListaRankingCanalesVentaMesVigente()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarRankingCanalesVentaPorVenta();
+
+            if (dt.Rows.Count > 0)
+            {
+                DataRow canal = dt.Rows[0];
+                ltTeam.Text ="Equipo " + dt.Rows[0]["CanalVenta"].ToString();
+
+                decimal ventas = Convert.ToDecimal(dt.Rows[0]["Ventas"], CultureInfo.InvariantCulture);
+                
+                int estrategias = Convert.ToInt32(canal["Estrategias"]);
+                string ranking = canal["Ranking"].ToString();
+
+                decimal meta = 1000000m; // Meta de ejemplo
+                decimal porcentaje = ventas > 0 ? (ventas / meta * 100) : 0;
+
+                lblEstadoVentas.InnerText = $"{porcentaje:0}%";
+                progressBar.Style["width"] = $"{porcentaje:0}%";
+                lblEstrategias.Text = estrategias.ToString();
+                lblRanking.Text = string.IsNullOrEmpty(ranking) ? "-" : ranking;
+                lblVentas.Text = ventas.ToString("C0", CultureInfo.CurrentCulture);
+
+                ltDescripcion.Text =
+                $"Enfocados en resultados, el {ltTeam.Text} ha logrado posicionarse en el {ranking} lugar, " +
+                $"impulsando {estrategias} estrategias activas con una excelente gestión de recursos.";
+
+            }
+            else
+            {
+                lblEstadoVentas.InnerText = "0%";
+                progressBar.Style["width"] = "0%";
+                lblEstrategias.Text = "0";
+                lblRanking.Text = "-";
+                lblVentas.Text = "$0";
+            }
+
         }
 
         public class VentasCanal
