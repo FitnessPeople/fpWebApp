@@ -262,18 +262,38 @@
                                                     <label class="col-lg-2 control-label">Mostrar</label>
                                                     <div class="col-lg-10">
                                                         <asp:RadioButtonList ID="rblPageSize" runat="server" AutoPostBack="true"
-                                                            RepeatDirection="Horizontal" OnSelectedIndexChanged="rblPageSize_SelectedIndexChanged">
+                                                            RepeatDirection="Horizontal" 
+                                                            OnSelectedIndexChanged="rblPageSize_SelectedIndexChanged">
                                                             <asp:ListItem Text="10" Value="10" Selected="True" />
                                                             <asp:ListItem Text="50" Value="50" />
                                                             <asp:ListItem Text="100" Value="100" />
                                                             <asp:ListItem Text="Todos" Value="0" />
                                                         </asp:RadioButtonList>
                                                         <asp:Label ID="lblTotalRegistros" runat="server" CssClass="total-registros" />
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-xs btn-white">10</button>
+                                                            <button type="button" class="btn btn-xs btn-white">50</button>
+                                                            <button type="button" class="btn btn-xs btn-white">100</button>
+                                                            <button type="button" class="btn btn-xs btn-white">Todos</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-lg-4 form-horizontal">
+                                                <div class="form-group">
+                                                    <label class="col-lg-2 control-label">Asesor comercial:</label>
+                                                    <div class="col-lg-10">
+                                                        <asp:DropDownList ID="ddlAsesores" runat="server" AppendDataBoundItems="true"
+                                                            DataTextField="NombreUsuario" DataValueField="idUsuario"
+                                                            CssClass="form-control input-sm m-b">
+                                                            <asp:ListItem Text="Seleccione" Value="" Selected="True" />
+                                                        </asp:DropDownList>
+                                                        <asp:RequiredFieldValidator ID="rfvAsesor" runat="server" 
+                                                            ControlToValidate="ddlAsesores" ErrorMessage="*" InitialValue="">
+                                                        </asp:RequiredFieldValidator>
+                                                    </div>
+                                                </div>
                                                 <div class="form-group">
                                                     <label class="col-lg-2 control-label">&nbsp;</label>
                                                     <div class="col-lg-10">
@@ -284,33 +304,22 @@
                                                         </a>
                                                         <asp:LinkButton ID="lnkAsignar" runat="server" Style="font-size: 12px;"
                                                             CssClass="btn btn-primary pull-right dim m-l-md" Visible="true"
-                                                            OnClick="lnkAsignar_Click">
+                                                            OnClick="lnkAsignar_Click" CausesValidation="true" ValidationGroup="asignar">
                                                         <i class="fa fa-user-plus m-r-xs"></i>ASIGNAR
                                                         </asp:LinkButton>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-lg-2 control-label">Asesor comercial:</label>
-                                                    <div class="col-lg-10">
-                                                        <asp:DropDownList ID="ddlAsesores" runat="server" AppendDataBoundItems="true"
-                                                            DataTextField="NombreAsesor" DataValueField="idAsesor"
-                                                            CssClass="form-control input-sm m-b"
-                                                            AutoPostBack="true">
-                                                            <asp:ListItem Text="Seleccione" Value="" Selected="True" />
-                                                        </asp:DropDownList>
                                                     </div>
                                                 </div>
                                             </div>
 
                                         </div>
 
-                                        <asp:GridView ID="gvAfiliados" runat="server" AutoGenerateColumns="False"
-                                            AllowPaging="True" PageSize="10" OnPageIndexChanging="gvAfiliados_PageIndexChanging"
-                                            AllowSorting="true" OnSorting="gvAfiliados_Sorting"
-                                            OnRowCreated="gvAfiliados_RowCreated"
-                                            OnRowDataBound="gvAfiliados_RowDataBound"
-                                            CssClass="table table-striped list-group-item-text"
-                                            DataKeyNames="IdAfiliado"
+                                        <asp:GridView ID="gvAfiliados" runat="server" AutoGenerateColumns="False" 
+                                            AllowPaging="True" PageSize="10" OnPageIndexChanging="gvAfiliados_PageIndexChanging" 
+                                            AllowSorting="true" OnSorting="gvAfiliados_Sorting" 
+                                            OnRowCreated="gvAfiliados_RowCreated" 
+                                            OnRowDataBound="gvAfiliados_RowDataBound" 
+                                            CssClass="table table-striped list-group-item-text" 
+                                            DataKeyNames="IdAfiliado,NombreAfiliado,ApellidoAfiliado,DocumentoAfiliado,idTipoDocumento,CelularAfiliado,diasquefaltan"
                                             BorderStyle="None" GridLines="None"
                                             PagerSettings-Mode="NumericFirstLast"
                                             PagerSettings-FirstPageText="«"
@@ -330,14 +339,24 @@
 
                                                 <%--Otras columnas--%>
                                                 <asp:BoundField DataField="IdAfiliado" HeaderText="ID" />
-                                                <asp:BoundField DataField="NombreAfiliado" HeaderText="Nombres" SortExpression="NombreAfiliado" />
-                                                <asp:BoundField DataField="ApellidoAfiliado" HeaderText="Apellidos" SortExpression="ApellidoAfiliado" />
-                                                <asp:BoundField DataField="diasquefaltan" HeaderText="Días plan" SortExpression="diasquefaltan" />
-                                                <asp:BoundField DataField="EstadoPlan" HeaderText="Estado" SortExpression="EstadoPlan" />
+                                                <asp:BoundField DataField="NombreAfiliado" HeaderText="Nombres" 
+                                                    SortExpression="NombreAfiliado" />
+                                                <asp:BoundField DataField="ApellidoAfiliado" HeaderText="Apellidos" 
+                                                    SortExpression="ApellidoAfiliado" />
+                                                <asp:BoundField DataField="DocumentoAfiliado" HeaderText="Documento" 
+                                                    SortExpression="DocumentoAfiliado" />
+                                                <asp:BoundField DataField="idTipoDocumento" HeaderText="TipoDocumento" 
+                                                    SortExpression="idTipoDocumento" Visible="False" />
+                                                <asp:BoundField DataField="CelularAfiliado" HeaderText="Celular" 
+                                                    SortExpression="CelularAfiliado" />
+                                                <asp:BoundField DataField="diasquefaltan" HeaderText="Días plan" 
+                                                    SortExpression="diasquefaltan" />
+                                                <asp:BoundField DataField="EstadoPlan" HeaderText="Estado" 
+                                                    SortExpression="EstadoPlan" />
 
-                                                <asp:TemplateField HeaderText="Estado plan">
+                                                <asp:TemplateField HeaderText="Estado">
                                                     <ItemTemplate>
-                                                        <asp:Literal runat="server" ID="EstadoPlan" Text=""></asp:Literal>
+                                                        <asp:Label ID="lblEstado" runat="server" Text='<%# Eval("EstadoPlan") %>'></asp:Label>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                             </Columns>

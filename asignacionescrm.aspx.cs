@@ -1,6 +1,8 @@
-﻿using NPOI.OpenXmlFormats.Spreadsheet;
+﻿using MySql.Data.MySqlClient;
+using NPOI.OpenXmlFormats.Spreadsheet;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -33,6 +35,7 @@ namespace fpWebApp
                         {
                             CargarSedes(Convert.ToInt32(Session["idSede"].ToString()), "Gimnasio");
                         }
+                        CargarAsesores();
                         listaAfiliados(strParam, ddlSedes.SelectedItem.Value.ToString());
 
                         if (ViewState["Exportar"].ToString() == "1")
@@ -42,6 +45,11 @@ namespace fpWebApp
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             lnkAsignar.Visible = true;
+                            foreach (ListItem item in rblPageSize.Items)
+                            {
+                                item.Attributes["class"] = "btn btn-xs btn-white";
+                            }
+                            rblPageSize.RepeatLayout = RepeatLayout.Flow; // Para que se acomoden como botones
                         }
                     }
                 }
@@ -93,6 +101,22 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        private void CargarAsesores()
+        {
+            string strQuery = "SELECT * " +
+                "FROM Usuarios u, Empleados e " +
+                "WHERE u.idEmpleado = e.DocumentoEmpleado " +
+                "AND u.EstadoUsuario = 'Activo' " +
+                "AND e.idSede = " + Session["idSede"].ToString();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            ddlAsesores.DataSource = dt;
+            ddlAsesores.DataBind();
+
+            dt.Dispose();
+        }
+
         private void listaAfiliados(string strParam, string strSede)
         {
             string strQueryAdd = "";
@@ -122,27 +146,15 @@ namespace fpWebApp
                 strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) > 31 ";
             }
 
-            string strQuery = "SELECT *, " +
-                "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) IS NOT NULL, CONCAT('(',TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()),')'),'<i class=\"fa fa-circle-question m-r-lg m-l-lg\"></i>') AS edad, " +
-                "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 14,'danger',IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 14,'success',IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 60,'info','warning'))) AS badge, " +
-                "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 14,'baby',IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) >= 60,'person-walking-with-cane','')) AS age, " +
-                "IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS badge2, " +
-                "IF(EstadoPlan='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS badge3, " +
-                "DATEDIFF(FechaFinalPlan, CURDATE()) AS diasquefaltan, " +
-                "IF(DATEDIFF(FechaFinalPlan, CURDATE()) < 30 AND DATEDIFF(FechaFinalPlan, CURDATE()) > -30,'1',IF(DATEDIFF(FechaFinalPlan, CURDATE()) < -30,'2','')) AS TipoGestion " +
+            string strQuery = "SELECT *, DATEDIFF(FechaFinalPlan, CURDATE()) AS diasquefaltan " +
                 "FROM Afiliados a " +
-                "LEFT JOIN generos g ON g.idGenero = a.idGenero " +
                 "LEFT JOIN sedes s ON s.idSede = a.idSede " +
-                "LEFT JOIN ciudadessedes cs ON s.idCiudadSede = cs.idCiudadSede " +
-                "LEFT JOIN estadocivil ec ON ec.idEstadoCivil = a.idEstadoCivilAfiliado " +
                 "LEFT JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado " +
-                "LEFT JOIN profesiones p ON p.idProfesion = a.idProfesion " +
-                "LEFT JOIN eps ON eps.idEps = a.idEps " +
-                "LEFT JOIN ciudades ON ciudades.idCiudad = a.idCiudadAfiliado " +
                 "WHERE (DocumentoAfiliado like '%" + strParam + "%' " +
                 "OR NombreAfiliado like '%" + strParam + "%' " +
                 "OR EmailAfiliado like '%" + strParam + "%' " +
                 "OR CelularAfiliado like '%" + strParam + "%') " + strQueryAdd + " " + strQueryAdd2 + " " +
+                "AND a.DocumentoAfiliado NOT IN (SELECT documentoContacto FROM pregestioncrm) " +
                 "ORDER BY a.idAfiliado DESC " +
                 "LIMIT " + strLimit + "";
             clasesglobales cg = new clasesglobales();
@@ -180,16 +192,60 @@ namespace fpWebApp
         protected void AsignarAfiliados()
         {
             string strQuery = "";
+            string asesor = ddlAsesores.SelectedItem.Value.ToString();
+            string connString = ConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+            string tipoGestion = "1";
+
             clasesglobales cg = new clasesglobales();
             foreach (GridViewRow row in gvAfiliados.Rows)
             {
                 CheckBox chk = (CheckBox)row.FindControl("chkSeleccionar");
                 if (chk != null && chk.Checked)
                 {
-                    string id = gvAfiliados.DataKeys[row.RowIndex].Value.ToString();
+                    string id = gvAfiliados.DataKeys[row.RowIndex]["IdAfiliado"].ToString();
+                    string nombre = gvAfiliados.DataKeys[row.RowIndex]["NombreAfiliado"].ToString();
+                    string apellido = gvAfiliados.DataKeys[row.RowIndex]["ApellidoAfiliado"].ToString();
+                    string documento = gvAfiliados.DataKeys[row.RowIndex]["DocumentoAfiliado"].ToString();
+                    string idTipoDocumento = gvAfiliados.DataKeys[row.RowIndex]["idTipoDocumento"].ToString();
+                    string celular = gvAfiliados.DataKeys[row.RowIndex]["CelularAfiliado"].ToString();
+                    int diasquefaltan = Convert.ToInt32(gvAfiliados.DataKeys[row.RowIndex]["diasquefaltan"].ToString());
+                    
                     // Aquí puedes procesar ese ID seleccionado
-                    strQuery = "INSERT INTO pregestioncrm (NombreContacto) VALUES ('CARLOS')";
-                    cg.TraerDatosStr(strQuery);
+
+                    if (diasquefaltan >= -30 && diasquefaltan < 30)
+                    {
+                        tipoGestion = "2";
+                    }
+                    if (diasquefaltan < -30)
+                    {
+                        tipoGestion = "3";
+                    }
+
+                    using (MySqlConnection conn = new MySqlConnection(connString))
+                    {
+                        conn.Open();
+
+                        strQuery = @"INSERT INTO pregestioncrm 
+                            (FechaHoraPregestion, NombreContacto, ApellidoContacto, DocumentoContacto, 
+                            idTipoDocumentoContacto, CelularContacto, idTipoGestion, idUsuarioAsigna, idAsesor) 
+                            VALUES (NOW(), @Nombre, @Apellido, @Documento, 
+                            @TipoDoc, @Celular, @TipoGestion, @IdUsuarioAsigna, @idAsesor)";
+
+                        using (MySqlCommand cmd = new MySqlCommand(strQuery, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@Nombre", nombre);
+                            cmd.Parameters.AddWithValue("@Apellido", apellido);
+                            cmd.Parameters.AddWithValue("@Documento", documento);
+                            cmd.Parameters.AddWithValue("@TipoDoc", idTipoDocumento);
+                            cmd.Parameters.AddWithValue("@Celular", celular);
+                            cmd.Parameters.AddWithValue("@TipoGestion", tipoGestion); // ejemplo: fijo en 1
+                            cmd.Parameters.AddWithValue("@idusuarioAsigna", Session["idUsuario"].ToString());
+                            cmd.Parameters.AddWithValue("@idAsesor", asesor);
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
                 }
             }
         }
@@ -250,6 +306,7 @@ namespace fpWebApp
         protected void lnkAsignar_Click(object sender, EventArgs e)
         {
             AsignarAfiliados();
+            Response.Redirect("asignacionescrm");
         }
 
         protected void rblPageSize_SelectedIndexChanged(object sender, EventArgs e)
@@ -322,10 +379,6 @@ namespace fpWebApp
 
             string strQuery = "SELECT *, " +
                 "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) IS NOT NULL, CONCAT('(',TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()),')'),'<i class=\"fa fa-circle-question m-r-lg m-l-lg\"></i>') AS edad, " +
-                "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 14,'danger',IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 14,'success',IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 60,'info','warning'))) AS badge, " +
-                "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) < 14,'baby',IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) >= 60,'person-walking-with-cane','')) AS age, " +
-                "IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS badge2, " +
-                "IF(EstadoPlan='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS badge3, " +
                 "DATEDIFF(FechaFinalPlan, CURDATE()) AS diasquefaltan, " +
                 "IF(DATEDIFF(FechaFinalPlan, CURDATE()) < 30 AND DATEDIFF(FechaFinalPlan, CURDATE()) > -30,'1',IF(DATEDIFF(FechaFinalPlan, CURDATE()) < -30,'2','')) AS TipoGestion " +
                 "FROM Afiliados a " +
@@ -373,6 +426,26 @@ namespace fpWebApp
                 e.Row.Attributes["onclick"] = "seleccionarCheckbox(this, event)";
                 // Opcional: cambia el cursor al pasar
                 e.Row.Attributes["style"] = "cursor:pointer;";
+            }
+
+            Label lblEstado = (Label)e.Row.FindControl("lblEstado");
+            if (lblEstado != null)
+            {
+                string estado = lblEstado.Text.Trim();
+
+                // Aplica clases Bootstrap según el estado
+                switch (estado.ToLower())
+                {
+                    case "activo":
+                        lblEstado.CssClass = "badge badge-info"; // verde
+                        break;
+                    case "inactivo":
+                        lblEstado.CssClass = "badge badge-danger"; // rojo
+                        break;
+                    default:
+                        lblEstado.CssClass = "badge badge-warning"; // gris
+                        break;
+                }
             }
         }
     }
