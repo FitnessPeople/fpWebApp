@@ -976,13 +976,13 @@ namespace fpWebApp
 
                 int mesesPlan = Convert.ToInt32(fila[0]["Meses"]); // Asegúrate que esta columna está en tu tabla
 
-                if (ViewState["DebitoAutomatico"] != null && int.TryParse(ViewState["DebitoAutomatico"].ToString(), out DebitoAutomatico))
-                {
-                    if (DebitoAutomatico == 1)
-                    {
-                        total = precioBase * 12;
-                    }
-                }
+                //if (ViewState["DebitoAutomatico"] != null && int.TryParse(ViewState["DebitoAutomatico"].ToString(), out DebitoAutomatico))
+                //{
+                //    if (DebitoAutomatico == 1)
+                //    {
+                //        total = precioBase * 12;
+                //    }
+                //}
                 txbValorPropuesta.Text = $"${total:N0}";
             }
         }

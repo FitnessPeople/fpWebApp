@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using MySql.Data.MySqlClient;
 
 namespace fpWebApp
 {
@@ -45,8 +46,50 @@ namespace fpWebApp
                             //btnAgregar.Visible = true;
                         }
                     }
-                    ListaCargos();
+
+
+
                     ListaRankingAsesores();
+                    ListaEstadosVentaLeads();
+                    clasesglobales cg = new clasesglobales();
+                    DataTable dt3 = cg.ConsultarRankingCanalesVentaPorVenta();
+
+                    DataRow canal = null;
+
+                    // Buscar la primera fila que no sea idCanalVenta = 1
+                    foreach (DataRow row in dt3.Rows)
+                    {
+                        if (Convert.ToInt32(row["idCanalVenta"]) != 1)
+                        {
+                            canal = row;
+                            break; // Salimos porque ya encontramos la primera válida
+                        }
+                    }
+
+                    if (canal != null)
+                    {
+                        decimal ventas = Convert.ToDecimal(canal["Ventas"]);
+                        int estrategias = Convert.ToInt32(canal["Estrategias"]);
+                        string ranking = canal["Ranking"].ToString();
+
+                        decimal meta = 1000000m; // Meta de ejemplo
+                        decimal porcentaje = ventas > 0 ? (ventas / meta * 100) : 0;
+
+                        lblEstadoVentas.InnerText = $"{porcentaje:0}%";
+                        progressBar.Style["width"] = $"{porcentaje:0}%";
+                        lblEstrategias.Text = estrategias.ToString();
+                        lblRanking.Text = string.IsNullOrEmpty(ranking) ? "-" : ranking;
+                        lblVentas.Text = ventas.ToString("C0");
+                    }
+                    else
+                    {
+                        lblEstadoVentas.InnerText = "0%";
+                        progressBar.Style["width"] = "0%";
+                        lblEstrategias.Text = "0";
+                        lblRanking.Text = "-";
+                        lblVentas.Text = "$0";
+                    }
+
                     //ltTitulo.Text = "Agregar cargo";
 
                     if (Request.QueryString.Count > 0)
@@ -55,7 +98,7 @@ namespace fpWebApp
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
-                            clasesglobales cg = new clasesglobales();
+                            
                             DataTable dt = cg.ConsultarCargosPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
@@ -66,7 +109,7 @@ namespace fpWebApp
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
-                            clasesglobales cg = new clasesglobales();
+                            //clasesglobales cg = new clasesglobales();
                             DataTable dt = cg.ValidarCargoTablas(int.Parse(Request.QueryString["deleteid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
@@ -135,14 +178,6 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void ListaCargos()
-        {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarCargos();
-            //rpCargos.DataSource = dt;
-            //rpCargos.DataBind();
-            dt.Dispose();
-        }
 
         private void ListaRankingAsesores()
         {
@@ -162,6 +197,51 @@ namespace fpWebApp
 
             dt.Dispose();
         }
+
+        private void ListaEstadosVentaLeads()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCantidadLeadsPorEstadosVenta(); 
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    string estado = row["nombreEstado"].ToString();
+
+                    if (estado == "Caliente")
+                    {
+                        lblCalienteLeads.Text = row["cantidadLeads"].ToString();
+                        lblCalientePorcentaje.Text = row["porcentajeLeads"].ToString() + "%";
+                        lblCalienteVentas.Text = "$" + row["monto"].ToString();
+                    }
+                    else if (estado == "Tibio")
+                    {
+                        lblTibioLeads.Text = row["cantidadLeads"].ToString();
+                        lblTibioPorcentaje.Text = row["porcentajeLeads"].ToString() + "%";
+                        lblTibioVentas.Text = "$" + row["monto"].ToString();
+                    }
+                    else if (estado == "Frío")
+                    {
+                        lblFrioLeads.Text = row["cantidadLeads"].ToString();
+                        lblFrioPorcentaje.Text = row["porcentajeLeads"].ToString() + "%";
+                        lblFrioVentas.Text = "$" + row["monto"].ToString();
+                    }
+                }
+            }
+        }
+
+        public class VentasCanal
+        {
+            public string CanalVenta { get; set; }
+            public int Estrategias { get; set; }
+            public decimal Ventas { get; set; }
+            public int Ranking { get; set; }
+        }
+
+
+
+
 
 
         protected void rpCargos_ItemDataBound(object sender, RepeaterItemEventArgs e)

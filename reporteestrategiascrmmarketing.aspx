@@ -156,7 +156,7 @@
                                                 “Enfocados en resultados, el Team Online ha logrado posicionarse en el Top 5, 
                                                 impulsando 12 estrategias activas con una excelente gestión de recursos.”
                                             </p>
-                                            <div>
+                                            <%--                                            <div>
                                                 <span>Estado actual de ventas:</span>
                                                 <div class="stat-percent">48%</div>
                                                 <div class="progress progress-mini">
@@ -173,10 +173,34 @@
                                                     4th
                                                 </div>
                                                 <div class="col-sm-4 text-right">
-                                                    <div class="font-bold">PRESUPUESTO</div>
+                                                    <div class="font-bold">VENTAS</div>
                                                     $200,913 <i class="fa fa-level-up text-navy"></i>
                                                 </div>
+                                            </div>--%>
+
+                                            <div>
+                                                <span>Estado actual de ventas:</span>
+                                                <div id="lblEstadoVentas" runat="server" class="stat-percent"></div>
+                                                <div class="progress progress-mini">
+                                                    <div id="progressBar" runat="server" class="progress-bar"></div>
+                                                </div>
                                             </div>
+                                            <div class="row  m-t-sm">
+                                                <div class="col-sm-4">
+                                                    <div class="font-bold">ESTRATEGIAS</div>
+                                                    <asp:Label ID="lblEstrategias" runat="server" />
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="font-bold">RANKING</div>
+                                                    <asp:Label ID="lblRanking" runat="server" />
+                                                </div>
+                                                <div class="col-sm-4 text-right">
+                                                    <div class="font-bold">VENTAS</div>
+                                                    <asp:Label ID="lblVentas" runat="server" />
+                                                    <i class="fa fa-level-up text-navy"></i>
+                                                </div>
+                                            </div>
+
 
                                         </div>
                                     </div>
@@ -190,63 +214,73 @@
                                                     <span class="label label-warning pull-right">Datos actualizados</span>
                                                     <h5>Estados de la venta</h5>
                                                 </div>
+
                                                 <div class="ibox-content">
                                                     <div class="row">
                                                         <div class="col-xs-4">
                                                             <small class="stats-label">Leads / Caliente</small>
-                                                            <h4>236</h4>
+                                                            <h4>
+                                                                <asp:Label ID="lblCalienteLeads" runat="server" /></h4>
                                                         </div>
-
                                                         <div class="col-xs-4">
                                                             <small class="stats-label">% Leads</small>
-                                                            <h4>46.11%</h4>
+                                                            <h4>
+                                                                <asp:Label ID="lblCalientePorcentaje" runat="server" /></h4>
                                                         </div>
                                                         <div class="col-xs-4">
                                                             <small class="stats-label">Ventas mañana</small>
-                                                            <h4>$432.021</h4>
+                                                            <h4>
+                                                                <asp:Label ID="lblCalienteVentas" runat="server" /></h4>
                                                         </div>
                                                     </div>
                                                 </div>
+
                                                 <div class="ibox-content">
                                                     <div class="row">
                                                         <div class="col-xs-4">
                                                             <small class="stats-label">Leads / Tibio</small>
-                                                            <h4>64</h4>
+                                                            <h4>
+                                                                <asp:Label ID="lblTibioLeads" runat="server" /></h4>
                                                         </div>
-
                                                         <div class="col-xs-4">
                                                             <small class="stats-label">% Leads</small>
-                                                            <h4>92.43%</h4>
+                                                            <h4>
+                                                                <asp:Label ID="lblTibioPorcentaje" runat="server" /></h4>
                                                         </div>
                                                         <div class="col-xs-4">
                                                             <small class="stats-label">Última semana</small>
-                                                            <h4>$564.554</h4>
+                                                            <h4>
+                                                                <asp:Label ID="lblTibioVentas" runat="server" /></h4>
                                                         </div>
                                                     </div>
                                                 </div>
+
                                                 <div class="ibox-content">
                                                     <div class="row">
                                                         <div class="col-xs-4">
                                                             <small class="stats-label">Leads / Frío</small>
-                                                            <h4>36</h4>
+                                                            <h4>
+                                                                <asp:Label ID="lblFrioLeads" runat="server" /></h4>
                                                         </div>
-
                                                         <div class="col-xs-4">
                                                             <small class="stats-label">% Leads</small>
-                                                            <h4>150.23%</h4>
+                                                            <h4>
+                                                                <asp:Label ID="lblFrioPorcentaje" runat="server" /></h4>
                                                         </div>
                                                         <div class="col-xs-4">
                                                             <small class="stats-label">Última semana</small>
-                                                            <h4>$124.990</h4>
+                                                            <h4>
+                                                                <asp:Label ID="lblFrioVentas" runat="server" /></h4>
                                                         </div>
                                                     </div>
                                                 </div>
+
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
-                                                    <h5>Ranking de asesores</h5>
+                                                    <h5>TOP 5 Ranking de asesores </h5>
                                                     <div class="ibox-tools">
                                                         <a class="collapse-link">
                                                             <i class="fa fa-chevron-up"></i>
@@ -257,29 +291,6 @@
                                                     </div>
                                                 </div>
                                                 <div class="ibox-content">
-                                                    <%--                                                    <ul class="todo-list m-t small-list">
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">1. Sara Uribe.</span>
-
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">2. Adrian Cubaque</span>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">3. Kendy Leal</span>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-check-o"></i></a>
-                                                            <span class="m-l-xs">4. Karina Coronel</span>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">5. Javier Galvan</span>
-                                                        </li>
-                                                    </ul>--%>
                                                     <asp:Repeater ID="rptRankingAsesores" runat="server">
                                                         <HeaderTemplate>
                                                             <ul class="todo-list m-t small-list">
