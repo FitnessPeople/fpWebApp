@@ -7681,7 +7681,7 @@ int valor, string observaciones, string estado)
         }
 
         public string InsertarEstrategiaMarketing(string nombreEstrategia, string descripcionEstrategia, string fechaInicio, string fechaFin,
-        string canalesVenta, int idTipoEstrategia, string planes, int idUsuario,  out bool respuesta, out string mensaje)
+        string canalesVenta, int idTipoEstrategia, string planes, int idUsuario, decimal valorPresupuesto,  out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -7702,7 +7702,7 @@ int valor, string observaciones, string estado)
                         cmd.Parameters.AddWithValue("@p_id_tipo_estrategia", idTipoEstrategia);
                         cmd.Parameters.AddWithValue("@p_planes", planes);
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
-
+                        cmd.Parameters.AddWithValue("@p_valor_presupuesto", valorPresupuesto);
 
                         // Parámetro de salida
                         MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
@@ -7727,7 +7727,7 @@ int valor, string observaciones, string estado)
         }
 
         public string ActualizarEstrategiaMarketing(int idEstrategia, string nombreEstrategia, string descripcionEstrategia, string fechaInicio, string fechaFin,
-        string canalesVenta, int idTipoEstrategia, string planes, out bool respuesta, out string mensaje)
+        string canalesVenta, int idTipoEstrategia, string planes, decimal ValorPresupuesto, out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -7748,6 +7748,7 @@ int valor, string observaciones, string estado)
                         cmd.Parameters.AddWithValue("@p_canales", canalesVenta);
                         cmd.Parameters.AddWithValue("@p_id_tipo_estrategia", idTipoEstrategia);
                         cmd.Parameters.AddWithValue("@p_planes", planes);
+                        cmd.Parameters.AddWithValue("@p_valor_presupuesto", ValorPresupuesto);
 
                         // Parámetro de salida
                         MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
@@ -7986,6 +7987,35 @@ int valor, string observaciones, string estado)
             return dt;
         }
 
+        public DataTable ConsultarRankingAsesoresMesPasado()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_RANKING_ASESORES_MES_PASADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
 
 
 

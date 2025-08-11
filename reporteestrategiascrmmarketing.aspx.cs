@@ -19,7 +19,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Cargos");
+                    ValidarPermisos("Reporte estrategias");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -53,8 +53,11 @@ namespace fpWebApp
                     ListaRankingAsesores();
                     ListaEstadosVentaLeads();
                     ListaRankingCanalesVentaMesVigente();
+                    ListaRankingMejorAsesorMesPasado();
+
                     clasesglobales cg = new clasesglobales();
-                    //ltTitulo.Text = "Agregar cargo";
+
+                    
 
                     if (Request.QueryString.Count > 0)
                     {
@@ -147,6 +150,15 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarRankingAsesoresMesVigente();
+            
+            DateTime fechaActual = DateTime.Now;
+            string mesActualConAnio = System.Globalization.CultureInfo
+                .GetCultureInfo("es-ES")
+                .DateTimeFormat
+                .GetMonthName(fechaActual.Month)
+                + " " + fechaActual.Year;
+
+            ltMesActual.Text = mesActualConAnio.ToString();
 
             if (dt != null && dt.Rows.Count > 0)
             {
@@ -161,6 +173,41 @@ namespace fpWebApp
 
             dt.Dispose();
         }
+
+        private void ListaRankingMejorAsesorMesPasado()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarRankingAsesoresMesPasado();
+
+            // Calcular mes y año anteriores
+            DateTime fechaAnterior = DateTime.Now.AddMonths(-1);
+            string mesAnteriorConAnio = System.Globalization.CultureInfo
+                .GetCultureInfo("es-ES")
+                .DateTimeFormat
+                .GetMonthName(fechaAnterior.Month)
+                + " " + fechaAnterior.Year;
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                DataRow row = dt.Rows[0]; // solo el mejor asesor
+                ltNomAsesorMesPasado.Text = row["Asesor"].ToString();
+                ltMes.Text = mesAnteriorConAnio;
+                ltCanalVenta.Text = row["CanalVenta"].ToString();
+                ltCantidadPlanes.Text = row["CantidadPlanesVendidos"].ToString();
+                ltValorVendido.Text = "$" + string.Format("{0:N0}", row["TotalVendido"]);
+            }
+            else
+            {
+                ltNomAsesorMesPasado.Text = "Sin datos";
+                ltMes.Text = mesAnteriorConAnio;
+                ltCanalVenta.Text = "N/A";
+                ltCantidadPlanes.Text = "0";
+                ltValorVendido.Text = "$0";
+            }
+
+            dt?.Dispose();
+        }
+
 
         private void ListaEstadosVentaLeads()
         {

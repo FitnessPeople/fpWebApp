@@ -41,9 +41,9 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#sedes");
+            var element1 = document.querySelector("#reporteestrategiascrmmarketing");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#sistema");
+            var element2 = document.querySelector("#CRM");
             element2.classList.remove("collapse");
         }
     </script>
@@ -280,7 +280,7 @@
                                         <div class="col-lg-6">
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
-                                                    <h5>TOP 5 Ranking de asesores </h5>
+                                                    <h5>TOP 5 asesores <asp:Literal ID="ltMesActual" runat="server"></asp:Literal> </h5>
                                                     <div class="ibox-tools">
                                                         <a class="collapse-link">
                                                             <i class="fa fa-chevron-up"></i>
@@ -380,15 +380,19 @@
                                 <div class="col-lg-4">
                                     <div class="widget-head-color-box navy-bg p-lg text-center">
                                         <div class="m-b-md">
-                                            <h2 class="font-bold no-margins">Alex Smith
+                                            <h2 class="font-bold no-margins">
+                                                <asp:Literal ID="ltNomAsesorMesPasado" runat="server"></asp:Literal>
                                             </h2>
-                                            <small>Mejor Asesor del mes</small>
+                                            <small>Mejor Asesor del mes <asp:Literal ID="ltMes" runat="server"></asp:Literal></small>
                                         </div>
                                         <img src="img/a4.jpg" class="img-circle circle-border m-b-md" alt="profile">
                                         <div>
-                                            <span>Equipo online</span> |
-                                <span>Cantidad de leads 600</span> |
-                                <span>Valor vendido $61.000.000</span>
+                                            <span>
+                                                <asp:Literal ID="ltCanalVenta" runat="server"></asp:Literal></span> |
+                                            <span>
+                                                <asp:Literal ID="ltCantidadPlanes" runat="server"></asp:Literal></span> |
+                                            <span>
+                                                <asp:Literal ID="ltValorVendido" runat="server"></asp:Literal></span>
                                         </div>
                                     </div>
                                     <%--                        <div class="widget-text-box">

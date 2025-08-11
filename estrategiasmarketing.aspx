@@ -202,8 +202,6 @@
                                                         </div>
                                                     </div>
 
-
-
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Tipos de estrategia:</label>
@@ -219,12 +217,24 @@
                                                     </div>
                                                 </div>
 
-
-
                                                 <div class="form-group">
                                                     <label>Descripción de la estrategia:</label>
                                                     <div id="editor" cssclass="form-control input-sm"></div>
                                                     <asp:HiddenField ID="hiddenEditor" runat="server" />
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <i class="fa fa-dollar text-info"></i>
+                                                            <label for="ValorPresupuesto" class="col-form-label">Valor Presupuesto estimado:</label>
+                                                            <asp:TextBox ID="txbValorPresupuesto" CssClass="form-control input-sm" runat="server" placeholder="$0"
+                                                                onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
+                                                            <asp:RequiredFieldValidator ID="rfvValorPresupuesto" runat="server" ErrorMessage="* Campo requerido" 
+                                                                ControlToValidate="txbValorPresupuesto" ValidationGroup="agregar"
+                                                                 CssClass="font-bold text-danger" Display="Dynamic" />
+                                                        </div>
+                                                    </div>
                                                 </div>
 
                                                 <div class="row">
@@ -272,9 +282,6 @@
                                                             <br />
                                                             <asp:CheckBoxList ID="chblCanales" runat="server" RepeatDirection="Vertical" CssClass="todo-list m-t">
                                                             </asp:CheckBoxList>
-                                                            <%--                                                            <asp:RequiredFieldValidator ID="rfvCanales" runat="server" ControlToValidate="chblCanales"
-                                                                ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic">
-                                                            </asp:RequiredFieldValidator>--%>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -352,12 +359,15 @@
                                                                     <tr>
                                                                         <th width="25%"><i class="fa fa-city m-r-xs"></i>Canales de venta</th>
                                                                         <th width="25%"><i class="fa fa-mobile m-r-xs"></i>Planes</th>
-                                                                        <th width="50%" class="text-nowrap"><i class="fa fa-clock m-r-xs"></i>Descripción</th>
+                                                                        <th width="25%"><i class="fa fa-mobile m-r-xs"></i>Presupuesto</th>
+                                                                        <th width="50%" class="text-nowrap"><i class="fa fa-clock m-r-xs"></i>Descripción</th>                                                                        
                                                                     </tr>
                                                                     <tr>
                                                                         <td><%# Eval("CanalesVenta") %></td>
                                                                         <td><%# Eval("Planes") %></td>
+                                                                        <td><%# string.Format(new System.Globalization.CultureInfo("es-CO"), "{0:C0}", Eval("ValorPresupuesto")) %></td>
                                                                         <td><%# Eval("DescripcionEstrategia") %></td>
+                                                                        
                                                                     </tr>
                                                                 </table>
                                                             </td>
