@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -26,7 +27,6 @@ namespace fpWebApp
                     }
                     if (ViewState["Consulta"].ToString() == "1")
                     {
-                        string strParam = "";
                         if (Session["idSede"].ToString() == "11")
                         {
                             CargarSedes(11, "Todas");
@@ -36,7 +36,7 @@ namespace fpWebApp
                             CargarSedes(Convert.ToInt32(Session["idSede"].ToString()), "Gimnasio");
                         }
                         CargarAsesores();
-                        listaAfiliados(strParam, ddlSedes.SelectedItem.Value.ToString());
+                        listaAfiliados(ddlSedes.SelectedItem.Value.ToString());
 
                         if (ViewState["Exportar"].ToString() == "1")
                         {
@@ -45,11 +45,6 @@ namespace fpWebApp
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             lnkAsignar.Visible = true;
-                            foreach (ListItem item in rblPageSize.Items)
-                            {
-                                item.Attributes["class"] = "btn btn-xs btn-white";
-                            }
-                            rblPageSize.RepeatLayout = RepeatLayout.Flow; // Para que se acomoden como botones
                         }
                     }
                 }
@@ -117,18 +112,15 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void listaAfiliados(string strParam, string strSede)
+        private void listaAfiliados(string strSede)
         {
             string strQueryAdd = "";
             string strQueryAdd2 = "";
             string strLimit = "5000";
+
             if (strSede != "Todas")
             {
                 strQueryAdd = "AND a.idSede = " + strSede;
-            }
-            if (strParam != "")
-            {
-                strLimit = "5000";
             }
 
             if (ddlDias.SelectedItem.Value.ToString() == "-30")
@@ -150,17 +142,13 @@ namespace fpWebApp
                 "FROM Afiliados a " +
                 "LEFT JOIN sedes s ON s.idSede = a.idSede " +
                 "LEFT JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado " +
-                "WHERE (DocumentoAfiliado like '%" + strParam + "%' " +
-                "OR NombreAfiliado like '%" + strParam + "%' " +
-                "OR EmailAfiliado like '%" + strParam + "%' " +
-                "OR CelularAfiliado like '%" + strParam + "%') " + strQueryAdd + " " + strQueryAdd2 + " " +
+                "WHERE 1=1 " + strQueryAdd + " " + strQueryAdd2 + " " +
                 "AND a.DocumentoAfiliado NOT IN (SELECT documentoContacto FROM pregestioncrm) " +
-                "ORDER BY a.idAfiliado DESC " +
                 "LIMIT " + strLimit + "";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
-            lblTotalRegistros.Text = $"Total de registros: {dt.Rows.Count}";
+            lblTotalRegistros.Text = $"Registros totales: {dt.Rows.Count}";
 
             DataView dv = dt.DefaultView;
             dv.Sort = $"{SortExpression} {SortDirection}";
@@ -172,12 +160,18 @@ namespace fpWebApp
             //rpAfiliados.DataBind();
 
             dt.Dispose();
+
+            foreach (ListItem item in rblPageSize.Items)
+            {
+                item.Attributes["class"] = "btn btn-xs btn-white";
+            }
+            rblPageSize.RepeatLayout = RepeatLayout.Flow; // Para que se acomoden como botones
         }
 
         protected void gvAfiliados_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             gvAfiliados.PageIndex = e.NewPageIndex;
-            string strParam = "";
+            
             if (Session["idSede"].ToString() == "11")
             {
                 CargarSedes(11, "Todas");
@@ -186,79 +180,17 @@ namespace fpWebApp
             {
                 CargarSedes(Convert.ToInt32(Session["idSede"].ToString()), "Gimnasio");
             }
-            listaAfiliados(strParam, ddlSedes.SelectedItem.Value.ToString());
-        }
-
-        protected void AsignarAfiliados()
-        {
-            string strQuery = "";
-            string asesor = ddlAsesores.SelectedItem.Value.ToString();
-            string connString = ConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-            string tipoGestion = "1";
-
-            clasesglobales cg = new clasesglobales();
-            foreach (GridViewRow row in gvAfiliados.Rows)
-            {
-                CheckBox chk = (CheckBox)row.FindControl("chkSeleccionar");
-                if (chk != null && chk.Checked)
-                {
-                    string id = gvAfiliados.DataKeys[row.RowIndex]["IdAfiliado"].ToString();
-                    string nombre = gvAfiliados.DataKeys[row.RowIndex]["NombreAfiliado"].ToString();
-                    string apellido = gvAfiliados.DataKeys[row.RowIndex]["ApellidoAfiliado"].ToString();
-                    string documento = gvAfiliados.DataKeys[row.RowIndex]["DocumentoAfiliado"].ToString();
-                    string idTipoDocumento = gvAfiliados.DataKeys[row.RowIndex]["idTipoDocumento"].ToString();
-                    string celular = gvAfiliados.DataKeys[row.RowIndex]["CelularAfiliado"].ToString();
-                    int diasquefaltan = Convert.ToInt32(gvAfiliados.DataKeys[row.RowIndex]["diasquefaltan"].ToString());
-                    
-                    // Aquí puedes procesar ese ID seleccionado
-
-                    if (diasquefaltan >= -30 && diasquefaltan < 30)
-                    {
-                        tipoGestion = "2";
-                    }
-                    if (diasquefaltan < -30)
-                    {
-                        tipoGestion = "3";
-                    }
-
-                    using (MySqlConnection conn = new MySqlConnection(connString))
-                    {
-                        conn.Open();
-
-                        strQuery = @"INSERT INTO pregestioncrm 
-                            (FechaHoraPregestion, NombreContacto, ApellidoContacto, DocumentoContacto, 
-                            idTipoDocumentoContacto, CelularContacto, idTipoGestion, idUsuarioAsigna, idAsesor) 
-                            VALUES (NOW(), @Nombre, @Apellido, @Documento, 
-                            @TipoDoc, @Celular, @TipoGestion, @IdUsuarioAsigna, @idAsesor)";
-
-                        using (MySqlCommand cmd = new MySqlCommand(strQuery, conn))
-                        {
-                            cmd.Parameters.AddWithValue("@Nombre", nombre);
-                            cmd.Parameters.AddWithValue("@Apellido", apellido);
-                            cmd.Parameters.AddWithValue("@Documento", documento);
-                            cmd.Parameters.AddWithValue("@TipoDoc", idTipoDocumento);
-                            cmd.Parameters.AddWithValue("@Celular", celular);
-                            cmd.Parameters.AddWithValue("@TipoGestion", tipoGestion); // ejemplo: fijo en 1
-                            cmd.Parameters.AddWithValue("@idusuarioAsigna", Session["idUsuario"].ToString());
-                            cmd.Parameters.AddWithValue("@idAsesor", asesor);
-
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-
-                }
-            }
+            listaAfiliados(ddlSedes.SelectedItem.Value.ToString());
         }
 
         protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string strParam = txbBuscar.Value.ToString();
-            listaAfiliados(strParam, ddlSedes.SelectedItem.Value.ToString());
+            listaAfiliados(ddlSedes.SelectedItem.Value.ToString());
         }
 
         protected void ddlDias_SelectedIndexChanged(object sender, EventArgs e)
         {
-            listaAfiliados("", "Todas");
+            listaAfiliados("Todas");
         }
 
         protected void gvAfiliados_RowCreated(object sender, GridViewRowEventArgs e)
@@ -290,6 +222,9 @@ namespace fpWebApp
                             case "diasquefaltan":
                                 field.HeaderText = "Días plan";
                                 break;
+                            case "EstadoPlan":
+                                field.HeaderText = "Estado";
+                                break;
                         }
 
                         // Si esta es la columna ordenada, agregar el ícono
@@ -305,8 +240,79 @@ namespace fpWebApp
 
         protected void lnkAsignar_Click(object sender, EventArgs e)
         {
-            AsignarAfiliados();
-            Response.Redirect("asignacionescrm");
+            string strQuery = @"INSERT INTO pregestioncrm 
+                (FechaHoraPregestion, NombreContacto, ApellidoContacto, DocumentoContacto, 
+                idTipoDocumentoContacto, CelularContacto, idTipoGestion, idCanalVenta, idUsuarioAsigna, idAsesor) 
+                VALUES (NOW(), @Nombre, @Apellido, @Documento, 
+                @TipoDoc, @Celular, @TipoGestion, @IdCanalVenta, @IdUsuarioAsigna, @idAsesor)";
+
+            string asesor = ddlAsesores.SelectedItem.Value;
+            string connString = ConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+            string tipoGestion = "1";
+            bool haySeleccionados = false;
+
+            using (MySqlConnection conn = new MySqlConnection(connString))
+            {
+                conn.Open();
+
+                foreach (GridViewRow row in gvAfiliados.Rows)
+                {
+                    CheckBox chk = (CheckBox)row.FindControl("chkSeleccionar");
+                    if (chk != null && chk.Checked)
+                    {
+                        haySeleccionados = true;
+
+                        string id = gvAfiliados.DataKeys[row.RowIndex]["IdAfiliado"].ToString();
+                        string nombre = gvAfiliados.DataKeys[row.RowIndex]["NombreAfiliado"].ToString();
+                        string apellido = gvAfiliados.DataKeys[row.RowIndex]["ApellidoAfiliado"].ToString();
+                        string documento = gvAfiliados.DataKeys[row.RowIndex]["DocumentoAfiliado"].ToString();
+                        string idTipoDocumento = gvAfiliados.DataKeys[row.RowIndex]["idTipoDocumento"].ToString();
+                        string celular = gvAfiliados.DataKeys[row.RowIndex]["CelularAfiliado"].ToString();
+                        int diasquefaltan = Convert.ToInt32(gvAfiliados.DataKeys[row.RowIndex]["diasquefaltan"].ToString());
+
+                        if (diasquefaltan >= -30 && diasquefaltan < 30)
+                            tipoGestion = "2";
+                        else if (diasquefaltan < -30)
+                            tipoGestion = "3";
+                        else
+                            tipoGestion = "1"; // valor por defecto
+
+                        using (MySqlCommand cmd = new MySqlCommand(strQuery, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@Nombre", nombre);
+                            cmd.Parameters.AddWithValue("@Apellido", apellido);
+                            cmd.Parameters.AddWithValue("@Documento", documento);
+                            cmd.Parameters.AddWithValue("@TipoDoc", idTipoDocumento);
+                            cmd.Parameters.AddWithValue("@Celular", celular);
+                            cmd.Parameters.AddWithValue("@TipoGestion", tipoGestion);
+                            cmd.Parameters.AddWithValue("@IdCanalVenta", Session["idCanalVenta"].ToString());
+                            cmd.Parameters.AddWithValue("@IdUsuarioAsigna", Session["idUsuario"].ToString());
+                            cmd.Parameters.AddWithValue("@idAsesor", asesor);
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+
+            // Si no hubo seleccionados, mostrar alerta
+            if (!haySeleccionados)
+            {
+                //ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Debe seleccionar al menos un registro.');", true);
+                string script = @"
+                    Swal.fire({
+                        title: 'Seleccione al menos 1 registro',
+                        text: 'Debes seleccionar al menos un registro para asignarlo a un asesor.',
+                        icon: 'warning'
+                    });
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "SeleccioneUno", script, true);
+                return;
+            }
+            else
+            {
+                Response.Redirect("asignacionescrm");
+            }
         }
 
         protected void rblPageSize_SelectedIndexChanged(object sender, EventArgs e)
@@ -325,7 +331,6 @@ namespace fpWebApp
             }
 
             // Recargar datos
-            string strParam = "";
             if (Session["idSede"].ToString() == "11")
             {
                 CargarSedes(11, "Todas");
@@ -334,7 +339,7 @@ namespace fpWebApp
             {
                 CargarSedes(Convert.ToInt32(Session["idSede"].ToString()), "Gimnasio");
             }
-            listaAfiliados(strParam, ddlSedes.SelectedItem.Value.ToString());
+            listaAfiliados(ddlSedes.SelectedItem.Value.ToString());
         }
 
         protected void gvAfiliados_Sorting(object sender, GridViewSortEventArgs e)
@@ -349,17 +354,12 @@ namespace fpWebApp
             }
 
             // Obtener y ordenar datos
-            string strParam = "";
             string strQueryAdd = "";
             string strQueryAdd2 = "";
             string strLimit = "5000";
             if (ddlSedes.SelectedItem.Value.ToString() != "Todas")
             {
                 strQueryAdd = "AND a.idSede = " + ddlSedes.SelectedItem.Value.ToString();
-            }
-            if (strParam != "")
-            {
-                strLimit = "5000";
             }
 
             if (ddlDias.SelectedItem.Value.ToString() == "-30")
@@ -377,24 +377,13 @@ namespace fpWebApp
                 strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) > 31 ";
             }
 
-            string strQuery = "SELECT *, " +
-                "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) IS NOT NULL, CONCAT('(',TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()),')'),'<i class=\"fa fa-circle-question m-r-lg m-l-lg\"></i>') AS edad, " +
-                "DATEDIFF(FechaFinalPlan, CURDATE()) AS diasquefaltan, " +
-                "IF(DATEDIFF(FechaFinalPlan, CURDATE()) < 30 AND DATEDIFF(FechaFinalPlan, CURDATE()) > -30,'1',IF(DATEDIFF(FechaFinalPlan, CURDATE()) < -30,'2','')) AS TipoGestion " +
+            string strQuery = "SELECT *, DATEDIFF(FechaFinalPlan, CURDATE()) AS diasquefaltan " +
                 "FROM Afiliados a " +
-                "LEFT JOIN generos g ON g.idGenero = a.idGenero " +
                 "LEFT JOIN sedes s ON s.idSede = a.idSede " +
-                "LEFT JOIN ciudadessedes cs ON s.idCiudadSede = cs.idCiudadSede " +
-                "LEFT JOIN estadocivil ec ON ec.idEstadoCivil = a.idEstadoCivilAfiliado " +
                 "LEFT JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado " +
-                "LEFT JOIN profesiones p ON p.idProfesion = a.idProfesion " +
-                "LEFT JOIN eps ON eps.idEps = a.idEps " +
-                "LEFT JOIN ciudades ON ciudades.idCiudad = a.idCiudadAfiliado " +
-                "WHERE (DocumentoAfiliado like '%" + strParam + "%' " +
-                "OR NombreAfiliado like '%" + strParam + "%' " +
-                "OR EmailAfiliado like '%" + strParam + "%' " +
-                "OR CelularAfiliado like '%" + strParam + "%') " + strQueryAdd + " " + strQueryAdd2 + " " +
-                "ORDER BY a.idAfiliado DESC " +
+                "WHERE 1=1 " + strQueryAdd + " " + strQueryAdd2 + " " +
+                "AND a.DocumentoAfiliado NOT IN (SELECT documentoContacto FROM pregestioncrm) " +
+                "ORDER BY DATEDIFF(FechaFinalPlan, CURDATE()) DESC " +
                 "LIMIT " + strLimit + "";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
@@ -404,11 +393,17 @@ namespace fpWebApp
             // Asignar al GridView
             gvAfiliados.DataSource = dv;
             gvAfiliados.DataBind();
+
+            foreach (ListItem item in rblPageSize.Items)
+            {
+                item.Attributes["class"] = "btn btn-xs btn-white";
+            }
+            rblPageSize.RepeatLayout = RepeatLayout.Flow; // Para que se acomoden como botones
         }
 
         private string SortExpression
         {
-            get { return ViewState["SortExpression"] as string ?? "IdAfiliado"; }
+            get { return ViewState["SortExpression"] as string ?? "diasquefaltan"; }
             set { ViewState["SortExpression"] = value; }
         }
 

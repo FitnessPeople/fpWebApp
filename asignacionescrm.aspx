@@ -41,48 +41,48 @@
             /*font-weight: bold;*/
         }
 
-            /* Enlaces normales */
-            .paginador a {
-                /*margin: 0 5px;
-            padding: 5px 10px;
-            color: #007bff;
+        /* Enlaces normales */
+        .paginador a {
+            /*margin: 0 5px;
+        padding: 5px 10px;
+        color: #007bff;
+        text-decoration: none;
+        border: 1px solid #ccc;
+        border-radius: 5px;*/
+            background-color: #FFFFFF;
+            border: 1px solid #DDDDDD;
+            color: inherit;
+            float: left;
+            line-height: 1.42857;
+            margin-left: -1px;
+            padding: 4px 7px;
+            position: relative;
             text-decoration: none;
-            border: 1px solid #ccc;
-            border-radius: 5px;*/
-                background-color: #FFFFFF;
-                border: 1px solid #DDDDDD;
-                color: inherit;
-                float: left;
-                line-height: 1.42857;
-                margin-left: -1px;
-                padding: 4px 7px;
-                position: relative;
-                text-decoration: none;
-            }
+        }
 
-            /* Enlace activo (página actual) */
-            .paginador span {
-                /*margin: 0 5px;
-            padding: 5px 10px;
-            color: white;
-            background-color: #007bff;
-            border-radius: 5px;*/
-                background-color: #FFFFFF;
-                border: 1px solid #DDDDDD;
-                color: inherit;
-                float: left;
-                line-height: 1.42857;
-                margin-left: -1px;
-                padding: 4px 7px;
-                position: relative;
-                text-decoration: none;
-            }
+        /* Enlace activo (página actual) */
+        .paginador span {
+            /*margin: 0 5px;
+        padding: 5px 10px;
+        color: white;
+        background-color: #007bff;
+        border-radius: 5px;*/
+            background-color: #FFFFFF;
+            border: 1px solid #DDDDDD;
+            color: inherit;
+            float: left;
+            line-height: 1.42857;
+            margin-left: -1px;
+            padding: 4px 7px;
+            position: relative;
+            text-decoration: none;
+        }
 
-            /* Hover en los enlaces */
-            .paginador a:hover {
-                background-color: #e0e0e0;
-                border-color: #999;
-            }
+        /* Hover en los enlaces */
+        .paginador a:hover {
+            background-color: #e0e0e0;
+            border-color: #999;
+        }
     </style>
 
     <script>
@@ -218,23 +218,33 @@
                         </div>
                         <div class="ibox-content">
                             <form runat="server" id="form1">
-                                <asp:ScriptManager ID="sm1" runat="server"></asp:ScriptManager>
+                                <asp:ScriptManager ID="sm1" runat="server">
+                                    <Scripts>
+                                        <asp:ScriptReference Path="https://cdn.jsdelivr.net/npm/sweetalert2@11"></asp:ScriptReference>
+                                    </Scripts>
+                                </asp:ScriptManager>
+
+                                <!-- Imagen de carga -->
+                                <%--<div id="divCargando" style="display:none; text-align:center; margin:10px;">
+                                    <div class="sk-spinner sk-spinner-cube-grid">
+                                        <div class="sk-cube"></div>
+                                        <div class="sk-cube"></div>
+                                        <div class="sk-cube"></div>
+                                        <div class="sk-cube"></div>
+                                        <div class="sk-cube"></div>
+                                        <div class="sk-cube"></div>
+                                        <div class="sk-cube"></div>
+                                        <div class="sk-cube"></div>
+                                        <div class="sk-cube"></div>
+                                    </div>
+                                </div>--%>
 
                                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate>
 
                                         <div class="row">
 
-                                            <div class="col-lg-4 form-horizontal">
-                                                <div class="input-group">
-                                                    <input type="text" placeholder="Nombre / Cédula / Email / Móvil" class="input form-control input-sm" name="txbBuscar" id="txbBuscar" runat="server" />
-                                                    <span class="input-group-btn">
-                                                        <%--<button type="button" id="btnBuscar" name="btnBuscar" onserverclick="btnBuscar_Click" class="btn btn btn-primary btn-sm" runat="server"><i class="fa fa-search m-r-sm"></i>Buscar</button>--%>
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-4 form-horizontal">
+                                            <div class="col-lg-6 form-horizontal">
                                                 <div class="form-group">
                                                     <label class="col-lg-2 control-label">Sede:</label>
                                                     <div class="col-lg-10">
@@ -264,33 +274,28 @@
                                                         <asp:RadioButtonList ID="rblPageSize" runat="server" AutoPostBack="true"
                                                             RepeatDirection="Horizontal" 
                                                             OnSelectedIndexChanged="rblPageSize_SelectedIndexChanged">
-                                                            <asp:ListItem Text="10" Value="10" Selected="True" />
-                                                            <asp:ListItem Text="50" Value="50" />
-                                                            <asp:ListItem Text="100" Value="100" />
-                                                            <asp:ListItem Text="Todos" Value="0" />
+                                                            <asp:ListItem Text="&nbsp;10" Value="10" Selected="True" />
+                                                            <asp:ListItem Text="&nbsp;50" Value="50" />
+                                                            <asp:ListItem Text="&nbsp;100" Value="100" />
+                                                            <asp:ListItem Text="&nbsp;Todos" Value="0" />
                                                         </asp:RadioButtonList>
                                                         <asp:Label ID="lblTotalRegistros" runat="server" CssClass="total-registros" />
-                                                        <div class="btn-group">
-                                                            <button type="button" class="btn btn-xs btn-white">10</button>
-                                                            <button type="button" class="btn btn-xs btn-white">50</button>
-                                                            <button type="button" class="btn btn-xs btn-white">100</button>
-                                                            <button type="button" class="btn btn-xs btn-white">Todos</button>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-4 form-horizontal">
+                                            <div class="col-lg-6 form-horizontal">
                                                 <div class="form-group">
-                                                    <label class="col-lg-2 control-label">Asesor comercial:</label>
-                                                    <div class="col-lg-10">
+                                                    <label class="col-lg-4 control-label">Asesor comercial:</label>
+                                                    <div class="col-lg-8">
                                                         <asp:DropDownList ID="ddlAsesores" runat="server" AppendDataBoundItems="true"
                                                             DataTextField="NombreUsuario" DataValueField="idUsuario"
                                                             CssClass="form-control input-sm m-b">
                                                             <asp:ListItem Text="Seleccione" Value="" Selected="True" />
                                                         </asp:DropDownList>
                                                         <asp:RequiredFieldValidator ID="rfvAsesor" runat="server" 
-                                                            ControlToValidate="ddlAsesores" ErrorMessage="*" InitialValue="">
+                                                            ControlToValidate="ddlAsesores" ErrorMessage="Campo requerido." InitialValue="" 
+                                                            EnableClientScript="true" CssClass="text-danger font-bold" ValidationGroup="asignar">
                                                         </asp:RequiredFieldValidator>
                                                     </div>
                                                 </div>
@@ -307,6 +312,22 @@
                                                             OnClick="lnkAsignar_Click" CausesValidation="true" ValidationGroup="asignar">
                                                         <i class="fa fa-user-plus m-r-xs"></i>ASIGNAR
                                                         </asp:LinkButton>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <!-- Imagen de carga -->
+                                                    <div id="divCargando" style="display:none; text-align:center;">
+                                                        <div class="sk-spinner sk-spinner-cube-grid">
+                                                            <div class="sk-cube"></div>
+                                                            <div class="sk-cube"></div>
+                                                            <div class="sk-cube"></div>
+                                                            <div class="sk-cube"></div>
+                                                            <div class="sk-cube"></div>
+                                                            <div class="sk-cube"></div>
+                                                            <div class="sk-cube"></div>
+                                                            <div class="sk-cube"></div>
+                                                            <div class="sk-cube"></div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -351,10 +372,7 @@
                                                     SortExpression="CelularAfiliado" />
                                                 <asp:BoundField DataField="diasquefaltan" HeaderText="Días plan" 
                                                     SortExpression="diasquefaltan" />
-                                                <asp:BoundField DataField="EstadoPlan" HeaderText="Estado" 
-                                                    SortExpression="EstadoPlan" />
-
-                                                <asp:TemplateField HeaderText="Estado">
+                                                <asp:TemplateField HeaderText="Estado" SortExpression="EstadoPlan">
                                                     <ItemTemplate>
                                                         <asp:Label ID="lblEstado" runat="server" Text='<%# Eval("EstadoPlan") %>'></asp:Label>
                                                     </ItemTemplate>
@@ -432,6 +450,16 @@
             table.options.paging.limit = 20; // Cambia el valor a lo que necesites
             table.draw(); // Redibuja la tabla con la nueva configuración
         }
+
+        var prm = Sys.WebForms.PageRequestManager.getInstance();
+
+        prm.add_beginRequest(function () {
+            document.getElementById("divCargando").style.display = "block";
+        });
+
+        prm.add_endRequest(function () {
+            document.getElementById("divCargando").style.display = "none";
+        });
 
     </script>
 
