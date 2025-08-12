@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -54,6 +56,7 @@ namespace fpWebApp
                     ListaEstadosVentaLeads();
                     ListaRankingCanalesVentaMesVigente();
                     ListaRankingMejorAsesorMesPasado();
+                    ObtenerGraficaEstrategiasPorMes();
 
                     clasesglobales cg = new clasesglobales();
 
@@ -174,12 +177,50 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        //private void ListaRankingMejorAsesorMesPasado()
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarRankingAsesoresMesPasado();
+
+        //    // Calcular mes y año anteriores
+        //    DateTime fechaAnterior = DateTime.Now.AddMonths(-1);
+        //    string mesAnteriorConAnio = System.Globalization.CultureInfo
+        //        .GetCultureInfo("es-ES")
+        //        .DateTimeFormat
+        //        .GetMonthName(fechaAnterior.Month)
+        //        + " " + fechaAnterior.Year;
+
+        //    if (dt != null && dt.Rows.Count > 0)
+        //    {
+        //        DataRow row = dt.Rows[0];
+        //        ltNomAsesorMesPasado.Text = row["Asesor"].ToString();
+        //        ltMes.Text = mesAnteriorConAnio;
+        //        ltCanalVenta.Text = row["CanalVenta"].ToString();
+        //        ltCantidadPlanes.Text = row["CantidadPlanesVendidos"].ToString() + " Planes vendidos";
+        //        ltValorVendido.Text = "$" + string.Format("{0:N0}", row["TotalVendido"]) + " vendido";
+
+        //        // Ruta de imagen con fallback
+        //        string rutaFoto = row["Foto"]?.ToString();
+        //        imgAsesor.ImageUrl = string.IsNullOrWhiteSpace(rutaFoto) ? "img/a4.jpg" : rutaFoto;
+        //    }
+        //    else
+        //    {
+        //        ltNomAsesorMesPasado.Text = "Sin datos";
+        //        ltMes.Text = mesAnteriorConAnio;
+        //        ltCanalVenta.Text = "N/A";
+        //        ltCantidadPlanes.Text = "0";
+        //        ltValorVendido.Text = "$0";
+        //        imgAsesor.ImageUrl = "img/a4.jpg";
+        //    }
+
+        //    dt?.Dispose();
+        //}
+
         private void ListaRankingMejorAsesorMesPasado()
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarRankingAsesoresMesPasado();
 
-            // Calcular mes y año anteriores
             DateTime fechaAnterior = DateTime.Now.AddMonths(-1);
             string mesAnteriorConAnio = System.Globalization.CultureInfo
                 .GetCultureInfo("es-ES")
@@ -189,12 +230,21 @@ namespace fpWebApp
 
             if (dt != null && dt.Rows.Count > 0)
             {
-                DataRow row = dt.Rows[0]; // solo el mejor asesor
+                DataRow row = dt.Rows[0];
+
                 ltNomAsesorMesPasado.Text = row["Asesor"].ToString();
                 ltMes.Text = mesAnteriorConAnio;
                 ltCanalVenta.Text = row["CanalVenta"].ToString();
-                ltCantidadPlanes.Text = row["CantidadPlanesVendidos"].ToString();
-                ltValorVendido.Text = "$" + string.Format("{0:N0}", row["TotalVendido"]);
+                ltCantidadPlanes.Text = row["CantidadPlanesVendidos"].ToString() + " Planes vendidos";
+                ltValorVendido.Text = "$" + string.Format("{0:N0}", row["TotalVendido"]) + " vendido";
+
+                string archivoFoto = row["Foto"]?.ToString();
+                if (!string.IsNullOrWhiteSpace(archivoFoto))
+                {
+                    // Ruta completa hacia carpeta empleados
+                    imgAsesor.ImageUrl = "img/empleados/" + archivoFoto;
+                }
+                // Si no viene nada, no se asigna imagen
             }
             else
             {
@@ -203,6 +253,8 @@ namespace fpWebApp
                 ltCanalVenta.Text = "N/A";
                 ltCantidadPlanes.Text = "0";
                 ltValorVendido.Text = "$0";
+                imgAsesor.ImageUrl = "img/a4.jpg";
+                // No se asigna imagen
             }
 
             dt?.Dispose();
@@ -246,11 +298,49 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarRankingCanalesVentaPorVenta();
+            
 
             if (dt.Rows.Count > 0)
             {
                 DataRow canal = dt.Rows[0];
                 ltTeam.Text ="Equipo " + dt.Rows[0]["CanalVenta"].ToString();
+                int idCanalVenta = Convert.ToInt32(dt.Rows[0]["idCanalVenta"].ToString());
+
+                DataTable asesores = cg.ConsultarRankingCanalesVentaPorVentaPorIdCanal(idCanalVenta);
+                var sb = new StringBuilder();
+
+                if (asesores != null && asesores.Rows.Count > 0)
+                {
+                    foreach (DataRow row in asesores.Rows)
+                    {
+                        string foto = row["Foto"]?.ToString().Trim();
+                        string asesor = row["Asesor"]?.ToString().Trim();
+
+                        if (string.IsNullOrEmpty(foto))
+                        {
+                            sb.AppendFormat(
+                                "<a href='#'><img alt='{0}' title='{0}' class='img-circle' src='{1}' /></a>",
+                                HttpUtility.HtmlEncode(asesor),
+                                ResolveUrl("~/img/a4.jpg")
+                            );
+                            continue;
+                        }
+
+                        foto = foto.TrimStart('~', '/', '\\');
+
+                        string imageUrl = foto.StartsWith("/img/empleados/", StringComparison.OrdinalIgnoreCase)
+                            ? ResolveUrl("~/" + HttpUtility.UrlPathEncode(foto))
+                            : ResolveUrl("~/img/empleados/" + HttpUtility.UrlPathEncode(foto));
+
+                        sb.AppendFormat(
+                            "<a href='#'><img alt='{0}' title='{0}' class='img-circle' src='{1}' /></a>",
+                            HttpUtility.HtmlEncode(asesor),
+                            imageUrl
+                        );
+                    }
+                }
+
+                ltAsesores.Text = sb.ToString();
 
                 decimal ventas = Convert.ToDecimal(dt.Rows[0]["Ventas"], CultureInfo.InvariantCulture);
                 
@@ -281,6 +371,58 @@ namespace fpWebApp
             }
 
         }
+
+        public string labelsJson { get; set; }
+        public string presupuestoJson { get; set; }
+        public string ventasJson { get; set; }
+        private void ObtenerGraficaEstrategiasPorMes()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEstrategiasMarketingValorMes();
+
+            var labels = new List<string>();
+            var presupuestos = new List<decimal>();
+            var ventas = new List<decimal>();
+
+            var datosPorMes = dt.AsEnumerable()
+                .GroupBy(r => Convert.ToDateTime(r["Mes"]).Month)
+                .ToDictionary(
+                    g => g.Key,
+                    g => new
+                    {
+                        Presupuesto = g.Sum(x => Convert.ToDecimal(x["Presupuesto"])),
+                        Ventas = g.Sum(x => Convert.ToDecimal(x["Ventas"]))
+                    }
+                );
+
+
+            // Rellenar los 12 meses
+            for (int mes = 1; mes <= 12; mes++)
+            {
+                string abreviado = new DateTime(DateTime.Now.Year, mes, 1)
+                    .ToString("MMM", new System.Globalization.CultureInfo("es-CO"));
+
+                labels.Add(abreviado);
+
+                if (datosPorMes.ContainsKey(mes))
+                {
+                    presupuestos.Add(datosPorMes[mes].Presupuesto);
+                    ventas.Add(datosPorMes[mes].Ventas);
+                }
+                else
+                {
+                    presupuestos.Add(0);
+                    ventas.Add(0);
+                }
+            }
+
+            labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
+            presupuestoJson = Newtonsoft.Json.JsonConvert.SerializeObject(presupuestos);
+            ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
+        }
+
+
+
 
         public class VentasCanal
         {

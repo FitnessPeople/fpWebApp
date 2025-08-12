@@ -39,6 +39,15 @@
         }
     </style>
 
+    <style>
+        .img-circle {
+            width: 120px; /* ancho fijo */
+            height: 120px; /* alto fijo */
+            object-fit: cover; /* recorta sin deformar */
+            border-radius: 50%; /* círculo perfecto */
+        }
+    </style>
+
     <script>
         function changeClass() {
             var element1 = document.querySelector("#reporteestrategiascrmmarketing");
@@ -47,6 +56,8 @@
             element2.classList.remove("collapse");
         }
     </script>
+
+
 
 </head>
 
@@ -141,43 +152,13 @@
                                         </div>
                                         <div class="ibox-content">
                                             <div class="team-members">
-                                                <a href="#">
-                                                    <img alt="member" class="img-circle" src="img/a1.jpg"></a>
-                                                <a href="#">
-                                                    <img alt="member" class="img-circle" src="img/a2.jpg"></a>
-                                                <a href="#">
-                                                    <img alt="member" class="img-circle" src="img/a3.jpg"></a>
-                                                <a href="#">
-                                                    <img alt="member" class="img-circle" src="img/a5.jpg"></a>
-                                                <a href="#">
-                                                    <img alt="member" class="img-circle" src="img/a6.jpg"></a>
+                                                <asp:Literal ID="ltAsesores" runat="server"></asp:Literal>
                                             </div>
+
                                             <h4>Resumen de desempeño y métricas clave del equipo</h4>
                                             <p>
                                                 <asp:Literal ID="ltDescripcion" runat="server"></asp:Literal>
                                             </p>
-                                            <%--                                            <div>
-                                                <span>Estado actual de ventas:</span>
-                                                <div class="stat-percent">48%</div>
-                                                <div class="progress progress-mini">
-                                                    <div style="width: 48%;" class="progress-bar"></div>
-                                                </div>
-                                            </div>
-                                            <div class="row  m-t-sm">
-                                                <div class="col-sm-4">
-                                                    <div class="font-bold">ESTRATEGIAS</div>
-                                                    12
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <div class="font-bold">RANKING</div>
-                                                    4th
-                                                </div>
-                                                <div class="col-sm-4 text-right">
-                                                    <div class="font-bold">VENTAS</div>
-                                                    $200,913 <i class="fa fa-level-up text-navy"></i>
-                                                </div>
-                                            </div>--%>
-
                                             <div>
                                                 <span>Estado actual de ventas:</span>
                                                 <div id="lblEstadoVentas" runat="server" class="stat-percent"></div>
@@ -200,7 +181,6 @@
                                                     <i class="fa fa-level-up text-navy"></i>
                                                 </div>
                                             </div>
-
 
                                         </div>
                                     </div>
@@ -280,7 +260,9 @@
                                         <div class="col-lg-6">
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
-                                                    <h5>TOP 5 asesores <asp:Literal ID="ltMesActual" runat="server"></asp:Literal> </h5>
+                                                    <h5>TOP 5 asesores
+                                                        <asp:Literal ID="ltMesActual" runat="server"></asp:Literal>
+                                                    </h5>
                                                     <div class="ibox-tools">
                                                         <a class="collapse-link">
                                                             <i class="fa fa-chevron-up"></i>
@@ -329,7 +311,7 @@
                                                     <br />
                                                     Ventas totales: 162,862
                                                 </span>
-                                                <h3 class="font-bold no-margins">Margen de ingresos semestral
+                                                <h3 class="font-bold no-margins">Margen de ingresos 
                                                 </h3>
                                                 <small>Marketing de ventas.</small>
                                             </div>
@@ -383,9 +365,12 @@
                                             <h2 class="font-bold no-margins">
                                                 <asp:Literal ID="ltNomAsesorMesPasado" runat="server"></asp:Literal>
                                             </h2>
-                                            <small>Mejor Asesor del mes <asp:Literal ID="ltMes" runat="server"></asp:Literal></small>
+                                            <small>Mejor Asesor del mes
+                                                <asp:Literal ID="ltMes" runat="server"></asp:Literal></small>
                                         </div>
-                                        <img src="img/a4.jpg" class="img-circle circle-border m-b-md" alt="profile">
+                                        <asp:Image ID="imgAsesor" runat="server" CssClass="img-circle circle-border m-b-md" alt="profile" />
+
+                                        <%--                                        <img src="img/a4.jpg" class="img-circle circle-border m-b-md" alt="profile">--%>
                                         <div>
                                             <span>
                                                 <asp:Literal ID="ltCanalVenta" runat="server"></asp:Literal></span> |
@@ -818,7 +803,7 @@
         }
     </script>
 
-    <script>
+<%--    <script>
         $('.chart').easyPieChart({
             barColor: '#f8ac59',
             //scaleColor: false,
@@ -876,7 +861,38 @@
                 toastr.error('25 días y contando...', 'DIA ZERO');
             }, 1300);
         });
+    </script>--%>
+
+    <script>
+        $(document).ready(function () {
+            var lineData = {
+                labels: <%= labelsJson %>,
+            datasets: [
+                {
+                    label: "Ventas",
+                    backgroundColor: "rgba(26,179,148,0.5)",
+                    borderColor: "rgba(26,179,148,0.7)",
+                    pointBackgroundColor: "rgba(26,179,148,1)",
+                    pointBorderColor: "#fff",
+                    data: <%= ventasJson %>
+                },
+                {
+                    label: "Presupuesto",
+                    backgroundColor: "rgba(220,220,220,0.5)",
+                    borderColor: "rgba(220,220,220,1)",
+                    pointBackgroundColor: "rgba(220,220,220,1)",
+                    pointBorderColor: "#fff",
+                    data: <%= presupuestoJson %>
+                }
+            ]
+        };
+
+        var lineOptions = { responsive: true };
+        var ctx = document.getElementById("lineChart").getContext("2d");
+        new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
+    });
     </script>
+
 
     <!-- EayPIE -->
     <script src="js/plugins/easypiechart/jquery.easypiechart.js"></script>
@@ -922,7 +938,7 @@
         }
     </script>
 
-    <script>
+<%--    <script>
         $('.chart').easyPieChart({
             barColor: '#f8ac59',
             //scaleColor: false,
@@ -980,7 +996,38 @@
                 toastr.error('25 días y contando...', 'DIA ZERO');
             }, 1300);
         });
+    </script>--%>
+
+    <script>
+        $(document).ready(function () {
+            var lineData = {
+                labels: <%= labelsJson %>,
+            datasets: [
+                {
+                    label: "Presupuesto",
+                    backgroundColor: "rgba(26,179,148,0.5)",
+                    borderColor: "rgba(26,179,148,0.7)",
+                    pointBackgroundColor: "rgba(26,179,148,1)",
+                    pointBorderColor: "#fff",
+                    data: <%= presupuestoJson %>
+                },
+                {
+                    label: "Ventas",
+                    backgroundColor: "rgba(220,220,220,0.5)",
+                    borderColor: "rgba(220,220,220,1)",
+                    pointBackgroundColor: "rgba(220,220,220,1)",
+                    pointBorderColor: "#fff",
+                    data: <%= ventasJson %>
+                }
+            ]
+        };
+
+        var lineOptions = { responsive: true };
+        var ctx = document.getElementById("lineChart").getContext("2d");
+        new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
+    });
     </script>
+
 
 </body>
 
