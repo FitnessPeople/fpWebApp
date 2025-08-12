@@ -28,7 +28,7 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#productos");
+            var element1 = document.querySelector("#productostienda");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#webpage");
             element2.classList.remove("collapse");

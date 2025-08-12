@@ -30,14 +30,6 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
-    <script>
-        function changeClass() {
-            var element1 = document.querySelector("#listacontactoscrm");
-            element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#crm");
-            element2.classList.remove("collapse");
-        }
-    </script>
     <%--        Validación postback modal--%>
     <script>
         // Función para reabrir el modal si fue cerrado por un PostBack
@@ -80,7 +72,7 @@
     <%--        formato de posición en el menú--%>
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#nuevocontactocrm");
+            var element1 = document.querySelector("#listacontactoscrm");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#crm");
             element2.classList.remove("collapse");

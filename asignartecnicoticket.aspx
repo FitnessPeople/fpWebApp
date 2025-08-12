@@ -32,9 +32,9 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#usuarios");
+            var element1 = document.querySelector("#asignartecnicoticket");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#configuracion");
+            var element2 = document.querySelector("#mantenimiento");
             element2.classList.remove("collapse");
         }
     </script>

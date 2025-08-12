@@ -81,7 +81,7 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#sedes");
+            var element1 = document.querySelector("#estrategiasmarketing");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#crm");
             element2.classList.remove("collapse");

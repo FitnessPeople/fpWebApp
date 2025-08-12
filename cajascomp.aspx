@@ -37,7 +37,7 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#cajas");
+            var element1 = document.querySelector("#cajascomp");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#seguridadsocial");
             element2.classList.remove("collapse");

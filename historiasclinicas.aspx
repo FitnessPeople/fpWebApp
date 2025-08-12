@@ -33,7 +33,7 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#historias");
+            var element1 = document.querySelector("#historiasclinicas");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#medico");
             element2.classList.remove("collapse");
