@@ -16,7 +16,7 @@
                     <i class="fa fa-id-card fa-5x"></i>
                 </div>
                 <div class="col-xs-8 text-right">
-                    <span>Afiliados activos</span>
+                    <span>Afiliados</span>
                     <h2 class="font-bold">
                         <asp:Literal ID="ltCuantos1" runat="server"></asp:Literal></h2>
                 </div>

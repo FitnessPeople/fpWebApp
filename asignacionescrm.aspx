@@ -148,25 +148,6 @@
         </div>
     </div>
 
-    <%--<div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content animated bounceInRight">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <h4 class="modal-title"><span id="titulo"></span></h4>
-                </div>
-                <div class="modal-body">
-                    <div class="text-center m-t-md">
-                        <iframe id="objEmbed" title="Frame" width="300" height="200" src=""></iframe>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>--%>
-
     <div id="wrapper">
 
         <uc1:navbar runat="server" ID="navbar1" />
@@ -223,21 +204,6 @@
                                         <asp:ScriptReference Path="https://cdn.jsdelivr.net/npm/sweetalert2@11"></asp:ScriptReference>
                                     </Scripts>
                                 </asp:ScriptManager>
-
-                                <!-- Imagen de carga -->
-                                <%--<div id="divCargando" style="display:none; text-align:center; margin:10px;">
-                                    <div class="sk-spinner sk-spinner-cube-grid">
-                                        <div class="sk-cube"></div>
-                                        <div class="sk-cube"></div>
-                                        <div class="sk-cube"></div>
-                                        <div class="sk-cube"></div>
-                                        <div class="sk-cube"></div>
-                                        <div class="sk-cube"></div>
-                                        <div class="sk-cube"></div>
-                                        <div class="sk-cube"></div>
-                                        <div class="sk-cube"></div>
-                                    </div>
-                                </div>--%>
 
                                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate>
@@ -359,7 +325,7 @@
                                                 </asp:TemplateField>
 
                                                 <%--Otras columnas--%>
-                                                <asp:BoundField DataField="IdAfiliado" HeaderText="ID" />
+                                                <asp:BoundField DataField="IdAfiliado" HeaderText="ID" Visible="false" />
                                                 <asp:BoundField DataField="NombreAfiliado" HeaderText="Nombres" 
                                                     SortExpression="NombreAfiliado" />
                                                 <asp:BoundField DataField="ApellidoAfiliado" HeaderText="Apellidos" 

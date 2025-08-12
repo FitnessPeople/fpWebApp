@@ -15,7 +15,11 @@ namespace fpWebApp.controles
 
         private void CuantosAfiliadosActivos()
         {
-            string strQuery = "SELECT COUNT(*) AS cuantos FROM Afiliados WHERE EstadoAfiliado = 'Activo'";
+            string strQuery = "SELECT COUNT(*) AS cuantos FROM Afiliados WHERE EstadoAfiliado = 'Activo' ";
+
+            if (Session["idSede"].ToString() != "11")
+                strQuery += "AND idSede = " + Session["idSede"].ToString();
+
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
