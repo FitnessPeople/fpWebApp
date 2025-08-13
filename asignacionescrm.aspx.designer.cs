@@ -87,22 +87,22 @@ namespace fpWebApp
         protected global::System.Web.UI.ScriptManager sm1;
 
         /// <summary>
-        /// Control UpdatePanel1.
+        /// Control upContactos.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        protected global::System.Web.UI.UpdatePanel upContactos;
 
         /// <summary>
-        /// Control ddlSedes.
+        /// Control ddlCanalVenta.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlSedes;
+        protected global::System.Web.UI.WebControls.DropDownList ddlCanalVenta;
 
         /// <summary>
         /// Control ddlDias.

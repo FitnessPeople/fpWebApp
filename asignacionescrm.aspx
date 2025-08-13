@@ -205,18 +205,21 @@
                                     </Scripts>
                                 </asp:ScriptManager>
 
-                                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                                <asp:UpdatePanel ID="upContactos" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate>
 
                                         <div class="row">
 
                                             <div class="col-lg-6 form-horizontal">
                                                 <div class="form-group">
-                                                    <label class="col-lg-2 control-label">Sede:</label>
+                                                    <label class="col-lg-2 control-label">Canal de venta:</label>
                                                     <div class="col-lg-10">
-                                                        <asp:DropDownList ID="ddlSedes" runat="server" AppendDataBoundItems="true"
-                                                            DataTextField="NombreSede" DataValueField="idSede"
-                                                            CssClass="form-control input-sm m-b" OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
+                                                        <asp:DropDownList ID="ddlCanalVenta" runat="server" 
+                                                            AppendDataBoundItems="true"
+                                                            DataTextField="NombreCanalVenta" 
+                                                            CssClass="form-control input-sm m-b" 
+                                                            DataValueField="idCanalVenta" 
+                                                            OnSelectedIndexChanged="ddlCanalVenta_SelectedIndexChanged" 
                                                             AutoPostBack="true">
                                                         </asp:DropDownList>
                                                     </div>

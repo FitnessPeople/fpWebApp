@@ -11,7 +11,6 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.IO;
 using System.Net;
-using static fpWebApp.reportepagosmulticanal;
 using System.Globalization;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;

@@ -18,12 +18,15 @@
     <title>Fitness People | Prospectos CRM</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
-    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
+
+    <link href="css/plugins/dropzone/basic.css" rel="stylesheet" />
+    <link href="css/plugins/dropzone/dropzone.css" rel="stylesheet" />
+    <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet" />
+    <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -130,6 +133,11 @@
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
                     <form role="form" id="form" runat="server">
+                        <asp:ScriptManager ID="sm1" runat="server">
+                            <Scripts>
+                                <asp:ScriptReference Path="https://cdn.jsdelivr.net/npm/sweetalert2@11"></asp:ScriptReference>
+                            </Scripts>
+                        </asp:ScriptManager>
                         <div class="row" id="divContenido" runat="server">
                             <div class="col-lg-4">
                                 <div class="ibox float-e-margins">
@@ -229,22 +237,25 @@
                                                                     <span class="fileinput-filename"></span>
                                                                 </div>
                                                                 <span class="input-group-addon btn btn-success btn-file input-sm">
-                                                                    <span class="fileinput-new input-sm">Seleccionar foto</span>
+                                                                    <span class="fileinput-new input-sm">Seleccionar archivo plano</span>
                                                                     <span class="fileinput-exists input-sm">Cambiar</span>
                                                                     <input type="file" name="fileFoto" id="fileFoto" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                                                                 </span>
                                                                 <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm"
                                                                     data-dismiss="fileinput">Quitar</a>
                                                             </div>
-                                                            
+
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <a href="prospectoscrm" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                    <asp:Button ID="Button1" runat="server" Text="Agregar"
-                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
-                                                        OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
+                                                    <asp:Button ID="btnProcesar" runat="server" Text="Procesar"
+                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs m-l-md"
+                                                        OnClick="btnProcesar_Click" Visible="true" ValidationGroup="procesar" />
+                                                    <asp:Button ID="btnAgregarDatos" runat="server" Text="Agregar datos"
+                                                        CssClass="btn btn-sm btn-info pull-right m-t-n-xs"
+                                                        OnClick="btnAgregarDatos_Click" Visible="true" ValidationGroup="procesar" />
                                                 </div>
                                                 <br />
                                                 <br />
@@ -256,6 +267,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-lg-8">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
@@ -268,23 +280,15 @@
                                     </div>
                                     <div class="ibox-content">
 
-                                        <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
+                                        <%--<div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
                                             <div class="col-lg-12 form-horizontal">
                                                 <div class="form-group">
                                                     <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                                 </div>
                                             </div>
+                                        </div>--%>
 
-                                            <%--<div class="col-lg-6 form-horizontal">
-                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false" 
-                                                    CssClass="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
-                                                    OnClick="lbExportarExcel_Click">
-                                                    <i class="fa fa-file-excel"></i> EXCEL
-                                                </asp:LinkButton>
-                                            </div>--%>
-                                        </div>
-
-                                        <table class="footable table table-striped" data-paging-size="10"
+                                        <%--<table class="footable table table-striped" data-paging-size="10"
                                             data-filter-min="3" data-filter-placeholder="Buscar"
                                             data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
                                             data-paging-limit="10" data-filtering="true"
@@ -293,7 +297,12 @@
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th width="80%">Nombre</th>
+                                                    <th>Fecha gestión</th>
+                                                    <th>Nombres</th>
+                                                    <th>Apellidos</th>
+                                                    <th>Documento</th>
+                                                    <th>Celular</th>
+                                                    <th>Tipo de Gestión</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
@@ -301,7 +310,13 @@
                                                 <asp:Repeater ID="rpProspectos" runat="server">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
+                                                            <td><%# Eval("FechaHoraPregestion", "{0:dd MMM yyyy}") %> (<%# Eval("hacecuanto") %> días)</td>
                                                             <td><%# Eval("NombreContacto") %></td>
+                                                            <td><%# Eval("ApellidoContacto") %></td>
+                                                            <td><%# Eval("DocumentoContacto") %></td>
+                                                            <td><%# Eval("CelularContacto") %></td>
+                                                            <td><span class='badge badge-<%# Eval("ColorGestion") %>'>
+                                                                <i class='fa fa-<%# Eval("IconoGestion") %>'></i> <%# Eval("NombreGestion") %></span></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
@@ -312,7 +327,140 @@
                                                     </ItemTemplate>
                                                 </asp:Repeater>
                                             </tbody>
-                                        </table>
+                                        </table>--%>
+
+                                        <asp:UpdatePanel ID="upContactos" runat="server" UpdateMode="Conditional">
+                                            <ContentTemplate>
+
+                                                <div class="row">
+
+                                                    <div class="col-lg-6 form-horizontal">
+                                                        <div class="form-group">
+                                                            <label class="col-lg-2 control-label">Canal de venta:</label>
+                                                            <div class="col-lg-10">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-2 control-label">Días:</label>
+                                                            <div class="col-lg-10">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-2 control-label">Mostrar</label>
+                                                            <div class="col-lg-10">
+                                                                <asp:RadioButtonList ID="rblPageSize" runat="server" AutoPostBack="true"
+                                                                    RepeatDirection="Horizontal" 
+                                                                    OnSelectedIndexChanged="rblPageSize_SelectedIndexChanged">
+                                                                    <asp:ListItem Text="&nbsp;10" Value="10" Selected="True" />
+                                                                    <asp:ListItem Text="&nbsp;50" Value="50" />
+                                                                    <asp:ListItem Text="&nbsp;100" Value="100" />
+                                                                    <asp:ListItem Text="&nbsp;Todos" Value="0" />
+                                                                </asp:RadioButtonList>
+                                                                <asp:Label ID="lblTotalRegistros" runat="server" CssClass="total-registros" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6 form-horizontal">
+                                                        <div class="form-group">
+                                                            <label class="col-lg-4 control-label">Asesor comercial:</label>
+                                                            <div class="col-lg-8">
+                                                                <asp:DropDownList ID="ddlAsesores" runat="server" AppendDataBoundItems="true"
+                                                                    DataTextField="NombreUsuario" DataValueField="idUsuario"
+                                                                    CssClass="form-control input-sm m-b">
+                                                                    <asp:ListItem Text="Seleccione" Value="" Selected="True" />
+                                                                </asp:DropDownList>
+                                                                <asp:RequiredFieldValidator ID="rfvAsesor" runat="server"
+                                                                    ControlToValidate="ddlAsesores" ErrorMessage="Campo requerido." InitialValue=""
+                                                                    EnableClientScript="true" CssClass="text-danger font-bold" ValidationGroup="asignar">
+                                                                </asp:RequiredFieldValidator>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-2 control-label">&nbsp;</label>
+                                                            <div class="col-lg-10">
+                                                                <a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px;"
+                                                                    target="_blank" runat="server" id="btnExportar"
+                                                                    href="imprimirafiliados" visible="false" title="Exportar">
+                                                                    <i class="fa fa-file-excel m-r-xs"></i>EXCEL
+                                                                </a>
+                                                                <asp:LinkButton ID="lnkAsignar" runat="server" Style="font-size: 12px;"
+                                                                    CssClass="btn btn-primary pull-right dim m-l-md" Visible="true"
+                                                                    CausesValidation="true" ValidationGroup="asignar">
+                        <i class="fa fa-user-plus m-r-xs"></i>ASIGNAR
+                                                                </asp:LinkButton>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <!-- Imagen de carga -->
+                                                            <div id="divCargando" style="display: none; text-align: center;">
+                                                                <div class="sk-spinner sk-spinner-cube-grid">
+                                                                    <div class="sk-cube"></div>
+                                                                    <div class="sk-cube"></div>
+                                                                    <div class="sk-cube"></div>
+                                                                    <div class="sk-cube"></div>
+                                                                    <div class="sk-cube"></div>
+                                                                    <div class="sk-cube"></div>
+                                                                    <div class="sk-cube"></div>
+                                                                    <div class="sk-cube"></div>
+                                                                    <div class="sk-cube"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <asp:GridView ID="gvAfiliados" runat="server" AutoGenerateColumns="False"
+                                                    AllowPaging="True" PageSize="10" OnPageIndexChanging="gvAfiliados_PageIndexChanging"
+                                                    AllowSorting="true" OnSorting="gvAfiliados_Sorting"
+                                                    OnRowCreated="gvAfiliados_RowCreated"
+                                                    OnRowDataBound="gvAfiliados_RowDataBound"
+                                                    CssClass="table table-striped list-group-item-text"
+                                                    DataKeyNames="IdAfiliado,NombreAfiliado,ApellidoAfiliado,DocumentoAfiliado,idTipoDocumento,CelularAfiliado,diasquefaltan"
+                                                    BorderStyle="None" GridLines="None"
+                                                    PagerSettings-Mode="NumericFirstLast"
+                                                    PagerSettings-FirstPageText="«"
+                                                    PagerSettings-LastPageText="»"
+                                                    PagerStyle-CssClass="paginador">
+                                                    <Columns>
+                                                        <%--Columna de CheckBox--%>
+                                                        <asp:TemplateField HeaderText="Seleccionar">
+                                                            <HeaderTemplate>
+                                                                <asp:CheckBox ID="chkSeleccionarTodo" runat="server" />
+                                                                Todos
+                                                            </HeaderTemplate>
+                                                            <ItemTemplate>
+                                                                <asp:CheckBox ID="chkSeleccionar" runat="server" />
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+
+                                                        <%--Otras columnas--%>
+                                                        <asp:BoundField DataField="IdAfiliado" HeaderText="ID" Visible="false" />
+                                                        <asp:BoundField DataField="NombreAfiliado" HeaderText="Nombres"
+                                                            SortExpression="NombreAfiliado" />
+                                                        <asp:BoundField DataField="ApellidoAfiliado" HeaderText="Apellidos"
+                                                            SortExpression="ApellidoAfiliado" />
+                                                        <asp:BoundField DataField="DocumentoAfiliado" HeaderText="Documento"
+                                                            SortExpression="DocumentoAfiliado" />
+                                                        <asp:BoundField DataField="idTipoDocumento" HeaderText="TipoDocumento"
+                                                            SortExpression="idTipoDocumento" Visible="False" />
+                                                        <asp:BoundField DataField="CelularAfiliado" HeaderText="Celular"
+                                                            SortExpression="CelularAfiliado" />
+                                                        <asp:BoundField DataField="diasquefaltan" HeaderText="Días plan"
+                                                            SortExpression="diasquefaltan" />
+                                                        <asp:TemplateField HeaderText="Estado" SortExpression="EstadoPlan">
+                                                            <ItemTemplate>
+                                                                <asp:Label ID="lblEstado" runat="server" Text='<%# Eval("EstadoPlan") %>'></asp:Label>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                    </Columns>
+                                                </asp:GridView>
+
+                                            </ContentTemplate>
+                                        </asp:UpdatePanel>
 
                                     </div>
                                 </div>

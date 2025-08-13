@@ -65,9 +65,9 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#agenda");
+            var element1 = document.querySelector("#estacionalidad");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#medico");
+            var element2 = document.querySelector("#canalesprocesoscomerciales");
             element2.classList.remove("collapse");
         }
     </script>

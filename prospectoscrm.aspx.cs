@@ -1,5 +1,8 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
+using System.Configuration;
 using System.Data;
+using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
@@ -22,15 +25,14 @@ namespace fpWebApp
                     else
                     {
                         //Si tiene acceso a esta página
-                        divBotonesLista.Visible = false;
                         btnAgregar.Visible = false;
                         if (ViewState["Consulta"].ToString() == "1")
                         {
-                            divBotonesLista.Visible = true;
+                            
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
-                            divBotonesLista.Visible = true;
+                            
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
@@ -38,11 +40,13 @@ namespace fpWebApp
                         }
                     }
                     ListaProspectos();
+                    CargarTipoDocumento();
+
                     ltTitulo.Text = "Agregar prospecto";
 
                     if (Request.QueryString.Count > 0)
                     {
-                        rpProspectos.Visible = false;
+                        //rpProspectos.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
@@ -131,17 +135,95 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             //DataTable dt = cg.ConsultarEpss();
 
-            string strQuery = "SELECT * FROM pregestioncrm WHERE idtipoGestion = 4 ";
+            string strQuery = "SELECT *, DATEDIFF(FechaHoraPregestion, CURDATE()) AS hacecuanto " +
+                "FROM pregestioncrm pg, tiposgestioncrm tg " +
+                "WHERE pg.idTipoGestion = 4 " +
+                "AND pg.idTipoGestion = tg.idTipoGestionCRM ";
             DataTable dt = cg.TraerDatos(strQuery);
 
-            rpProspectos.DataSource = dt;
-            rpProspectos.DataBind();
+            //rpProspectos.DataSource = dt;
+            //rpProspectos.DataBind();
+            dt.Dispose();
+        }
+
+        private void CargarTipoDocumento()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultartiposDocumento();
+
+            ddlTipoDocumento.DataSource = dt;
+            ddlTipoDocumento.DataBind();
+
             dt.Dispose();
         }
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            
+            string strQuery = @"INSERT INTO pregestioncrm 
+                (FechaHoraPregestion, NombreContacto, ApellidoContacto, DocumentoContacto, 
+                idTipoDocumentoContacto, CelularContacto, idTipoGestion, idCanalVenta, idUsuarioAsigna) 
+                VALUES (NOW(), @Nombre, @Apellido, @Documento, 
+                @TipoDoc, @Celular, @TipoGestion, @IdCanalVenta, @IdUsuarioAsigna)";
+
+            string connString = ConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+            string tipoGestion = "4";
+
+            using (MySqlConnection conn = new MySqlConnection(connString))
+            {
+                conn.Open();
+
+                string nombre = txbNombreContacto.Text.ToString();
+                string apellido = txbApellidoContacto.Text.ToString();
+                string documento = txbDocumento.Text.ToString();
+                string idTipoDocumento = ddlTipoDocumento.SelectedItem.Value.ToString();
+                string celular = txbCelular.Text.ToString();
+
+                using (MySqlCommand cmd = new MySqlCommand(strQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Nombre", nombre);
+                    cmd.Parameters.AddWithValue("@Apellido", apellido);
+                    cmd.Parameters.AddWithValue("@Documento", documento);
+                    cmd.Parameters.AddWithValue("@TipoDoc", idTipoDocumento);
+                    cmd.Parameters.AddWithValue("@Celular", celular);
+                    cmd.Parameters.AddWithValue("@TipoGestion", tipoGestion);
+                    cmd.Parameters.AddWithValue("@IdCanalVenta", Session["idCanalVenta"].ToString());
+                    cmd.Parameters.AddWithValue("@IdUsuarioAsigna", Session["idUsuario"].ToString());
+
+                    cmd.ExecuteNonQuery();
+
+                    Response.Redirect("prospectocrm");
+                }
+            }
+        }
+
+        protected void gvAfiliados_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvAfiliados.PageIndex = e.NewPageIndex;
+
+            //CargarCanalesVenta();
+            if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
+            {
+                //listaAfiliados("Todas");
+            }
+            else
+            {
+                //listaAfiliados(Session["idSede"].ToString());
+            }
+        }
+
+        protected void btnProcesar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnAgregarDatos_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void rblPageSize_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
