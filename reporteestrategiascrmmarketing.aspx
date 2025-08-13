@@ -114,7 +114,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-school-flag text-success m-r-sm"></i>Reporte estrategias marketing</h2>
+                    <h2><i class="fa fa-magnifying-glass-chart text-success m-r-sm"></i>Reporte estrategias marketing</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>CRM</li>
@@ -307,9 +307,12 @@
                                         <div class="ibox-content">
                                             <div>
                                                 <span class="pull-right text-right">
-                                                    <small>Valor promedio de las ventas del ultimo mes: <strong>FP</strong></small>
+                                                    <asp:Literal ID="litResumen" runat="server"></asp:Literal>
+
+<%--                                                    <small>Resumen del último mes: <strong>Top: Estrategia 1 (+$5,500)</strong></small>
                                                     <br />
-                                                    Ventas totales: 162,862
+                                                    <small>Presupuesto: $45,000 | Ventas: $52,300</small>--%>
+                                                   
                                                 </span>
                                                 <h3 class="font-bold no-margins">Margen de ingresos 
                                                 </h3>
@@ -328,14 +331,14 @@
                                                         <ul class="stat-list m-t-lg">
                                                             <li>
                                                                 <h2 class="no-margins">2,346</h2>
-                                                                <small>Solicitudes del periodo</small>
+                                                                <small>Negociaciones aceptadas</small>
                                                                 <div class="progress progress-mini">
                                                                     <div class="progress-bar" style="width: 48%;"></div>
                                                                 </div>
                                                             </li>
                                                             <li>
                                                                 <h2 class="no-margins ">4,422</h2>
-                                                                <small>Solicitudes ultimo mes</small>
+                                                                <small>Propuestas en gestión</small>
                                                                 <div class="progress progress-mini">
                                                                     <div class="progress-bar" style="width: 60%;"></div>
                                                                 </div>
@@ -349,10 +352,10 @@
                                             <div class="m-t-md">
                                                 <small class="pull-right">
                                                     <i class="fa fa-clock-o"></i>
-                                                    Actualizado el 03.10.2024
+                                                     Ventas totales: 162,862
                                                 </small>
                                                 <small>
-                                                    <strong>Analisis de venta:</strong> The value has been changed over time, and last month reached a level over $50,000.
+                                                    <strong>Desempeño de estrategias de venta:</strong> Seguimiento mes a mes del presupuesto invertido y las ventas generadas por cada estrategia.
                                                 </small>
                                             </div>
 
@@ -938,86 +941,26 @@
         }
     </script>
 
-<%--    <script>
-        $('.chart').easyPieChart({
-            barColor: '#f8ac59',
-            //scaleColor: false,
-            scaleLength: 5,
-            liNuevasidth: 4,
-            size: 80
-        });
-
-        $('.chart2').easyPieChart({
-            barColor: '#1c84c6',
-            //scaleColor: false,
-            scaleLength: 5,
-            liNuevasidth: 4,
-            size: 80
-        });
-
-        $(document).ready(function () {
-            var lineData = {
-                labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"],
-                datasets: [
-                    {
-                        label: "Afiliados",
-                        backgroundColor: "rgba(26,179,148,0.5)",
-                        borderColor: "rgba(26,179,148,0.7)",
-                        pointBackgroundColor: "rgba(26,179,148,1)",
-                        pointBorderColor: "#fff",
-                        data: [48, 48, 60, 39, 56, 37, 30]
-                    },
-                    {
-                        label: "Empresas",
-                        backgroundColor: "rgba(220,220,220,0.5)",
-                        borderColor: "rgba(220,220,220,1)",
-                        pointBackgroundColor: "rgba(220,220,220,1)",
-                        pointBorderColor: "#fff",
-                        data: [65, 59, 40, 51, 36, 25, 40]
-                    }
-                ]
-            };
-
-            var lineOptions = {
-                responsive: true
-            };
-
-
-            var ctx = document.getElementById("lineChart").getContext("2d");
-            new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
-
-            setTimeout(function () {
-                toastr.options = {
-                    closeButton: true,
-                    progressBar: true,
-                    showMethod: 'slideDown',
-                    timeOut: 4000
-                };
-                toastr.error('25 días y contando...', 'DIA ZERO');
-            }, 1300);
-        });
-    </script>--%>
-
     <script>
         $(document).ready(function () {
             var lineData = {
                 labels: <%= labelsJson %>,
             datasets: [
                 {
-                    label: "Presupuesto",
+                    label: "Ventas", 
                     backgroundColor: "rgba(26,179,148,0.5)",
                     borderColor: "rgba(26,179,148,0.7)",
                     pointBackgroundColor: "rgba(26,179,148,1)",
                     pointBorderColor: "#fff",
-                    data: <%= presupuestoJson %>
+                    data: <%= ventasJson %>
                 },
                 {
-                    label: "Ventas",
+                    label: "Presupuesto", 
                     backgroundColor: "rgba(220,220,220,0.5)",
                     borderColor: "rgba(220,220,220,1)",
                     pointBackgroundColor: "rgba(220,220,220,1)",
                     pointBorderColor: "#fff",
-                    data: <%= ventasJson %>
+                    data: <%= presupuestoJson %>
                 }
             ]
         };

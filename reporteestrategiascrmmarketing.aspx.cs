@@ -57,6 +57,7 @@ namespace fpWebApp
                     ListaRankingCanalesVentaMesVigente();
                     ListaRankingMejorAsesorMesPasado();
                     ObtenerGraficaEstrategiasPorMes();
+                    ListaResumenEstrategiaUltimoMes();
 
                     clasesglobales cg = new clasesglobales();
 
@@ -177,44 +178,48 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        //private void ListaRankingMejorAsesorMesPasado()
+        //private void ListaResumenestrategiaUltimoMes()
         //{
         //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.ConsultarRankingAsesoresMesPasado();
+        //    DataTable dt = cg.ConsultarResumenEstrategiasUltimoMes(); 
 
-        //    // Calcular mes y año anteriores
-        //    DateTime fechaAnterior = DateTime.Now.AddMonths(-1);
-        //    string mesAnteriorConAnio = System.Globalization.CultureInfo
-        //        .GetCultureInfo("es-ES")
-        //        .DateTimeFormat
-        //        .GetMonthName(fechaAnterior.Month)
-        //        + " " + fechaAnterior.Year;
-
-        //    if (dt != null && dt.Rows.Count > 0)
-        //    {
-        //        DataRow row = dt.Rows[0];
-        //        ltNomAsesorMesPasado.Text = row["Asesor"].ToString();
-        //        ltMes.Text = mesAnteriorConAnio;
-        //        ltCanalVenta.Text = row["CanalVenta"].ToString();
-        //        ltCantidadPlanes.Text = row["CantidadPlanesVendidos"].ToString() + " Planes vendidos";
-        //        ltValorVendido.Text = "$" + string.Format("{0:N0}", row["TotalVendido"]) + " vendido";
-
-        //        // Ruta de imagen con fallback
-        //        string rutaFoto = row["Foto"]?.ToString();
-        //        imgAsesor.ImageUrl = string.IsNullOrWhiteSpace(rutaFoto) ? "img/a4.jpg" : rutaFoto;
-        //    }
-        //    else
-        //    {
-        //        ltNomAsesorMesPasado.Text = "Sin datos";
-        //        ltMes.Text = mesAnteriorConAnio;
-        //        ltCanalVenta.Text = "N/A";
-        //        ltCantidadPlanes.Text = "0";
-        //        ltValorVendido.Text = "$0";
-        //        imgAsesor.ImageUrl = "img/a4.jpg";
-        //    }
-
-        //    dt?.Dispose();
+        //    dt.Dispose();
         //}
+
+        private void ListaResumenEstrategiaUltimoMes()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarResumenEstrategiasUltimoMes();
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                string topEstrategia = dt.Rows[0]["TopEstrategia"].ToString();
+                string diferencia = dt.Rows[0]["DiferenciaVsPresupuesto"].ToString();
+                string presupuesto = dt.Rows[0]["PresupuestoTotal"].ToString();
+                string ventas = dt.Rows[0]["VentasTotales"].ToString();
+                               
+                string html = $@"
+                            <span class='pull-right text-right'>
+                                <small>Resumen del último mes: <strong>Top: {topEstrategia} ({diferencia})</strong></small><br />
+                                <small>Presupuesto: {presupuesto} | Ventas: {ventas}</small>
+                            </span>";
+
+                litResumen.Text = html; 
+            }
+            else
+            {
+                string html = @"
+                            <span class='pull-right text-right'>
+                                <small>Resumen del último mes: <strong>Top: Sin datos ($0)</strong></small><br />
+                                <small>Presupuesto: $0 | Ventas: $0</small>
+                            </span>";
+
+                litResumen.Text = html;
+            }
+
+            dt.Dispose();
+        }
+
 
         private void ListaRankingMejorAsesorMesPasado()
         {
@@ -299,6 +304,8 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarRankingCanalesVentaPorVenta();
             
+
+
 
             if (dt.Rows.Count > 0)
             {
