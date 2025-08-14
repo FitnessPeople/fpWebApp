@@ -194,7 +194,9 @@
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
                                                     <span class="label label-warning pull-right">Datos actualizados</span>
-                                                    <h5>Estados de la venta</h5>
+                                                    <h5>Estados de la venta
+                                                        <asp:Literal ID="ltMesActualEV" runat="server"></asp:Literal>
+                                                    </h5>
                                                 </div>
 
                                                 <div class="ibox-content">
@@ -309,6 +311,7 @@
                                                     <asp:Literal ID="litResumen" runat="server"></asp:Literal>
                                                 </span>
                                                 <h3 class="font-bold no-margins">Margen de ingresos 
+                                                    <asp:Literal ID="ltAnnioActual" runat="server"></asp:Literal>
                                                 </h3>
                                                 <small>Marketing de ventas.</small>
                                             </div>
@@ -328,14 +331,18 @@
                                                                     <asp:Literal ID="ltCantidadLeadsAceptados" runat="server"></asp:Literal></h2>
                                                                 <small>Negociaciones aceptadas</small>
                                                                 <div class="progress progress-mini">
-                                                                    <div class="progress-bar" style="width: 48%;"></div>
+                                                                    <div id="progressBarAnio" runat="server" class="progress-bar"></div>
+                                                                    <asp:Literal ID="ltMediaCuantosAnio" runat="server"></asp:Literal>
                                                                 </div>
                                                             </li>
                                                             <li>
-                                                                <h2 class="no-margins ">4,422</h2>
-                                                                <small>Propuestas en gestión</small>
+                                                                <h2 class="no-margins ">
+                                                                    <asp:Literal ID="ltVentasTotalesMesActual" runat="server"></asp:Literal>
+                                                                </h2>
+                                                                <small>Ventas mes actual</small>
                                                                 <div class="progress progress-mini">
-                                                                    <div class="progress-bar" style="width: 60%;"></div>
+                                                                    <div id="progressBarVentasMesActual" runat="server" class="progress-bar"></div>
+                                                                     <asp:Literal ID="ltMediaVentasMesActual" runat="server"></asp:Literal>
                                                                 </div>
                                                             </li>
                                                         </ul>
@@ -347,7 +354,8 @@
                                             <div class="m-t-md">
                                                 <small class="pull-right">
                                                     <i class="fa fa-clock-o"></i>
-                                                     Ventas totales: 162,862
+                                                    Ventas totales :
+                                                    <asp:Literal ID="ltVentasTotales" runat="server"></asp:Literal>
                                                 </small>
                                                 <small>
                                                     <strong>Desempeño de estrategias de venta:</strong> Seguimiento mes a mes del presupuesto invertido y las ventas generadas por cada estrategia.
@@ -795,7 +803,7 @@
         }
     </script>
 
-<%--    <script>
+    <%--    <script>
         $('.chart').easyPieChart({
             barColor: '#f8ac59',
             //scaleColor: false,
@@ -859,14 +867,14 @@
         $(document).ready(function () {
             var lineData = {
                 labels: <%= labelsJson %>,
-            datasets: [
-                {
-                    label: "Ventas",
-                    backgroundColor: "rgba(26,179,148,0.5)",
-                    borderColor: "rgba(26,179,148,0.7)",
-                    pointBackgroundColor: "rgba(26,179,148,1)",
-                    pointBorderColor: "#fff",
-                    data: <%= ventasJson %>
+                datasets: [
+                    {
+                        label: "Ventas",
+                        backgroundColor: "rgba(26,179,148,0.5)",
+                        borderColor: "rgba(26,179,148,0.7)",
+                        pointBackgroundColor: "rgba(26,179,148,1)",
+                        pointBorderColor: "#fff",
+                        data: <%= ventasJson %>
                 },
                 {
                     label: "Presupuesto",
@@ -876,13 +884,13 @@
                     pointBorderColor: "#fff",
                     data: <%= presupuestoJson %>
                 }
-            ]
-        };
+                ]
+            };
 
-        var lineOptions = { responsive: true };
-        var ctx = document.getElementById("lineChart").getContext("2d");
-        new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
-    });
+            var lineOptions = { responsive: true };
+            var ctx = document.getElementById("lineChart").getContext("2d");
+            new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
+        });
     </script>
 
 
@@ -930,36 +938,93 @@
         }
     </script>
 
-    <script>
+<%--    <script>
         $(document).ready(function () {
             var lineData = {
                 labels: <%= labelsJson %>,
-            datasets: [
-                {
-                    label: "Ventas", 
-                    backgroundColor: "rgba(26,179,148,0.5)",
-                    borderColor: "rgba(26,179,148,0.7)",
-                    pointBackgroundColor: "rgba(26,179,148,1)",
-                    pointBorderColor: "#fff",
-                    data: <%= ventasJson %>
+                datasets: [
+                    {
+                        label: "Ventas",
+                        backgroundColor: "rgba(26,179,148,0.5)",
+                        borderColor: "rgba(26,179,148,0.7)",
+                        pointBackgroundColor: "rgba(26,179,148,1)",
+                        pointBorderColor: "#fff",
+                        data: <%= ventasJson %>
                 },
                 {
-                    label: "Presupuesto", 
+                    label: "Presupuesto",
                     backgroundColor: "rgba(220,220,220,0.5)",
                     borderColor: "rgba(220,220,220,1)",
                     pointBackgroundColor: "rgba(220,220,220,1)",
                     pointBorderColor: "#fff",
                     data: <%= presupuestoJson %>
                 }
+                ]
+            };
+
+            var lineOptions = { responsive: true };
+            var ctx = document.getElementById("lineChart").getContext("2d");
+            new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
+        });
+    </script>--%>
+
+<script>
+    $(document).ready(function () {
+        var lineData = {
+            labels: <%= labelsJson %>,
+            datasets: [
+                {
+                    label: "Ventas",
+                    backgroundColor: "rgba(26,179,148,0.5)",
+                    borderColor: "rgba(26,179,148,0.7)",
+                    pointBackgroundColor: "rgba(26,179,148,1)",
+                    pointBorderColor: "#fff",
+                    data: <%= ventasJson %> // números, no texto
+                },
+                {
+                    label: "Presupuesto",
+                    backgroundColor: "rgba(220,220,220,0.5)",
+                    borderColor: "rgba(220,220,220,1)",
+                    pointBackgroundColor: "rgba(220,220,220,1)",
+                    pointBorderColor: "#fff",
+                    data: <%= presupuestoJson %> // números, no texto
+                }
             ]
         };
 
-        var lineOptions = { responsive: true };
+        var lineOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            tooltips: {
+                callbacks: {
+                    label: function (tooltipItem, data) {
+                        var value = tooltipItem.yLabel;
+                        return value.toLocaleString('es-CO', {
+                            style: 'currency',
+                            currency: 'COP',
+                            minimumFractionDigits: 0
+                        });
+                    }
+                }
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        callback: function (value) {
+                            return value.toLocaleString('es-CO', {
+                                style: 'currency',
+                                currency: 'COP',
+                                minimumFractionDigits: 0
+                            });
+                        }
+                    }
+                }]
+            }
+        };
         var ctx = document.getElementById("lineChart").getContext("2d");
         new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
     });
-    </script>
-
+</script>
 
 </body>
 

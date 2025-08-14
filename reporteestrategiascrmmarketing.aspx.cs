@@ -260,7 +260,14 @@ namespace fpWebApp
         private void ListaEstadosVentaLeads()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarCantidadLeadsPorEstadosVenta(); 
+            DataTable dt = cg.ConsultarCantidadLeadsPorEstadosVenta();
+            DateTime fechaActual = DateTime.Now;
+            string mesActualConAnio = System.Globalization.CultureInfo
+             .GetCultureInfo("es-ES")
+             .DateTimeFormat
+             .GetMonthName(fechaActual.Month)
+             + " " + fechaActual.Year;
+            ltMesActualEV.Text = mesActualConAnio.ToString();
 
             if (dt != null && dt.Rows.Count > 0)
             {
@@ -376,7 +383,24 @@ namespace fpWebApp
                 DataTable dt = cg.ConsultarCuantosLeadsEstrategiaAceptados();
                 if (dt.Rows.Count > 0)
                 {
-                    ltCantidadLeadsAceptados.Text = Convert.ToInt32(dt.Rows[0]["TotalContactosConPagoAprobado"]).ToString("N0");
+                    
+                    ltCantidadLeadsAceptados.Text = Convert.ToInt32(dt.Rows[0]["TotalContactosVentasAnio"]).ToString("N0");
+                    ltVentasTotales.Text = Convert.ToDecimal(dt.Rows[0]["TotalVentasAnio"]).ToString("C0", new System.Globalization.CultureInfo("es-CO"));
+                    ltVentasTotalesMesActual.Text = Convert.ToDecimal(dt.Rows[0]["TotalVentasMes"]).ToString("C0", new System.Globalization.CultureInfo("es-CO"));
+
+
+                    decimal ventasTotalesMesActual = Convert.ToDecimal(dt.Rows[0]["TotalVentasMes"].ToString());
+                    int totalPresupuestoMes = Convert.ToInt32(dt.Rows[0]["TotalPresupuestoMes"].ToString());
+
+
+                    decimal mediaVentasMes = ventasTotalesMesActual / totalPresupuestoMes;
+
+                    int porcentaje = (int)Math.Round(mediaVentasMes * 100, MidpointRounding.AwayFromZero);
+
+                    ltMediaVentasMesActual.Text = porcentaje + "%";
+                    progressBarVentasMesActual.Attributes["style"] = "width: " + porcentaje + "%;";
+
+
                 }
                 dt.Dispose();
             }
@@ -397,54 +421,79 @@ namespace fpWebApp
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.ConsultarEstrategiasMarketingValorMes();
 
-                DateTime fechaActual = DateTime.Now;
-                string mesActualConAnio = System.Globalization.CultureInfo
-                 .GetCultureInfo("es-ES")
-                 .DateTimeFormat
-                 .GetMonthName(fechaActual.Month)
-                 + " " + fechaActual.Year;
-                ltMesActualGraf.Text = mesActualConAnio.ToString();
-
-
-                var labels = new List<string>();
-                var presupuestos = new List<decimal>();
-                var ventas = new List<decimal>();
-
-                var datosPorMes = dt.AsEnumerable()
-                    .GroupBy(r => Convert.ToDateTime(r["Mes"]).Month)
-                    .ToDictionary(
-                        g => g.Key,
-                        g => new
-                        {
-                            Presupuesto = g.Sum(x => Convert.ToDecimal(x["Presupuesto"])),
-                            Ventas = g.Sum(x => Convert.ToDecimal(x["Ventas"]))
-                        }
-                    );
-
-
-                // Rellenar los 12 meses
-                for (int mes = 1; mes <= 12; mes++)
+                if(dt.Rows.Count > 0)
                 {
-                    string abreviado = new DateTime(DateTime.Now.Year, mes, 1)
-                        .ToString("MMM", new System.Globalization.CultureInfo("es-CO"));
+                    //Etiquetas para las fechas
+                    DateTime fechaActual = DateTime.Now;
+                    string mesActualConAnio = System.Globalization.CultureInfo
+                     .GetCultureInfo("es-ES")
+                     .DateTimeFormat
+                     .GetMonthName(fechaActual.Month)
+                     + " " + fechaActual.Year;
+                    ltMesActualGraf.Text = mesActualConAnio.ToString();
 
-                    labels.Add(abreviado);
+                    string annioActual = fechaActual.Year.ToString();
+                    ltAnnioActual.Text = annioActual;
+                    //
 
-                    if (datosPorMes.ContainsKey(mes))
+                    DataTable dt1 = cg.ConsultarCuantosLeadsEstrategiaAceptados();
+                    if (dt1.Rows.Count > 0)
                     {
-                        presupuestos.Add(datosPorMes[mes].Presupuesto);
-                        ventas.Add(datosPorMes[mes].Ventas);
-                    }
-                    else
+                        decimal totalVentasAnio = Convert.ToDecimal(dt1.Rows[0]["TotalVentasAnio"].ToString());
+                        decimal TotalContactosVentasAnio = Convert.ToDecimal(dt1.Rows[0]["TotalContactosVentasAnio"].ToString());
+                        int TotalContactosAnio = Convert.ToInt32(dt1.Rows[0]["TotalcontactosAnio"].ToString());
+
+                        decimal mediaCuantosAnio = TotalContactosVentasAnio / TotalContactosAnio;
+
+                        int porcentaje = (int)Math.Round(mediaCuantosAnio * 100, MidpointRounding.AwayFromZero);
+
+                        ltMediaCuantosAnio.Text = porcentaje + "%";
+                        progressBarAnio.Attributes["style"] = "width: " + porcentaje + "%;";
+                    }                    
+
+
+                    var labels = new List<string>();
+                    var presupuestos = new List<decimal>();
+                    var ventas = new List<decimal>();
+
+                    var datosPorMes = dt.AsEnumerable()
+                        .GroupBy(r => Convert.ToDateTime(r["Mes"]).Month)
+                        .ToDictionary(
+                            g => g.Key,
+                            g => new
+                            {
+                                Presupuesto = g.Sum(x => Convert.ToDecimal(x["Presupuesto"])),
+                                Ventas = g.Sum(x => Convert.ToDecimal(x["Ventas"]))
+                            }
+                        );
+
+
+                    // Rellenar los 12 meses
+                    for (int mes = 1; mes <= 12; mes++)
                     {
-                        presupuestos.Add(0);
-                        ventas.Add(0);
+                        string abreviado = new DateTime(DateTime.Now.Year, mes, 1)
+                            .ToString("MMM", new System.Globalization.CultureInfo("es-CO"));
+
+                        labels.Add(abreviado);
+
+                        if (datosPorMes.ContainsKey(mes))
+                        {
+                            presupuestos.Add(datosPorMes[mes].Presupuesto);
+                            ventas.Add(datosPorMes[mes].Ventas);
+                        }
+                        else
+                        {
+                            presupuestos.Add(0);
+                            ventas.Add(0);
+                        }
                     }
+
+                    labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
+                    presupuestoJson = Newtonsoft.Json.JsonConvert.SerializeObject(presupuestos);
+                    ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
+
                 }
 
-                labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
-                presupuestoJson = Newtonsoft.Json.JsonConvert.SerializeObject(presupuestos);
-                ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
             }
             catch (Exception ex)
             {

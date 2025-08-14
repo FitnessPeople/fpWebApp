@@ -141,6 +141,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Label lblVentas;
 
         /// <summary>
+        /// Control ltMesActualEV.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltMesActualEV;
+
+        /// <summary>
         /// Control lblCalienteLeads.
         /// </summary>
         /// <remarks>
@@ -249,6 +258,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal litResumen;
 
         /// <summary>
+        /// Control ltAnnioActual.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltAnnioActual;
+
+        /// <summary>
         /// Control ltCantidadLeadsAceptados.
         /// </summary>
         /// <remarks>
@@ -256,6 +274,60 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltCantidadLeadsAceptados;
+
+        /// <summary>
+        /// Control progressBarAnio.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl progressBarAnio;
+
+        /// <summary>
+        /// Control ltMediaCuantosAnio.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltMediaCuantosAnio;
+
+        /// <summary>
+        /// Control ltVentasTotalesMesActual.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltVentasTotalesMesActual;
+
+        /// <summary>
+        /// Control progressBarVentasMesActual.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl progressBarVentasMesActual;
+
+        /// <summary>
+        /// Control ltMediaVentasMesActual.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltMediaVentasMesActual;
+
+        /// <summary>
+        /// Control ltVentasTotales.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltVentasTotales;
 
         /// <summary>
         /// Control ltNomAsesorMesPasado.
