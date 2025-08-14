@@ -384,7 +384,7 @@ namespace fpWebApp
                 if (dt.Rows.Count > 0)
                 {
                     
-                    ltCantidadLeadsAceptados.Text = Convert.ToInt32(dt.Rows[0]["TotalContactosVentasAnio"]).ToString("N0");
+                    ltCantidadLeadsAceptados.Text = Convert.ToInt32(dt.Rows[0]["TotalContactosMes"]).ToString("N0");
                     ltVentasTotales.Text = Convert.ToDecimal(dt.Rows[0]["TotalVentasAnio"]).ToString("C0", new System.Globalization.CultureInfo("es-CO"));
                     ltVentasTotalesMesActual.Text = Convert.ToDecimal(dt.Rows[0]["TotalVentasMes"]).ToString("C0", new System.Globalization.CultureInfo("es-CO"));
 

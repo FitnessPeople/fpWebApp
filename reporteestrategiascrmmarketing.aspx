@@ -329,7 +329,7 @@
                                                             <li>
                                                                 <h2 class="no-margins">
                                                                     <asp:Literal ID="ltCantidadLeadsAceptados" runat="server"></asp:Literal></h2>
-                                                                <small>Negociaciones aceptadas</small>
+                                                                <small>Negociaciones aceptadas mes actual</small>
                                                                 <div class="progress progress-mini">
                                                                     <div id="progressBarAnio" runat="server" class="progress-bar"></div>
                                                                     <asp:Literal ID="ltMediaCuantosAnio" runat="server"></asp:Literal>
