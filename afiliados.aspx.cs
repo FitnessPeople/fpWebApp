@@ -31,7 +31,9 @@ namespace fpWebApp
                         {
                             CargarSedes(Convert.ToInt32(Session["idSede"].ToString()), "Gimnasio");
                         }
-                        listaAfiliados(strParam, ddlSedes.SelectedItem.Value.ToString());
+
+                        if (ddlSedes.Items.Count > 0)
+                            listaAfiliados(strParam, ddlSedes.SelectedItem.Value.ToString());
 
                         if (ViewState["Exportar"].ToString() == "1")
                         {

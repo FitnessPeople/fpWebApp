@@ -167,7 +167,9 @@
                                                     <tr>
                                                         <td><span class='label label-<%# Eval("label") %>'><%# Eval("Accion") %></span></td>
                                                         <td><%# Eval("NombreUsuario") %></td>
-                                                        <td><%# Eval("FechaHora", "{0:yyyy/MM/dd HH:mm}") %></td>
+                                                        <td><i class="fa fa-calendar"></i> <%# Eval("FechaHora", "{0:yyyy-MM-dd}") %>&nbsp;&nbsp;&nbsp;
+                                                            <i class="fa fa-clock"></i> <%# Eval("FechaHora", "{0:HH:mm}") %>
+                                                        </td>
                                                         <td><%# Eval("Tabla") %></td>
                                                         <td><%# Eval("DescripcionLog") %></td>
                                                         <td class="table-bordered">

@@ -87,22 +87,57 @@ namespace fpWebApp
             {
                 divUsuario.Visible = false;
                 divPassword.Visible = false;
+                
                 // Crear Código
                 int longitudCodigo = 6;
                 string codigo = cg.GenerarCodigo(longitudCodigo);
 
-                //Inserta el código en la tabla usuarios
-                string strQuery = "UPDATE usuarios SET CodigoIngreso = '" + codigo + "' WHERE idUsuario = " + Session["idUsuario"].ToString();
-                cg.TraerDatosStr(strQuery);
+                ltCodigo.Text = codigo;   // Quitar esta línea de código cuando se ponga en producción
 
-                //Enviar por correo
-                //cg.EnviarCorreo("info@fitnesspeoplecmd.com", Session["usuario"].ToString(), "Clave acceso", "Clave de acceso: " + codigo);
+                // Si ya tiene código con fecha de hoy, no se pide el codigo... Solo pide una vez por día el código
 
-                //Mostrar div para escribir el código
-                divCodigo.Visible = true;
+                string strQuery = "SELECT FechaCodigoIngreso FROM usuarios WHERE idUsuario = " + Session["idUsuario"].ToString();
+                DataTable dt = cg.TraerDatos(strQuery);
 
-                //cg.InsertarLog(Session["idusuario"].ToString(), "usuarios", "Login", "El usuario inicio sesión.", "", "");
-                //Response.Redirect("micuenta");
+                string strFechaIngreso = dt.Rows[0]["FechaCodigoIngreso"].ToString();
+
+                if (strFechaIngreso != "")
+                {
+                    if (Convert.ToDateTime(strFechaIngreso) == DateTime.Now.Date)
+                    {
+                        cg.InsertarLog(Session["idusuario"].ToString(), "usuarios", "Login", "El usuario inicio sesión.", "", "");
+                        Response.Redirect("micuenta");
+                    }
+                    else
+                    {
+                        //Inserta el código en la tabla usuarios
+                        strQuery = "UPDATE usuarios " +
+                            "SET CodigoIngreso = '" + codigo + "', FechaCodigoIngreso = CURDATE() " +
+                            "WHERE idUsuario = " + Session["idUsuario"].ToString();
+                        cg.TraerDatosStr(strQuery);
+
+                        //Enviar por correo
+                        //cg.EnviarCorreo("info@fitnesspeoplecmd.com", Session["usuario"].ToString(), "Clave acceso", "Clave de acceso: " + codigo);
+
+                        //Mostrar div para escribir el código
+                        divCodigo.Visible = true;
+                    }
+                }
+                else
+                {
+                    //Inserta el código en la tabla usuarios
+                    strQuery = "UPDATE usuarios " +
+                        "SET CodigoIngreso = '" + codigo + "', FechaCodigoIngreso = CURDATE() " +
+                        "WHERE idUsuario = " + Session["idUsuario"].ToString();
+                    cg.TraerDatosStr(strQuery);
+
+                    //Enviar por correo
+                    //cg.EnviarCorreo("info@fitnesspeoplecmd.com", Session["usuario"].ToString(), "Clave acceso", "Clave de acceso: " + codigo);
+
+                    //Mostrar div para escribir el código
+                    divCodigo.Visible = true;
+                }
+
             }
         }
 
@@ -119,7 +154,8 @@ namespace fpWebApp
             if (dt.Rows.Count > 0)
             {
                 // Ingresa a FP+
-                Response.Redirect("inicio");
+                cg.InsertarLog(Session["idusuario"].ToString(), "usuarios", "Login", "El usuario inicio sesión.", "", "");
+                Response.Redirect("micuenta");
             }
             else
             {

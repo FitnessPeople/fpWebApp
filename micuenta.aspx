@@ -683,6 +683,7 @@
                                                 <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm" 
                                                     data-dismiss="fileinput">Quitar</a>
                                             </div>
+                                            <asp:Literal ID="ltFotoEmpleado" runat="server"></asp:Literal>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">

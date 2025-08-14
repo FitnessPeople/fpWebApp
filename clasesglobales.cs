@@ -232,7 +232,8 @@ namespace fpWebApp
 
         public string GenerarCodigo(int longitud)
         {
-            const string caracteresPermitidos = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+            //const string caracteresPermitidos = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+            const string caracteresPermitidos = "1234567890";
             StringBuilder resultado = new StringBuilder(longitud);
             Random random = new Random();
 

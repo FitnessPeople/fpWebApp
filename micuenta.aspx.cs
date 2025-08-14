@@ -182,7 +182,10 @@ namespace fpWebApp
 
             if (ConsultarSiActualizo(Session["idEmpleado"].ToString()))
             {
-                Response.Redirect("inicio");
+                if (Request.QueryString.Count == 0)
+                {
+                    Response.Redirect("inicio");
+                }
             }
 
             if (dt.Rows[0]["idTipoDocumento"].ToString() != "")
@@ -254,6 +257,10 @@ namespace fpWebApp
                 ddlCargo.SelectedIndex = Convert.ToInt32(ddlCargo.Items.IndexOf(ddlCargo.Items.FindByValue(dt.Rows[0]["idCargo"].ToString())));
             }
 
+            ltFotoEmpleado.Text = "<img src=\"img/empleados/" + dt.Rows[0]["FotoEmpleado"].ToString() + "\" class=\"img-circle circle-border m-b-md\" width=\"220px\" alt=\"profile\" />";
+
+            ViewState["FotoEmpleado"] = dt.Rows[0]["FotoEmpleado"].ToString();
+
             dt.Dispose();
         }
 
@@ -301,7 +308,8 @@ namespace fpWebApp
                 clasesglobales cg = new clasesglobales();
                 string strHashClave = cg.ComputeSha256Hash(txbClave.Text.ToString());
 
-                string mensaje = cg.ActualizarEmpleadoNuevo(txbDocumento.Text.ToString(), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
+                string mensaje = cg.ActualizarEmpleadoNuevo(txbDocumento.Text.ToString(), 
+                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
                     txbNombre.Text.ToString(), txbTelefono.Text.ToString(), txbTelefonoCorp.Text.ToString(),
                     txbEmail.Text.ToString(), txbEmailCorp.Text.ToString(), txbDireccion.Text.ToString(),
                     Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), txbFechaNac.Text.ToString(), strFilename, 

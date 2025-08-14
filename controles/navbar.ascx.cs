@@ -89,49 +89,5 @@ namespace fpWebApp.controles
 
             dt1.Dispose();
         }
-
-        //private void totalAfiliados()
-        //{
-        //    string strQuery = "SELECT COUNT(*) AS cuantos FROM Afiliados WHERE EstadoAfiliado = 'Activo'";
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.TraerDatos(strQuery);
-
-        //    ltTotalAfiliados.Text = dt.Rows[0]["cuantos"].ToString();
-
-        //    dt.Dispose();
-        //}
-
-        //private void totalEmpleados()
-        //{
-        //    string strQuery = "SELECT COUNT(*) AS cuantos FROM Empleados WHERE Estado = 'Activo'";
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.TraerDatos(strQuery);
-
-        //    ltTotalEmpleados.Text = dt.Rows[0]["cuantos"].ToString();
-
-        //    dt.Dispose();
-        //}
-
-        //private void totalUsuarios()
-        //{
-        //    string strQuery = "SELECT COUNT(*) AS cuantos FROM Usuarios WHERE EstadoUsuario = 'Activo'";
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.TraerDatos(strQuery);
-
-        //    ltTotalUsuarios.Text = dt.Rows[0]["cuantos"].ToString();
-
-        //    dt.Dispose();
-        //}
-
-        //private void totalInscritos()
-        //{
-        //    string strQuery = "SELECT COUNT(*) AS cuantos FROM GymPass";
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.TraerDatos(strQuery);
-
-        //    ltTotalInscritos.Text = dt.Rows[0]["cuantos"].ToString();
-
-        //    dt.Dispose();
-        //}
     }
 }
