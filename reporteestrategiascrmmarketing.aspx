@@ -160,7 +160,9 @@
                                                 <asp:Literal ID="ltDescripcion" runat="server"></asp:Literal>
                                             </p>
                                             <div>
-                                                <span>Estado actual de ventas:</span>
+                                                <span>Estado actual de ventas:
+                                                    <asp:Literal ID="ltMesActualGraf" runat="server"></asp:Literal>
+                                                </span>
                                                 <div id="lblEstadoVentas" runat="server" class="stat-percent"></div>
                                                 <div class="progress progress-mini">
                                                     <div id="progressBar" runat="server" class="progress-bar"></div>
@@ -260,7 +262,7 @@
                                         <div class="col-lg-6">
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
-                                                    <h5>TOP 5 asesores
+                                                    <h5>Top 5 asesores
                                                         <asp:Literal ID="ltMesActual" runat="server"></asp:Literal>
                                                     </h5>
                                                     <div class="ibox-tools">
@@ -291,14 +293,11 @@
                                                             </ul>
                                                         </FooterTemplate>
                                                     </asp:Repeater>
-
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
-
                             </div>
 
                             <div class="row">
@@ -308,11 +307,6 @@
                                             <div>
                                                 <span class="pull-right text-right">
                                                     <asp:Literal ID="litResumen" runat="server"></asp:Literal>
-
-<%--                                                    <small>Resumen del último mes: <strong>Top: Estrategia 1 (+$5,500)</strong></small>
-                                                    <br />
-                                                    <small>Presupuesto: $45,000 | Ventas: $52,300</small>--%>
-                                                   
                                                 </span>
                                                 <h3 class="font-bold no-margins">Margen de ingresos 
                                                 </h3>
@@ -330,7 +324,8 @@
                                                     <div class="col-md-4">
                                                         <ul class="stat-list m-t-lg">
                                                             <li>
-                                                                <h2 class="no-margins">2,346</h2>
+                                                                <h2 class="no-margins">
+                                                                    <asp:Literal ID="ltCantidadLeadsAceptados" runat="server"></asp:Literal></h2>
                                                                 <small>Negociaciones aceptadas</small>
                                                                 <div class="progress progress-mini">
                                                                     <div class="progress-bar" style="width: 48%;"></div>
@@ -372,8 +367,6 @@
                                                 <asp:Literal ID="ltMes" runat="server"></asp:Literal></small>
                                         </div>
                                         <asp:Image ID="imgAsesor" runat="server" CssClass="img-circle circle-border m-b-md" alt="profile" />
-
-                                        <%--                                        <img src="img/a4.jpg" class="img-circle circle-border m-b-md" alt="profile">--%>
                                         <div>
                                             <span>
                                                 <asp:Literal ID="ltCanalVenta" runat="server"></asp:Literal></span> |
@@ -383,10 +376,6 @@
                                                 <asp:Literal ID="ltValorVendido" runat="server"></asp:Literal></span>
                                         </div>
                                     </div>
-                                    <%--                        <div class="widget-text-box">
-                            <h4 class="media-heading">Alex Smith</h4>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                        </div>--%>
                                 </div>
                             </div>
 

@@ -58,6 +58,7 @@ namespace fpWebApp
                     ListaRankingMejorAsesorMesPasado();
                     ObtenerGraficaEstrategiasPorMes();
                     ListaResumenEstrategiaUltimoMes();
+                    ListaCuantosLeadsEstrategiaAceptados();
 
                     clasesglobales cg = new clasesglobales();
 
@@ -178,14 +179,6 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        //private void ListaResumenestrategiaUltimoMes()
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.ConsultarResumenEstrategiasUltimoMes(); 
-
-        //    dt.Dispose();
-        //}
-
         private void ListaResumenEstrategiaUltimoMes()
         {
             clasesglobales cg = new clasesglobales();
@@ -219,7 +212,6 @@ namespace fpWebApp
 
             dt.Dispose();
         }
-
 
         private void ListaRankingMejorAsesorMesPasado()
         {
@@ -265,7 +257,6 @@ namespace fpWebApp
             dt?.Dispose();
         }
 
-
         private void ListaEstadosVentaLeads()
         {
             clasesglobales cg = new clasesglobales();
@@ -302,10 +293,7 @@ namespace fpWebApp
         private void ListaRankingCanalesVentaMesVigente()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarRankingCanalesVentaPorVenta();
-            
-
-
+            DataTable dt = cg.ConsultarRankingCanalesVentaPorVenta();  
 
             if (dt.Rows.Count > 0)
             {
@@ -379,53 +367,89 @@ namespace fpWebApp
 
         }
 
+        private void ListaCuantosLeadsEstrategiaAceptados()
+        {
+            try
+            {
+                ltCantidadLeadsAceptados.Text = "0";
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarCuantosLeadsEstrategiaAceptados();
+                if (dt.Rows.Count > 0)
+                {
+                    ltCantidadLeadsAceptados.Text = Convert.ToInt32(dt.Rows[0]["TotalContactosConPagoAprobado"]).ToString("N0");
+                }
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+               string mensaje = ex.Message;
+            }
+
+        }
+
         public string labelsJson { get; set; }
         public string presupuestoJson { get; set; }
         public string ventasJson { get; set; }
         private void ObtenerGraficaEstrategiasPorMes()
         {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEstrategiasMarketingValorMes();
-
-            var labels = new List<string>();
-            var presupuestos = new List<decimal>();
-            var ventas = new List<decimal>();
-
-            var datosPorMes = dt.AsEnumerable()
-                .GroupBy(r => Convert.ToDateTime(r["Mes"]).Month)
-                .ToDictionary(
-                    g => g.Key,
-                    g => new
-                    {
-                        Presupuesto = g.Sum(x => Convert.ToDecimal(x["Presupuesto"])),
-                        Ventas = g.Sum(x => Convert.ToDecimal(x["Ventas"]))
-                    }
-                );
-
-
-            // Rellenar los 12 meses
-            for (int mes = 1; mes <= 12; mes++)
+            try
             {
-                string abreviado = new DateTime(DateTime.Now.Year, mes, 1)
-                    .ToString("MMM", new System.Globalization.CultureInfo("es-CO"));
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarEstrategiasMarketingValorMes();
 
-                labels.Add(abreviado);
+                DateTime fechaActual = DateTime.Now;
+                string mesActualConAnio = System.Globalization.CultureInfo
+                 .GetCultureInfo("es-ES")
+                 .DateTimeFormat
+                 .GetMonthName(fechaActual.Month)
+                 + " " + fechaActual.Year;
+                ltMesActualGraf.Text = mesActualConAnio.ToString();
 
-                if (datosPorMes.ContainsKey(mes))
+
+                var labels = new List<string>();
+                var presupuestos = new List<decimal>();
+                var ventas = new List<decimal>();
+
+                var datosPorMes = dt.AsEnumerable()
+                    .GroupBy(r => Convert.ToDateTime(r["Mes"]).Month)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => new
+                        {
+                            Presupuesto = g.Sum(x => Convert.ToDecimal(x["Presupuesto"])),
+                            Ventas = g.Sum(x => Convert.ToDecimal(x["Ventas"]))
+                        }
+                    );
+
+
+                // Rellenar los 12 meses
+                for (int mes = 1; mes <= 12; mes++)
                 {
-                    presupuestos.Add(datosPorMes[mes].Presupuesto);
-                    ventas.Add(datosPorMes[mes].Ventas);
+                    string abreviado = new DateTime(DateTime.Now.Year, mes, 1)
+                        .ToString("MMM", new System.Globalization.CultureInfo("es-CO"));
+
+                    labels.Add(abreviado);
+
+                    if (datosPorMes.ContainsKey(mes))
+                    {
+                        presupuestos.Add(datosPorMes[mes].Presupuesto);
+                        ventas.Add(datosPorMes[mes].Ventas);
+                    }
+                    else
+                    {
+                        presupuestos.Add(0);
+                        ventas.Add(0);
+                    }
                 }
-                else
-                {
-                    presupuestos.Add(0);
-                    ventas.Add(0);
-                }
+
+                labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
+                presupuestoJson = Newtonsoft.Json.JsonConvert.SerializeObject(presupuestos);
+                ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
             }
-
-            labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
-            presupuestoJson = Newtonsoft.Json.JsonConvert.SerializeObject(presupuestos);
-            ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message.ToString();               
+            }
         }
 
 

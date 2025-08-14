@@ -87,6 +87,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltDescripcion;
 
         /// <summary>
+        /// Control ltMesActualGraf.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltMesActualGraf;
+
+        /// <summary>
         /// Control lblEstadoVentas.
         /// </summary>
         /// <remarks>
@@ -238,6 +247,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal litResumen;
+
+        /// <summary>
+        /// Control ltCantidadLeadsAceptados.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltCantidadLeadsAceptados;
 
         /// <summary>
         /// Control ltNomAsesorMesPasado.
