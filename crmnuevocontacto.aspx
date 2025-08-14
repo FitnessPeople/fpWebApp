@@ -50,8 +50,6 @@
     <link href="css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet" />
     <link href="css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
 
-
-
     <!-- FooTable -->
     <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
 

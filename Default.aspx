@@ -31,7 +31,7 @@
                 Se avecinan muchas funciones y mejoras.
             </p>
             <form class="m-t" role="form" id="form1" runat="server">
-                <div class="row">
+                <div class="row" runat="server" id="divUsuario">
                     <div class="col-lg-12">
                         <div class="form-group">
                             <%--<asp:TextBox ID="txbEmail" CssClass="form-control" runat="server" placeholder="Usuario" required></asp:TextBox>--%>
@@ -48,18 +48,18 @@
                         </div>
                     </div>--%>
                 </div>
-                
+
                 <%--<div class="form-group">
                     <asp:TextBox ID="txbPassword" CssClass="form-control" runat="server" placeholder="Password" required TextMode="Password"></asp:TextBox>
                 </div>--%>
-                <div class="form-group">
+                <div class="form-group" runat="server" id="divPassword">
                     <div class="input-group">
-					    <asp:TextBox ID="txbPassword" CssClass="form-control" runat="server" placeholder="Password" required TextMode="Password"></asp:TextBox>
-					    <span class="input-group-btn">
-						    <button type="button" class="btn btn-default"><i class="fa fa-eye" id="togglePassword"></i></button>
-					    </span>
+                        <asp:TextBox ID="txbPassword" CssClass="form-control" runat="server" placeholder="Password" required TextMode="Password"></asp:TextBox>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"><i class="fa fa-eye" id="togglePassword"></i></button>
+                        </span>
                     </div>
-				</div>
+                </div>
                 <asp:Button ID="btnIngresar" runat="server" CssClass="btn btn-warning1 block full-width m-b font-bold" Text="INGRESAR" OnClick="btnIngresar_Click" />
 
                 <div class="alert alert-danger alert-dismissable" runat="server" id="divMensaje" visible="false">
@@ -67,12 +67,20 @@
                     <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                 </div>
 
-                <p><a href="olvidoclave"><small style="color: #fff; text-decoration: underline;">Olvidaste la contraseña?</small></a></p>
-                <%--<p class="text-muted text-center text-white"><small>No tienes una cuenta?</small></p>--%>
-                <a class="btn btn-warning1 block full-width m-b font-bold" href="soporte">No tengo cuenta</a>
+                <div class="alert alert-danger alert-dismissable" runat="server" id="divCodigo" visible="false">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                    <asp:TextBox ID="txbCodigo" CssClass="form-control" runat="server" required></asp:TextBox>
+                    <asp:Button ID="btnIngresarCodigo" runat="server" CssClass="btn btn-warning1 block full-width m-b font-bold"
+                        Text="INGRESAR CON CODIGO" OnClick="btnIngresarCodigo_Click" />
+                </div>
+
+            <p><a href="olvidoclave"><small style="color: #fff; text-decoration: underline;">Olvidaste la contraseña?</small></a></p>
+            <%--<p class="text-muted text-center text-white"><small>No tienes una cuenta?</small></p>--%>
+            <a class="btn btn-warning1 block full-width m-b font-bold" href="soporte">No tengo cuenta</a>
 
             </form>
-            <p class="m-t text-white"><small>Fitness People &copy; <asp:Label ID="lblAnho" runat="server" /></small> </p>
+            <p class="m-t text-white"><small>Fitness People &copy;
+                <asp:Label ID="lblAnho" runat="server" /></small> </p>
         </div>
     </div>
 

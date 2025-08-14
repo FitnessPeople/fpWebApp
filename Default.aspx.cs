@@ -85,8 +85,48 @@ namespace fpWebApp
 
             if (YourValidationFunction(usuario, strHashClave))
             {
-                cg.InsertarLog(Session["idusuario"].ToString(), "usuarios", "Login", "El usuario inicio sesión.", "", "");
-                Response.Redirect("micuenta");
+                divUsuario.Visible = false;
+                divPassword.Visible = false;
+                // Crear Código
+                int longitudCodigo = 6;
+                string codigo = cg.GenerarCodigo(longitudCodigo);
+
+                //Inserta el código en la tabla usuarios
+                string strQuery = "UPDATE usuarios SET CodigoIngreso = '" + codigo + "' WHERE idUsuario = " + Session["idUsuario"].ToString();
+                cg.TraerDatosStr(strQuery);
+
+                //Enviar por correo
+                //cg.EnviarCorreo("info@fitnesspeoplecmd.com", Session["usuario"].ToString(), "Clave acceso", "Clave de acceso: " + codigo);
+
+                //Mostrar div para escribir el código
+                divCodigo.Visible = true;
+
+                //cg.InsertarLog(Session["idusuario"].ToString(), "usuarios", "Login", "El usuario inicio sesión.", "", "");
+                //Response.Redirect("micuenta");
+            }
+        }
+
+        protected void btnIngresarCodigo_Click(object sender, EventArgs e)
+        {
+            string strMensaje;
+            string strQuery = "SELECT * FROM usuarios " +
+                "WHERE idUsuario = " + Session["idUsuario"].ToString() + " " +
+                "AND CodigoIngreso = '" + txbCodigo.Text.ToString() + "' ";
+
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            if (dt.Rows.Count > 0)
+            {
+                // Ingresa a FP+
+                Response.Redirect("inicio");
+            }
+            else
+            {
+                strMensaje = "Código errado.<br />";
+                strMensaje += "<a class=\"alert-link\" href=\"#\">Intente nuevamente</a>.";
+                ltMensaje.Text = strMensaje;
+                divMensaje.Visible = true;
             }
         }
     }

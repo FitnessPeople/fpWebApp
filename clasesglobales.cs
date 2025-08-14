@@ -230,6 +230,20 @@ namespace fpWebApp
             return res.ToString();
         }
 
+        public string GenerarCodigo(int longitud)
+        {
+            const string caracteresPermitidos = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+            StringBuilder resultado = new StringBuilder(longitud);
+            Random random = new Random();
+
+            for (int i = 0; i < longitud; i++)
+            {
+                resultado.Append(caracteresPermitidos[random.Next(caracteresPermitidos.Length)]);
+            }
+
+            return resultado.ToString();
+        }
+
         public void EnviarCorreo(string strRemitente, string strDestinatario, string strAsunto, string strMensaje)
         {
             MailMessage objeto_mail = new MailMessage();
