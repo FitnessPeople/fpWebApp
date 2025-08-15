@@ -240,8 +240,7 @@ namespace fpWebApp
                 {
                     // Ruta completa hacia carpeta empleados
                     imgAsesor.ImageUrl = "img/empleados/" + archivoFoto;
-                }
-                // Si no viene nada, no se asigna imagen
+                }                
             }
             else
             {
