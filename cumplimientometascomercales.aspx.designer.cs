@@ -11,7 +11,7 @@ namespace fpWebApp
 {
 
 
-    public partial class estacionalidad
+    public partial class cumplimientometascomercales
     {
 
         /// <summary>

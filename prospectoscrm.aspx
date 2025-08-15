@@ -414,10 +414,11 @@
                                                 </div>
 
                                                 <asp:GridView ID="gvAfiliados" runat="server" AutoGenerateColumns="False"
-                                                    AllowPaging="True" PageSize="10" OnPageIndexChanging="gvAfiliados_PageIndexChanging"
-                                                    AllowSorting="true" OnSorting="gvAfiliados_Sorting"
-                                                    OnRowCreated="gvAfiliados_RowCreated"
-                                                    OnRowDataBound="gvAfiliados_RowDataBound"
+                                                    AllowPaging="True" PageSize="10" 
+                                                    OnPageIndexChanging="gvAfiliados_PageIndexChanging1"
+                                                    AllowSorting="true" OnSorting="gvAfiliados_Sorting" 
+                                                    OnRowCreated="gvAfiliados_RowCreated" 
+                                                    OnRowDataBound="gvAfiliados_RowDataBound" 
                                                     CssClass="table table-striped list-group-item-text"
                                                     DataKeyNames="IdAfiliado,NombreAfiliado,ApellidoAfiliado,DocumentoAfiliado,idTipoDocumento,CelularAfiliado,diasquefaltan"
                                                     BorderStyle="None" GridLines="None"

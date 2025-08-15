@@ -225,5 +225,25 @@ namespace fpWebApp
         {
 
         }
+
+        protected void gvAfiliados_PageIndexChanging1(object sender, GridViewPageEventArgs e)
+        {
+
+        }
+
+        protected void gvAfiliados_Sorting(object sender, GridViewSortEventArgs e)
+        {
+
+        }
+
+        protected void gvAfiliados_RowCreated(object sender, GridViewRowEventArgs e)
+        {
+
+        }
+
+        protected void gvAfiliados_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+
+        }
     }
 }

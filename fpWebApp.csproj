@@ -262,6 +262,7 @@
     <Content Include="arl.aspx" />
     <Content Include="asignacionescrm.aspx" />
     <Content Include="asignarcita.aspx" />
+    <Content Include="asignarmetascomercales.aspx" />
     <Content Include="asignartecnicoticket.aspx" />
     <Content Include="asistenciaagendagympass.aspx" />
     <Content Include="autorizaciones.aspx" />
@@ -428,6 +429,7 @@
     <Content Include="css\plugins\toastr\toastr.min.css" />
     <Content Include="css\plugins\touchspin\jquery.bootstrap-touchspin.min.css" />
     <Content Include="css\style.css" />
+    <Content Include="cumplimientometascomercales.aspx" />
     <Content Include="dashboard_2.html" />
     <Content Include="dashboard_3.html" />
     <Content Include="dashboard_4.html" />
@@ -1096,6 +1098,13 @@
     <Compile Include="asignarcita.aspx.designer.cs">
       <DependentUpon>asignarcita.aspx</DependentUpon>
     </Compile>
+    <Compile Include="asignarmetascomercales.aspx.cs">
+      <DependentUpon>asignarmetascomercales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="asignarmetascomercales.aspx.designer.cs">
+      <DependentUpon>asignarmetascomercales.aspx</DependentUpon>
+    </Compile>
     <Compile Include="asignartecnicoticket.aspx.cs">
       <DependentUpon>asignartecnicoticket.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1378,6 +1387,13 @@
     </Compile>
     <Compile Include="crmnuevocontacto.aspx.designer.cs">
       <DependentUpon>crmnuevocontacto.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="cumplimientometascomercales.aspx.cs">
+      <DependentUpon>cumplimientometascomercales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="cumplimientometascomercales.aspx.designer.cs">
+      <DependentUpon>cumplimientometascomercales.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>

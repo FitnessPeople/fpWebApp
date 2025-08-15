@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="estacionalidad.aspx.cs" Inherits="fpWebApp.estacionalidad" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="cumplimientometascomercales.aspx.cs" Inherits="fpWebApp.cumplimientometascomercales" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
@@ -34,16 +34,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        #external-events {
-            top: 20px;
-            left: 20px;
-        }
-
-        #external-events .fc-event {
-            cursor: move;
-            margin: 3px 0;
-        }
-
         /* Fuerza que todas las celdas tengan igual alto */
         .fc .fc-daygrid-day {
             height: 60px; /* ajusta este valor según tu diseño */
@@ -57,15 +47,23 @@
             /*display: flex;*/
             flex-direction: column;
             justify-content: flex-start;
+        }
 
-        /*.fc-event-title-container {
-            background: #f8ac59;
-        }*/
+        /* Estilo del título del evento */
+        .fc .fc-event-title {
+            font-weight: bold;
+            color: #fff;
+        }
+
+        /* Estilo de la descripción */
+        .fc .fc-event-desc {
+            color: #fff;
+        }
     </style>
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#estacionalidad");
+            var element1 = document.querySelector("#cumplimientometascomerciales");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#canalesprocesoscomerciales");
             element2.classList.remove("collapse");
@@ -129,11 +127,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-calendar-days text-success m-r-sm"></i>Estacionalidad</h2>
+                    <h2><i class="fa fa-chart-line text-success m-r-sm"></i>Cumplimiento de Metas Comerciales</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Comercial</li>
-                        <li class="active"><strong>Estacionalidad</strong></li>
+                        <li class="active"><strong>Cumplimiento Metas Comerciales</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -159,43 +157,7 @@
                     <form runat="server" id="form" onsubmit="return false;">
                         <div id="divContenido" runat="server">
                             <div class="col-lg-3">
-                                <div class="ibox float-e-margins">
-                                    <div class="ibox-title">
-                                        <h5><i class="fa fa-arrow-turn-down text-danger"></i> Arrastra al calendario</h5>
-                                    </div>
-                                    <div id='external-events' class="ibox-content">
-                                        <div class='fc-event' data-title="1%" data-bgcolor="#ed5565">
-                                            <div class='fc-event-main'
-                                                style="color: #fff; background: #ed5565; border: 1px solid #ed5565; border-radius: 3px; font-size: 1.5em; padding-left: 10px;">
-                                                1%
-                                            </div>
-                                        </div>
-                                        <div class='fc-event' data-title="2%" data-bgcolor="#1ab394">
-                                            <div class='fc-event-main'
-                                                style="color: #fff; background: #1ab394; border: 1px solid #1ab394; border-radius: 3px; font-size: 1.5em; padding-left: 10px;">
-                                                2%
-                                            </div>
-                                        </div>
-                                        <div class='fc-event' data-title="3%" data-bgcolor="#1c84c6">
-                                            <div class='fc-event-main'
-                                                style="color: #fff; background: #1c84c6; border: 1px solid #1c84c6; border-radius: 3px; font-size: 1.5em; padding-left: 10px;">
-                                                3%
-                                            </div>
-                                        </div>
-                                        <div class='fc-event' data-title="4%" data-bgcolor="#f8ac59">
-                                            <div class='fc-event-main'
-                                                style="color: #fff; background: #f8ac59; border: 1px solid #f8ac59; border-radius: 3px; font-size: 1.5em; padding-left: 10px;">
-                                                4%
-                                            </div>
-                                        </div>
-                                        <div class='fc-event' data-title="5%" data-bgcolor="#23c6c8">
-                                            <div class='fc-event-main'
-                                                style="color: #fff; background: #23c6c8; border: 1px solid #23c6c8; border-radius: 3px; font-size: 1.5em; padding-left: 10px;">
-                                                5%
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-content">
                                         <h3><i class="fa fa-chart-simple text-danger"></i> Total por semana</h3>
@@ -206,7 +168,7 @@
                             <div class="col-lg-9">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5><i class="fa fa-percent text-danger"></i> Estacionalidad </h5>
+                                        <h5><i class="fa fa-percent text-danger"></i> Metas diarias </h5>
                                     </div>
                                     <div class="ibox-content">
                                         <div id="calendar"></div>
@@ -334,26 +296,6 @@
             return `${String(weekNo).padStart(2, '0')}`;
         }
 
-        function eliminarEvento(evento) {
-            let data = evento;
-
-            // Enviar a servidor por AJAX
-            fetch("estacionalidad.aspx/EliminarEvento", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-                .then(response => response.text())
-                .then(data => {
-                    //console.log('Respuesta del servidor:', data);
-                })
-                .catch(error => {
-                    console.error('Error al eliminar evento:', error);
-                });
-        }
-
         let feriados = {};
 
         function cargarFeriados() {
@@ -377,26 +319,8 @@
             var Calendar = FullCalendar.Calendar;
             var Draggable = FullCalendar.Draggable;
 
-            var containerEl = document.getElementById('external-events');
             var calendarEl = document.getElementById('calendar');
             var checkbox = document.getElementById('drop-remove');
-
-            // initialize the external events
-            // -----------------------------------------------------------------
-
-            new Draggable(containerEl, {
-                itemSelector: '.fc-event',
-                eventData: function (eventEl) {
-                    return {
-                        //title: eventEl.innerText
-                        title: eventEl.getAttribute('data-title'),
-                        extendedProps: {
-                            //value: eventEl.getAttribute('data-value'),
-                            bgcolor: eventEl.getAttribute('data-bgcolor')
-                        }
-                    };
-                }
-            });
 
             cargarFeriados().then(() => {
 
@@ -411,19 +335,30 @@
                 },
                 eventContent: function (arg) {
                     //console.log(arg);
-                    let backgroundColor = arg.event.extendedProps.bgcolor || '#fff'; // Color por defecto si no se define
+                    //let backgroundColor = arg.event.extendedProps.bgcolor || '#fff'; // Color por defecto si no se define
                     let italicEl = document.createElement('i')
 
                     italicEl.innerHTML = arg.event.title;
-                    //italicEl.style = `background: ${backgroundColor};`;
                     italicEl.style = `font-size: 1.5em;`;
-                    //console.log(backgroundColor);
 
                     let arrayOfDomNodes = [italicEl]
-                    return { domNodes: arrayOfDomNodes }
+                    //return { domNodes: arrayOfDomNodes }
+
+                    // Contenedor del título
+                    let titleEl = document.createElement('div');
+                    titleEl.classList.add('fc-event-title');
+                    titleEl.innerText = arg.event.title;
+                    titleEl.style = `font-size: 1.5em;`;
+
+                    // Contenedor de la descripción
+                    let descEl = document.createElement('div');
+                    descEl.classList.add('fc-event-desc');
+                    descEl.innerText = arg.event.extendedProps.description || '';
+                    descEl.style = `font-size: 1.2em;`;
+
+                    return { domNodes: [titleEl, descEl] };
                 },
                 editable: false,
-                //events: 'obtenerestacionalidad.aspx',
                 eventSources: [{
                     url: 'obtenerestacionalidad.aspx',
                     method: 'GET',
@@ -488,6 +423,7 @@
                     info.event.setProp('backgroundColor', color);
                     const evento = {
                         title: info.event.title,
+                        descripcion: info.event.descripcion,
                         start: info.event.start.toISOString(),
                         allDay: info.event.allDay,
                         bgcolor: info.event.backgroundColor
@@ -516,26 +452,6 @@
                             console.error('Error:', error);
                             info.revert();
                         });
-
-                    realizarCalculosConExtendedProps(calendar.getEvents(), calendar);
-
-                },
-                eventClick: function (info) {
-                    // Evento que se activa cuando hacemos clic en un evento
-                    if (info.event.rendering === 'background' || info.event.display === 'background') {
-                        return; // Ignora el clic
-                    }
-
-                    const evento = {
-                        id: info.event.id
-                    };
-                    
-                    eliminarEvento(evento); // Elimina el evento de la base de datos
-
-                    var eventObj = info.event;
-                    if (eventObj) {
-                        eventObj.remove(); // Elimina el evento del calendario
-                    }
 
                     realizarCalculosConExtendedProps(calendar.getEvents(), calendar);
 

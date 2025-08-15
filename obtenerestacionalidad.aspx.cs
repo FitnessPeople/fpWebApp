@@ -9,7 +9,19 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string strQuery = "SELECT * FROM estacionalidad";
+            string filtro = Request.QueryString["filtro"];
+
+            if (filtro == "" || filtro is null)
+            {
+                filtro = Session["idCanalVenta"].ToString();
+            }
+
+            string strQuery = "SELECT *, (mc.Valor * e.Titulo / 100) metaDia " +
+                "FROM estacionalidad e, metascomerciales mc " +
+                "WHERE mc.idCanalVenta = " + filtro + " " +
+                "AND mc.mes = 8 " +
+                "AND mc.annio = 2025 " +
+                "AND MONTH(e.FechaInicio) = 8";
 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
@@ -21,13 +33,14 @@ namespace fpWebApp
                 {
                     id = row["idEstacionalidad"],
                     title = row["Titulo"],
+                    description = "$ " + String.Format("{0:N0}", row["metaDia"]),
                     start = row["FechaInicio"],
                     end = row["FechaFin"],
                     rendering = row["Renderizado"],
                     color = row["Color"],
                     allDay = row["TodoElDia"],
                     backgroundColor = row["Color"],
-                    display = row["Mostrar"]
+                    display = row["Mostrar"],
                 });
             }
 

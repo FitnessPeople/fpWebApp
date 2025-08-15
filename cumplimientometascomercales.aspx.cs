@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Web.Script.Services;
 using System.Web.Services;
+
 
 namespace fpWebApp
 {
-    public partial class estacionalidad : System.Web.UI.Page
+    public partial class cumplimientometascomercales : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -14,7 +14,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Administrar agenda");
+                    ValidarPermisos("Cumplimiento metas");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         divMensaje.Visible = true;
@@ -66,41 +66,6 @@ namespace fpWebApp
         }
 
         [WebMethod]
-        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public static int GuardarEvento(string title, string start, bool allDay, string bgcolor)
-        {
-            string dtInicio = Convert.ToDateTime(start).ToString("yyyy-MM-dd");
-            string dtFin = dtInicio;
-            string strQuery = "INSERT INTO estacionalidad (Titulo, FechaInicio, FechaFin, TodoElDia, Color) " +
-            "VALUES ('" + title + "', '" + dtInicio + "', '" + dtFin + "', " + allDay + ", '" + bgcolor + "')";
-            clasesglobales cg = new clasesglobales();
-            cg.TraerDatosStr(strQuery);
-
-            strQuery = "SELECT LAST_INSERT_ID()";
-            DataTable dt = cg.TraerDatos(strQuery);
-
-            if (dt.Rows.Count > 0)
-            {
-                return Convert.ToInt32(dt.Rows[0][0].ToString());
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
-        [WebMethod]
-        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public static string EliminarEvento(string id)
-        {
-            string strQuery = "DELETE FROM estacionalidad WHERE idEstacionalidad = " + id;
-            clasesglobales cg = new clasesglobales();
-            cg.TraerDatosStr(strQuery);
-
-            return "Ok";
-        }
-
-        [WebMethod]
         public static List<Feriado> ObtenerFeriados()
         {
             List<Feriado> lista = new List<Feriado>();
@@ -127,13 +92,9 @@ namespace fpWebApp
             public string descripcion { get; set; }
         }
 
-        //protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    if (ddlSedes.SelectedItem.Value.ToString() != "")
-        //    {
-        //        ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
-        //        CargarAgenda();
-        //    }
-        //}
+        protected void ddlCanalVenta_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
