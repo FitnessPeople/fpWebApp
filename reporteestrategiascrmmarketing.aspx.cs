@@ -59,6 +59,7 @@ namespace fpWebApp
                     ObtenerGraficaEstrategiasPorMes();
                     ListaResumenEstrategiaUltimoMes();
                     ListaCuantosLeadsEstrategiaAceptados();
+                    listaEstrategiasMarketingEncabezado();
 
                     clasesglobales cg = new clasesglobales();
 
@@ -511,7 +512,24 @@ namespace fpWebApp
         }
 
 
+        private void listaEstrategiasMarketingEncabezado()
+        {
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                DataTable dt = cg.ConsultarEstrategiaasMarketingEncabezado();              
 
+                rpEstrategiasEncabezado.DataSource = dt;
+                rpEstrategiasEncabezado.DataBind();
+
+                dt.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message.ToString();
+            }
+        }
 
         public class VentasCanal
         {
@@ -599,19 +617,19 @@ namespace fpWebApp
                 //            mensajeExcepcionInterna = ex.InnerException.Message;
                 //            Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
                 //        }
-                //        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                //        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                //        "Excepción interna." +
-                //        "</div>";
+                //        //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                //        //"<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                //        //"Excepción interna." +
+                //        //"</div>";
                 //    }
                 //    Response.Redirect("cargos");
                 //}
                 //else
                 //{
-                //    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                //        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                //        "Ya existe un cargo con ese nombre." +
-                //        "</div>";
+                //    //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                //    //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                //    //    "Ya existe un cargo con ese nombre." +
+                //    //    "</div>";
                 //}
             }
         }
@@ -621,8 +639,8 @@ namespace fpWebApp
             try
             {
                 string consultaSQL = @"SELECT NombreCargo AS 'Nombre de Cargos'
-		                               FROM cargos
-		                               ORDER BY NombreCargo;";
+                                 FROM cargos
+                                 ORDER BY NombreCargo;";
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(consultaSQL);
