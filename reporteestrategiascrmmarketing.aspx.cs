@@ -154,29 +154,39 @@ namespace fpWebApp
         private void ListaRankingAsesores()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarRankingAsesoresMesVigente();
-            
-            DateTime fechaActual = DateTime.Now;
-            string mesActualConAnio = System.Globalization.CultureInfo
-                .GetCultureInfo("es-ES")
-                .DateTimeFormat
-                .GetMonthName(fechaActual.Month)
-                + " " + fechaActual.Year;
 
-            ltMesActual.Text = mesActualConAnio.ToString();
-
-            if (dt != null && dt.Rows.Count > 0)
+            try
             {
-                rptRankingAsesores.DataSource = dt;
-                rptRankingAsesores.DataBind();
-            }
-            else
-            {
-                rptRankingAsesores.DataSource = null;
-                rptRankingAsesores.DataBind();
-            }
+                DataTable dt = cg.ConsultarRankingAsesoresMesVigente();
 
-            dt.Dispose();
+                DateTime fechaActual = DateTime.Now;
+                string mesActualConAnio = System.Globalization.CultureInfo
+                    .GetCultureInfo("es-ES")
+                    .DateTimeFormat
+                    .GetMonthName(fechaActual.Month)
+                    + " " + fechaActual.Year;
+
+                ltMesActual.Text = mesActualConAnio.ToString();
+
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    rptRankingAsesores.DataSource = dt;
+                    rptRankingAsesores.DataBind();
+                }
+                else
+                {
+                    rptRankingAsesores.DataSource = null;
+                    rptRankingAsesores.DataBind();
+                }
+
+                dt.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.ToString();
+                throw;
+            }
         }
 
         private void ListaResumenEstrategiaUltimoMes()

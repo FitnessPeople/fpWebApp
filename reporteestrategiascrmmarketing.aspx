@@ -284,10 +284,13 @@
                                                         <ItemTemplate>
                                                             <li>
                                                                 <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                                <span class="m-l-xs">
-                                                                    <%# Container.ItemIndex + 1 %>. <%# Eval("Asesor") %> - 
-                                                                    $<%# String.Format("{0:N0}", Eval("TotalVendido")) %> - 
-                                                                    <%# Eval("CanalVenta") %>  (<%# Eval("CantidadPlanesVendidos") %>) Planes
+                                                                    <span class="m-l-xs">
+                                                                        <strong><%# Container.ItemIndex + 1 %>.</strong>
+                                                                        <%# Eval("Asesor") %> - 
+                                                                        <span style="color: green;">$<%# String.Format("{0:N0}", Eval("TotalVendido")) %>
+                                                                    </span>- 
+                                                                        <%# Eval("CanalVenta") %> 
+                                                                        (<%# Eval("CantidadPlanesVendidos") %>) Planes
                                                                 </span>
                                                             </li>
                                                         </ItemTemplate>
