@@ -67,7 +67,6 @@ namespace fpWebApp
 
                     if (Request.QueryString.Count > 0)
                     {
-                        //rpCargos.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
@@ -155,7 +154,6 @@ namespace fpWebApp
         private void ListaRankingAsesores()
         {
             clasesglobales cg = new clasesglobales();
-
             try
             {
                 DataTable dt = cg.ConsultarRankingAsesoresMesVigente();
@@ -391,25 +389,26 @@ namespace fpWebApp
                 ltCantidadLeadsAceptados.Text = "0";
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.ConsultarCuantosLeadsEstrategiaAceptados();
+                int porcentaje = 0;
+                ltMediaVentasMesActual.Text = "0";
+                decimal mediaVentasMes = 0;
+                decimal ventasTotalesMesActual = 0;
                 if (dt.Rows.Count > 0)
-                {
-                    
+                {                    
                     ltCantidadLeadsAceptados.Text = Convert.ToInt32(dt.Rows[0]["TotalContactosMes"]).ToString("N0");
                     ltVentasTotales.Text = Convert.ToDecimal(dt.Rows[0]["TotalVentasAnio"]).ToString("C0", new System.Globalization.CultureInfo("es-CO"));
                     ltVentasTotalesMesActual.Text = Convert.ToDecimal(dt.Rows[0]["TotalVentasMes"]).ToString("C0", new System.Globalization.CultureInfo("es-CO"));
 
 
-                    decimal ventasTotalesMesActual = Convert.ToDecimal(dt.Rows[0]["TotalVentasMes"].ToString());
+                    ventasTotalesMesActual = Convert.ToDecimal(dt.Rows[0]["TotalVentasMes"].ToString());
                     int totalPresupuestoMes = Convert.ToInt32(dt.Rows[0]["TotalPresupuestoMes"].ToString());
 
+                    if(totalPresupuestoMes > 0) mediaVentasMes = ventasTotalesMesActual / totalPresupuestoMes;
 
-                    decimal mediaVentasMes = ventasTotalesMesActual / totalPresupuestoMes;
-
-                    int porcentaje = (int)Math.Round(mediaVentasMes * 100, MidpointRounding.AwayFromZero);
+                    porcentaje = (int)Math.Round(mediaVentasMes * 100, MidpointRounding.AwayFromZero);
 
                     ltMediaVentasMesActual.Text = porcentaje + "%";
                     progressBarVentasMesActual.Attributes["style"] = "width: " + porcentaje + "%;";
-
 
                 }
                 dt.Dispose();
