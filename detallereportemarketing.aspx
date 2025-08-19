@@ -37,9 +37,9 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#cargos");
+            var element1 = document.querySelector("#reporteestrategiascrmmarketing");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#sistema");
+            var element2 = document.querySelector("#crm");
             element2.classList.remove("collapse");
         }
     </script>

@@ -17,7 +17,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Cargos");
+                    ValidarPermisos("Reporte estrategias");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
