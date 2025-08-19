@@ -417,58 +417,12 @@
                                                 </div>
 
                                                 <div class="project-list">
-                                                    <%--<asp:Repeater ID="rpEstrategiasEncabezado" runat="server">
-                                                        <HeaderTemplate>
-                                                            <table class="table table-hover">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td class="project-status">
-                                                                            <span class="label label-primary">
-                                                                                <%# Eval("CanalVenta") %> 
-                                                                            </span>
-                                                                        </td>
-                                                                        <td class="project-title">
-                                                                            <a href="detallereportemarketing">
-                                                                                <%# Eval("NombreEstrategia") %> </a>
-                                                                            <br />
-                                                                            <small>
-                                                                                 <%# "Creado " + Eval("FechaCreacion", "{0:dd.MM.yyyy}") %> </small>
-                                                                        </td>
-                                                                        <td class="project-completion">
-                                                                            <small>
-                                                                                <strong>Eficiencia</strong> : <%# Eval("Eficiencia") %> %
-                                                                            </small>
-                                                                            <div class="progress progress-mini">
-                                                                                <div style='width:<%# Eval("Eficiencia") %>%;' class="progress-bar"></div>
-                                                                            </div>
-                                                                        </td>
-                                                                        <td class="project-people">
-                                                                            <a href="">
-                                                                                <img alt="image" class="img-circle" src="img/a3.jpg"></a>
-                                                                            <a href="">
-                                                                                <img alt="image" class="img-circle" src="img/a1.jpg"></a>
-                                                                            <a href="">
-                                                                                <img alt="image" class="img-circle" src="img/a2.jpg"></a>
-                                                                            <a href="">
-                                                                                <img alt="image" class="img-circle" src="img/a4.jpg"></a>
-                                                                            <a href="">
-                                                                                <img alt="image" class="img-circle" src="img/a5.jpg"></a>
-                                                                        </td>
-                                                                        <td class="project-actions">
-                                                                            <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i>View </a>
-                                                                            <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i>Edit </a>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </HeaderTemplate>
-                                                    </asp:Repeater>--%>
-                                                    <asp:Repeater ID="rpEstrategiasEncabezado" runat="server">
+                       
+                                                    <asp:Repeater ID="rpEstrategiasEncabezado" runat="server" OnItemDataBound="rpEstrategiasEncabezado_ItemDataBound">
                                                         <HeaderTemplate>
                                                             <table class="table table-hover">
                                                                 <tbody>
                                                         </HeaderTemplate>
-
                                                         <ItemTemplate>
                                                             <tr>
                                                                 <td class="project-status">
@@ -501,12 +455,11 @@
                                                                     <a href=""><img alt="image" class="img-circle" src="img/a5.jpg"></a>
                                                                 </td>
                                                                 <td class="project-actions">
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> View</a>
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit</a>
+                                                                    <a href="detallereportemarketing" runat="server" id="btnVer" class="btn btn-white btn-sm" title="Ver"><i class="fa-solid fa-eye"></i></a>
+                                                                    <a href="#" class="btn btn-white btn-sm" title="Editar"><i class="fa fa-pencil"></i></a>
                                                                 </td>
                                                             </tr>
                                                         </ItemTemplate>
-
                                                         <FooterTemplate>
                                                                 </tbody>
                                                             </table>

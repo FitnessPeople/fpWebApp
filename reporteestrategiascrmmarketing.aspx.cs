@@ -675,5 +675,10 @@ namespace fpWebApp
 
             return strData;
         }
+
+        protected void rpEstrategiasEncabezado_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+
+        }
     }
 }
