@@ -39,14 +39,25 @@
         }
     </style>
 
+    <style>
+        .img-circle {
+            width: 120px; /* ancho fijo */
+            height: 120px; /* alto fijo */
+            object-fit: cover; /* recorta sin deformar */
+            border-radius: 50%; /* círculo perfecto */
+        }
+    </style>
+
     <script>
         function changeClass() {
             var element1 = document.querySelector("#reporteestrategiascrmmarketing");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#crm");
+            var element2 = document.querySelector("#CRM");
             element2.classList.remove("collapse");
         }
     </script>
+
+
 
 </head>
 
@@ -103,7 +114,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-school-flag text-success m-r-sm"></i>Reporte estrategias marketing</h2>
+                    <h2><i class="fa fa-magnifying-glass-chart text-success m-r-sm"></i>Reporte estrategias marketing</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>CRM</li>
@@ -135,46 +146,41 @@
                                 <div class="col-lg-4">
                                     <div class="ibox">
                                         <div class="ibox-title">
-                                            <span class="label label-primary pull-right">NEW</span>
-                                            <h5>Team Online</h5>
+                                            <span class="label label-primary pull-right">Nuevo</span>
+                                            <h5>
+                                                <asp:Literal ID="ltTeam" runat="server"></asp:Literal></h5>
                                         </div>
                                         <div class="ibox-content">
                                             <div class="team-members">
-                                                <a href="#">
-                                                    <img alt="member" class="img-circle" src="img/a1.jpg"></a>
-                                                <a href="#">
-                                                    <img alt="member" class="img-circle" src="img/a2.jpg"></a>
-                                                <a href="#">
-                                                    <img alt="member" class="img-circle" src="img/a3.jpg"></a>
-                                                <a href="#">
-                                                    <img alt="member" class="img-circle" src="img/a5.jpg"></a>
-                                                <a href="#">
-                                                    <img alt="member" class="img-circle" src="img/a6.jpg"></a>
+                                                <asp:Literal ID="ltAsesores" runat="server"></asp:Literal>
                                             </div>
+
                                             <h4>Resumen de desempeño y métricas clave del equipo</h4>
                                             <p>
-                                                “Enfocados en resultados, el Team Online ha logrado posicionarse en el Top 5, 
-                                                impulsando 12 estrategias activas con una excelente gestión de recursos.”
+                                                <asp:Literal ID="ltDescripcion" runat="server"></asp:Literal>
                                             </p>
                                             <div>
-                                                <span>Estado actual de ventas:</span>
-                                                <div class="stat-percent">48%</div>
+                                                <span>Estado actual de ventas:
+                                                    <asp:Literal ID="ltMesActualGraf" runat="server"></asp:Literal>
+                                                </span>
+                                                <div id="lblEstadoVentas" runat="server" class="stat-percent"></div>
                                                 <div class="progress progress-mini">
-                                                    <div style="width: 48%;" class="progress-bar"></div>
+                                                    <div id="progressBar" runat="server" class="progress-bar"></div>
                                                 </div>
                                             </div>
                                             <div class="row  m-t-sm">
                                                 <div class="col-sm-4">
                                                     <div class="font-bold">ESTRATEGIAS</div>
-                                                    12
+                                                    <asp:Label ID="lblEstrategias" runat="server" />
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <div class="font-bold">RANKING</div>
-                                                    4th
+                                                    <asp:Label ID="lblRanking" runat="server" />
                                                 </div>
                                                 <div class="col-sm-4 text-right">
-                                                    <div class="font-bold">PRESUPUESTO</div>
-                                                    $200,913 <i class="fa fa-level-up text-navy"></i>
+                                                    <div class="font-bold">VENTAS</div>
+                                                    <asp:Label ID="lblVentas" runat="server" />
+                                                    <i class="fa fa-level-up text-navy"></i>
                                                 </div>
                                             </div>
 
@@ -188,65 +194,79 @@
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
                                                     <span class="label label-warning pull-right">Datos actualizados</span>
-                                                    <h5>Estados de la venta</h5>
+                                                    <h5>Estados de la venta
+                                                        <asp:Literal ID="ltMesActualEV" runat="server"></asp:Literal>
+                                                    </h5>
                                                 </div>
+
                                                 <div class="ibox-content">
                                                     <div class="row">
                                                         <div class="col-xs-4">
                                                             <small class="stats-label">Leads / Caliente</small>
-                                                            <h4>236</h4>
+                                                            <h4>
+                                                                <asp:Label ID="lblCalienteLeads" runat="server" /></h4>
                                                         </div>
-
                                                         <div class="col-xs-4">
                                                             <small class="stats-label">% Leads</small>
-                                                            <h4>46.11%</h4>
+                                                            <h4>
+                                                                <asp:Label ID="lblCalientePorcentaje" runat="server" /></h4>
                                                         </div>
                                                         <div class="col-xs-4">
                                                             <small class="stats-label">Ventas mañana</small>
-                                                            <h4>$432.021</h4>
+                                                            <h4>
+                                                                <asp:Label ID="lblCalienteVentas" runat="server" /></h4>
                                                         </div>
                                                     </div>
                                                 </div>
+
                                                 <div class="ibox-content">
                                                     <div class="row">
                                                         <div class="col-xs-4">
                                                             <small class="stats-label">Leads / Tibio</small>
-                                                            <h4>64</h4>
+                                                            <h4>
+                                                                <asp:Label ID="lblTibioLeads" runat="server" /></h4>
                                                         </div>
-
                                                         <div class="col-xs-4">
                                                             <small class="stats-label">% Leads</small>
-                                                            <h4>92.43%</h4>
+                                                            <h4>
+                                                                <asp:Label ID="lblTibioPorcentaje" runat="server" /></h4>
                                                         </div>
                                                         <div class="col-xs-4">
                                                             <small class="stats-label">Última semana</small>
-                                                            <h4>$564.554</h4>
+                                                            <h4>
+                                                                <asp:Label ID="lblTibioVentas" runat="server" /></h4>
                                                         </div>
                                                     </div>
                                                 </div>
+
                                                 <div class="ibox-content">
                                                     <div class="row">
                                                         <div class="col-xs-4">
                                                             <small class="stats-label">Leads / Frío</small>
-                                                            <h4>36</h4>
+                                                            <h4>
+                                                                <asp:Label ID="lblFrioLeads" runat="server" /></h4>
                                                         </div>
-
                                                         <div class="col-xs-4">
                                                             <small class="stats-label">% Leads</small>
-                                                            <h4>150.23%</h4>
+                                                            <h4>
+                                                                <asp:Label ID="lblFrioPorcentaje" runat="server" /></h4>
                                                         </div>
                                                         <div class="col-xs-4">
                                                             <small class="stats-label">Última semana</small>
-                                                            <h4>$124.990</h4>
+                                                            <h4>
+                                                                <asp:Label ID="lblFrioVentas" runat="server" /></h4>
                                                         </div>
                                                     </div>
                                                 </div>
+
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
-                                                    <h5>Ranking de asesores</h5>
+                                                    <h5>Top 5 asesores
+                                                        <asp:Literal ID="ltMesActual" runat="server"></asp:Literal>
+                                                    </h5>
                                                     <div class="ibox-tools">
                                                         <a class="collapse-link">
                                                             <i class="fa fa-chevron-up"></i>
@@ -257,36 +277,32 @@
                                                     </div>
                                                 </div>
                                                 <div class="ibox-content">
-                                                    <ul class="todo-list m-t small-list">
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">1. Sara Uribe.</span>
-
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">2. Adrian Cubaque</span>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">3. Kendy Leal</span>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-check-o"></i></a>
-                                                            <span class="m-l-xs">4. Karina Coronel</span>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">5. Javier Galvan</span>
-                                                        </li>
-                                                    </ul>
+                                                    <asp:Repeater ID="rptRankingAsesores" runat="server">
+                                                        <HeaderTemplate>
+                                                            <ul class="todo-list m-t small-list">
+                                                        </HeaderTemplate>
+                                                        <ItemTemplate>
+                                                            <li>
+                                                                <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                                <span class="m-l-xs">
+                                                                    <strong><%# Container.ItemIndex + 1 %>.</strong>
+                                                                    <%# Eval("Asesor") %> - 
+                                                                        <span style="color: green;">$<%# String.Format("{0:N0}", Eval("TotalVendido")) %>
+                                                                        </span>- 
+                                                                        <%# Eval("CanalVenta") %> 
+                                                                        (<%# Eval("CantidadPlanesVendidos") %>) Planes
+                                                                </span>
+                                                            </li>
+                                                        </ItemTemplate>
+                                                        <FooterTemplate>
+                                                            </ul>
+                                                        </FooterTemplate>
+                                                    </asp:Repeater>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
-
                             </div>
 
                             <div class="row">
@@ -295,11 +311,10 @@
                                         <div class="ibox-content">
                                             <div>
                                                 <span class="pull-right text-right">
-                                                    <small>Valor promedio de las ventas del ultimo mes: <strong>FP</strong></small>
-                                                    <br />
-                                                    Ventas totales: 162,862
+                                                    <asp:Literal ID="litResumen" runat="server"></asp:Literal>
                                                 </span>
-                                                <h3 class="font-bold no-margins">Margen de ingresos semestral
+                                                <h3 class="font-bold no-margins">Margen de ingresos 
+                                                    <asp:Literal ID="ltAnnioActual" runat="server"></asp:Literal>
                                                 </h3>
                                                 <small>Marketing de ventas.</small>
                                             </div>
@@ -315,17 +330,22 @@
                                                     <div class="col-md-4">
                                                         <ul class="stat-list m-t-lg">
                                                             <li>
-                                                                <h2 class="no-margins">2,346</h2>
-                                                                <small>Solicitudes del periodo</small>
+                                                                <h2 class="no-margins">
+                                                                    <asp:Literal ID="ltCantidadLeadsAceptados" runat="server"></asp:Literal></h2>
+                                                                <small>Negociaciones aceptadas mes actual</small>
                                                                 <div class="progress progress-mini">
-                                                                    <div class="progress-bar" style="width: 48%;"></div>
+                                                                    <div id="progressBarAnio" runat="server" class="progress-bar"></div>
+                                                                    <asp:Literal ID="ltMediaCuantosAnio" runat="server"></asp:Literal>
                                                                 </div>
                                                             </li>
                                                             <li>
-                                                                <h2 class="no-margins ">4,422</h2>
-                                                                <small>Solicitudes ultimo mes</small>
+                                                                <h2 class="no-margins ">
+                                                                    <asp:Literal ID="ltVentasTotalesMesActual" runat="server"></asp:Literal>
+                                                                </h2>
+                                                                <small>Ventas mes actual</small>
                                                                 <div class="progress progress-mini">
-                                                                    <div class="progress-bar" style="width: 60%;"></div>
+                                                                    <div id="progressBarVentasMesActual" runat="server" class="progress-bar"></div>
+                                                                    <asp:Literal ID="ltMediaVentasMesActual" runat="server"></asp:Literal>
                                                                 </div>
                                                             </li>
                                                         </ul>
@@ -337,10 +357,11 @@
                                             <div class="m-t-md">
                                                 <small class="pull-right">
                                                     <i class="fa fa-clock-o"></i>
-                                                    Actualizado el 03.10.2024
+                                                    Ventas totales :
+                                                    <asp:Literal ID="ltVentasTotales" runat="server"></asp:Literal>
                                                 </small>
                                                 <small>
-                                                    <strong>Analisis de venta:</strong> The value has been changed over time, and last month reached a level over $50,000.
+                                                    <strong>Desempeño de estrategias de venta:</strong> Seguimiento mes a mes del presupuesto invertido y las ventas generadas por cada estrategia.
                                                 </small>
                                             </div>
 
@@ -350,21 +371,22 @@
                                 <div class="col-lg-4">
                                     <div class="widget-head-color-box navy-bg p-lg text-center">
                                         <div class="m-b-md">
-                                            <h2 class="font-bold no-margins">Alex Smith
+                                            <h2 class="font-bold no-margins">
+                                                <asp:Literal ID="ltNomAsesorMesPasado" runat="server"></asp:Literal>
                                             </h2>
-                                            <small>Mejor Asesor del mes</small>
+                                            <small>Mejor Asesor del mes
+                                                <asp:Literal ID="ltMes" runat="server"></asp:Literal></small>
                                         </div>
-                                        <img src="img/a4.jpg" class="img-circle circle-border m-b-md" alt="profile">
+                                        <asp:Image ID="imgAsesor" runat="server" CssClass="img-circle circle-border m-b-md" alt="profile" />
                                         <div>
-                                            <span>Equipo online</span> |
-                                <span>Cantidad de leads 600</span> |
-                                <span>Valor vendido $61.000.000</span>
+                                            <span>
+                                                <asp:Literal ID="ltCanalVenta" runat="server"></asp:Literal></span> |
+                                            <span>
+                                                <asp:Literal ID="ltCantidadPlanes" runat="server"></asp:Literal></span> |
+                                            <span>
+                                                <asp:Literal ID="ltValorVendido" runat="server"></asp:Literal></span>
                                         </div>
                                     </div>
-                                    <%--                        <div class="widget-text-box">
-                            <h4 class="media-heading">Alex Smith</h4>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                        </div>--%>
                                 </div>
                             </div>
 
@@ -374,7 +396,7 @@
 
                                         <div class="ibox">
                                             <div class="ibox-title">
-                                                <h5>All projects assigned to this account</h5>
+                                                <h5>Lista de estretegias comerciales de Marketing</h5>
                                                 <div class="ibox-tools">
                                                     <a href="estrategiasmarketing" class="btn btn-primary btn-xs">Crear nueva estrategia</a>
                                                 </div>
@@ -395,315 +417,55 @@
                                                 </div>
 
                                                 <div class="project-list">
+                       
+                                                    <asp:Repeater ID="rpEstrategiasEncabezado" runat="server" OnItemDataBound="rpEstrategiasEncabezado_ItemDataBound">
+                                                        <HeaderTemplate>
+                                                            <table class="table table-hover">
+                                                                <tbody>
+                                                        </HeaderTemplate>
+                                                        <ItemTemplate>
+                                                            <tr>
+                                                                <td class="project-status">
+                                                                    <span class="label label-primary">
+                                                                        <%# Eval("Estado") %> 
+                                                                    </span>
+                                                                </td>
+                                                                <td class="project-title">
+                                                                    <a href="detallereportemarketing">
+                                                                        <%# Eval("NombreEstrategia") %> 
+                                                                    </a>
+                                                                    <br />
+                                                                    <small>
+                                                                        <%# "Creado " + Eval("FechaCreacion", "{0:dd.MM.yyyy}") %> 
+                                                                    </small>
+                                                                </td>
+                                                                <td class="project-completion">
+                                                                    <small>
+                                                                        <strong>Eficiencia</strong> : <%# Eval("Eficiencia") %> %
+                                                                    </small>
+                                                                    <div class="progress progress-mini">
+                                                                        <div style='width:<%# Eval("Eficiencia") %>%;' class="progress-bar"></div>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="project-people">
+                                                                    <a href=""><img alt="image" class="img-circle" src="img/a3.jpg"></a>
+                                                                    <a href=""><img alt="image" class="img-circle" src="img/a1.jpg"></a>
+                                                                    <a href=""><img alt="image" class="img-circle" src="img/a2.jpg"></a>
+                                                                    <a href=""><img alt="image" class="img-circle" src="img/a4.jpg"></a>
+                                                                    <a href=""><img alt="image" class="img-circle" src="img/a5.jpg"></a>
+                                                                </td>
+                                                                <td class="project-actions">
+                                                                    <a href="detallereportemarketing" runat="server" id="btnVer" class="btn btn-white btn-sm" title="Ver"><i class="fa-solid fa-eye"></i></a>
+                                                                    <a href="#" class="btn btn-white btn-sm" title="Editar"><i class="fa fa-pencil"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                        </ItemTemplate>
+                                                        <FooterTemplate>
+                                                                </tbody>
+                                                            </table>
+                                                        </FooterTemplate>
+                                                    </asp:Repeater>
 
-                                                    <table class="table table-hover">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td class="project-status">
-                                                                    <span class="label label-primary">Activa</span>
-                                                                </td>
-                                                                <td class="project-title">
-                                                                    <a href="detallereportemarketing">Estrategia 1</a>
-                                                                    <br />
-                                                                    <small>Created 14.08.2014</small>
-                                                                </td>
-                                                                <td class="project-completion">
-                                                                    <small>Completion with: 48%</small>
-                                                                    <div class="progress progress-mini">
-                                                                        <div style="width: 48%;" class="progress-bar"></div>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="project-people">
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a3.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a1.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a2.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a4.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a5.jpg"></a>
-                                                                </td>
-                                                                <td class="project-actions">
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i>View </a>
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i>Edit </a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="project-status">
-                                                                    <span class="label label-primary">Activa</span>
-                                                                </td>
-                                                                <td class="project-title">
-                                                                    <a href="project_detail.html">Estrategia 2</a>
-                                                                    <br />
-                                                                    <small>Created 11.08.2014</small>
-                                                                </td>
-                                                                <td class="project-completion">
-                                                                    <small>Completion with: 28%</small>
-                                                                    <div class="progress progress-mini">
-                                                                        <div style="width: 28%;" class="progress-bar"></div>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="project-people">
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a7.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a6.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a3.jpg"></a>
-                                                                </td>
-                                                                <td class="project-actions">
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i>View </a>
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i>Edit </a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="project-status">
-                                                                    <span class="label label-default">Inactiva</span>
-                                                                </td>
-                                                                <td class="project-title">
-                                                                    <a href="project_detail.html">Estrategia 3</a>
-                                                                    <br />
-                                                                    <small>Created 10.08.2014</small>
-                                                                </td>
-                                                                <td class="project-completion">
-                                                                    <small>Completion with: 8%</small>
-                                                                    <div class="progress progress-mini">
-                                                                        <div style="width: 8%;" class="progress-bar"></div>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="project-people">
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a5.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a3.jpg"></a>
-                                                                </td>
-                                                                <td class="project-actions">
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i>View </a>
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i>Edit </a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="project-status">
-                                                                    <span class="label label-primary">Active</span>
-                                                                </td>
-                                                                <td class="project-title">
-                                                                    <a href="project_detail.html">Letraset sheets containing</a>
-                                                                    <br />
-                                                                    <small>Created 22.07.2014</small>
-                                                                </td>
-                                                                <td class="project-completion">
-                                                                    <small>Completion with: 83%</small>
-                                                                    <div class="progress progress-mini">
-                                                                        <div style="width: 83%;" class="progress-bar"></div>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="project-people">
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a2.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a3.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a1.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a7.jpg"></a>
-                                                                </td>
-                                                                <td class="project-actions">
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i>View </a>
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i>Edit </a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="project-status">
-                                                                    <span class="label label-primary">Active</span>
-                                                                </td>
-                                                                <td class="project-title">
-                                                                    <a href="project_detail.html">Contrary to popular belief</a>
-                                                                    <br />
-                                                                    <small>Created 14.07.2014</small>
-                                                                </td>
-                                                                <td class="project-completion">
-                                                                    <small>Completion with: 97%</small>
-                                                                    <div class="progress progress-mini">
-                                                                        <div style="width: 97%;" class="progress-bar"></div>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="project-people">
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a4.jpg"></a>
-                                                                </td>
-                                                                <td class="project-actions">
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i>View </a>
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i>Edit </a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="project-status">
-                                                                    <span class="label label-primary">Active</span>
-                                                                </td>
-                                                                <td class="project-title">
-                                                                    <a href="project_detail.html">Contract with Zender Company</a>
-                                                                    <br />
-                                                                    <small>Created 14.08.2014</small>
-                                                                </td>
-                                                                <td class="project-completion">
-                                                                    <small>Completion with: 48%</small>
-                                                                    <div class="progress progress-mini">
-                                                                        <div style="width: 48%;" class="progress-bar"></div>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="project-people">
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a1.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a2.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a4.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a5.jpg"></a>
-                                                                </td>
-                                                                <td class="project-actions">
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i>View </a>
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i>Edit </a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="project-status">
-                                                                    <span class="label label-primary">Active</span>
-                                                                </td>
-                                                                <td class="project-title">
-                                                                    <a href="project_detail.html">There are many variations of passages</a>
-                                                                    <br />
-                                                                    <small>Created 11.08.2014</small>
-                                                                </td>
-                                                                <td class="project-completion">
-                                                                    <small>Completion with: 28%</small>
-                                                                    <div class="progress progress-mini">
-                                                                        <div style="width: 28%;" class="progress-bar"></div>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="project-people">
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a7.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a6.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a3.jpg"></a>
-                                                                </td>
-                                                                <td class="project-actions">
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i>View </a>
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i>Edit </a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="project-status">
-                                                                    <span class="label label-default">Inactiva</span>
-                                                                </td>
-                                                                <td class="project-title">
-                                                                    <a href="project_detail.html">Many desktop publishing packages and web</a>
-                                                                    <br />
-                                                                    <small>Created 10.08.2014</small>
-                                                                </td>
-                                                                <td class="project-completion">
-                                                                    <small>Completion with: 8%</small>
-                                                                    <div class="progress progress-mini">
-                                                                        <div style="width: 8%;" class="progress-bar"></div>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="project-people">
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a5.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a3.jpg"></a>
-                                                                </td>
-                                                                <td class="project-actions">
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i>View </a>
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i>Edit </a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="project-status">
-                                                                    <span class="label label-primary">Active</span>
-                                                                </td>
-                                                                <td class="project-title">
-                                                                    <a href="project_detail.html">Letraset sheets containing</a>
-                                                                    <br />
-                                                                    <small>Created 22.07.2014</small>
-                                                                </td>
-                                                                <td class="project-completion">
-                                                                    <small>Completion with: 83%</small>
-                                                                    <div class="progress progress-mini">
-                                                                        <div style="width: 83%;" class="progress-bar"></div>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="project-people">
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a2.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a3.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a1.jpg"></a>
-                                                                </td>
-                                                                <td class="project-actions">
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i>View </a>
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i>Edit </a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="project-status">
-                                                                    <span class="label label-primary">Active</span>
-                                                                </td>
-                                                                <td class="project-title">
-                                                                    <a href="project_detail.html">Contrary to popular belief</a>
-                                                                    <br />
-                                                                    <small>Created 14.07.2014</small>
-                                                                </td>
-                                                                <td class="project-completion">
-                                                                    <small>Completion with: 97%</small>
-                                                                    <div class="progress progress-mini">
-                                                                        <div style="width: 97%;" class="progress-bar"></div>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="project-people">
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a4.jpg"></a>
-                                                                </td>
-                                                                <td class="project-actions">
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i>View </a>
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i>Edit </a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="project-status">
-                                                                    <span class="label label-primary">Active</span>
-                                                                </td>
-                                                                <td class="project-title">
-                                                                    <a href="project_detail.html">There are many variations of passages</a>
-                                                                    <br />
-                                                                    <small>Created 11.08.2014</small>
-                                                                </td>
-                                                                <td class="project-completion">
-                                                                    <small>Completion with: 28%</small>
-                                                                    <div class="progress progress-mini">
-                                                                        <div style="width: 28%;" class="progress-bar"></div>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="project-people">
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a7.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a6.jpg"></a>
-                                                                    <a href="">
-                                                                        <img alt="image" class="img-circle" src="img/a3.jpg"></a>
-                                                                </td>
-                                                                <td class="project-actions">
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i>View </a>
-                                                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i>Edit </a>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
@@ -784,7 +546,7 @@
         }
     </script>
 
-    <script>
+    <%--    <script>
         $('.chart').easyPieChart({
             barColor: '#f8ac59',
             //scaleColor: false,
@@ -842,9 +604,40 @@
                 toastr.error('25 días y contando...', 'DIA ZERO');
             }, 1300);
         });
+    </script>--%>
+
+    <script>
+        $(document).ready(function () {
+            var lineData = {
+                labels: <%= labelsJson %>,
+                datasets: [
+                    {
+                        label: "Ventas",
+                        backgroundColor: "rgba(26,179,148,0.5)",
+                        borderColor: "rgba(26,179,148,0.7)",
+                        pointBackgroundColor: "rgba(26,179,148,1)",
+                        pointBorderColor: "#fff",
+                        data: <%= ventasJson %>
+                },
+                    {
+                        label: "Presupuesto",
+                        backgroundColor: "rgba(220,220,220,0.5)",
+                        borderColor: "rgba(220,220,220,1)",
+                        pointBackgroundColor: "rgba(220,220,220,1)",
+                        pointBorderColor: "#fff",
+                        data: <%= presupuestoJson %>
+                }
+                ]
+            };
+
+            var lineOptions = { responsive: true };
+            var ctx = document.getElementById("lineChart").getContext("2d");
+            new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
+        });
     </script>
 
-        <!-- EayPIE -->
+
+    <!-- EayPIE -->
     <script src="js/plugins/easypiechart/jquery.easypiechart.js"></script>
 
     <!-- Sparkline -->
@@ -888,69 +681,96 @@
         }
     </script>
 
-    <script>
-        $('.chart').easyPieChart({
-            barColor: '#f8ac59',
-            //scaleColor: false,
-            scaleLength: 5,
-            liNuevasidth: 4,
-            size: 80
-        });
-
-        $('.chart2').easyPieChart({
-            barColor: '#1c84c6',
-            //scaleColor: false,
-            scaleLength: 5,
-            liNuevasidth: 4,
-            size: 80
-        });
-
+    <%--    <script>
         $(document).ready(function () {
             var lineData = {
-                labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"],
+                labels: <%= labelsJson %>,
                 datasets: [
                     {
-                        label: "Afiliados",
+                        label: "Ventas",
                         backgroundColor: "rgba(26,179,148,0.5)",
                         borderColor: "rgba(26,179,148,0.7)",
                         pointBackgroundColor: "rgba(26,179,148,1)",
                         pointBorderColor: "#fff",
-                        data: [48, 48, 60, 39, 56, 37, 30]
-                    },
-                    {
-                        label: "Empresas",
-                        backgroundColor: "rgba(220,220,220,0.5)",
-                        borderColor: "rgba(220,220,220,1)",
-                        pointBackgroundColor: "rgba(220,220,220,1)",
-                        pointBorderColor: "#fff",
-                        data: [65, 59, 40, 51, 36, 25, 40]
-                    }
+                        data: <%= ventasJson %>
+                },
+                {
+                    label: "Presupuesto",
+                    backgroundColor: "rgba(220,220,220,0.5)",
+                    borderColor: "rgba(220,220,220,1)",
+                    pointBackgroundColor: "rgba(220,220,220,1)",
+                    pointBorderColor: "#fff",
+                    data: <%= presupuestoJson %>
+                }
+                ]
+            };
+
+            var lineOptions = { responsive: true };
+            var ctx = document.getElementById("lineChart").getContext("2d");
+            new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
+        });
+    </script>--%>
+
+    <script>
+        $(document).ready(function () {
+            var lineData = {
+                labels: <%= labelsJson %>,
+            datasets: [
+                {
+                    label: "Ventas",
+                    backgroundColor: "rgba(26,179,148,0.5)",
+                    borderColor: "rgba(26,179,148,0.7)",
+                    pointBackgroundColor: "rgba(26,179,148,1)",
+                    pointBorderColor: "#fff",
+                    data: <%= ventasJson %> // números, no texto
+                },
+                {
+                    label: "Presupuesto",
+                    backgroundColor: "rgba(220,220,220,0.5)",
+                    borderColor: "rgba(220,220,220,1)",
+                    pointBackgroundColor: "rgba(220,220,220,1)",
+                    pointBorderColor: "#fff",
+                    data: <%= presupuestoJson %> // números, no texto
+                }
                 ]
             };
 
             var lineOptions = {
-                responsive: true
+                responsive: true,
+                maintainAspectRatio: false,
+                tooltips: {
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            var value = tooltipItem.yLabel;
+                            return value.toLocaleString('es-CO', {
+                                style: 'currency',
+                                currency: 'COP',
+                                minimumFractionDigits: 0
+                            });
+                        }
+                    }
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            callback: function (value) {
+                                return value.toLocaleString('es-CO', {
+                                    style: 'currency',
+                                    currency: 'COP',
+                                    minimumFractionDigits: 0
+                                });
+                            }
+                        }
+                    }]
+                }
             };
-
-
             var ctx = document.getElementById("lineChart").getContext("2d");
             new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
-
-            setTimeout(function () {
-                toastr.options = {
-                    closeButton: true,
-                    progressBar: true,
-                    showMethod: 'slideDown',
-                    timeOut: 4000
-                };
-                toastr.error('25 días y contando...', 'DIA ZERO');
-            }, 1300);
         });
     </script>
 
 </body>
 
 </html>
-
 
 

@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using MySql.Data.MySqlClient;
 
 namespace fpWebApp
 {
@@ -17,13 +21,13 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Reporte estrategias marketing");
+                    ValidarPermisos("Reporte estrategias");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
                         divMensaje.Visible = true;
                         paginasperfil.Visible = true;
-                       // divContenido.Visible = false;
+                        //divContenido.Visible = false;
                     }
                     else
                     {
@@ -45,16 +49,28 @@ namespace fpWebApp
                             //btnAgregar.Visible = true;
                         }
                     }
-                    ListaCargos();
-                    //ltTitulo.Text = "Agregar cargo";
+
+
+
+                    ListaRankingAsesores();
+                    ListaEstadosVentaLeads();
+                    ListaRankingCanalesVentaMesVigente();
+                    ListaRankingMejorAsesorMesPasado();
+                    ObtenerGraficaEstrategiasPorMes();
+                    ListaResumenEstrategiaUltimoMes();
+                    ListaCuantosLeadsEstrategiaAceptados();
+                    listaEstrategiasMarketingEncabezado();
+
+                    clasesglobales cg = new clasesglobales();
+
+
 
                     if (Request.QueryString.Count > 0)
                     {
-                        //rpCargos.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
-                            clasesglobales cg = new clasesglobales();
+
                             DataTable dt = cg.ConsultarCargosPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
@@ -65,7 +81,7 @@ namespace fpWebApp
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
-                            clasesglobales cg = new clasesglobales();
+                            //clasesglobales cg = new clasesglobales();
                             DataTable dt = cg.ValidarCargoTablas(int.Parse(Request.QueryString["deleteid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
@@ -134,14 +150,398 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void ListaCargos()
+
+        private void ListaRankingAsesores()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarCargos();
-            //rpCargos.DataSource = dt;
-            //rpCargos.DataBind();
+            try
+            {
+                DataTable dt = cg.ConsultarRankingAsesoresMesVigente();
+
+                DateTime fechaActual = DateTime.Now;
+                string mesActualConAnio = System.Globalization.CultureInfo
+                    .GetCultureInfo("es-ES")
+                    .DateTimeFormat
+                    .GetMonthName(fechaActual.Month)
+                    + " " + fechaActual.Year;
+
+                ltMesActual.Text = mesActualConAnio.ToString();
+
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    rptRankingAsesores.DataSource = dt;
+                    rptRankingAsesores.DataBind();
+                }
+                else
+                {
+                    rptRankingAsesores.DataSource = null;
+                    rptRankingAsesores.DataBind();
+                }
+
+                dt.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.ToString();
+                throw;
+            }
+        }
+
+        private void ListaResumenEstrategiaUltimoMes()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarResumenEstrategiasUltimoMes();
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                string topEstrategia = dt.Rows[0]["TopEstrategia"].ToString();
+                string diferencia = dt.Rows[0]["DiferenciaVsPresupuesto"].ToString();
+                string presupuesto = dt.Rows[0]["PresupuestoTotal"].ToString();
+                string ventas = dt.Rows[0]["VentasTotales"].ToString();
+
+                string html = $@"
+                            <span class='pull-right text-right'>
+                                <small>Resumen del último mes: <strong>Top: {topEstrategia} ({diferencia})</strong></small><br />
+                                <small>Presupuesto: {presupuesto} | Ventas: {ventas}</small>
+                            </span>";
+
+                litResumen.Text = html;
+            }
+            else
+            {
+                string html = @"
+                            <span class='pull-right text-right'>
+                                <small>Resumen del último mes: <strong>Top: Sin datos ($0)</strong></small><br />
+                                <small>Presupuesto: $0 | Ventas: $0</small>
+                            </span>";
+
+                litResumen.Text = html;
+            }
+
             dt.Dispose();
         }
+
+        private void ListaRankingMejorAsesorMesPasado()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarRankingAsesoresMesPasado();
+
+            DateTime fechaAnterior = DateTime.Now.AddMonths(-1);
+            string mesAnteriorConAnio = System.Globalization.CultureInfo
+                .GetCultureInfo("es-ES")
+                .DateTimeFormat
+                .GetMonthName(fechaAnterior.Month)
+                + " " + fechaAnterior.Year;
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                DataRow row = dt.Rows[0];
+
+                ltNomAsesorMesPasado.Text = row["Asesor"].ToString();
+                ltMes.Text = mesAnteriorConAnio;
+                ltCanalVenta.Text = row["CanalVenta"].ToString();
+                ltCantidadPlanes.Text = row["CantidadPlanesVendidos"].ToString() + " Planes vendidos";
+                ltValorVendido.Text = "$" + string.Format("{0:N0}", row["TotalVendido"]) + " vendido";
+
+                string archivoFoto = row["Foto"]?.ToString();
+                if (!string.IsNullOrWhiteSpace(archivoFoto))
+                {
+                    // Ruta completa hacia carpeta empleados
+                    imgAsesor.ImageUrl = "img/empleados/" + archivoFoto;
+                }
+            }
+            else
+            {
+                ltNomAsesorMesPasado.Text = "Sin datos";
+                ltMes.Text = mesAnteriorConAnio;
+                ltCanalVenta.Text = "N/A";
+                ltCantidadPlanes.Text = "0";
+                ltValorVendido.Text = "$0";
+                imgAsesor.ImageUrl = "img/a4.jpg";
+                // No se asigna imagen
+            }
+
+            dt?.Dispose();
+        }
+
+        private void ListaEstadosVentaLeads()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCantidadLeadsPorEstadosVenta();
+            DateTime fechaActual = DateTime.Now;
+            string mesActualConAnio = System.Globalization.CultureInfo
+             .GetCultureInfo("es-ES")
+             .DateTimeFormat
+             .GetMonthName(fechaActual.Month)
+             + " " + fechaActual.Year;
+            ltMesActualEV.Text = mesActualConAnio.ToString();
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    string estado = row["nombreEstado"].ToString();
+
+                    if (estado == "Caliente")
+                    {
+                        lblCalienteLeads.Text = row["cantidadLeads"].ToString();
+                        lblCalientePorcentaje.Text = row["porcentajeLeads"].ToString() + "%";
+                        lblCalienteVentas.Text = "$" + row["monto"].ToString();
+                    }
+                    else if (estado == "Tibio")
+                    {
+                        lblTibioLeads.Text = row["cantidadLeads"].ToString();
+                        lblTibioPorcentaje.Text = row["porcentajeLeads"].ToString() + "%";
+                        lblTibioVentas.Text = "$" + row["monto"].ToString();
+                    }
+                    else if (estado == "Frío")
+                    {
+                        lblFrioLeads.Text = row["cantidadLeads"].ToString();
+                        lblFrioPorcentaje.Text = row["porcentajeLeads"].ToString() + "%";
+                        lblFrioVentas.Text = "$" + row["monto"].ToString();
+                    }
+                }
+            }
+        }
+
+        private void ListaRankingCanalesVentaMesVigente()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarRankingCanalesVentaPorVenta();
+
+            if (dt.Rows.Count > 0)
+            {
+                DataRow canal = dt.Rows[0];
+                ltTeam.Text = "Equipo " + dt.Rows[0]["CanalVenta"].ToString();
+                int idCanalVenta = Convert.ToInt32(dt.Rows[0]["idCanalVenta"].ToString());
+
+                DataTable asesores = cg.ConsultarRankingCanalesVentaPorVentaPorIdCanal(idCanalVenta);
+                var sb = new StringBuilder();
+
+                if (asesores != null && asesores.Rows.Count > 0)
+                {
+                    foreach (DataRow row in asesores.Rows)
+                    {
+                        string foto = row["Foto"]?.ToString().Trim();
+                        string asesor = row["Asesor"]?.ToString().Trim();
+
+                        if (string.IsNullOrEmpty(foto))
+                        {
+                            sb.AppendFormat(
+                                "<a href='#'><img alt='{0}' title='{0}' class='img-circle' src='{1}' /></a>",
+                                HttpUtility.HtmlEncode(asesor),
+                                ResolveUrl("~/img/a4.jpg")
+                            );
+                            continue;
+                        }
+
+                        foto = foto.TrimStart('~', '/', '\\');
+
+                        string imageUrl = foto.StartsWith("/img/empleados/", StringComparison.OrdinalIgnoreCase)
+                            ? ResolveUrl("~/" + HttpUtility.UrlPathEncode(foto))
+                            : ResolveUrl("~/img/empleados/" + HttpUtility.UrlPathEncode(foto));
+
+                        sb.AppendFormat(
+                            "<a href='#'><img alt='{0}' title='{0}' class='img-circle' src='{1}' /></a>",
+                            HttpUtility.HtmlEncode(asesor),
+                            imageUrl
+                        );
+                    }
+                }
+
+                ltAsesores.Text = sb.ToString();
+
+                decimal ventas = Convert.ToDecimal(dt.Rows[0]["Ventas"], CultureInfo.InvariantCulture);
+
+                int estrategias = Convert.ToInt32(canal["Estrategias"]);
+                string ranking = canal["Ranking"].ToString();
+
+                decimal meta = 1000000m; // Meta de ejemplo
+                decimal porcentaje = ventas > 0 ? (ventas / meta * 100) : 0;
+
+                lblEstadoVentas.InnerText = $"{porcentaje:0}%";
+                progressBar.Style["width"] = $"{porcentaje:0}%";
+                lblEstrategias.Text = estrategias.ToString();
+                lblRanking.Text = string.IsNullOrEmpty(ranking) ? "-" : ranking;
+                lblVentas.Text = ventas.ToString("C0", CultureInfo.CurrentCulture);
+
+                ltDescripcion.Text =
+                $"Enfocados en resultados, el {ltTeam.Text} ha logrado posicionarse en el {ranking} lugar, " +
+                $"impulsando {estrategias} estrategias activas con una excelente gestión de recursos.";
+
+            }
+            else
+            {
+                lblEstadoVentas.InnerText = "0%";
+                progressBar.Style["width"] = "0%";
+                lblEstrategias.Text = "0";
+                lblRanking.Text = "-";
+                lblVentas.Text = "$0";
+            }
+
+        }
+
+        private void ListaCuantosLeadsEstrategiaAceptados()
+        {
+            try
+            {
+                ltCantidadLeadsAceptados.Text = "0";
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarCuantosLeadsEstrategiaAceptados();
+                int porcentaje = 0;
+                ltMediaVentasMesActual.Text = "0";
+                decimal mediaVentasMes = 0;
+                decimal ventasTotalesMesActual = 0;
+                if (dt.Rows.Count > 0)
+                {
+                    ltCantidadLeadsAceptados.Text = Convert.ToInt32(dt.Rows[0]["TotalContactosMes"]).ToString("N0");
+                    ltVentasTotales.Text = Convert.ToDecimal(dt.Rows[0]["TotalVentasAnio"]).ToString("C0", new System.Globalization.CultureInfo("es-CO"));
+                    ltVentasTotalesMesActual.Text = Convert.ToDecimal(dt.Rows[0]["TotalVentasMes"]).ToString("C0", new System.Globalization.CultureInfo("es-CO"));
+
+
+                    ventasTotalesMesActual = Convert.ToDecimal(dt.Rows[0]["TotalVentasMes"].ToString());
+                    int totalPresupuestoMes = Convert.ToInt32(dt.Rows[0]["TotalPresupuestoMes"].ToString());
+
+                    if (totalPresupuestoMes > 0) mediaVentasMes = ventasTotalesMesActual / totalPresupuestoMes;
+
+                    porcentaje = (int)Math.Round(mediaVentasMes * 100, MidpointRounding.AwayFromZero);
+
+                    ltMediaVentasMesActual.Text = porcentaje + "%";
+                    progressBarVentasMesActual.Attributes["style"] = "width: " + porcentaje + "%;";
+
+                }
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message;
+            }
+
+        }
+
+        public string labelsJson { get; set; }
+        public string presupuestoJson { get; set; }
+        public string ventasJson { get; set; }
+        private void ObtenerGraficaEstrategiasPorMes()
+        {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarEstrategiasMarketingValorMes();
+
+                if (dt.Rows.Count > 0)
+                {
+                    //Etiquetas para las fechas
+                    DateTime fechaActual = DateTime.Now;
+                    string mesActualConAnio = System.Globalization.CultureInfo
+                     .GetCultureInfo("es-ES")
+                     .DateTimeFormat
+                     .GetMonthName(fechaActual.Month)
+                     + " " + fechaActual.Year;
+                    ltMesActualGraf.Text = mesActualConAnio.ToString();
+
+                    string annioActual = fechaActual.Year.ToString();
+                    ltAnnioActual.Text = annioActual;
+                    //
+
+                    DataTable dt1 = cg.ConsultarCuantosLeadsEstrategiaAceptados();
+                    if (dt1.Rows.Count > 0)
+                    {
+                        decimal totalVentasAnio = Convert.ToDecimal(dt1.Rows[0]["TotalVentasAnio"].ToString());
+                        decimal TotalContactosVentasAnio = Convert.ToDecimal(dt1.Rows[0]["TotalContactosVentasAnio"].ToString());
+                        int TotalContactosAnio = Convert.ToInt32(dt1.Rows[0]["TotalcontactosAnio"].ToString());
+
+                        decimal mediaCuantosAnio = TotalContactosVentasAnio / TotalContactosAnio;
+
+                        int porcentaje = (int)Math.Round(mediaCuantosAnio * 100, MidpointRounding.AwayFromZero);
+
+                        ltMediaCuantosAnio.Text = porcentaje + "%";
+                        progressBarAnio.Attributes["style"] = "width: " + porcentaje + "%;";
+                    }
+
+
+                    var labels = new List<string>();
+                    var presupuestos = new List<decimal>();
+                    var ventas = new List<decimal>();
+
+                    var datosPorMes = dt.AsEnumerable()
+                        .GroupBy(r => Convert.ToDateTime(r["Mes"]).Month)
+                        .ToDictionary(
+                            g => g.Key,
+                            g => new
+                            {
+                                Presupuesto = g.Sum(x => Convert.ToDecimal(x["Presupuesto"])),
+                                Ventas = g.Sum(x => Convert.ToDecimal(x["Ventas"]))
+                            }
+                        );
+
+
+                    // Rellenar los 12 meses
+                    for (int mes = 1; mes <= 12; mes++)
+                    {
+                        string abreviado = new DateTime(DateTime.Now.Year, mes, 1)
+                            .ToString("MMM", new System.Globalization.CultureInfo("es-CO"));
+
+                        labels.Add(abreviado);
+
+                        if (datosPorMes.ContainsKey(mes))
+                        {
+                            presupuestos.Add(datosPorMes[mes].Presupuesto);
+                            ventas.Add(datosPorMes[mes].Ventas);
+                        }
+                        else
+                        {
+                            presupuestos.Add(0);
+                            ventas.Add(0);
+                        }
+                    }
+
+                    labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
+                    presupuestoJson = Newtonsoft.Json.JsonConvert.SerializeObject(presupuestos);
+                    ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message.ToString();
+            }
+        }
+
+
+        private void listaEstrategiasMarketingEncabezado()
+        {
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                DataTable dt = cg.ConsultarEstrategiaasMarketingEncabezado();
+
+                rpEstrategiasEncabezado.DataSource = dt;
+                rpEstrategiasEncabezado.DataBind();
+
+                dt.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message.ToString();
+            }
+        }
+
+        public class VentasCanal
+        {
+            public string CanalVenta { get; set; }
+            public int Estrategias { get; set; }
+            public decimal Ventas { get; set; }
+            public int Ranking { get; set; }
+        }
+
+
+
+
+
 
         protected void rpCargos_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
@@ -199,7 +599,37 @@ namespace fpWebApp
             }
             else
             {
+                //if (!ValidarCargos(txbNombreCargo.Text.ToString()))
+                //{
+                //    try
+                //    {
+                //        string respuesta = cg.InsertarCargo(txbNombreCargo.Text.ToString().Trim());
 
+                //        cg.InsertarLog(Session["idusuario"].ToString(), "cargos empleado", "Agrega", "El usuario agregó un nuevo cargo de empleado: " + txbNombreCargo.Text.ToString() + ".", "", "");
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        string mensajeExcepcionInterna = string.Empty;
+                //        Console.WriteLine(ex.Message);
+                //        if (ex.InnerException != null)
+                //        {
+                //            mensajeExcepcionInterna = ex.InnerException.Message;
+                //            Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
+                //        }
+                //        //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                //        //"<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                //        //"Excepción interna." +
+                //        //"</div>";
+                //    }
+                //    Response.Redirect("cargos");
+                //}
+                //else
+                //{
+                //    //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                //    //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                //    //    "Ya existe un cargo con ese nombre." +
+                //    //    "</div>";
+                //}
             }
         }
 
@@ -208,8 +638,8 @@ namespace fpWebApp
             try
             {
                 string consultaSQL = @"SELECT NombreCargo AS 'Nombre de Cargos'
-		                               FROM cargos
-		                               ORDER BY NombreCargo;";
+                                 FROM cargos
+                                 ORDER BY NombreCargo;";
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(consultaSQL);
@@ -243,6 +673,11 @@ namespace fpWebApp
             dt.Dispose();
 
             return strData;
+        }
+
+        protected void rpEstrategiasEncabezado_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+
         }
     }
 }
