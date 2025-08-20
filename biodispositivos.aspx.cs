@@ -73,12 +73,21 @@ namespace fpWebApp
 
         private void listaDispositivos()
         {
-            string strQuery = "SELECT * FROM acc_device";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatosArmatura(strQuery);
-            rpBiometricos.DataSource = dt;
-            rpBiometricos.DataBind();
-            dt.Dispose();
+
+            try
+            {
+                string strQuery = "SELECT * FROM acc_device";
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.TraerDatosArmatura(strQuery);
+                rpBiometricos.DataSource = dt;
+                rpBiometricos.DataBind();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message.ToString();                
+            }
+
         }
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)

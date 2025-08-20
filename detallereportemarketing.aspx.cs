@@ -17,7 +17,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Cargos");
+                    ValidarPermisos("Reporte estrategias");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -45,7 +45,8 @@ namespace fpWebApp
                             //btnAgregar.Visible = true;
                         }
                     }
-                    ListaCargos();
+                    listaEstrategias();
+                    //ListaCargos();
                     //ltTitulo.Text = "Agregar cargo";
 
                     if (Request.QueryString.Count > 0)
@@ -134,6 +135,41 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+
+        private void listaEstrategias()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEstrategiasMarketing();
+
+            //foreach (DataRow row in dt.Rows)
+            //{
+            //    row["Planes"] = ConvertirIdsANombres(row["Planes"].ToString(), dicPlanes);
+            //    row["CanalesVenta"] = ConvertirIdsANombres(row["CanalesVenta"].ToString(), dicCanales);
+            //}
+
+            //rpEstrategias.DataSource = dt;
+            //rpEstrategias.DataBind();
+
+            dt.Dispose();
+        }
+
+
+        private Dictionary<int, string> dicPlanes;
+        private Dictionary<int, string> dicCanales;
+
+        //private string ConvertirIdsANombres(string ids, Dictionary<int, string> diccionario)
+        //{
+        //    if (string.IsNullOrEmpty(ids)) return "";
+
+        //    var nombres = ids.Split(',')
+        //                     .Select(id => int.TryParse(id.Trim(), out int parsedId) && diccionario.ContainsKey(parsedId)
+        //                         ? diccionario[parsedId]
+        //                         : $"(ID {id})") // por si el id no existe
+        //                     .ToList();
+
+        //    return string.Join(", ", nombres);
+        //}
+
         private void ListaCargos()
         {
             clasesglobales cg = new clasesglobales();
@@ -203,32 +239,32 @@ namespace fpWebApp
             }
         }
 
-        protected void lbExportarExcel_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                string consultaSQL = @"SELECT NombreCargo AS 'Nombre de Cargos'
-		                               FROM cargos
-		                               ORDER BY NombreCargo;";
+        //protected void lbExportarExcel_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        string consultaSQL = @"SELECT NombreCargo AS 'Nombre de Cargos'
+        //                         FROM cargos
+        //                         ORDER BY NombreCargo;";
 
-                clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.TraerDatos(consultaSQL);
-                string nombreArchivo = $"CargosEmpleados_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+        //        clasesglobales cg = new clasesglobales();
+        //        DataTable dt = cg.TraerDatos(consultaSQL);
+        //        string nombreArchivo = $"CargosEmpleados_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
-                if (dt.Rows.Count > 0)
-                {
-                    cg.ExportarExcel(dt, nombreArchivo);
-                }
-                else
-                {
-                    Response.Write("<script>alert('No existen registros para esta consulta');</script>");
-                }
-            }
-            catch (Exception ex)
-            {
-                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
-            }
-        }
+        //        if (dt.Rows.Count > 0)
+        //        {
+        //            cg.ExportarExcel(dt, nombreArchivo);
+        //        }
+        //        else
+        //        {
+        //            Response.Write("<script>alert('No existen registros para esta consulta');</script>");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+        //    }
+        //}
 
         private string TraerData()
         {
