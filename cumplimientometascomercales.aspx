@@ -248,8 +248,6 @@
                 
             });
 
-            
-
             let claves = Object.keys(sumaPorSemana); 
             for (let i = 0; i < claves.length; i++) {
                 let clave = claves[i];
@@ -276,13 +274,15 @@
                 }
             }
 
-            let clavesMes = Object.keys(sumaPorMes);
-            for (let i = 0; i < clavesMes.length; i++) {
-                let clave = clavesMes[i];
-                const totalMes = sumaPorMes[clave];
+            //const fecha = new Date(evento.start);
+            //const nombreMesOpcion1 = fecha.toLocaleString('es-ES', { month: 'long' });
 
-                semanasDiv.innerHTML += `<h5>Mes ${parseInt(clave)+1}</h5><div class="progress progress-striped active"><div style="width: ${totalMes}%" class="progress-bar progress-bar-danger" aria-valuemax="100" aria-valuemin="0" aria-valuenow="${totalMes}" role="progressbar"><span class="font-bold">${totalMes}%</span></div></div>`;
-            }
+            let clavesMes = Object.keys(sumaPorMes);
+            let clave = clavesMes[0];
+            const totalMes = sumaPorMes[clave];
+
+            semanasDiv.innerHTML += `<h5>Mes ${parseInt(clave)+1}</h5><div class="progress progress-striped active"><div style="width: ${totalMes}%" class="progress-bar progress-bar-danger" aria-valuemax="100" aria-valuemin="0" aria-valuenow="${totalMes}" role="progressbar"><span class="font-bold">${totalMes}%</span></div></div>`;
+
         }
 
         function obtenerClaveSemana(fecha) {

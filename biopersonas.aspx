@@ -15,7 +15,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Personas</title>
+    <title>Fitness People | Personal Armatura</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
@@ -108,11 +108,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-person text-success m-r-sm"></i>Personas</h2>
+                    <h2><i class="fa fa-person text-success m-r-sm"></i>Personal Armatura</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Configuración</li>
-                        <li class="active"><strong>Personas</strong></li>
+                        <li class="active"><strong>Personal Armatura</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -141,7 +141,7 @@
 
                             <div class="ibox float-e-margins" runat="server" id="divContenido">
                                 <div class="ibox-title">
-                                    <h5>Lista de personas</h5>
+                                    <h5>Lista de Personal Armatura</h5>
                                     <div class="ibox-tools">
                                         <a class="collapse-link">
                                             <i class="fa fa-chevron-up"></i>
