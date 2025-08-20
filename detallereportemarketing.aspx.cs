@@ -146,51 +146,58 @@ namespace fpWebApp
 
         private void listaEstrategia( int idEstrategia)
         {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEstrategiaMarketingPorId(idEstrategia);
-            DataTable dt1 = cg.ConsultarCuantosLeadsEstrategiaAceptados();
 
-            DataTable dt2 = cg.ConsultarEstrategiaasMarketingEncabezado();
-
-            if (dt2 != null && dt2.Rows.Count > 0)
+            try
             {
-                DataRow[] rows = dt2.Select("IdEstrategia = " + idEstrategia);
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarEstrategiaMarketingPorId(idEstrategia);
+                DataTable dt1 = cg.ConsultarCuantosLeadsEstrategiaAceptados();
 
-                if (rows.Length > 0)                
-                    ltEstadoEstrategia.Text = rows[0]["Estado"].ToString();                
-                else                
-                    ltEstadoEstrategia.Text = "No encontrado";                
+                DataTable dt2 = cg.ConsultarEstrategiaasMarketingEncabezado();
+
+                if (dt2 != null && dt2.Rows.Count > 0)
+                {
+                    DataRow[] rows = dt2.Select("IdEstrategia = " + idEstrategia);
+
+                    if (rows.Length > 0)
+                        ltEstadoEstrategia.Text = rows[0]["Estado"].ToString();
+                    else
+                        ltEstadoEstrategia.Text = "No encontrado";
+                }
+
+                ltNombreEstrategia.Text = dt2.Rows[0]["NombreEstrategia"].ToString();
+                ltNombreUsuario.Text = dt.Rows[0]["NombreUsuario"].ToString();
+                DataTable dt3 = cg.ConsultarEstrategiaMarketingCuantos(idEstrategia);
+
+                if (dt3 != null && dt3.Rows.Count > 0)
+                {
+                    int eficienciaInt = (int)Math.Round(Convert.ToDecimal(dt3.Rows[0]["PorcentajeEfectividad"]));
+                    ltEficiencia.Text = eficienciaInt.ToString();
+                    progressEficiencia.Attributes["style"] = "width:" + eficienciaInt + "%;";
+                }
+                else
+                {
+                    ltEficiencia.Text = "0";
+                    progressEficiencia.Attributes["style"] = "width:0%;";
+                }
+
+                ltCantidadLeadsEstrategia.Text = dt3.Rows[0]["TotalContactos"].ToString();
+                ltCantidadLeadsAprobados.Text = dt3.Rows[0]["ContactosConPagoAprobado"].ToString();
+
+                DateTime fechaInicio = Convert.ToDateTime(dt.Rows[0]["FechaInicio"]);
+                DateTime fechaFin = Convert.ToDateTime(dt.Rows[0]["FechaFin"]);
+
+                ltFechaIni.Text = fechaInicio.ToString("dd.MM.yyyy");
+                ltFechaFin.Text = fechaFin.ToString("dd.MM.yyyy");
+                ltDescripcionEstrategia.Text = dt.Rows[0]["DescripcionEstrategia"].ToString();
+
+                dt.Dispose();
+
             }
-
-            ltNombreEstrategia.Text = dt2.Rows[0]["NombreEstrategia"].ToString();
-            ltNombreUsuario.Text = dt.Rows[0]["NombreUsuario"].ToString();
-            DataTable dt3 = cg.ConsultarEstrategiaMarketingCuantos(idEstrategia);
-
-            if (dt3 != null && dt3.Rows.Count > 0)
+            catch (Exception ex)
             {
-                int eficienciaInt = (int)Math.Round(Convert.ToDecimal(dt3.Rows[0]["PorcentajeEfectividad"]));
-                ltEficiencia.Text = eficienciaInt.ToString();
-                progressEficiencia.Attributes["style"] = "width:" + eficienciaInt + "%;";
+                string mensaje = ex.Message.ToString();
             }
-            else
-            {
-                ltEficiencia.Text = "0";
-                progressEficiencia.Attributes["style"] = "width:0%;";
-            }
-
-            ltCantidadLeadsEstrategia.Text = dt3.Rows[0]["TotalContactos"].ToString();
-            ltCantidadLeadsAprobados.Text = dt3.Rows[0]["ContactosConPagoAprobado"].ToString();
-
-            DateTime fechaInicio = Convert.ToDateTime(dt.Rows[0]["FechaInicio"]);
-            DateTime fechaFin = Convert.ToDateTime(dt.Rows[0]["FechaFin"]);
-
-            ltFechaIni.Text = fechaInicio.ToString("dd.MM.yyyy");
-            ltFechaFin.Text = fechaFin.ToString("dd.MM.yyyy");
-            ltDescripcionEstrategia.Text = dt.Rows[0]["DescripcionEstrategia"].ToString();
-
-
-
-            dt.Dispose();
         }
 
 
