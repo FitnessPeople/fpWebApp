@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -52,12 +54,12 @@ namespace fpWebApp
                         txbFechaFin.Attributes.Add("min", DateTime.Now.ToString("yyyy-MM-dd"));
                         txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd");
                     }
+
                     CargarDiccionarios();
                     listaEstrategias();
                     CargartiposEstrategias();
                     CargarPlanes();
                     ListaCanalesDeVenta();
-
 
                     ltTitulo.Text = "Agregar estrategia";
 
@@ -75,6 +77,10 @@ namespace fpWebApp
                                 ddlTipoEstrategias.SelectedIndex = ddlTipoEstrategias.Items.IndexOf(ddlTipoEstrategias.Items.FindByValue(dt.Rows[0]["idTipoEstrategia"].ToString()));
 
                                 hiddenEditor.Value = dt.Rows[0]["DescripcionEstrategia"].ToString();
+
+                                decimal ValorPresupuesto = Convert.ToDecimal(dt.Rows[0]["ValorPresupuesto"]);
+                                txbValorPresupuesto.Text = ValorPresupuesto.ToString("C0", new CultureInfo("es-CO"));
+
                                 txbFechaIni.Value = Convert.ToDateTime(dt.Rows[0]["FechaInicio"]).ToString("yyyy-MM-dd");
                                 txbFechaFin.Value = Convert.ToDateTime(dt.Rows[0]["FechaFin"]).ToString("yyyy-MM-dd");
 
@@ -261,6 +267,18 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarCanalesVenta();
 
+
+            DataRow[] filasFiltradas = dt.Select("idCanalVenta <> 1"); // Se excluye la opción 1 Ninguno
+
+            if (filasFiltradas.Length > 0)
+            {
+                dt = filasFiltradas.CopyToDataTable();
+            }
+            else
+            {
+                dt.Clear();
+            }
+
             chblCanales.DataSource = dt;
             chblCanales.DataTextField = "NombreCanalVenta";
             chblCanales.DataValueField = "idCanalVenta";
@@ -268,6 +286,7 @@ namespace fpWebApp
 
             dt.Dispose();
         }
+
 
         private string ConvertirIdsANombres(string ids, Dictionary<int, string> diccionario)
         {
@@ -388,7 +407,9 @@ namespace fpWebApp
                     string strInitData = TraerData();
                     try
                     {
-                        string respuesta = cg.ActualizarEstrategiaMarketing(Convert.ToInt32(Request.QueryString["editid"].ToString()), txbNombreEstrategia.Text, contenidoEditor, txbFechaIni.Value, txbFechaFin.Value, canalesObtenidos, Convert.ToInt32(ddlTipoEstrategias.SelectedItem.Value.ToString()), planesObtenidos, out salida, out mensaje);
+                        string respuesta = cg.ActualizarEstrategiaMarketing(Convert.ToInt32(Request.QueryString["editid"].ToString()), txbNombreEstrategia.Text,
+                        contenidoEditor, txbFechaIni.Value, txbFechaFin.Value, canalesObtenidos, Convert.ToInt32(ddlTipoEstrategias.SelectedItem.Value.ToString()),
+                        planesObtenidos, Convert.ToDecimal(Regex.Replace(txbValorPresupuesto.Text, @"[^\d]", "")), out salida, out mensaje);
 
                         if (salida)
                         {
@@ -522,7 +543,8 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.InsertarEstrategiaMarketing(txbNombreEstrategia.Text, contenidoEditor, txbFechaIni.Value, txbFechaFin.Value, canalesObtenidos,
-                             Convert.ToInt32(ddlTipoEstrategias.SelectedItem.Value.ToString()), planesObtenidos, Convert.ToInt32(Session["idUsuario"].ToString()), out salida, out mensaje);
+                             Convert.ToInt32(ddlTipoEstrategias.SelectedItem.Value.ToString()), planesObtenidos, Convert.ToInt32(Session["idUsuario"].ToString()),
+                             Convert.ToDecimal(Regex.Replace(txbValorPresupuesto.Text, @"[^\d]", "")), out salida, out mensaje);
                         if (salida)
                         {
                             string script = @"
