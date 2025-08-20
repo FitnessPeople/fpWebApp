@@ -140,11 +140,14 @@
                                                     <div class="col-lg-12">
                                                         <div class="m-b-md">
                                                             <a href="#" class="btn btn-white btn-xs pull-right">Editar estrategia</a>
-                                                            <h2>Estrategia 1</h2>
+                                                            <h2>
+                                                                <asp:Literal ID="ltNombreEstrategia" runat="server"></asp:Literal></h2>
                                                         </div>
                                                         <dl class="dl-horizontal">
                                                             <dt>Estado:</dt>
-                                                            <dd><span class="label label-primary">Active</span></dd>
+                                                            <dd><span class="label label-primary">
+                                                                <asp:Literal ID="ltEstadoEstrategia" runat="server"></asp:Literal>
+                                                                </span></dd>
                                                         </dl>
                                                     </div>
                                                 </div>
@@ -153,11 +156,15 @@
                                                         <dl class="dl-horizontal">
 
                                                             <dt>Creado por:</dt>
-                                                            <dd>Alex Smith</dd>
-                                                            <dt>Messages:</dt>
-                                                            <dd>162</dd>
-                                                            <dt>Client:</dt>
-                                                            <dd><a href="#" class="text-navy">Zender Company</a> </dd>
+                                                            <dd>
+                                                                <asp:Literal ID="ltNombreUsuario" runat="server"></asp:Literal>
+                                                            </dd>
+                                                            <dt>Total Leads:</dt>
+                                                            <dd>
+                                                                <asp:Literal ID="ltCantidadLeadsEstrategia" runat="server"></asp:Literal>
+                                                            </dd>
+                                                            <dt>Total Leads con pago:</dt>
+                                                            <dd><asp:Literal ID="ltCantidadLeadsAprobados" runat="server"></asp:Literal></dd>
                                                             <dt>Version:</dt>
                                                             <dd>v1.4.2 </dd>
                                                         </dl>
@@ -165,11 +172,15 @@
                                                     <div class="col-lg-7" id="cluster_info">
                                                         <dl class="dl-horizontal">
 
-                                                            <dt>Last Updated:</dt>
-                                                            <dd>16.08.2014 12:15:57</dd>
-                                                            <dt>Created:</dt>
-                                                            <dd>10.07.2014 23:36:57 </dd>
-                                                            <dt>Participants:</dt>
+                                                            <dt>Fecha Inicio:</dt>
+                                                            <dd>
+                                                                <asp:Literal ID="ltFechaIni" runat="server"></asp:Literal>
+                                                            </dd>
+                                                            <dt>Fecha Fin:</dt>
+                                                            <dd>
+                                                                <asp:Literal ID="ltFechaFin" runat="server"></asp:Literal>
+                                                            </dd>
+                                                            <dt>Mejores asesores:</dt>
                                                             <dd class="project-people">
                                                                 <a href="">
                                                                     <img alt="image" class="img-circle" src="img/a3.jpg"></a>
@@ -188,13 +199,16 @@
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <dl class="dl-horizontal">
-                                                            <dt>Completed:</dt>
-                                                            <dd>
-                                                                <div class="progress progress-striped active m-b-sm">
-                                                                    <div style="width: 60%;" class="progress-bar"></div>
-                                                                </div>
-                                                                <small>Project completed in <strong>60%</strong>. Remaining close the project, sign a contract and invoice.</small>
-                                                            </dd>
+                                                        <dt>Eficiencia:</dt>
+                                                        <dd>
+                                                            <div class="progress progress-striped active m-b-sm">
+                                                                <div id="progressEficiencia" runat="server" class="progress-bar progress-bar-success"></div>
+                                                            </div>
+                                                            <small>
+                                                                La estrategia completó con un 
+                                                                <strong><asp:Literal ID="ltEficiencia" runat="server"></asp:Literal>%</strong>
+                                                            </small>
+                                                        </dd>
                                                         </dl>
                                                     </div>
                                                 </div>
@@ -204,7 +218,7 @@
                                                             <div class="panel-heading">
                                                                 <div class="panel-options">
                                                                     <ul class="nav nav-tabs">
-                                                                        <li class="active"><a href="#tab-1" data-toggle="tab">Users messages</a></li>
+                                                                        <li class="active"><a href="#tab-1" data-toggle="tab">Leads gestionaos</a></li>
                                                                         <li class=""><a href="#tab-2" data-toggle="tab">Last activity</a></li>
                                                                     </ul>
                                                                 </div>
@@ -481,10 +495,9 @@
                                 <div class="col-lg-3">
                                     <div class="wrapper wrapper-content project-manager">
                                         <h4>Descripción de la estrategia</h4>
-                                        <img src="img/zender_logo.png" class="img-responsive">
+                                        <%--<img src="img/zender_logo.png" class="img-responsive">--%>
                                         <p class="small">
-                                            There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look
-                                            even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing
+                                            <asp:Literal ID="ltDescripcionEstrategia" runat="server"></asp:Literal>
                                         </p>
                                         <p class="small font-bold">
                                             <span><i class="fa fa-circle text-warning"></i>High priority</span>

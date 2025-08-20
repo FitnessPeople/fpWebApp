@@ -546,6 +546,13 @@ namespace fpWebApp
                     else
                         lbl.Attributes["class"] = "label label-secondary";
                 }
+
+                if (ViewState["CrearModificar"].ToString() == "1")
+                {
+                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("href", "estrategiasmarketing?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Visible = true;
+                }
             }
         }
 
@@ -695,7 +702,6 @@ namespace fpWebApp
 
             return strData;
         }
-
    
     }
 }

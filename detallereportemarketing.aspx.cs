@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net.Cache;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -45,12 +46,19 @@ namespace fpWebApp
                             //btnAgregar.Visible = true;
                         }
                     }
-                    listaEstrategias();
                     //ListaCargos();
                     //ltTitulo.Text = "Agregar cargo";
 
                     if (Request.QueryString.Count > 0)
                     {
+                        if (Request.QueryString["idEstrategia"] != null)
+                        {
+                            Session["idEstrategia"] = Request.QueryString["idEstrategia"].ToString();
+                            listaEstrategia(Convert.ToInt32(Session["idEstrategia"].ToString()));
+
+                        }
+
+
                         //rpCargos.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
@@ -102,7 +110,7 @@ namespace fpWebApp
                                 }
                                 dt1.Dispose();
                             }
-                        }
+                        }                    
                     }
                 }
                 else
@@ -136,19 +144,51 @@ namespace fpWebApp
         }
 
 
-        private void listaEstrategias()
+        private void listaEstrategia( int idEstrategia)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEstrategiasMarketing();
+            DataTable dt = cg.ConsultarEstrategiaMarketingPorId(idEstrategia);
+            DataTable dt1 = cg.ConsultarCuantosLeadsEstrategiaAceptados();
 
-            //foreach (DataRow row in dt.Rows)
-            //{
-            //    row["Planes"] = ConvertirIdsANombres(row["Planes"].ToString(), dicPlanes);
-            //    row["CanalesVenta"] = ConvertirIdsANombres(row["CanalesVenta"].ToString(), dicCanales);
-            //}
+            DataTable dt2 = cg.ConsultarEstrategiaasMarketingEncabezado();
 
-            //rpEstrategias.DataSource = dt;
-            //rpEstrategias.DataBind();
+            if (dt2 != null && dt2.Rows.Count > 0)
+            {
+                DataRow[] rows = dt2.Select("IdEstrategia = " + idEstrategia);
+
+                if (rows.Length > 0)                
+                    ltEstadoEstrategia.Text = rows[0]["Estado"].ToString();                
+                else                
+                    ltEstadoEstrategia.Text = "No encontrado";                
+            }
+
+            ltNombreEstrategia.Text = dt2.Rows[0]["NombreEstrategia"].ToString();
+            ltNombreUsuario.Text = dt.Rows[0]["NombreUsuario"].ToString();
+            DataTable dt3 = cg.ConsultarEstrategiaMarketingCuantos(idEstrategia);
+
+            if (dt3 != null && dt3.Rows.Count > 0)
+            {
+                int eficienciaInt = (int)Math.Round(Convert.ToDecimal(dt3.Rows[0]["PorcentajeEfectividad"]));
+                ltEficiencia.Text = eficienciaInt.ToString();
+                progressEficiencia.Attributes["style"] = "width:" + eficienciaInt + "%;";
+            }
+            else
+            {
+                ltEficiencia.Text = "0";
+                progressEficiencia.Attributes["style"] = "width:0%;";
+            }
+
+            ltCantidadLeadsEstrategia.Text = dt3.Rows[0]["TotalContactos"].ToString();
+            ltCantidadLeadsAprobados.Text = dt3.Rows[0]["ContactosConPagoAprobado"].ToString();
+
+            DateTime fechaInicio = Convert.ToDateTime(dt.Rows[0]["FechaInicio"]);
+            DateTime fechaFin = Convert.ToDateTime(dt.Rows[0]["FechaFin"]);
+
+            ltFechaIni.Text = fechaInicio.ToString("dd.MM.yyyy");
+            ltFechaFin.Text = fechaFin.ToString("dd.MM.yyyy");
+            ltDescripcionEstrategia.Text = dt.Rows[0]["DescripcionEstrategia"].ToString();
+
+
 
             dt.Dispose();
         }
