@@ -530,6 +530,27 @@ namespace fpWebApp
             }
         }
 
+        protected void rpEstrategiasEncabezado_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                DataRowView row = (DataRowView)e.Item.DataItem;
+                string estado = row["Estado"].ToString();
+
+                var lbl = (System.Web.UI.HtmlControls.HtmlGenericControl)e.Item.FindControl("lblEstado");
+
+                if (lbl != null) 
+                {
+                    if (estado == "Activo")
+                        lbl.Attributes["class"] = "label label-primary";
+                    else
+                        lbl.Attributes["class"] = "label label-secondary";
+                }
+            }
+        }
+
+
+
         public class VentasCanal
         {
             public string CanalVenta { get; set; }
@@ -675,9 +696,6 @@ namespace fpWebApp
             return strData;
         }
 
-        protected void rpEstrategiasEncabezado_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-
-        }
+   
     }
 }

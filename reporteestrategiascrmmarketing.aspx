@@ -425,11 +425,12 @@
                                                         </HeaderTemplate>
                                                         <ItemTemplate>
                                                             <tr>
-                                                                <td class="project-status">
-                                                                    <span class="label label-primary">
-                                                                        <%# Eval("Estado") %> 
-                                                                    </span>
-                                                                </td>
+<td class="project-status">
+    <span id="lblEstado" runat="server">
+        <%# Eval("Estado") %>
+    </span>
+</td>
+
                                                                 <td class="project-title">
                                                                     <a href="detallereportemarketing">
                                                                         <%# Eval("NombreEstrategia") %> 
@@ -455,8 +456,10 @@
                                                                     <a href=""><img alt="image" class="img-circle" src="img/a5.jpg"></a>
                                                                 </td>
                                                                 <td class="project-actions">
-                                                                    <a href="detallereportemarketing" runat="server" id="btnVer" class="btn btn-white btn-sm" title="Ver"><i class="fa-solid fa-eye"></i></a>
-                                                                    <a href="#" class="btn btn-white btn-sm" title="Editar"><i class="fa fa-pencil"></i></a>
+                                                                    <a href='<%# "detallereportemarketing.aspx?idEstrategia=" + Eval("idEstrategia") %>' 
+                                                                       class="btn btn-white btn-sm" title="Ver"><i class="fa-solid fa-eye"></i>
+                                                                    </a>
+                                                                    <a class="btn btn-white btn-sm" id="btnEditar" runat="server" title="Editar"><i class="fa fa-pencil"></i></a>
                                                                 </td>
                                                             </tr>
                                                         </ItemTemplate>
