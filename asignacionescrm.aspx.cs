@@ -29,7 +29,8 @@ namespace fpWebApp
                     {
                         CargarAsesores();
 
-                        CargarCanalesVenta();
+                        //CargarCanalesVenta();
+                        CargarSedes();
                         if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
                         {
                             listaAfiliados("Todas");
@@ -82,21 +83,44 @@ namespace fpWebApp
         }
 
 
-        private void CargarCanalesVenta()
+        //private void CargarCanalesVenta()
+        //{
+        //    ddlCanalVenta.Items.Clear();
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = new DataTable();
+
+        //    if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
+        //    {
+        //        dt = cg.ConsultarCanalesVenta();
+        //    }
+        //    else
+        //    {
+        //        dt = cg.ConsultarCanalesVentaPorId(Convert.ToInt32(Session["idCanalVenta"].ToString()));
+        //    }
+
+        //    ddlCanalVenta.DataSource = dt;
+        //    ddlCanalVenta.DataBind();
+
+        //    dt.Dispose();
+        //}
+
+        private void CargarSedes()
         {
-            ddlCanalVenta.Items.Clear();
+            //ddlCanalVenta.Items.Clear();
             clasesglobales cg = new clasesglobales();
             DataTable dt = new DataTable();
 
             if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
             {
-                dt = cg.ConsultarCanalesVenta();
+                dt = cg.ConsultaCargarSedes("Gimnasio");
             }
             else
             {
-                dt = cg.ConsultarCanalesVentaPorId(Convert.ToInt32(Session["idCanalVenta"].ToString()));
+                dt = cg.ConsultaCargarSedesPorId(Convert.ToInt32(Session["idSede"].ToString()), "Gimnasio");
             }
 
+            ddlCanalVenta.DataTextField = "NombreSede";
+            ddlCanalVenta.DataValueField = "idSede";
             ddlCanalVenta.DataSource = dt;
             ddlCanalVenta.DataBind();
 
@@ -176,7 +200,8 @@ namespace fpWebApp
         {
             gvAfiliados.PageIndex = e.NewPageIndex;
 
-            CargarCanalesVenta();
+            //CargarCanalesVenta();
+            CargarSedes();
             if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
             {
                 listaAfiliados("Todas");
@@ -330,7 +355,8 @@ namespace fpWebApp
             }
 
             // Recargar datos
-            CargarCanalesVenta();
+            //CargarCanalesVenta();
+            CargarSedes();
             if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
             {
                 listaAfiliados("Todas");
@@ -456,14 +482,15 @@ namespace fpWebApp
 
         protected void ddlCanalVenta_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
-            {
-                listaAfiliados("Todas");
-            }
-            else
-            {
-                listaAfiliados(Session["idSede"].ToString());
-            }
+            //if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
+            //{
+            //    listaAfiliados("Todas");
+            //}
+            //else
+            //{
+            //    listaAfiliados(Session["idSede"].ToString());
+            //}
+            listaAfiliados(ddlCanalVenta.SelectedItem.Value.ToString());
         }
     }
 }
