@@ -156,36 +156,29 @@
                                                 <div class="form-group">
                                                     <div class="row">
                                                         <div class="col-lg-6">
-                                                            <label>Nombre(s):</label>
-                                                            <asp:TextBox ID="txbNombreContacto" runat="server"
-                                                                CssClass="form-control input-sm" placeholder="Nombre(s)"></asp:TextBox>
-                                                            <%--<asp:RequiredFieldValidator ID="rfvNombreContacto" runat="server"
-                                                                ErrorMessage="* Campo requerido"
-                                                                ControlToValidate="txbNombreContacto" ValidationGroup="agregar"
-                                                                CssClass="font-bold text-danger"></asp:RequiredFieldValidator>--%>
+                                                            <label>Documento:</label>
+                                                            <asp:TextBox ID="txbDocumento" ClientIDMode="Static" CssClass="form-control input-sm" runat="server" placeholder="#" autocomplete="off" spellcheck="false"></asp:TextBox>
                                                         </div>
                                                         <div class="col-lg-6">
-                                                            <label>Apellidos(s):</label>
-                                                            <asp:TextBox ID="txbApellidoContacto" runat="server"
-                                                                CssClass="form-control input-sm" placeholder="Apellido(s)"></asp:TextBox>
+                                                            <label>Tipo de Documento:</label>
+                                                            <asp:DropDownList ID="ddlTipoDocumento" runat="server"
+                                                                AppendDataBoundItems="true" DataTextField="TipoDocumento"
+                                                                DataValueField="idTipoDoc" CssClass="form-control input-sm m-b">
+                                                            </asp:DropDownList>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="row">
                                                         <div class="col-lg-6">
-                                                            <label>Tipo de Documento:</label>
-                                                            <asp:DropDownList ID="ddlTipoDocumento" runat="server"
-                                                                AppendDataBoundItems="true" DataTextField="TipoDocumento"
-                                                                DataValueField="idTipoDoc" CssClass="form-control input-sm m-b">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                            </asp:DropDownList>
+                                                            <label>Nombre(s):</label>
+                                                            <asp:TextBox ID="txbNombreContacto" runat="server"
+                                                                CssClass="form-control input-sm" placeholder="Nombre(s)"></asp:TextBox>
                                                         </div>
                                                         <div class="col-lg-6">
-                                                            <label>Documento:</label>
-                                                            <asp:TextBox ID="txbDocumento" CssClass="form-control input-sm"
-                                                                runat="server" placeholder="Nro. Documento"
-                                                                autocomplete="off" spellcheck="false"></asp:TextBox>
+                                                            <label>Apellidos(s):</label>
+                                                            <asp:TextBox ID="txbApellidoContacto" runat="server"
+                                                                CssClass="form-control input-sm" placeholder="Apellido(s)"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -496,6 +489,57 @@
     <!-- Page-Level Scripts -->
     <script>
         $('.footable').footable();
+    </script>
+    
+    <script>
+        $(document).ready(function () {
+            $('#txbDocumento').on('change blur', function () {
+                var documento = $(this).val().trim();
+                if (documento.length === 0) return;
+
+                var url = 'https://pqrdsuperargo.supersalud.gov.co/api/api/adres/0/' + documento;
+
+                // Limpia primero los campos
+                $('#txbNombreContacto').val('');
+                $('#txbApellidoContacto').val('');
+                // $('#txaObservaciones').val('Consultando...');
+
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function (data) {
+                        // Nombres
+                        var nombreCompleto = [data.nombre, data.s_nombre].filter(Boolean).join(' ').toUpperCase();
+                        var apellidoCompleto = [data.apellido, data.s_apellido].filter(Boolean).join(' ').toUpperCase();
+
+                        $('#txbNombreContacto').val(nombreCompleto);
+                        $('#txbApellidoContacto').val(apellidoCompleto);
+
+                        //$('#txbEdad').val((data.edad != null ? data.edad + ' años' : ''));
+                        //$('#txbFecNac').val((data.fecha_nacimiento));
+                        //$('#ddlGenero').val(data.sexo);
+
+                        // Campos restantes (omitimos nombre y apellidos)
+                        //    var observaciones = `
+                        //    Nro. Documento: ${data.numero_doc}
+                        //    Sexo: ${data.sexo == 1 ? 'Masculino' : 'Femenino'}
+                        //    Correo: ${data.correo || '-'}
+                        //    Municipio ID: ${data.municipio_id}
+                        //    Departamento ID: ${data.departamento_id}
+                        //    EPS: ${data.eps}
+                        //    Tipo de Afiliado: ${data.tipo_de_afiliado}
+                        //    Estado Afiliación: ${data.estado_afiliacion}
+                        //`   .trim();
+
+                        //    $('#txaObservaciones').val(observaciones);
+                    },
+                    error: function (xhr, status, error) {
+                        $('#txaObservaciones').val('Error al consultar la información.');
+                        console.error("Error:", error);
+                    }
+                });
+            });
+        });
     </script>
 
 </body>

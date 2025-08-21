@@ -52,7 +52,7 @@
         function changeClass() {
             var element1 = document.querySelector("#reporteestrategiascrmmarketing");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#CRM");
+            var element2 = document.querySelector("#crm");
             element2.classList.remove("collapse");
         }
     </script>
