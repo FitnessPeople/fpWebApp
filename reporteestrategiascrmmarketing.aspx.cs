@@ -500,7 +500,26 @@ namespace fpWebApp
                     labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
                     presupuestoJson = Newtonsoft.Json.JsonConvert.SerializeObject(presupuestos);
                     ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
+                }
+                else
+                {
+                    var labels = new List<string>();
+                    var presupuestos = new List<decimal>();
+                    var ventas = new List<decimal>();
 
+                    for (int mes = 1; mes <= 12; mes++)
+                    {
+                        string abreviado = new DateTime(DateTime.Now.Year, mes, 1)
+                            .ToString("MMM", new System.Globalization.CultureInfo("es-CO"));
+
+                        labels.Add(abreviado);
+                        presupuestos.Add(0);
+                        ventas.Add(0);
+                    }
+
+                    labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
+                    presupuestoJson = Newtonsoft.Json.JsonConvert.SerializeObject(presupuestos);
+                    ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
                 }
 
             }

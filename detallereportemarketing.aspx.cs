@@ -55,6 +55,7 @@ namespace fpWebApp
                         {
                             Session["idEstrategia"] = Request.QueryString["idEstrategia"].ToString();
                             listaEstrategia(Convert.ToInt32(Session["idEstrategia"].ToString()));
+                            ListaContactosPorUsuario();
 
                         }
 
@@ -181,6 +182,9 @@ namespace fpWebApp
                     progressEficiencia.Attributes["style"] = "width:0%;";
                 }
 
+                DateTime fechaCreacion = Convert.ToDateTime(dt.Rows[0]["FechaCreacion"]);
+                ltFechaCreacion.Text = fechaCreacion.ToString("dd.MM.yyyy");
+
                 ltCantidadLeadsEstrategia.Text = dt3.Rows[0]["TotalContactos"].ToString();
                 ltCantidadLeadsAprobados.Text = dt3.Rows[0]["ContactosConPagoAprobado"].ToString();
 
@@ -225,7 +229,20 @@ namespace fpWebApp
             //rpCargos.DataBind();
             dt.Dispose();
         }
+        private void ListaContactosPorUsuario()
+        {
 
+            int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
+            decimal valorTotal = 0;
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarContactosCRMPorUsuario(idUsuario, out valorTotal);
+
+            rpContactosCRM.DataSource = dt;
+            rpContactosCRM.DataBind();
+
+            //ltValorTotal.Text = valorTotal.ToString("C0");
+            dt.Dispose();
+        }
         protected void rpCargos_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
@@ -291,8 +308,8 @@ namespace fpWebApp
         //    try
         //    {
         //        string consultaSQL = @"SELECT NombreCargo AS 'Nombre de Cargos'
-		      //                         FROM cargos
-		      //                         ORDER BY NombreCargo;";
+        //                         FROM cargos
+        //                         ORDER BY NombreCargo;";
 
         //        clasesglobales cg = new clasesglobales();
         //        DataTable dt = cg.TraerDatos(consultaSQL);
@@ -312,7 +329,85 @@ namespace fpWebApp
         //        Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
         //    }
         //}
+        protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                DataRowView row = (DataRowView)e.Item.DataItem;
 
+                HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+
+                // Obtener documento del afiliado desde el campo del Repeater
+                int documentoAfiliado;
+                if (int.TryParse(row["DocumentoAfiliado"].ToString(), out documentoAfiliado))
+                {
+                    clasesglobales cg = new clasesglobales();
+                    DataTable dtAfiliado = cg.ConsultarAfiliadoPorDocumento(documentoAfiliado);
+
+                    if (dtAfiliado.Rows.Count > 0)
+                    {
+                        int idAfiliado = Convert.ToInt32(dtAfiliado.Rows[0]["idAfiliado"]);
+                        DataTable dtEstadoActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+
+                        // Encontrar los tres botones
+                        //HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                        //HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                        HtmlAnchor btnNuevoAfiliado = (HtmlAnchor)e.Item.FindControl("btnNuevoAfiliado");
+
+                        // Si el afiliado tiene plan activo, ocultar todos los botones
+                        if (dtEstadoActivo.Rows.Count > 0)
+                        {
+                            if (btnEditar != null) btnEditar.Visible = false;
+                            if (btnEliminar != null) btnEliminar.Visible = false;
+                            if (btnNuevoAfiliado != null) btnNuevoAfiliado.Visible = false;
+                        }
+                        else
+                        {
+                            // Mostrar botones solo si no tiene plan activo y según permisos
+                            if (ViewState["CrearModificar"].ToString() == "1" && btnEditar != null)
+                            {
+                                btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + row.Row[0].ToString());
+                                btnEditar.Visible = true;
+                            }
+
+                            if (ViewState["Borrar"].ToString() == "1" && btnEliminar != null)
+                            {
+                                btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + row.Row[0].ToString());
+                                btnEliminar.Visible = true;
+                            }
+
+                            if (btnNuevoAfiliado != null)
+                            {
+                                // Este botón se muestra sin permisos adicionales
+                                btnNuevoAfiliado.Visible = true;
+                            }
+                        }
+                    }
+                }
+
+                // Manejamos la fecha de creación para mostrar el tiempo transcurrido
+                if (row["FechaCreacion"] != DBNull.Value)
+                {
+                    DateTime fechaPrimerContacto = Convert.ToDateTime(row["FechaCreacion"]);
+                    TimeSpan diferencia = DateTime.Now - fechaPrimerContacto;
+
+                    string leyenda = "";
+                    if (diferencia.TotalMinutes < 1)
+                        leyenda = "Hace menos de un minuto";
+                    else if (diferencia.TotalMinutes < 60)
+                        leyenda = $"Hace {(int)diferencia.TotalMinutes} minuto{((int)diferencia.TotalMinutes == 1 ? "" : "s")}";
+                    else if (diferencia.TotalHours < 24)
+                        leyenda = $"Hace {(int)diferencia.TotalHours} hora{((int)diferencia.TotalHours == 1 ? "" : "s")}";
+                    else
+                        leyenda = $"Hace {(int)diferencia.TotalDays} día{((int)diferencia.TotalDays == 1 ? "" : "s")}";
+
+                    Literal ltTiempo = (Literal)e.Item.FindControl("ltTiempoTranscurrido");
+                    if (ltTiempo != null)
+                        ltTiempo.Text = leyenda;
+                }
+            }
+        }
         private string TraerData()
         {
             clasesglobales cg = new clasesglobales();
