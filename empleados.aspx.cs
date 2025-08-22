@@ -67,9 +67,18 @@ namespace fpWebApp
         }
 
         private void listaEmpleados()
-        {         
+        {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEmpleados(); 
+            DataTable dt = new DataTable();
+            if (Session["idSede"].ToString() == "11") // Usuario administrativo
+            { 
+                dt = cg.ConsultarEmpleados();
+            }
+            else
+            {
+                dt = cg.ConsultarEmpleadosPorSede(Session["idSede"].ToString());
+            }
+            
             rpEmpleados.DataSource = dt;
             rpEmpleados.DataBind();
             dt.Dispose();

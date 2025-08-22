@@ -221,36 +221,6 @@ namespace fpWebApp
             return rta;
         }
 
-        private bool ExisteEmail(string strEmail)
-        {
-            bool rta = false;
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarExisteEmailEmpleado(strEmail);
-
-            if (dt.Rows.Count > 0)
-            {
-                rta = true;
-            }
-
-            dt.Dispose();
-            return rta;
-        }
-
-        private bool ExisteTelefono(string strTelefono)
-        {
-            bool rta = false;
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarExisteTelEmpleado(strTelefono);
-
-            if (dt.Rows.Count > 0)
-            {
-                rta = true;
-            }
-
-            dt.Dispose();
-            return rta;
-        }
-
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             // Validar si existe por Cedula, Email y/o Telefono
@@ -272,95 +242,81 @@ namespace fpWebApp
             }
             else
             {
-                //if (ExisteEmail(txbEmail.Text.ToString().Trim()))
-                //{
-                //    divMensaje2.Visible = true;
-                //}
-                //else
-                //{
-                    //if (ExisteTelefono(txbTelefono.Text.ToString().Trim()))
-                    //{
-                    //    divMensaje3.Visible = true;
-                    //}
-                    //else
-                    //{
-                        string strFilename = "";
-                        HttpPostedFile postedFile = Request.Files["fileFoto"];
+                string strFilename = "";
+                HttpPostedFile postedFile = Request.Files["fileFoto"];
 
-                        if (postedFile != null && postedFile.ContentLength > 0)
-                        {
-                            //Save the File.
-                            string filePath = Server.MapPath("img//empleados//") + Path.GetFileName(postedFile.FileName);
-                            postedFile.SaveAs(filePath);
-                            strFilename = postedFile.FileName;
-                        }
+                if (postedFile != null && postedFile.ContentLength > 0)
+                {
+                    //Save the File.
+                    string filePath = Server.MapPath("img//empleados//") + Path.GetFileName(postedFile.FileName);
+                    postedFile.SaveAs(filePath);
+                    strFilename = postedFile.FileName;
+                }
 
-                        try
-                        {
-                            clasesglobales cg = new clasesglobales();
-                            string mensaje = cg.InsertarNuevoEmpleado(txbDocumento.Text.ToString(), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
-                                txbNombre.Text.ToString(), txbTelefono.Text.ToString(), txbTelefonoCorp.Text.ToString(), txbEmail.Text.ToString(), 
-                                txbEmailCorp.Text.ToString(), txbDireccion.Text.ToString(),
-                                Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), txbFechaNac.Text.ToString(), strFilename, txbContrato.Text.ToString(),
-                                ddlTipoContrato.SelectedItem.Value.ToString(), Convert.ToInt32(ddlempresasFP.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), txbFechaInicio.Text.ToString(), txbFechaFinal.Text.ToString(),
-                                Convert.ToInt32(Regex.Replace(txbSueldo.Text, @"[^\d]", "")), ddlGrupo.SelectedItem.Value.ToString(), Convert.ToInt32(ddlEps.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(ddlFondoPension.SelectedItem.Value.ToString()), Convert.ToInt32(ddlArl.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(ddlCajaComp.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCesantias.SelectedItem.Value.ToString()), "Activo",
-                                Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()));
+                try
+                {
+                    clasesglobales cg = new clasesglobales();
+                    string mensaje = cg.InsertarNuevoEmpleado(txbDocumento.Text.ToString(), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
+                        txbNombre.Text.ToString(), txbTelefono.Text.ToString(), txbTelefonoCorp.Text.ToString(), txbEmail.Text.ToString(), 
+                        txbEmailCorp.Text.ToString(), txbDireccion.Text.ToString(),
+                        Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), txbFechaNac.Text.ToString(), strFilename, txbContrato.Text.ToString(),
+                        ddlTipoContrato.SelectedItem.Value.ToString(), Convert.ToInt32(ddlempresasFP.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), txbFechaInicio.Text.ToString(), txbFechaFinal.Text.ToString(),
+                        Convert.ToInt32(Regex.Replace(txbSueldo.Text, @"[^\d]", "")), ddlGrupo.SelectedItem.Value.ToString(), Convert.ToInt32(ddlEps.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(ddlFondoPension.SelectedItem.Value.ToString()), Convert.ToInt32(ddlArl.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(ddlCajaComp.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCesantias.SelectedItem.Value.ToString()), "Activo",
+                        Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()));
 
-                            if (mensaje == "OK")
-                            {
-                                cg.InsertarLog(Session["idusuario"].ToString(), "empleados", "Agrega", "El usuario agregó un nuevo empleado con documento: " + txbDocumento.Text.ToString() + ".", "", "");
+                    if (mensaje == "OK")
+                    {
+                        cg.InsertarLog(Session["idusuario"].ToString(), "empleados", "Agrega", "El usuario agregó un nuevo empleado con documento: " + txbDocumento.Text.ToString() + ".", "", "");
 
-                                string script = @"
-                                    Swal.fire({
-                                        title: 'El empleado se creo de forma exitosa',
-                                        text: '',
-                                        icon: 'success',
-                                        timer: 3000, // 3 segundos
-                                        showConfirmButton: false,
-                                        timerProgressBar: true
-                                    }).then(() => {
-                                        window.location.href = 'empleados';
-                                    });
-                                    ";
-                                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                            }
-                            else
-                            {
-                                string script = @"
-                                    Swal.fire({
-                                        title: 'Error',
-                                        text: '" + mensaje.Replace("'", "\\'") + @"',
-                                        icon: 'error'
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
+                        string script = @"
+                            Swal.fire({
+                                title: 'El empleado se creo de forma exitosa',
+                                text: '',
+                                icon: 'success',
+                                timer: 3000, // 3 segundos
+                                showConfirmButton: false,
+                                timerProgressBar: true
+                            }).then(() => {
+                                window.location.href = 'empleados';
+                            });
+                            ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                    }
+                    else
+                    {
+                        string script = @"
+                            Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
                                             
-                                        }
-                                    });
-                                ";
-                                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-                            }
+                                }
+                            });
+                        ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                    }
 
                                                         
-                        }
-                        catch (SqlException ex)
-                        {
-                            string script = @"
-                                Swal.fire({
-                                    title: 'Error',
-                                    text: 'Ha ocurrido un error inesperado. " + ex.Message.ToString() + @"',
-                                    icon: 'error'
-                                }).then(() => {
-                                    window.location.href = 'nuevoempleado';
-                                });
-                            ";
-                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                        }
-                    //}
-                //}
+                }
+                catch (SqlException ex)
+                {
+                    string script = @"
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Ha ocurrido un error inesperado. " + ex.Message.ToString() + @"',
+                            icon: 'error'
+                        }).then(() => {
+                            window.location.href = 'nuevoempleado';
+                        });
+                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                }
             }
         }
     }

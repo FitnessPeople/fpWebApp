@@ -1,7 +1,9 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using System;
 using System.Data;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using DataTable = System.Data.DataTable;
 
 namespace fpWebApp
 {
@@ -50,25 +52,6 @@ namespace fpWebApp
             }
         }
 
-        private void listaUsuarios()
-        {
-            string strQuery = "SELECT *, " +
-                "IF(NombreEmpleado is null,'-Sin asociar-',NombreEmpleado) AS Empleado, " +
-                "IF(NombreEmpleado is null,'warning','default') AS label, " +
-                "IF(EstadoUsuario = 'Activo','success','danger') AS estatus " +
-                "FROM Usuarios u " +
-                "LEFT JOIN Empleados e ON u.idEmpleado = e.DocumentoEmpleado " +
-                "LEFT JOIN Perfiles pf ON u.idPerfil = pf.idPerfil " +
-                "ORDER BY NombreUsuario";
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
-
-            rpUsuarios.DataSource = dt;
-            rpUsuarios.DataBind();
-
-            dt.Dispose();
-        }
-
         private void ValidarPermisos(string strPagina)
         {
             ViewState["SinPermiso"] = "1";
@@ -88,6 +71,32 @@ namespace fpWebApp
                 ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
                 ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
             }
+
+            dt.Dispose();
+        }
+
+        private void listaUsuarios()
+        {
+            string strWhere = " ";
+            if (Session["idSede"].ToString() != "11") // Usuario NO administrativo
+            {
+                strWhere = "WHERE s.idSede = " + Session["idSede"].ToString() + " ";
+            }
+
+            string strQuery = "SELECT *, " +
+                "IF(NombreEmpleado is null,'-Sin asociar-',NombreEmpleado) AS Empleado, " +
+                "IF(NombreEmpleado is null,'warning','default') AS label, " +
+                "IF(EstadoUsuario = 'Activo','success','danger') AS estatus " +
+                "FROM Usuarios u " +
+                "LEFT JOIN Empleados e ON u.idEmpleado = e.DocumentoEmpleado " +
+                "LEFT JOIN Perfiles pf ON u.idPerfil = pf.idPerfil " +
+                "LEFT JOIN sedes s ON s.idSede = e.idSede " + strWhere +
+                "ORDER BY NombreUsuario";
+            clasesglobales cg = new clasesglobales();
+            System.Data.DataTable dt = cg.TraerDatos(strQuery);
+
+            rpUsuarios.DataSource = dt;
+            rpUsuarios.DataBind();
 
             dt.Dispose();
         }
@@ -132,7 +141,7 @@ namespace fpWebApp
                                        ORDER BY NombreUsuario;";
 
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.TraerDatos(consultaSQL);
+                System.Data.DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"Usuarios_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
