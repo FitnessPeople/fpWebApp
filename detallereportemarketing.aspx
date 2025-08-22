@@ -325,7 +325,7 @@
                                             <div class="col-lg-12">
                                                 <div class="ibox float-e-margins">
                                                     <div class="ibox-title">
-                                                        <h5>Ventas por canales de venta<small> Estrategia x</small></h5>
+                                                        <h5>Resultados canales de venta<small></small></h5>
                                                         <div class="ibox-tools">
                                                             <a class="collapse-link">
                                                                 <i class="fa fa-chevron-up"></i>
@@ -347,6 +347,8 @@
                                                     <div class="ibox-content">
                                                         <div class="flot-chart">
                                                             <div class="flot-chart-content" id="flot-bar-chart"></div>
+                                                            <asp:HiddenField ID="hiddenGrafica" runat="server" />
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -356,7 +358,7 @@
                                             <div class="col-lg-12">
                                                 <div class="ibox float-e-margins">
                                                     <div class="ibox-title">
-                                                        <h5>Planes comerciales</h5>
+                                                        <h5>Resultados planes comerciales</h5>
                                                         <div class="ibox-tools">
                                                             <a class="collapse-link">
                                                                 <i class="fa fa-chevron-up"></i>
@@ -426,13 +428,126 @@
     <script src="js/plugins/flot/jquery.flot.resize.js"></script>
     <script src="js/plugins/flot/jquery.flot.pie.js"></script>
     <script src="js/plugins/flot/jquery.flot.time.js"></script>
-
-    <!-- Custom and plugin javascript -->
-    <script src="js/inspinia.js"></script>
-    <script src="js/plugins/pace/pace.min.js"></script>
-
+    
     <!-- Flot demo data -->
     <script src="js/demo/flot-demo.js"></script>
+
+    <script>
+            $(function () {
+                var rawData = $('#<%= hiddenGrafica.ClientID %>').val();
+
+        if (!rawData || rawData.trim() === "") {
+            console.warn("⚠️ No hay datos en hiddenGrafica");
+            return;
+        }
+
+        var parsedData = JSON.parse(rawData);
+
+        var barData = {
+            label: "Ventas",
+            data: parsedData.map(function (d) { return [d[0], d[1]]; })
+        };
+
+        // 👉 Función para formatear números en K/M
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1).replace(".0", "") + "M";
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(1).replace(".0", "") + "K";
+            }
+            return num;
+        }
+
+        var barOptions = {
+            series: {
+                bars: {
+                    show: true,
+                    barWidth: 0.6,
+                    align: "center",
+                    fill: true,
+                    fillColor: { colors: [{ opacity: 0.8 }, { opacity: 0.8 }] }
+                }
+            },
+            xaxis: {
+                ticks: parsedData.map(function (d) { return [d[0], d[2]]; }),
+                tickDecimals: 0,
+                tickLength: 0
+            },
+            colors: ["#1ab394"],
+            grid: {
+                color: "#999999",
+                hoverable: true,
+                clickable: true,
+                tickColor: "#D4D4D4",
+                borderWidth: 0
+            },
+            legend: { show: false },
+            tooltip: true,
+            tooltipOpts: {
+                content: function (label, x, y) {
+                    var canal = parsedData.find(function (d) { return d[0] === x; });
+                    return canal ? canal[2] + "<br>Ventas: " + formatNumber(y) : y;
+                }
+            }
+        };
+
+        $.plot($("#flot-bar-chart"), [barData], barOptions);
+
+        // 👇 Rotar etiquetas del eje X
+        $("#flot-bar-chart .flot-x-axis div").css("transform", "rotate(45deg)")
+            .css("transform-origin", "top right")
+            .css("white-space", "nowrap");
+    });
+
+    </script>
+
+    <script>
+        $(function () {
+            // Métrica del área del pie: "cantidad" (número de planes) o "valor" (monto)
+            var metric = "cantidad"; // ← como pediste, por número de planes vendidos
+
+            var raw = (window.planesRanking || []);
+            // 1) Construir data → 2) quitar ceros → 3) ordenar desc (ranking visual)
+            var data = raw
+                .map(function (p) {
+                    return {
+                        label: p.label,
+                        data: metric === "cantidad" ? (Number(p.cantidad) || 0) : (Number(p.valor) || 0)
+                    };
+                })
+                .filter(function (it) { return it.data > 0; })   // ← no mostrar ceros
+                .sort(function (a, b) { return b.data - a.data; });
+
+            if (!data.length) {
+                $("#flot-pie-chart").text("Sin datos para mostrar.");
+                return;
+            }
+
+            $.plot($("#flot-pie-chart"), data, {
+                series: {
+                    pie: {
+                        show: true,
+                        radius: 1,
+                        label: { show: false } // evitamos ruido visual, usa tooltip/leyenda
+                        // si quisieras agrupar por porcentaje pequeño:
+                        // ,combine: { threshold: 0.03, label: "Otros" }
+                    }
+                },
+                legend: { show: true, position: "ne" },
+                grid: { hoverable: true },
+                tooltip: true,
+                tooltipOpts: {
+                    // %p = porcentaje, %s = label, %y = valor
+                    content: metric === "cantidad"
+                        ? "%p.1% | %s: %y planes"
+                        : "%p.1% | %s: %y"
+                },
+                colors: ["#1ab394", "#79d2c0", "#bababa", "#d3d3d3", "#f8ac59", "#ed5565", "#23c6c8"]
+            });
+        });
+
+    </script>
+
 
 </body>
 

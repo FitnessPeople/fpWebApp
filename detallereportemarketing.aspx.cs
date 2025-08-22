@@ -56,7 +56,8 @@ namespace fpWebApp
                             Session["idEstrategia"] = Request.QueryString["idEstrategia"].ToString();
                             listaEstrategia(Convert.ToInt32(Session["idEstrategia"].ToString()));
                             ListaContactosPorUsuario();
-
+                            CargarGraficaBarraCanalesVenta(Convert.ToInt32(Session["idEstrategia"].ToString()));
+                            CargarGraficaPiePlanesEstrategia(Convert.ToInt32(Session["idEstrategia"].ToString()));
                         }
 
 
@@ -204,6 +205,61 @@ namespace fpWebApp
             }
         }
 
+        private void CargarGraficaBarraCanalesVenta(int idEstrategia)
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarRankingCanalesVentaPorIdEstrategia(Convert.ToInt32(idEstrategia));
+            
+            var dataList = new List<object>();
+            int index = 1;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                string canal = row["CanalVenta"].ToString();
+                decimal ventas = Convert.ToDecimal(row["Ventas"]);
+
+                // Estructura: [x, y, label]
+                dataList.Add(new object[] { index, ventas, canal });
+                index++;
+            }
+
+            // Serializar a JSON
+            string jsonData = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(dataList);
+
+            // Guardar en un hiddenfield o literal para usar en JS
+            hiddenGrafica.Value = jsonData;
+
+            dt.Dispose();
+        }
+
+        private void CargarGraficaPiePlanesEstrategia(int idEstrategia)
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarRankingPlanesPorIdEstrategia(idEstrategia);
+
+            // En el DataTable deben venir: NombrePlan, NumeroPlanes, ValorAcumulado
+            var lista = dt.AsEnumerable().Select(r => new
+            {
+                label = r["NombrePlan"].ToString(),
+                cantidad = Convert.ToInt32(r["NumeroPlanes"]),
+                valor = Convert.ToDouble(r["ValorAcumulado"])
+            }).ToList();
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(lista);
+
+            // Deja disponible en JS
+            ClientScript.RegisterStartupScript(
+                this.GetType(),
+                "dataPiePlanes",
+                $"window.planesRanking = {json};",
+                true
+            );
+
+            dt.Dispose();
+        }
+
+
+
 
         private Dictionary<int, string> dicPlanes;
         private Dictionary<int, string> dicCanales;
@@ -264,18 +320,7 @@ namespace fpWebApp
 
 
 
-        private bool ValidarCargos(string strNombre)
-        {
-            bool bExiste = false;
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEstadoCivilPorNombre(strNombre);
-            if (dt.Rows.Count > 0)
-            {
-                bExiste = true;
-            }
-            dt.Dispose();
-            return bExiste;
-        }
+
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
@@ -385,8 +430,7 @@ namespace fpWebApp
                         }
                     }
                 }
-
-                // Manejamos la fecha de creación para mostrar el tiempo transcurrido
+                
                 if (row["FechaCreacion"] != DBNull.Value)
                 {
                     DateTime fechaPrimerContacto = Convert.ToDateTime(row["FechaCreacion"]);

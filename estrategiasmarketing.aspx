@@ -227,7 +227,7 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <i class="fa fa-dollar text-info"></i>
-                                                            <label for="ValorPresupuesto" class="col-form-label">Valor Presupuesto estimado:</label>
+                                                            <label for="ValorPresupuesto" class="col-form-label">Presupuesto estimado:</label>
                                                             <asp:TextBox ID="txbValorPresupuesto" CssClass="form-control input-sm" runat="server" placeholder="$0"
                                                                 onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
                                                             <asp:RequiredFieldValidator ID="rfvValorPresupuesto" runat="server" ErrorMessage="* Campo requerido" 
