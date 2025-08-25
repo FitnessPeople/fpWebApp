@@ -465,19 +465,6 @@
                         //$('#txbFecNac').val((data.fecha_nacimiento));
                         //$('#ddlGenero').val(data.sexo);
 
-                        // Campos restantes (omitimos nombre y apellidos)
-                        //    var observaciones = `
-                        //    Nro. Documento: ${data.numero_doc}
-                        //    Sexo: ${data.sexo == 1 ? 'Masculino' : 'Femenino'}
-                        //    Correo: ${data.correo || '-'}
-                        //    Municipio ID: ${data.municipio_id}
-                        //    Departamento ID: ${data.departamento_id}
-                        //    EPS: ${data.eps}
-                        //    Tipo de Afiliado: ${data.tipo_de_afiliado}
-                        //    Estado Afiliación: ${data.estado_afiliacion}
-                        //`   .trim();
-
-                        //    $('#txaObservaciones').val(observaciones);
                     },
                     error: function (xhr, status, error) {
                         $('#txaObservaciones').val('Error al consultar la información.');

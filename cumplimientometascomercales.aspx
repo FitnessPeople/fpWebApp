@@ -59,6 +59,14 @@
         .fc .fc-event-desc {
             color: #fff;
         }
+
+        .fc .fc-daygrid-week-number {
+            top: 54px;
+            bottom: 0px;
+            left: 0px;
+            writing-mode: sideways-lr;
+            text-orientation: mixed;
+        }
     </style>
 
     <script>
@@ -359,18 +367,55 @@
                     return { domNodes: [titleEl, descEl] };
                 },
                 editable: false,
-                eventSources: [{
-                    url: 'obtenerestacionalidad.aspx',
-                    method: 'GET',
-                    failure: function () {
-                        alert('Error al cargar eventos.');
-                    },
-                    success: function (events) {
-                        // Aquí puedes hacer tu cálculo cuando todos los eventos hayan llegado
-                        realizarCalculosConExtendedProps(events, calendar);
-                    }
-                }],
+                //eventSources: [{
+                //    url: 'obtenerestacionalidad.aspx',
+                //    method: 'GET',
+                //    extraParams: function () {
+                //        // obtengo la fecha que está mostrando el calendario
+                //        var view = calendar.view;
+                //        var start = view.currentStart; // inicio de la vista actual
+                //        var month = start.getMonth() + 1;
+                //        var year = start.getFullYear();
+
+                //        return {
+                //            mes: month,
+                //            anio: year
+                //        };
+                //    },
+                //    failure: function () {
+                //        alert('Error al cargar eventos.');
+                //    },
+                //    success: function (events) {
+                //        // Aquí puedes hacer tu cálculo cuando todos los eventos hayan llegado
+                //        realizarCalculosConExtendedProps(events, calendar);
+                //    }
+                //}],
+                events: function (info, successCallback, failureCallback) {
+                    // info.start = inicio del rango visible
+                    // info.end   = fin del rango visible
+                    var month = info.start.getMonth() + 1; // meses 0–11
+                    var year = info.start.getFullYear();
+
+                    $.ajax({
+                        url: 'obtenerestacionalidad.aspx',
+                        method: 'GET',
+                        data: { mes: month, anio: year },
+                        success: function (events) {
+                            successCallback(events); // entregamos eventos al calendario
+                            realizarCalculosConExtendedProps(events, calendar);
+                        },
+                        error: function () {
+                            failureCallback();
+                        }
+                    });
+                },
                 weekNumbers: true,
+                weekNumberContent: function (arg) {
+                    // arg.num = número de semana
+                    return {
+                        html: '<span style="font-size: 1rem;">SEM ' + arg.num + '</span>'
+                    };
+                },
                 fixedWeekCount: false,
                 showNonCurrentDates: false,
                 eventOverlap: false,
@@ -415,47 +460,7 @@
                     center: 'title',
                     right: 'dayGridMonth'
                 },
-                droppable: true, // this allows things to be dropped onto the calendar
-                eventReceive: function (info) {
-                    // Aquí el evento ya ha sido agregado al calendario
-                    //console.log('Entra por el eventReceive');
-                    let color = info.event.extendedProps.bgcolor;
-                    info.event.setProp('backgroundColor', color);
-                    const evento = {
-                        title: info.event.title,
-                        descripcion: info.event.descripcion,
-                        start: info.event.start.toISOString(),
-                        allDay: info.event.allDay,
-                        bgcolor: info.event.backgroundColor
-                    };
-                    console.log(evento);
-
-                    fetch('estacionalidad.aspx/GuardarEvento', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(evento)
-                    })
-                        .then(response => response.json())
-                        .then(result => {
-                            const idInsertado = result.d;
-                            if (idInsertado > 0) {
-                                // Asignar el id retornado al evento
-                                info.event.setProp('id', idInsertado);
-                            } else {
-                                alert('Error al guardar el evento.');
-                                info.revert(); // Revierte el evento si falla
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            info.revert();
-                        });
-
-                    realizarCalculosConExtendedProps(calendar.getEvents(), calendar);
-
-                },
+                droppable: false, // this allows things to be dropped onto the calendar
                 dayCellDidMount: function(info) {
                     //console.log(info);
                     const fechaCelda = info.date.toISOString().split('T')[0];
@@ -479,7 +484,8 @@
                             textoFeriado.innerText = feriados[fechaCelda];
                             textoFeriado.style.fontSize = '0.75rem';
                             textoFeriado.style.color = '#000';
-                            textoFeriado.style.marginTop = '2px';
+                            textoFeriado.style.marginTop = '-18px';
+                            textoFeriado.style.marginLeft = '4px';
 
                             // Agregar el texto dentro de la celda
                             contenedor.appendChild(textoFeriado);

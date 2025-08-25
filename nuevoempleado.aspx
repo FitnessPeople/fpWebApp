@@ -30,7 +30,7 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#nuevoempleado");
+            var element1 = document.querySelector("#empleados");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#sistema");
             element2.classList.remove("collapse");
@@ -157,7 +157,7 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Nro. de Documento</label>
-                                                            <asp:TextBox ID="txbDocumento" CssClass="form-control input-sm" runat="server" placeholder="Documento"></asp:TextBox>
+                                                            <asp:TextBox ID="txbDocumento" ClientIDMode="Static" CssClass="form-control input-sm" runat="server" placeholder="#" autocomplete="off" spellcheck="false"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
@@ -480,16 +480,16 @@
                     required: true,
                     minlength: 10
                 },
-                txbTelefonoCorp: {
-                    required: true,
-                    minlength: 10
-                },
+                //txbTelefonoCorp: {
+                //    required: true,
+                //    minlength: 10
+                //},
                 txbEmail: {
                     required: true,
                 },
-                txbEmailCorp: {
-                    required: true,
-                },
+                //txbEmailCorp: {
+                //    required: true,
+                //},
                 txbDireccion: {
                     required: true,
                     minlength: 10
@@ -567,6 +567,44 @@
         });
 
         $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#txbDocumento').on('change blur', function () {
+                var documento = $(this).val().trim();
+                if (documento.length === 0) return;
+
+                var url = 'https://pqrdsuperargo.supersalud.gov.co/api/api/adres/0/' + documento;
+
+                // Limpia primero los campos
+                $('#txbNombreContacto').val('');
+                $('#txbApellidoContacto').val('');
+                // $('#txaObservaciones').val('Consultando...');
+
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function (data) {
+                        // Nombres
+                        var nombreCompleto = [data.nombre, data.s_nombre].filter(Boolean).join(' ').toUpperCase() + ' ' + [data.apellido, data.s_apellido].filter(Boolean).join(' ').toUpperCase();
+                        //var apellidoCompleto = [data.apellido, data.s_apellido].filter(Boolean).join(' ').toUpperCase();
+
+                        $('#txbNombre').val(nombreCompleto);
+                        //$('#txbApellidoContacto').val(apellidoCompleto);
+
+                        //$('#txbEdad').val((data.edad != null ? data.edad + ' años' : ''));
+                        $('#txbFechaNac').val((data.fecha_nacimiento));
+                        $('#ddlGenero').val(data.sexo);
+
+                    },
+                    error: function (xhr, status, error) {
+                        $('#txaObservaciones').val('Error al consultar la información.');
+                        console.error("Error:", error);
+                    }
+                });
+            });
+        });
     </script>
 
 </body>

@@ -59,8 +59,15 @@
             justify-content: flex-start;
 
         /*.fc-event-title-container {
-            background: #f8ac59;
-        }*/
+            background: #f8ac59;*/
+        }
+        .fc .fc-daygrid-week-number {
+            top: 54px;
+            bottom: 0px;
+            left: 0px;
+            writing-mode: sideways-lr;
+            text-orientation: mixed;
+        }
     </style>
 
     <script>
@@ -194,6 +201,12 @@
                                                 5%
                                             </div>
                                         </div>
+                                        <div class='fc-event' data-title="6%" data-bgcolor="#6F7275">
+                                            <div class='fc-event-main'
+                                                style="color: #fff; background: #6F7275; border: 1px solid #6F7275; border-radius: 3px; font-size: 1.5em; padding-left: 10px;">
+                                                6%
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="ibox float-e-margins">
@@ -207,6 +220,11 @@
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5><i class="fa fa-percent text-danger"></i> Estacionalidad </h5>
+                                        <div class="ibox-tools">
+                                            <a class="fullscreen-link">
+                                                <i class="fa fa-expand text-success"></i>
+                                            </a>
+                                        </div>
                                     </div>
                                     <div class="ibox-content">
                                         <div id="calendar"></div>
@@ -424,18 +442,43 @@
                 },
                 editable: false,
                 //events: 'obtenerestacionalidad.aspx',
-                eventSources: [{
-                    url: 'obtenerestacionalidad.aspx',
-                    method: 'GET',
-                    failure: function () {
-                        alert('Error al cargar eventos.');
-                    },
-                    success: function (events) {
-                        // Aquí puedes hacer tu cálculo cuando todos los eventos hayan llegado
-                        realizarCalculosConExtendedProps(events, calendar);
-                    }
-                }],
+                //eventSources: [{
+                //    url: 'obtenerestacionalidad.aspx',
+                //    method: 'GET',
+                //    failure: function () {
+                //        alert('Error al cargar eventos.');
+                //    },
+                //    success: function (events) {
+                //        // Aquí puedes hacer tu cálculo cuando todos los eventos hayan llegado
+                //        realizarCalculosConExtendedProps(events, calendar);
+                //    }
+                //}],
+                events: function (info, successCallback, failureCallback) {
+                    // info.start = inicio del rango visible
+                    // info.end   = fin del rango visible
+                    var month = info.start.getMonth() + 1; // meses 0–11
+                    var year = info.start.getFullYear();
+
+                    $.ajax({
+                        url: 'obtenerestacionalidad.aspx',
+                        method: 'GET',
+                        data: { mes: month, anio: year },
+                        success: function (events) {
+                            successCallback(events); // entregamos eventos al calendario
+                            realizarCalculosConExtendedProps(events, calendar);
+                        },
+                        error: function () {
+                            failureCallback();
+                        }
+                    });
+                },
                 weekNumbers: true,
+                weekNumberContent: function (arg) {
+                    // arg.num = número de semana
+                    return {
+                        html: '<span style="font-size: 1rem;">SEM ' + arg.num + '</span>'
+                    };
+                },
                 fixedWeekCount: false,
                 showNonCurrentDates: false,
                 eventOverlap: false,
@@ -501,21 +544,21 @@
                         },
                         body: JSON.stringify(evento)
                     })
-                        .then(response => response.json())
-                        .then(result => {
-                            const idInsertado = result.d;
-                            if (idInsertado > 0) {
-                                // Asignar el id retornado al evento
-                                info.event.setProp('id', idInsertado);
-                            } else {
-                                alert('Error al guardar el evento.');
-                                info.revert(); // Revierte el evento si falla
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            info.revert();
-                        });
+                    .then(response => response.json())
+                    .then(result => {
+                        const idInsertado = result.d;
+                        if (idInsertado > 0) {
+                            // Asignar el id retornado al evento
+                            info.event.setProp('id', idInsertado);
+                        } else {
+                            alert('Error al guardar el evento.');
+                            info.revert(); // Revierte el evento si falla
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        info.revert();
+                    });
 
                     realizarCalculosConExtendedProps(calendar.getEvents(), calendar);
 
@@ -563,7 +606,8 @@
                             textoFeriado.innerText = feriados[fechaCelda];
                             textoFeriado.style.fontSize = '0.75rem';
                             textoFeriado.style.color = '#000';
-                            textoFeriado.style.marginTop = '2px';
+                            textoFeriado.style.marginTop = '-18px';
+                            textoFeriado.style.marginLeft = '4px';
 
                             // Agregar el texto dentro de la celda
                             contenedor.appendChild(textoFeriado);
