@@ -123,6 +123,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltCantidadLeadsAprobados;
 
         /// <summary>
+        /// Control ltDescripcionEstrategia.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltDescripcionEstrategia;
+
+        /// <summary>
         /// Control ltFechaIni.
         /// </summary>
         /// <remarks>
@@ -141,6 +150,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltFechaFin;
 
         /// <summary>
+        /// Control ltTipoEstrategia.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltTipoEstrategia;
+
+        /// <summary>
         /// Control progressEficiencia.
         /// </summary>
         /// <remarks>
@@ -157,15 +175,6 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltEficiencia;
-
-        /// <summary>
-        /// Control ltDescripcionEstrategia.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltDescripcionEstrategia;
 
         /// <summary>
         /// Control rpContactosCRM.

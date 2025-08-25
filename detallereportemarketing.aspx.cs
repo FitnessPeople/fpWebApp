@@ -58,6 +58,7 @@ namespace fpWebApp
                             ListaContactosPorUsuario();
                             CargarGraficaBarraCanalesVenta(Convert.ToInt32(Session["idEstrategia"].ToString()));
                             CargarGraficaPiePlanesEstrategia(Convert.ToInt32(Session["idEstrategia"].ToString()));
+                            ListarCantidadLeadsDiaPorAsesor(Convert.ToInt32(Session["idEstrategia"].ToString()));
                         }
 
 
@@ -195,7 +196,7 @@ namespace fpWebApp
                 ltFechaIni.Text = fechaInicio.ToString("dd.MM.yyyy");
                 ltFechaFin.Text = fechaFin.ToString("dd.MM.yyyy");
                 ltDescripcionEstrategia.Text = dt.Rows[0]["DescripcionEstrategia"].ToString();
-
+                ltTipoEstrategia.Text = dt.Rows[0]["NombreTipoEstrategia"].ToString();
                 dt.Dispose();
 
             }
@@ -299,6 +300,16 @@ namespace fpWebApp
             //ltValorTotal.Text = valorTotal.ToString("C0");
             dt.Dispose();
         }
+
+
+        private void ListarCantidadLeadsDiaPorAsesor(int idEstrategia)
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCuantossLeadsDiaPorAsesor(idEstrategia);
+
+            dt.Dispose();
+        }
+
         protected void rpCargos_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)

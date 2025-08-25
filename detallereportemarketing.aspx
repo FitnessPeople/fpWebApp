@@ -175,6 +175,10 @@
                                                                     <asp:Literal ID="ltCantidadLeadsAprobados" runat="server"></asp:Literal>
                                                                 </span>
                                                             </dd>
+                                                            <dt>Descripción de la estrategia:</dt>
+                                                            <dd>
+                                                                <asp:Literal ID="ltDescripcionEstrategia" runat="server"></asp:Literal>
+                                                            </dd>
                                                         </dl>
                                                     </div>
                                                     <div class="col-lg-7" id="cluster_info">
@@ -186,6 +190,10 @@
                                                             <dt>Fecha Fin:</dt>
                                                             <dd>
                                                                 <asp:Literal ID="ltFechaFin" runat="server"></asp:Literal>
+                                                            </dd>
+                                                            <dt>Tipo estrategia:</dt>
+                                                            <dd>
+                                                                <asp:Literal ID="ltTipoEstrategia" runat="server"></asp:Literal>
                                                             </dd>
                                                             <dt>Mejores asesores:</dt>
                                                             <dd class="project-people">
@@ -202,8 +210,6 @@
                                                             </dd>
                                                         </dl>
                                                     </div>
-
-
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-lg-12">
@@ -220,13 +226,7 @@
                                                             </dd>
                                                         </dl>
                                                     </div>
-                                                    <div class="wrapper wrapper-content project-manager">
-                                                        <h4>
-                                                            <i class="fa fa-circle text-warning"></i>
-                                                            Descripción de la estrategia:
-                                                            <asp:Literal ID="ltDescripcionEstrategia" runat="server"></asp:Literal>
-                                                        </h4>
-                                                    </div>
+
                                                 </div>
                                                 <div class="row m-t-sm">
                                                     <div class="col-lg-12">
@@ -385,6 +385,65 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                           <div class="row">
+                                            <div class="col-lg-12">
+                                                <table class="table table-hover margin bottom">
+                                                    <thead>
+                                                    <tr>
+                                                        <th style="width: 1%" class="text-center">Identifiación.</th>
+                                                        <th>Asesor/a</th>
+                                                        <th class="text-center">Día</th>
+                                                        <th class="text-center">Cantidad Leads</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td class="text-center">1</td>
+                                                        <td> Security doors
+                                                            </td>
+                                                        <td class="text-center small">16 Jun 2014</td>
+                                                        <td class="text-center"><span class="label label-primary">$483.00</span></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">2</td>
+                                                        <td> Wardrobes
+                                                        </td>
+                                                        <td class="text-center small">10 Jun 2014</td>
+                                                        <td class="text-center"><span class="label label-primary">$327.00</span></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">3</td>
+                                                        <td> Set of tools
+                                                        </td>
+                                                        <td class="text-center small">12 Jun 2014</td>
+                                                        <td class="text-center"><span class="label label-warning">$125.00</span></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">4</td>
+                                                        <td> Panoramic pictures</td>
+                                                        <td class="text-center small">22 Jun 2013</td>
+                                                        <td class="text-center"><span class="label label-primary">$344.00</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">5</td>
+                                                        <td>Phones</td>
+                                                        <td class="text-center small">24 Jun 2013</td>
+                                                        <td class="text-center"><span class="label label-primary">$235.00</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">6</td>
+                                                        <td>Monitors</td>
+                                                        <td class="text-center small">26 Jun 2013</td>
+                                                        <td class="text-center"><span class="label label-primary">$100.00</span></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                          </div>
                                     </div>
 
 
@@ -428,76 +487,76 @@
     <script src="js/plugins/flot/jquery.flot.resize.js"></script>
     <script src="js/plugins/flot/jquery.flot.pie.js"></script>
     <script src="js/plugins/flot/jquery.flot.time.js"></script>
-    
+
     <!-- Flot demo data -->
     <script src="js/demo/flot-demo.js"></script>
 
     <script>
-            $(function () {
-                var rawData = $('#<%= hiddenGrafica.ClientID %>').val();
+        $(function () {
+            var rawData = $('#<%= hiddenGrafica.ClientID %>').val();
 
-        if (!rawData || rawData.trim() === "") {
-            console.warn("⚠️ No hay datos en hiddenGrafica");
-            return;
-        }
-
-        var parsedData = JSON.parse(rawData);
-
-        var barData = {
-            label: "Ventas",
-            data: parsedData.map(function (d) { return [d[0], d[1]]; })
-        };
-
-        // 👉 Función para formatear números en K/M
-        function formatNumber(num) {
-            if (num >= 1000000) {
-                return (num / 1000000).toFixed(1).replace(".0", "") + "M";
-            } else if (num >= 1000) {
-                return (num / 1000).toFixed(1).replace(".0", "") + "K";
+            if (!rawData || rawData.trim() === "") {
+                console.warn("⚠️ No hay datos en hiddenGrafica");
+                return;
             }
-            return num;
-        }
 
-        var barOptions = {
-            series: {
-                bars: {
-                    show: true,
-                    barWidth: 0.6,
-                    align: "center",
-                    fill: true,
-                    fillColor: { colors: [{ opacity: 0.8 }, { opacity: 0.8 }] }
+            var parsedData = JSON.parse(rawData);
+
+            var barData = {
+                label: "Ventas",
+                data: parsedData.map(function (d) { return [d[0], d[1]]; })
+            };
+
+            // 👉 Función para formatear números en K/M
+            function formatNumber(num) {
+                if (num >= 1000000) {
+                    return (num / 1000000).toFixed(1).replace(".0", "") + "M";
+                } else if (num >= 1000) {
+                    return (num / 1000).toFixed(1).replace(".0", "") + "K";
                 }
-            },
-            xaxis: {
-                ticks: parsedData.map(function (d) { return [d[0], d[2]]; }),
-                tickDecimals: 0,
-                tickLength: 0
-            },
-            colors: ["#1ab394"],
-            grid: {
-                color: "#999999",
-                hoverable: true,
-                clickable: true,
-                tickColor: "#D4D4D4",
-                borderWidth: 0
-            },
-            legend: { show: false },
-            tooltip: true,
-            tooltipOpts: {
-                content: function (label, x, y) {
-                    var canal = parsedData.find(function (d) { return d[0] === x; });
-                    return canal ? canal[2] + "<br>Ventas: " + formatNumber(y) : y;
-                }
+                return num;
             }
-        };
 
-        $.plot($("#flot-bar-chart"), [barData], barOptions);
+            var barOptions = {
+                series: {
+                    bars: {
+                        show: true,
+                        barWidth: 0.6,
+                        align: "center",
+                        fill: true,
+                        fillColor: { colors: [{ opacity: 0.8 }, { opacity: 0.8 }] }
+                    }
+                },
+                xaxis: {
+                    ticks: parsedData.map(function (d) { return [d[0], d[2]]; }),
+                    tickDecimals: 0,
+                    tickLength: 0
+                },
+                colors: ["#1ab394"],
+                grid: {
+                    color: "#999999",
+                    hoverable: true,
+                    clickable: true,
+                    tickColor: "#D4D4D4",
+                    borderWidth: 0
+                },
+                legend: { show: false },
+                tooltip: true,
+                tooltipOpts: {
+                    content: function (label, x, y) {
+                        var canal = parsedData.find(function (d) { return d[0] === x; });
+                        return canal ? canal[2] + "<br>Ventas: " + formatNumber(y) : y;
+                    }
+                }
+            };
 
-        // 👇 Rotar etiquetas del eje X
-        $("#flot-bar-chart .flot-x-axis div").css("transform", "rotate(45deg)")
-            .css("transform-origin", "top right")
-            .css("white-space", "nowrap");
-    });
+            $.plot($("#flot-bar-chart"), [barData], barOptions);
+
+            // 👇 Rotar etiquetas del eje X
+            $("#flot-bar-chart .flot-x-axis div").css("transform", "rotate(45deg)")
+                .css("transform-origin", "top right")
+                .css("white-space", "nowrap");
+        });
 
     </script>
 
