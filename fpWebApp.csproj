@@ -984,6 +984,7 @@
     <Content Include="planesweb.aspx" />
     <Content Include="plantilla.aspx" />
     <Content Include="procedimientosalmacenados.aspx" />
+    <Content Include="procesarfechas.aspx" />
     <Content Include="productostienda.aspx" />
     <Content Include="profesiones.aspx" />
     <Content Include="recuperacionclave.aspx" />
@@ -1920,6 +1921,13 @@
     </Compile>
     <Compile Include="procedimientosalmacenados.aspx.designer.cs">
       <DependentUpon>procedimientosalmacenados.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="procesarfechas.aspx.cs">
+      <DependentUpon>procesarfechas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="procesarfechas.aspx.designer.cs">
+      <DependentUpon>procesarfechas.aspx</DependentUpon>
     </Compile>
     <Compile Include="productostienda.aspx.cs">
       <DependentUpon>productostienda.aspx</DependentUpon>
