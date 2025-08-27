@@ -119,8 +119,8 @@ namespace fpWebApp
 
         private void CargarEps()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarEpss();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEpss();
             ddlEps.DataSource = dt;
             ddlEps.DataBind();
             dt.Dispose();
@@ -128,8 +128,8 @@ namespace fpWebApp
 
         private void CargarFondoPension()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarPensiones();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPensiones();
             ddlFondoPension.DataSource = dt;
             ddlFondoPension.DataBind();
             dt.Dispose();
@@ -137,8 +137,8 @@ namespace fpWebApp
 
         private void CargarArl()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarArls();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarArls();
             ddlArl.DataSource = dt;
             ddlArl.DataBind();
             dt.Dispose();
@@ -155,16 +155,16 @@ namespace fpWebApp
 
         private void CargarCesantias()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarCesantias();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCesantias();
             ddlCesantias.DataSource = dt;
             ddlCesantias.DataBind();
             dt.Dispose();
         }
         private void CargarCanalesVenta()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarCanalesVenta();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCanalesVenta();
             ddlCanalVenta.DataSource = dt;
             ddlCanalVenta.DataBind();
             dt.Dispose();
@@ -172,8 +172,8 @@ namespace fpWebApp
 
         private void CargarCargos()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarCargos();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCargos();
             ddlCargo.DataSource = dt;
             ddlCargo.DataBind();
             dt.Dispose();
@@ -181,8 +181,8 @@ namespace fpWebApp
 
         private void CargarEmpresasFP()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarEmpresasFP();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEmpresasFP();
             ddlempresasFP.DataSource = dt;
             ddlempresasFP.DataBind();
             dt.Dispose();
@@ -190,8 +190,8 @@ namespace fpWebApp
 
         private void CargarEstadoCivil()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarEstadosCiviles();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEstadosCiviles();
             ddlEstadoCivil.DataSource = dt;
             ddlEstadoCivil.DataBind();
             dt.Dispose();
@@ -199,8 +199,8 @@ namespace fpWebApp
 
         private void CargarGeneros()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarGeneros();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarGeneros();
             ddlGenero.DataSource = dt;
             ddlGenero.DataBind();
             dt.Dispose();
@@ -209,8 +209,8 @@ namespace fpWebApp
         private bool ExisteDocumento(string strDocumento)
         {
             bool rta = false;
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarExisteDocEmpleado(strDocumento);
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarExisteDocEmpleado(strDocumento);
 
             if (dt.Rows.Count > 0)
             {

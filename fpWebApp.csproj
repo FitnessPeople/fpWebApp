@@ -957,6 +957,7 @@
     <Content Include="listacontactoscrm.aspx" />
     <Content Include="logactividades.aspx" />
     <Content Include="logout.aspx" />
+    <Content Include="metascomerciales.aspx" />
     <Content Include="micuenta.aspx" />
     <Content Include="noasistenciaagendagympass.aspx" />
     <Content Include="nuevaempresaafiliada.aspx" />
@@ -1747,6 +1748,13 @@
     </Compile>
     <Compile Include="logout.aspx.designer.cs">
       <DependentUpon>logout.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="metascomerciales.aspx.cs">
+      <DependentUpon>metascomerciales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="metascomerciales.aspx.designer.cs">
+      <DependentUpon>metascomerciales.aspx</DependentUpon>
     </Compile>
     <Compile Include="micuenta.aspx.cs">
       <DependentUpon>micuenta.aspx</DependentUpon>

@@ -24,7 +24,9 @@ namespace fpWebApp
             //    "AND MONTH(e.FechaInicio) = " + Request.QueryString["mes"].ToString() + " " +
             //    "AND YEAR(e.FechaInicio) = " + Request.QueryString["anio"].ToString() + " ";
 
-            string strQuery = "SELECT e.FechaInicio, e.idEstacionalidad, e.Titulo, (mc.Valor * e.Titulo / 100) metaDia, SUM(ppa.Valor) pagado " +
+            string strQuery = "SELECT e.FechaInicio, e.FechaFin, " +
+                "e.idEstacionalidad, e.Titulo, e.Renderizado, e.Color, e.TodoElDia, e.Mostrar, " +
+                "(mc.Valor * e.Titulo / 100) metaDia, SUM(ppa.Valor) pagado " +
                 "FROM estacionalidad e " +
                 "INNER JOIN metascomerciales mc " +
                 "ON mc.mes = " + Request.QueryString["mes"].ToString() + " " +
@@ -34,7 +36,8 @@ namespace fpWebApp
                 "ON DATE(ppa.FechaHoraPago) = e.FechaInicio " +
                 "WHERE MONTH(e.FechaInicio) = " + Request.QueryString["mes"].ToString() + " " +
                 "AND YEAR(e.FechaInicio) = " + Request.QueryString["anio"].ToString() + " " +
-                "GROUP BY e.FechaInicio, (mc.Valor * e.Titulo / 100), e.Titulo, e.idEstacionalidad ";
+                "GROUP BY e.FechaInicio, (mc.Valor * e.Titulo / 100), e.Titulo, e.idEstacionalidad, " +
+                "e.FechaFin, e.Renderizado, e.Color, e.TodoElDia, e.Mostrar ";
 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
@@ -42,18 +45,34 @@ namespace fpWebApp
             var lista = new List<object>();
             foreach (DataRow row in dt.Rows)
             {
+                int pagado = (row["pagado"] == DBNull.Value || row["pagado"] == null) ? 0 : Convert.ToInt32(row["pagado"]);
+                int intDiferencia = Convert.ToInt32(row["metaDia"]) - pagado;
+                double dblCumplimiento = (pagado / Convert.ToInt32(row["metaDia"])) * 100;
+
+                string strColor = "";
+                if (dblCumplimiento < 85)
+                    strColor = "#ed5565";
+                if (dblCumplimiento >= 85 && dblCumplimiento < 95)
+                    strColor = "#f8ac59";
+                if (dblCumplimiento >= 95)
+                    strColor = "#1ab394";
+
                 lista.Add(new
                 {
                     id = row["idEstacionalidad"],
-                    title = row["Titulo"],
-                    description = "Meta: $ " + String.Format("{0:N0}", row["metaDia"]) + "\r\nVentas: $" + String.Format("{0:N0}", row["pagado"]),
+                    //title = row["Titulo"],
+                    title = "Meta: $ " + String.Format("{0:N0}", row["metaDia"]),
+                    description = "Meta: $ " + String.Format("{0:N0}", row["metaDia"]) + "\r\n" +
+                    "Ventas: $ " + String.Format("{0:N0}", pagado) + "\r\n" +
+                    "Diferencia: $ " + String.Format("{0:N0}", intDiferencia) + "\r\n" +
+                    "Cumplimiento: " + String.Format("{0:N0}", dblCumplimiento) + "%",
                     start = row["FechaInicio"],
-                    //end = row["FechaFin"],
-                    //rendering = row["Renderizado"],
-                    //color = row["Color"],
-                    //allDay = row["TodoElDia"],
-                    //backgroundColor = row["Color"],
-                    //display = row["Mostrar"],
+                    end = row["FechaFin"],
+                    rendering = row["Renderizado"],
+                    color = strColor,
+                    allDay = row["TodoElDia"],
+                    backgroundColor = strColor,
+                    display = row["Mostrar"],
                 });
             }
 

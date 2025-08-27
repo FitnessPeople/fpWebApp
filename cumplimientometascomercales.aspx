@@ -168,8 +168,11 @@
                                 
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-content">
-                                        <h3><i class="fa fa-chart-simple text-danger"></i> Total por semana</h3>
-                                        <div id="listaSemanas"></div>
+                                        <h3><i class="fa fa-chart-simple text-danger"></i> Indicadores</h3>
+                                        Meta del mes: $
+                                        Ventas del mes: $
+                                        Diferencia: $
+                                        Cumplimiento: %
                                     </div>
                                 </div>
                             </div>
@@ -211,98 +214,6 @@
 
     <script>
         var calendar; // declarada globalmente
-
-        function realizarCalculosConExtendedProps(eventos, calendar) {
-
-            let vista = calendar.view;
-            let fechaInicio = vista.currentStart;
-            let fechaFin = vista.currentEnd;
-
-            // Filtrar eventos que estén dentro del rango visible
-            let eventosDelMes = eventos.filter(ev => {
-                let fechaEvento = new Date(ev.start);
-                return fechaEvento >= fechaInicio && fechaEvento < fechaFin;
-            });
-
-            //console.log(eventosDelMes);
-
-            const semanasDiv = document.getElementById('listaSemanas');
-            semanasDiv.innerHTML = ''; // limpiar lista anterior
-
-
-            let sumaPorSemana = {};
-            let sumaPorMes = {};
-
-            eventosDelMes.forEach(evento => {
-                const fecha = new Date(evento.start);
-                const valor = parseFloat(evento.title);
-
-                if (isNaN(valor)) return;
-
-                // Calcular el año y número de semana
-                const semanaKey = obtenerClaveSemana(fecha);
-                const mesKey = fecha.getMonth();
-
-                if (!sumaPorSemana[semanaKey]) {
-                    sumaPorSemana[semanaKey] = 0;
-                }
-
-                if (!sumaPorMes[mesKey]) {
-                    sumaPorMes[mesKey] = 0;
-                }
-                
-                sumaPorSemana[semanaKey] += valor;
-                sumaPorMes[mesKey] += valor;
-                
-            });
-
-            let claves = Object.keys(sumaPorSemana); 
-            for (let i = 0; i < claves.length; i++) {
-                let clave = claves[i];
-                //console.log(sumaPorSemana[clave]);
-                const totalSemana = sumaPorSemana[clave];
-                //semanasDiv.innerHTML += "<div>Semana " + clave + ": <span class='badge badge-danger'>" + sumaPorSemana[clave] + "%</span></div>";
-
-                if (parseInt(totalSemana) == 0) {
-                    semanasDiv.innerHTML += `<h5>Semana ${clave}</h5><div class="progress progress-striped active"><div style="width: ${totalSemana}%" class="progress-bar progress-bar-danger" aria-valuemax="100" aria-valuemin="0" aria-valuenow="${totalSemana}" role="progressbar"><span class="font-bold">${totalSemana}%</span></div></div>`;
-                }
-                else {
-                    if (parseInt(totalSemana) < 100) {
-                        //semanasDiv.innerHTML += `<div>Semana ${clave}: <span class='badge badge-warning' style='font-size: 1.5rem; margin-bottom: 2px;' >${totalSemana}%</span></div>`;
-                        semanasDiv.innerHTML += `<h5>Semana ${clave}</h5><div class="progress progress-striped active"><div style="width: ${totalSemana}%" class="progress-bar progress-bar-warning" aria-valuemax="100" aria-valuemin="0" aria-valuenow="${totalSemana}" role="progressbar"><span class="font-bold">${totalSemana}%</span></div></div>`;
-                    }
-                    else {
-                        if (parseInt(totalSemana) == 100) {
-                            semanasDiv.innerHTML += `<h5>Semana ${clave}</h5><div class="progress progress-striped active"><div style="width: ${totalSemana}%" class="progress-bar progress-bar-primary" aria-valuemax="100" aria-valuemin="0" aria-valuenow="${totalSemana}" role="progressbar"><span class="font-bold">${totalSemana}%</span></div></div>`;
-                        }
-                        else {
-                            semanasDiv.innerHTML += `<h5>Semana ${clave}</h5><div class="progress progress-striped active"><div style="width: ${totalSemana}%" class="progress-bar progress-bar-danger" aria-valuemax="100" aria-valuemin="0" aria-valuenow="${totalSemana}" role="progressbar"><span class="font-bold">${totalSemana}%</span></div></div>`;
-                        }
-                    }
-                }
-            }
-
-            //const fecha = new Date(evento.start);
-            //const nombreMesOpcion1 = fecha.toLocaleString('es-ES', { month: 'long' });
-
-            let clavesMes = Object.keys(sumaPorMes);
-            let clave = clavesMes[0];
-            const totalMes = sumaPorMes[clave];
-
-            semanasDiv.innerHTML += `<h5>Mes ${parseInt(clave)+1}</h5><div class="progress progress-striped active"><div style="width: ${totalMes}%" class="progress-bar progress-bar-danger" aria-valuemax="100" aria-valuemin="0" aria-valuenow="${totalMes}" role="progressbar"><span class="font-bold">${totalMes}%</span></div></div>`;
-
-        }
-
-        function obtenerClaveSemana(fecha) {
-            const temp = new Date(fecha.getTime());
-            temp.setHours(0, 0, 0, 0);
-            temp.setDate(temp.getDate() + 4 - (temp.getDay() || 7)); // Mover al jueves de la semana ISO
-
-            const yearStart = new Date(temp.getFullYear(), 0, 1);
-            const weekNo = Math.ceil((((temp - yearStart) / 86400000) + 1) / 7);
-
-            return `${String(weekNo).padStart(2, '0')}`;
-        }
 
         let feriados = {};
 
@@ -402,7 +313,7 @@
                         data: { mes: month, anio: year },
                         success: function (events) {
                             successCallback(events); // entregamos eventos al calendario
-                            realizarCalculosConExtendedProps(events, calendar);
+                            //realizarCalculosConExtendedProps(events, calendar);
                         },
                         error: function () {
                             failureCallback();

@@ -1,10 +1,9 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="eps.aspx.cs" Inherits="fpWebApp.eps" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="metascomerciales.aspx.cs" Inherits="fpWebApp.metascomerciales" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
-<%@ Register Src="~/controles/indicadores01.ascx" TagPrefix="uc1" TagName="indicadores01" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
 
 <!DOCTYPE html>
@@ -15,7 +14,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | EPSs</title>
+    <title>Fitness People | Metas comerciales</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
@@ -35,9 +34,9 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#eps");
+            var element1 = document.querySelector("#metascomerciales");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#seguridadsocial");
+            var element2 = document.querySelector("#canalesprocesoscomerciales");
             element2.classList.remove("collapse");
         }
     </script>
@@ -49,36 +48,36 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-house-medical modal-icon" style="color: #1C84C6;"></i>
-                    <h4 class="modal-title">Guía para visualizar las EPS</h4>
-                    <small class="font-bold">¡Bienvenido! Te explicamos cómo gestionar las EPS de manera clara y eficiente.</small>
+                    <i class="fa fa-person-chalkboard modal-icon"></i>
+                    <h4 class="modal-title">Guía para editar un especialista</h4>
+                    <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>Paso 1: Crea una nueva</b><br />
-                        Usa el campo que está a la <b>izquierda</b> para digitar el nombre que quieres registrar.<br />
-                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Agregar:</b> Guarda la información y finaliza el registro.<br />
-                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
-                    <br />
+                        <b>1. Lee las Instrucciones</b><br />
+                        Antes de comenzar, es importante que leas todas las instrucciones del formulario. Esto te ayudará a entender qué información se requiere y cómo debe ser presentada.
                         <br />
-                        <b>Paso 2: Visualiza</b><br />
-                        Usa el buscador que está a la <b>derecha</b> para encontrar lo que buscas.<br />
-                        <i class="fa-solid fa-magnifying-glass"></i> Filtra por 
-                        <i class="fa-solid fa-house-medical" style="color: #0D6EFD;"></i> <b>EPS</b>
-                    <br />
                         <br />
-                        <b>Paso 3: Gestiona</b><br />
-                        En la columna <b>Acciones</b> encontrarás estas opciones:<br />
-                        <i class="fa fa-edit" style="color: #1AB394;"></i> <b>Editar:</b> Modifica los datos necesarios.<br />
-                        <i class="fa fa-trash" style="color: #DC3545;"></i> <b>Eliminar:</b> Borra lo que creas innecesario.
-                   <br />
+                        <b>2. Reúne la Información Necesaria</b><br />
+                        Asegúrate de tener a mano todos los documentos e información que necesitas, como:
+                        Datos personales (nombre, dirección, número de teléfono, etc.)
+                        Información específica relacionada con el propósito del formulario (por ejemplo, detalles de empleo, historial médico, etc.)
                         <br />
-                        <b>Paso 4: Acción adicional</b><br />
-                        Al lado opuesto del buscador encontrarás un botón útil:<br />
-                        <i class="fa-solid fa-file-export" style="color: #212529;"></i> <b>Exportar a Excel:</b> 
-                   <br />
                         <br />
-                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <b>3. Completa los Campos Requeridos</b><br />
+                        Campos Obligatorios: Identifica cuáles son los campos obligatorios (generalmente marcados con un asterisco *) y asegúrate de completarlos.
+                        Campos Opcionales: Si hay campos opcionales, completa solo los que consideres relevantes.
+                        <br />
+                        <br />
+                        <b>4. Confirma la Información</b><br />
+                        Asegúrate de que todos los datos ingresados son correctos y actualizados. Una revisión final puede evitar errores que podrían complicar el proceso.
+                        <br />
+                        <br />
+                        <b>5. Envía el Formulario</b><br />
+                        Asegúrate de seguir el proceso de envío indicado (hacer clic en "Agregar").
+                        <br />
+                        <br />
+                        ¡Siguiendo estos pasos, estarás listo para diligenciar tu formulario sin problemas! Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -99,11 +98,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-house-medical text-success m-r-sm"></i>EPSs</h2>
+                    <h2><i class="fa fa-user-tie text-success m-r-sm"></i>Metas comerciales</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>Seguridad Social</li>
-                        <li class="active"><strong>EPSs</strong></li>
+                        <li>Comercial</li>
+                        <li class="active"><strong>Metas comerciales</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -143,16 +142,53 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="form-group">
-                                                    <label>Nombre de la EPS:</label>
-                                                    <asp:TextBox ID="txbEps" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="rfvEps" runat="server" ErrorMessage="* Campo requerido" 
-                                                        ControlToValidate="txbEps" ValidationGroup="agregar" 
-                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                    <label>Canal de venta:</label>
+                                                    <asp:DropDownList ID="ddlCanalVenta" runat="server" 
+                                                        DataTextField="NombreCanalVenta" DataValueField="idCanalVenta" 
+                                                        CssClass="form-control input-sm" AppendDataBoundItems="true">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Mes:</label>
+                                                            <asp:DropDownList ID="ddlMes" runat="server" 
+                                                                CssClass="form-control input-sm" AppendDataBoundItems="true">
+                                                                <asp:ListItem Text="Enero" Value="1"></asp:ListItem>
+                                                                <asp:ListItem Text="Febrero" Value="2"></asp:ListItem>
+                                                                <asp:ListItem Text="Marzo" Value="3"></asp:ListItem>
+                                                                <asp:ListItem Text="Abril" Value="4"></asp:ListItem>
+                                                                <asp:ListItem Text="Mayo" Value="5"></asp:ListItem>
+                                                                <asp:ListItem Text="Junio" Value="6"></asp:ListItem>
+                                                                <asp:ListItem Text="Julio" Value="7"></asp:ListItem>
+                                                                <asp:ListItem Text="Agosto" Value="8"></asp:ListItem>
+                                                                <asp:ListItem Text="Septiembre" Value="9"></asp:ListItem>
+                                                                <asp:ListItem Text="Octubre" Value="10"></asp:ListItem>
+                                                                <asp:ListItem Text="Noviembre" Value="11"></asp:ListItem>
+                                                                <asp:ListItem Text="Diciembre" Value="12"></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Año:</label>
+                                                            <asp:DropDownList ID="ddlAnnio" runat="server" 
+                                                                CssClass="form-control input-sm" AppendDataBoundItems="true">
+                                                                <asp:ListItem Text="2025" Value="2025"></asp:ListItem>
+                                                                <asp:ListItem Text="2026" Value="2026"></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <a href="eps" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar" 
-                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" 
+                                                    <label>Presupuesto:</label>
+                                                    <asp:TextBox ID="txbPresupuesto" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                </div>
+                                                <div class="form-group">
+                                                    <a href="metascomerciales" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
+                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
                                                         OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
                                                 </div>
                                                 <br />
@@ -168,7 +204,7 @@
                             <div class="col-lg-8">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Lista de EPSs</h5>
+                                        <h5>Metas comerciales</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -183,34 +219,38 @@
                                                     <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                                 </div>
                                             </div>
- 
+
                                             <div class="col-lg-6 form-horizontal">
-                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false" 
-                                                    CssClass="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
+                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
                                                     OnClick="lbExportarExcel_Click">
-                                                    <i class="fa fa-file-excel"></i> EXCEL
+                                <i class="fa fa-file-excel"></i> EXCEL
                                                 </asp:LinkButton>
                                             </div>
                                         </div>
 
-                                        <table class="footable table table-striped" data-paging-size="10" 
-                                            data-filter-min="3" data-filter-placeholder="Buscar" 
-                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" 
-                                            data-paging-limit="10" data-filtering="true" 
-                                            data-filter-container="#filter-form-container" data-filter-delay="300" 
-                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" 
+                                        <table class="footable table table-striped" data-paging-size="10"
+                                            data-filter-min="3" data-filter-placeholder="Buscar"
+                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
+                                            data-paging-limit="10" data-filtering="true"
+                                            data-filter-container="#filter-form-container" data-filter-delay="300"
+                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left"
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th width="80%">EPS</th>
+                                                    <th width="50%">Canal de venta</th>
+                                                    <th width="20%">Mes / Año</th>
+                                                    <th width="20%">Valor</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpEps" runat="server" OnItemDataBound="rpEps_ItemDataBound">
+                                                <asp:Repeater ID="rpMetasComerciales" runat="server" OnItemDataBound="rpMetasComerciales_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
-                                                            <td><%# Eval("NombreEps") %></td>
+                                                            <td><%# Eval("NombreCanalVenta") %></td>
+                                                            <td><%# ObtenerNombreMes(Eval("Mes")) %> - <%# Eval("Annio") %></td>
+                                                            <td style="text-align: right;"><%# Eval("Valor", "{0:N0}") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
@@ -251,6 +291,9 @@
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
+
+    <!-- Chosen -->
+    <script src="js/plugins/chosen/chosen.jquery.js"></script>
 
     <!-- Page-Level Scripts -->
     <script>

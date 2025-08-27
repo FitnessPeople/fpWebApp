@@ -1,22 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web;
-using System.Data;
-using System.Configuration;
-using System.Text;
-using System.Net.Mail;
+﻿using DocumentFormat.OpenXml.Presentation;
+using K4os.Compression.LZ4.Internal;
 using MySql.Data.MySqlClient;
-using System.Web.Configuration;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using System.IO;
-using System.Net;
-using System.Globalization;
+using Newtonsoft.Json.Linq;
+using Npgsql;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
-using System.Security.Cryptography;
-using Npgsql;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
 using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Net;
+using System.Net.Mail;
+using System.Security.Cryptography;
+using System.Text;
+using System.Web;
+using System.Web.Configuration;
 
 namespace fpWebApp
 {
@@ -5530,6 +5532,194 @@ int valor, string observaciones, string estado)
 
         #region Canales de venta
 
+        public DataTable ConsultarMetasComerciales()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_METAS_COMERCIALES", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarMetaComercial(int CanalVenta, int mes, int annio)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_META_COMERCIAL", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_canal_venta", CanalVenta);
+                        cmd.Parameters.AddWithValue("@p_mes", mes);
+                        cmd.Parameters.AddWithValue("@p_annio", annio);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarMetaComercialPorId(int idMeta)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_META_COMERCIAL_POR_ID", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_meta", idMeta);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public string InsertarMetaComercial(int idCanalVenta, int Mes, int Annio, int Valor, int idUsuario)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_META_COMERCIAL", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);
+                        cmd.Parameters.AddWithValue("@p_mes", Mes);
+                        cmd.Parameters.AddWithValue("@p_annio", Annio);
+                        cmd.Parameters.AddWithValue("@p_valor", Valor);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarMetaComercial(int idMeta, int idCanalVenta, int Mes, int Annio, int Valor, int idUsuario)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_META_COMERCIAL", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_meta", idMeta);
+                        cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);
+                        cmd.Parameters.AddWithValue("@p_mes", Mes);
+                        cmd.Parameters.AddWithValue("@p_annio", Annio);
+                        cmd.Parameters.AddWithValue("@p_valor", Valor);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarMetaComercial(int idCanalVenta, int Mes, int Annio, int Valor, int idUsuario)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_CANAL_VENTA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);
+                        cmd.Parameters.AddWithValue("@p_mes", Mes);
+                        cmd.Parameters.AddWithValue("@p_annio", Annio);
+                        cmd.Parameters.AddWithValue("@p_valor", Valor);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
         public DataTable ConsultarCanalesVenta()
         {
             DataTable dt = new DataTable();
@@ -5623,6 +5813,7 @@ int valor, string observaciones, string estado)
 
             return dt;
         }
+
         public string InsertarCanalVenta(string nombreCanalVenta)
         {
             string respuesta = string.Empty;
