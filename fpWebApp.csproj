@@ -429,7 +429,7 @@
     <Content Include="css\plugins\toastr\toastr.min.css" />
     <Content Include="css\plugins\touchspin\jquery.bootstrap-touchspin.min.css" />
     <Content Include="css\style.css" />
-    <Content Include="cumplimientometascomercales.aspx" />
+    <Content Include="cumplimientometascomerciales.aspx" />
     <Content Include="dashboard_2.html" />
     <Content Include="dashboard_3.html" />
     <Content Include="dashboard_4.html" />
@@ -975,6 +975,7 @@
     <Content Include="obtenerafiliados.aspx" />
     <Content Include="obtenerciudades.aspx" />
     <Content Include="obtenerestacionalidad.aspx" />
+    <Content Include="obtenermetascomerciales.aspx" />
     <Content Include="olvidoclave.aspx" />
     <Content Include="paginas.aspx" />
     <Content Include="pantallabloqueo.aspx" />
@@ -1389,12 +1390,12 @@
     <Compile Include="crmnuevocontacto.aspx.designer.cs">
       <DependentUpon>crmnuevocontacto.aspx</DependentUpon>
     </Compile>
-    <Compile Include="cumplimientometascomercales.aspx.cs">
-      <DependentUpon>cumplimientometascomercales.aspx</DependentUpon>
+    <Compile Include="cumplimientometascomerciales.aspx.cs">
+      <DependentUpon>cumplimientometascomerciales.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="cumplimientometascomercales.aspx.designer.cs">
-      <DependentUpon>cumplimientometascomercales.aspx</DependentUpon>
+    <Compile Include="cumplimientometascomerciales.aspx.designer.cs">
+      <DependentUpon>cumplimientometascomerciales.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -1874,6 +1875,13 @@
     </Compile>
     <Compile Include="obtenerestacionalidad.aspx.designer.cs">
       <DependentUpon>obtenerestacionalidad.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="obtenermetascomerciales.aspx.cs">
+      <DependentUpon>obtenermetascomerciales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="obtenermetascomerciales.aspx.designer.cs">
+      <DependentUpon>obtenermetascomerciales.aspx</DependentUpon>
     </Compile>
     <Compile Include="olvidoclave.aspx.cs">
       <DependentUpon>olvidoclave.aspx</DependentUpon>

@@ -98,7 +98,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-user-tie text-success m-r-sm"></i>Metas comerciales</h2>
+                    <h2><i class="fa fa-chart-column text-success m-r-sm"></i>Metas comerciales</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Comercial</li>
@@ -150,7 +150,7 @@
                                                     </asp:DropDownList>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label>Mes:</label>
                                                             <asp:DropDownList ID="ddlMes" runat="server" 
@@ -170,7 +170,7 @@
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label>Año:</label>
                                                             <asp:DropDownList ID="ddlAnnio" runat="server" 
@@ -180,10 +180,18 @@
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>&nbsp;</label>
+                                                            <asp:CheckBox ID="chbTodoElAnnio" runat="server" 
+                                                                CssClass="form-control input-sm" Text="&nbsp;Todo el año" />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Presupuesto:</label>
-                                                    <asp:TextBox ID="txbPresupuesto" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                                                    <asp:TextBox ID="txbPresupuesto" runat="server" CssClass="form-control input-sm" 
+                                                        onkeyup="formatCurrency(this)" onblur="keepFormatted(this)"></asp:TextBox>
                                                 </div>
                                                 <div class="form-group">
                                                     <a href="metascomerciales" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>

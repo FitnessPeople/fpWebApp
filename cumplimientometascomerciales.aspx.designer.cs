@@ -11,7 +11,7 @@ namespace fpWebApp
 {
 
 
-    public partial class cumplimientometascomercales
+    public partial class cumplimientometascomerciales
     {
 
         /// <summary>
@@ -60,6 +60,15 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlForm form;
 
         /// <summary>
+        /// Control hfMes.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfMes;
+
+        /// <summary>
         /// Control divContenido.
         /// </summary>
         /// <remarks>
@@ -67,6 +76,33 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContenido;
+
+        /// <summary>
+        /// Control ltMetaMes.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltMetaMes;
+
+        /// <summary>
+        /// Control ltVentaMes.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltVentaMes;
+
+        /// <summary>
+        /// Control ltBrecha.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltBrecha;
 
         /// <summary>
         /// Control footer.

@@ -203,7 +203,7 @@ namespace fpWebApp
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
-            if (Request.QueryString.Count > 0)
+            if (Request.QueryString.Count > 0)  // Viene a editar o a borrar el registro
             {
                 string strInitData = TraerData();
 
@@ -229,47 +229,87 @@ namespace fpWebApp
                 }
                 Response.Redirect("metascomerciales");
             }
-            else
+            else // Viene a agregar un registro
             {
-                if (!ValidarMetaComercial())
+                if (chbTodoElAnnio.Checked)
                 {
-                    try
+                    for (int i = 0; i < 12; i++)
                     {
-                        string respuesta = cg.InsertarMetaComercial(
-                            Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()), 
-                            Convert.ToInt32(ddlMes.SelectedItem.Value.ToString()), 
-                            Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString()), 
-                            Convert.ToInt32(txbPresupuesto.Text.ToString()),
-                            Convert.ToInt32(Session["idUsuario"].ToString())
-                            );
-
-                        cg.InsertarLog(Session["idusuario"].ToString(), "MetasComerciales", "Agrega", "El usuario agregó una nueva meta comercial: " +
-                            "Canal de venta: " + ddlCanalVenta.SelectedItem.Text.ToString() + ", Mes: " + ddlMes.SelectedItem.Text.ToString() + ", " +
-                            "Año: " + ddlAnnio.SelectedItem.Text.ToString() + ", Valor: $ " + txbPresupuesto.Text.ToString(), "", "");
-                    }
-                    catch (Exception ex)
-                    {
-                        string mensajeExcepcionInterna = string.Empty;
-                        Console.WriteLine(ex.Message);
-                        if (ex.InnerException != null)
+                        try
                         {
-                            mensajeExcepcionInterna = ex.InnerException.Message;
-                            Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
+                            string respuesta = cg.InsertarMetaComercial(
+                                Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()),
+                                i+1,
+                                Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(txbPresupuesto.Text.ToString()),
+                                Convert.ToInt32(Session["idUsuario"].ToString())
+                                );
                         }
-                        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Excepción interna." +
-                        "</div>";
+                        catch (Exception ex)
+                        {
+                            string mensajeExcepcionInterna = string.Empty;
+                            Console.WriteLine(ex.Message);
+                            if (ex.InnerException != null)
+                            {
+                                mensajeExcepcionInterna = ex.InnerException.Message;
+                                Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
+                            }
+                            ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                            "Excepción interna." +
+                            "</div>";
+                        }
                     }
+                    cg.InsertarLog(Session["idusuario"].ToString(), "MetasComerciales", "Agrega", "El usuario agregó una nueva meta comercial: " +
+                        "Canal de venta: " + ddlCanalVenta.SelectedItem.Text.ToString() + ", todo el año, " +
+                        "Año: " + ddlAnnio.SelectedItem.Text.ToString() + ", Valor: $ " + txbPresupuesto.Text.ToString(), "", "");
+
                     Response.Redirect("metascomerciales");
                 }
                 else
                 {
-                    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Ya existe una meta comercial para ese canal de venta en el mismo mes y año." +
-                        "</div>";
+                    if (!ValidarMetaComercial())
+                    {
+                        try
+                        {
+                            string respuesta = cg.InsertarMetaComercial(
+                                Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(ddlMes.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(txbPresupuesto.Text.ToString()),
+                                Convert.ToInt32(Session["idUsuario"].ToString())
+                                );
+
+                            cg.InsertarLog(Session["idusuario"].ToString(), "MetasComerciales", "Agrega", "El usuario agregó una nueva meta comercial: " +
+                                "Canal de venta: " + ddlCanalVenta.SelectedItem.Text.ToString() + ", Mes: " + ddlMes.SelectedItem.Text.ToString() + ", " +
+                                "Año: " + ddlAnnio.SelectedItem.Text.ToString() + ", Valor: $ " + txbPresupuesto.Text.ToString(), "", "");
+                        }
+                        catch (Exception ex)
+                        {
+                            string mensajeExcepcionInterna = string.Empty;
+                            Console.WriteLine(ex.Message);
+                            if (ex.InnerException != null)
+                            {
+                                mensajeExcepcionInterna = ex.InnerException.Message;
+                                Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
+                            }
+                            ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                            "Excepción interna." +
+                            "</div>";
+                        }
+                        Response.Redirect("metascomerciales");
+                    }
+                    else
+                    {
+                        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                            "Ya existe una meta comercial para ese canal de venta en el mismo mes y año." +
+                            "</div>";
+                    }
                 }
+
+                
             }
         }
 

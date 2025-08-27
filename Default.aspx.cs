@@ -94,7 +94,7 @@ namespace fpWebApp
 
                 ltCodigo.Text = codigo;   // Quitar esta línea de código cuando se ponga en producción
 
-                // Si ya tiene código con fecha de hoy, no se pide el codigo... Solo pide una vez por día el código
+                // Si ya tiene código con fecha de hoy, no se pide el codigo... Solo pide el código una vez por día.
 
                 string strQuery = "SELECT FechaCodigoIngreso FROM usuarios WHERE idUsuario = " + Session["idUsuario"].ToString();
                 DataTable dt = cg.TraerDatos(strQuery);

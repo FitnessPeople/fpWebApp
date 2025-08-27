@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="cumplimientometascomercales.aspx.cs" Inherits="fpWebApp.cumplimientometascomercales" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="cumplimientometascomerciales.aspx.cs" Inherits="fpWebApp.cumplimientometascomerciales" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
@@ -163,8 +163,9 @@
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
                     <form runat="server" id="form" onsubmit="return false;">
+                        <asp:HiddenField ID="hfMes" runat="server" />
                         <div id="divContenido" runat="server">
-                            <div class="col-lg-3">
+                            <%--<div class="col-lg-3">
                                 
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-content">
@@ -173,6 +174,52 @@
                                         Ventas del mes: $
                                         Diferencia: $
                                         Cumplimiento: %
+                                    </div>
+                                </div>
+                            </div>--%>
+                            <div class="col-lg-3">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title bg-danger">
+                                        <%--<span class="label label-info pull-right">Monthly</span>--%>
+                                        <h5>Meta del mes</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <h1 class="no-margins"><asp:Literal runat="server" ID="ltMetaMes" /></h1>
+                                        <div class="stat-percent font-bold text-info">5% <i class="fa fa-level-up"></i></div>
+                                        <small>&nbsp;</small>
+                                    </div>
+                                </div>
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title bg-info">
+                                        <%--<span class="label label-info pull-right">Monthly</span>--%>
+                                        <h5>Ventas del mes</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <h1 class="no-margins"><asp:Literal runat="server" ID="ltVentaMes" /></h1>
+                                        <div class="stat-percent font-bold text-info">5% <i class="fa fa-level-up"></i></div>
+                                        <small>Brecha: <asp:Literal runat="server" ID="ltBrecha" /></small>
+                                    </div>
+                                </div>
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title bg-success">
+                                        <%--<span class="label label-info pull-right">Monthly</span>--%>
+                                        <h5>Cumplimiento</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <h1 class="no-margins">35 %</h1>
+                                        <div class="stat-percent font-bold text-info">&nbsp;</div>
+                                        <small>&nbsp;</small>
+                                    </div>
+                                </div>
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title bg-success">
+                                        <%--<span class="label label-info pull-right">Monthly</span>--%>
+                                        <h5>Promedio de ventas diaria</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <h1 class="no-margins">35 %</h1>
+                                        <div class="stat-percent font-bold text-info">&nbsp;</div>
+                                        <small>&nbsp;</small>
                                     </div>
                                 </div>
                             </div>
@@ -277,30 +324,18 @@
 
                     return { domNodes: [titleEl, descEl] };
                 },
-                editable: false,
-                //eventSources: [{
-                //    url: 'obtenerestacionalidad.aspx',
-                //    method: 'GET',
-                //    extraParams: function () {
-                //        // obtengo la fecha que está mostrando el calendario
-                //        var view = calendar.view;
-                //        var start = view.currentStart; // inicio de la vista actual
-                //        var month = start.getMonth() + 1;
-                //        var year = start.getFullYear();
+                datesSet: function (info) {
+                    var fecha = info.start; // inicio del rango (ej. primer día visible)
+                    var year = fecha.getFullYear();
+                    var month = fecha.getMonth() + 1; // OJO: getMonth() devuelve 0-11
 
-                //        return {
-                //            mes: month,
-                //            anio: year
-                //        };
-                //    },
-                //    failure: function () {
-                //        alert('Error al cargar eventos.');
-                //    },
-                //    success: function (events) {
-                //        // Aquí puedes hacer tu cálculo cuando todos los eventos hayan llegado
-                //        realizarCalculosConExtendedProps(events, calendar);
-                //    }
-                //}],
+                    // Guardar valores en el HiddenField
+                    document.getElementById('<%= hfMes.ClientID %>').value = year + "|" + month;
+
+                    // Hacer postback
+                    __doPostBack('CalendarChanged', '');
+                },
+                editable: false,
                 events: function (info, successCallback, failureCallback) {
                     // info.start = inicio del rango visible
                     // info.end   = fin del rango visible
@@ -308,7 +343,7 @@
                     var year = info.start.getFullYear();
 
                     $.ajax({
-                        url: 'obtenerestacionalidad.aspx',
+                        url: 'obtenermetascomerciales.aspx',
                         method: 'GET',
                         data: { mes: month, anio: year },
                         success: function (events) {
