@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="procesarfechas.aspx.cs" Inherits="fpWebApp.procesarfechas" %>
+﻿<%@ Page Language="C#" Async="true" AutoEventWireup="true" CodeBehind="procesarfechas.aspx.cs" Inherits="fpWebApp.procesarfechas" %>
 
 <!DOCTYPE html>
 

@@ -8958,7 +8958,7 @@ int valor, string observaciones, string estado)
                 {
                     mysqlConexion.Open();
 
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_PROCESOS_FECHAS", mysqlConexion))
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_PROCESO_FECHAS_LOTE", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
