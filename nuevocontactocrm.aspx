@@ -7,14 +7,10 @@
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
 <%@ Register Src="~/controles/indicadoresusucrm.ascx" TagPrefix="uc2" TagName="indicadoresusucrm" %>
 
-
-
-
 <!DOCTYPE html>
 <html>
 
 <head>
-
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -106,10 +102,18 @@
     <%--        formato de posición en el menú--%>
     <script>
         function changeClass() {
+            // Activa el menú principal
             var element1 = document.querySelector("#nuevocontactocrm");
-            element1.classList.replace("old", "active");
+            if (element1) {
+                element1.classList.add("active");
+            }
+
+            // Despliega el submenú
             var element2 = document.querySelector("#crm");
-            element2.classList.remove("collapse");
+            if (element2) {
+                element2.classList.add("show"); // en Bootstrap el desplegado es con "show"
+                element2.classList.remove("collapse");
+            }
         }
     </script>
 
