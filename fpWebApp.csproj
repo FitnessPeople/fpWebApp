@@ -1015,10 +1015,8 @@
     <Content Include="tiposincapacidades.aspx" />
     <Content Include="traspasos.aspx" />
     <Content Include="traspasosAfil.aspx" />
-    <Content Include="W-SiigoCliente.aspx" />
     <Content Include="usuarios.aspx" />
     <Content Include="verhistoriaclinica.aspx" />
-    <Content Include="W-SiigoFactura.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -2080,13 +2078,6 @@
     <Compile Include="traspasosAfil.aspx.designer.cs">
       <DependentUpon>traspasosAfil.aspx</DependentUpon>
     </Compile>
-    <Compile Include="W-SiigoCliente.aspx.cs">
-      <DependentUpon>W-SiigoCliente.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="W-SiigoCliente.aspx.designer.cs">
-      <DependentUpon>W-SiigoCliente.aspx</DependentUpon>
-    </Compile>
     <Compile Include="usuarios.aspx.cs">
       <DependentUpon>usuarios.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2100,13 +2091,6 @@
     </Compile>
     <Compile Include="verhistoriaclinica.aspx.designer.cs">
       <DependentUpon>verhistoriaclinica.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="W-SiigoFactura.aspx.cs">
-      <DependentUpon>W-SiigoFactura.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="W-SiigoFactura.aspx.designer.cs">
-      <DependentUpon>W-SiigoFactura.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

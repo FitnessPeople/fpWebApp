@@ -38,11 +38,18 @@
 
     <script>
         function changeClass() {
+            // Activa el menú principal
             var element1 = document.querySelector("#reportepagos");
-            element1.classList.replace("old", "active");
-            //var element2 = document.querySelector("#reportes");
+            if (element1) {
+                element1.classList.add("active");
+            }
+
+            // Despliega el submenú
             var element2 = document.querySelector("#reportes");
-            element2.classList.remove("collapse");
+            if (element2) {
+                element2.classList.add("show"); // en Bootstrap el desplegado es con "show"
+                element2.classList.remove("collapse");
+            }
         }
     </script>
 
