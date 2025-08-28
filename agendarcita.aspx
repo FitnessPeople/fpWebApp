@@ -326,7 +326,8 @@
                     info.jsEvent.preventDefault();
 
                     const fechainicial = new Date(info.event.start);
-                    fechainicial.setHours(fechainicial.getHours() + 5);
+                    //fechainicial.setHours(fechainicial.getHours() + 5);
+                    fechainicial.setHours(fechainicial.getHours());
 
                     const formatter1 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
                     const formattedTime1 = formatter1.format(fechainicial);
@@ -338,16 +339,17 @@
                     const formattedmesini = formattermes.format(fechainicial)[0].toUpperCase() + formattermes.format(fechainicial).substring(1);
 
                     const fechafinal = new Date(info.event.end);
-                    fechafinal.setHours(fechafinal.getHours() + 5);
+                    //fechafinal.setHours(fechafinal.getHours() + 5);
+                    fechafinal.setHours(fechafinal.getHours());
                     const formatter2 = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
                     const formattedTime2 = formatter2.format(fechafinal);
 
                     if (info.event.id) {
                         console.log(info.event.extendedProps);
                         jQuery('.event-id').html(info.event.id);
-                        jQuery('.event-icon').html("<i class='fa fa-" + info.event.extendedProps.icon + "'></i>");
+                        jQuery('.event-icon').html("<i class='fa fa-" + info.event.extendedProps.icon + " fa-3x text-success m-r-xs'></i>");
                         jQuery('.event-title').html(info.event.title);
-                        jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />");
+                        jQuery('.event-body').html(" <i class='fa fa-calendar-day m-r-xs'></i>" + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock m-r-xs'></i>" + formattedTime1 + " - " + formattedTime2 + "<br /><br />");
                         jQuery('.event-description').html(info.event.extendedProps.description);
                         var btn = document.getElementById("btnAsignar");
                         btn.style.display = info.event.extendedProps.btnAsignar;

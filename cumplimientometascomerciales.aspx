@@ -184,7 +184,8 @@
                                         <h5>Meta del mes</h5>
                                     </div>
                                     <div class="ibox-content">
-                                        <h1 class="no-margins"><asp:Literal runat="server" ID="ltMetaMes" /></h1>
+                                        <%--<h1 class="no-margins"><asp:Literal runat="server" ID="ltMetaMes" /></h1>--%>
+                                        <div id="divMetaMes"></div>
                                         <div class="stat-percent font-bold text-info">5% <i class="fa fa-level-up"></i></div>
                                         <small>&nbsp;</small>
                                     </div>
@@ -195,7 +196,8 @@
                                         <h5>Ventas del mes</h5>
                                     </div>
                                     <div class="ibox-content">
-                                        <h1 class="no-margins"><asp:Literal runat="server" ID="ltVentaMes" /></h1>
+                                        <%--<h1 class="no-margins"><asp:Literal runat="server" ID="ltVentaMes" /></h1>--%>
+                                        <div id="divVentasMes"></div>
                                         <div class="stat-percent font-bold text-info">5% <i class="fa fa-level-up"></i></div>
                                         <small>Brecha: <asp:Literal runat="server" ID="ltBrecha" /></small>
                                     </div>
@@ -262,6 +264,45 @@
     <script>
         var calendar; // declarada globalmente
 
+        function realizarCalculosConExtendedProps(eventos, calendar) {
+
+            let vista = calendar.view;
+            let fechaInicio = vista.currentStart;
+            let fechaFin = vista.currentEnd;
+
+            // Filtrar eventos que estén dentro del rango visible
+            let eventosDelMes = eventos.filter(ev => {
+                let fechaEvento = new Date(ev.start);
+                return fechaEvento >= fechaInicio && fechaEvento < fechaFin;
+            });
+
+            //console.log(eventosDelMes);
+
+            const metaMesDiv = document.getElementById('divMetaMes');
+            const ventasMesDiv = document.getElementById('divVentasMes');
+            metaMesDiv.innerHTML = ''; // limpiar lista anterior
+            ventasMesDiv.innerHTML = ''; // limpiar lista anterior
+
+            let sumaVentasMes = {};
+            let valor = 0;
+
+            eventosDelMes.forEach(evento => {
+                const fecha = new Date(evento.start);
+                valor = parseFloat(evento.valor);
+                const venta = parseFloat(evento.ventas);
+                
+
+                if (isNaN(valor)) return;
+
+                sumaVentasMes[0] += venta;
+                console.log(sumaVentasMes[0]);
+
+            });
+
+            metaMesDiv.innerHTML += `<h1 class="no-margins">$ ${valor.toLocaleString()}</h1>`;
+            ventasMesDiv.innerHTML += `<h1 class="no-margins">$ ${sumaVentasMes[0].toLocaleString()}</h1>`;
+        }
+
         let feriados = {};
 
         function cargarFeriados() {
@@ -324,17 +365,6 @@
 
                     return { domNodes: [titleEl, descEl] };
                 },
-                datesSet: function (info) {
-                    var fecha = info.start; // inicio del rango (ej. primer día visible)
-                    var year = fecha.getFullYear();
-                    var month = fecha.getMonth() + 1; // OJO: getMonth() devuelve 0-11
-
-                    // Guardar valores en el HiddenField
-                    document.getElementById('<%= hfMes.ClientID %>').value = year + "|" + month;
-
-                    // Hacer postback
-                    __doPostBack('CalendarChanged', '');
-                },
                 editable: false,
                 events: function (info, successCallback, failureCallback) {
                     // info.start = inicio del rango visible
@@ -348,7 +378,7 @@
                         data: { mes: month, anio: year },
                         success: function (events) {
                             successCallback(events); // entregamos eventos al calendario
-                            //realizarCalculosConExtendedProps(events, calendar);
+                            realizarCalculosConExtendedProps(events, calendar);
                         },
                         error: function () {
                             failureCallback();

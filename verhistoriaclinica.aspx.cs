@@ -234,11 +234,14 @@ namespace fpWebApp
             try
             {
                 string strQuery = "INSERT INTO HistoriasClinicas " +
-                "(idAfiliado, FechaHora, MedicinaPrepagada, idObjetivoIngreso, DescripcionObjetivoIngreso, AnteFamiliar, AntePatologico, " +
+                "(idAfiliado, FechaHora, MedicinaPrepagada, idObjetivoIngreso, DescripcionObjetivoIngreso, " +
+                "Remision, TipoConsulta, MotivoConsulta, AnteFamiliar, AntePatologico, " +
                 "AnteQuirurgico, AnteToxicologico, AnteHospitalario, AnteTraumatologico, AnteFarmacologico, AnteActividadFisica, AnteGineco, " +
                 "AnteFUM, Tabaquismo, Cigarrillos, Alcoholismo, Bebidas, Sedentarismo, Diabetes, Colesterol, Trigliceridos, HTA) " +
                 "VALUES (" + Request.QueryString["idAfiliado"].ToString() + ", CURRENT_TIMESTAMP(), '" + txbMedicinaPrepagada.Text.ToString() + "', " +
                 "" + ddlObjetivo.SelectedItem.Value.ToString() + ", '" + txbDescripcionObjetivo.Text.ToString() + "', " +
+                "'" + txbRemision.Text.ToString() + "', '" + ddlTipoConsulta.SelectedItem.Value.ToString() + "', " +
+                "'" + txbMotivoConsulta.Text.ToString() + "', " +
                 "'" + txbAnteFamiliares.Text.ToString() + "', '" + txbAntePatologico.Text.ToString() + "', " +
                 "'" + txbAnteQuirurgico.Text.ToString() + "', '" + txbAnteToxicologico.Text.ToString() + "', " +
                 "'" + txbAnteHospitalario.Text.ToString() + "', '" + txbAnteTraumatologico.Text.ToString() + "', " +

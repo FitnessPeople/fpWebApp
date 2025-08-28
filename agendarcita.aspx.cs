@@ -135,7 +135,7 @@ namespace fpWebApp
                     {
                         _strEventos += "color: '#F8AC59',\r\n";
                         _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                        _strEventos += "description: 'Cita asignada a: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                        _strEventos += "description: 'Cita asignada a: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + ". Atiende:" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
                         _strEventos += "icon: 'id-card',\r\n";
                         _strEventos += "btnAsignar: 'none',\r\n";
                         _strEventos += "divAfil: 'none',\r\n";

@@ -69,7 +69,6 @@ namespace fpWebApp
             ltEspecialista.Text = Session["NombreUsuario"].ToString();
 
             clasesglobales cg = new clasesglobales();
-            //DataTable dt = cg.ConsultaCargarAgendaPorEspecialista(int.Parse(Session["idUsuario"].ToString()));
             DataTable dt = cg.ConsultaCargarAgendaPorEspecialista(Convert.ToInt32(Session["idUsuario"].ToString()));
 
             _strEventos = "events: [\r\n";

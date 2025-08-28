@@ -26,21 +26,7 @@ namespace fpWebApp
                     }
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
-                        string eventTarget = Request["__EVENTTARGET"];
-                        if (eventTarget == "CalendarChanged")
-                        {
-                            // Leer el HiddenField
-                            string[] valores = hfMes.Value.Split('|');
-                            int year = int.Parse(valores[0]);
-                            int month = int.Parse(valores[1]);
-
-                            // Aquí llamas tu lógica actual en C#
-                            ConsultarMetaMensual(year, month);
-                            ConsultarVentaMensual(year, month);
-                        }
-
-                        //ConsultarMetaMensual();
-                        //ConsultarVentaMensual();
+                        
                     }
                     if (ViewState["Borrar"].ToString() == "1")
                     {
@@ -75,46 +61,6 @@ namespace fpWebApp
                 ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
             }
 
-            dt.Dispose();
-        }
-
-        /// <summary>
-        /// Consulta la meta comercial del mes y año actual
-        /// </summary>
-        private void ConsultarMetaMensual(int year, int month)
-        {
-            clasesglobales cg = new clasesglobales();
-            DateTime fechaActual = DateTime.Now;
-            int numeroDelMes = month;
-            int numeroDelAnnio = year;
-            string strQuery = "SELECT * " +
-                "FROM MetasComerciales " +
-                "WHERE Mes = " + numeroDelMes + " " +
-                "AND Annio = " + numeroDelAnnio;
-            DataTable dt = cg.TraerDatos(strQuery);
-            ViewState.Add("metamensual", dt.Rows[0]["valor"]);
-            ltMetaMes.Text = "$ " + string.Format("{0:N0}", dt.Rows[0]["valor"]);
-            dt.Dispose();
-        }
-
-        /// <summary>
-        /// Consulta las ventas acumuladas del mes, 
-        /// </summary>
-        private void ConsultarVentaMensual(int year, int month)
-        {
-            clasesglobales cg = new clasesglobales();
-            DateTime fechaActual = DateTime.Now;
-            int numeroDelMes = month;
-            int numeroDelAnnio = year;
-            string strQuery = "SELECT SUM(valor) ventasTotal " +
-                "FROM pagosplanafiliado " +
-                "WHERE MONTH(FechaHoraPago) = " + numeroDelMes + " " +
-                "AND YEAR(FechaHoraPago) = " + numeroDelAnnio + " " +
-                "AND idCanalVenta = " + Session["idCanalVenta"].ToString();
-            DataTable dt = cg.TraerDatos(strQuery);
-            ltVentaMes.Text = "$ " + string.Format("{0:N0}", dt.Rows[0]["ventasTotal"]);
-            int brecha = Convert.ToInt32(ViewState["metamensual"]) - Convert.ToInt32(dt.Rows[0]["ventasTotal"]);
-            ltBrecha.Text = string.Format("{0:N0}", brecha);
             dt.Dispose();
         }
 

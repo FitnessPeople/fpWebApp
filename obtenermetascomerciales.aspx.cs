@@ -26,7 +26,8 @@ namespace fpWebApp
 
             string strQuery = "SELECT e.FechaInicio, e.FechaFin, " +
                 "e.idEstacionalidad, e.Titulo, e.Renderizado, e.Color, e.TodoElDia, e.Mostrar, " +
-                "(mc.Valor * e.Titulo / 100) metaDia, SUM(ppa.Valor) pagado " +
+                "(mc.Valor * e.Titulo / 100) AS metaDia, " +
+                "IF(SUM(ppa.Valor) IS NULL, 0, SUM(ppa.Valor)) AS pagado, mc.Valor  " +
                 "FROM estacionalidad e " +
                 "INNER JOIN metascomerciales mc " +
                 "ON mc.mes = " + Request.QueryString["mes"].ToString() + " " +
@@ -37,7 +38,7 @@ namespace fpWebApp
                 "WHERE MONTH(e.FechaInicio) = " + Request.QueryString["mes"].ToString() + " " +
                 "AND YEAR(e.FechaInicio) = " + Request.QueryString["anio"].ToString() + " " +
                 "GROUP BY e.FechaInicio, (mc.Valor * e.Titulo / 100), e.Titulo, e.idEstacionalidad, " +
-                "e.FechaFin, e.Renderizado, e.Color, e.TodoElDia, e.Mostrar ";
+                "e.FechaFin, e.Renderizado, e.Color, e.TodoElDia, e.Mostrar, mc.Valor ";
 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
@@ -46,7 +47,8 @@ namespace fpWebApp
             foreach (DataRow row in dt.Rows)
             {
                 int metaDia = Convert.ToInt32(row["metaDia"]);
-                int pagado = (row["pagado"] == DBNull.Value || row["pagado"] == null) ? 0 : Convert.ToInt32(row["pagado"]);
+                //int pagado = (row["pagado"] == DBNull.Value || row["pagado"] == null) ? 0 : Convert.ToInt32(row["pagado"]);
+                int pagado = Convert.ToInt32(row["pagado"]);
                 int intDiferencia = Convert.ToInt32(row["metaDia"]) - pagado;
                 decimal dblCumplimiento = metaDia > 0 ? ((decimal)pagado / metaDia) * 100 : 0;
 
@@ -61,8 +63,9 @@ namespace fpWebApp
                 lista.Add(new
                 {
                     id = row["idEstacionalidad"],
-                    //title = row["Titulo"],
                     title = "Meta: $ " + String.Format("{0:N0}", row["metaDia"]),
+                    valor = row["Valor"],
+                    ventas = Convert.ToInt32(row["pagado"]),
                     description = "Meta: $ " + String.Format("{0:N0}", row["metaDia"]) + "\r\n" +
                     "Ventas: $ " + String.Format("{0:N0}", pagado) + "\r\n" +
                     "Diferencia: $ " + String.Format("{0:N0}", intDiferencia) + "\r\n" +
