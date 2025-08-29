@@ -44,11 +44,12 @@ namespace fpWebApp
             DataTable dt = cg.ConsultarAfiliados();
             
             DataRow[] filasFiltradas = dt.Select("idSede = " + idSede + " AND ProcesoActFecNac = 0");
+            ltCantidadRegistros.Text = filasFiltradas.Length.ToString() + "registros";
 
             if (filasFiltradas.Length > 0)
                 return filasFiltradas.CopyToDataTable();
             else
-                return dt.Clone(); 
+                return dt.Clone();           
         }
 
 
@@ -234,55 +235,6 @@ namespace fpWebApp
             }
         }
 
-        //public async Task ActualizarAfiliadosAsync(DataTable dtUpdate, string connectionString)
-        //{
-        //    if (dtUpdate == null || dtUpdate.Rows.Count == 0)
-        //        return;
-
-        //    using (var conn = new MySqlConnection(connectionString))
-        //    {
-        //        await conn.OpenAsync();
-
-        //        // limpiar tabla temporal
-        //        await new MySqlCommand("TRUNCATE TABLE AfiliadosUpdateFechaNacTmp;", conn).ExecuteNonQueryAsync();
-
-        //        var sb = new StringBuilder();
-        //        sb.Append("INSERT INTO AfiliadosUpdateFechaNacTmp (IdAfiliado, FechaNacimiento, Genero, Nombre, S_Nombre, Apellido, S_Apellido) VALUES ");
-
-        //        for (int i = 0; i < dtUpdate.Rows.Count; i++)
-        //        {
-        //            var row = dtUpdate.Rows[i];
-
-        //            sb.AppendFormat("({0}, '{1}', {2}, '{3}', '{4}', '{5}', '{6}')",
-        //                row["IdAfiliado"],
-        //                MySqlHelper.EscapeString(row["FechaNacimiento"].ToString()),
-        //                string.IsNullOrEmpty(row["Genero"].ToString()) ? "NULL" : row["Genero"].ToString(),
-        //                MySqlHelper.EscapeString(row["Nombre"].ToString()),
-        //                MySqlHelper.EscapeString(row["S_Nombre"].ToString()),
-        //                MySqlHelper.EscapeString(row["Apellido"].ToString()),
-        //                MySqlHelper.EscapeString(row["S_Apellido"].ToString())
-        //            );
-
-        //            if (i < dtUpdate.Rows.Count - 1)
-        //                sb.Append(",");
-        //        }
-
-        //        sb.Append(";");
-
-        //        using (var cmd = new MySqlCommand(sb.ToString(), conn))
-        //        {
-        //            await cmd.ExecuteNonQueryAsync();
-        //        }
-
-        //        // ejecutar SP
-        //        using (var cmd = new MySqlCommand("CALL Pa_ACTUALIZAR_PROCESO_FECHAS_LOTE();", conn))
-        //        {
-        //            await cmd.ExecuteNonQueryAsync();
-        //        }
-        //    }
-        //}
-
-
         private string NormalizarTexto(string texto, out bool modificado)
         {
             modificado = false;
@@ -312,11 +264,6 @@ namespace fpWebApp
 
             return texto;
         }
-
-
-
-
-
     }
 
     //Respuesta de adres 

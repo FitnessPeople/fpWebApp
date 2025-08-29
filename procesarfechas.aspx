@@ -24,6 +24,7 @@
             </div>
             <asp:Button ID="btnConsultar" runat="server" Text="Consultar" OnClick="btnConsultar_Click" />
             <asp:Button ID="btnProcesar" runat="server" Text="Procesar y Actualizar" CssClass="btn btn-success" OnClick="btnProcesar_Click" />
+            <asp:Literal ID="ltCantidadRegistros" runat="server"></asp:Literal>
 
             <hr />
 
