@@ -14,7 +14,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Estacionalidad</title>
+    <title>Fitness People | Cumplimiento Metas Comerciales</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
@@ -188,26 +188,22 @@
                             <div class="col-lg-3">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title bg-danger">
-                                        <%--<span class="label label-info pull-right">Monthly</span>--%>
                                         <h5>Meta del mes</h5>
                                     </div>
                                     <div class="ibox-content">
-                                        <%--<h1 class="no-margins"><asp:Literal runat="server" ID="ltMetaMes" /></h1>--%>
                                         <div id="divMetaMes"></div>
-                                        <div class="stat-percent font-bold text-info">5% <i class="fa fa-level-up"></i></div>
                                         <small>&nbsp;</small>
                                     </div>
                                 </div>
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title bg-info">
-                                        <%--<span class="label label-info pull-right">Monthly</span>--%>
                                         <h5>Ventas del mes</h5>
                                     </div>
                                     <div class="ibox-content">
-                                        <%--<h1 class="no-margins"><asp:Literal runat="server" ID="ltVentaMes" /></h1>--%>
                                         <div id="divVentasMes"></div>
                                         <div class="stat-percent font-bold text-info">5% <i class="fa fa-level-up"></i></div>
-                                        <small>Brecha: <asp:Literal runat="server" ID="ltBrecha" /></small>
+                                        <%--<small>Brecha: <asp:Literal runat="server" ID="ltBrecha" /></small>--%>
+                                        <div id="divBrecha"></div>
                                     </div>
                                 </div>
                                 <div class="ibox float-e-margins">
@@ -216,19 +212,27 @@
                                         <h5>Cumplimiento</h5>
                                     </div>
                                     <div class="ibox-content">
-                                        <h1 class="no-margins">35 %</h1>
-                                        <div class="stat-percent font-bold text-info">&nbsp;</div>
+                                        <%--<h1 class="no-margins">35 %</h1>--%>
+                                        <div id="divCumplimiento"></div>
                                         <small>&nbsp;</small>
                                     </div>
                                 </div>
                                 <div class="ibox float-e-margins">
-                                    <div class="ibox-title bg-success">
+                                    <div class="ibox-title bg-warning">
                                         <%--<span class="label label-info pull-right">Monthly</span>--%>
-                                        <h5>Promedio de ventas diaria</h5>
+                                        <h5>Promedio de ventas diarias</h5>
                                     </div>
                                     <div class="ibox-content">
-                                        <h1 class="no-margins">35 %</h1>
-                                        <div class="stat-percent font-bold text-info">&nbsp;</div>
+                                        <div id="divPromedioDiario"></div>
+                                        <small>&nbsp;</small>
+                                    </div>
+                                </div>
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title bg-danger">
+                                        <h5>Ventas necesarias por día</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div id="divVentasNecesarias"></div>
                                         <small>&nbsp;</small>
                                     </div>
                                 </div>
@@ -288,27 +292,53 @@
 
             const metaMesDiv = document.getElementById('divMetaMes');
             const ventasMesDiv = document.getElementById('divVentasMes');
+            const brechaDiv = document.getElementById('divBrecha');
+            const cumplimientoDiv = document.getElementById('divCumplimiento');
+            const promedioDiarioDiv = document.getElementById('divPromedioDiario');
+            const ventasNecesariasDiv = document.getElementById('divVentasNecesarias');
+
             metaMesDiv.innerHTML = ''; // limpiar lista anterior
             ventasMesDiv.innerHTML = ''; // limpiar lista anterior
+            brechaDiv.innerHTML = ''; // limpiar lista anterior
+            cumplimientoDiv.innerHTML = ''; // limpiar lista anterior
+            promedioDiarioDiv.innerHTML = ''; // limpiar lista anterior
 
-            let sumaVentasMes = {};
+            let sumaVentasMes = 0;
             let valor = 0;
 
             eventosDelMes.forEach(evento => {
                 const fecha = new Date(evento.start);
                 valor = parseFloat(evento.valor);
-                const venta = parseFloat(evento.ventas);
-                
+                const venta = parseInt(evento.ventas);
 
                 if (isNaN(valor)) return;
 
-                sumaVentasMes[0] += venta;
-                console.log(sumaVentasMes[0]);
+                sumaVentasMes += venta;
 
             });
 
             metaMesDiv.innerHTML += `<h1 class="no-margins">$ ${valor.toLocaleString()}</h1>`;
-            ventasMesDiv.innerHTML += `<h1 class="no-margins">$ ${sumaVentasMes[0].toLocaleString()}</h1>`;
+            ventasMesDiv.innerHTML += `<h1 class="no-margins">$ ${sumaVentasMes.toLocaleString()}</h1>`;
+
+            let brecha = valor - sumaVentasMes;
+            let cumplimiento = (sumaVentasMes / valor) * 100;
+            const fechaActual = new Date();
+            const annioActual = fechaActual.getFullYear();
+            const mesActual = fechaActual.getMonth();
+            const ultimoDiaDelMes = new Date(annioActual, mesActual + 1, 0);
+            const diasRestantes = ultimoDiaDelMes.getDate() - fechaActual.getDate();
+
+            let promedioDiario = sumaVentasMes / fechaActual.getDate();
+            
+            let ventasNecesariasPorDia = (valor - sumaVentasMes) / diasRestantes;
+            ventasNecesariasPorDia = parseInt(ventasNecesariasPorDia);
+            console.log(ventasNecesariasPorDia);
+
+            brechaDiv.innerHTML += `<small>Brecha: $ ${brecha.toLocaleString()}</small>`;
+            cumplimientoDiv.innerHTML += `<h1 class="no-margins">${cumplimiento.toFixed(2)}%</h1>`;
+            promedioDiarioDiv.innerHTML += `<h1 class="no-margins">$ ${promedioDiario.toLocaleString()}</h1>`;
+            ventasNecesariasDiv.innerHTML += `<h1 class="no-margins">$ ${ventasNecesariasPorDia.toLocaleString()}</h1>`;
+    
         }
 
         let feriados = {};
