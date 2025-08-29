@@ -147,14 +147,26 @@ namespace fpWebApp
                             string apellidoDb = row["ApellidoAfiliado"].ToString();
 
                             // Detectar cambios en nombre y apellidos
-                            bool actualizarNombreApellido = cambioNombre || cambio_sNombre || cambioApellido || cambio_sApellido;
+                            bool actualizarNombreApellido1 = cambioNombre || cambio_sNombre || cambioApellido || cambio_sApellido;
 
                             // Detectar cambios en fecha de nacimiento o género
                             bool actualizarFechaGenero = (!string.IsNullOrEmpty(fechaNacimientoApi) && !string.IsNullOrEmpty(generoApi)) &&
                                                          (fechaNacimientoDb != fechaNacimientoApi || generoDb != generoApi);
 
+                            string nombreCompletoApi = nombre;
+                            string apellidoCompletoApi = apellidoApi;
+
+                            if (!string.IsNullOrEmpty(nombreCompletoApi) && !string.IsNullOrEmpty(apellidoCompletoApi))
+                            {
+                                nombreCompletoApi = nombre + " " + s_nombre;
+                                apellidoCompletoApi = apellidoApi + " " + s_apellidoApi;
+                            }
+
+                            bool actualizarNombreApellido2 = (!string.IsNullOrEmpty(nombre) && !string.IsNullOrEmpty(apellidoApi)) && 
+                                                             (nombreCompletoApi != nombreDb || apellidoCompletoApi != apellidoDb);
+
                             // Si hay cambios en cualquiera, se agrega el registro
-                            if (actualizarNombreApellido || actualizarFechaGenero)
+                            if (actualizarNombreApellido1 || actualizarNombreApellido2 || actualizarFechaGenero)
                             {
                                 dtUpdate.Rows.Add(
                                     Convert.ToInt32(row["IdAfiliado"]),
