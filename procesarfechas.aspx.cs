@@ -93,8 +93,17 @@ namespace fpWebApp
                 dtUpdate.Columns.Add("IdAfiliado", typeof(int));
                 dtUpdate.Columns.Add("FechaNacimiento", typeof(string));
                 dtUpdate.Columns.Add("Genero", typeof(int));
+                dtUpdate.Columns.Add("Nombre", typeof(string));
+                dtUpdate.Columns.Add("SegundoNombre", typeof(string));
+                dtUpdate.Columns.Add("Apellido", typeof(string));
+                dtUpdate.Columns.Add("SegundoApellido", typeof(string));
+
 
                 string nombre, s_nombre, apellidoApi, s_apellidoApi, fechaNacimientoApi, generoApi, fechaNacimientoDb, generoDb;
+                bool cambioNombre;
+                bool cambio_sNombre; 
+                bool cambioApellido; 
+                bool cambio_sApellido;
 
                 using (HttpClient client = new HttpClient())
                 {
@@ -108,8 +117,12 @@ namespace fpWebApp
                         s_apellidoApi = string.Empty;
                         fechaNacimientoApi = string.Empty;
                         generoApi = string.Empty;
-                        fechaNacimientoDb =string.Empty;
+                        fechaNacimientoDb = string.Empty;
                         generoDb = string.Empty;
+                        cambioNombre = false;
+                        cambio_sNombre = false;
+                        cambioApellido = false;
+                        cambio_sApellido = false;
 
                         HttpResponseMessage response = await client.GetAsync(url);
                         if (response.IsSuccessStatusCode)
@@ -117,40 +130,42 @@ namespace fpWebApp
                             string json = await response.Content.ReadAsStringAsync();
                             JObject data = JObject.Parse(json);
 
-                            nombre = NormalizarTexto(data["nombre"]?.ToString());
-                            s_nombre = NormalizarTexto(data["s_nombre"]?.ToString());
-                            apellidoApi = NormalizarTexto(data["apellido"]?.ToString());
-                            s_apellidoApi = NormalizarTexto(data["s_apellido"]?.ToString());
+                            fechaNacimientoApi = data["fecha_nacimiento"]?.ToString();
+                            generoApi = data["sexo"]?.ToString();
+
+                            nombre = NormalizarTexto(data["nombre"]?.ToString(), out cambioNombre);
+                            s_nombre = NormalizarTexto(data["s_nombre"]?.ToString(), out cambio_sNombre);
+                            apellidoApi = NormalizarTexto(data["apellido"]?.ToString(), out cambioApellido);
+                            s_apellidoApi = NormalizarTexto(data["s_apellido"]?.ToString(), out cambio_sApellido);
+
 
                             // valores BD
                             fechaNacimientoDb = row["FechaNacAfiliado"].ToString();
                             generoDb = row["idGenero"].ToString();
-                            string nombreDb = row["Nombre"].ToString();
-                            string sNombreDb = row["SegundoNombre"].ToString();
-                            string apellidoDb = row["Apellido"].ToString();
-                            string sApellidoDb = row["SegundoApellido"].ToString();
+                            string nombreDb = row["NombreAfiliado"].ToString();                            
+                            string apellidoDb = row["ApellidoAfiliado"].ToString();
 
-                            // validar fecha y género
-                            if (!string.IsNullOrEmpty(fechaNacimientoApi) && !string.IsNullOrEmpty(generoApi))
+                            // Detectar cambios en nombre y apellidos
+                            bool actualizarNombreApellido = cambioNombre || cambio_sNombre || cambioApellido || cambio_sApellido;
+
+                            // Detectar cambios en fecha de nacimiento o género
+                            bool actualizarFechaGenero = (!string.IsNullOrEmpty(fechaNacimientoApi) && !string.IsNullOrEmpty(generoApi)) &&
+                                                         (fechaNacimientoDb != fechaNacimientoApi || generoDb != generoApi);
+
+                            // Si hay cambios en cualquiera, se agrega el registro
+                            if (actualizarNombreApellido || actualizarFechaGenero)
                             {
-                                bool actualizarFechaGenero = fechaNacimientoDb != fechaNacimientoApi || generoDb != generoApi;
-
-                                // validar nombres/apellidos
-                                bool actualizarNombre = nombreDb != nombre || sNombreDb != s_nombre || apellidoDb != apellidoApi || sApellidoDb != s_apellidoApi;
-
-                                if (actualizarFechaGenero || actualizarNombre)
-                                {
-                                    dtUpdate.Rows.Add(
-                                        Convert.ToInt32(row["IdAfiliado"]),
-                                        fechaNacimientoApi,
-                                        Convert.ToInt32(generoApi),
-                                        nombre,
-                                        s_nombre,
-                                        apellidoApi,
-                                        s_apellidoApi
-                                    );
-                                }
+                                dtUpdate.Rows.Add(
+                                    Convert.ToInt32(row["IdAfiliado"]),
+                                    string.IsNullOrEmpty(fechaNacimientoApi) ? fechaNacimientoDb : fechaNacimientoApi,
+                                    Convert.ToInt32(generoApi),
+                                    nombre,
+                                    s_nombre,
+                                    apellidoApi,
+                                    s_apellidoApi
+                                );
                             }
+
                         }
                     }
                 }
@@ -170,51 +185,6 @@ namespace fpWebApp
             }
         }
 
-        //public async Task ActualizarAfiliadosAsync(DataTable dtUpdate, string connectionString)
-        //{
-        //    if (dtUpdate == null || dtUpdate.Rows.Count == 0)
-        //        return;
-
-        //    using (var conn = new MySqlConnection(connectionString))
-        //    {
-        //        await conn.OpenAsync();
-
-        //        using (var cmd = new MySqlCommand("TRUNCATE TABLE AfiliadosUpdateFechaNacTmp;", conn))
-        //        {
-        //            await cmd.ExecuteNonQueryAsync();
-        //        }
-
-        //        // 2. Insertar en bloque en la staging
-        //        var sb = new StringBuilder();
-        //        sb.Append("INSERT INTO AfiliadosUpdateFechaNacTmp (IdAfiliado, FechaNacimiento, Genero) VALUES ");
-
-        //        for (int i = 0; i < dtUpdate.Rows.Count; i++)
-        //        {
-        //            var row = dtUpdate.Rows[i];
-        //            sb.AppendFormat("({0}, '{1}', {2})",
-        //                row["IdAfiliado"],
-        //                MySqlHelper.EscapeString(row["FechaNacimiento"].ToString()),
-        //                string.IsNullOrEmpty(row["Genero"].ToString()) ? "NULL" : row["Genero"].ToString()
-        //            );
-
-        //            if (i < dtUpdate.Rows.Count - 1)
-        //                sb.Append(",");
-        //        }
-
-        //        sb.Append(";");
-
-        //        using (var cmd = new MySqlCommand(sb.ToString(), conn))
-        //        {
-        //            await cmd.ExecuteNonQueryAsync();
-        //        }
-
-        //        using (var cmd = new MySqlCommand("CALL Pa_ACTUALIZAR_PROCESO_FECHAS_LOTE();", conn))
-        //        {
-        //            await cmd.ExecuteNonQueryAsync();
-        //        }
-        //    }
-        //}
-
         public async Task ActualizarAfiliadosAsync(DataTable dtUpdate, string connectionString)
         {
             if (dtUpdate == null || dtUpdate.Rows.Count == 0)
@@ -224,11 +194,13 @@ namespace fpWebApp
             {
                 await conn.OpenAsync();
 
-                // limpiar tabla temporal
-                await new MySqlCommand("TRUNCATE TABLE AfiliadosUpdateFechaNacTmp;", conn).ExecuteNonQueryAsync();
+                using (var cmd = new MySqlCommand("TRUNCATE TABLE AfiliadosUpdateFechaNacTmp;", conn))
+                {
+                    await cmd.ExecuteNonQueryAsync();
+                }
 
                 var sb = new StringBuilder();
-                sb.Append("INSERT INTO AfiliadosUpdateFechaNacTmp (IdAfiliado, FechaNacimiento, Genero, Nombre, S_Nombre, Apellido, S_Apellido) VALUES ");
+                sb.Append("INSERT INTO AfiliadosUpdateFechaNacTmp (IdAfiliado, FechaNacimiento, Genero, Nombre, SegundoNombre, Apellido, SegundoApellido) VALUES ");
 
                 for (int i = 0; i < dtUpdate.Rows.Count; i++)
                 {
@@ -239,9 +211,9 @@ namespace fpWebApp
                         MySqlHelper.EscapeString(row["FechaNacimiento"].ToString()),
                         string.IsNullOrEmpty(row["Genero"].ToString()) ? "NULL" : row["Genero"].ToString(),
                         MySqlHelper.EscapeString(row["Nombre"].ToString()),
-                        MySqlHelper.EscapeString(row["S_Nombre"].ToString()),
+                        MySqlHelper.EscapeString(row["SegundoNombre"].ToString()),
                         MySqlHelper.EscapeString(row["Apellido"].ToString()),
-                        MySqlHelper.EscapeString(row["S_Apellido"].ToString())
+                        MySqlHelper.EscapeString(row["SegundoApellido"].ToString())
                     );
 
                     if (i < dtUpdate.Rows.Count - 1)
@@ -255,7 +227,6 @@ namespace fpWebApp
                     await cmd.ExecuteNonQueryAsync();
                 }
 
-                // ejecutar SP
                 using (var cmd = new MySqlCommand("CALL Pa_ACTUALIZAR_PROCESO_FECHAS_LOTE();", conn))
                 {
                     await cmd.ExecuteNonQueryAsync();
@@ -263,9 +234,59 @@ namespace fpWebApp
             }
         }
 
+        //public async Task ActualizarAfiliadosAsync(DataTable dtUpdate, string connectionString)
+        //{
+        //    if (dtUpdate == null || dtUpdate.Rows.Count == 0)
+        //        return;
 
-        private string NormalizarTexto(string texto)
+        //    using (var conn = new MySqlConnection(connectionString))
+        //    {
+        //        await conn.OpenAsync();
+
+        //        // limpiar tabla temporal
+        //        await new MySqlCommand("TRUNCATE TABLE AfiliadosUpdateFechaNacTmp;", conn).ExecuteNonQueryAsync();
+
+        //        var sb = new StringBuilder();
+        //        sb.Append("INSERT INTO AfiliadosUpdateFechaNacTmp (IdAfiliado, FechaNacimiento, Genero, Nombre, S_Nombre, Apellido, S_Apellido) VALUES ");
+
+        //        for (int i = 0; i < dtUpdate.Rows.Count; i++)
+        //        {
+        //            var row = dtUpdate.Rows[i];
+
+        //            sb.AppendFormat("({0}, '{1}', {2}, '{3}', '{4}', '{5}', '{6}')",
+        //                row["IdAfiliado"],
+        //                MySqlHelper.EscapeString(row["FechaNacimiento"].ToString()),
+        //                string.IsNullOrEmpty(row["Genero"].ToString()) ? "NULL" : row["Genero"].ToString(),
+        //                MySqlHelper.EscapeString(row["Nombre"].ToString()),
+        //                MySqlHelper.EscapeString(row["S_Nombre"].ToString()),
+        //                MySqlHelper.EscapeString(row["Apellido"].ToString()),
+        //                MySqlHelper.EscapeString(row["S_Apellido"].ToString())
+        //            );
+
+        //            if (i < dtUpdate.Rows.Count - 1)
+        //                sb.Append(",");
+        //        }
+
+        //        sb.Append(";");
+
+        //        using (var cmd = new MySqlCommand(sb.ToString(), conn))
+        //        {
+        //            await cmd.ExecuteNonQueryAsync();
+        //        }
+
+        //        // ejecutar SP
+        //        using (var cmd = new MySqlCommand("CALL Pa_ACTUALIZAR_PROCESO_FECHAS_LOTE();", conn))
+        //        {
+        //            await cmd.ExecuteNonQueryAsync();
+        //        }
+        //    }
+        //}
+
+
+        private string NormalizarTexto(string texto, out bool modificado)
         {
+            modificado = false;
+
             if (string.IsNullOrEmpty(texto)) return texto;
 
             Dictionary<string, string> mapaReemplazos = new Dictionary<string, string>
@@ -276,16 +297,22 @@ namespace fpWebApp
                 { "Õ", "Á" }, { "õ", "á" },
                 { "Â", "É" }, { "â", "é" },
                 { "Ê", "Ú" }, { "ê", "ú" }
-                
             };
+
+            string original = texto;
 
             foreach (var kvp in mapaReemplazos)
             {
-                texto = texto.Replace(kvp.Key, kvp.Value);
+                if (texto.Contains(kvp.Key))
+                {
+                    texto = texto.Replace(kvp.Key, kvp.Value);
+                    modificado = true;
+                }
             }
 
             return texto;
         }
+
 
 
 
