@@ -81,20 +81,13 @@
 
     <script>
         function changeClass() {
-            // Activa el menú principal
             var element1 = document.querySelector("#sedes");
-            if (element1) {
-                element1.classList.add("active");
-            }
-
-            // Despliega el submenú
+            element1.classList.replace("old", "active");
             var element2 = document.querySelector("#crm");
-            if (element2) {
-                element2.classList.add("show"); // en Bootstrap el desplegado es con "show"
-                element2.classList.remove("collapse");
-            }
+            element2.classList.remove("collapse");
         }
     </script>
+
 </head>
 
 <body onload="changeClass()">
@@ -234,7 +227,7 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <i class="fa fa-dollar text-info"></i>
-                                                            <label for="ValorPresupuesto" class="col-form-label">Presupuesto:</label>
+                                                            <label for="ValorPresupuesto" class="col-form-label">Presupuesto estimado:</label>
                                                             <asp:TextBox ID="txbValorPresupuesto" CssClass="form-control input-sm" runat="server" placeholder="$0"
                                                                 onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
                                                             <asp:RequiredFieldValidator ID="rfvValorPresupuesto" runat="server" ErrorMessage="* Campo requerido" 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net.Cache;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -45,12 +46,22 @@ namespace fpWebApp
                             //btnAgregar.Visible = true;
                         }
                     }
-                    listaEstrategias();
                     //ListaCargos();
                     //ltTitulo.Text = "Agregar cargo";
 
                     if (Request.QueryString.Count > 0)
                     {
+                        if (Request.QueryString["idEstrategia"] != null)
+                        {
+                            Session["idEstrategia"] = Request.QueryString["idEstrategia"].ToString();
+                            listaEstrategia(Convert.ToInt32(Session["idEstrategia"].ToString()));
+                            ListaContactosPorUsuario();
+                            CargarGraficaBarraCanalesVenta(Convert.ToInt32(Session["idEstrategia"].ToString()));
+                            CargarGraficaPiePlanesEstrategia(Convert.ToInt32(Session["idEstrategia"].ToString()));
+                            ListarCantidadLeadsDiaPorAsesor(Convert.ToInt32(Session["idEstrategia"].ToString()));
+                        }
+
+
                         //rpCargos.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
@@ -136,22 +147,119 @@ namespace fpWebApp
         }
 
 
-        private void listaEstrategias()
+        private void listaEstrategia(int idEstrategia)
+        {
+
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarEstrategiaMarketingPorId(idEstrategia);
+                DataTable dt1 = cg.ConsultarCuantosLeadsEstrategiaAceptados();
+
+                DataTable dt2 = cg.ConsultarEstrategiaasMarketingEncabezado();
+
+                if (dt2 != null && dt2.Rows.Count > 0)
+                {
+                    DataRow[] rows = dt2.Select("IdEstrategia = " + idEstrategia);
+
+                    if (rows.Length > 0)
+                        ltEstadoEstrategia.Text = rows[0]["Estado"].ToString();
+                    else
+                        ltEstadoEstrategia.Text = "No encontrado";
+                }
+
+                ltNombreEstrategia.Text = dt2.Rows[0]["NombreEstrategia"].ToString();
+                ltNombreUsuario.Text = dt.Rows[0]["NombreUsuario"].ToString();
+                DataTable dt3 = cg.ConsultarEstrategiaMarketingCuantos(idEstrategia);
+
+                if (dt3 != null && dt3.Rows.Count > 0)
+                {
+                    int eficienciaInt = (int)Math.Round(Convert.ToDecimal(dt3.Rows[0]["PorcentajeEfectividad"]));
+                    ltEficiencia.Text = eficienciaInt.ToString();
+                    progressEficiencia.Attributes["style"] = "width:" + eficienciaInt + "%;";
+                }
+                else
+                {
+                    ltEficiencia.Text = "0";
+                    progressEficiencia.Attributes["style"] = "width:0%;";
+                }
+
+                DateTime fechaCreacion = Convert.ToDateTime(dt.Rows[0]["FechaCreacion"]);
+                ltFechaCreacion.Text = fechaCreacion.ToString("dd.MM.yyyy");
+
+                ltCantidadLeadsEstrategia.Text = dt3.Rows[0]["TotalContactos"].ToString();
+                ltCantidadLeadsAprobados.Text = dt3.Rows[0]["ContactosConPagoAprobado"].ToString();
+
+                DateTime fechaInicio = Convert.ToDateTime(dt.Rows[0]["FechaInicio"]);
+                DateTime fechaFin = Convert.ToDateTime(dt.Rows[0]["FechaFin"]);
+
+                ltFechaIni.Text = fechaInicio.ToString("dd.MM.yyyy");
+                ltFechaFin.Text = fechaFin.ToString("dd.MM.yyyy");
+                ltDescripcionEstrategia.Text = dt.Rows[0]["DescripcionEstrategia"].ToString();
+                ltTipoEstrategia.Text = dt.Rows[0]["NombreTipoEstrategia"].ToString();
+                dt.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message.ToString();
+            }
+        }
+
+        private void CargarGraficaBarraCanalesVenta(int idEstrategia)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEstrategiasMarketing();
+            DataTable dt = cg.ConsultarRankingCanalesVentaPorIdEstrategia(Convert.ToInt32(idEstrategia));
 
-            //foreach (DataRow row in dt.Rows)
-            //{
-            //    row["Planes"] = ConvertirIdsANombres(row["Planes"].ToString(), dicPlanes);
-            //    row["CanalesVenta"] = ConvertirIdsANombres(row["CanalesVenta"].ToString(), dicCanales);
-            //}
+            var dataList = new List<object>();
+            int index = 1;
 
-            //rpEstrategias.DataSource = dt;
-            //rpEstrategias.DataBind();
+            foreach (DataRow row in dt.Rows)
+            {
+                string canal = row["CanalVenta"].ToString();
+                decimal ventas = Convert.ToDecimal(row["Ventas"]);
+
+                // Estructura: [x, y, label]
+                dataList.Add(new object[] { index, ventas, canal });
+                index++;
+            }
+
+            // Serializar a JSON
+            string jsonData = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(dataList);
+
+            // Guardar en un hiddenfield o literal para usar en JS
+            hiddenGrafica.Value = jsonData;
 
             dt.Dispose();
         }
+
+        private void CargarGraficaPiePlanesEstrategia(int idEstrategia)
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarRankingPlanesPorIdEstrategia(idEstrategia);
+
+            // En el DataTable deben venir: NombrePlan, NumeroPlanes, ValorAcumulado
+            var lista = dt.AsEnumerable().Select(r => new
+            {
+                label = r["NombrePlan"].ToString(),
+                cantidad = Convert.ToInt32(r["NumeroPlanes"]),
+                valor = Convert.ToDouble(r["ValorAcumulado"])
+            }).ToList();
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(lista);
+
+            // Deja disponible en JS
+            ClientScript.RegisterStartupScript(
+                this.GetType(),
+                "dataPiePlanes",
+                $"window.planesRanking = {json};",
+                true
+            );
+
+            dt.Dispose();
+        }
+
+
 
 
         private Dictionary<int, string> dicPlanes;
@@ -178,6 +286,29 @@ namespace fpWebApp
             //rpCargos.DataBind();
             dt.Dispose();
         }
+        private void ListaContactosPorUsuario()
+        {
+
+            int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
+            decimal valorTotal = 0;
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarContactosCRMPorUsuario(idUsuario, out valorTotal);
+
+            rpContactosCRM.DataSource = dt;
+            rpContactosCRM.DataBind();
+
+            //ltValorTotal.Text = valorTotal.ToString("C0");
+            dt.Dispose();
+        }
+
+
+        private void ListarCantidadLeadsDiaPorAsesor(int idEstrategia)
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCuantossLeadsDiaPorAsesor(idEstrategia);
+
+            dt.Dispose();
+        }
 
         protected void rpCargos_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
@@ -200,18 +331,7 @@ namespace fpWebApp
 
 
 
-        private bool ValidarCargos(string strNombre)
-        {
-            bool bExiste = false;
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEstadoCivilPorNombre(strNombre);
-            if (dt.Rows.Count > 0)
-            {
-                bExiste = true;
-            }
-            dt.Dispose();
-            return bExiste;
-        }
+
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
@@ -265,7 +385,84 @@ namespace fpWebApp
         //        Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
         //    }
         //}
+        protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                DataRowView row = (DataRowView)e.Item.DataItem;
 
+                HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+
+                // Obtener documento del afiliado desde el campo del Repeater
+                int documentoAfiliado;
+                if (int.TryParse(row["DocumentoAfiliado"].ToString(), out documentoAfiliado))
+                {
+                    clasesglobales cg = new clasesglobales();
+                    DataTable dtAfiliado = cg.ConsultarAfiliadoPorDocumento(documentoAfiliado);
+
+                    if (dtAfiliado.Rows.Count > 0)
+                    {
+                        int idAfiliado = Convert.ToInt32(dtAfiliado.Rows[0]["idAfiliado"]);
+                        DataTable dtEstadoActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+
+                        // Encontrar los tres botones
+                        //HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                        //HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                        HtmlAnchor btnNuevoAfiliado = (HtmlAnchor)e.Item.FindControl("btnNuevoAfiliado");
+
+                        // Si el afiliado tiene plan activo, ocultar todos los botones
+                        if (dtEstadoActivo.Rows.Count > 0)
+                        {
+                            if (btnEditar != null) btnEditar.Visible = false;
+                            if (btnEliminar != null) btnEliminar.Visible = false;
+                            if (btnNuevoAfiliado != null) btnNuevoAfiliado.Visible = false;
+                        }
+                        else
+                        {
+                            // Mostrar botones solo si no tiene plan activo y según permisos
+                            if (ViewState["CrearModificar"].ToString() == "1" && btnEditar != null)
+                            {
+                                btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + row.Row[0].ToString());
+                                btnEditar.Visible = true;
+                            }
+
+                            if (ViewState["Borrar"].ToString() == "1" && btnEliminar != null)
+                            {
+                                btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + row.Row[0].ToString());
+                                btnEliminar.Visible = true;
+                            }
+
+                            if (btnNuevoAfiliado != null)
+                            {
+                                // Este botón se muestra sin permisos adicionales
+                                btnNuevoAfiliado.Visible = true;
+                            }
+                        }
+                    }
+                }
+
+                if (row["FechaCreacion"] != DBNull.Value)
+                {
+                    DateTime fechaPrimerContacto = Convert.ToDateTime(row["FechaCreacion"]);
+                    TimeSpan diferencia = DateTime.Now - fechaPrimerContacto;
+
+                    string leyenda = "";
+                    if (diferencia.TotalMinutes < 1)
+                        leyenda = "Hace menos de un minuto";
+                    else if (diferencia.TotalMinutes < 60)
+                        leyenda = $"Hace {(int)diferencia.TotalMinutes} minuto{((int)diferencia.TotalMinutes == 1 ? "" : "s")}";
+                    else if (diferencia.TotalHours < 24)
+                        leyenda = $"Hace {(int)diferencia.TotalHours} hora{((int)diferencia.TotalHours == 1 ? "" : "s")}";
+                    else
+                        leyenda = $"Hace {(int)diferencia.TotalDays} día{((int)diferencia.TotalDays == 1 ? "" : "s")}";
+
+                    Literal ltTiempo = (Literal)e.Item.FindControl("ltTiempoTranscurrido");
+                    if (ltTiempo != null)
+                        ltTiempo.Text = leyenda;
+                }
+            }
+        }
         private string TraerData()
         {
             clasesglobales cg = new clasesglobales();

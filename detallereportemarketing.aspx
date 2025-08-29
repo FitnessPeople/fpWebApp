@@ -37,18 +37,10 @@
 
     <script>
         function changeClass() {
-            // Activa el menú principal
             var element1 = document.querySelector("#reporteestrategiascrmmarketing");
-            if (element1) {
-                element1.classList.add("active");
-            }
-
-            // Despliega el submenú
+            element1.classList.replace("old", "active");
             var element2 = document.querySelector("#crm");
-            if (element2) {
-                element2.classList.add("show"); // en Bootstrap el desplegado es con "show"
-                element2.classList.remove("collapse");
-            }
+            element2.classList.remove("collapse");
         }
     </script>
 </head>
@@ -140,7 +132,7 @@
                         <div class="row" id="divContenido" runat="server">
 
                             <div class="row">
-                                <div class="col-lg-9">
+                                <div class="col-lg-8">
                                     <div class="wrapper wrapper-content animated fadeInUp">
                                         <div class="ibox">
                                             <div class="ibox-content">
@@ -148,11 +140,14 @@
                                                     <div class="col-lg-12">
                                                         <div class="m-b-md">
                                                             <a href="#" class="btn btn-white btn-xs pull-right">Editar estrategia</a>
-                                                            <h2>Estrategia 1</h2>
+                                                            <h2>
+                                                                <asp:Literal ID="ltNombreEstrategia" runat="server"></asp:Literal></h2>
                                                         </div>
                                                         <dl class="dl-horizontal">
                                                             <dt>Estado:</dt>
-                                                            <dd><span class="label label-primary">Active</span></dd>
+                                                            <dd><span class="label label-primary">
+                                                                <asp:Literal ID="ltEstadoEstrategia" runat="server"></asp:Literal>
+                                                            </span></dd>
                                                         </dl>
                                                     </div>
                                                 </div>
@@ -161,23 +156,46 @@
                                                         <dl class="dl-horizontal">
 
                                                             <dt>Creado por:</dt>
-                                                            <dd>Alex Smith</dd>
-                                                            <dt>Messages:</dt>
-                                                            <dd>162</dd>
-                                                            <dt>Client:</dt>
-                                                            <dd><a href="#" class="text-navy">Zender Company</a> </dd>
-                                                            <dt>Version:</dt>
-                                                            <dd>v1.4.2 </dd>
+                                                            <dd>
+                                                                <asp:Literal ID="ltNombreUsuario" runat="server"></asp:Literal>
+                                                            </dd>
+                                                            <dt>Fecha Creación:</dt>
+                                                            <dd>
+                                                                <asp:Literal ID="ltFechaCreacion" runat="server"></asp:Literal>
+                                                            </dd>
+                                                            <dt>Total Leads:</dt>
+                                                            <dd>
+                                                                <span class="label label-success">
+                                                                    <asp:Literal ID="ltCantidadLeadsEstrategia" runat="server"></asp:Literal>
+                                                                </span>
+                                                            </dd>
+                                                            <dt>Total Leads con pago:</dt>
+                                                            <dd>
+                                                                <span class="label label-primary">
+                                                                    <asp:Literal ID="ltCantidadLeadsAprobados" runat="server"></asp:Literal>
+                                                                </span>
+                                                            </dd>
+                                                            <dt>Descripción de la estrategia:</dt>
+                                                            <dd>
+                                                                <asp:Literal ID="ltDescripcionEstrategia" runat="server"></asp:Literal>
+                                                            </dd>
                                                         </dl>
                                                     </div>
                                                     <div class="col-lg-7" id="cluster_info">
                                                         <dl class="dl-horizontal">
-
-                                                            <dt>Last Updated:</dt>
-                                                            <dd>16.08.2014 12:15:57</dd>
-                                                            <dt>Created:</dt>
-                                                            <dd>10.07.2014 23:36:57 </dd>
-                                                            <dt>Participants:</dt>
+                                                            <dt>Fecha Inicio:</dt>
+                                                            <dd>
+                                                                <asp:Literal ID="ltFechaIni" runat="server"></asp:Literal>
+                                                            </dd>
+                                                            <dt>Fecha Fin:</dt>
+                                                            <dd>
+                                                                <asp:Literal ID="ltFechaFin" runat="server"></asp:Literal>
+                                                            </dd>
+                                                            <dt>Tipo estrategia:</dt>
+                                                            <dd>
+                                                                <asp:Literal ID="ltTipoEstrategia" runat="server"></asp:Literal>
+                                                            </dd>
+                                                            <dt>Mejores asesores:</dt>
                                                             <dd class="project-people">
                                                                 <a href="">
                                                                     <img alt="image" class="img-circle" src="img/a3.jpg"></a>
@@ -196,15 +214,19 @@
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <dl class="dl-horizontal">
-                                                            <dt>Completed:</dt>
+                                                            <dt>Eficiencia:</dt>
                                                             <dd>
                                                                 <div class="progress progress-striped active m-b-sm">
-                                                                    <div style="width: 60%;" class="progress-bar"></div>
+                                                                    <div id="progressEficiencia" runat="server" class="progress-bar progress-bar-primary"></div>
                                                                 </div>
-                                                                <small>Project completed in <strong>60%</strong>. Remaining close the project, sign a contract and invoice.</small>
+                                                                <small>La estrategia completó con un 
+                                                                <strong>
+                                                                    <asp:Literal ID="ltEficiencia" runat="server"></asp:Literal>%</strong>
+                                                                </small>
                                                             </dd>
                                                         </dl>
                                                     </div>
+
                                                 </div>
                                                 <div class="row m-t-sm">
                                                     <div class="col-lg-12">
@@ -212,270 +234,79 @@
                                                             <div class="panel-heading">
                                                                 <div class="panel-options">
                                                                     <ul class="nav nav-tabs">
-                                                                        <li class="active"><a href="#tab-1" data-toggle="tab">Users messages</a></li>
-                                                                        <li class=""><a href="#tab-2" data-toggle="tab">Last activity</a></li>
+                                                                        <li class="active"><a href="#tab-1" data-toggle="tab">Leads gestionados</a></li>
+                                                                        <%--<li class=""><a href="#tab-2" data-toggle="tab">Last activity</a></li>--%>
                                                                     </ul>
                                                                 </div>
                                                             </div>
 
                                                             <div class="panel-body">
 
-                                                                <div class="tab-content">
-                                                                    <div class="tab-pane active" id="tab-1">
-                                                                        <div class="feed-activity-list">
-                                                                            <div class="feed-element">
-                                                                                <a href="#" class="pull-left">
-                                                                                    <img alt="image" class="img-circle" src="img/a2.jpg">
-                                                                                </a>
-                                                                                <div class="media-body ">
-                                                                                    <small class="pull-right">2h ago</small>
-                                                                                    <strong>Mark Johnson</strong> posted message on <strong>Monica Smith</strong> site.
-                                                                                    <br>
-                                                                                    <small class="text-muted">Today 2:10 pm - 12.06.2014</small>
-                                                                                    <div class="well">
-                                                                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
-                                                                                        Over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="feed-element">
-                                                                                <a href="#" class="pull-left">
-                                                                                    <img alt="image" class="img-circle" src="img/a3.jpg">
-                                                                                </a>
-                                                                                <div class="media-body ">
-                                                                                    <small class="pull-right">2h ago</small>
-                                                                                    <strong>Janet Rosowski</strong> add 1 photo on <strong>Monica Smith</strong>.
-                                                                                    <br>
-                                                                                    <small class="text-muted">2 days ago at 8:30am</small>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="feed-element">
-                                                                                <a href="#" class="pull-left">
-                                                                                    <img alt="image" class="img-circle" src="img/a4.jpg">
-                                                                                </a>
-                                                                                <div class="media-body ">
-                                                                                    <small class="pull-right text-navy">5h ago</small>
-                                                                                    <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>.
-                                                                                    <br>
-                                                                                    <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
-                                                                                    <div class="actions">
-                                                                                        <a class="btn btn-xs btn-white"><i class="fa fa-thumbs-up"></i>Like </a>
-                                                                                        <a class="btn btn-xs btn-white"><i class="fa fa-heart"></i>Love</a>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="feed-element">
-                                                                                <a href="#" class="pull-left">
-                                                                                    <img alt="image" class="img-circle" src="img/a5.jpg">
-                                                                                </a>
-                                                                                <div class="media-body ">
-                                                                                    <small class="pull-right">2h ago</small>
-                                                                                    <strong>Kim Smith</strong> posted message on <strong>Monica Smith</strong> site.
-                                                                                    <br>
-                                                                                    <small class="text-muted">Yesterday 5:20 pm - 12.06.2014</small>
-                                                                                    <div class="well">
-                                                                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
-                                                                                        Over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="feed-element">
-                                                                                <a href="#" class="pull-left">
-                                                                                    <img alt="image" class="img-circle" src="img/profile.jpg">
-                                                                                </a>
-                                                                                <div class="media-body ">
-                                                                                    <small class="pull-right">23h ago</small>
-                                                                                    <strong>Monica Smith</strong> love <strong>Kim Smith</strong>.
-                                                                                    <br>
-                                                                                    <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="feed-element">
-                                                                                <a href="#" class="pull-left">
-                                                                                    <img alt="image" class="img-circle" src="img/a7.jpg">
-                                                                                </a>
-                                                                                <div class="media-body ">
-                                                                                    <small class="pull-right">46h ago</small>
-                                                                                    <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>.
-                                                                                    <br>
-                                                                                    <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
+                                                                <table id="tablaContactos" class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                                                    data-filter-min="3" data-filter-placeholder="Buscar"
+                                                                    data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
+                                                                    data-paging-limit="10" data-filtering="true"
+                                                                    data-filter-container="#filter-form-container1" data-filter-delay="300"
+                                                                    data-filter-dropdown-title="Buscar en:" data-filter-position="left"
+                                                                    data-empty="Sin resultados">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th data-sortable="false" data-breakpoints="xs" style="width: 300px;">Nombre</th>
+                                                                            <th data-breakpoints="xs">Teléfono</th>
+                                                                            <th data-breakpoints="xs">Estado</th>
+                                                                            <th data-breakpoints="xs">Plan</th>
+                                                                            <th data-breakpoints="xs">HaceCuanto</th>
+                                                                            <th data-breakpoints="xs">Lead</th>
+                                                                            <th data-breakpoints="all" data-title="Info"></th>
+                                                                            <th data-sortable="false" data-filterable="false" class="text-left" style="width: 120px;">Acciones</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <asp:Repeater ID="rpContactosCRM" runat="server" OnItemDataBound="rpContactosCRM_ItemDataBound">
+                                                                            <ItemTemplate>
+                                                                                <tr class="feed-element">
+                                                                                    <td><%# Eval("NombreContacto") %> <%# Eval("ApellidoContacto") %></td>
+                                                                                    <td><%# Eval("TelefonoContacto") %></td>
+                                                                                    <td>Caliente</td>
+                                                                                    <td><%# Eval("NombrePlan") %></td>
+                                                                                    <td>
+                                                                                        <asp:Literal ID="ltTiempoTranscurrido" runat="server"></asp:Literal></td>
+                                                                                    <td>
+                                                                                        <span title='<%# Eval("NombreEstadoCRM") %>' style='color: <%# Eval("ColorHexaCRM") %>'>
+                                                                                            <%# Eval("IconoMinEstadoCRM") %>
+                                                                                        </span><%# Eval("NombreEstadoCRM") %>
+                                                                                    </td>
 
-                                                                    </div>
-                                                                    <div class="tab-pane" id="tab-2">
+                                                                                    <td>
+                                                                                        <table class="table table-bordered table-striped">
+                                                                                            <tr>
+                                                                                                <%-- <th width="25%"><i class="fa fa-city m-r-xs"></i>Ciudad</th>--%>
+                                                                                                <th width="25%"><i class="fa fa-mobile m-r-xs"></i>Archivo propuesta</th>
+                                                                                                <th width="50%" class="text-nowrap"><i class="fa fa-clock m-r-xs"></i>Historial</th>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td><%# Eval("ArchivoPropuesta") %></td>
+                                                                                                <td><%# Eval("HistorialHTML2") %></td>
+                                                                                            </tr>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                    <td style="display: flex; flex-wrap: nowrap;">
 
-                                                                        <table class="table table-striped">
-                                                                            <thead>
-                                                                                <tr>
-                                                                                    <th>Status</th>
-                                                                                    <th>Title</th>
-                                                                                    <th>Start Time</th>
-                                                                                    <th>End Time</th>
-                                                                                    <th>Comments</th>
+                                                                                        <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-left m-r-xs"
+                                                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" onclientclick="ocultarContador(); return true;">
+                                                                                            <i class="fa fa-edit"></i></a>
+                                                                                        <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-left m-r-xs"
+                                                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                                                        <a runat="server" id="btnNuevoAfiliado" href="#" class="btn btn-outline btn-success pull-left"
+                                                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" data-idcrm='<%# Eval("idContacto") %>'
+                                                                                            data-documento='<%# Eval("DocumentoAfiliado") %>' onclick="redirigirNuevoAfiliado(this, event)">
+                                                                                            <i class="fa fa-id-card"></i></a>
+                                                                                    </td>
                                                                                 </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <span class="label label-primary"><i class="fa fa-check"></i>Completed</span>
-                                                                                    </td>
-                                                                                    <td>Create project in webapp
-                                                                                    </td>
-                                                                                    <td>12.07.2014 10:10:1
-                                                                                    </td>
-                                                                                    <td>14.07.2014 10:16:36
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <p class="small">
-                                                                                            Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable.
-                                                                                        </p>
-                                                                                    </td>
-
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <span class="label label-primary"><i class="fa fa-check"></i>Accepted</span>
-                                                                                    </td>
-                                                                                    <td>Various versions
-                                                                                    </td>
-                                                                                    <td>12.07.2014 10:10:1
-                                                                                    </td>
-                                                                                    <td>14.07.2014 10:16:36
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <p class="small">
-                                                                                            Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-                                                                                        </p>
-                                                                                    </td>
-
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <span class="label label-primary"><i class="fa fa-check"></i>Sent</span>
-                                                                                    </td>
-                                                                                    <td>There are many variations
-                                                                                    </td>
-                                                                                    <td>12.07.2014 10:10:1
-                                                                                    </td>
-                                                                                    <td>14.07.2014 10:16:36
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <p class="small">
-                                                                                            There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which
-                                                                                        </p>
-                                                                                    </td>
-
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <span class="label label-primary"><i class="fa fa-check"></i>Reported</span>
-                                                                                    </td>
-                                                                                    <td>Latin words
-                                                                                    </td>
-                                                                                    <td>12.07.2014 10:10:1
-                                                                                    </td>
-                                                                                    <td>14.07.2014 10:16:36
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <p class="small">
-                                                                                            Latin words, combined with a handful of model sentence structures
-                                                                                        </p>
-                                                                                    </td>
-
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <span class="label label-primary"><i class="fa fa-check"></i>Accepted</span>
-                                                                                    </td>
-                                                                                    <td>The generated Lorem
-                                                                                    </td>
-                                                                                    <td>12.07.2014 10:10:1
-                                                                                    </td>
-                                                                                    <td>14.07.2014 10:16:36
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <p class="small">
-                                                                                            The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
-                                                                                        </p>
-                                                                                    </td>
-
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <span class="label label-primary"><i class="fa fa-check"></i>Sent</span>
-                                                                                    </td>
-                                                                                    <td>The first line
-                                                                                    </td>
-                                                                                    <td>12.07.2014 10:10:1
-                                                                                    </td>
-                                                                                    <td>14.07.2014 10:16:36
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <p class="small">
-                                                                                            The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-                                                                                        </p>
-                                                                                    </td>
-
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <span class="label label-primary"><i class="fa fa-check"></i>Reported</span>
-                                                                                    </td>
-                                                                                    <td>The standard chunk
-                                                                                    </td>
-                                                                                    <td>12.07.2014 10:10:1
-                                                                                    </td>
-                                                                                    <td>14.07.2014 10:16:36
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <p class="small">
-                                                                                            The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.
-                                                                                        </p>
-                                                                                    </td>
-
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <span class="label label-primary"><i class="fa fa-check"></i>Completed</span>
-                                                                                    </td>
-                                                                                    <td>Lorem Ipsum is that
-                                                                                    </td>
-                                                                                    <td>12.07.2014 10:10:1
-                                                                                    </td>
-                                                                                    <td>14.07.2014 10:16:36
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <p class="small">
-                                                                                            Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable.
-                                                                                        </p>
-                                                                                    </td>
-
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <span class="label label-primary"><i class="fa fa-check"></i>Sent</span>
-                                                                                    </td>
-                                                                                    <td>Contrary to popular
-                                                                                    </td>
-                                                                                    <td>12.07.2014 10:10:1
-                                                                                    </td>
-                                                                                    <td>14.07.2014 10:16:36
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <p class="small">
-                                                                                            Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical
-                                                                                        </p>
-                                                                                    </td>
-
-                                                                                </tr>
-
-                                                                            </tbody>
-                                                                        </table>
-
-                                                                    </div>
-                                                                </div>
+                                                                            </ItemTemplate>
+                                                                        </asp:Repeater>
+                                                                    </tbody>
+                                                                </table>
 
                                                             </div>
 
@@ -483,40 +314,141 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="wrapper wrapper-content project-manager">
-                                        <h4>Descripción de la estrategia</h4>
-                                        <img src="img/zender_logo.png" class="img-responsive">
-                                        <p class="small">
-                                            There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look
-                                            even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing
-                                        </p>
-                                        <p class="small font-bold">
-                                            <span><i class="fa fa-circle text-warning"></i>High priority</span>
-                                        </p>
-                                        <h5>Project tag</h5>
-                                        <ul class="tag-list" style="padding: 0">
-                                            <li><a href=""><i class="fa fa-tag"></i>Zender</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i>Lorem ipsum</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i>Passages</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i>Variations</a></li>
-                                        </ul>
-                                        <h5>Project files</h5>
-                                        <ul class="list-unstyled project-files">
-                                            <li><a href=""><i class="fa fa-file"></i>Project_document.docx</a></li>
-                                            <li><a href=""><i class="fa fa-file-picture-o"></i>Logo_zender_company.jpg</a></li>
-                                            <li><a href=""><i class="fa fa-stack-exchange"></i>Email_from_Alex.mln</a></li>
-                                            <li><a href=""><i class="fa fa-file"></i>Contract_20_11_2014.docx</a></li>
-                                        </ul>
-                                        <div class="text-center m-t-md">
-                                            <a href="#" class="btn btn-xs btn-primary">Add files</a>
-                                            <a href="#" class="btn btn-xs btn-primary">Report contact</a>
 
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-lg-4">
+
+                                    <div class="wrapper wrapper-content animated fadeInRight">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="ibox float-e-margins">
+                                                    <div class="ibox-title">
+                                                        <h5>Resultados canales de venta<small></small></h5>
+                                                        <div class="ibox-tools">
+                                                            <a class="collapse-link">
+                                                                <i class="fa fa-chevron-up"></i>
+                                                            </a>
+                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                                <i class="fa fa-wrench"></i>
+                                                            </a>
+                                                            <ul class="dropdown-menu dropdown-user">
+                                                                <li><a href="#">Config option 1</a>
+                                                                </li>
+                                                                <li><a href="#">Config option 2</a>
+                                                                </li>
+                                                            </ul>
+                                                            <a class="close-link">
+                                                                <i class="fa fa-times"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ibox-content">
+                                                        <div class="flot-chart">
+                                                            <div class="flot-chart-content" id="flot-bar-chart"></div>
+                                                            <asp:HiddenField ID="hiddenGrafica" runat="server" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="ibox float-e-margins">
+                                                    <div class="ibox-title">
+                                                        <h5>Resultados planes comerciales</h5>
+                                                        <div class="ibox-tools">
+                                                            <a class="collapse-link">
+                                                                <i class="fa fa-chevron-up"></i>
+                                                            </a>
+                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                                <i class="fa fa-wrench"></i>
+                                                            </a>
+                                                            <ul class="dropdown-menu dropdown-user">
+                                                                <li><a href="#">Config option 1</a>
+                                                                </li>
+                                                                <li><a href="#">Config option 2</a>
+                                                                </li>
+                                                            </ul>
+                                                            <a class="close-link">
+                                                                <i class="fa fa-times"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ibox-content">
+                                                        <div class="flot-chart">
+                                                            <div class="flot-chart-pie-content" id="flot-pie-chart"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                           <div class="row">
+                                            <div class="col-lg-12">
+                                                <table class="table table-hover margin bottom">
+                                                    <thead>
+                                                    <tr>
+                                                        <th style="width: 1%" class="text-center">Identifiación.</th>
+                                                        <th>Asesor/a</th>
+                                                        <th class="text-center">Día</th>
+                                                        <th class="text-center">Cantidad Leads</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td class="text-center">1</td>
+                                                        <td> Security doors
+                                                            </td>
+                                                        <td class="text-center small">16 Jun 2014</td>
+                                                        <td class="text-center"><span class="label label-primary">$483.00</span></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">2</td>
+                                                        <td> Wardrobes
+                                                        </td>
+                                                        <td class="text-center small">10 Jun 2014</td>
+                                                        <td class="text-center"><span class="label label-primary">$327.00</span></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">3</td>
+                                                        <td> Set of tools
+                                                        </td>
+                                                        <td class="text-center small">12 Jun 2014</td>
+                                                        <td class="text-center"><span class="label label-warning">$125.00</span></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">4</td>
+                                                        <td> Panoramic pictures</td>
+                                                        <td class="text-center small">22 Jun 2013</td>
+                                                        <td class="text-center"><span class="label label-primary">$344.00</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">5</td>
+                                                        <td>Phones</td>
+                                                        <td class="text-center small">24 Jun 2013</td>
+                                                        <td class="text-center"><span class="label label-primary">$235.00</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">6</td>
+                                                        <td>Monitors</td>
+                                                        <td class="text-center small">26 Jun 2013</td>
+                                                        <td class="text-center"><span class="label label-primary">$100.00</span></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                          </div>
+                                    </div>
+
+
+
+
                                 </div>
                             </div>
                         </div>
@@ -548,6 +480,133 @@
     <script>
         $('.footable').footable();
     </script>
+
+    <!-- Flot -->
+    <script src="js/plugins/flot/jquery.flot.js"></script>
+    <script src="js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="js/plugins/flot/jquery.flot.resize.js"></script>
+    <script src="js/plugins/flot/jquery.flot.pie.js"></script>
+    <script src="js/plugins/flot/jquery.flot.time.js"></script>
+
+    <!-- Flot demo data -->
+    <script src="js/demo/flot-demo.js"></script>
+
+    <script>
+        $(function () {
+            var rawData = $('#<%= hiddenGrafica.ClientID %>').val();
+
+            if (!rawData || rawData.trim() === "") {
+                console.warn("⚠️ No hay datos en hiddenGrafica");
+                return;
+            }
+
+            var parsedData = JSON.parse(rawData);
+
+            var barData = {
+                label: "Ventas",
+                data: parsedData.map(function (d) { return [d[0], d[1]]; })
+            };
+
+            // 👉 Función para formatear números en K/M
+            function formatNumber(num) {
+                if (num >= 1000000) {
+                    return (num / 1000000).toFixed(1).replace(".0", "") + "M";
+                } else if (num >= 1000) {
+                    return (num / 1000).toFixed(1).replace(".0", "") + "K";
+                }
+                return num;
+            }
+
+            var barOptions = {
+                series: {
+                    bars: {
+                        show: true,
+                        barWidth: 0.6,
+                        align: "center",
+                        fill: true,
+                        fillColor: { colors: [{ opacity: 0.8 }, { opacity: 0.8 }] }
+                    }
+                },
+                xaxis: {
+                    ticks: parsedData.map(function (d) { return [d[0], d[2]]; }),
+                    tickDecimals: 0,
+                    tickLength: 0
+                },
+                colors: ["#1ab394"],
+                grid: {
+                    color: "#999999",
+                    hoverable: true,
+                    clickable: true,
+                    tickColor: "#D4D4D4",
+                    borderWidth: 0
+                },
+                legend: { show: false },
+                tooltip: true,
+                tooltipOpts: {
+                    content: function (label, x, y) {
+                        var canal = parsedData.find(function (d) { return d[0] === x; });
+                        return canal ? canal[2] + "<br>Ventas: " + formatNumber(y) : y;
+                    }
+                }
+            };
+
+            $.plot($("#flot-bar-chart"), [barData], barOptions);
+
+            // 👇 Rotar etiquetas del eje X
+            $("#flot-bar-chart .flot-x-axis div").css("transform", "rotate(45deg)")
+                .css("transform-origin", "top right")
+                .css("white-space", "nowrap");
+        });
+
+    </script>
+
+    <script>
+        $(function () {
+            // Métrica del área del pie: "cantidad" (número de planes) o "valor" (monto)
+            var metric = "cantidad"; // ← como pediste, por número de planes vendidos
+
+            var raw = (window.planesRanking || []);
+            // 1) Construir data → 2) quitar ceros → 3) ordenar desc (ranking visual)
+            var data = raw
+                .map(function (p) {
+                    return {
+                        label: p.label,
+                        data: metric === "cantidad" ? (Number(p.cantidad) || 0) : (Number(p.valor) || 0)
+                    };
+                })
+                .filter(function (it) { return it.data > 0; })   // ← no mostrar ceros
+                .sort(function (a, b) { return b.data - a.data; });
+
+            if (!data.length) {
+                $("#flot-pie-chart").text("Sin datos para mostrar.");
+                return;
+            }
+
+            $.plot($("#flot-pie-chart"), data, {
+                series: {
+                    pie: {
+                        show: true,
+                        radius: 1,
+                        label: { show: false } // evitamos ruido visual, usa tooltip/leyenda
+                        // si quisieras agrupar por porcentaje pequeño:
+                        // ,combine: { threshold: 0.03, label: "Otros" }
+                    }
+                },
+                legend: { show: true, position: "ne" },
+                grid: { hoverable: true },
+                tooltip: true,
+                tooltipOpts: {
+                    // %p = porcentaje, %s = label, %y = valor
+                    content: metric === "cantidad"
+                        ? "%p.1% | %s: %y planes"
+                        : "%p.1% | %s: %y"
+                },
+                colors: ["#1ab394", "#79d2c0", "#bababa", "#d3d3d3", "#f8ac59", "#ed5565", "#23c6c8"]
+            });
+        });
+
+    </script>
+
 
 </body>
 

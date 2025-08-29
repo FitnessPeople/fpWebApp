@@ -500,7 +500,26 @@ namespace fpWebApp
                     labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
                     presupuestoJson = Newtonsoft.Json.JsonConvert.SerializeObject(presupuestos);
                     ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
+                }
+                else
+                {
+                    var labels = new List<string>();
+                    var presupuestos = new List<decimal>();
+                    var ventas = new List<decimal>();
 
+                    for (int mes = 1; mes <= 12; mes++)
+                    {
+                        string abreviado = new DateTime(DateTime.Now.Year, mes, 1)
+                            .ToString("MMM", new System.Globalization.CultureInfo("es-CO"));
+
+                        labels.Add(abreviado);
+                        presupuestos.Add(0);
+                        ventas.Add(0);
+                    }
+
+                    labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
+                    presupuestoJson = Newtonsoft.Json.JsonConvert.SerializeObject(presupuestos);
+                    ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
                 }
 
             }
@@ -529,6 +548,34 @@ namespace fpWebApp
                 string mensaje = ex.Message.ToString();
             }
         }
+
+        protected void rpEstrategiasEncabezado_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                DataRowView row = (DataRowView)e.Item.DataItem;
+                string estado = row["Estado"].ToString();
+
+                var lbl = (System.Web.UI.HtmlControls.HtmlGenericControl)e.Item.FindControl("lblEstado");
+
+                if (lbl != null)
+                {
+                    if (estado == "Activo")
+                        lbl.Attributes["class"] = "label label-primary";
+                    else
+                        lbl.Attributes["class"] = "label label-secondary";
+                }
+
+                if (ViewState["CrearModificar"].ToString() == "1")
+                {
+                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("href", "estrategiasmarketing?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Visible = true;
+                }
+            }
+        }
+
+
 
         public class VentasCanal
         {
@@ -675,9 +722,5 @@ namespace fpWebApp
             return strData;
         }
 
-        protected void rpEstrategiasEncabezado_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-
-        }
     }
 }

@@ -48,22 +48,26 @@
         }
     </style>
 
-    <script>
-        function changeClass() {
-            // Activa el menú principal
-            var element1 = document.querySelector("#reporteestrategiascrmmarketing");
-            if (element1) {
-                element1.classList.add("active");
-            }
 
-            // Despliega el submenú
-            var element2 = document.querySelector("#crm");
-            if (element2) {
-                element2.classList.add("show"); // en Bootstrap el desplegado es con "show"
+<%--    <script>
+        function changeClass() {
+            var element1 = document.querySelector("#reporteestrategiascrmmarketing");
+            element1.classList.replace("old", "active");
+            var element2 = document.querySelector("#CRM");
+            element2.classList.remove("collapse");
+        }
+    </script>--%>
+        <script>
+            function changeClass() {
+                var element1 = document.querySelector("#reporteestrategiascrmmarketing");
+                element1.classList.replace("old", "active");
+                var element2 = document.querySelector("#crm");
                 element2.classList.remove("collapse");
             }
-        }
-    </script>
+        </script>
+
+
+
 </head>
 
 <body onload="changeClass()">
@@ -272,14 +276,6 @@
                                                     <h5>Top 5 asesores
                                                         <asp:Literal ID="ltMesActual" runat="server"></asp:Literal>
                                                     </h5>
-                                                    <div class="ibox-tools">
-                                                        <a class="collapse-link">
-                                                            <i class="fa fa-chevron-up"></i>
-                                                        </a>
-                                                        <a class="close-link">
-                                                            <i class="fa fa-times"></i>
-                                                        </a>
-                                                    </div>
                                                 </div>
                                                 <div class="ibox-content">
                                                     <asp:Repeater ID="rptRankingAsesores" runat="server">
@@ -430,11 +426,12 @@
                                                         </HeaderTemplate>
                                                         <ItemTemplate>
                                                             <tr>
-                                                                <td class="project-status">
-                                                                    <span class="label label-primary">
-                                                                        <%# Eval("Estado") %> 
-                                                                    </span>
-                                                                </td>
+<td class="project-status">
+    <span id="lblEstado" runat="server">
+        <%# Eval("Estado") %>
+    </span>
+</td>
+
                                                                 <td class="project-title">
                                                                     <a href="detallereportemarketing">
                                                                         <%# Eval("NombreEstrategia") %> 
@@ -460,8 +457,10 @@
                                                                     <a href=""><img alt="image" class="img-circle" src="img/a5.jpg"></a>
                                                                 </td>
                                                                 <td class="project-actions">
-                                                                    <a href="detallereportemarketing" runat="server" id="btnVer" class="btn btn-white btn-sm" title="Ver"><i class="fa-solid fa-eye"></i></a>
-                                                                    <a href="#" class="btn btn-white btn-sm" title="Editar"><i class="fa fa-pencil"></i></a>
+                                                                    <a href='<%# "detallereportemarketing.aspx?idEstrategia=" + Eval("idEstrategia") %>' 
+                                                                       class="btn btn-white btn-sm" title="Ver"><i class="fa-solid fa-eye"></i>
+                                                                    </a>
+                                                                    <a class="btn btn-white btn-sm" id="btnEditar" runat="server" title="Editar"><i class="fa fa-pencil"></i></a>
                                                                 </td>
                                                             </tr>
                                                         </ItemTemplate>
