@@ -30,7 +30,8 @@ namespace fpWebApp
                         CargarAsesores();
 
                         //CargarCanalesVenta();
-                        CargarSedes();
+                        CargarSedes(); 
+                        //CargarCanalesVenta();
                         if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
                         {
                             listaAfiliados("Todas");
@@ -89,15 +90,40 @@ namespace fpWebApp
         //    clasesglobales cg = new clasesglobales();
         //    DataTable dt = new DataTable();
 
+        //    //if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
+        //    //{
+        //    //    dt = cg.ConsultarCanalesVenta();
+        //    //}
+        //    //else
+        //    //{
+        //    //    dt = cg.ConsultarCanalesVentaPorId(Convert.ToInt32(Session["idCanalVenta"].ToString()));
+        //    //}
+
+        //    dt = cg.ConsultarCanalesVentaSedes();
+
+        //    ddlCanalVenta.DataSource = dt;
+        //    ddlCanalVenta.DataBind();
+
+        //    dt.Dispose();
+        //}
+
+        //private void CargarSedes()
+        //{
+        //    //ddlCanalVenta.Items.Clear();
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = new DataTable();
+
         //    if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
         //    {
-        //        dt = cg.ConsultarCanalesVenta();
+        //        dt = cg.ConsultaCargarSedes("Gimnasio");
         //    }
         //    else
         //    {
-        //        dt = cg.ConsultarCanalesVentaPorId(Convert.ToInt32(Session["idCanalVenta"].ToString()));
+        //        dt = cg.ConsultaCargarSedesPorId(Convert.ToInt32(Session["idSede"].ToString()), "Gimnasio");
         //    }
 
+        //    ddlCanalVenta.DataTextField = "NombreSede";
+        //    ddlCanalVenta.DataValueField = "idSede";
         //    ddlCanalVenta.DataSource = dt;
         //    ddlCanalVenta.DataBind();
 
@@ -106,20 +132,20 @@ namespace fpWebApp
 
         private void CargarSedes()
         {
-            //ddlCanalVenta.Items.Clear();
             clasesglobales cg = new clasesglobales();
             DataTable dt = new DataTable();
+            dt = cg.ConsultarCanalesVentaSedes();
 
-            if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
+            if (Session["idCanalVenta"].ToString() != "1") // Usuario de Sede Administrativa (11)
             {
-                dt = cg.ConsultaCargarSedes("Gimnasio");
+                dt = cg.ConsultarCanalesVentaSedes();
             }
             else
             {
-                dt = cg.ConsultaCargarSedesPorId(Convert.ToInt32(Session["idSede"].ToString()), "Gimnasio");
+                dt = cg.ConsultarCanalesVentaSedesPorId(Convert.ToInt32(Session["idSede"].ToString()));
             }
 
-            ddlCanalVenta.DataTextField = "NombreSede";
+            ddlCanalVenta.DataTextField = "NombreCanalVenta";
             ddlCanalVenta.DataValueField = "idSede";
             ddlCanalVenta.DataSource = dt;
             ddlCanalVenta.DataBind();
