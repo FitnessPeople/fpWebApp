@@ -27,7 +27,7 @@ namespace fpWebApp
                     }
                     if (ViewState["Consulta"].ToString() == "1")
                     {
-                        CargarAsesores();
+                        CargarAsesoresPorSede();
 
                         //CargarCanalesVenta();
                         CargarSedes(); 
@@ -132,28 +132,36 @@ namespace fpWebApp
 
         private void CargarSedes()
         {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = new DataTable();
-            dt = cg.ConsultarCanalesVentaSedes();
-
-            if (Session["idCanalVenta"].ToString() != "1") // Usuario de Sede Administrativa (11)
+            try
             {
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = new DataTable();
                 dt = cg.ConsultarCanalesVentaSedes();
+
+                if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
+                {
+                    dt = cg.ConsultarCanalesVentaSedes();
+                }
+                else
+                {
+                    dt = cg.ConsultarCanalesVentaSedesPorId(Convert.ToInt32(Session["idSede"].ToString()));
+                }
+
+                ddlCanalVenta.DataTextField = "NombreCanalVenta";
+                ddlCanalVenta.DataValueField = "idSede";
+                ddlCanalVenta.DataSource = dt;
+                ddlCanalVenta.DataBind();
+
+                dt.Dispose();
             }
-            else
+            catch (Exception ex)
             {
-                dt = cg.ConsultarCanalesVentaSedesPorId(Convert.ToInt32(Session["idSede"].ToString()));
+                string mensaje = ex.Message.ToString();
             }
 
-            ddlCanalVenta.DataTextField = "NombreCanalVenta";
-            ddlCanalVenta.DataValueField = "idSede";
-            ddlCanalVenta.DataSource = dt;
-            ddlCanalVenta.DataBind();
-
-            dt.Dispose();
         }
 
-        private void CargarAsesores()
+        private void CargarAsesoresPorSede()
         {
             string strQuery = "SELECT * " +
                 "FROM Usuarios u, Empleados e " +

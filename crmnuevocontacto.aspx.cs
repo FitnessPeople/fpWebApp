@@ -81,6 +81,7 @@ namespace fpWebApp
                     CargarTipoDocumento();
                     ListaMediosDePago();
                     CargarAfiliadosOrigen();
+                    CargarPregestion();
                     CargarGeneros();
                     CargarEstadosVentas();
                     CargarEstrategiasMarketing();
@@ -430,20 +431,23 @@ namespace fpWebApp
         }
         private void CargarPlanesAfiliado(string strIdAfiliado)
         {
-            string strQuery = "SELECT *, " +
-                "IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,'danger','info') AS label1, " +
-                "IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,CONCAT(DATEDIFF(FechaFinalPlan, CURDATE())*(-1),' días vencidos'),CONCAT(DATEDIFF(FechaFinalPlan, CURDATE()),' días disponibles')) AS diasquefaltan, " +
-                "DATEDIFF(CURDATE(), FechaInicioPlan) AS diasconsumidos, " +
-                "DATEDIFF(FechaFinalPlan, FechaInicioPlan) AS diastotales, " +
-                "ROUND(DATEDIFF(CURDATE(), FechaInicioPlan) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje1, " +
-                "ROUND(DATEDIFF(FechaFinalPlan, CURDATE()) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje2 " +
-                "FROM afiliadosPlanes ap, Afiliados a, Planes p " +
-                "WHERE a.idAfiliado = " + strIdAfiliado + " " +
-                "AND ap.idAfiliado = a.idAfiliado " +
-                "AND ap.idPlan = p.idPlan ";
+            //string strQuery = "SELECT *, " +
+            //    "IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,'danger','info') AS label1, " +
+            //    "IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,CONCAT(DATEDIFF(FechaFinalPlan, CURDATE())*(-1),' días vencidos'),CONCAT(DATEDIFF(FechaFinalPlan, CURDATE()),' días disponibles')) AS diasquefaltan, " +
+            //    "DATEDIFF(CURDATE(), FechaInicioPlan) AS diasconsumidos, " +
+            //    "DATEDIFF(FechaFinalPlan, FechaInicioPlan) AS diastotales, " +
+            //    "ROUND(DATEDIFF(CURDATE(), FechaInicioPlan) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje1, " +
+            //    "ROUND(DATEDIFF(FechaFinalPlan, CURDATE()) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje2 " +
+            //    "FROM afiliadosPlanes ap, Afiliados a, Planes p " +
+            //    "WHERE a.idAfiliado = " + strIdAfiliado + " " +
+            //    "AND ap.idAfiliado = a.idAfiliado " +
+            //    "AND ap.idPlan = p.idPlan ";
             //"AND ap.EstadoPlan = 'Activo'";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+
+            DataTable dt = cg.CargarPlanesAfiliado(strIdAfiliado, "Activo");
+
+           // DataTable dt = cg.TraerDatos(strQuery);
 
             if (dt.Rows.Count > 0)
             {
@@ -492,10 +496,18 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
-            ddlAfiliadoOrigen.DataSource = dt;
-            ddlAfiliadoOrigen.DataBind();
+           // ddlAfiliadoOrigen.DataSource = dt;
+           //  ddlAfiliadoOrigen.DataBind();
 
             dt.Dispose();
+        }
+
+        private void CargarPregestion()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultaCargarPregestionPorIdAsesor(Convert.ToInt32(Session["idUsuario"].ToString()));
+            ddlAfiliadoOrigen.DataSource = dt;
+            ddlAfiliadoOrigen.DataBind();
         }
 
         #endregion

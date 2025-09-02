@@ -476,13 +476,49 @@
                                                         <asp:UpdatePanel ID="upAfiliado" runat="server" UpdateMode="Conditional">
                                                             <ContentTemplate>
 
-                                                                <div class="crm-align-row">
+<%--                                                                <div class="crm-align-row">
                                                                     <div class="crm-align-cell" style="width: 80%;" id="btnAfiliadoBus">
                                                                         <div class="form-group">
                                                                             <label>Afiliado origen</label>
                                                                             <asp:DropDownList ID="ddlAfiliadoOrigen" name="ddlAfiliadoOrigen" runat="server"
                                                                                 DataTextField="DocNombreAfiliado" AppendDataBoundItems="true"
                                                                                 DataValueField="DocumentoAfiliado" CssClass="chosen-select form-control input-sm"
+                                                                                OnSelectedIndexChanged="ddlAfiliadoOrigen_SelectedIndexChanged"
+                                                                                AutoPostBack="true">
+                                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                            </asp:DropDownList>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- Contador -->
+                                                                    <div class="crm-align-cell" style="width: 10%;">
+                                                                        <div class="form-group">
+                                                                            <label>Contador:</label>
+                                                                            <div id="reloj" style="font-size: 20px; font-family: monospace;"></div>
+                                                                            <asp:HiddenField ID="hfContador" runat="server" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Spinner -->
+                                                                    <div class="crm-align-cell" style="width: 10%;">
+                                                                        <div class="form-group crm-spinner">
+                                                                            <div class="sk-spinner sk-spinner-wave">
+                                                                                <div class="sk-rect1"></div>
+                                                                                <div class="sk-rect2"></div>
+                                                                                <div class="sk-rect3"></div>
+                                                                                <div class="sk-rect4"></div>
+                                                                                <div class="sk-rect5"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>--%>
+
+                                                                  <div class="crm-align-row">
+                                                                    <div class="crm-align-cell" style="width: 80%;" id="btnAfiliadoBus">
+                                                                        <div class="form-group">
+                                                                            <label>Leads asignados</label>
+                                                                            <asp:DropDownList ID="ddlAfiliadoOrigen" name="ddlAfiliadoOrigen" runat="server"
+                                                                                DataTextField="NombreContacto" AppendDataBoundItems="true"
+                                                                                DataValueField="DocumentoContacto" CssClass="chosen-select form-control input-sm"
                                                                                 OnSelectedIndexChanged="ddlAfiliadoOrigen_SelectedIndexChanged"
                                                                                 AutoPostBack="true">
                                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
