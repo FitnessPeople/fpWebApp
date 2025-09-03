@@ -515,9 +515,9 @@
                                                                   <div class="crm-align-row">
                                                                     <div class="crm-align-cell" style="width: 80%;" id="btnAfiliadoBus">
                                                                         <div class="form-group">
-                                                                            <label>Leads asignados</label>
+                                                                            <label>Contactos asignados</label>
                                                                             <asp:DropDownList ID="ddlAfiliadoOrigen" name="ddlAfiliadoOrigen" runat="server"
-                                                                                DataTextField="NombreContacto" AppendDataBoundItems="true"
+                                                                                DataTextField="NombreCompleto" AppendDataBoundItems="true"
                                                                                 DataValueField="DocumentoContacto" CssClass="chosen-select form-control input-sm"
                                                                                 OnSelectedIndexChanged="ddlAfiliadoOrigen_SelectedIndexChanged"
                                                                                 AutoPostBack="true">

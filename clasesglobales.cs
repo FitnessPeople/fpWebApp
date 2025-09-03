@@ -7095,7 +7095,7 @@ int valor, string observaciones, string estado)
         public string InsertarContactoCRM(string nombreContacto, string apellidoContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
         int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
         int idUsuario, int idObjetivo, int tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, int idTipoDoc,
-        string DocumentoAfiliado, string tiempoAtencion, int idGenero, int edad, string fechaNac, int idEstadoVenta, int idEstrategia,
+        string DocumentoAfiliado, string tiempoAtencion, int idGenero, int edad, string fechaNac, int idEstadoVenta, int idEstrategia, int idPregestion,
         out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
@@ -7135,6 +7135,7 @@ int valor, string observaciones, string estado)
                         cmd.Parameters.AddWithValue("@p_fec_nac", fechaNac);
                         cmd.Parameters.AddWithValue("@p_estado_venta", idEstadoVenta);
                         cmd.Parameters.AddWithValue("@p_estrategia", idEstrategia);
+                        cmd.Parameters.AddWithValue("@p_id_pregestion", idPregestion);
 
 
                         // Parámetro de salida
@@ -8608,6 +8609,38 @@ int valor, string observaciones, string estado)
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
 
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable CargarPlanesAfiliadoPregestionCRM(string idAfiliado, string Estado)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PLAN_AFILIADO_PREGESTION", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_afiliado", idAfiliado);
+                        //cmd.Parameters.AddWithValue("@p_estado", Estado);
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
                         {
                             mysqlConexion.Open();
