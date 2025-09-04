@@ -293,12 +293,12 @@
                                                                 
                                                             </div>
                                                         </div>--%>
-                                                        
+
                                                         <div class="form-group">
                                                             <label class="col-lg-2 control-label">Mostrar</label>
                                                             <div class="col-lg-10">
                                                                 <asp:RadioButtonList ID="rblPageSize" runat="server" AutoPostBack="true"
-                                                                    RepeatDirection="Horizontal" 
+                                                                    RepeatDirection="Horizontal"
                                                                     OnSelectedIndexChanged="rblPageSize_SelectedIndexChanged">
                                                                     <asp:ListItem Text="&nbsp;10" Value="10" Selected="True" />
                                                                     <asp:ListItem Text="&nbsp;50" Value="50" />
@@ -361,11 +361,11 @@
                                                 </div>
 
                                                 <asp:GridView ID="gvAfiliados" runat="server" AutoGenerateColumns="False"
-                                                    AllowPaging="True" PageSize="10" 
+                                                    AllowPaging="True" PageSize="10"
                                                     OnPageIndexChanging="gvAfiliados_PageIndexChanging1"
-                                                    AllowSorting="true" OnSorting="gvAfiliados_Sorting" 
-                                                    OnRowCreated="gvAfiliados_RowCreated" 
-                                                    OnRowDataBound="gvAfiliados_RowDataBound" 
+                                                    AllowSorting="true" OnSorting="gvAfiliados_Sorting"
+                                                    OnRowCreated="gvAfiliados_RowCreated"
+                                                    OnRowDataBound="gvAfiliados_RowDataBound"
                                                     CssClass="table table-striped list-group-item-text"
                                                     DataKeyNames="IdAfiliado,NombreAfiliado,ApellidoAfiliado,DocumentoAfiliado,idTipoDocumento,CelularAfiliado,diasquefaltan"
                                                     BorderStyle="None" GridLines="None"
@@ -444,7 +444,7 @@
     <script>
         $('.footable').footable();
     </script>
-    
+
     <script>
         $(document).ready(function () {
             $('#txbDocumento').on('change blur', function () {
