@@ -132,56 +132,39 @@ namespace fpWebApp
 
         private void listaAfiliados(string strSede)
         {
-            string strQueryAdd = "";
-            string strQueryAdd2 = "";
-            string strLimit = "5000";
-
-            if (strSede != "Todas")
+            int dias = 0;
+            try
             {
-                strQueryAdd = "AND a.idSede = " + strSede;
-            }
+                if (ddlDias.SelectedItem != null && int.TryParse(ddlDias.SelectedItem.Value, out int parsed))
+                    dias = parsed;
 
-            if (ddlDias.SelectedItem.Value.ToString() == "-30")
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarDiasFaltanPlanPregestionCRM(strSede, dias);
+
+                lblTotalRegistros.Text = $"Registros totales: {dt.Rows.Count}";
+
+                DataView dv = dt.DefaultView;
+                dv.Sort = $"{SortExpression} {SortDirection}";
+
+                gvAfiliados.DataSource = dv;
+                gvAfiliados.DataBind();
+
+                dt.Dispose();
+
+                foreach (ListItem item in rblPageSize.Items)
+                {
+                    item.Attributes["class"] = "btn btn-xs btn-white";
+                }
+                rblPageSize.RepeatLayout = RepeatLayout.Flow; // Para que se acomoden como botones
+
+            }
+            catch (Exception ex)
             {
-                strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) <= -30 ";
-            }
+                string mensaje = ex.Message.ToString();                
+            }           
 
-            if (ddlDias.SelectedItem.Value.ToString() == "30")
-            {
-                strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) > -30 AND DATEDIFF(FechaFinalPlan, CURDATE()) < 30 ";
-            }
-
-            if (ddlDias.SelectedItem.Value.ToString() == "31")
-            {
-                strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) > 31 ";
-            }
-
-            string strQuery = "SELECT *, DATEDIFF(FechaFinalPlan, CURDATE()) AS diasquefaltan " +
-                "FROM Afiliados a " +
-                "LEFT JOIN sedes s ON s.idSede = a.idSede " +
-                "LEFT JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado " +
-                "WHERE 1=1 " + strQueryAdd + " " + strQueryAdd2 + " " +
-                "AND a.DocumentoAfiliado NOT IN (SELECT documentoContacto FROM pregestioncrm) " +
-                "LIMIT " + strLimit + "";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
-            lblTotalRegistros.Text = $"Registros totales: {dt.Rows.Count}";
-
-            DataView dv = dt.DefaultView;
-            dv.Sort = $"{SortExpression} {SortDirection}";
-
-            gvAfiliados.DataSource = dv;
-            gvAfiliados.DataBind();
-
-            dt.Dispose();
-
-            foreach (ListItem item in rblPageSize.Items)
-            {
-                item.Attributes["class"] = "btn btn-xs btn-white";
-            }
-            rblPageSize.RepeatLayout = RepeatLayout.Flow; // Para que se acomoden como botones
         }
+
 
         protected void gvAfiliados_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
