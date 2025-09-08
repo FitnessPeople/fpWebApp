@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Services.Description;
@@ -35,6 +36,7 @@ namespace fpWebApp
                     else
                     {
                         //Si tiene acceso a esta página
+                        Session["idPregestion"] = "0";
                         txbFechaPrim.Attributes.Add("type", "date");
                         txbFechaPrim.Attributes.Add("min", DateTime.Now.ToString("yyyy-MM-dd"));
                         txbFechaPrim.Value = DateTime.Now.ToString("yyyy-MM-dd");
@@ -81,6 +83,7 @@ namespace fpWebApp
                     CargarTipoDocumento();
                     ListaMediosDePago();
                     CargarAfiliadosOrigen();
+                    CargarPregestion();
                     CargarGeneros();
                     CargarEstadosVentas();
                     CargarEstrategiasMarketing();
@@ -428,22 +431,11 @@ namespace fpWebApp
             ddlPlanes.DataBind();
             dt.Dispose();
         }
-        private void CargarPlanesAfiliado(string strIdAfiliado)
+        private void CargarPlanesAfiliadPregestion(string strIdAfiliado)
         {
-            string strQuery = "SELECT *, " +
-                "IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,'danger','info') AS label1, " +
-                "IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,CONCAT(DATEDIFF(FechaFinalPlan, CURDATE())*(-1),' días vencidos'),CONCAT(DATEDIFF(FechaFinalPlan, CURDATE()),' días disponibles')) AS diasquefaltan, " +
-                "DATEDIFF(CURDATE(), FechaInicioPlan) AS diasconsumidos, " +
-                "DATEDIFF(FechaFinalPlan, FechaInicioPlan) AS diastotales, " +
-                "ROUND(DATEDIFF(CURDATE(), FechaInicioPlan) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje1, " +
-                "ROUND(DATEDIFF(FechaFinalPlan, CURDATE()) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje2 " +
-                "FROM afiliadosPlanes ap, Afiliados a, Planes p " +
-                "WHERE a.idAfiliado = " + strIdAfiliado + " " +
-                "AND ap.idAfiliado = a.idAfiliado " +
-                "AND ap.idPlan = p.idPlan ";
-            //"AND ap.EstadoPlan = 'Activo'";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+
+            DataTable dt = cg.CargarPlanesAfiliadoPregestionCRM(strIdAfiliado, "Activo");
 
             if (dt.Rows.Count > 0)
             {
@@ -492,11 +484,41 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
-            ddlAfiliadoOrigen.DataSource = dt;
-            ddlAfiliadoOrigen.DataBind();
+            // ddlAfiliadoOrigen.DataSource = dt;
+            //  ddlAfiliadoOrigen.DataBind();
 
             dt.Dispose();
         }
+
+
+        private void CargarPregestion()
+        {
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+
+                DataTable dt = cg.ConsultaCargarPregestionPorIdAsesor(
+                                   Convert.ToInt32(Session["idUsuario"]));
+
+                ddlAfiliadoOrigen.DataSource = dt;
+                ddlAfiliadoOrigen.DataValueField = "DocumentoContacto";
+                ddlAfiliadoOrigen.DataTextField = "NombreCompleto";
+                ddlAfiliadoOrigen.DataBind();
+
+                // Se crea un diccionario con idPregestion y el documento contacto
+                var map = dt.AsEnumerable()
+                            .ToDictionary(r => r["DocumentoContacto"].ToString(),
+                                          r => Convert.ToInt32(r["idPregestion"]));
+                ViewState["DocToIdPreg"] = map;
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message.ToString();
+            }
+
+        }
+
+
 
         #endregion
 
@@ -751,7 +773,8 @@ namespace fpWebApp
                     Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
                     Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
                     Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, tiempo.ToString(), Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(txbEdad.Text), txbFecNac.Text, Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()), out salida, out mensaje);
+                    Convert.ToInt32(txbEdad.Text), txbFecNac.Text, Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(Session["idPregestion"].ToString()), out salida, out mensaje);
 
                     if (salida)
                     {
@@ -800,61 +823,6 @@ namespace fpWebApp
             }
         }
 
-
-        //protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        //{
-        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-        //    {
-        //        DataRowView row = (DataRowView)e.Item.DataItem;
-        //        if (ViewState["CrearModificar"].ToString() == "1")
-        //        {
-        //            HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-        //            btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-        //            btnEditar.Visible = true;                    
-        //        }
-        //        if (ViewState["Borrar"].ToString() == "1")
-        //        {
-        //            HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-        //            btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-        //            btnEliminar.Visible = true;
-        //        }
-
-        //        //  ltTiempoTranscurrido: Hace X minutos
-        //        if (row["FechaCreacion"] != DBNull.Value)
-        //        {
-        //            DateTime fechaPrimerContacto = Convert.ToDateTime(row["FechaCreacion"]);
-        //            TimeSpan diferencia = DateTime.Now - fechaPrimerContacto;
-
-        //            string leyenda = "";
-        //            if (diferencia.TotalMinutes < 1)
-        //            {
-        //                leyenda = "Hace menos de un minuto";
-        //            }
-        //            else if (diferencia.TotalMinutes < 60)
-        //            {
-        //                int min = (int)Math.Floor(diferencia.TotalMinutes);
-        //                leyenda = $"Hace {min} minuto" + (min == 1 ? "" : "s");
-        //            }
-        //            else if (diferencia.TotalHours < 24)
-        //            {
-        //                int hrs = (int)Math.Floor(diferencia.TotalHours);
-        //                leyenda = $"Hace {hrs} hora" + (hrs == 1 ? "" : "s");
-        //            }
-        //            else
-        //            {
-        //                int dias = (int)Math.Floor(diferencia.TotalDays);
-        //                leyenda = $"Hace {dias} día" + (dias == 1 ? "" : "s");
-        //            }
-
-        //            Literal ltTiempo = (Literal)e.Item.FindControl("ltTiempoTranscurrido");
-        //            if (ltTiempo != null)
-        //            {
-        //                ltTiempo.Text = leyenda;
-        //            }
-        //        }
-
-        //    }
-        //}
 
         protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
@@ -1174,8 +1142,17 @@ namespace fpWebApp
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = new DataTable();
                 DataTable dt1 = new DataTable();
+
+                var map = ViewState["DocToIdPreg"] as Dictionary<string, int>;
+                if (map != null && map.TryGetValue(ddlAfiliadoOrigen.SelectedValue, out int idPregestion))
+                {
+                    Session["idPregestion"] = idPregestion;
+                }
+
                 bool esAfiliado = false;
                 Session["esAfiliado"] = esAfiliado.ToString();
+
+
                 int documento = 0;
                 string[] strDocumento = ddlAfiliadoOrigen.SelectedItem.Value.ToString().Split('-');
                 if (int.TryParse(strDocumento[0], out documento))
@@ -1199,7 +1176,7 @@ namespace fpWebApp
                         txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString();
                         ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString())));
                         ddlTiposAfiliado.SelectedValue = "2";//Afiliado en renovación
-                        CargarPlanesAfiliado(dt.Rows[0]["idAfiliado"].ToString());
+                        CargarPlanesAfiliadPregestion(dt.Rows[0]["idAfiliado"].ToString());
                     }
                     dt.Dispose();
                 }

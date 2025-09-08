@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="crmnuevocontacto.aspx.cs" Inherits="fpWebApp.crmnuevocontacto" %>
+﻿    <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="crmnuevocontacto.aspx.cs" Inherits="fpWebApp.crmnuevocontacto" %>
 
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
@@ -94,31 +94,6 @@
     </style>
 
 
-    <%--    formato de moneda--%>
-    <%--    <script>
-        function formatCurrency(input) {
-            let value = input.value.replace(/\D/g, '');
-            if (value === "") {
-                input.value = "";
-                return;
-            }
-            let formattedValue = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(value);
-            input.value = formattedValue;
-        }
-        function keepFormatted(input) {
-            if (input.value.trim() === "") {
-                input.value = "";
-                return;
-            }
-            formatCurrency(input);
-        }
-        function getNumericValue(input) {
-            return input.value.replace(/[^0-9]/g, '');
-        }
-    </script>--%>
-
-    <%--    formato de posición en el menú--%>
-
     <%--    Formatear telefono --%>
     <script>
         function formatearTelefono(input) {
@@ -137,24 +112,6 @@
         }
     </script>
 
-    <%--    Formatear solo letraas --%>
-    <%--    <script>
-        function validarSoloLetras(input) {
-            input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
-        }
-    </script>--%>
-
-    <%--    Formatear solo correo --%>
-    <%--    <script>
-        function validarCorreo(input) {
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            if (!emailRegex.test(input.value)) {
-                input.setCustomValidity('Por favor ingrese un correo electrónico válido.');
-            } else {
-                input.setCustomValidity('');
-            }
-        }
-    </script>--%>
     <!-- Select2 -->
     <%--   <link href="css/plugins/select2/select2.min.css" rel="stylesheet">--%>
 
@@ -171,9 +128,6 @@
             $('.select2_demo_1').select2();
         });
     </script>
-
-
-    <%--    <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />--%>
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -200,26 +154,10 @@
                 element2.classList.remove("collapse");
             }
         }
+
+
     </script>
-    <%--    <script>
-    function mueveReloj() {
-        var momentoActual = new Date();
-        var hora = momentoActual.getHours();
-        var minuto = momentoActual.getMinutes();
-        var segundo = momentoActual.getSeconds();
 
-        // Formatear con 0 al inicio si es necesario
-        if (hora < 10) hora = "0" + hora;
-        if (minuto < 10) minuto = "0" + minuto;
-        if (segundo < 10) segundo = "0" + segundo;
-
-        var horaImprimible = hora + " : " + minuto + " : " + segundo;
-
-        document.form_reloj.reloj.value = horaImprimible;
-
-        setTimeout(mueveReloj, 1000); // Mejor usar referencia directa
-    }
-    </script>--%>
 </head>
 
 <body onload="changeClass(); iniciarContador()">
@@ -476,13 +414,49 @@
                                                         <asp:UpdatePanel ID="upAfiliado" runat="server" UpdateMode="Conditional">
                                                             <ContentTemplate>
 
-                                                                <div class="crm-align-row">
+<%--                                                                <div class="crm-align-row">
                                                                     <div class="crm-align-cell" style="width: 80%;" id="btnAfiliadoBus">
                                                                         <div class="form-group">
                                                                             <label>Afiliado origen</label>
                                                                             <asp:DropDownList ID="ddlAfiliadoOrigen" name="ddlAfiliadoOrigen" runat="server"
                                                                                 DataTextField="DocNombreAfiliado" AppendDataBoundItems="true"
                                                                                 DataValueField="DocumentoAfiliado" CssClass="chosen-select form-control input-sm"
+                                                                                OnSelectedIndexChanged="ddlAfiliadoOrigen_SelectedIndexChanged"
+                                                                                AutoPostBack="true">
+                                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                            </asp:DropDownList>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- Contador -->
+                                                                    <div class="crm-align-cell" style="width: 10%;">
+                                                                        <div class="form-group">
+                                                                            <label>Contador:</label>
+                                                                            <div id="reloj" style="font-size: 20px; font-family: monospace;"></div>
+                                                                            <asp:HiddenField ID="hfContador" runat="server" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Spinner -->
+                                                                    <div class="crm-align-cell" style="width: 10%;">
+                                                                        <div class="form-group crm-spinner">
+                                                                            <div class="sk-spinner sk-spinner-wave">
+                                                                                <div class="sk-rect1"></div>
+                                                                                <div class="sk-rect2"></div>
+                                                                                <div class="sk-rect3"></div>
+                                                                                <div class="sk-rect4"></div>
+                                                                                <div class="sk-rect5"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>--%>
+
+                                                                  <div class="crm-align-row">
+                                                                    <div class="crm-align-cell" style="width: 80%;" id="btnAfiliadoBus">
+                                                                        <div class="form-group">
+                                                                            <label>Contactos asignados</label>
+                                                                            <asp:DropDownList ID="ddlAfiliadoOrigen" name="ddlAfiliadoOrigen" runat="server"
+                                                                                DataTextField="NombreCompleto" AppendDataBoundItems="true"
+                                                                                DataValueField="DocumentoContacto" CssClass="chosen-select form-control input-sm"
                                                                                 OnSelectedIndexChanged="ddlAfiliadoOrigen_SelectedIndexChanged"
                                                                                 AutoPostBack="true">
                                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
@@ -1253,52 +1227,6 @@
         $('#acordeonZonaLateralIzqSup').collapse('hide');
     </script>
 
-    <%--    <script>
-        $(document).ready(function () {
-            $('#<%= ddlStatusLead.ClientID %>').select2({
-                templateResult: formatOption,
-                templateSelection: formatOption,
-                escapeMarkup: function (m) { return m; } // Permite HTML
-            });
-
-            function formatOption(state) {
-                if (!state.id) return state.text;
-
-                var color = $(state.element).data('color');
-                var icon = $(state.element).data('icon');
-
-                // Aplica color solo al icono
-                return "<span><span style='color:" + color + ";'>" + icon + "</span> " + state.text + "</span>";
-            }
-        });
-    </script>--%>
-
-    <%--    <script type="text/javascript">  
-        $(document).ready(function () {
-            $("#txbAfiliado").autocomplete({
-                source: function (request, response) {
-                    $.getJSON("/obtenerafiliados?search=" + request.term, function (data) {
-                        response($.map(data, function (item) {
-                            return {
-                                label: item.nombre + " " + item.apellido + " - " + item.id + ", " + item.correo,
-                                value: item.id + " - " + item.nombre + " - " + item.apellido,
-                            };
-                        }));
-                    });
-                },
-                select: function (event, ui) {
-                    if (ui.item) {
-                        console.log(ui.item.value);
-                        document.getElementById("txbAfiliado").value = ui.item.value;
-                        var btn = document.getElementById("btnAfiliado");
-                        btn.click();
-                    }
-                },
-                minLength: 3,
-                delay: 100
-            });
-        });
-    </script>--%>
 
     <script>
         let segundos = 0;
@@ -1629,36 +1557,6 @@
             }
         });
     </script>
-
-
-    <!-- Page-Level Scripts -->
-    <%--    <script>
-        $('.footable').footable();
-
-        document.querySelector("input#txbBuscar").addEventListener("input", function () {
-            const allowedCharacters = "0123456789azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBNzáéíóúñÁÉÍÓÚÑ@. "; // You can add any other character in the same way
-
-            this.value = this.value.split('').filter(char => allowedCharacters.includes(char)).join('')
-        });
-
-        $(document).ready(function () {
-            $('#txbBuscar').keypress(function (e) {
-                if (e.keyCode == 13)
-                    $('#btnBuscar').click();
-            });
-        });
-
-        $(document).on("click", ".dropdown-toggle", function () {
-            var url = 'https://pqrdsuperargo.supersalud.gov.co/api/api/adres/0/';
-            /*var url = 'consultaadres?id';*/
-            url = url + $(this).data('documento');
-            //console.log(url);
-
-            document.getElementById('titulo').innerHTML = $(this).data('documento');
-            document.getElementById('objEmbed').src = url;
-        });
-
-    </script>--%>
 
     <script>
         $(document).ready(function () {
