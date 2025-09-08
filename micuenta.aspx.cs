@@ -297,7 +297,7 @@ namespace fpWebApp
             if (postedFile != null && postedFile.ContentLength > 0)
             {
                 //Save the File.
-                string filePath = Server.MapPath("img//afiliados//") + Path.GetFileName(postedFile.FileName);
+                string filePath = Server.MapPath("img//empleados//") + Path.GetFileName(postedFile.FileName);
                 postedFile.SaveAs(filePath);
                 strFilename = postedFile.FileName;
             }
