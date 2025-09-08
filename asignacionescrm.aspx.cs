@@ -1,10 +1,12 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
+﻿using DocumentFormat.OpenXml.Presentation;
+using DocumentFormat.OpenXml.Wordprocessing;
 using MySql.Data.MySqlClient;
 using NPOI.OpenXmlFormats.Spreadsheet;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -236,143 +238,92 @@ namespace fpWebApp
             }
         }
 
-        //protected void lnkAsignar_Click(object sender, EventArgs e)
-        //{
-
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.InsertarPregestionAsesorCRM();
-
-
-        //    string strQuery = @"INSERT INTO pregestioncrm 
-        //        (FechaHoraPregestion, NombreContacto, ApellidoContacto, DocumentoContacto, 
-        //        idTipoDocumentoContacto, CelularContacto, idTipoGestion, idCanalVenta, idUsuarioAsigna, idAsesor) 
-        //        VALUES (NOW(), @Nombre, @Apellido, @Documento, 
-        //        @TipoDoc, @Celular, @TipoGestion, @IdCanalVenta, @IdUsuarioAsigna, @idAsesor)";
-
-        //    string asesor = ddlAsesores.SelectedItem.Value;
-        //    string connString = ConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-        //    string tipoGestion = "1";
-        //    bool haySeleccionados = false;
-
-        //    using (MySqlConnection conn = new MySqlConnection(connString))
-        //    {
-        //        conn.Open();
-
-        //        foreach (GridViewRow row in gvAfiliados.Rows)
-        //        {
-        //            System.Web.UI.WebControls.CheckBox chk =
-        //                (System.Web.UI.WebControls.CheckBox)row.FindControl("chkSeleccionarTodo");
-
-        //            if (chk != null && chk.Checked)
-        //            {
-        //                haySeleccionados = true;
-
-        //                string id = gvAfiliados.DataKeys[row.RowIndex]["IdAfiliado"].ToString();
-        //                string nombre = gvAfiliados.DataKeys[row.RowIndex]["NombreAfiliado"].ToString();
-        //                string apellido = gvAfiliados.DataKeys[row.RowIndex]["ApellidoAfiliado"].ToString();
-        //                string documento = gvAfiliados.DataKeys[row.RowIndex]["DocumentoAfiliado"].ToString();
-        //                string idTipoDocumento = gvAfiliados.DataKeys[row.RowIndex]["idTipoDocumento"].ToString();
-        //                string celular = gvAfiliados.DataKeys[row.RowIndex]["CelularAfiliado"].ToString();
-        //                int diasquefaltan = Convert.ToInt32(gvAfiliados.DataKeys[row.RowIndex]["diasquefaltan"].ToString());
-
-        //                if (diasquefaltan >= -30 && diasquefaltan < 30)
-        //                    tipoGestion = "2";
-        //                else if (diasquefaltan < -30)
-        //                    tipoGestion = "3";
-        //                else
-        //                    tipoGestion = "1"; // valor por defecto
-
-        //                using (MySqlCommand cmd = new MySqlCommand(strQuery, conn))
-        //                {
-        //                    cmd.Parameters.AddWithValue("@Nombre", nombre);
-        //                    cmd.Parameters.AddWithValue("@Apellido", apellido);
-        //                    cmd.Parameters.AddWithValue("@Documento", documento);
-        //                    cmd.Parameters.AddWithValue("@TipoDoc", idTipoDocumento);
-        //                    cmd.Parameters.AddWithValue("@Celular", celular);
-        //                    cmd.Parameters.AddWithValue("@TipoGestion", tipoGestion);
-        //                    cmd.Parameters.AddWithValue("@IdCanalVenta", Session["idCanalVenta"].ToString());
-        //                    cmd.Parameters.AddWithValue("@IdUsuarioAsigna", Session["idUsuario"].ToString());
-        //                    cmd.Parameters.AddWithValue("@idAsesor", asesor);
-
-        //                    cmd.ExecuteNonQuery();
-        //                }
-        //            }
-        //        }
-
-        //    }
-
-
-        //    if (!haySeleccionados)
-        //    {
-        //        string script = @"
-        //            Swal.fire({
-        //                title: 'Selecciona un registro',
-        //                text: 'Debes elegir al menos uno para poder asignarlo a un asesor.',
-        //                icon: 'warning'
-        //            });
-        //        ";
-        //        ScriptManager.RegisterStartupScript(this, GetType(), "SeleccioneUno", script, true);
-        //        return;
-        //    }
-        //    else
-        //    {
-        //        Response.Redirect("asignacionescrm");
-        //    }
-        //}
-
 
         protected void lnkAsignar_Click(object sender, EventArgs e)
         {
+            string mensaje = string.Empty;
             string asesor = ddlAsesores.SelectedItem.Value;
             string tipoGestion = "1";
             bool haySeleccionados = false;
+            int totalAgregados = 0;
+            int totalErrores = 0;
 
-            foreach (GridViewRow row in gvAfiliados.Rows)
+            try
             {
-                if (row.RowType == DataControlRowType.DataRow) // solo filas de datos
+                foreach (GridViewRow row in gvAfiliados.Rows)
                 {
-                    var chk = row.FindControl("chkSeleccionar") as System.Web.UI.WebControls.CheckBox;
-
-                    if (chk != null && chk.Checked)
+                    if (row.RowType == DataControlRowType.DataRow)
                     {
-                        haySeleccionados = true;
+                        var chk = row.FindControl("chkSeleccionar") as System.Web.UI.WebControls.CheckBox;
 
-                        string nombre = gvAfiliados.DataKeys[row.RowIndex]["NombreAfiliado"].ToString();
-                        string apellido = gvAfiliados.DataKeys[row.RowIndex]["ApellidoAfiliado"].ToString();
-                        string documento = gvAfiliados.DataKeys[row.RowIndex]["DocumentoAfiliado"].ToString();
-                        string idTipoDocumento = gvAfiliados.DataKeys[row.RowIndex]["idTipoDocumento"].ToString();
-                        string celular = gvAfiliados.DataKeys[row.RowIndex]["CelularAfiliado"].ToString();
-                        int diasquefaltan = Convert.ToInt32(gvAfiliados.DataKeys[row.RowIndex]["diasquefaltan"].ToString());
+                        if (chk != null && chk.Checked)
+                        {
+                            haySeleccionados = true;
 
-                        if (diasquefaltan >= -30 && diasquefaltan < 30)
-                            tipoGestion = "2";
-                        else if (diasquefaltan < -30)
-                            tipoGestion = "3";
-                        else
-                            tipoGestion = "1";
+                            string nombre = gvAfiliados.DataKeys[row.RowIndex]["NombreAfiliado"].ToString();
+                            string apellido = gvAfiliados.DataKeys[row.RowIndex]["ApellidoAfiliado"].ToString();
+                            string documento = gvAfiliados.DataKeys[row.RowIndex]["DocumentoAfiliado"].ToString();
+                            string idTipoDocumento = gvAfiliados.DataKeys[row.RowIndex]["idTipoDocumento"].ToString();
+                            string celular = gvAfiliados.DataKeys[row.RowIndex]["CelularAfiliado"].ToString();
+                            int diasquefaltan = Convert.ToInt32(gvAfiliados.DataKeys[row.RowIndex]["diasquefaltan"].ToString());
 
-                        clasesglobales cg = new clasesglobales();
-                        string respuesta = cg.InsertarPregestionAsesorCRM(nombre, apellido, documento, Convert.ToInt32(idTipoDocumento), celular, Convert.ToInt32(tipoGestion),
-                                            Convert.ToInt32(Session["idCanalVenta"].ToString()), Convert.ToInt32(Session["idUsuario"].ToString()), Convert.ToInt32(asesor), "Pendiente");
+                            if (diasquefaltan >= -30 && diasquefaltan < 30)
+                                tipoGestion = "2";
+                            else if (diasquefaltan < -30)
+                                tipoGestion = "3";
+                            else
+                                tipoGestion = "1";
+
+                            clasesglobales cg = new clasesglobales();
+                            string respuesta = cg.InsertarPregestionAsesorCRM(nombre, apellido, documento, Convert.ToInt32(idTipoDocumento), celular, Convert.ToInt32(tipoGestion),
+                                                Convert.ToInt32(Session["idCanalVenta"].ToString()), Convert.ToInt32(Session["idUsuario"].ToString()), Convert.ToInt32(asesor), "Pendiente");
+
+                            if (respuesta == "OK")
+                                totalAgregados++;
+                            else
+                                totalErrores++;
+                        }
                     }
                 }
+
+                if (!haySeleccionados)
+                {
+                    string script = @"
+                        Swal.fire({
+                            title: 'Selecciona un registro',
+                            text: 'Debes elegir al menos uno para poder asignarlo a un asesor.',
+                            icon: 'warning'
+                        });
+                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "SeleccioneUno", script, true);
+                    return;
+                }
+
+                string scriptOk = $@"
+                    Swal.fire({{
+                        title: '¡Registros asignados!',
+                        text: 'Se agregaron {totalAgregados} registros correctamente.',
+                        icon: 'success',
+                        timer: 3000,
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    }}).then(() => {{
+                        window.location.href = 'asignacionescrm';
+                    }});
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", scriptOk, true);
             }
 
-            if (!haySeleccionados)
+            catch (Exception ex)
             {
                 string script = @"
-                Swal.fire({
-                    title: 'Selecciona un registro',
-                    text: 'Debes elegir al menos uno para poder asignarlo a un asesor.',
-                    icon: 'warning'
-                });
-        ";
-                ScriptManager.RegisterStartupScript(this, GetType(), "SeleccioneUno", script, true);
-                return;
-            }
-            else
-            {
-                Response.Redirect("asignacionescrm");
+                    Swal.fire({
+                        title: 'Error inesperado',
+                        text: '" + ex.Message.Replace("'", "\\'") + @"',
+                        icon: 'error'
+                    });
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
             }
         }
 
@@ -482,7 +433,6 @@ namespace fpWebApp
                 }
             }
         }
-
         protected void ddlCanalVenta_SelectedIndexChanged(object sender, EventArgs e)
         {
             listaAfiliados(ddlCanalVenta.SelectedItem.Value.ToString());
