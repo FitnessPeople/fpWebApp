@@ -27,7 +27,7 @@
             </div>
             <h3 class="text-white"><i class="fa fa-dumbbell m-r-sm"></i>Bienvenido a FP+</h3>
             <p class="text-white">
-                ¡Nuestra app está lista, reconstruida desde cero!<br />
+                ¡Nuestra app está lista, construida desde cero!<br />
                 Se avecinan muchas funciones y mejoras.
             </p>
             <form class="m-t" role="form" id="form1" runat="server">

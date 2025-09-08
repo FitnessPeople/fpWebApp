@@ -5689,23 +5689,21 @@ int valor, string observaciones, string estado)
             return respuesta;
         }
 
-        public string ActualizarMetaComercial(int idCanalVenta, int Mes, int Annio, int Valor, int idUsuario)
+        public string EliminarMetaComercial(int idMeta)
         {
             string respuesta = string.Empty;
             try
             {
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
                     mysqlConexion.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_CANAL_VENTA", mysqlConexion))
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ELIMINAR_META_COMERCIAL", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);
-                        cmd.Parameters.AddWithValue("@p_mes", Mes);
-                        cmd.Parameters.AddWithValue("@p_annio", Annio);
-                        cmd.Parameters.AddWithValue("@p_valor", Valor);
-                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_id_meta", idMeta);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";

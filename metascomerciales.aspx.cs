@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Data;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -55,45 +57,47 @@ namespace fpWebApp
                             DataTable dt = cg.ConsultarMetaComercialPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                txbPresupuesto.Text = dt.Rows[0]["Valor"].ToString();
+                                if (dt.Rows[0]["idCanalVenta"].ToString() != "")
+                                {
+                                    ddlCanalVenta.SelectedIndex = Convert.ToInt16(ddlCanalVenta.Items.IndexOf(ddlCanalVenta.Items.FindByValue(dt.Rows[0]["idCanalVenta"].ToString())));
+                                }
+                                else
+                                {
+                                    ddlCanalVenta.SelectedItem.Value = "";
+                                }
+                                ddlMes.SelectedIndex = Convert.ToInt16(ddlMes.Items.IndexOf(ddlMes.Items.FindByValue(dt.Rows[0]["mes"].ToString())));
+                                ddlAnnio.SelectedIndex = Convert.ToInt16(ddlAnnio.Items.IndexOf(ddlAnnio.Items.FindByValue(dt.Rows[0]["annio"].ToString())));
+                                int presupuesto = (dt.Rows[0]["Valor"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["Valor"]) : 0;
+                                txbPresupuesto.Text = presupuesto.ToString("C0", new CultureInfo("es-CO"));
                                 btnAgregar.Text = "Actualizar";
                                 ltTitulo.Text = "Actualizar meta comercial";
                             }
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
+                            // Eliminar
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ValidarEpsTablas(int.Parse(Request.QueryString["deleteid"].ToString()));
+                            DataTable dt = new DataTable();
+                            dt = cg.ConsultarMetaComercialPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                    "<div class=\"alert alert-danger alert-dismissable\">" +
-                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Esta EPS no se puede borrar, hay empleados asociados a ella." +
-                                    "</div></div>";
-
-                                DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarEpsPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
-                                if (dt1.Rows.Count > 0)
+                                if (dt.Rows[0]["idCanalVenta"].ToString() != "")
                                 {
-                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                    btnAgregar.Enabled = false;
-                                    ltTitulo.Text = "Borrar meta comercial";
+                                    ddlCanalVenta.SelectedIndex = Convert.ToInt16(ddlCanalVenta.Items.IndexOf(ddlCanalVenta.Items.FindByValue(dt.Rows[0]["idCanalVenta"].ToString())));
                                 }
-                                dt1.Dispose();
-                            }
-                            else
-                            {
-                                //Borrar
-                                DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarEpsPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
-                                if (dt1.Rows.Count > 0)
+                                else
                                 {
-                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                    ltTitulo.Text = "Borrar meta comercial";
+                                    ddlCanalVenta.SelectedItem.Value = "";
                                 }
-                                dt1.Dispose();
+                                ddlCanalVenta.Enabled = false;
+                                txbPresupuesto.Text = dt.Rows[0]["Valor"].ToString();
+                                txbPresupuesto.Enabled = false;
+                                ddlMes.Enabled = false;
+                                ddlAnnio.Enabled = false;
+                                btnAgregar.Text = "⚠ Confirmar borrado ❗";
+                                ltTitulo.Text = "Eliminar meta";
                             }
+                            dt.Dispose();
                         }
                     }
                 }
@@ -205,29 +209,41 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)  // Viene a editar o a borrar el registro
             {
-                string strInitData = TraerData();
-
-                if (Request.QueryString["editid"] != null)
+                if (!ValidarMetaComercial())
                 {
-                    string respuesta = cg.ActualizarMetaComercial(
-                        Convert.ToInt32(Request.QueryString["editid"].ToString()),
-                        Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()),
-                        Convert.ToInt32(ddlMes.SelectedItem.Value.ToString()),
-                        Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString()),
-                        Convert.ToInt32(txbPresupuesto.Text.ToString()),
-                        Convert.ToInt32(Session["idUsuario"].ToString())
-                        );
+                    string strInitData = TraerData();
 
-                    string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "MetasComerciales", "Modifica", "El usuario modificó la nueva meta comercial: " +
-                            "Canal de venta: " + ddlCanalVenta.SelectedItem.Text.ToString() + ", Mes: " + ddlMes.SelectedItem.Text.ToString() + ", " +
-                            "Año: " + ddlAnnio.SelectedItem.Text.ToString() + ", Valor: $ " + txbPresupuesto.Text.ToString(), strInitData, strNewData);
+                    if (Request.QueryString["editid"] != null)
+                    {
+                        string respuesta = cg.ActualizarMetaComercial(
+                            Convert.ToInt32(Request.QueryString["editid"].ToString()),
+                            Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()),
+                            Convert.ToInt32(ddlMes.SelectedItem.Value.ToString()),
+                            Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString()),
+                            Convert.ToInt32(Regex.Replace(txbPresupuesto.Text, @"[^\d]", "")),
+                            Convert.ToInt32(Session["idUsuario"].ToString())
+                            );
+
+                        string strNewData = TraerData();
+                        cg.InsertarLog(Session["idusuario"].ToString(), "MetasComerciales", "Modifica", "El usuario modificó la nueva meta comercial: " +
+                                "Canal de venta: " + ddlCanalVenta.SelectedItem.Text.ToString() + ", Mes: " + ddlMes.SelectedItem.Text.ToString() + ", " +
+                                "Año: " + ddlAnnio.SelectedItem.Text.ToString() + ", Valor: $ " + Regex.Replace(txbPresupuesto.Text, @"[^\d]", ""), strInitData, strNewData);
+                    }
+                    if (Request.QueryString["deleteid"] != null)
+                    {
+                        string respuesta = cg.EliminarMetaComercial(int.Parse(Request.QueryString["deleteid"].ToString()));
+                    }
+                    Response.Redirect("metascomerciales");
                 }
-                if (Request.QueryString["deleteid"] != null)
+                else
                 {
-                    //string respuesta = cg.EliminarMetaComercial(int.Parse(Request.QueryString["deleteid"].ToString()));
+                    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                    "Ya existe un registro para misma fecha y el mismo canal de venta." +
+                    "</div>";
                 }
-                Response.Redirect("metascomerciales");
+
+                
             }
             else // Viene a agregar un registro
             {
@@ -241,7 +257,7 @@ namespace fpWebApp
                                 Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()),
                                 i+1,
                                 Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(txbPresupuesto.Text.ToString()),
+                                Convert.ToInt32(Regex.Replace(txbPresupuesto.Text, @"[^\d]", "")),
                                 Convert.ToInt32(Session["idUsuario"].ToString())
                                 );
                         }
@@ -262,7 +278,7 @@ namespace fpWebApp
                     }
                     cg.InsertarLog(Session["idusuario"].ToString(), "MetasComerciales", "Agrega", "El usuario agregó una nueva meta comercial: " +
                         "Canal de venta: " + ddlCanalVenta.SelectedItem.Text.ToString() + ", todo el año, " +
-                        "Año: " + ddlAnnio.SelectedItem.Text.ToString() + ", Valor: $ " + txbPresupuesto.Text.ToString(), "", "");
+                        "Año: " + ddlAnnio.SelectedItem.Text.ToString() + ", Valor: $ " + Regex.Replace(txbPresupuesto.Text, @"[^\d]", ""), "", "");
 
                     Response.Redirect("metascomerciales");
                 }
@@ -276,22 +292,22 @@ namespace fpWebApp
                                 Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()),
                                 Convert.ToInt32(ddlMes.SelectedItem.Value.ToString()),
                                 Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(txbPresupuesto.Text.ToString()),
+                                Convert.ToInt32(Regex.Replace(txbPresupuesto.Text, @"[^\d]", "")),
                                 Convert.ToInt32(Session["idUsuario"].ToString())
                                 );
 
                             cg.InsertarLog(Session["idusuario"].ToString(), "MetasComerciales", "Agrega", "El usuario agregó una nueva meta comercial: " +
                                 "Canal de venta: " + ddlCanalVenta.SelectedItem.Text.ToString() + ", Mes: " + ddlMes.SelectedItem.Text.ToString() + ", " +
-                                "Año: " + ddlAnnio.SelectedItem.Text.ToString() + ", Valor: $ " + txbPresupuesto.Text.ToString(), "", "");
+                                "Año: " + ddlAnnio.SelectedItem.Text.ToString() + ", Valor: $ " + Regex.Replace(txbPresupuesto.Text, @"[^\d]", ""), "", "");
                         }
                         catch (Exception ex)
                         {
                             string mensajeExcepcionInterna = string.Empty;
-                            Console.WriteLine(ex.Message);
+                            //Console.WriteLine(ex.Message);
                             if (ex.InnerException != null)
                             {
                                 mensajeExcepcionInterna = ex.InnerException.Message;
-                                Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
+                                //Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
                             }
                             ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
                             "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
@@ -308,8 +324,6 @@ namespace fpWebApp
                             "</div>";
                     }
                 }
-
-                
             }
         }
 

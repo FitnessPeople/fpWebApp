@@ -26,14 +26,10 @@
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
     <script>
-        var editorContenido = document.querySelector(".ql-editor");
-        console.log(editorContenido);
-        //editorContenido.style.height = "600";
-        //editorContenido.style.height = editorContenido.scrollHeight + "px";
-
         var quill;
+
         document.addEventListener("DOMContentLoaded", function () {
-            quill = new Quill("#editor", {
+            quill = new Quill("#editor1", {
                 theme: "snow",
                 modules: {
                     toolbar: [
@@ -45,22 +41,63 @@
                     ]
                 }
             });
-            function ajustarAlturaEditor() {
-                var editorContenido = document.querySelector(".ql-editor");
-                editorContenido.style.height = "auto";
-                editorContenido.style.height = editorContenido.scrollHeight + "px";
-            }
-            quill.on("text-change", ajustarAlturaEditor);
 
-            var contenidoGuardado = document.getElementById('<%= hiddenEditor.ClientID %>').value;
+            quill.on('text-change', function (delta, oldDelta, source) {
+                var editorContenido = document.getElementById("editor1");
+                if (source === 'user') {
+                    const scrollTop = editorContenido.scrollTop;
+                    requestAnimationFrame(() => {
+                        editorContenido.scrollTop = scrollTop;
+                    });
+                }
+            });
+
+            var contenidoGuardado = document.getElementById('<%= hiddenEditor1.ClientID %>').value;
             if (contenidoGuardado.trim() !== "") {
                 quill.root.innerHTML = contenidoGuardado;
             }
         });
-        function guardarContenidoEditor() {
+
+        function guardarContenidoEditor1() {
             var contenido = quill.root.innerHTML;
-            document.getElementById('<%= hiddenEditor.ClientID %>').value = contenido;
+            document.getElementById('<%= hiddenEditor1.ClientID %>').value = contenido;
         }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            quill = new Quill("#editor2", {
+                theme: "snow",
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold'], // Negrita y Tachado
+                        ['italic', 'underline'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'align': [] }],
+                    ]
+                }
+            });
+
+            quill.on('text-change', function (delta, oldDelta, source) {
+                var editorContenido = document.getElementById("editor2");
+                if (source === 'user') {
+                    const scrollTop = editorContenido.scrollTop;
+                    requestAnimationFrame(() => {
+                        editorContenido.scrollTop = scrollTop;
+                    });
+                }
+            });
+
+            var contenidoGuardado = document.getElementById('<%= hiddenEditor2.ClientID %>').value;
+            if (contenidoGuardado.trim() !== "") {
+                quill.root.innerHTML = contenidoGuardado;
+            }
+        });
+
+        function guardarContenidoEditor2() {
+            var contenido = quill.root.innerHTML;
+            document.getElementById('<%= hiddenEditor2.ClientID %>').value = contenido;
+        }
+
     </script>
 
     <link href="css/animate.css" rel="stylesheet" />
@@ -163,94 +200,101 @@
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                    <div class="row">
-                        <div class="col-lg-10 col-lg-offset-1">
-
-                            <div class="tabs-container">
-                                <ul class="nav nav-tabs">
-                                    <li class="active"><a data-toggle="tab" href="#tab-1"> Contrato Mayor de Edad F.P.</a></li>
-                                    <li class=""><a data-toggle="tab" href="#tab-2"> Contrato Mayor de Edad I.F.</a></li>
-                                </ul>
-                                <div class="tab-content">
-                                    <div id="tab-1" class="tab-pane active">
-                                        <div class="panel-body">
-                                            
-                                            <div>
-                                                <p>
-                                                    <button id="btnNombreAfiliado" data-button="NOMBRE" onclick="putText('btnNombreAfiliado')" class="btn btn-sm btn-info">Nombre</button>
-                                                    <button id="btnDocumentoAfiliado" data-button="DOCUMENTO" onclick="putText('btnDocumentoAfiliado')" class="btn btn-sm btn-info">Documento</button>
-                                                    <button id="btnDireccionAfiliado" data-button="DIRECCION" onclick="putText('btnDireccionAfiliado')" class="btn btn-sm btn-info">Dirección</button>
-                                                    <button id="btnCelularAfiliado" data-button="CELULAR" onclick="putText('btnCelularAfiliado')" class="btn btn-sm btn-info">Celular</button>
-                                                    <button id="btnFechaNacAfiliado" data-button="FECHANAC" onclick="putText('btnFechaNacAfiliado')" class="btn btn-sm btn-info">Fecha nacimiento</button>
-                                                    <button id="btnEmailAfiliado" data-button="EMAIL" onclick="putText('btnEmailAfiliado')" class="btn btn-sm btn-info">Email</button>
-                                                    <button id="btnFechaInicioPlan" data-button="FECHAINICIOPLAN" onclick="putText('btnFechaInicioPlan')" class="btn btn-sm btn-info">Fecha Inicio Plan</button>
-                                                    <button id="btnEPS" data-button="EPS" onclick="putText('btnEPS')" class="btn btn-sm btn-info">EPS</button>
-                                                </p>
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <form role="form" id="form" runat="server">
-                                                            <div class="form-group">
-                                                                <div id="editor" cssclass="form-control input-sm"></div>
-                                                                <asp:HiddenField ID="hiddenEditor" runat="server" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <a href="contratoafiliado" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                                <asp:Button ID="btnAgregar" runat="server" Text="Guardar" Visible="false" 
-                                                                    CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar"
-                                                                    OnClick="btnAgregar_Click" OnClientClick="guardarContenidoEditor()" />
-                                                            </div>
-                                                        </form>
+                    <form role="form" id="form1" runat="server">
+                        <div class="row">
+                            <div class="col-lg-10 col-lg-offset-1">
+                                <div class="tabs-container">
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a data-toggle="tab" href="#tab-1"> Contrato Mayor de Edad F.P.</a></li>
+                                        <li class=""><a data-toggle="tab" href="#tab-2"> Contrato Mayor de Edad I.F.</a></li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div id="tab-1" class="tab-pane active">
+                                            <div class="panel-body">
+                                                <div>
+                                                    <p>
+                                                        <button id="btnNombreAfiliado" data-button="NOMBRE" onclick="putText('btnNombreAfiliado')" class="btn btn-sm btn-info">Nombre</button>
+                                                        <button id="btnDocumentoAfiliado" data-button="DOCUMENTO" onclick="putText('btnDocumentoAfiliado')" class="btn btn-sm btn-info">Documento</button>
+                                                        <button id="btnDireccionAfiliado" data-button="DIRECCION" onclick="putText('btnDireccionAfiliado')" class="btn btn-sm btn-info">Dirección</button>
+                                                        <button id="btnCelularAfiliado" data-button="CELULAR" onclick="putText('btnCelularAfiliado')" class="btn btn-sm btn-info">Celular</button>
+                                                        <button id="btnFechaNacAfiliado" data-button="FECHANAC" onclick="putText('btnFechaNacAfiliado')" class="btn btn-sm btn-info">Fecha nacimiento</button>
+                                                        <button id="btnEmailAfiliado" data-button="EMAIL" onclick="putText('btnEmailAfiliado')" class="btn btn-sm btn-info">Email</button>
+                                                        <button id="btnFechaInicioPlan" data-button="FECHAINICIOPLAN" onclick="putText('btnFechaInicioPlan')" class="btn btn-sm btn-info">Fecha Inicio Plan</button>
+                                                        <button id="btnEPS" data-button="EPS" onclick="putText('btnEPS')" class="btn btn-sm btn-info">EPS</button>
+                                                        <button id="btnResponsable" data-button="RESPONSABLE" onclick="putText('btnResponsable')" class="btn btn-sm btn-info">Responsable</button>
+                                                        <button id="btnParentesco" data-button="PARENTESCO" onclick="putText('btnParentesco')" class="btn btn-sm btn-info">Parentesco</button>
+                                                        <button id="btnCelularResponsable" data-button="CELULARRESPONSABLE" onclick="putText('btnCelularResponsable')" class="btn btn-sm btn-info">Celular Responsable</button>
+                                                    </p>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <%--<form role="form" id="form1" runat="server">--%>
+                                                                <div class="form-group">
+                                                                    <div id="editor1" cssclass="form-control input-sm"></div>
+                                                                    <asp:HiddenField ID="hiddenEditor1" runat="server" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <a href="contratoafiliado" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                                    <asp:Button ID="btnAgregar1" runat="server" Text="Guardar" Visible="false" 
+                                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar"
+                                                                        OnClick="btnAgregar1_Click" OnClientClick="guardarContenidoEditor1()" />
+                                                                </div>
+                                                            <%--</form>--%>
+                                                        </div>
                                                     </div>
                                                 </div>
+
+                                                <h5>Previsualización</h5>
+
+                                                <p><asp:Literal ID="ltContrato1" runat="server"></asp:Literal></p>
+
                                             </div>
-
-                                            <h5>Previsualización</h5>
-
-                                            <p><asp:Literal ID="ltContrato" runat="server"></asp:Literal></p>
-
                                         </div>
-                                    </div>
-                                    <div id="tab-2" class="tab-pane">
-                                        <div class="panel-body">
+                                        <div id="tab-2" class="tab-pane">
+                                            <div class="panel-body">
                                             
+                                                <div>
+                                                    <p>
+                                                        <button id="btnNombreAfiliado2" data-button="NOMBRE" onclick="putText('btnNombreAfiliado2')" class="btn btn-sm btn-info">Nombre</button>
+                                                        <button id="btnDocumentoAfiliado2" data-button="DOCUMENTO" onclick="putText('btnDocumentoAfiliado2')" class="btn btn-sm btn-info">Documento</button>
+                                                        <button id="btnDireccionAfiliado2" data-button="DIRECCION" onclick="putText('btnDireccionAfiliado2')" class="btn btn-sm btn-info">Dirección</button>
+                                                        <button id="btnCelularAfiliado2" data-button="CELULAR" onclick="putText('btnCelularAfiliado2')" class="btn btn-sm btn-info">Celular</button>
+                                                        <button id="btnFechaNacAfiliado2" data-button="FECHANAC" onclick="putText('btnFechaNacAfiliado2')" class="btn btn-sm btn-info">Fecha nacimiento</button>
+                                                        <button id="btnEmailAfiliado2" data-button="EMAIL" onclick="putText('btnEmailAfiliado2')" class="btn btn-sm btn-info">Email</button>
+                                                        <button id="btnFechaInicioPlan2" data-button="FECHAINICIOPLAN" onclick="putText('btnFechaInicioPlan2')" class="btn btn-sm btn-info">Fecha Inicio Plan</button>
+                                                        <button id="btnEPS2" data-button="EPS" onclick="putText('btnEPS2')" class="btn btn-sm btn-info">EPS</button>
+                                                        <button id="btnResponsable2" data-button="RESPONSABLE" onclick="putText('btnResponsable2')" class="btn btn-sm btn-info">Responsable</button>
+                                                        <button id="btnParentesco2" data-button="PARENTESCO" onclick="putText('btnParentesco2')" class="btn btn-sm btn-info">Parentesco</button>
+                                                        <button id="btnCelularResponsable2" data-button="CELULARRESPONSABLE" onclick="putText('btnCelularResponsable2')" class="btn btn-sm btn-info">Celular Responsable</button>
+                                                    </p>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <%--<form role="form" id="form2" runat="server">--%>
+                                                                <div class="form-group">
+                                                                    <div id="editor2" cssclass="form-control input-sm"></div>
+                                                                    <asp:HiddenField ID="hiddenEditor2" runat="server" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <a href="contratoafiliado" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                                    <asp:Button ID="btnAgregar2" runat="server" Text="Guardar" Visible="false" 
+                                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar"
+                                                                        OnClick="btnAgregar2_Click" OnClientClick="guardarContenidoEditor2()" />
+                                                                </div>
+                                                            <%--</form>--%>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
+                                                <h5>Previsualización</h5>
 
+                                                <p><asp:Literal ID="ltContrato2" runat="server"></asp:Literal></p>
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <%--<div class="ibox float-e-margins">
-                                <div class="ibox-title">
-                                    <h5>Contrato de Afiliado Mayor de Edad</h5>
-                                    <div class="ibox-tools">
-                                        <a class="collapse-link">
-                                            <i class="fa fa-chevron-up"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="ibox-content">
-                                    
-                                </div>
-                            </div>
-
-                            <div class="ibox float-e-margins">
-                                <div class="ibox-title">
-                                    <h5>Previsualización</h5>
-                                    <div class="ibox-tools">
-                                        <a class="collapse-link">
-                                            <i class="fa fa-chevron-up"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="ibox-content">
-                                    <div class="scroll_content">
-                                            
-                                    </div>
-                                </div>
-                            </div>--%>
                         </div>
-                    </div>
+                    </form>
                     <%--Fin Contenido!!!!--%>
                 </div>
             </div>
@@ -299,6 +343,14 @@
         }
 
     </script>
+
+    <style>
+        #editor{
+            height: 500px;
+              max-height: 500px;
+              overflow: auto;
+        }
+    </style>
 
 </body>
 
