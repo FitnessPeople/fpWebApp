@@ -824,61 +824,6 @@ namespace fpWebApp
         }
 
 
-        //protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        //{
-        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-        //    {
-        //        DataRowView row = (DataRowView)e.Item.DataItem;
-        //        if (ViewState["CrearModificar"].ToString() == "1")
-        //        {
-        //            HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-        //            btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-        //            btnEditar.Visible = true;                    
-        //        }
-        //        if (ViewState["Borrar"].ToString() == "1")
-        //        {
-        //            HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-        //            btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-        //            btnEliminar.Visible = true;
-        //        }
-
-        //        //  ltTiempoTranscurrido: Hace X minutos
-        //        if (row["FechaCreacion"] != DBNull.Value)
-        //        {
-        //            DateTime fechaPrimerContacto = Convert.ToDateTime(row["FechaCreacion"]);
-        //            TimeSpan diferencia = DateTime.Now - fechaPrimerContacto;
-
-        //            string leyenda = "";
-        //            if (diferencia.TotalMinutes < 1)
-        //            {
-        //                leyenda = "Hace menos de un minuto";
-        //            }
-        //            else if (diferencia.TotalMinutes < 60)
-        //            {
-        //                int min = (int)Math.Floor(diferencia.TotalMinutes);
-        //                leyenda = $"Hace {min} minuto" + (min == 1 ? "" : "s");
-        //            }
-        //            else if (diferencia.TotalHours < 24)
-        //            {
-        //                int hrs = (int)Math.Floor(diferencia.TotalHours);
-        //                leyenda = $"Hace {hrs} hora" + (hrs == 1 ? "" : "s");
-        //            }
-        //            else
-        //            {
-        //                int dias = (int)Math.Floor(diferencia.TotalDays);
-        //                leyenda = $"Hace {dias} día" + (dias == 1 ? "" : "s");
-        //            }
-
-        //            Literal ltTiempo = (Literal)e.Item.FindControl("ltTiempoTranscurrido");
-        //            if (ltTiempo != null)
-        //            {
-        //                ltTiempo.Text = leyenda;
-        //            }
-        //        }
-
-        //    }
-        //}
-
         protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
