@@ -8722,6 +8722,44 @@ int valor, string observaciones, string estado)
             return dt;
         }
 
+        public string InsertarPregestionAsesorCRM( string nombre, string apellido, string documento, int idTipoDocumento, string celular,
+            int tipoGestion, int idCanalVenta, int idUsuarioAsigna, int asesor, string estado )
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_PREGESTION_ASESOR_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        //cmd.Parameters.AddWithValue("@p_fecha_hora", fecha));
+                        cmd.Parameters.AddWithValue("@p_nombre_contacto", nombre);
+                        cmd.Parameters.AddWithValue("@p_apellido_contacto", apellido);
+                        cmd.Parameters.AddWithValue("@p_documento_contacto", documento);
+                        cmd.Parameters.AddWithValue("@p_tipo_doc_contacto", idTipoDocumento);
+                        cmd.Parameters.AddWithValue("@p_celular_contacto", celular);
+                        cmd.Parameters.AddWithValue("@p_id_tipo_gestion", tipoGestion);
+                        cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuarioAsigna);
+                        cmd.Parameters.AddWithValue("@p_id_asesor", asesor);
+                        cmd.Parameters.AddWithValue("@p_estado", estado);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
         #endregion
 
         #region GymPass
