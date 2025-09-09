@@ -81,8 +81,7 @@ namespace fpWebApp
                     ListaCanalesMarketingCRM();
                     ListaObjetivosfiliadoCRM();
                     CargarTipoDocumento();
-                    ListaMediosDePago();
-                    CargarAfiliadosOrigen();
+                    ListaMediosDePago();                  
                     CargarPregestion();
                     CargarGeneros();
                     CargarEstadosVentas();
@@ -122,6 +121,32 @@ namespace fpWebApp
                                     txbNombreContacto.Value = row["NombreContacto"].ToString();
                                     txbApellidoContacto.Value = row["ApellidoContacto"].ToString();
                                     ltNombreContacto.Text = row["NombreContacto"].ToString() + " " + row["ApellidoContacto"].ToString();
+
+                                    if (row["idGenero"].ToString() != "")
+                                        ddlGenero.SelectedIndex = Convert.ToInt32(ddlGenero.Items.IndexOf(ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString())));
+                                    else
+                                        ddlGenero.SelectedItem.Value = "0";
+
+                                    DateTime fechaNacimiento = Convert.ToDateTime(dt.Rows[0]["FecNacAfiliado"]);
+                                    DateTime hoy = DateTime.Today;
+
+                                    if (fechaNacimiento == new DateTime(1900, 1, 1))
+                                    {
+                                        txbFecNac.Text = string.Empty;
+                                        txbEdad.Text = string.Empty;
+                                    }
+                                    else
+                                    {
+                                        hoy = DateTime.Today;
+                                        int edad = hoy.Year - fechaNacimiento.Year;
+
+                                        if (fechaNacimiento.Date > hoy.AddYears(-edad))
+                                            edad--;
+
+                                        txbFecNac.Text = fechaNacimiento.ToString("dd/MM/yyyy");
+                                        txbEdad.Text = edad.ToString();
+                                    }
+
                                     string telefono = Convert.ToString(row["TelefonoContacto"]);
                                     if (!string.IsNullOrEmpty(telefono) && telefono.Length == 10)
                                     {
@@ -139,6 +164,9 @@ namespace fpWebApp
                                         ddlEmpresa.SelectedItem.Value = "0";
 
                                     ddlStatusLead.SelectedIndex = Convert.ToInt32(ddlStatusLead.Items.IndexOf(ddlStatusLead.Items.FindByValue(dt.Rows[0]["idEstadoCRM"].ToString())));
+                                    ddlEstadoVenta.SelectedIndex = Convert.ToInt32(ddlEstadoVenta.Items.IndexOf(ddlEstadoVenta.Items.FindByValue(dt.Rows[0]["idEstadoVenta"].ToString())));
+                                    ddlEstrategia.SelectedIndex = Convert.ToInt32(ddlEstrategia.Items.IndexOf(ddlEstrategia.Items.FindByValue(dt.Rows[0]["idEstrategia"].ToString())));
+
                                     CultureInfo cultura = new CultureInfo("es-ES");
                                     txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
 
@@ -189,8 +217,6 @@ namespace fpWebApp
                                     else
                                         ltTipoAfiliado.Text = "sin Tipo afiliado asignado";
 
-
-
                                     ddlCanalesMarketing.SelectedIndex = Convert.ToInt32(ddlCanalesMarketing.Items.IndexOf(ddlCanalesMarketing.Items.FindByValue(dt.Rows[0]["idCanalMarketing"].ToString())));
                                     ddlPlanes.SelectedIndex = Convert.ToInt32(ddlPlanes.Items.IndexOf(ddlPlanes.Items.FindByValue(dt.Rows[0]["idPlan"].ToString())));
                                     ltPlan.Text = row["NombrePlan"].ToString();
@@ -207,29 +233,6 @@ namespace fpWebApp
                         {
                             bool respuesta = false;
                             clasesglobales cg = new clasesglobales();
-                            //DataTable dt = cg.validarco(int.Parse(Request.QueryString["deleteid"].ToString()));
-                            //if (dt.Rows.Count > 0)
-                            //{
-                            //    ltMensaje.Text = "<div class=\"ibox-content\">" +
-                            //        "<div class=\"alert alert-danger alert-dismissable\">" +
-                            //        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                            //        "Este Contacto no se puede borrar, hay registros asociados a él" +
-                            //        "</div></div>";
-
-                            //    DataTable dt1 = cg.ConsultarContactosCRMPorId(int.Parse(Request.QueryString["deleteid"].ToString()),out respuesta);
-
-                            //    if (dt1.Rows.Count > 0)
-                            //    {
-                            //        txbNombreContacto.Value = dt.Rows[0]["NombreContacto"].ToString();
-                            //        txbNombreContacto.Disabled = true;
-                            //        btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                            //        btnAgregar.Enabled = false;
-                            //        //ltTitulo.Text = "Borrar Contacto CRM";
-                            //    }
-                            //    dt1.Dispose();
-                            //}
-                            // else
-                            //{
                             //Borrar
                             DataTable dt1 = new DataTable();
                             dt1 = cg.ConsultarContactosCRMPorId(int.Parse(Request.QueryString["deleteid"].ToString()), out respuesta);
@@ -241,6 +244,33 @@ namespace fpWebApp
                                 txbDocumento.Text = row["DocumentoAfiliado"].ToString();
 
                                 txbNombreContacto.Value = row["NombreContacto"].ToString();
+
+                                txbApellidoContacto.Value = row["ApellidoContacto"].ToString();
+                                if (row["idGenero"].ToString() != "")
+                                    ddlGenero.SelectedIndex = Convert.ToInt32(ddlGenero.Items.IndexOf(ddlGenero.Items.FindByValue(dt1.Rows[0]["idGenero"].ToString())));
+                                else
+                                    ddlGenero.SelectedItem.Value = "0";
+
+                                DateTime fechaNacimiento = Convert.ToDateTime(dt1.Rows[0]["FecNacAfiliado"]);
+                                DateTime hoy = DateTime.Today;
+
+                                if (fechaNacimiento == new DateTime(1900, 1, 1))
+                                {
+                                    txbFecNac.Text = string.Empty;
+                                    txbEdad.Text = string.Empty;
+                                }
+                                else
+                                {
+                                    hoy = DateTime.Today;
+                                    int edad = hoy.Year - fechaNacimiento.Year;
+
+                                    if (fechaNacimiento.Date > hoy.AddYears(-edad))
+                                        edad--;
+
+                                    txbFecNac.Text = fechaNacimiento.ToString("dd/MM/yyyy");
+                                    txbEdad.Text = edad.ToString();
+                                }
+
                                 string telefono = Convert.ToString(row["TelefonoContacto"]);
                                 if (!string.IsNullOrEmpty(telefono) && telefono.Length == 10)
                                 {
@@ -257,13 +287,15 @@ namespace fpWebApp
                                     ddlEmpresa.SelectedItem.Value = "0";
 
                                 ddlStatusLead.SelectedIndex = Convert.ToInt32(ddlStatusLead.Items.IndexOf(ddlStatusLead.Items.FindByValue(dt1.Rows[0]["idEstadoCRM"].ToString())));
+                                ddlEstadoVenta.SelectedIndex = Convert.ToInt32(ddlEstadoVenta.Items.IndexOf(ddlEstadoVenta.Items.FindByValue(dt1.Rows[0]["idEstadoVenta"].ToString())));
+                                ddlEstrategia.SelectedIndex = Convert.ToInt32(ddlEstrategia.Items.IndexOf(ddlEstrategia.Items.FindByValue(dt1.Rows[0]["idEstrategia"].ToString())));
                                 txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
                                 txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
                                 int ValorPropuesta = Convert.ToInt32(dt1.Rows[0]["ValorPropuesta"]);
                                 txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
                                 //int ValorMes = Convert.ToInt32(dt.Rows[0]["ValorBase"]);
                                 //txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
-                                //txaObservaciones.Value = row["observaciones"].ToString();
+                                txaObservaciones.Value = row["observaciones"].ToString();
                                 ddlObjetivos.SelectedIndex = Convert.ToInt32(ddlObjetivos.Items.IndexOf(ddlObjetivos.Items.FindByValue(dt1.Rows[0]["idObjetivo"].ToString())));
                                 ddlTipoPago.SelectedIndex = ddlTipoPago.Items.IndexOf(ddlTipoPago.Items.FindByValue(dt1.Rows[0]["idMedioPago"].ToString()));
                                 ddlTiposAfiliado.SelectedIndex = Convert.ToInt32(ddlTiposAfiliado.Items.IndexOf(ddlTiposAfiliado.Items.FindByValue(dt1.Rows[0]["idTipoAfiliado"].ToString())));
@@ -275,13 +307,17 @@ namespace fpWebApp
                                 txbDocumento.Enabled = false;
                                 ddlTipoDocumento.Enabled = false;
                                 txbNombreContacto.Disabled = true;
+                                txbApellidoContacto.Disabled = true;
+                                ddlGenero.Enabled = false;
                                 txbTelefonoContacto.Disabled = true;
                                 txbCorreoContacto.Disabled = true;
                                 txbFechaPrim.Disabled = true;
                                 txbFechaProx.Disabled = true;
                                 txbValorPropuesta.Enabled = false;
-                                ddlEmpresa.Enabled = false;
+                                ddlEmpresa.Enabled = false;    
                                 ddlStatusLead.Enabled = false;
+                                ddlEstadoVenta.Enabled = false;
+                                ddlEstrategia.Enabled = false;
                                 ddlTiposAfiliado.Enabled = false;
                                 txbHoraIni.Disabled = true;
                                 ddlTipoPago.Enabled = false;
@@ -290,6 +326,7 @@ namespace fpWebApp
                                 ddlPlanes.Enabled = false;
                                 //rblMesesPlan.Enabled = false;
                                 txaObservaciones.Disabled = true;
+                                rfvObservaciones.Enabled = false;
                                 ArchivoPropuesta.Disabled = true;
 
                                 btnAgregar.Text = "⚠ Confirmar borrado ❗";
@@ -476,29 +513,13 @@ namespace fpWebApp
             ddlTipoDocumento.DataBind();
             dt.Dispose();
         }
-        private void CargarAfiliadosOrigen()
-        {
-            string strQuery = @"SELECT a.idAfiliado, a.DocumentoAfiliado,
-                CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado, ' - ', a.DocumentoAfiliado) AS DocNombreAfiliado 
-                FROM afiliados a";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
-           // ddlAfiliadoOrigen.DataSource = dt;
-           //  ddlAfiliadoOrigen.DataBind();
-
-            dt.Dispose();
-        }
-
  
         private void CargarPregestion()
         {
             clasesglobales cg = new clasesglobales();
             try
-            {
-               
-                DataTable dt = cg.ConsultaCargarPregestionPorIdAsesor(
-                                   Convert.ToInt32(Session["idUsuario"]));
+            {               
+                DataTable dt = cg.ConsultaCargarPregestionPorIdAsesor(Convert.ToInt32(Session["idUsuario"]));
 
                 ddlAfiliadoOrigen.DataSource = dt;
                 ddlAfiliadoOrigen.DataValueField = "DocumentoContacto";
@@ -515,7 +536,6 @@ namespace fpWebApp
             {
                 string mensaje = ex.Message.ToString();               
             }
-
         }
 
 
@@ -1172,18 +1192,34 @@ namespace fpWebApp
                         ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
                         txbNombreContacto.Value = dt.Rows[0]["NombreAfiliado"].ToString();
                         txbApellidoContacto.Value = dt.Rows[0]["ApellidoAfiliado"].ToString();
+                        if (dt.Rows[0]["idGenero"].ToString() != "")
+                            ddlGenero.SelectedIndex = Convert.ToInt32(ddlGenero.Items.IndexOf(ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString())));
+                        else
+                            ddlGenero.SelectedItem.Value = "0";
+
+                        DateTime fechaNacimiento = Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]);
+                        DateTime hoy = DateTime.Today;
+
+                        int edad = hoy.Year - fechaNacimiento.Year;
+                        if (fechaNacimiento.Date > hoy.AddYears(-edad))
+                        {
+                            edad--;
+                        }
+
+                        txbFecNac.Text = fechaNacimiento.ToString("dd/MM/yyyy");
+                        txbEdad.Text = edad.ToString() + " años";
                         txbTelefonoContacto.Value = dt.Rows[0]["CelularAfiliado"].ToString();
                         txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString();
                         ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString())));
                         ddlTiposAfiliado.SelectedValue = "2";//Afiliado en renovación
+
                         CargarPlanesAfiliadPregestion(dt.Rows[0]["idAfiliado"].ToString());
                     }
                     dt.Dispose();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
-                    throw;
+                    string mensaje = ex.Message.ToString();
                 }
             }
 

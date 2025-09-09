@@ -6,6 +6,8 @@
 <%@ Register Src="~/controles/indicadores01.ascx" TagPrefix="uc1" TagName="indicadores01" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
 <%@ Register Src="~/controles/indicadoresusucrm.ascx" TagPrefix="uc2" TagName="indicadoresusucrm" %>
+<%@ Register Src="~/controles/indicadoresusucrm2.ascx" TagPrefix="uc1" TagName="indicadoresusucrm2" %>
+
 
 
 <!DOCTYPE html>
@@ -228,11 +230,11 @@
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row animated fadeInDown">
                     <%--Inicio Contenido!!!!--%>
-
+                    <uc1:indicadoresusucrm2 runat="server" id="indicadoresusucrm2" />
                     <%-- //////////////////////////////////GRÁFICAS//////////////////////////////////////////////////--%>
 
                     <%--Gráfica asesor--%>
-                    <div class="row d-flex">
+<%--                    <div class="row d-flex">
                         <!-- Gráfica -->
                         <div class="col-lg-6 d-flex">
                             <div class="ibox flex-fill w-100">
@@ -369,8 +371,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
+                    </div>--%>
 
                     <%-- ////////////////////////////////////////////////////////////////////////////////////////////--%>
 
@@ -390,9 +391,6 @@
                     <form role="form" id="form" runat="server">
                         <asp:ScriptManager ID="ScriptManager1" runat="server" />
                         <div class="row" id="divContenido" runat="server">
-
-
-
 
                             <div class="col-lg-12">
                                 <div class="tabs-container">
