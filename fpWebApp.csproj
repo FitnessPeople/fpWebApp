@@ -282,6 +282,7 @@
     <Content Include="cesantias.aspx" />
     <Content Include="ciudades.aspx" />
     <Content Include="ciudadessedes.aspx" />
+    <Content Include="concursogympass.aspx" />
     <Content Include="congelaciones.aspx" />
     <Content Include="congelacionesAfil.aspx" />
     <Content Include="contratoafiliado.aspx" />
@@ -1233,6 +1234,13 @@
       <DependentUpon>ciudadessedes.aspx</DependentUpon>
     </Compile>
     <Compile Include="clasesglobales.cs" />
+    <Compile Include="concursogympass.aspx.cs">
+      <DependentUpon>concursogympass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="concursogympass.aspx.designer.cs">
+      <DependentUpon>concursogympass.aspx</DependentUpon>
+    </Compile>
     <Compile Include="congelaciones.aspx.cs">
       <DependentUpon>congelaciones.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
