@@ -12,11 +12,11 @@ namespace fpWebApp.controles
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            ConsultarContactosActivosPorUsuario();
-
+            int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
+            ConsultarContactosActivosPorUsuario( idUsuario);
         }
 
-        private void ConsultarContactosActivosPorUsuario()
+        private void ConsultarContactosActivosPorUsuario(int idUsuario)
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarMetasComerciales();
@@ -53,10 +53,10 @@ namespace fpWebApp.controles
                 dt.Clear();
             }
 
-            chblCanales.DataSource = dt;
-            chblCanales.DataTextField = "NombreCanalVenta";
-            chblCanales.DataValueField = "idCanalVenta";
-            chblCanales.DataBind();
+            //chblCanales.DataSource = dt;
+            //chblCanales.DataTextField = "NombreCanalVenta";
+            //chblCanales.DataValueField = "idCanalVenta";
+            //chblCanales.DataBind();
 
             dt.Dispose();
         }
