@@ -130,7 +130,7 @@
                 <div class="col-lg-2 d-flex mt-3">
                     <div class="ibox flex-fill w-100">
                         <div class="ibox-content">
-                            <h5>Vendido hasta hoy</h5>
+                            <h5>Vendido del mes</h5>
                             <h1 class="no-margins">
                                 <asp:Literal ID="ltVendidoMes" runat="server"></asp:Literal>
                             </h1>
@@ -143,7 +143,9 @@
                     <div class="ibox flex-fill w-100">
                         <div class="ibox-content">
                             <h5>Brecha hoy</h5>
-                            <h1 class="no-margins">-200,100</h1>
+                            <h1 class="no-margins">
+                                <asp:Literal ID="ltVendidoDia" runat="server"></asp:Literal>
+                            </h1>
                             <div class="stat-percent font-bold text-danger">12% <i class="fa fa-level-down"></i></div>
                             <small>Proyectado</small>
                         </div>
