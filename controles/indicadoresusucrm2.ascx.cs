@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -24,6 +25,10 @@ namespace fpWebApp.controles
             {
                 decimal valorT = 0;
                 int valor = 0;
+                int idCanalVenta = Convert.ToInt32(Session["idCanalVenta"].ToString());
+                int cantidadAsesores = 0;
+                bool sw = false;
+                decimal ValorMetaMesAsesor = 0;
                 ltNumContactos.Text = "0";
                 ltNumNegociacionAceptada.Text = "0";
                 ltNumEnNegociacion.Text = "0";
@@ -37,8 +42,15 @@ namespace fpWebApp.controles
                 /////////////////////////////////////////////////OBJETIVOS COMERCIALES////////////////////////////////////
                 
                 DataTable dt = cg.ConsultarMetasComerciales();
+                DataTable dt6 = cg.ConsultarCuantosAsesoresPorCanalVenta(idCanalVenta);
 
-                int canalVenta = Convert.ToInt32(Session["idCanalVenta"]); // Ejemplo: Cabecera
+                if (dt6.Rows.Count > 0)
+                {
+                    cantidadAsesores = Convert.ToInt32(dt6.Rows[0]["cuantosAsesores"]);
+                    if (cantidadAsesores == 0) sw = true;
+                }
+
+                int canalVenta = Convert.ToInt32(idCanalVenta); 
                 DataRow meta = ConsultarMetaCanal(dt, canalVenta);
 
                 if (meta != null)
@@ -52,6 +64,12 @@ namespace fpWebApp.controles
                     string canal = canalVenta.ToString();
                 }
 
+                if (!sw)
+                    ValorMetaMesAsesor = valor / cantidadAsesores;
+                else
+                    ValorMetaMesAsesor = valor;
+
+                ltValorMetaMesAsesor.Text = ValorMetaMesAsesor.ToString("C0", new CultureInfo("es-CO"));
 
 
 

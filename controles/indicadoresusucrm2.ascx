@@ -14,7 +14,8 @@
                                     <br />
                                     Total ventas: 19'162,862
                                 </span>
-                                <h1 class="m-b-xs">$ 5'098,992</h1>
+                                <h1 class="m-b-xs"><asp:Literal ID="ltValorMetaMesAsesor" runat="server"></asp:Literal>
+                                </h1>
                                 <h3 class="font-bold no-margins">Objetivo mes julio</h3>
                                 <small>..</small>
                             </div>
