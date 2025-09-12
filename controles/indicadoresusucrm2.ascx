@@ -12,7 +12,7 @@
                                 <span class="pull-right text-right">
                                     <small>Valor promedio de ventas del último mes en: <strong>Online</strong></small>
                                     <br />
-                                    Total ventas: 19'162,862
+                                    Objetivo hoy: <asp:Literal ID="ltValorMetaAsesorHoy" runat="server"></asp:Literal>
                                 </span>
                                 <h1 class="m-b-xs"><asp:Literal ID="ltValorMetaMesAsesor" runat="server"></asp:Literal>
                                 </h1>

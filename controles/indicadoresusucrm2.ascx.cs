@@ -27,7 +27,14 @@ namespace fpWebApp.controles
                 int valor = 0;
                 int idCanalVenta = Convert.ToInt32(Session["idCanalVenta"].ToString());
                 int cantidadAsesores = 0;
-                bool sw = false;
+                int metaAsesorDeluxe = 0;
+                int metaAsesorPremiun = 0;
+                int metaAsesorElite = 0;
+                int metaDirectorSede = 0;
+                int valorMetaAsesorHoy = 0;
+                int valorMetaAsesorMes = 0;
+                string tipoSedeUsuario = string.Empty;
+              
                 decimal ValorMetaMesAsesor = 0;
                 ltNumContactos.Text = "0";
                 ltNumNegociacionAceptada.Text = "0";
@@ -37,25 +44,25 @@ namespace fpWebApp.controles
                 ltNumFrio.Text = "0";
                 ltVendidoMes.Text = "0";
                 ltVendidoDia.Text = "0";
+                ltValorMetaAsesorHoy.Text = "0";
 
 
-                /////////////////////////////////////////////////OBJETIVOS COMERCIALES////////////////////////////////////
-                
+                /////////////////////////////////////////////////METAS COMERCIALES////////////////////////////////////
+
                 DataTable dt = cg.ConsultarMetasComerciales();
-                DataTable dt6 = cg.ConsultarCuantosAsesoresPorCanalVenta(idCanalVenta);
 
-                if (dt6.Rows.Count > 0)
-                {
-                    cantidadAsesores = Convert.ToInt32(dt6.Rows[0]["cuantosAsesores"]);
-                    if (cantidadAsesores == 0) sw = true;
-                }
+
+
+
+
+                ///////////////////////////////////////////////META CANAL DE VENTAS
 
                 int canalVenta = Convert.ToInt32(idCanalVenta); 
                 DataRow meta = ConsultarMetaCanal(dt, canalVenta);
 
                 if (meta != null)
                 {
-                    valor = Convert.ToInt32(meta["Valor"]);
+                    valor = Convert.ToInt32(meta["Presupuesto"]);
                     string canal = meta["NombreCanalVenta"].ToString();
                 }
                 else
@@ -64,12 +71,28 @@ namespace fpWebApp.controles
                     string canal = canalVenta.ToString();
                 }
 
-                if (!sw)
-                    ValorMetaMesAsesor = valor / cantidadAsesores;
-                else
-                    ValorMetaMesAsesor = valor;
+
+
+
+
+
+
+                ///////////////////////////////////////////////METAS ASESORES /////////////////////////////////////////////
+                DataTable dt6 = cg.ConsultarUsuarioSedePerfilPorId(idUsuario);
+                tipoSedeUsuario = dt6.Rows[0]["TipoSede"].ToString();
+
+                DataTable dt7 = cg.ConsultarEstacionalidadPorDia(idCanalVenta, 9, 2025);
+
+
+
+                //valorMetaAsesorMes
+
+
+
 
                 ltValorMetaMesAsesor.Text = ValorMetaMesAsesor.ToString("C0", new CultureInfo("es-CO"));
+
+                ltValorMetaAsesorHoy.Text = "0"; 
 
 
 
