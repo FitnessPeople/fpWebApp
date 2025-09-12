@@ -207,6 +207,7 @@
                                             <th data-breakpoints="xs">Fecha Inicio</th>
                                             <th data-breakpoints="xs">Sede</th>
                                             <th data-breakpoints="xs">Código Embajador</th>
+                                            <th data-breakpoints="xs">Ver Captura</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -222,6 +223,13 @@
                                                     <td><%# Eval("fechaInicio", "{0:dd/MM/yyyy}") %></td>
                                                     <td><%# Eval("sede") %></td>
                                                     <td><%# Eval("CodigoEmb") %></td>
+                                                    <td style="text-align: center; vertical-align: middle;">
+                                                        <a href='<%# "https://fitnesspeoplecolombia.com/img/estudiafit/concurso-gympass/" + Eval("capturaArchivo") %>' 
+                                                            target="_blank" class="btn btn-danger btn-outline m-r-xs"
+                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"> 
+                                                            <i class="fa-solid fa-camera"></i>
+                                                        </a>
+                                                    </td>
                                                 </tr>
                                             </ItemTemplate>
                                         </asp:Repeater>

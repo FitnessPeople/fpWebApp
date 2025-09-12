@@ -165,9 +165,9 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarEstudiafitExcel();
+                DataTable dt = cg.ConsultarConcursoGymPassExcel();
 
-                string nombreArchivo = $"Estudiafit_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+                string nombreArchivo = $"ConcursoGymPass_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
                 {
