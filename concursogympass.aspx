@@ -203,9 +203,10 @@
                                             <th data-breakpoints="xs">Apellidos</th>
                                             <th data-breakpoints="xs">Correo</th>
                                             <th data-breakpoints="xs">Teléfono</th>
-                                            <th data-breakpoints="xs">Fecha de Inicio</th>
+                                            <th data-breakpoints="xs">Fecha Registro</th>
+                                            <th data-breakpoints="xs">Fecha Inicio</th>
                                             <th data-breakpoints="xs">Sede</th>
-                                            <th data-breakpoints="xs">Código del Embajador</th>
+                                            <th data-breakpoints="xs">Código Embajador</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -217,7 +218,8 @@
                                                     <td><%# Eval("apellidos") %></td>
                                                     <td><%# Eval("correo") %></td>
                                                     <td><%# Eval("telefono") %></td>
-                                                    <td><%# Eval("fechaInicio") %></td>
+                                                    <td><%# Eval("fechaRegistro", "{0:dd/MM/yyyy}") %></td>
+                                                    <td><%# Eval("fechaInicio", "{0:dd/MM/yyyy}") %></td>
                                                     <td><%# Eval("sede") %></td>
                                                     <td><%# Eval("CodigoEmb") %></td>
                                                 </tr>
@@ -231,7 +233,7 @@
                                         <div class="col-lg-12">
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
-                                                    <h5>Cantidad de </h5>
+                                                    <h5>Embajador con más códigos registrados</h5>
                                                 </div>
                                                 <div class="ibox-content">
                                                     <div id="barras"></div>
@@ -243,7 +245,7 @@
                                         <div class="col-lg-6">
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
-                                                    <h5>Cantidad de Agendas por Estado</h5>
+                                                    <h5>Cantidad de personas registradas por Embajador</h5>
                                                 </div>
                                                 <div class="ibox-content">
                                                     <div>
@@ -255,7 +257,7 @@
                                         <div class="col-lg-6">
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
-                                                    <h5>Porcentaje de Agendas por Estado</h5>
+                                                    <h5>Porcentaje de personas registradas por Embajador</h5>
                                                 </div>
                                                 <div class="ibox-content">
                                                     <div>
@@ -323,20 +325,24 @@
     </script>
 
     <script>
-
         $(document).ready(function () {
 
+            // --- c3: barras categóricas ---
             c3.generate({
                 bindto: '#barras',
                 data: {
-                    columns: columnasJS,
+                    columns: columnasJS, // remplazado por el server: [["Emb1",10],["Emb2",5],...]
                     type: 'bar',
-                    colors: coloresJS
+                    colors: coloresJS     // objeto { "Emb1":"#...", "Emb2":"#..." }
                 },
                 axis: {
                     x: {
                         type: 'category',
-                        categories: [""]
+                        categories: categoriasJS, // [""] tal como antes
+                        tick: {
+                            rotate: 45,
+                            multiline: false
+                        }
                     },
                     y: {
                         tick: {
@@ -346,60 +352,76 @@
                 },
                 tooltip: {
                     format: {
-                        title: function () { return 'Universidades'; }
+                        title: function () { return 'Embajadores'; }
                     }
-                }
-            });
-
-            c3.generate({
-                bindto: '#pie',
-                data: {
-                    columns: columnasJS,
-                    type: 'pie',
-                    colors: coloresJS
                 },
-                tooltip: {
-                    format: {
-                        title: function () { return 'Universidades'; }
+                legend: {
+                    show: true
+                },
+                bar: {
+                    width: {
+                        ratio: 0.7
                     }
                 }
             });
 
-        });
+            // --- c3: pie ---
+            // Extraemos datos para Chart.js
+            var nombres = columnasJS.map(function (c) { return c[0]; });  // ["Emb1","Emb2",...]
+            var valores = columnasJS.map(function (c) { return c[1]; });  // [10,20,...]
+            var colores = nombres.map(function (n) { return coloresJS[n]; });
 
-        $(function () {
+            var ctx = document.getElementById("doughnutChart").getContext("2d");
 
-            var ctx = document.getElementById('doughnutChart').getContext('2d');
-            var myPieChart = new Chart(ctx, {
-                type: 'pie',
+            new Chart(ctx, {
+                type: 'doughnut',
                 data: {
-                    labels: chartLabels,
+                    labels: nombres,
                     datasets: [{
-                        data: chartData,
-                        backgroundColor: chartColors
+                        data: valores,
+                        backgroundColor: colores
                     }]
                 },
                 options: {
                     responsive: true,
                     plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
                         tooltip: {
                             callbacks: {
                                 label: function (context) {
                                     let label = context.label || '';
-                                    let value = context.parsed || 0;
-                                    return label + ': ' + value + ' estudiantes';
+                                    let value = context.raw || 0;
+                                    return `${label}: ${value}`;
                                 }
                             }
-                        },
-                        legend: {
-                            position: 'right'
+                        }
+                    }
+                }
+            });
+
+            // --- Chart.js: doughnut/pie ---
+            c3.generate({
+                bindto: '#pie',
+                data: {
+                    columns: columnasJS,  // [["Emb1",10],["Emb2",5],...]
+                    type: 'pie',
+                    colors: coloresJS
+                },
+                legend: {
+                    position: 'right'
+                },
+                tooltip: {
+                    format: {
+                        value: function (value, ratio, id) {
+                            return value; // muestra la cantidad
                         }
                     }
                 }
             });
 
         });
-
     </script>
 
 </body>

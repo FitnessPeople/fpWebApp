@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
+using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -40,7 +41,7 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-                            CargarGraficaBarras();
+                            CargarGraficas();
                         }
                     }
 
@@ -85,78 +86,79 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void CargarGraficaBarras()
+        private void CargarGraficas()
         {
-            string query = @"SELECT e.NombreEmb AS 'NombreEmbajador', COUNT(*) AS Cantidad 
-                            FROM Embajadores e 
-                            INNER JOIN concursogympass cgp 
-                            ON e.CodigoEmb = cgp.CodigoEmb 
-                            GROUP BY e.NombreEmb 
-                            ORDER BY e.NombreEmb DESC;";
+            string query = @"SELECT e.NombreEmb AS NombreEmbajador, COUNT(*) AS Cantidad 
+                             FROM Embajadores e 
+                             INNER JOIN concursogympass cgp 
+                               ON e.CodigoEmb = cgp.CodigoEmb 
+                             GROUP BY e.NombreEmb 
+                             ORDER BY Cantidad DESC;";
 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(query);
 
-            var columnas = new List<string>();
-            var coloresUsados = new Dictionary<string, string>();
+            // columnas: array de arrays -> [["Emb1", 10], ["Emb2", 5], ...]
+            var columnas = new List<List<object>>();
+            // colores: objeto name->color -> { "Emb1":"#ff0000", "Emb2":"#00ff00", ... }
+            var coloresMap = new Dictionary<string, string>();
 
-            foreach (DataRow row in dt.Rows)
+            int total = dt.Rows.Count;
+            for (int i = 0; i < total; i++)
             {
+                DataRow row = dt.Rows[i];
                 string embajador = row["NombreEmbajador"].ToString();
                 int cantidad = Convert.ToInt32(row["Cantidad"]);
 
-                columnas.Add($"['{embajador}', {cantidad}]");
+                columnas.Add(new List<object> { embajador, cantidad });
 
-                if (coloresFijos.ContainsKey(embajador))
-                {
-                    coloresUsados[embajador] = coloresFijos[embajador];
-                }
-                else
-                {
-                    // Color por defecto si no está en la lista
-                    coloresUsados[embajador] = "#7f7f7f";
-                }
+                string color = GenerateColor(i, Math.Max(1, total)); // genera color dinámico
+                coloresMap[embajador] = color;
             }
 
-            string columnasJS = string.Join(",", columnas);
-            string coloresJS = string.Join(",", coloresUsados.Select(kv => $"'{kv.Key}': '{kv.Value}'"));
+            var serializer = new JavaScriptSerializer();
+            string columnasJson = serializer.Serialize(columnas);   // [["Emb1",10],["Emb2",5],...]
+            string coloresJson = serializer.Serialize(coloresMap);  // {"Emb1":"#...","Emb2":"#..."}
+            string categoriasJson = serializer.Serialize(new string[] { "" }); // tal como tenías
 
-            ClientScript.RegisterStartupScript(this.GetType(), "setVars",
-                $"var columnasJS = [{columnasJS}]; var coloresJS = {{{coloresJS}}};", true);
-
-
-            // Gráfica de chartjs
-            string labelsJS = string.Join(",", dt.Rows.Cast<DataRow>()
-                .Select(row => $"'{row["NombreEmbajador"].ToString()}'"));
-
-            string dataJS = string.Join(",", dt.Rows.Cast<DataRow>()
-                .Select(row => row["Cantidad"].ToString()));
-
-            string backgroundColorsJS = string.Join(",", dt.Rows.Cast<DataRow>()
-                .Select(row =>
-                {
-                    string embajador = row["NombreEmbajador"].ToString();
-                    return $"'{(coloresFijos.ContainsKey(embajador) ? coloresFijos[embajador] : "#7f7f7f")}'";
-                }));
-
-
-            ClientScript.RegisterStartupScript(this.GetType(), "chartjsVars", $@"
-                var chartLabels = [{labelsJS}];
-                var chartData = [{dataJS}];
-                var chartColors = [{backgroundColorsJS}];
-            ", true);
+            string script = $@"
+                var columnasJS = {columnasJson};
+                var coloresJS = {coloresJson};
+                var categoriasJS = {categoriasJson};
+            ";
+            ClientScript.RegisterStartupScript(this.GetType(), "chartVars", script, true);
         }
 
-        Dictionary<string, string> coloresFijos = new Dictionary<string, string>
+        // Generador HSL -> HEX
+        private string GenerateColor(int index, int total)
         {
-            { "Universidad 1", "#1f77b4" },
-            { "Universidad 2", "#ff7f0e" },
-            { "Universidad 3", "#2ca02c" },
-            { "Universidad 4", "#d62728" },
-            { "Universidad 5", "#7401a0" },
-            { "Universidad 6", "#8c564b" },
-            { "Universidad 7", "#e377c2" }
-        };
+            double hue = (index * 360.0) / Math.Max(1, total);
+            double s = 0.65;
+            double l = 0.55;
+
+            double c = (1 - Math.Abs(2 * l - 1)) * s;
+            double hPrime = hue / 60.0;
+            double x = c * (1 - Math.Abs(hPrime % 2 - 1));
+            double r1 = 0, g1 = 0, b1 = 0;
+
+            if (0 <= hPrime && hPrime < 1) { r1 = c; g1 = x; b1 = 0; }
+            else if (1 <= hPrime && hPrime < 2) { r1 = x; g1 = c; b1 = 0; }
+            else if (2 <= hPrime && hPrime < 3) { r1 = 0; g1 = c; b1 = x; }
+            else if (3 <= hPrime && hPrime < 4) { r1 = 0; g1 = x; b1 = c; }
+            else if (4 <= hPrime && hPrime < 5) { r1 = x; g1 = 0; b1 = c; }
+            else { r1 = c; g1 = 0; b1 = x; }
+
+            double m = l - c / 2.0;
+            int r = (int)Math.Round((r1 + m) * 255);
+            int g = (int)Math.Round((g1 + m) * 255);
+            int b = (int)Math.Round((b1 + m) * 255);
+
+            r = Math.Max(0, Math.Min(255, r));
+            g = Math.Max(0, Math.Min(255, g));
+            b = Math.Max(0, Math.Min(255, b));
+
+            return $"#{r:X2}{g:X2}{b:X2}";
+        }
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
