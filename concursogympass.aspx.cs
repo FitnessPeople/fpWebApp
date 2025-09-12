@@ -91,7 +91,7 @@ namespace fpWebApp
             string query = @"SELECT e.NombreEmb AS NombreEmbajador, COUNT(*) AS Cantidad 
                              FROM Embajadores e 
                              INNER JOIN concursogympass cgp 
-                               ON e.CodigoEmb = cgp.CodigoEmb 
+                             ON e.CodigoEmb = cgp.CodigoEmb 
                              GROUP BY e.NombreEmb 
                              ORDER BY Cantidad DESC;";
 
