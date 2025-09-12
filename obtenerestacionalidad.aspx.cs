@@ -16,14 +16,6 @@ namespace fpWebApp
                 filtro = Session["idCanalVenta"].ToString();
             }
 
-            //string strQuery = "SELECT *, (mc.Valor * e.Titulo / 100) metaDia " +
-            //    "FROM estacionalidad e, metascomerciales mc " +
-            //    "WHERE mc.idCanalVenta = " + filtro + " " +
-            //    "AND mc.mes = " + Request.QueryString["mes"].ToString() + " " +
-            //    "AND mc.annio = " + Request.QueryString["anio"].ToString() + " " +
-            //    "AND MONTH(e.FechaInicio) = " + Request.QueryString["mes"].ToString() + " " +
-            //    "AND YEAR(e.FechaInicio) = " + Request.QueryString["anio"].ToString() + " ";
-
             string strQuery = "SELECT e.FechaInicio, e.FechaFin, " +
                 "e.idEstacionalidad, e.Titulo, e.Renderizado, e.Color, e.TodoElDia, e.Mostrar, " +
                 "(mc.Valor * e.Titulo / 100) metaDia, SUM(ppa.Valor) pagado " +

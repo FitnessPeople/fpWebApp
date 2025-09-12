@@ -112,8 +112,8 @@ namespace fpWebApp
 
         private void listaTransaccionesWompi(int tipoPago, string fechaIni, string fechaFin)
         {
-            bool rtaStatus = false;
             clasesglobales cg = new clasesglobales();
+            bool rtaStatus;
             DataTable dt1 = listarDetalle(out rtaStatus);
 
             if (rtaStatus)
@@ -154,27 +154,24 @@ namespace fpWebApp
 
         private DataTable listarDetalle(out bool rtaStatus)
         {
-            string parametro = string.Empty;
-            string tester = string.Empty;
-            string mensaje = string.Empty;
             int idempresa = 4; //Wompi
-            rtaStatus = false;
 
             clasesglobales cg = new clasesglobales();
             DataTable dti = cg.ConsultarUrl(idempresa);
             DataTable respuestaWompi = new DataTable();
 
             string cadena = dti.Rows[0]["urlServicioAd3"].ToString(); //string de parámetro
-            parametro = cadena
-           .Replace("{from}", txbFechaIni.Value)
-           .Replace("{until}", txbFechaFin.Value)
-           .Replace("{page}", "1")
-           .Replace("{size}", "50")
-           .Replace("{order_by}", "created_at")
-           .Replace("{order}", "DESC")
-           .Trim('"');
+            string parametro = cadena
+                .Replace("{from}", txbFechaIni.Value)
+                .Replace("{until}", txbFechaFin.Value)
+                .Replace("{page}", "1")
+                .Replace("{size}", "50")
+                .Replace("{order_by}", "created_at")
+                .Replace("{order}", "DESC")
+                .Trim('"');
 
             string url = dti.Rows[0]["urlTest"].ToString() + parametro;
+            string mensaje;
             string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
 
             JToken token = JToken.Parse(respuesta[0]);
