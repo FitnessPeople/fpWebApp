@@ -34,12 +34,13 @@ namespace fpWebApp.controles
                 int metaAsesorPremiun = 0;
                 int metaAsesorElite = 0;
                 int metaDirectorSede = 0;
+                int valorVendidoMes = 0;
+                int valorVendidoHoy = 0;
                 int valorMetaAsesorHoy = 0;
                 int valorMetaAsesorMes = 0;
                 string tipoSedeUsuario = string.Empty;
                 int perfilUsuario = 0;
               
-                decimal ValorMetaMesAsesor = 0;
                 ltNumContactos.Text = "0";
                 ltNumNegociacionAceptada.Text = "0";
                 ltNumEnNegociacion.Text = "0";
@@ -49,18 +50,18 @@ namespace fpWebApp.controles
                 ltVendidoMes.Text = "0";
                 ltVendidoDia.Text = "0";
                 ltValorMetaAsesorHoy.Text = "0";
+                ltBrechaMes.Text = "0";
+                ltBrechaHoy.Text = "0";
 
                 DateTime hoy = DateTime.Today;
-
-                /////////////////////////////////////////////////METAS COMERCIALES////////////////////////////////////
-
-                DataTable dt = cg.ConsultarMetasComerciales();
-
-
-
-
+                int mes = hoy.Month;
+                int anio = hoy.Year;
+                string nombreMes = hoy.ToString("MMMM", new CultureInfo("es-ES"));
+                nombreMes = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(nombreMes);
+                ltNomMesActual.Text = $"Objetivo mes {nombreMes} {anio}";
 
                 ///////////////////////////////////////////////META CANAL DE VENTA //////////////////////////////////
+                DataTable dt = cg.ConsultarMetasComerciales();
 
                 int canalVenta = Convert.ToInt32(idCanalVenta); 
                 DataRow meta = ConsultarMetaCanal(dt, canalVenta);
@@ -87,7 +88,7 @@ namespace fpWebApp.controles
                 if (tipoSedeUsuario == "Deluxe")
                     valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorDeluxe"].ToString());
                 if (tipoSedeUsuario == "Premium")
-                    valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorPremiun"].ToString());
+                    valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorPremium"].ToString());
                 if (tipoSedeUsuario == "Elite")
                     valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorElite"].ToString());
                 if (perfilUsuario == 2)
@@ -95,16 +96,13 @@ namespace fpWebApp.controles
                 if (idCanalVenta == 12)
                     valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorOnline"].ToString());
 
-                ltValorMetaMesAsesor.Text = valorMetaAsesorMes.ToString("C0", new CultureInfo("es-CO"));
+                ltValorMetaAsesorMes.Text = valorMetaAsesorMes.ToString("C0", new CultureInfo("es-CO"));
 
+                DataTable dt8 = cg.ConsultarEstacionalidadPorDia(idCanalVenta, mes, anio);
+                valorMetaAsesorHoy = Convert.ToInt32(dt8.Rows[0]["MetaDia"].ToString());
+                if (dt8.Rows.Count >0)
+                ltValorMetaAsesorHoy.Text = valorMetaAsesorHoy.ToString("C0", new CultureInfo("es-CO")); 
 
-
-                // obtener el valor de hoy por fecha actual.
-                ltValorMetaAsesorHoy.Text = "0"; 
-
-
-
-                DataTable dt1 = cg.ConsultarCanalesVenta();
 
                 ///////////////////////////////////////////////PANEL INDICADORES SUPERIOR DERECHC/////////////////////////
                 DataTable dt2 = cg.ConsultarContactosCRMPorUsuario(idUsuario, out valorT);
@@ -126,33 +124,29 @@ namespace fpWebApp.controles
                 ltNumFrio.Text = RegistrosEnFrio.Length.ToString();
 
                 //////////////////////////////////////INDICADORES DE VALORES///////////////////////
-              
-
+               
                 DataTable dt3 = cg.ConsultarVentasAsesorMesVigente(idUsuario);
+                valorVendidoMes = Convert.ToInt32(dt3.Rows[0]["TotalVendido"].ToString());
+               
                 if (dt3.Rows.Count > 0 )
-                ltVendidoMes.Text = dt3.Rows[0]["TotalVendido"].ToString();
+                ltVendidoMes.Text = valorVendidoMes.ToString();
 
                 DataTable dt4 = cg.ConsultarVentasAsesorAnnioVigente(idUsuario);
                 if (dt4.Rows.Count > 0)
                     ltVendidoMes.Text = dt4.Rows[0]["TotalVendido"].ToString(); 
 
                 DataTable dt5 = cg.ConsultarVentasAsesorDiaVigente(idUsuario);
+                valorVendidoHoy = Convert.ToInt32(dt5.Rows[0]["TotalVendido"].ToString());
                 if (dt5.Rows.Count > 0)
-                    ltVendidoDia.Text = dt5.Rows[0]["TotalVendido"].ToString(); 
+                    ltVendidoDia.Text = dt5.Rows[0]["TotalVendido"].ToString();
 
+                /////////////////////////////////////////BRECHAS////////////////////////////////////
+                int brechames = valorMetaAsesorMes - valorVendidoMes;
+                ltBrechaMes.Text = brechames.ToString("C0", new CultureInfo("es-CO"));
 
-                
+                int brechahoy = valorMetaAsesorHoy - valorVendidoHoy;
+                ltBrechaHoy.Text = brechahoy.ToString("C0", new CultureInfo("es-CO"));
 
-                DataRow[] filasFiltradas = dt.Select("idCanalVenta <> 1"); // Se excluye la opción 1 Ninguno
-
-                if (filasFiltradas.Length > 0)
-                {
-                    dt = filasFiltradas.CopyToDataTable();
-                }
-                else
-                {
-                    dt.Clear();
-                }
             }
             catch (Exception ex)
             {
@@ -178,36 +172,5 @@ namespace fpWebApp.controles
             return null;
         }
 
-
-        private void ListaCanalesDeVenta()
-        {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarCanalesVenta();
-            try
-            {
-                DataRow[] filasFiltradas = dt.Select("idCanalVenta <> 1"); // Se excluye la opción 1 Ninguno
-
-                if (filasFiltradas.Length > 0)
-                {
-                    dt = filasFiltradas.CopyToDataTable();
-                }
-                else
-                {
-                    dt.Clear();
-                }
-
-                //chblCanales.DataSource = dt;
-                //chblCanales.DataTextField = "NombreCanalVenta";
-                //chblCanales.DataValueField = "idCanalVenta";
-                //chblCanales.DataBind();
-
-                dt.Dispose();
-            }
-            catch (Exception ex)
-            {
-                string mensaje = ex.Message.ToString();                
-            }
-
-        }
     }
 }

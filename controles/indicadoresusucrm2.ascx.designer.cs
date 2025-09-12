@@ -24,13 +24,31 @@ namespace fpWebApp.controles
         protected global::System.Web.UI.WebControls.Literal ltValorMetaAsesorHoy;
 
         /// <summary>
-        /// Control ltValorMetaMesAsesor.
+        /// Control ltVendidoDia.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltValorMetaMesAsesor;
+        protected global::System.Web.UI.WebControls.Literal ltVendidoDia;
+
+        /// <summary>
+        /// Control ltValorMetaAsesorMes.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltValorMetaAsesorMes;
+
+        /// <summary>
+        /// Control ltNomMesActual.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltNomMesActual;
 
         /// <summary>
         /// Control ltNumContactos.
@@ -96,12 +114,21 @@ namespace fpWebApp.controles
         protected global::System.Web.UI.WebControls.Literal ltVendidoMes;
 
         /// <summary>
-        /// Control ltVendidoDia.
+        /// Control ltBrechaHoy.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltVendidoDia;
+        protected global::System.Web.UI.WebControls.Literal ltBrechaHoy;
+
+        /// <summary>
+        /// Control ltBrechaMes.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltBrechaMes;
     }
 }

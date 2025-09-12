@@ -10,13 +10,16 @@
                         <div class="ibox-content">
                             <div>
                                 <span class="pull-right text-right">
-                                    <small>Valor promedio de ventas del último mes en: <strong>Online</strong></small>
+                                    <small>Objetivo hoy: <asp:Literal ID="ltValorMetaAsesorHoy" runat="server"></asp:Literal></small>
                                     <br />
-                                    Objetivo hoy: <asp:Literal ID="ltValorMetaAsesorHoy" runat="server"></asp:Literal>
+                                    <small>Vendido hoy: <asp:Literal ID="ltVendidoDia" runat="server"></asp:Literal></small>
+
                                 </span>
-                                <h1 class="m-b-xs"><asp:Literal ID="ltValorMetaMesAsesor" runat="server"></asp:Literal>
+                                <h1 class="m-b-xs"><asp:Literal ID="ltValorMetaAsesorMes" runat="server"></asp:Literal>
                                 </h1>
-                                <h3 class="font-bold no-margins">Objetivo mes julio</h3>
+                                <h3 class="font-bold no-margins">
+                                    <asp:Literal ID="ltNomMesActual" runat="server"></asp:Literal>
+                                </h3>
                                 <small>..</small>
                             </div>
 
@@ -145,7 +148,7 @@
                         <div class="ibox-content">
                             <h5>Brecha hoy</h5>
                             <h1 class="no-margins">
-                                <asp:Literal ID="ltVendidoDia" runat="server"></asp:Literal>
+                                <asp:Literal ID="ltBrechaHoy" runat="server"></asp:Literal>
                             </h1>
                             <div class="stat-percent font-bold text-danger">12% <i class="fa fa-level-down"></i></div>
                             <small>Proyectado</small>
@@ -156,7 +159,8 @@
                     <div class="ibox flex-fill w-100">
                         <div class="ibox-content">
                             <h5>Brecha mes</h5>
-                            <h1 class="no-margins">-200,100</h1>
+                            <h1 class="no-margins">
+                                <asp:Literal ID="ltBrechaMes" runat="server"></asp:Literal></h1>
                             <div class="stat-percent font-bold text-danger">12% <i class="fa fa-level-down"></i></div>
                             <small>Otros</small>
                         </div>
