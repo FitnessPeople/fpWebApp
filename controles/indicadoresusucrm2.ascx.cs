@@ -23,6 +23,9 @@ namespace fpWebApp.controles
             clasesglobales cg = new clasesglobales();
             try
             {
+
+
+                //////////////////////////////////DECLARACIÓN DE VARIABLES ///////////////////////////////
                 decimal valorT = 0;
                 int valor = 0;
                 int idCanalVenta = Convert.ToInt32(Session["idCanalVenta"].ToString());
@@ -34,6 +37,7 @@ namespace fpWebApp.controles
                 int valorMetaAsesorHoy = 0;
                 int valorMetaAsesorMes = 0;
                 string tipoSedeUsuario = string.Empty;
+                int perfilUsuario = 0;
               
                 decimal ValorMetaMesAsesor = 0;
                 ltNumContactos.Text = "0";
@@ -46,6 +50,7 @@ namespace fpWebApp.controles
                 ltVendidoDia.Text = "0";
                 ltValorMetaAsesorHoy.Text = "0";
 
+                DateTime hoy = DateTime.Today;
 
                 /////////////////////////////////////////////////METAS COMERCIALES////////////////////////////////////
 
@@ -55,7 +60,7 @@ namespace fpWebApp.controles
 
 
 
-                ///////////////////////////////////////////////META CANAL DE VENTAS
+                ///////////////////////////////////////////////META CANAL DE VENTA //////////////////////////////////
 
                 int canalVenta = Convert.ToInt32(idCanalVenta); 
                 DataRow meta = ConsultarMetaCanal(dt, canalVenta);
@@ -71,27 +76,30 @@ namespace fpWebApp.controles
                     string canal = canalVenta.ToString();
                 }
 
-
-
-
-
-
-
-                ///////////////////////////////////////////////METAS ASESORES /////////////////////////////////////////////
+                ///////////////////////////////////////////////METAS ASESORES MES Y HOY /////////////////////////////////////////////
                 DataTable dt6 = cg.ConsultarUsuarioSedePerfilPorId(idUsuario);
                 tipoSedeUsuario = dt6.Rows[0]["TipoSede"].ToString();
+                perfilUsuario = Convert.ToInt32(dt6.Rows[0]["IdPerfil"].ToString());
+
 
                 DataTable dt7 = cg.ConsultarEstacionalidadPorDia(idCanalVenta, 9, 2025);
 
+                if (tipoSedeUsuario == "Deluxe")
+                    valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorDeluxe"].ToString());
+                if (tipoSedeUsuario == "Premium")
+                    valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorPremiun"].ToString());
+                if (tipoSedeUsuario == "Elite")
+                    valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorElite"].ToString());
+                if (perfilUsuario == 2)
+                    valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaDirectorSede"].ToString());
+                if (idCanalVenta == 12)
+                    valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorOnline"].ToString());
+
+                ltValorMetaMesAsesor.Text = valorMetaAsesorMes.ToString("C0", new CultureInfo("es-CO"));
 
 
-                //valorMetaAsesorMes
 
-
-
-
-                ltValorMetaMesAsesor.Text = ValorMetaMesAsesor.ToString("C0", new CultureInfo("es-CO"));
-
+                // obtener el valor de hoy por fecha actual.
                 ltValorMetaAsesorHoy.Text = "0"; 
 
 
@@ -133,7 +141,7 @@ namespace fpWebApp.controles
                     ltVendidoDia.Text = dt5.Rows[0]["TotalVendido"].ToString(); 
 
 
-                DateTime hoy = DateTime.Today;
+                
 
                 DataRow[] filasFiltradas = dt.Select("idCanalVenta <> 1"); // Se excluye la opción 1 Ninguno
 
