@@ -36,22 +36,23 @@ namespace fpWebApp.controles
                 int metaDirectorSede = 0;
                 int valorVendidoMes = 0;
                 int valorVendidoHoy = 0;
+                int valorVendidoAnnio = 0;
                 int valorMetaAsesorHoy = 0;
                 int valorMetaAsesorMes = 0;
                 string tipoSedeUsuario = string.Empty;
                 int perfilUsuario = 0;
               
-                ltNumContactos.Text = "0";
-                ltNumNegociacionAceptada.Text = "0";
-                ltNumEnNegociacion.Text = "0";
-                ltNumCaliente.Text = "0";
-                ltNumTibio.Text = "0";
-                ltNumFrio.Text = "0";
-                ltVendidoMes.Text = "0";
-                ltVendidoDia.Text = "0";
-                ltValorMetaAsesorHoy.Text = "0";
-                ltBrechaMes.Text = "0";
-                ltBrechaHoy.Text = "0";
+                ltNumContactos.Text = "$0";
+                ltNumNegociacionAceptada.Text = "$0";
+                ltNumEnNegociacion.Text = "$0";
+                ltNumCaliente.Text = "$0";
+                ltNumTibio.Text = "$0";
+                ltNumFrio.Text = "$0";
+                ltVendidoMes.Text = "$0";
+                ltVendidoDia.Text = "$0";
+                ltValorMetaAsesorHoy.Text = "$0";
+                ltBrechaMes.Text = "$0";
+                ltBrechaHoy.Text = "$0";
 
                 DateTime hoy = DateTime.Today;
                 int mes = hoy.Month;
@@ -85,16 +86,17 @@ namespace fpWebApp.controles
 
                 DataTable dt7 = cg.ConsultarEstacionalidadPorDia(idCanalVenta, 9, 2025);
 
-                if (tipoSedeUsuario == "Deluxe")
+                if (perfilUsuario == 4 &&  tipoSedeUsuario == "Deluxe")
                     valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorDeluxe"].ToString());
-                if (tipoSedeUsuario == "Premium")
+                if (perfilUsuario == 4 &&  tipoSedeUsuario == "Premium")
                     valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorPremium"].ToString());
-                if (tipoSedeUsuario == "Elite")
+                if (perfilUsuario == 4 &&  tipoSedeUsuario == "Elite")
                     valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorElite"].ToString());
                 if (perfilUsuario == 2)
                     valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaDirectorSede"].ToString());
-                if (idCanalVenta == 12)
+                if (perfilUsuario == 4 &&  idCanalVenta == 12)
                     valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorOnline"].ToString());
+
 
                 ltValorMetaAsesorMes.Text = valorMetaAsesorMes.ToString("C0", new CultureInfo("es-CO"));
 
@@ -129,16 +131,19 @@ namespace fpWebApp.controles
                 valorVendidoMes = Convert.ToInt32(dt3.Rows[0]["TotalVendido"].ToString());
                
                 if (dt3.Rows.Count > 0 )
-                ltVendidoMes.Text = valorVendidoMes.ToString();
+                ltVendidoMes.Text = valorVendidoMes.ToString("C0", new CultureInfo("es-CO"));
 
                 DataTable dt4 = cg.ConsultarVentasAsesorAnnioVigente(idUsuario);
+
                 if (dt4.Rows.Count > 0)
-                    ltVendidoMes.Text = dt4.Rows[0]["TotalVendido"].ToString(); 
+                    valorVendidoAnnio = Convert.ToInt32(dt4.Rows[0]["TotalVendido"].ToString()); 
+                   // ltVendidoMes.Text = valorVendidoAnnio.ToString("C0", new CultureInfo("es-CO"));
 
                 DataTable dt5 = cg.ConsultarVentasAsesorDiaVigente(idUsuario);
-                valorVendidoHoy = Convert.ToInt32(dt5.Rows[0]["TotalVendido"].ToString());
+                
                 if (dt5.Rows.Count > 0)
-                    ltVendidoDia.Text = dt5.Rows[0]["TotalVendido"].ToString();
+                    valorVendidoHoy = Convert.ToInt32(dt5.Rows[0]["TotalVendido"].ToString());
+                ltVendidoDia.Text = valorVendidoHoy.ToString("C0", new CultureInfo("es-CO"));
 
                 /////////////////////////////////////////BRECHAS////////////////////////////////////
                 int brechames = valorMetaAsesorMes - valorVendidoMes;
