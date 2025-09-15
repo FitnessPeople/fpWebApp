@@ -4,7 +4,7 @@
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
-<%@ Register Src="~/controles/indicadoresgympass.ascx" TagPrefix="uc1" TagName="indicadoresgympass" %>
+<%@ Register Src="~/controles/indicadoresconcursogympass.ascx" TagPrefix="uc1" TagName="indicadoresconcursogympass" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
 
 <!DOCTYPE html>
@@ -144,7 +144,7 @@
                 <div class="row animated fadeInDown">
                     <%--Inicio Contenido!!!!--%>
 
-                    <%--<uc1:indicadoresgympass runat="server" ID="indicadoresgympass" />--%>
+                    <uc1:indicadoresconcursogympass runat="server" ID="indicadoresconcursogympass" />
 
                     <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
                         <div class="p-xs">

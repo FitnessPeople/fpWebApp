@@ -295,6 +295,7 @@
     <Content Include="controles\indicadores04.ascx" />
     <Content Include="controles\indicadores05.ascx" />
     <Content Include="controles\indicadoresacceso.ascx" />
+    <Content Include="controles\indicadoresconcursogympass.ascx" />
     <Content Include="controles\indicadoresgympass.ascx" />
     <Content Include="controles\indicadoresmedico.ascx" />
     <Content Include="controles\indicadoressoporte.ascx" />
@@ -1319,6 +1320,13 @@
     </Compile>
     <Compile Include="controles\indicadoresacceso.ascx.designer.cs">
       <DependentUpon>indicadoresacceso.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="controles\indicadoresconcursogympass.ascx.cs">
+      <DependentUpon>indicadoresconcursogympass.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadoresconcursogympass.ascx.designer.cs">
+      <DependentUpon>indicadoresconcursogympass.ascx</DependentUpon>
     </Compile>
     <Compile Include="controles\indicadoresgympass.ascx.cs">
       <DependentUpon>indicadoresgympass.ascx</DependentUpon>
