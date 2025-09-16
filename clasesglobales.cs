@@ -6,6 +6,8 @@ using Newtonsoft.Json.Linq;
 using Npgsql;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using OfficeOpenXml.Style;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -19,6 +21,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.Configuration;
+using System.Drawing;
 
 namespace fpWebApp
 {
@@ -341,6 +344,71 @@ namespace fpWebApp
                 {
                     workbook.Write(memoryStream);
                     workbook.Close();
+                    byte[] byteArray = memoryStream.ToArray();
+                    HttpContext.Current.Response.Clear();
+                    HttpContext.Current.Response.Buffer = true;
+                    HttpContext.Current.Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    HttpContext.Current.Response.AddHeader("Content-Disposition", $"attachment; filename={nombreArchivo}.xlsx");
+                    HttpContext.Current.Response.BinaryWrite(byteArray);
+                    HttpContext.Current.Response.Flush();
+                    HttpContext.Current.ApplicationInstance.CompleteRequest();
+                }
+            }
+        }
+
+        // Exportar Excel Mejorado
+        public void ExportarExcelEPPlus(DataTable dt, string nombreArchivo)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                ExcelWorksheet ws = package.Workbook.Worksheets.Add("Datos");
+
+                // Cargar la DataTable en la hoja (con encabezados)
+                ws.Cells["A1"].LoadFromDataTable(dt, true);
+
+                int totalRows = dt.Rows.Count + 1; // +1 por los encabezados
+                int totalCols = dt.Columns.Count;
+
+                // 1. Estilos de encabezados (primera fila)
+                using (ExcelRange range = ws.Cells[1, 1, 1, totalCols])
+                {
+                    range.Style.Font.Bold = true; // Negrita
+                    range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center; // Centrado
+                    range.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    range.Style.Fill.BackgroundColor.SetColor(Color.LightGray); // Fondo gris
+                    range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    range.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                }
+                ws.Row(1).Height = 20; // Altura fila encabezados
+
+                // 2. Estilos de datos (bordes en todo el documento con info)
+                using (ExcelRange range = ws.Cells[2, 1, totalRows, totalCols])
+                {
+                    range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    range.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    range.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    range.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                }
+
+                // 3. Arreglar formato de fechas aplicando formato de fecha a las columnas 6 y 7 (desde fila 2 hasta la última fila con datos)
+                using (ExcelRange range = ws.Cells[2, 6, totalRows, 7])
+                {
+                    range.Style.Numberformat.Format = "dd/MM/yyyy";
+                }
+
+                // 4. Autoajustar columnas
+                ws.Cells[ws.Dimension.Address].AutoFitColumns();
+
+                // Descargar el archivo
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    package.SaveAs(memoryStream);
                     byte[] byteArray = memoryStream.ToArray();
                     HttpContext.Current.Response.Clear();
                     HttpContext.Current.Response.Buffer = true;

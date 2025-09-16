@@ -171,7 +171,7 @@ namespace fpWebApp
 
                 if (dt.Rows.Count > 0)
                 {
-                    cg.ExportarExcel(dt, nombreArchivo);
+                    cg.ExportarExcelEPPlus(dt, nombreArchivo);
                 }
                 else
                 {
