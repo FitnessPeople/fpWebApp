@@ -26,7 +26,7 @@ namespace fpWebApp
 
             string strQuery = "SELECT e.FechaInicio, e.FechaFin, " +
                 "e.idEstacionalidad, e.Titulo, e.Renderizado, e.Color, e.TodoElDia, e.Mostrar, " +
-                "(mc.Valor * e.Titulo / 100) AS metaDia, " +
+                "(mc.Presupuesto * e.Titulo / 100) AS metaDia, " +
                 "IF(SUM(ppa.Valor) IS NULL, 0, SUM(ppa.Valor)) AS pagado, mc.Valor  " +
                 "FROM estacionalidad e " +
                 "INNER JOIN metascomerciales mc " +
@@ -38,7 +38,7 @@ namespace fpWebApp
                 "WHERE MONTH(e.FechaInicio) = " + Request.QueryString["mes"].ToString() + " " +
                 "AND YEAR(e.FechaInicio) = " + Request.QueryString["anio"].ToString() + " " +
                 "GROUP BY e.FechaInicio, (mc.Valor * e.Titulo / 100), e.Titulo, e.idEstacionalidad, " +
-                "e.FechaFin, e.Renderizado, e.Color, e.TodoElDia, e.Mostrar, mc.Valor ";
+                "e.FechaFin, e.Renderizado, e.Color, e.TodoElDia, e.Mostrar, mc.Presupuesto ";
 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
