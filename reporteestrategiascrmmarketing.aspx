@@ -685,36 +685,6 @@
         }
     </script>
 
-    <%--    <script>
-        $(document).ready(function () {
-            var lineData = {
-                labels: <%= labelsJson %>,
-                datasets: [
-                    {
-                        label: "Ventas",
-                        backgroundColor: "rgba(26,179,148,0.5)",
-                        borderColor: "rgba(26,179,148,0.7)",
-                        pointBackgroundColor: "rgba(26,179,148,1)",
-                        pointBorderColor: "#fff",
-                        data: <%= ventasJson %>
-                },
-                {
-                    label: "Presupuesto",
-                    backgroundColor: "rgba(220,220,220,0.5)",
-                    borderColor: "rgba(220,220,220,1)",
-                    pointBackgroundColor: "rgba(220,220,220,1)",
-                    pointBorderColor: "#fff",
-                    data: <%= presupuestoJson %>
-                }
-                ]
-            };
-
-            var lineOptions = { responsive: true };
-            var ctx = document.getElementById("lineChart").getContext("2d");
-            new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
-        });
-    </script>--%>
-
     <script>
         $(document).ready(function () {
             var lineData = {

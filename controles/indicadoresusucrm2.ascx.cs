@@ -16,6 +16,7 @@ namespace fpWebApp.controles
         {
             int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
             ConsultarContactosActivosPorUsuario(idUsuario);
+            ObtenerGraficaEstrategiasPorMes();
         }
 
         private void ConsultarContactosActivosPorUsuario(int idUsuario)
@@ -219,6 +220,115 @@ namespace fpWebApp.controles
             }
 
             return null;
+        }
+
+        public string labelsJson { get; set; }
+        public string presupuestoJson { get; set; }
+        public string ventasJson { get; set; }
+        private void ObtenerGraficaEstrategiasPorMes()
+        {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarEstrategiasMarketingValorMes();
+
+                if (dt.Rows.Count > 0)
+                {
+                    //Etiquetas para las fechas
+                    DateTime fechaActual = DateTime.Now;
+                    string mesActualConAnio = System.Globalization.CultureInfo
+                     .GetCultureInfo("es-ES")
+                     .DateTimeFormat
+                     .GetMonthName(fechaActual.Month)
+                     + " " + fechaActual.Year;
+                    //ltMesActualGraf.Text = mesActualConAnio.ToString();
+
+                    string annioActual = fechaActual.Year.ToString();
+                    //ltAnnioActual.Text = annioActual;
+                    //
+
+                    DataTable dt1 = cg.ConsultarCuantosLeadsEstrategiaAceptados();
+                    if (dt1.Rows.Count > 0)
+                    {
+                        decimal totalVentasAnio = Convert.ToDecimal(dt1.Rows[0]["TotalVentasAnio"].ToString());
+                        decimal TotalContactosVentasAnio = Convert.ToDecimal(dt1.Rows[0]["TotalContactosVentasAnio"].ToString());
+                        int TotalContactosAnio = Convert.ToInt32(dt1.Rows[0]["TotalcontactosAnio"].ToString());
+
+                        decimal mediaCuantosAnio = TotalContactosVentasAnio / TotalContactosAnio;
+
+                        int porcentaje = (int)Math.Round(mediaCuantosAnio * 100, MidpointRounding.AwayFromZero);
+
+                        //ltMediaCuantosAnio.Text = porcentaje + "%";
+                        //progressBarAnio.Attributes["style"] = "width: " + porcentaje + "%;";
+                    }
+
+
+                    var labels = new List<string>();
+                    var presupuestos = new List<decimal>();
+                    var ventas = new List<decimal>();
+
+                    var datosPorMes = dt.AsEnumerable()
+                        .GroupBy(r => Convert.ToDateTime(r["Mes"]).Month)
+                        .ToDictionary(
+                            g => g.Key,
+                            g => new
+                            {
+                                Presupuesto = g.Sum(x => Convert.ToDecimal(x["Presupuesto"])),
+                                Ventas = g.Sum(x => Convert.ToDecimal(x["Ventas"]))
+                            }
+                        );
+
+
+                    // Rellenar los 12 meses
+                    for (int mes = 1; mes <= 12; mes++)
+                    {
+                        string abreviado = new DateTime(DateTime.Now.Year, mes, 1)
+                            .ToString("MMM", new System.Globalization.CultureInfo("es-CO"));
+
+                        labels.Add(abreviado);
+
+                        if (datosPorMes.ContainsKey(mes))
+                        {
+                            presupuestos.Add(datosPorMes[mes].Presupuesto);
+                            ventas.Add(datosPorMes[mes].Ventas);
+                        }
+                        else
+                        {
+                            presupuestos.Add(0);
+                            ventas.Add(0);
+                        }
+                    }
+
+                    labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
+                    presupuestoJson = Newtonsoft.Json.JsonConvert.SerializeObject(presupuestos);
+                    ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
+                }
+                else
+                {
+                    var labels = new List<string>();
+                    var presupuestos = new List<decimal>();
+                    var ventas = new List<decimal>();
+
+                    for (int mes = 1; mes <= 12; mes++)
+                    {
+                        string abreviado = new DateTime(DateTime.Now.Year, mes, 1)
+                            .ToString("MMM", new System.Globalization.CultureInfo("es-CO"));
+
+                        labels.Add(abreviado);
+                        presupuestos.Add(0);
+                        ventas.Add(0);
+                    }
+
+                    labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
+                    presupuestoJson = Newtonsoft.Json.JsonConvert.SerializeObject(presupuestos);
+                    ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message.ToString();
+            }
         }
 
     }

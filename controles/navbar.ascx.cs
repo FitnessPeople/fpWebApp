@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Net.Http.Headers;
 using static fpWebApp.estacionalidad;
 
 namespace fpWebApp.controles
@@ -8,8 +9,18 @@ namespace fpWebApp.controles
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            clasesglobales cg = new clasesglobales();
+            string nombrePerfil = string.Empty;
+            string nombreSede = string.Empty;
+            
+
+            DataTable dt = cg.ConsultarUsuarioSedePerfilPorId(Convert.ToInt32(Session["idUsuario"]));
+
+            if (dt.Rows.Count > 0) lblNombrePerfil.Text = dt.Rows[0]["Perfil"].ToString() + "-"+ dt.Rows[0]["NombreSede"].ToString();        
+
             if (Session["idUsuario"] != null)
             {
+
                 ltNombreUsuario.Text = Session["NombreUsuario"].ToString();
                 ltCargo.Text = Session["Cargo"].ToString();
                 if (Session["Foto"].ToString() != "")

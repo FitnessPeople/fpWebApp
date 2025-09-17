@@ -7,9 +7,10 @@
                     <span>
                         <asp:Literal ID="ltFoto" runat="server"></asp:Literal>
                     </span>
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                      <asp:Label ID="lblNombrePerfil" runat="server" Text="Label" Visible="false"></asp:Label>
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#" title="<%= lblNombrePerfil.Text %>">
                         <span class="clear"><span class="block m-t-xs"><strong class="font-bold">
-                            <asp:Literal ID="ltNombreUsuario" runat="server"></asp:Literal></strong>
+                            <asp:Literal ID="ltNombreUsuario" runat="server"></asp:Literal></strong>                          
                         </span><span class="text-muted text-xs block">
                             <asp:Literal ID="ltCargo" runat="server"></asp:Literal><b class="caret"></b></span></span></a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
