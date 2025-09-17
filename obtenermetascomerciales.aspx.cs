@@ -9,31 +9,13 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //DateTime hoy = DateTime.Today;
-            //int mes = hoy.Month;
-            //int anio = hoy.Year;
+
             string filtro = Request.QueryString["filtro"];
 
             if (filtro == "" || filtro is null)
             {
                 filtro = Session["idCanalVenta"].ToString();
             }
-
-            //string strQuery = "SELECT e.FechaInicio, e.FechaFin, " +
-            //    "e.idEstacionalidad, e.Titulo, e.Renderizado, e.Color, e.TodoElDia, e.Mostrar, " +
-            //    "(mc.Presupuesto * e.Titulo / 100) AS metaDia, " +
-            //    "IF(SUM(ppa.Valor) IS NULL, 0, SUM(ppa.Valor)) AS pagado, mc.Valor  " +
-            //    "FROM estacionalidad e " +
-            //    "INNER JOIN metascomerciales mc " +
-            //    "ON mc.mes = " + Request.QueryString["mes"].ToString() + " " +
-            //    "AND mc.annio = " + Request.QueryString["anio"].ToString() + " " +
-            //    "AND mc.idCanalVenta = 9 " +
-            //    "LEFT JOIN pagosplanafiliado ppa " +
-            //    "ON DATE(ppa.FechaHoraPago) = e.FechaInicio " +
-            //    "WHERE MONTH(e.FechaInicio) = " + Request.QueryString["mes"].ToString() + " " +
-            //    "AND YEAR(e.FechaInicio) = " + Request.QueryString["anio"].ToString() + " " +
-            //    "GROUP BY e.FechaInicio, (mc.Valor * e.Titulo / 100), e.Titulo, e.idEstacionalidad, " +
-            //    "e.FechaFin, e.Renderizado, e.Color, e.TodoElDia, e.Mostrar, mc.Presupuesto ";
 
             clasesglobales cg = new clasesglobales();
 

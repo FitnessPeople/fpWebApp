@@ -89,42 +89,6 @@ namespace fpWebApp.controles
 
                     DataTable dt7 = cg.ConsultarEstacionalidadPorDia(idCanalVenta, mes, anio);
 
-                    //if (dt7.Rows.Count > 0)
-                    //{
-                    //    if (perfilUsuario == 4 && tipoSedeUsuario == "Deluxe")
-                    //    {
-                    //        valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorDeluxeMes"].ToString());
-                    //        valorMetaAsesorHoy = Convert.ToInt32(dt7.Rows[0]["MetaAsesorDeluxeDia"].ToString());
-                    //    }
-
-                    //    if (perfilUsuario == 4 && tipoSedeUsuario == "Premium")
-                    //    {
-                    //        valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorPremiumMes"].ToString());
-                    //        valorMetaAsesorHoy = Convert.ToInt32(dt7.Rows[0]["MetaAsesorPremiumDia"].ToString());
-                    //    }
-
-                    //    if (perfilUsuario == 4 && tipoSedeUsuario == "Elite")
-                    //    {
-                    //        valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorEliteMes"].ToString());
-                    //        valorMetaAsesorHoy = Convert.ToInt32(dt7.Rows[0]["MetaAsesorEliteDia"].ToString());
-                    //    }
-
-                    //    if (perfilUsuario == 2)
-                    //    {
-                    //        valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaDirectorSedeMes"].ToString());
-                    //        valorMetaAsesorHoy = Convert.ToInt32(dt7.Rows[0]["MetaDirectorSedeDia"].ToString());
-                    //    }
-
-                    //    if (perfilUsuario == 4 && idCanalVenta == 12)
-                    //    {
-                    //        valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorOnlineMes"].ToString());
-                    //        valorMetaAsesorHoy = Convert.ToInt32(dt7.Rows[0]["MetaAsesorOnlineDia"].ToString());
-                    //    }
-
-                    //    ltValorMetaAsesorMes.Text = valorMetaAsesorMes.ToString("C0", new CultureInfo("es-CO"));
-                    //    ltValorMetaAsesorHoy.Text = valorMetaAsesorHoy.ToString("C0", new CultureInfo("es-CO"));
-                    //}
-
                     if (dt7.Rows.Count > 0)
                     {
                         DataRow filaHoy = null;
