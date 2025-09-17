@@ -205,7 +205,7 @@ namespace fpWebApp
 
             string strFechaHoy = string.Format("{0:yyyy-MM-dd}", DateTime.Now);
 
-            parametro = "?from_date=2025-09-01&until_date=2025-09-08&page=1&page_size=50&order_by=created_at&order=DESC";
+            parametro = "transactions?from_date=2025-09-01&until_date=2025-09-17&page=1&page_size=50&order_by=created_at&order=DESC";
             //parametro = "?from_date=" + strFechaHoy + "&until_date=" + strFechaHoy + "&page=1&page_size=10&order_by=created_at&order=DESC";
 
             string url = dti.Rows[0]["urlTest"].ToString() + parametro;
@@ -219,8 +219,11 @@ namespace fpWebApp
 
                 List<Datum> listaDatos = new List<Datum>();
 
-                foreach (var item in jsonData["data"])
+                JArray dataArray = (JArray)jsonData["data"];
+
+                foreach (JObject item in dataArray)
                 {
+                    JObject customerData = item["customer_data"] as JObject;
                     listaDatos.Add(new Datum
                     {
                         //id = item["id"]?.ToString(),
@@ -233,9 +236,9 @@ namespace fpWebApp
                         payment_method_type = item["payment_method_type"]?.ToString(),
                         status = item["status"]?.ToString(),
                         status_message = item["status_message"]?.ToString(),
-                        device_id = item["customer_data"]?["device_id"]?.ToString(),
-                        full_name = item["customer_data"]?["full_name"]?.ToString(),
-                        phone_number = item["customer_data"]?["phone_number"]?.ToString()
+                        device_id = customerData?["device_id"]?.ToString() ?? "",
+                        full_name = customerData?["full_name"]?.ToString() ?? "",
+                        phone_number = customerData?["phone_number"]?.ToString() ?? ""
                     });
                 }
 

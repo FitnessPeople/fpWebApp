@@ -432,7 +432,7 @@ namespace fpWebApp
             if (idempresa == "4")
             {
                 dt = ConsultarUrl(Convert.ToInt32(idempresa));
-                auth = dt.Rows[0]["urlServicioAd1"].ToString();
+                auth = dt.Rows[0]["urlServicioAd2"].ToString();
             }
 
             try
