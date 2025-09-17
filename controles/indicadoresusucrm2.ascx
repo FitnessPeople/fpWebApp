@@ -154,8 +154,8 @@
                 <div class="valor-numero">
                     <asp:Literal ID="ltVendidoMes" runat="server"></asp:Literal>
                </div>
-                <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>
-                <small>Cumplimiento</small>
+<%--                <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>
+                <small>Cumplimiento</small>--%>
             </div>
         </div>
     </div>

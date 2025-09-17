@@ -15,7 +15,7 @@ namespace fpWebApp.controles
         protected void Page_Load(object sender, EventArgs e)
         {
             int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
-            ConsultarContactosActivosPorUsuario( idUsuario);
+            ConsultarContactosActivosPorUsuario(idUsuario);
         }
 
         private void ConsultarContactosActivosPorUsuario(int idUsuario)
@@ -29,11 +29,6 @@ namespace fpWebApp.controles
                 decimal valorT = 0;
                 int valor = 0;
                 int idCanalVenta = Convert.ToInt32(Session["idCanalVenta"].ToString());
-                int cantidadAsesores = 0;
-                int metaAsesorDeluxe = 0;
-                int metaAsesorPremiun = 0;
-                int metaAsesorElite = 0;
-                int metaDirectorSede = 0;
                 int valorVendidoMes = 0;
                 int valorVendidoHoy = 0;
                 int valorVendidoAnnio = 0;
@@ -41,7 +36,7 @@ namespace fpWebApp.controles
                 int valorMetaAsesorMes = 0;
                 string tipoSedeUsuario = string.Empty;
                 int perfilUsuario = 0;
-              
+
                 ltNumContactos.Text = "$0";
                 ltNumNegociacionAceptada.Text = "$0";
                 ltNumEnNegociacion.Text = "$0";
@@ -50,9 +45,11 @@ namespace fpWebApp.controles
                 ltNumFrio.Text = "$0";
                 ltVendidoMes.Text = "$0";
                 ltVendidoDia.Text = "$0";
+                ltValorMetaAsesorMes.Text = "$0";
                 ltValorMetaAsesorHoy.Text = "$0";
                 ltBrechaMes.Text = "$0";
                 ltBrechaHoy.Text = "$0";
+
 
                 DateTime hoy = DateTime.Today;
                 int mes = hoy.Month;
@@ -60,11 +57,13 @@ namespace fpWebApp.controles
                 string nombreMes = hoy.ToString("MMMM", new CultureInfo("es-ES"));
                 nombreMes = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(nombreMes);
                 ltNomMesActual.Text = $"Objetivo mes {nombreMes} {anio}";
+                //////////////////////////////////////////////////////////////////////////////////////////////////////
+               
 
                 ///////////////////////////////////////////////META CANAL DE VENTA //////////////////////////////////
                 DataTable dt = cg.ConsultarMetasComerciales();
 
-                int canalVenta = Convert.ToInt32(idCanalVenta); 
+                int canalVenta = Convert.ToInt32(idCanalVenta);
                 DataRow meta = ConsultarMetaCanal(dt, canalVenta);
 
                 if (meta != null)
@@ -79,79 +78,160 @@ namespace fpWebApp.controles
                 }
 
                 ///////////////////////////////////////////////METAS ASESORES MES Y HOY /////////////////////////////////////////////
+
                 DataTable dt6 = cg.ConsultarUsuarioSedePerfilPorId(idUsuario);
-                tipoSedeUsuario = dt6.Rows[0]["TipoSede"].ToString();
-                perfilUsuario = Convert.ToInt32(dt6.Rows[0]["IdPerfil"].ToString());
+
+                if (dt6.Rows.Count > 0)
+                {
+                    tipoSedeUsuario = dt6.Rows[0]["TipoSede"].ToString();
+                    perfilUsuario = Convert.ToInt32(dt6.Rows[0]["IdPerfil"].ToString());
 
 
-                DataTable dt7 = cg.ConsultarEstacionalidadPorDia(idCanalVenta, 9, 2025);
+                    DataTable dt7 = cg.ConsultarEstacionalidadPorDia(idCanalVenta, mes, anio);
 
-                if (perfilUsuario == 4 &&  tipoSedeUsuario == "Deluxe")
-                    valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorDeluxe"].ToString());
-                if (perfilUsuario == 4 &&  tipoSedeUsuario == "Premium")
-                    valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorPremium"].ToString());
-                if (perfilUsuario == 4 &&  tipoSedeUsuario == "Elite")
-                    valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorElite"].ToString());
-                if (perfilUsuario == 2)
-                    valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaDirectorSede"].ToString());
-                if (perfilUsuario == 4 &&  idCanalVenta == 12)
-                    valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorOnline"].ToString());
+                    //if (dt7.Rows.Count > 0)
+                    //{
+                    //    if (perfilUsuario == 4 && tipoSedeUsuario == "Deluxe")
+                    //    {
+                    //        valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorDeluxeMes"].ToString());
+                    //        valorMetaAsesorHoy = Convert.ToInt32(dt7.Rows[0]["MetaAsesorDeluxeDia"].ToString());
+                    //    }
+
+                    //    if (perfilUsuario == 4 && tipoSedeUsuario == "Premium")
+                    //    {
+                    //        valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorPremiumMes"].ToString());
+                    //        valorMetaAsesorHoy = Convert.ToInt32(dt7.Rows[0]["MetaAsesorPremiumDia"].ToString());
+                    //    }
+
+                    //    if (perfilUsuario == 4 && tipoSedeUsuario == "Elite")
+                    //    {
+                    //        valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorEliteMes"].ToString());
+                    //        valorMetaAsesorHoy = Convert.ToInt32(dt7.Rows[0]["MetaAsesorEliteDia"].ToString());
+                    //    }
+
+                    //    if (perfilUsuario == 2)
+                    //    {
+                    //        valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaDirectorSedeMes"].ToString());
+                    //        valorMetaAsesorHoy = Convert.ToInt32(dt7.Rows[0]["MetaDirectorSedeDia"].ToString());
+                    //    }
+
+                    //    if (perfilUsuario == 4 && idCanalVenta == 12)
+                    //    {
+                    //        valorMetaAsesorMes = Convert.ToInt32(dt7.Rows[0]["MetaAsesorOnlineMes"].ToString());
+                    //        valorMetaAsesorHoy = Convert.ToInt32(dt7.Rows[0]["MetaAsesorOnlineDia"].ToString());
+                    //    }
+
+                    //    ltValorMetaAsesorMes.Text = valorMetaAsesorMes.ToString("C0", new CultureInfo("es-CO"));
+                    //    ltValorMetaAsesorHoy.Text = valorMetaAsesorHoy.ToString("C0", new CultureInfo("es-CO"));
+                    //}
+
+                    if (dt7.Rows.Count > 0)
+                    {
+                        DataRow filaHoy = null;
+                        foreach (DataRow row in dt7.Rows)
+                        {
+                            DateTime fechaInicio = Convert.ToDateTime(row["FechaInicio"]);
+
+                            if (hoy == fechaInicio)
+                            {
+                                filaHoy = row;
+                                break;
+                            }
+                        }
+
+                        if (filaHoy != null)
+                        {
+                            if (perfilUsuario == 4 && tipoSedeUsuario == "Deluxe")
+                            {
+                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorDeluxeMes"]);
+                                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorDeluxeDia"]);
+                            }
+
+                            if (perfilUsuario == 4 && tipoSedeUsuario == "Premium")
+                            {
+                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorPremiumMes"]);
+                                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorPremiumDia"]);
+                            }
+
+                            if (perfilUsuario == 4 && tipoSedeUsuario == "Elite")
+                            {
+                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorEliteMes"]);
+                                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorEliteDia"]);
+                            }
+
+                            if (perfilUsuario == 2)
+                            {
+                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaDirectorSedeMes"]);
+                                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaDirectorSedeDia"]);
+                            }
+
+                            if (perfilUsuario == 4 && idCanalVenta == 12)
+                            {
+                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorOnlineMes"]);
+                                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorOnlineDia"]);
+                            }
+
+                            ltValorMetaAsesorMes.Text = valorMetaAsesorMes.ToString("C0", new CultureInfo("es-CO"));
+                            ltValorMetaAsesorHoy.Text = valorMetaAsesorHoy.ToString("C0", new CultureInfo("es-CO"));
+                        }
+                    }
 
 
-                ltValorMetaAsesorMes.Text = valorMetaAsesorMes.ToString("C0", new CultureInfo("es-CO"));
-
-                DataTable dt8 = cg.ConsultarEstacionalidadPorDia(idCanalVenta, mes, anio);
-                valorMetaAsesorHoy = Convert.ToInt32(dt8.Rows[0]["MetaDia"].ToString());
-                if (dt8.Rows.Count >0)
-                ltValorMetaAsesorHoy.Text = valorMetaAsesorHoy.ToString("C0", new CultureInfo("es-CO")); 
-
+                }
 
                 ///////////////////////////////////////////////PANEL INDICADORES SUPERIOR DERECHC/////////////////////////
-                DataTable dt2 = cg.ConsultarContactosCRMPorUsuario(idUsuario, out valorT);
-                ltNumContactos.Text = dt2.Rows.Count.ToString();
-                //Negociación aceptada
-                DataRow[] RegistrosNegociacionAceptada = dt2.Select("idEstadoCRM = 3");
-                ltNumNegociacionAceptada.Text = RegistrosNegociacionAceptada.Length.ToString();
-                //En negociación
-                DataRow[] RegistrosEnNegociacion = dt2.Select("idEstadoCRM = 2");
-                ltNumEnNegociacion.Text = RegistrosEnNegociacion.Length.ToString();
-                //En caliente
-                DataRow[] RegistrosEnCaliente = dt2.Select("idEstadoVenta = 1");
-                ltNumCaliente.Text = RegistrosEnCaliente.Length.ToString();
-                //En tibio
-                DataRow[] RegistrosEnTibio = dt2.Select("idEstadoVenta = 2");
-                ltNumTibio.Text = RegistrosEnTibio.Length.ToString();
-                //En Frio
-                DataRow[] RegistrosEnFrio = dt2.Select("idEstadoVenta = 3");
-                ltNumFrio.Text = RegistrosEnFrio.Length.ToString();
 
-                //////////////////////////////////////INDICADORES DE VALORES///////////////////////
-               
+                DataTable dt2 = cg.ConsultarContactosCRMPorUsuario(idUsuario, out valorT);
+
+                if (dt2.Rows.Count > 0)
+                {
+                    ltNumContactos.Text = dt2.Rows.Count.ToString();
+                    //Negociación aceptada
+                    DataRow[] RegistrosNegociacionAceptada = dt2.Select("idEstadoCRM = 3");
+                    ltNumNegociacionAceptada.Text = RegistrosNegociacionAceptada.Length.ToString();
+                    //En negociación
+                    DataRow[] RegistrosEnNegociacion = dt2.Select("idEstadoCRM = 2");
+                    ltNumEnNegociacion.Text = RegistrosEnNegociacion.Length.ToString();
+                    //En caliente
+                    DataRow[] RegistrosEnCaliente = dt2.Select("idEstadoVenta = 1");
+                    ltNumCaliente.Text = RegistrosEnCaliente.Length.ToString();
+                    //En tibio
+                    DataRow[] RegistrosEnTibio = dt2.Select("idEstadoVenta = 2");
+                    ltNumTibio.Text = RegistrosEnTibio.Length.ToString();
+                    //En Frio
+                    DataRow[] RegistrosEnFrio = dt2.Select("idEstadoVenta = 3");
+                    ltNumFrio.Text = RegistrosEnFrio.Length.ToString();
+                }
+
+                //////////////INDICADORES DE VALORES - VENDIDO MES Y VENDIDO HOY///////////////////////
+
                 DataTable dt3 = cg.ConsultarVentasAsesorMesVigente(idUsuario);
+
                 valorVendidoMes = Convert.ToInt32(dt3.Rows[0]["TotalVendido"].ToString());
-               
-                if (dt3.Rows.Count > 0 )
-                ltVendidoMes.Text = valorVendidoMes.ToString("C0", new CultureInfo("es-CO"));
+
+                if (dt3.Rows.Count > 0)
+                    ltVendidoMes.Text = valorVendidoMes.ToString("C0", new CultureInfo("es-CO"));
 
                 DataTable dt4 = cg.ConsultarVentasAsesorAnnioVigente(idUsuario);
 
                 if (dt4.Rows.Count > 0)
-                    valorVendidoAnnio = Convert.ToInt32(dt4.Rows[0]["TotalVendido"].ToString()); 
-                   // ltVendidoMes.Text = valorVendidoAnnio.ToString("C0", new CultureInfo("es-CO"));
+                    valorVendidoAnnio = Convert.ToInt32(dt4.Rows[0]["TotalVendido"].ToString());
 
                 DataTable dt5 = cg.ConsultarVentasAsesorDiaVigente(idUsuario);
-                
+
                 if (dt5.Rows.Count > 0)
                     valorVendidoHoy = Convert.ToInt32(dt5.Rows[0]["TotalVendido"].ToString());
+
                 ltVendidoDia.Text = valorVendidoHoy.ToString("C0", new CultureInfo("es-CO"));
 
                 /////////////////////////////////////////BRECHAS////////////////////////////////////
+                
                 int brechames = valorMetaAsesorMes - valorVendidoMes;
                 ltBrechaMes.Text = brechames.ToString("C0", new CultureInfo("es-CO"));
 
                 int brechahoy = valorMetaAsesorHoy - valorVendidoHoy;
                 ltBrechaHoy.Text = brechahoy.ToString("C0", new CultureInfo("es-CO"));
-
+                /////////////////////////////////////////////////////////////////////////////////////
             }
             catch (Exception ex)
             {
