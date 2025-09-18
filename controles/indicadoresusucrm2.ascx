@@ -40,7 +40,7 @@
                 </div>
 
                 <div>
-                    <canvas id="lineChart" height="70"></canvas>
+                    <canvas id="lineChart" height="75"></canvas>
                 </div>
             </div>
         </div>
@@ -192,15 +192,6 @@
 </div>
 
 
-
-<!-- jQuery UI -->
-<script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
-
-<!-- Jvectormap -->
-<script src="js/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
-<script src="js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-
-
     <!-- EayPIE -->
     <script src="js/plugins/easypiechart/jquery.easypiechart.js"></script>
 
@@ -216,43 +207,7 @@
     <!-- Toastr -->
     <script src="js/plugins/toastr/toastr.min.js"></script>
 
-<%--<script>
-    $(document).ready(function () {
-
-        var lineData = {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
-            datasets: [
-                {
-                    label: "Ventas completadas",
-                    backgroundColor: "rgba(26,179,148,0.5)",
-                    borderColor: "rgba(26,179,148,0.7)",
-                    pointBackgroundColor: "rgba(26,179,148,1)",
-                    pointBorderColor: "#fff",
-                    data: [280, 480, 400, 190, 860, 270, 900]
-                },
-                {
-                    label: "Meta propuesta",
-                    backgroundColor: "rgba(220,220,220,0.5)",
-                    borderColor: "rgba(220,220,220,1)",
-                    pointBackgroundColor: "rgba(220,220,220,1)",
-                    pointBorderColor: "#fff",
-                    data: [650, 590, 800, 810, 560, 550, 400]
-                }
-            ]
-        };
-
-        var lineOptions = {
-            responsive: true
-        };
-
-
-        var ctx = document.getElementById("lineChart").getContext("2d");
-        new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
-
-    });
-</script>--%>
-
-<%--    <script>
+    <script>
         $(document).ready(function () {
             var lineData = {
                 labels: <%= labelsJson %>,
@@ -280,8 +235,12 @@
             var ctx = document.getElementById("lineChart").getContext("2d");
             new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
         });
-    </script>--%>
-    <script>
+    </script>
+
+
+
+
+<%--    <script>
         $(document).ready(function () {
 
             $('#loading-example-btn').click(function () {
@@ -308,20 +267,20 @@
                 }, 2000);
             }
         }
-    </script>
+    </script>--%>
 
     <script>
         $(document).ready(function () {
             var lineData = {
                 labels: <%= labelsJson %>,
-                datasets: [
-                    {
-                        label: "Ventas",
-                        backgroundColor: "rgba(26,179,148,0.5)",
-                        borderColor: "rgba(26,179,148,0.7)",
-                        pointBackgroundColor: "rgba(26,179,148,1)",
-                        pointBorderColor: "#fff",
-                        data: <%= ventasJson %> // números, no texto
+            datasets: [
+                {
+                    label: "Ventas",
+                    backgroundColor: "rgba(26,179,148,0.5)",
+                    borderColor: "rgba(26,179,148,0.7)",
+                    pointBackgroundColor: "rgba(26,179,148,1)",
+                    pointBorderColor: "#fff",
+                    data: <%= ventasJson %> // números, no texto
                 },
                 {
                     label: "Presupuesto",
