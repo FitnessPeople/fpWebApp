@@ -213,17 +213,17 @@
                                             <div class="panel-body">
                                                 <div>
                                                     <p>
-                                                        <button id="btnNombreAfiliado" data-button="NOMBRE" onclick="putText('btnNombreAfiliado')" class="btn btn-sm btn-info">Nombre</button>
-                                                        <button id="btnDocumentoAfiliado" data-button="DOCUMENTO" onclick="putText('btnDocumentoAfiliado')" class="btn btn-sm btn-info">Documento</button>
-                                                        <button id="btnDireccionAfiliado" data-button="DIRECCION" onclick="putText('btnDireccionAfiliado')" class="btn btn-sm btn-info">Dirección</button>
-                                                        <button id="btnCelularAfiliado" data-button="CELULAR" onclick="putText('btnCelularAfiliado')" class="btn btn-sm btn-info">Celular</button>
-                                                        <button id="btnFechaNacAfiliado" data-button="FECHANAC" onclick="putText('btnFechaNacAfiliado')" class="btn btn-sm btn-info">Fecha nacimiento</button>
-                                                        <button id="btnEmailAfiliado" data-button="EMAIL" onclick="putText('btnEmailAfiliado')" class="btn btn-sm btn-info">Email</button>
-                                                        <button id="btnFechaInicioPlan" data-button="FECHAINICIOPLAN" onclick="putText('btnFechaInicioPlan')" class="btn btn-sm btn-info">Fecha Inicio Plan</button>
-                                                        <button id="btnEPS" data-button="EPS" onclick="putText('btnEPS')" class="btn btn-sm btn-info">EPS</button>
-                                                        <button id="btnResponsable" data-button="RESPONSABLE" onclick="putText('btnResponsable')" class="btn btn-sm btn-info">Responsable</button>
-                                                        <button id="btnParentesco" data-button="PARENTESCO" onclick="putText('btnParentesco')" class="btn btn-sm btn-info">Parentesco</button>
-                                                        <button id="btnCelularResponsable" data-button="CELULARRESPONSABLE" onclick="putText('btnCelularResponsable')" class="btn btn-sm btn-info">Celular Responsable</button>
+                                                        <button id="btnNombreAfiliado" data-button="NOMBRE" onclick="putText('btnNombreAfiliado')" class="btn btn-sm btn-info" type="button">Nombre</button>
+                                                        <button id="btnDocumentoAfiliado" data-button="DOCUMENTO" onclick="putText('btnDocumentoAfiliado')" class="btn btn-sm btn-info" type="button">Documento</button>
+                                                        <button id="btnDireccionAfiliado" data-button="DIRECCION" onclick="putText('btnDireccionAfiliado')" class="btn btn-sm btn-info" type="button">Dirección</button>
+                                                        <button id="btnCelularAfiliado" data-button="CELULAR" onclick="putText('btnCelularAfiliado')" class="btn btn-sm btn-info" type="button">Celular</button>
+                                                        <button id="btnFechaNacAfiliado" data-button="FECHANAC" onclick="putText('btnFechaNacAfiliado')" class="btn btn-sm btn-info" type="button">Fecha nacimiento</button>
+                                                        <button id="btnEmailAfiliado" data-button="EMAIL" onclick="putText('btnEmailAfiliado')" class="btn btn-sm btn-info" type="button">Email</button>
+                                                        <button id="btnFechaInicioPlan" data-button="FECHAINICIOPLAN" onclick="putText('btnFechaInicioPlan')" class="btn btn-sm btn-info" type="button">Fecha Inicio Plan</button>
+                                                        <button id="btnEPS" data-button="EPS" onclick="putText('btnEPS')" class="btn btn-sm btn-info" type="button">EPS</button>
+                                                        <button id="btnResponsable" data-button="RESPONSABLE" onclick="putText('btnResponsable')" class="btn btn-sm btn-info" type="button">Responsable</button>
+                                                        <button id="btnParentesco" data-button="PARENTESCO" onclick="putText('btnParentesco')" class="btn btn-sm btn-info" type="button">Parentesco</button>
+                                                        <button id="btnCelularResponsable" data-button="CELULARRESPONSABLE" onclick="putText('btnCelularResponsable')" class="btn btn-sm btn-info" type="button">Celular Responsable</button>
                                                     </p>
                                                     <div class="row">
                                                         <div class="col-lg-12">
@@ -254,17 +254,17 @@
                                             
                                                 <div>
                                                     <p>
-                                                        <button id="btnNombreAfiliado2" data-button="NOMBRE" onclick="putText('btnNombreAfiliado2')" class="btn btn-sm btn-info">Nombre</button>
-                                                        <button id="btnDocumentoAfiliado2" data-button="DOCUMENTO" onclick="putText('btnDocumentoAfiliado2')" class="btn btn-sm btn-info">Documento</button>
-                                                        <button id="btnDireccionAfiliado2" data-button="DIRECCION" onclick="putText('btnDireccionAfiliado2')" class="btn btn-sm btn-info">Dirección</button>
-                                                        <button id="btnCelularAfiliado2" data-button="CELULAR" onclick="putText('btnCelularAfiliado2')" class="btn btn-sm btn-info">Celular</button>
-                                                        <button id="btnFechaNacAfiliado2" data-button="FECHANAC" onclick="putText('btnFechaNacAfiliado2')" class="btn btn-sm btn-info">Fecha nacimiento</button>
-                                                        <button id="btnEmailAfiliado2" data-button="EMAIL" onclick="putText('btnEmailAfiliado2')" class="btn btn-sm btn-info">Email</button>
+                                                        <button id="btnNombreAfiliado2" data-button="NOMBRE" onclick="putText('btnNombreAfiliado2')" class="btn btn-sm btn-info" type="button">Nombre</button>
+                                                        <button id="btnDocumentoAfiliado2" data-button="DOCUMENTO" onclick="putText('btnDocumentoAfiliado2')" class="btn btn-sm btn-info" type="button">Documento</button>
+                                                        <button id="btnDireccionAfiliado2" data-button="DIRECCION" onclick="putText('btnDireccionAfiliado2')" class="btn btn-sm btn-info" type="button">Dirección</button>
+                                                        <button id="btnCelularAfiliado2" data-button="CELULAR" onclick="putText('btnCelularAfiliado2')" class="btn btn-sm btn-info" type="button">Celular</button>
+                                                        <button id="btnFechaNacAfiliado2" data-button="FECHANAC" onclick="putText('btnFechaNacAfiliado2')" class="btn btn-sm btn-info" type="button">Fecha nacimiento</button>
+                                                        <button id="btnEmailAfiliado2" data-button="EMAIL" onclick="putText('btnEmailAfiliado2')" class="btn btn-sm btn-info" type="button">Email</button>
                                                         <button id="btnFechaInicioPlan2" data-button="FECHAINICIOPLAN" onclick="putText('btnFechaInicioPlan2')" class="btn btn-sm btn-info">Fecha Inicio Plan</button>
-                                                        <button id="btnEPS2" data-button="EPS" onclick="putText('btnEPS2')" class="btn btn-sm btn-info">EPS</button>
-                                                        <button id="btnResponsable2" data-button="RESPONSABLE" onclick="putText('btnResponsable2')" class="btn btn-sm btn-info">Responsable</button>
-                                                        <button id="btnParentesco2" data-button="PARENTESCO" onclick="putText('btnParentesco2')" class="btn btn-sm btn-info">Parentesco</button>
-                                                        <button id="btnCelularResponsable2" data-button="CELULARRESPONSABLE" onclick="putText('btnCelularResponsable2')" class="btn btn-sm btn-info">Celular Responsable</button>
+                                                        <button id="btnEPS2" data-button="EPS" onclick="putText('btnEPS2')" class="btn btn-sm btn-info" type="button">EPS</button>
+                                                        <button id="btnResponsable2" data-button="RESPONSABLE" onclick="putText('btnResponsable2')" class="btn btn-sm btn-info" type="button">Responsable</button>
+                                                        <button id="btnParentesco2" data-button="PARENTESCO" onclick="putText('btnParentesco2')" class="btn btn-sm btn-info" type="button">Parentesco</button>
+                                                        <button id="btnCelularResponsable2" data-button="CELULARRESPONSABLE" onclick="putText('btnCelularResponsable2')" class="btn btn-sm btn-info" type="button">Celular Responsable</button>
                                                     </p>
                                                     <div class="row">
                                                         <div class="col-lg-12">
@@ -345,11 +345,16 @@
     </script>
 
     <style>
-        #editor{
+        #editor1{
             height: 500px;
-              max-height: 500px;
-              overflow: auto;
+            max-height: 500px;
+            overflow: auto;
         }
+        #editor2{
+            height: 500px;
+            max-height: 500px;
+            overflow: auto;
+}
     </style>
 
 </body>
