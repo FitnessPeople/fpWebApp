@@ -360,14 +360,14 @@
 
                                                 </div>
 
-                                                <asp:GridView ID="gvAfiliados" runat="server" AutoGenerateColumns="False"
+                                                <asp:GridView ID="gvProspectos" runat="server" AutoGenerateColumns="False"
                                                     AllowPaging="True" PageSize="10" 
-                                                    OnPageIndexChanging="gvAfiliados_PageIndexChanging1"
-                                                    AllowSorting="true" OnSorting="gvAfiliados_Sorting" 
-                                                    OnRowCreated="gvAfiliados_RowCreated" 
-                                                    OnRowDataBound="gvAfiliados_RowDataBound" 
+                                                    OnPageIndexChanging="gvProspectos_PageIndexChanging1"
+                                                    AllowSorting="true" OnSorting="gvProspectos_Sorting" 
+                                                    OnRowCreated="gvProspectos_RowCreated" 
+                                                    OnRowDataBound="gvProspectos_RowDataBound" 
                                                     CssClass="table table-striped list-group-item-text"
-                                                    DataKeyNames="IdAfiliado,NombreAfiliado,ApellidoAfiliado,DocumentoAfiliado,idTipoDocumento,CelularAfiliado,diasquefaltan"
+                                                    DataKeyNames="idPregestion,NombreContacto,ApellidoContacto,DocumentoContacto,idTipoDocumentoContacto,CelularContacto,hacecuanto"
                                                     BorderStyle="None" GridLines="None"
                                                     PagerSettings-Mode="NumericFirstLast"
                                                     PagerSettings-FirstPageText="«"
@@ -386,24 +386,24 @@
                                                         </asp:TemplateField>
 
                                                         <%--Otras columnas--%>
-                                                        <asp:BoundField DataField="IdAfiliado" HeaderText="ID" Visible="false" />
-                                                        <asp:BoundField DataField="NombreAfiliado" HeaderText="Nombres"
-                                                            SortExpression="NombreAfiliado" />
-                                                        <asp:BoundField DataField="ApellidoAfiliado" HeaderText="Apellidos"
-                                                            SortExpression="ApellidoAfiliado" />
-                                                        <asp:BoundField DataField="DocumentoAfiliado" HeaderText="Documento"
-                                                            SortExpression="DocumentoAfiliado" />
-                                                        <asp:BoundField DataField="idTipoDocumento" HeaderText="TipoDocumento"
-                                                            SortExpression="idTipoDocumento" Visible="False" />
-                                                        <asp:BoundField DataField="CelularAfiliado" HeaderText="Celular"
-                                                            SortExpression="CelularAfiliado" />
-                                                        <asp:BoundField DataField="diasquefaltan" HeaderText="Días plan"
-                                                            SortExpression="diasquefaltan" />
-                                                        <asp:TemplateField HeaderText="Estado" SortExpression="EstadoPlan">
+                                                        <asp:BoundField DataField="idPregestion" HeaderText="ID" Visible="false" />
+                                                        <asp:BoundField DataField="NombreContacto" HeaderText="Nombres"
+                                                            SortExpression="NombreContacto" />
+                                                        <asp:BoundField DataField="ApellidoContacto" HeaderText="Apellidos"
+                                                            SortExpression="ApellidoContacto" />
+                                                        <asp:BoundField DataField="DocumentoContacto" HeaderText="Documento"
+                                                            SortExpression="DocumentoContacto" />
+                                                        <asp:BoundField DataField="idTipoDocumentoContacto" HeaderText="TipoDocumento"
+                                                            SortExpression="idTipoDocumentoContacto" Visible="False" />
+                                                        <asp:BoundField DataField="CelularContacto" HeaderText="Celular"
+                                                            SortExpression="CelularContacto" />
+                                                        <asp:BoundField DataField="hacecuanto" HeaderText="Hace cuanto"
+                                                            SortExpression="hacecuanto" />
+                                                        <%--<asp:TemplateField HeaderText="Estado" SortExpression="EstadoPlan">
                                                             <ItemTemplate>
                                                                 <asp:Label ID="lblEstado" runat="server" Text='<%# Eval("EstadoPlan") %>'></asp:Label>
                                                             </ItemTemplate>
-                                                        </asp:TemplateField>
+                                                        </asp:TemplateField>--%>
                                                     </Columns>
                                                 </asp:GridView>
 

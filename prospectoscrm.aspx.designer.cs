@@ -249,13 +249,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.LinkButton lnkAsignar;
 
         /// <summary>
-        /// Control gvAfiliados.
+        /// Control gvProspectos.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvAfiliados;
+        protected global::System.Web.UI.WebControls.GridView gvProspectos;
 
         /// <summary>
         /// Control footer.

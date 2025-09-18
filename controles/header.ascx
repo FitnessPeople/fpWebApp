@@ -56,6 +56,24 @@
                         </a>
                     </div>
                 </li>
+                <li>
+                    <div class="dropdown-messages-box">
+                        <a href="inicio?idPerfil=4&idUsuario=14">
+                            <div>
+                                Cambiar a perfil <strong>Asesor comercial</strong>.
+                            </div>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div class="dropdown-messages-box">
+                        <a href="inicio?idPerfil=2&idUsuario=150">
+                            <div>
+                                Cambiar a perfil <strong>Administrador Sede</strong>.
+                            </div>
+                        </a>
+                    </div>
+                </li>
             </ul>
         </li>
         <li class="dropdown">

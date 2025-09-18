@@ -141,8 +141,8 @@ namespace fpWebApp
                 "AND pg.idTipoGestion = tg.idTipoGestionCRM ";
             DataTable dt = cg.TraerDatos(strQuery);
 
-            //rpProspectos.DataSource = dt;
-            //rpProspectos.DataBind();
+            gvProspectos.DataSource = dt;
+            gvProspectos.DataBind();
             dt.Dispose();
         }
 
@@ -196,9 +196,9 @@ namespace fpWebApp
             }
         }
 
-        protected void gvAfiliados_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void gvProspectos_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            gvAfiliados.PageIndex = e.NewPageIndex;
+            gvProspectos.PageIndex = e.NewPageIndex;
 
             //CargarCanalesVenta();
             if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
@@ -223,27 +223,201 @@ namespace fpWebApp
 
         protected void rblPageSize_SelectedIndexChanged(object sender, EventArgs e)
         {
+            int pageSize = int.Parse(rblPageSize.SelectedValue);
 
+            // Si es 0 (Todos), desactivamos paginación
+            if (pageSize == 0)
+            {
+                gvProspectos.AllowPaging = false;
+            }
+            else
+            {
+                gvProspectos.AllowPaging = true;
+                gvProspectos.PageSize = pageSize;
+            }
+            //CargarSedes();
+            if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
+            {
+                //listaAfiliados("Todas");
+            }
+            else
+            {
+                //listaAfiliados(Session["idSede"].ToString());
+            }
         }
 
-        protected void gvAfiliados_PageIndexChanging1(object sender, GridViewPageEventArgs e)
+        protected void gvProspectos_PageIndexChanging1(object sender, GridViewPageEventArgs e)
         {
+            gvProspectos.PageIndex = e.NewPageIndex;
 
+            //CargarCanalesVenta();
+            //CargarSedes();
+            if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
+            {
+                //listaAfiliados("Todas");
+            }
+            else
+            {
+                //listaAfiliados(Session["idSede"].ToString());
+            }
         }
 
-        protected void gvAfiliados_Sorting(object sender, GridViewSortEventArgs e)
+        protected void gvProspectos_Sorting(object sender, GridViewSortEventArgs e)
         {
+            // Alternar dirección
+            if (SortExpression == e.SortExpression)
+                SortDirection = (SortDirection == "ASC") ? "DESC" : "ASC";
+            else
+            {
+                SortExpression = e.SortExpression;
+                SortDirection = "ASC";
+            }
 
+            // Obtener y ordenar datos
+            string strQueryAdd = "";
+            string strQueryAdd2 = "";
+            string strLimit = "5000";
+            string strSede = "";
+
+            if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
+            {
+                strSede = "Todas";
+            }
+            else
+            {
+                strSede = Session["idSede"].ToString();
+            }
+
+            if (strSede != "Todas")
+            {
+                strQueryAdd = "AND a.idSede = " + strSede;
+            }
+
+            //if (ddlDias.SelectedItem.Value.ToString() == "-30")
+            //{
+            //    strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) <= -30 ";
+            //}
+
+            //if (ddlDias.SelectedItem.Value.ToString() == "30")
+            //{
+            //    strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) > -30 AND DATEDIFF(FechaFinalPlan, CURDATE()) < 30 ";
+            //}
+
+            //if (ddlDias.SelectedItem.Value.ToString() == "31")
+            //{
+            //    strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) > 31 ";
+            //}
+
+            string strQuery = "SELECT *, DATEDIFF(FechaFinalPlan, CURDATE()) AS diasquefaltan " +
+                "FROM Afiliados a " +
+                "LEFT JOIN sedes s ON s.idSede = a.idSede " +
+                "LEFT JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado " +
+                "WHERE 1=1 " + strQueryAdd + " " + strQueryAdd2 + " " +
+                "AND a.DocumentoAfiliado NOT IN (SELECT documentoContacto FROM pregestioncrm) " +
+                "ORDER BY DATEDIFF(FechaFinalPlan, CURDATE()) DESC " +
+                "LIMIT " + strLimit + "";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+            DataView dv = dt.DefaultView;
+            dv.Sort = $"{SortExpression} {SortDirection}";
+
+            // Asignar al GridView
+            gvProspectos.DataSource = dv;
+            gvProspectos.DataBind();
+
+            foreach (ListItem item in rblPageSize.Items)
+            {
+                item.Attributes["class"] = "btn btn-xs btn-white";
+            }
+            rblPageSize.RepeatLayout = RepeatLayout.Flow; // Para que se acomoden como botones
         }
 
-        protected void gvAfiliados_RowCreated(object sender, GridViewRowEventArgs e)
+        protected void gvProspectos_RowCreated(object sender, GridViewRowEventArgs e)
         {
+            if (e.Row.RowType == DataControlRowType.Header)
+            {
+                CheckBox chk = (CheckBox)e.Row.FindControl("chkSeleccionarTodo");
+                if (chk != null)
+                {
+                    chk.InputAttributes["onclick"] = "seleccionarTodos(this);";
+                }
 
+                foreach (DataControlField field in gvProspectos.Columns)
+                {
+                    if (!string.IsNullOrEmpty(field.SortExpression))
+                    {
+                        // Restaurar texto original (puedes usar un diccionario si son dinámicos)
+                        switch (field.SortExpression)
+                        {
+                            case "IdAfiliado":
+                                field.HeaderText = "ID";
+                                break;
+                            case "NombreAfiliado":
+                                field.HeaderText = "Nombres";
+                                break;
+                            case "ApellidoAfiliado":
+                                field.HeaderText = "Apellidos";
+                                break;
+                            case "diasquefaltan":
+                                field.HeaderText = "Días plan";
+                                break;
+                            case "EstadoPlan":
+                                field.HeaderText = "Estado";
+                                break;
+                        }
+
+                        // Si esta es la columna ordenada, agregar el ícono
+                        if (field.SortExpression == SortExpression)
+                        {
+                            string arrow = SortDirection == "ASC" ? " ▲" : " ▼";
+                            field.HeaderText += arrow;
+                        }
+                    }
+                }
+            }
         }
 
-        protected void gvAfiliados_RowDataBound(object sender, GridViewRowEventArgs e)
+        protected void gvProspectos_RowDataBound(object sender, GridViewRowEventArgs e)
         {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                // Añade un atributo onclick a cada fila
+                e.Row.Attributes["onclick"] = "seleccionarCheckbox(this, event)";
+                // Opcional: cambia el cursor al pasar
+                e.Row.Attributes["style"] = "cursor:pointer;";
+            }
 
+            Label lblEstado = (Label)e.Row.FindControl("lblEstado");
+            if (lblEstado != null)
+            {
+                string estado = lblEstado.Text.Trim();
+
+                // Aplica clases Bootstrap según el estado
+                switch (estado.ToLower())
+                {
+                    case "activo":
+                        lblEstado.CssClass = "badge badge-info"; // verde
+                        break;
+                    case "inactivo":
+                        lblEstado.CssClass = "badge badge-danger"; // rojo
+                        break;
+                    default:
+                        lblEstado.CssClass = "badge badge-warning"; // gris
+                        break;
+                }
+            }
+        }
+
+        private string SortExpression
+        {
+            get { return ViewState["SortExpression"] as string ?? "diasquefaltan"; }
+            set { ViewState["SortExpression"] = value; }
+        }
+
+        private string SortDirection
+        {
+            get { return ViewState["SortDirection"] as string ?? "ASC"; }
+            set { ViewState["SortDirection"] = value; }
         }
     }
 }
