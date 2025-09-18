@@ -17,7 +17,7 @@
 
 
 <div class="row d-flex">
-    <!-- Gráfica -->
+    <%-- <div class="row">--%>
     <div class="col-lg-6 d-flex">
         <div class="ibox flex-fill w-100">
             <div class="ibox-content">
@@ -40,11 +40,23 @@
                 </div>
 
                 <div>
-                    <canvas id="lineChart" height="75"></canvas>
+                    <canvas id="CRMlineChart" height="75"></canvas>
                 </div>
+
+                <div class="m-t-md">
+                    <small class="pull-right">
+                        <i class="fa fa-clock-o"></i>
+                        Update on 16.07.2015
+                    </small>
+                    <small>
+                        <strong>Analysis of sales:</strong> The value has been changed over time, and last month reached a level over $50,000.
+                    </small>
+                </div>
+
             </div>
         </div>
     </div>
+    <%--     </div>--%>
 
     <!-- Widgets -->
     <div class="col-lg-6 d-flex flex-column">
@@ -153,8 +165,8 @@
                 <h5>Vendido del mes</h5>
                 <div class="valor-numero">
                     <asp:Literal ID="ltVendidoMes" runat="server"></asp:Literal>
-               </div>
-<%--                <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>
+                </div>
+                <%--                <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>
                 <small>Cumplimiento</small>--%>
             </div>
         </div>
@@ -192,25 +204,23 @@
 </div>
 
 
-    <!-- EayPIE -->
-    <script src="js/plugins/easypiechart/jquery.easypiechart.js"></script>
+<!-- EayPIE -->
+<script src="js/plugins/easypiechart/jquery.easypiechart.js"></script>
 
-    <!-- Sparkline -->
-    <script src="js/plugins/sparkline/jquery.sparkline.min.js"></script>
+<!-- Sparkline -->
+<script src="js/plugins/sparkline/jquery.sparkline.min.js"></script>
 
-    <!-- Sparkline demo data  -->
-    <script src="js/demo/sparkline-demo.js"></script>
 
-    <!-- ChartJS-->
-    <script src="js/plugins/chartJs/Chart.min.js"></script>
+<!-- ChartJS-->
+<script src="js/plugins/chartJs/Chart.min.js"></script>
 
-    <!-- Toastr -->
-    <script src="js/plugins/toastr/toastr.min.js"></script>
+<!-- Toastr -->
+<script src="js/plugins/toastr/toastr.min.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            var lineData = {
-                labels: <%= labelsJson %>,
+<script>
+    $(document).ready(function () {
+        var lineData = {
+            labels: <%= labelsJson %>,
                 datasets: [
                     {
                         label: "Ventas",
@@ -221,7 +231,7 @@
                         data: <%= ventasJson %>
                 },
                     {
-                        label: "Presupuesto",
+                        label: "Metas",
                         backgroundColor: "rgba(220,220,220,0.5)",
                         borderColor: "rgba(220,220,220,1)",
                         pointBackgroundColor: "rgba(220,220,220,1)",
@@ -232,55 +242,28 @@
             };
 
             var lineOptions = { responsive: true };
-            var ctx = document.getElementById("lineChart").getContext("2d");
+            var ctx = document.getElementById("CRMlineChart").getContext("2d");
             new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
         });
-    </script>
+</script>
 
 
 
 
-<%--    <script>
-        $(document).ready(function () {
 
-            $('#loading-example-btn').click(function () {
-                btn = $(this);
-                simpleLoad(btn, true)
 
-                // Ajax example
-                //                $.ajax().always(function () {
-                //                    simpleLoad($(this), false)
-                //                });
-
-                simpleLoad(btn, false)
-            });
-        });
-
-        function simpleLoad(btn, state) {
-            if (state) {
-                btn.children().addClass('fa-spin');
-                btn.contents().last().replaceWith(" Loading");
-            } else {
-                setTimeout(function () {
-                    btn.children().removeClass('fa-spin');
-                    btn.contents().last().replaceWith(" Refresh");
-                }, 2000);
-            }
-        }
-    </script>--%>
-
-    <script>
-        $(document).ready(function () {
-            var lineData = {
-                labels: <%= labelsJson %>,
-            datasets: [
-                {
-                    label: "Ventas",
-                    backgroundColor: "rgba(26,179,148,0.5)",
-                    borderColor: "rgba(26,179,148,0.7)",
-                    pointBackgroundColor: "rgba(26,179,148,1)",
-                    pointBorderColor: "#fff",
-                    data: <%= ventasJson %> // números, no texto
+<script>
+    $(document).ready(function () {
+        var lineData = {
+            labels: <%= labelsJson %>,
+                datasets: [
+                    {
+                        label: "Ventas",
+                        backgroundColor: "rgba(26,179,148,0.5)",
+                        borderColor: "rgba(26,179,148,0.7)",
+                        pointBackgroundColor: "rgba(26,179,148,1)",
+                        pointBorderColor: "#fff",
+                        data: <%= ventasJson %> // números, no texto
                 },
                 {
                     label: "Presupuesto",
@@ -322,8 +305,8 @@
                     }]
                 }
             };
-            var ctx = document.getElementById("lineChart").getContext("2d");
+            var ctx = document.getElementById("CRMlineChart").getContext("2d");
             new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
         });
-    </script>
+</script>
 
