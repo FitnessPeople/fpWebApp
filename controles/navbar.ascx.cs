@@ -8,6 +8,17 @@ namespace fpWebApp.controles
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            clasesglobales cg = new clasesglobales();
+
+            DataTable dt = cg.ConsultarUsuarioSedePerfilPorId(Convert.ToInt32(Session["idUsuario"]));
+            if (dt.Rows.Count > 0)
+            {
+                lblNombrePerfil.Text = dt.Rows[0]["Perfil"].ToString();
+                if (dt.Rows[0]["idCanalVenta"].ToString()=="0") lblNombreSede.Text = dt.Rows[0]["NombreSede"].ToString();
+                else
+                    lblNombreSede.Text = dt.Rows[0]["NombreCanalVenta"].ToString();
+            }
+
             if (Session["idUsuario"] != null)
             {
                 ltNombreUsuario.Text = Session["NombreUsuario"].ToString();
