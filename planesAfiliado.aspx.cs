@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Antlr.Runtime.Tree;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -577,6 +578,7 @@ namespace fpWebApp
         /// <param name="e"></param>
         protected void lbAgregarPlan_Click(object sender, EventArgs e)
         {
+            int idCanalVenta = 0;
             if (ViewState["nombrePlan"] != null)
             {
                 if (txbFechaInicio.Text != "")
@@ -643,6 +645,8 @@ namespace fpWebApp
                                         DataTable dt1 = cg.ConsultarUltimoAfilEnAfiliadosPlan();
                                         int idAfiliado = 0;
                                         if (dt1.Rows.Count > 0) idAfiliado = Convert.ToInt32(dt1.Rows[0]["idAfiliadoPlan"].ToString());
+                                        DataTable dt6 = cg.ConsultarUsuarioSedePerfilPorId(Convert.ToInt32(Session["idUsuario"].ToString()));
+                                        if(dt6.Rows.Count > 0) idCanalVenta = Convert.ToInt32(dt6.Rows[0]["idCanalVenta"].ToString());
 
                                         //Consultamos los medios de pago
                                         DataTable dt2 = cg.ConsultarMediosDePago();
@@ -675,7 +679,7 @@ namespace fpWebApp
                                         }
 
                                         string respuesta = cg.InsertarPagoPlanAfiliado(idAfiliado, Convert.ToInt32(ViewState["precioTotal"].ToString()),
-                                            Convert.ToInt32(strTipoPago), strReferencia, strBanco, Convert.ToInt32(Session["idUsuario"].ToString()), "Aprobado", "", 0, Convert.ToInt32(Session["idcrm"]));
+                                            Convert.ToInt32(strTipoPago), strReferencia, strBanco, Convert.ToInt32(Session["idUsuario"].ToString()), "Aprobado", "", idCanalVenta, Convert.ToInt32(Session["idcrm"]));
 
                                         DataTable dt3 = cg.ConsultarAfiliadoEstadoActivo(Convert.ToInt32(dt1.Rows[0]["idAfiliado"].ToString()));
                                         string respuesta1 = cg.ActualizarEstadoCRMPagoPlan(Convert.ToInt32(Session["idcrm"].ToString()), dt3.Rows[0]["NombrePlan"].ToString(), Convert.ToInt32(dt3.Rows[0]["PrecioTotal"].ToString()), Convert.ToInt32(Session["idUsuario"].ToString()), 3);
