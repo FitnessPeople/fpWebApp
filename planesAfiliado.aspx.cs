@@ -574,6 +574,7 @@ namespace fpWebApp
         /// <param name="e"></param>
         protected void lbAgregarPlan_Click(object sender, EventArgs e)
         {
+            int idCanalVenta = 0;
             if (ViewState["nombrePlan"] != null)
             {
                 if (txbFechaInicio.Text != "")
@@ -640,6 +641,8 @@ namespace fpWebApp
                                         DataTable dt1 = cg.ConsultarUltimoAfilEnAfiliadosPlan();
                                         int idAfiliado = 0;
                                         if (dt1.Rows.Count > 0) idAfiliado = Convert.ToInt32(dt1.Rows[0]["idAfiliadoPlan"].ToString());
+                                        DataTable dt6 = cg.ConsultarUsuarioSedePerfilPorId(Convert.ToInt32(Session["idUsuario"].ToString()));
+                                        if (dt6.Rows.Count > 0) idCanalVenta = Convert.ToInt32(dt6.Rows[0]["idCanalVenta"].ToString());
 
                                         //Consultamos los medios de pago
                                         DataTable dt2 = cg.ConsultarMediosDePago();
