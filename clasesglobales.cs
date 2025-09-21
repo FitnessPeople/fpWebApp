@@ -8984,7 +8984,7 @@ int valor, string observaciones, string estado)
             return dt;
         }
 
-        public DataTable ConsultarVentasVsMetasPorUusuarioCRM(int idUsuario, int idCanalVenta, int mes, int annio)
+        public DataTable ConsultarVentasVsMetasPorUusuarioCRM(int idCanalVenta, int mes, int annio, int idUsuario)
         {
             DataTable dt = new DataTable();
             try
@@ -8995,10 +8995,10 @@ int valor, string observaciones, string estado)
                     using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_GRAFICA_METAS_VS_VENTAS_POR_USU", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
-                        cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);
+                        cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);                                           
                         cmd.Parameters.AddWithValue("@p_mes", mes);
                         cmd.Parameters.AddWithValue("@p_annio", annio);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
 
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
                         {

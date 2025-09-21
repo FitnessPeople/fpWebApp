@@ -236,7 +236,7 @@
                         borderColor: "rgba(220,220,220,1)",
                         pointBackgroundColor: "rgba(220,220,220,1)",
                         pointBorderColor: "#fff",
-                        data: <%= presupuestoJson %>
+                        data: <%= metasJson %>
                 }
                 ]
             };
@@ -271,7 +271,7 @@
                     borderColor: "rgba(220,220,220,1)",
                     pointBackgroundColor: "rgba(220,220,220,1)",
                     pointBorderColor: "#fff",
-                    data: <%= presupuestoJson %> // números, no texto
+                    data: <%= metasJson %> // números, no texto
                 }
                 ]
             };

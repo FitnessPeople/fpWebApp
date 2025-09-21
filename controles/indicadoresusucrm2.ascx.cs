@@ -222,117 +222,231 @@ namespace fpWebApp.controles
             return null;
         }
 
+
         public string labelsJson { get; set; }
-        public string presupuestoJson { get; set; }
+        public string metasJson { get; set; }
         public string ventasJson { get; set; }
+        //private void ObtenerGraficaEstrategiasPorMes()
+        //{
+        //    int idUsuario = 0;
+        //    int idCanalVenta = 0;
+        //    string tipoSedeUsuario = string.Empty;
+        //    int perfilUsuario = 0;
+        //    DateTime hoy = DateTime.Today;
+        //    int _mes = hoy.Month;
+        //    int _anio = hoy.Year;
+
+        //    try
+        //    {
+        //        idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
+        //        clasesglobales cg = new clasesglobales();
+        //        DataTable dt4 = cg.ConsultarUsuarioSedePerfilPorId(idUsuario);
+        //        if (dt4.Rows.Count > 0)
+        //        {              
+        //            idCanalVenta = Convert.ToInt32(dt4.Rows[0]["idCanalVenta"].ToString());
+        //            tipoSedeUsuario = dt4.Rows[0]["TipoSede"].ToString();
+        //            perfilUsuario = Convert.ToInt32(dt4.Rows[0]["IdPerfil"].ToString());
+        //        }
+
+        //        DataTable dt = cg.ConsultarVentasVsMetasPorUusuarioCRM(idCanalVenta, _mes, _anio, idUsuario);
+
+        //        var labels = new List<string>();
+        //        var metas = new List<decimal>();
+        //        var ventas = new List<decimal>();
+
+        //        if (dt.Rows.Count > 0)
+        //        {
+        //            // Agrupar datos por día
+        //            var datosPorDia = dt.AsEnumerable()
+        //                .GroupBy(r => Convert.ToDateTime(r["Fecha"]).Day)
+        //                .ToDictionary(
+        //                    g => g.Key,
+        //                    g => new
+        //                    {
+        //        if (perfilUsuario == 4 && tipoSedeUsuario == "Deluxe")
+        //            {
+        //                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorDeluxeMes"]);
+        //                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorDeluxeDia"]);
+        //            }
+
+        //            if (perfilUsuario == 4 && tipoSedeUsuario == "Premium")
+        //            {
+        //                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorPremiumMes"]);
+        //                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorPremiumDia"]);
+        //            }
+
+        //            if (perfilUsuario == 4 && tipoSedeUsuario == "Elite")
+        //            {
+        //                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorEliteMes"]);
+        //                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorEliteDia"]);
+        //            }
+
+        //            if (perfilUsuario == 2)
+        //            {
+        //                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaDirectorSedeMes"]);
+        //                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaDirectorSedeDia"]);
+        //            }
+
+        //            if (perfilUsuario == 4 && idCanalVenta == 12)
+        //            {
+        //                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorOnlineMes"]);
+        //                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorOnlineDia"]);
+        //            }
+
+
+        //            Metas = g.Sum(x => Convert.ToDecimal(x["MetaSedeDia"])),
+        //                        Ventas = g.Sum(x => Convert.ToDecimal(x["TotalVendidoDia"]))
+        //                    }
+        //                );
+
+        //            int diasDelMes = DateTime.DaysInMonth(_anio, _mes);
+
+        //            for (int dia = 1; dia <= diasDelMes; dia++)
+        //            {
+        //                labels.Add(dia.ToString()); // "1", "2", "3" ...
+
+        //                if (datosPorDia.ContainsKey(dia))
+        //                {
+        //                    metas.Add(datosPorDia[dia].Metas);
+        //                    ventas.Add(datosPorDia[dia].Ventas);
+        //                }
+        //                else
+        //                {
+        //                    metas.Add(0);
+        //                    ventas.Add(0);
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            int diasDelMes = DateTime.DaysInMonth(_anio, _mes);
+        //            for (int dia = 1; dia <= diasDelMes; dia++)
+        //            {
+        //                labels.Add(dia.ToString());
+        //                metas.Add(0);
+        //                ventas.Add(0);
+        //            }
+        //        }
+
+        //        labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
+        //        metasJson = Newtonsoft.Json.JsonConvert.SerializeObject(metas);
+        //        ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        string mensaje = ex.Message.ToString();
+        //    }
+        //}
+
         private void ObtenerGraficaEstrategiasPorMes()
         {
+            int idUsuario = 0;
+            int idCanalVenta = 0;
+            string tipoSedeUsuario = string.Empty;
+            int perfilUsuario = 0;
+            DateTime hoy = DateTime.Today;
+            int _mes = hoy.Month;
+            int _anio = hoy.Year;
+
             try
             {
+                idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarEstrategiasMarketingValorMes();
-                DataTable dt2 = cg.ConsultarVentasVsMetasPorCanalCRM(12,9,2025);
-                DataTable dt3 = cg.ConsultarVentasVsMetasPorUusuarioCRM(148,12,9,2025);
+                DataTable dt4 = cg.ConsultarUsuarioSedePerfilPorId(idUsuario);
+                if (dt4.Rows.Count > 0)
+                {
+                    idCanalVenta = Convert.ToInt32(dt4.Rows[0]["idCanalVenta"].ToString());
+                    tipoSedeUsuario = dt4.Rows[0]["TipoSede"].ToString();
+                    perfilUsuario = Convert.ToInt32(dt4.Rows[0]["IdPerfil"].ToString());
+                }
 
+                DataTable dt = cg.ConsultarVentasVsMetasPorUusuarioCRM(idCanalVenta, _mes, _anio, idUsuario);
+
+                var labels = new List<string>();
+                var metas = new List<decimal>();
+                var ventas = new List<decimal>();
 
                 if (dt.Rows.Count > 0)
                 {
-                    //Etiquetas para las fechas
-                    DateTime fechaActual = DateTime.Now;
-                    string mesActualConAnio = System.Globalization.CultureInfo
-                     .GetCultureInfo("es-ES")
-                     .DateTimeFormat
-                     .GetMonthName(fechaActual.Month)
-                     + " " + fechaActual.Year;
-                    //ltMesActualGraf.Text = mesActualConAnio.ToString();
-
-                    string annioActual = fechaActual.Year.ToString();
-                    //ltAnnioActual.Text = annioActual;
-                    //
-
-                    DataTable dt1 = cg.ConsultarCuantosLeadsEstrategiaAceptados();
-                    if (dt1.Rows.Count > 0)
-                    {
-                        decimal totalVentasAnio = Convert.ToDecimal(dt1.Rows[0]["TotalVentasAnio"].ToString());
-                        decimal TotalContactosVentasAnio = Convert.ToDecimal(dt1.Rows[0]["TotalContactosVentasAnio"].ToString());
-                        int TotalContactosAnio = Convert.ToInt32(dt1.Rows[0]["TotalcontactosAnio"].ToString());
-
-                        decimal mediaCuantosAnio = TotalContactosVentasAnio / TotalContactosAnio;
-
-                        int porcentaje = (int)Math.Round(mediaCuantosAnio * 100, MidpointRounding.AwayFromZero);
-
-                        //ltMediaCuantosAnio.Text = porcentaje + "%";
-                        //progressBarAnio.Attributes["style"] = "width: " + porcentaje + "%;";
-                    }
-
-
-                    var labels = new List<string>();
-                    var presupuestos = new List<decimal>();
-                    var ventas = new List<decimal>();
-
-                    var datosPorMes = dt.AsEnumerable()
-                        .GroupBy(r => Convert.ToDateTime(r["Mes"]).Month)
+                    // Agrupar por día
+                    var datosPorDia = dt.AsEnumerable()
+                        .GroupBy(r => Convert.ToDateTime(r["Fecha"]).Day)
                         .ToDictionary(
                             g => g.Key,
-                            g => new
+                            g =>
                             {
-                                Presupuesto = g.Sum(x => Convert.ToDecimal(x["Presupuesto"])),
-                                Ventas = g.Sum(x => Convert.ToDecimal(x["Ventas"]))
+                                decimal metaAcumulada = 0;
+                                decimal ventasAcumuladas = 0;
+
+                                foreach (var fila in g)
+                                {
+                                    int valorMetaHoy = 0;
+
+                                    // Seleccionar meta según perfil y sede
+                                    if (perfilUsuario == 4 && tipoSedeUsuario == "Deluxe")
+                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorDeluxeDia"]);
+                                    else if (perfilUsuario == 4 && tipoSedeUsuario == "Premium")
+                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorPremiumDia"]);
+                                    else if (perfilUsuario == 4 && tipoSedeUsuario == "Elite")
+                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorEliteDia"]);
+                                    else if (perfilUsuario == 2)
+                                        valorMetaHoy = Convert.ToInt32(fila["MetaDirectorSedeDia"]);
+                                    else if (perfilUsuario == 4 && idCanalVenta == 12)
+                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorOnlineDia"]);
+                                    else
+                                        valorMetaHoy = Convert.ToInt32(fila["MetaSedeDia"]); //
+
+                                    metaAcumulada += valorMetaHoy;
+                                    ventasAcumuladas += Convert.ToDecimal(fila["TotalVendidoDia"]);
+                                }
+
+                                return new
+                                {
+                                    Metas = metaAcumulada,
+                                    Ventas = ventasAcumuladas
+                                };
                             }
                         );
 
+                    int diasDelMes = DateTime.DaysInMonth(_anio, _mes);
 
-                    // Rellenar los 12 meses
-                    for (int mes = 1; mes <= 12; mes++)
+                    for (int dia = 1; dia <= diasDelMes; dia++)
                     {
-                        string abreviado = new DateTime(DateTime.Now.Year, mes, 1)
-                            .ToString("MMM", new System.Globalization.CultureInfo("es-CO"));
+                        labels.Add(dia.ToString());
 
-                        labels.Add(abreviado);
-
-                        if (datosPorMes.ContainsKey(mes))
+                        if (datosPorDia.ContainsKey(dia))
                         {
-                            presupuestos.Add(datosPorMes[mes].Presupuesto);
-                            ventas.Add(datosPorMes[mes].Ventas);
+                            metas.Add(datosPorDia[dia].Metas);
+                            ventas.Add(datosPorDia[dia].Ventas);
                         }
                         else
                         {
-                            presupuestos.Add(0);
+                            metas.Add(0);
                             ventas.Add(0);
                         }
                     }
-
-                    labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
-                    presupuestoJson = Newtonsoft.Json.JsonConvert.SerializeObject(presupuestos);
-                    ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
                 }
                 else
                 {
-                    var labels = new List<string>();
-                    var presupuestos = new List<decimal>();
-                    var ventas = new List<decimal>();
-
-                    for (int mes = 1; mes <= 12; mes++)
+                    int diasDelMes = DateTime.DaysInMonth(_anio, _mes);
+                    for (int dia = 1; dia <= diasDelMes; dia++)
                     {
-                        string abreviado = new DateTime(DateTime.Now.Year, mes, 1)
-                            .ToString("MMM", new System.Globalization.CultureInfo("es-CO"));
-
-                        labels.Add(abreviado);
-                        presupuestos.Add(0);
+                        labels.Add(dia.ToString());
+                        metas.Add(0);
                         ventas.Add(0);
                     }
-
-                    labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
-                    presupuestoJson = Newtonsoft.Json.JsonConvert.SerializeObject(presupuestos);
-                    ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
                 }
 
+                labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
+                metasJson = Newtonsoft.Json.JsonConvert.SerializeObject(metas);
+                ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
             }
             catch (Exception ex)
             {
                 string mensaje = ex.Message.ToString();
             }
         }
+
 
     }
 }
