@@ -7,12 +7,15 @@
                     <span>
                         <asp:Literal ID="ltFoto" runat="server"></asp:Literal>
                     </span>
-                      <asp:Label ID="lblNombrePerfil" runat="server" Text="Label" Visible="false"></asp:Label>
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#" title="<%= lblNombrePerfil.Text %>">
+                   <asp:Literal ID="ltCargo" runat="server" Visible="false"></asp:Literal>
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#" title="<%= ltCargo.Text %>">
                         <span class="clear"><span class="block m-t-xs"><strong class="font-bold">
-                            <asp:Literal ID="ltNombreUsuario" runat="server"></asp:Literal></strong>                          
+                            <asp:Literal ID="ltNombreUsuario" runat="server"></asp:Literal></strong>
                         </span><span class="text-muted text-xs block">
-                            <asp:Literal ID="ltCargo" runat="server"></asp:Literal><b class="caret"></b></span></span></a>
+                            <asp:Label ID="lblNombrePerfil" runat="server" Text="Label"></asp:Label><br/>
+                            <asp:Label ID="lblNombreSede" runat="server" Text="Label"></asp:Label>
+                            <b class="caret"></b></span></span></a>
+
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
                         <li><a href="micuenta?mandatory=1">Mi cuenta</a></li>
                         <li><a href="contactos">Contactos</a></li>

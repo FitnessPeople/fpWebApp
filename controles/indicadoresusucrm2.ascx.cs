@@ -231,7 +231,8 @@ namespace fpWebApp.controles
             {
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.ConsultarEstrategiasMarketingValorMes();
-                DataTable dt2 = cg.ConsultarVentasVsMetasCRM(12,9,2025);
+                DataTable dt2 = cg.ConsultarVentasVsMetasPorCanalCRM(12,9,2025);
+                DataTable dt3 = cg.ConsultarVentasVsMetasPorUusuarioCRM(148,12,9,2025);
 
 
                 if (dt.Rows.Count > 0)
