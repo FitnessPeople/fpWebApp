@@ -17,19 +17,24 @@
 
 
 <div class="row d-flex">
-    <%-- <div class="row">--%>
+     
+   <%-- Gráfica--%>
     <div class="col-lg-6 d-flex">
         <div class="ibox flex-fill w-100">
             <div class="ibox-content">
                 <div>
                     <span class="pull-right text-right">
-                        <small>Objetivo hoy:
+                        <small>
+                             <asp:Literal ID="ltFechaHoy" runat="server"></asp:Literal><br />
+                            Objetivo hoy:
                             <asp:Literal ID="ltValorMetaAsesorHoy" runat="server"></asp:Literal></small>
-                        <br />
-                        <small>Vendido hoy:
-                            <asp:Literal ID="ltVendidoDia" runat="server"></asp:Literal></small>
-
+                            <br />
+                            <small>Vendido hoy:
+                            <asp:Literal ID="ltVendidoDia" runat="server"></asp:Literal></small> <br />                           
                     </span>
+
+
+
                     <h1 class="m-b-xs">
                         <asp:Literal ID="ltValorMetaAsesorMes" runat="server"></asp:Literal>
                     </h1>
@@ -43,20 +48,9 @@
                     <canvas id="CRMlineChart" height="75"></canvas>
                 </div>
 
-                <div class="m-t-md">
-                    <small class="pull-right">
-                        <i class="fa fa-clock-o"></i>
-                        Update on 16.07.2015
-                    </small>
-                    <small>
-                        <strong>Analysis of sales:</strong> The value has been changed over time, and last month reached a level over $50,000.
-                    </small>
-                </div>
-
             </div>
         </div>
     </div>
-    <%--     </div>--%>
 
     <!-- Widgets -->
     <div class="col-lg-6 d-flex flex-column">
@@ -166,8 +160,6 @@
                 <div class="valor-numero">
                     <asp:Literal ID="ltVendidoMes" runat="server"></asp:Literal>
                 </div>
-                <%--                <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>
-                <small>Cumplimiento</small>--%>
             </div>
         </div>
     </div>
@@ -247,11 +239,6 @@
         });
 </script>
 
-
-
-
-
-
 <script>
     $(document).ready(function () {
         var lineData = {
@@ -266,7 +253,7 @@
                         data: <%= ventasJson %> // números, no texto
                 },
                 {
-                    label: "Presupuesto",
+                    label: "Metas",
                     backgroundColor: "rgba(220,220,220,0.5)",
                     borderColor: "rgba(220,220,220,1)",
                     pointBackgroundColor: "rgba(220,220,220,1)",

@@ -426,12 +426,11 @@
                                                         </HeaderTemplate>
                                                         <ItemTemplate>
                                                             <tr>
-<td class="project-status">
-    <span id="lblEstado" runat="server">
-        <%# Eval("Estado") %>
-    </span>
-</td>
-
+                                                            <td class="project-status">
+                                                                <span id="lblEstado" runat="server">
+                                                                    <%# Eval("Estado") %>
+                                                                </span>
+                                                            </td>
                                                                 <td class="project-title">
                                                                     <a href="detallereportemarketing">
                                                                         <%# Eval("NombreEstrategia") %> 

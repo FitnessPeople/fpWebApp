@@ -190,11 +190,11 @@ namespace fpWebApp.controles
                 ltVendidoDia.Text = valorVendidoHoy.ToString("C0", new CultureInfo("es-CO"));
 
                 /////////////////////////////////////////BRECHAS////////////////////////////////////
-                
-                int brechames = valorMetaAsesorMes - valorVendidoMes;
+
+                int brechames = valorVendidoMes - valorMetaAsesorMes;
                 ltBrechaMes.Text = brechames.ToString("C0", new CultureInfo("es-CO"));
 
-                int brechahoy = valorMetaAsesorHoy - valorVendidoHoy;
+                int brechahoy =  valorVendidoHoy - valorMetaAsesorHoy;
                 ltBrechaHoy.Text = brechahoy.ToString("C0", new CultureInfo("es-CO"));
                 /////////////////////////////////////////////////////////////////////////////////////
             }
@@ -236,6 +236,8 @@ namespace fpWebApp.controles
             DateTime hoy = DateTime.Today;
             int _mes = hoy.Month;
             int _anio = hoy.Year;
+            ltFechaHoy.Text = hoy.ToString("dd.MM.yyyy");
+
 
             try
             {

@@ -8992,7 +8992,7 @@ int valor, string observaciones, string estado)
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_GRAFICA_METAS_VS_VENTAS_POR_USU", mysqlConexion))
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_GRAFICA_METAS_VS_VENTAS_USU", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);                                           
