@@ -115,12 +115,13 @@ namespace fpWebApp
             string tipoPago = string.Empty;
             StringBuilder sb = new StringBuilder();
             clasesglobales cg = new clasesglobales();
-            int idempresa = 1;
+            //int idempresa = 1; //Wompi pruebas 
+            int idempresa = 4; //Wompi produccion
 
             try
             {
                 DataTable dt = cg.ConsultarPagosPorId(idAfiliadoPlan);
-                tipoPago = dt.Rows[0]["TipoPago"].ToString();
+                tipoPago = dt.Rows[0]["NombreMedioPago"].ToString();
 
 
                 switch (tipoPago)
@@ -136,7 +137,7 @@ namespace fpWebApp
                         sb.Append($"<td>{dt.Rows[0]["idAfiliadoPlan"].ToString()}</td>");
                         sb.Append($"<td>{dt.Rows[0]["DocumentoAfiliado"].ToString()}</td>");
                         sb.Append($"<td>{dt.Rows[0]["NombreAfiliado"].ToString()}</td>");
-                        sb.Append($"<td>{dt.Rows[0]["TipoPago"].ToString()}</td>");
+                        sb.Append($"<td>{dt.Rows[0]["NombreMedioPago"].ToString()}</td>");
                         sb.Append($"<td>{dt.Rows[0]["Valor"].ToString()}</td>");
                         sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaHoraPago"].ToString())) + "</td>");
                         sb.Append($"<td>{"Aprobado"}</td>");
@@ -155,7 +156,7 @@ namespace fpWebApp
                         sb.Append($"<td>{dt.Rows[0]["idAfiliadoPlan"].ToString()}</td>");
                         sb.Append($"<td>{dt.Rows[0]["DocumentoAfiliado"].ToString()}</td>");
                         sb.Append($"<td>{dt.Rows[0]["NombreAfiliado"].ToString()}</td>");
-                        sb.Append($"<td>{dt.Rows[0]["TipoPago"].ToString()}</td>");
+                        sb.Append($"<td>{dt.Rows[0]["NombreMedioPago"].ToString()}</td>");
                         sb.Append($"<td>{dt.Rows[0]["Valor"].ToString()}</td>");
                         sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaHoraPago"].ToString())) + "</td>");
                         sb.Append($"<td>{dt.Rows[0]["Banco"].ToString()}</td>");
@@ -169,7 +170,7 @@ namespace fpWebApp
                     case "Datafono":
 
                         break;
-                    case "Wompi":
+                    case "Pago en línea":
 
                         DataTable dti = cg.ConsultarUrl(idempresa);//1-Wompi 2-Armatura 
 
@@ -278,7 +279,7 @@ namespace fpWebApp
             {
                 // TODO: Arreglar datos quemados
                 string consultaSQL = @"SELECT a.DocumentoAfiliado AS 'Documento de Afiliado', CONCAT_WS(' ', a.NombreAfiliado, a.ApellidoAfiliado) AS 'Nombre de Afiliado', 
-                                       pa.Valor AS 'Valor', pa.idReferencia AS 'Nro. de Referencia', pa.TipoPago AS 'Tipo de Pago', 
+                                       pa.Valor AS 'Valor', pa.idReferencia AS 'Nro. de Referencia', mp.NombreMedioPago AS 'Tipo de Pago', 
                                        pa.Banco AS 'Entidad Bancaría', pa.FechaHoraPago AS 'Fecha de Pago', pa.estadoPago AS 'Estado', 
                                        u.NombreUsuario AS 'Nombre de Usuario', cv.NombreCanalVenta AS 'Canal de Venta'
                                        FROM pagosplanafiliado pa
@@ -286,8 +287,9 @@ namespace fpWebApp
                                        INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
                                        INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
                                        INNER JOIN empleados e ON e.DocumentoEmpleado = u.idEmpleado
-                                       INNER JOIN canalesventa cv ON cv.idCanalVenta = e.idCanalVenta
-                                       WHERE DATE(pa.FechaHoraPago) BETWEEN '2025-02-28' AND '2025-02-28' 
+                                       INNER JOIN canalesventa cv ON cv.idCanalVenta = e.idCanalVenta 
+                                       INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
+                                       WHERE DATE(pa.FechaHoraPago) BETWEEN '2025-09-01' AND '2025-09-30' 
                                        ORDER BY pa.FechaHoraPago DESC;";
 
                 clasesglobales cg = new clasesglobales();

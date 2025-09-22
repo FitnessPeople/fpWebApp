@@ -186,6 +186,7 @@
                                         data-empty="Sin resultados">
                                         <thead>
                                             <tr>
+                                                <th data-sortable="false" data-breakpoints="xs">ID</th>
                                                 <th data-sortable="false" data-breakpoints="xs">Nombre</th>
                                                 <th data-sortable="true" data-breakpoints="xs">Cargo</th>
                                                 <th data-sortable="false" data-breakpoints="xs sm md">Empleado</th>
@@ -201,6 +202,7 @@
                                             <asp:Repeater ID="rpUsuarios" runat="server" OnItemDataBound="rpUsuarios_ItemDataBound">
                                                 <ItemTemplate>
                                                     <tr>
+                                                        <td><%# Eval("idUsuario") %></td>
                                                         <td><%# Eval("NombreUsuario") %></td>
                                                         <td><%# Eval("CargoUsuario") %></td>
                                                         <td><a href="empleados" title="Ir a Empleados"><span class='badge badge-<%# Eval("label") %>'><%# Eval("Empleado") %></span></a></td>

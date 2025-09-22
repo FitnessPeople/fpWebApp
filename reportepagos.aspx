@@ -206,8 +206,8 @@
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                         <asp:ListItem Text="Efectivo" Value="1"></asp:ListItem>
                                                         <asp:ListItem Text="Transferencia" Value="2"></asp:ListItem>
-                                                        <asp:ListItem Text="Datafono" Value="4"></asp:ListItem>
-                                                        <asp:ListItem Text="Wompi" Value="5"></asp:ListItem>
+                                                        <asp:ListItem Text="Datafono" Value="3"></asp:ListItem>
+                                                        <asp:ListItem Text="Pago en línea" Value="4"></asp:ListItem>
                                                  </asp:DropDownList>
                                                 </div>
                                             </div>
