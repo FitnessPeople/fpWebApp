@@ -13,7 +13,7 @@
             <span class="m-r-sm text-muted welcome-message font-bold" id="demo"></span>
         </li>
         <li class="dropdown">
-            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" runat="server" id="divCambioPerfil">
                 <i class="fa fa-people-arrows"></i>
             </a>
             <ul class="dropdown-menu dropdown-messages">
@@ -125,7 +125,8 @@
                 <li class="divider"></li>
                 <li>
                     <div class="text-center link-block">
-                        <a href="correointerno">
+                        <%--<a href="correointerno">--%>
+                        <a href="#">
                             <i class="fa fa-envelope m-r-sm"></i><strong>Leer todos los mensajes</strong>
                         </a>
                     </div>

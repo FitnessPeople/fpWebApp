@@ -431,7 +431,7 @@
                     showMethod: 'slideDown',
                     timeOut: 1000
                 };
-                toastr.error('<%=strDiaZero%> días y contando...', 'DIA ZERO');
+                //toastr.error('<%=strDiaZero%> días y contando...', 'DIA ZERO');
             }, 1300);
 
             setTimeout(function () {

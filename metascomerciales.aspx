@@ -266,7 +266,7 @@
                                                         <tr class="feed-element">
                                                             <td><%# Eval("NombreCanalVenta") %></td>
                                                             <td><%# ObtenerNombreMes(Eval("Mes")) %> - <%# Eval("Annio") %></td>
-                                                            <td style="text-align: right;"><%# Eval("Valor", "{0:N0}") %></td>
+                                                            <td style="text-align: right;"><%# Eval("Presupuesto", "{0:N0}") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
