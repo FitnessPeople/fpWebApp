@@ -16,6 +16,7 @@ namespace fpWebApp.controles
         {
             int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
             ConsultarContactosActivosPorUsuario(idUsuario);
+            ObtenerGraficaEstrategiasPorMes();
         }
 
         private void ConsultarContactosActivosPorUsuario(int idUsuario)
@@ -190,10 +191,10 @@ namespace fpWebApp.controles
 
                 /////////////////////////////////////////BRECHAS////////////////////////////////////
 
-                int brechames = valorMetaAsesorMes - valorVendidoMes;
+                int brechames = valorVendidoMes - valorMetaAsesorMes;
                 ltBrechaMes.Text = brechames.ToString("C0", new CultureInfo("es-CO"));
 
-                int brechahoy = valorMetaAsesorHoy - valorVendidoHoy;
+                int brechahoy = valorVendidoHoy - valorMetaAsesorHoy;
                 ltBrechaHoy.Text = brechahoy.ToString("C0", new CultureInfo("es-CO"));
                 /////////////////////////////////////////////////////////////////////////////////////
             }
@@ -220,6 +221,122 @@ namespace fpWebApp.controles
 
             return null;
         }
+
+
+        public string labelsJson { get; set; }
+        public string metasJson { get; set; }
+        public string ventasJson { get; set; }
+
+        private void ObtenerGraficaEstrategiasPorMes()
+        {
+            int idUsuario = 0;
+            int idCanalVenta = 0;
+            string tipoSedeUsuario = string.Empty;
+            int perfilUsuario = 0;
+            DateTime hoy = DateTime.Today;
+            int _mes = hoy.Month;
+            int _anio = hoy.Year;
+            ltFechaHoy.Text = hoy.ToString("dd.MM.yyyy");
+
+
+            try
+            {
+                idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
+                clasesglobales cg = new clasesglobales();
+                DataTable dt4 = cg.ConsultarUsuarioSedePerfilPorId(idUsuario);
+                if (dt4.Rows.Count > 0)
+                {
+                    idCanalVenta = Convert.ToInt32(dt4.Rows[0]["idCanalVenta"].ToString());
+                    tipoSedeUsuario = dt4.Rows[0]["TipoSede"].ToString();
+                    perfilUsuario = Convert.ToInt32(dt4.Rows[0]["IdPerfil"].ToString());
+                }
+
+                DataTable dt = cg.ConsultarVentasVsMetasPorUusuarioCRM(idCanalVenta, _mes, _anio, idUsuario);
+
+                var labels = new List<string>();
+                var metas = new List<decimal>();
+                var ventas = new List<decimal>();
+
+                if (dt.Rows.Count > 0)
+                {
+                    // Agrupar por día
+                    var datosPorDia = dt.AsEnumerable()
+                        .GroupBy(r => Convert.ToDateTime(r["Fecha"]).Day)
+                        .ToDictionary(
+                            g => g.Key,
+                            g =>
+                            {
+                                decimal metaAcumulada = 0;
+                                decimal ventasAcumuladas = 0;
+
+                                foreach (var fila in g)
+                                {
+                                    int valorMetaHoy = 0;
+
+                                    if (perfilUsuario == 4 && tipoSedeUsuario == "Deluxe")
+                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorDeluxeDia"]);
+                                    else if (perfilUsuario == 4 && tipoSedeUsuario == "Premium")
+                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorPremiumDia"]);
+                                    else if (perfilUsuario == 4 && tipoSedeUsuario == "Elite")
+                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorEliteDia"]);
+                                    else if (perfilUsuario == 2)
+                                        valorMetaHoy = Convert.ToInt32(fila["MetaDirectorSedeDia"]);
+                                    else if (perfilUsuario == 4 && idCanalVenta == 12)
+                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorOnlineDia"]);
+                                    else
+                                        valorMetaHoy = Convert.ToInt32(fila["MetaSedeDia"]); //
+
+                                    metaAcumulada += valorMetaHoy;
+                                    ventasAcumuladas += Convert.ToDecimal(fila["TotalVendidoDia"]);
+                                }
+
+                                return new
+                                {
+                                    Metas = metaAcumulada,
+                                    Ventas = ventasAcumuladas
+                                };
+                            }
+                        );
+
+                    int diasDelMes = DateTime.DaysInMonth(_anio, _mes);
+
+                    for (int dia = 1; dia <= diasDelMes; dia++)
+                    {
+                        labels.Add(dia.ToString());
+
+                        if (datosPorDia.ContainsKey(dia))
+                        {
+                            metas.Add(datosPorDia[dia].Metas);
+                            ventas.Add(datosPorDia[dia].Ventas);
+                        }
+                        else
+                        {
+                            metas.Add(0);
+                            ventas.Add(0);
+                        }
+                    }
+                }
+                else
+                {
+                    int diasDelMes = DateTime.DaysInMonth(_anio, _mes);
+                    for (int dia = 1; dia <= diasDelMes; dia++)
+                    {
+                        labels.Add(dia.ToString());
+                        metas.Add(0);
+                        ventas.Add(0);
+                    }
+                }
+
+                labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
+                metasJson = Newtonsoft.Json.JsonConvert.SerializeObject(metas);
+                ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message.ToString();
+            }
+        }
+
 
     }
 }

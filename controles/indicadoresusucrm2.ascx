@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="indicadoresusucrm2.ascx.cs" Inherits="fpWebApp.controles.indicadoresusucrm2" %>
+
 <style>
     .valor-numero {
         font-size: 22px;
@@ -16,19 +17,24 @@
 
 
 <div class="row d-flex">
-    <!-- Gráfica -->
+     
+   <%-- Gráfica--%>
     <div class="col-lg-6 d-flex">
         <div class="ibox flex-fill w-100">
             <div class="ibox-content">
                 <div>
                     <span class="pull-right text-right">
-                        <small>Objetivo hoy:
+                        <small>
+                             <asp:Literal ID="ltFechaHoy" runat="server"></asp:Literal><br />
+                            Objetivo hoy:
                             <asp:Literal ID="ltValorMetaAsesorHoy" runat="server"></asp:Literal></small>
-                        <br />
-                        <small>Vendido hoy:
-                            <asp:Literal ID="ltVendidoDia" runat="server"></asp:Literal></small>
-
+                            <br />
+                            <small>Vendido hoy:
+                            <asp:Literal ID="ltVendidoDia" runat="server"></asp:Literal></small> <br />                           
                     </span>
+
+
+
                     <h1 class="m-b-xs">
                         <asp:Literal ID="ltValorMetaAsesorMes" runat="server"></asp:Literal>
                     </h1>
@@ -39,8 +45,9 @@
                 </div>
 
                 <div>
-                    <canvas id="lineChart" height="70"></canvas>
+                    <canvas id="CRMlineChart" height="75"></canvas>
                 </div>
+
             </div>
         </div>
     </div>
@@ -152,9 +159,7 @@
                 <h5>Vendido del mes</h5>
                 <div class="valor-numero">
                     <asp:Literal ID="ltVendidoMes" runat="server"></asp:Literal>
-               </div>
-<%--                <div class="stat-percent font-bold text-navy">98% <i class="fa fa-bolt"></i></div>
-                <small>Cumplimiento</small>--%>
+                </div>
             </div>
         </div>
     </div>
@@ -191,56 +196,104 @@
 </div>
 
 
-
-<!-- jQuery UI -->
-<script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
-
-<!-- Jvectormap -->
-<script src="js/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js"></script>
-<script src="js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+<!-- EayPIE -->
+<script src="js/plugins/easypiechart/jquery.easypiechart.js"></script>
 
 <!-- Sparkline -->
 <script src="js/plugins/sparkline/jquery.sparkline.min.js"></script>
 
-<!-- Sparkline demo data  -->
-<script src="js/demo/sparkline-demo.js"></script>
 
 <!-- ChartJS-->
 <script src="js/plugins/chartJs/Chart.min.js"></script>
 
+<!-- Toastr -->
+<script src="js/plugins/toastr/toastr.min.js"></script>
+
 <script>
     $(document).ready(function () {
-
         var lineData = {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            labels: <%= labelsJson %>,
             datasets: [
                 {
-                    label: "Ventas completadas",
+                    label: "Ventas",
                     backgroundColor: "rgba(26,179,148,0.5)",
                     borderColor: "rgba(26,179,148,0.7)",
                     pointBackgroundColor: "rgba(26,179,148,1)",
                     pointBorderColor: "#fff",
-                    data: [280, 480, 400, 190, 860, 270, 900]
+                    data: <%= ventasJson %>
+                },
+                    {
+                        label: "Metas",
+                        backgroundColor: "rgba(220,220,220,0.5)",
+                        borderColor: "rgba(220,220,220,1)",
+                        pointBackgroundColor: "rgba(220,220,220,1)",
+                        pointBorderColor: "#fff",
+                        data: <%= metasJson %>
+                }
+            ]
+        };
+
+        var lineOptions = { responsive: true };
+        var ctx = document.getElementById("CRMlineChart").getContext("2d");
+        new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        var lineData = {
+            labels: <%= labelsJson %>,
+                datasets: [
+                    {
+                        label: "Ventas",
+                        backgroundColor: "rgba(26,179,148,0.5)",
+                        borderColor: "rgba(26,179,148,0.7)",
+                        pointBackgroundColor: "rgba(26,179,148,1)",
+                        pointBorderColor: "#fff",
+                        data: <%= ventasJson %> // números, no texto
                 },
                 {
-                    label: "Meta propuesta",
+                    label: "Metas",
                     backgroundColor: "rgba(220,220,220,0.5)",
                     borderColor: "rgba(220,220,220,1)",
                     pointBackgroundColor: "rgba(220,220,220,1)",
                     pointBorderColor: "#fff",
-                    data: [650, 590, 800, 810, 560, 550, 400]
+                    data: <%= metasJson %> // números, no texto
                 }
             ]
         };
 
         var lineOptions = {
-            responsive: true
+            responsive: true,
+            maintainAspectRatio: false,
+            tooltips: {
+                callbacks: {
+                    label: function (tooltipItem, data) {
+                        var value = tooltipItem.yLabel;
+                        return value.toLocaleString('es-CO', {
+                            style: 'currency',
+                            currency: 'COP',
+                            minimumFractionDigits: 0
+                        });
+                    }
+                }
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        callback: function (value) {
+                            return value.toLocaleString('es-CO', {
+                                style: 'currency',
+                                currency: 'COP',
+                                minimumFractionDigits: 0
+                            });
+                        }
+                    }
+                }]
+            }
         };
-
-
-        var ctx = document.getElementById("lineChart").getContext("2d");
+        var ctx = document.getElementById("CRMlineChart").getContext("2d");
         new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
-
     });
 </script>
 
