@@ -221,6 +221,7 @@
                                             data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados" >
                                             <thead>
                                                 <tr>
+                                                    <th width="5%">ID</th>
                                                     <th>Ciudades</th>
                                                     <th>Departamentos</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
@@ -230,8 +231,9 @@
                                                 <asp:Repeater ID="rpCiudad" runat="server" OnItemDataBound="rpCiudad_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
-                                                            <td><%# Eval("ciudad") %></td>
-                                                            <td><%# Eval("departamento") %> </td>
+                                                            <td><%# Eval("idCiudad") %></td>
+                                                            <td><%# Eval("Ciudad") %></td>
+                                                            <td><%# Eval("Departamento") %> </td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>

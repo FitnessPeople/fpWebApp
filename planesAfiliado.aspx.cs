@@ -9,9 +9,11 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using WebPage.Services;
 
 namespace fpWebApp
 {
@@ -421,8 +423,14 @@ namespace fpWebApp
             string strDataWompi = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + intPrecio.ToString()));
             //lbEnlaceWompi.Text = "https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi;
             lbEnlaceWompi.Text = "<b>Enlace de pago Wompi:</b> <br />";
-            lbEnlaceWompi.Text += AcortarURL("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
-            hdEnlaceWompi.Value = AcortarURL("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
+            string payload = $"idPlan={HttpUtility.UrlEncode(ViewState["idPlan"].ToString())}&idVendedor={HttpUtility.UrlEncode(Session["idUsuario"].ToString())}";
+            string token = UrlEncryptor.Encrypt(payload);
+            //lbEnlaceWompi.Text += AcortarURL($"https://fitnesspeoplecolombia.com/register?data={HttpUtility.UrlEncode(token)}");
+            lbEnlaceWompi.Text += "https://fitnesspeoplecolombia.com/register?idPlan=" + ViewState["idPlan"].ToString() + "&idVendedor=" + Session["idUsuario"].ToString();
+            //hdEnlaceWompi.Value = AcortarURL($"https://fitnesspeoplecolombia.com/register?data={HttpUtility.UrlEncode(token)}");
+            hdEnlaceWompi.Value = "https://fitnesspeoplecolombia.com/register?idPlan=" + ViewState["idPlan"].ToString() + "&idVendedor=" + Session["idUsuario"].ToString();
+            //lbEnlaceWompi.Text += AcortarURL("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
+            //hdEnlaceWompi.Value = AcortarURL("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
             btnPortapaleles.Visible = true;
         }
 

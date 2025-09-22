@@ -227,7 +227,8 @@
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th width="50%">Profesión</th>
+                                                    <th width="5%">ID</th>
+                                                    <th width="45%">Profesión</th>
                                                     <th width="30%">Área</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
@@ -236,6 +237,7 @@
                                                 <asp:Repeater ID="rpProfesiones" runat="server" OnItemDataBound="rpProfesiones_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
+                                                            <td><%# Eval("idProfesion") %></td>
                                                             <td><%# Eval("Profesion") %></td>
                                                             <td><%# Eval("Area") %></td>
                                                             <td>

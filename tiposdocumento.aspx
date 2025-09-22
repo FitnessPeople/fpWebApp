@@ -221,6 +221,7 @@
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
+                                                    <th width="5%">ID</th>
                                                     <th>Tipos de Documento</th>
                                                     <th>Siglas</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
@@ -230,6 +231,7 @@
                                                 <asp:Repeater ID="rpTiposDoc" runat="server" OnItemDataBound="rpTiposDoc_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
+                                                            <td><%# Eval("idTipoDoc") %></td>
                                                             <td><%# Eval("TipoDocumento") %></td>
                                                             <td><%# Eval("siglaDocumento") %></td>
                                                             <td>

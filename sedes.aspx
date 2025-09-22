@@ -309,6 +309,7 @@
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
+                                                    <th data-breakpoints="xs">ID</th>
                                                     <th data-sortable="false" data-breakpoints="xs" style="width: 200px;">Sede</th>
                                                     <th data-breakpoints="xs">Dirección</th>
                                                     <th data-breakpoints="xs">Ciudad</th>
@@ -321,6 +322,7 @@
                                                 <asp:Repeater ID="rpSedes" runat="server" OnItemDataBound="rpSedes_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
+                                                            <td><%# Eval("idSede") %></td>
                                                             <td><%# Eval("NombreSede") %></td>
                                                             <td><%# Eval("DireccionSede") %></td>
                                                             <td><%# Eval("NombreCiudadSede") %></td>

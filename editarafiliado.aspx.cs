@@ -23,7 +23,7 @@ namespace fpWebApp
 
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Especialistas");
+                    ValidarPermisos("Afiliados");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         divMensaje.Visible = true;
@@ -667,7 +667,7 @@ namespace fpWebApp
                             title: '¡Afiliado actualizado correctamente!',
                             text: 'Serás redirigido a los planes comerciales',
                             icon: 'success',
-                            timer: 5000, // 3 segundos
+                            timer: 2000, // 2 segundos
                             showConfirmButton: false,
                             timerProgressBar: true
                         }).then(() => {                           
