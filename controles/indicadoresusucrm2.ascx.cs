@@ -226,117 +226,6 @@ namespace fpWebApp.controles
         public string labelsJson { get; set; }
         public string metasJson { get; set; }
         public string ventasJson { get; set; }
-        //private void ObtenerGraficaEstrategiasPorMes()
-        //{
-        //    int idUsuario = 0;
-        //    int idCanalVenta = 0;
-        //    string tipoSedeUsuario = string.Empty;
-        //    int perfilUsuario = 0;
-        //    DateTime hoy = DateTime.Today;
-        //    int _mes = hoy.Month;
-        //    int _anio = hoy.Year;
-
-        //    try
-        //    {
-        //        idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
-        //        clasesglobales cg = new clasesglobales();
-        //        DataTable dt4 = cg.ConsultarUsuarioSedePerfilPorId(idUsuario);
-        //        if (dt4.Rows.Count > 0)
-        //        {              
-        //            idCanalVenta = Convert.ToInt32(dt4.Rows[0]["idCanalVenta"].ToString());
-        //            tipoSedeUsuario = dt4.Rows[0]["TipoSede"].ToString();
-        //            perfilUsuario = Convert.ToInt32(dt4.Rows[0]["IdPerfil"].ToString());
-        //        }
-
-        //        DataTable dt = cg.ConsultarVentasVsMetasPorUusuarioCRM(idCanalVenta, _mes, _anio, idUsuario);
-
-        //        var labels = new List<string>();
-        //        var metas = new List<decimal>();
-        //        var ventas = new List<decimal>();
-
-        //        if (dt.Rows.Count > 0)
-        //        {
-        //            // Agrupar datos por día
-        //            var datosPorDia = dt.AsEnumerable()
-        //                .GroupBy(r => Convert.ToDateTime(r["Fecha"]).Day)
-        //                .ToDictionary(
-        //                    g => g.Key,
-        //                    g => new
-        //                    {
-        //        if (perfilUsuario == 4 && tipoSedeUsuario == "Deluxe")
-        //            {
-        //                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorDeluxeMes"]);
-        //                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorDeluxeDia"]);
-        //            }
-
-        //            if (perfilUsuario == 4 && tipoSedeUsuario == "Premium")
-        //            {
-        //                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorPremiumMes"]);
-        //                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorPremiumDia"]);
-        //            }
-
-        //            if (perfilUsuario == 4 && tipoSedeUsuario == "Elite")
-        //            {
-        //                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorEliteMes"]);
-        //                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorEliteDia"]);
-        //            }
-
-        //            if (perfilUsuario == 2)
-        //            {
-        //                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaDirectorSedeMes"]);
-        //                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaDirectorSedeDia"]);
-        //            }
-
-        //            if (perfilUsuario == 4 && idCanalVenta == 12)
-        //            {
-        //                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorOnlineMes"]);
-        //                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorOnlineDia"]);
-        //            }
-
-
-        //            Metas = g.Sum(x => Convert.ToDecimal(x["MetaSedeDia"])),
-        //                        Ventas = g.Sum(x => Convert.ToDecimal(x["TotalVendidoDia"]))
-        //                    }
-        //                );
-
-        //            int diasDelMes = DateTime.DaysInMonth(_anio, _mes);
-
-        //            for (int dia = 1; dia <= diasDelMes; dia++)
-        //            {
-        //                labels.Add(dia.ToString()); // "1", "2", "3" ...
-
-        //                if (datosPorDia.ContainsKey(dia))
-        //                {
-        //                    metas.Add(datosPorDia[dia].Metas);
-        //                    ventas.Add(datosPorDia[dia].Ventas);
-        //                }
-        //                else
-        //                {
-        //                    metas.Add(0);
-        //                    ventas.Add(0);
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            int diasDelMes = DateTime.DaysInMonth(_anio, _mes);
-        //            for (int dia = 1; dia <= diasDelMes; dia++)
-        //            {
-        //                labels.Add(dia.ToString());
-        //                metas.Add(0);
-        //                ventas.Add(0);
-        //            }
-        //        }
-
-        //        labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
-        //        metasJson = Newtonsoft.Json.JsonConvert.SerializeObject(metas);
-        //        ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        string mensaje = ex.Message.ToString();
-        //    }
-        //}
 
         private void ObtenerGraficaEstrategiasPorMes()
         {
@@ -381,8 +270,7 @@ namespace fpWebApp.controles
                                 foreach (var fila in g)
                                 {
                                     int valorMetaHoy = 0;
-
-                                    // Seleccionar meta según perfil y sede
+                                  
                                     if (perfilUsuario == 4 && tipoSedeUsuario == "Deluxe")
                                         valorMetaHoy = Convert.ToInt32(fila["MetaAsesorDeluxeDia"]);
                                     else if (perfilUsuario == 4 && tipoSedeUsuario == "Premium")
