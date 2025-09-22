@@ -959,18 +959,19 @@ namespace fpWebApp
                 txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
                 txbValorMes.Enabled = false;
 
-                string observaciones = fila[0]["DescripcionPlan"].ToString();
+                //string observaciones = fila[0]["DescripcionPlan"].ToString();
+                string observaciones ="" ;
                 txaObservaciones.InnerText = observaciones;
 
-                int mesesPlan = Convert.ToInt32(fila[0]["Meses"]); // Asegúrate que esta columna está en tu tabla
+                int mesesPlan = Convert.ToInt32(fila[0]["Meses"]); 
 
-                if (ViewState["DebitoAutomatico"] != null && int.TryParse(ViewState["DebitoAutomatico"].ToString(), out DebitoAutomatico))
-                {
-                    if (DebitoAutomatico == 1)
-                    {
-                        total = precioBase * 12;
-                    }
-                }
+                //if (ViewState["DebitoAutomatico"] != null && int.TryParse(ViewState["DebitoAutomatico"].ToString(), out DebitoAutomatico))
+                //{
+                //    if (DebitoAutomatico == 1)
+                //    {
+                //        total = precioBase * 12;
+                //    }
+                //}
                 txbValorPropuesta.Text = $"${total:N0}";
             }
         }

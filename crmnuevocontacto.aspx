@@ -884,12 +884,12 @@
                                                                         </td>
                                                                         <td style="display: flex; flex-wrap: nowrap;">
 
-                                                                            <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-left m-r-xs"
+                                                                            <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-left m-r-xs" title="Editar"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" onclientclick="ocultarContador(); return true;">
                                                                                 <i class="fa fa-edit"></i></a>
-                                                                            <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-left m-r-xs"
+                                                                            <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-left m-r-xs" title="Eliminar"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
-                                                                            <a runat="server" id="btnNuevoAfiliado" href="#" class="btn btn-outline btn-success pull-left"
+                                                                            <a runat="server" id="btnNuevoAfiliado" href="#" class="btn btn-outline btn-success pull-left" title="Afiliación"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" data-idcrm='<%# Eval("idContacto") %>'
                                                                                 data-documento='<%# Eval("DocumentoAfiliado") %>' onclick="redirigirNuevoAfiliado(this, event)">
                                                                                 <i class="fa fa-id-card"></i></a>
@@ -1355,8 +1355,7 @@
 
             $.getJSON("/obtenerafiliados?search=" + encodeURIComponent(documento), function (data) {
                 console.log("Datos devueltos:", data);
-
-                // ✅ Usa la propiedad id porque así se llama en tu JSON
+   
                 const existe = data.some(item => String(item.id) === String(documento));
 
                 console.log("¿Existe?:", existe);
@@ -1496,7 +1495,7 @@
     <!-- ChartJS-->
     <script src="js/plugins/chartJs/Chart.min.js"></script>
 
-    <script>
+<%--    <script>
         $(document).ready(function () {
 
             var lineData = {
@@ -1530,7 +1529,7 @@
             new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
 
         });
-    </script>
+    </script>--%>
 
     <script>
         $(document).ready(function () {
