@@ -263,7 +263,7 @@
                                                         <td><%# Eval("DocumentoAfiliado") %></td>
                                                         <td><%# Eval("NombreAfiliado") %></td>
                                                         <td><%# Eval("Valor", "{0:C0}") %></td>
-                                                        <td><%# Eval("TipoPago") %></td>
+                                                        <td><%# Eval("NombreMedioPago") %></td>
                                                         <td><%# Eval("IdReferencia") %></td>
                                                         <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
                                                         <td><%# Eval("EstadoPago") %></td>
@@ -275,7 +275,7 @@
                                                                 CommandArgument='<%# Eval("idAfiliadoPlan") %>'
                                                                 OnCommand="btnDetalle_Command"
                                                                 CommandName="mostrarDetalle"
-                                                                Visible='<%# Eval("TipoPago").ToString() == "Wompi" %>' 
+                                                                Visible='<%# Eval("NombreMedioPago").ToString() == "Pago en línea" %>' 
                                                                  />
                                                         </td>
                                                     </tr>

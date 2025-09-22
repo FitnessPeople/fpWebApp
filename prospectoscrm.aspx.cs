@@ -159,6 +159,8 @@ namespace fpWebApp
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
+
+
             string strQuery = @"INSERT INTO pregestioncrm 
                 (FechaHoraPregestion, NombreContacto, ApellidoContacto, DocumentoContacto, 
                 idTipoDocumentoContacto, CelularContacto, idTipoGestion, idCanalVenta, idUsuarioAsigna) 
