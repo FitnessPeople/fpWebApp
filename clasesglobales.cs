@@ -7158,6 +7158,44 @@ int valor, string observaciones, string estado)
             return dt;
         }
 
+        public string InsertarPregestionCRM(string nombreContacto, string apellidoContacto, string documentoContacto, 
+            int idTipoDocumentoContacto, string celularContacto, int idTipoGestion, int idCanalVenta, int idUsuarioAsigna)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_PREGESTION_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_nombre_contacto", nombreContacto);
+                        cmd.Parameters.AddWithValue("@p_apellido_contacto", apellidoContacto);
+                        cmd.Parameters.AddWithValue("@p_documento_contacto", documentoContacto);
+                        cmd.Parameters.AddWithValue("@p_id_tipo_documento_contacto", idTipoDocumentoContacto);
+                        cmd.Parameters.AddWithValue("@p_celular_contacto", celularContacto);
+                        cmd.Parameters.AddWithValue("@p_id_tipo_gestion", idTipoGestion);
+                        cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);
+                        cmd.Parameters.AddWithValue("@p_id_usuario_asigna", idUsuarioAsigna);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
         public string InsertarContactoCRM(string nombreContacto, string apellidoContacto, string telefonoContacto, string emailContacto, int idEmpresaCMR,
         int idEstado, string fechaPrimerCon, string fechaProxCon, int valorPropuesta, string archivoPropuesta, string observaciones,
         int idUsuario, int idObjetivo, int tipoPago, int idTipoAfiliado, int idCanalMarketing, int idPlan, int mesesPlan, int idTipoDoc,

@@ -38,18 +38,10 @@
 
     <script>
         function changeClass() {
-            // Activa el menú principal
             var element1 = document.querySelector("#reportepagos");
-            if (element1) {
-                element1.classList.add("active");
-            }
-
-            // Despliega el submenú
+            element1.classList.replace("old", "active");
             var element2 = document.querySelector("#reportes");
-            if (element2) {
-                element2.classList.add("show"); // en Bootstrap el desplegado es con "show"
-                element2.classList.remove("collapse");
-            }
+            element2.classList.remove("collapse");
         }
     </script>
 
@@ -194,9 +186,9 @@
                                     </div>
                                     <div class="ibox-content">
                                         <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
-                                            <div class="col-lg-2">
+                                            <div class="col-lg-3">
                                                 <div class="form-group">
-                                                    <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
+                                                    <div class="form-group" id="filter-form-container"></div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-2">
@@ -221,9 +213,9 @@
                                                    <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker" /> 
                                                </div>
                                            </div>
-                                             <div class="col-lg-2">
+                                             <div class="col-lg-1">
                                                <div class="form-group">
-                                                <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnBuscar_Click" />
+                                                <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn btn-primary btn-sm" OnClick="btnBuscar_Click" />
                                                </div>
                                            </div>
                                             <div class="col-lg-2">
@@ -236,23 +228,24 @@
                                             </div>
                                         </div>
 
-                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10" data-filter-min="3" data-filter-placeholder="Buscar"
-                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
-                                            data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300"
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
+                                            data-filter-min="3" data-filter-placeholder="Buscar" 
+                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10" 
+                                            data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300" 
                                             data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
                                                     <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">Id Pago</th>
-                                                    <th data-breakpoints="xs">Documento</th>
-                                                    <th data-breakpoints="xs">Afiliado</th>
-                                                    <th data-breakpoints="xs">Valor</th>
-                                                    <th data-breakpoints="xs">Tipo Pago</th>
-                                                    <th data-breakpoints="xs">Referencia</th>
-                                                    <th data-breakpoints="xs">Fecha</th>
-                                                    <th data-breakpoints="xs">Estado</th>
-                                                    <th data-breakpoints="xs">Usuario</th>
-                                                    <th data-breakpoints="xs">Canal</th>
-                                                    <th data-breakpoints="xs">Detalle</th>
+                                                    <th>Documento</th>
+                                                    <th>Afiliado</th>
+                                                    <th data-breakpoints="xs sm md">Valor</th>
+                                                    <th data-breakpoints="xs sm md">Tipo Pago</th>
+                                                    <th data-breakpoints="xs sm md">Referencia</th>
+                                                    <th data-breakpoints="xs sm md">Fecha</th>
+                                                    <th data-breakpoints="xs sm md">Estado</th>
+                                                    <th data-breakpoints="xs sm md">Usuario</th>
+                                                    <th data-breakpoints="xs sm md">Canal</th>
+                                                    <th data-breakpoints="xs sm md">Detalle</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

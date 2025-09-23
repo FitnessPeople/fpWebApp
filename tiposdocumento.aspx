@@ -221,7 +221,7 @@
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th width="5%">ID</th>
+                                                    <th width="5%" data-type="number">ID</th>
                                                     <th>Tipos de Documento</th>
                                                     <th>Siglas</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>

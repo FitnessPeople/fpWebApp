@@ -221,7 +221,7 @@
                                             data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados" >
                                             <thead>
                                                 <tr>
-                                                    <th width="5%">ID</th>
+                                                    <th width="5%" data-type="number">ID</th>
                                                     <th>Ciudades</th>
                                                     <th>Departamentos</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>

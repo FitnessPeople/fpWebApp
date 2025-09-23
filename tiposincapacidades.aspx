@@ -212,6 +212,7 @@
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
+                                                    <th width="5%" data-type="number">ID</th>
                                                     <th width="80%">Tipos de incapacidad</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
@@ -220,6 +221,7 @@
                                                 <asp:Repeater ID="rpTipoIncapacidad" runat="server" OnItemDataBound="rpTipoIncapacidad_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
+                                                            <td><%# Eval("idTipoIncapacidad") %></td>
                                                             <td><%# Eval("TipoIncapacidad") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"

@@ -227,7 +227,7 @@
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th width="5%">ID</th>
+                                                    <th width="5%" data-type="number">ID</th>
                                                     <th width="45%">Profesión</th>
                                                     <th width="30%">Área</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>

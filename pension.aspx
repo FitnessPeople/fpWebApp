@@ -212,6 +212,7 @@
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
+                                                    <th width="5%" data-type="number">ID</th>
                                                     <th width="80%">Fondo de pensión</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
@@ -220,6 +221,7 @@
                                                 <asp:Repeater ID="rpFondosPension" runat="server" OnItemDataBound="rpFondosPension_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
+                                                            <td><%# Eval("idFondoPension") %></td>
                                                             <td><%# Eval("NombreFondoPension") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"

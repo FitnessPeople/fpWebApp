@@ -54,7 +54,10 @@ namespace fpWebApp
                     Session["Foto"] = dt.Rows[0]["FotoEmpleado"].ToString();
                     Session["idPerfil"] = dt.Rows[0]["idPerfil"].ToString();
                     Session["usuario"] = dt.Rows[0]["EmailUsuario"].ToString();
-                    Session["idSede"] = dt.Rows[0]["idSede"].ToString();
+                    //Session["idSede"] = dt.Rows[0]["idSede"].ToString();
+                    Session["idSede"] = string.IsNullOrEmpty(dt.Rows[0]["idSede"]?.ToString())
+                        ? "11"   // Sede Administrativa
+                        : dt.Rows[0]["idSede"].ToString();
                     Session["idCanalVenta"] = dt.Rows[0]["idCanalVenta"].ToString();
                     Session["idEmpleado"] = dt.Rows[0]["idEmpleado"].ToString();
                     boolReturnValue = true;

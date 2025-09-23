@@ -210,6 +210,7 @@
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
+                                                    <th width="5%" data-type="number">ID</th>
                                                     <th width="80%">ARL</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
@@ -218,6 +219,7 @@
                                                 <asp:Repeater ID="rpArl" runat="server" OnItemDataBound="rpArl_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
+                                                            <td><%# Eval("idArl") %></td>
                                                             <td><%# Eval("NombreArl") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"

@@ -212,6 +212,7 @@
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
+                                                    <th width="5%" data-type="number">ID</th>
                                                     <th width="80%">Caja de Compensación</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
@@ -220,6 +221,7 @@
                                                 <asp:Repeater ID="rpCajasComp" runat="server" OnItemDataBound="rpCajasComp_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
+                                                            <td><%# Eval("idCajaComp") %></td>
                                                             <td><%# Eval("NombreCajaComp") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"

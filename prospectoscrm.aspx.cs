@@ -226,40 +226,33 @@ namespace fpWebApp
                     }
                     else
                     {
-                        string strQuery = @"INSERT INTO pregestioncrm 
-                        (FechaHoraPregestion, NombreContacto, ApellidoContacto, DocumentoContacto, 
-                        idTipoDocumentoContacto, CelularContacto, idTipoGestion, idCanalVenta, idUsuarioAsigna) 
-                        VALUES (NOW(), @Nombre, @Apellido, @Documento, 
-                        @TipoDoc, @Celular, @TipoGestion, @IdCanalVenta, @IdUsuarioAsigna)";
+                        string nombre = txbNombreContacto.Text.ToString();
+                        string apellido = txbApellidoContacto.Text.ToString();
+                        string documento = txbDocumento.Text.ToString();
+                        int idTipoDocumento = Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString());
+                        string celular = txbCelular.Text.ToString();
+                        int tipoGestion = 4;
 
-                        string connString = ConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-                        string tipoGestion = "4";
+                        string rta = cg.InsertarPregestionCRM(nombre, apellido,
+                                        documento, idTipoDocumento, celular, tipoGestion, 
+                                        Convert.ToInt32(Session["idCanalVenta"].ToString()), 
+                                        Convert.ToInt32(Session["idUsuario"].ToString()));
 
-                        using (MySqlConnection conn = new MySqlConnection(connString))
+                        if (rta == "OK")
                         {
-                            conn.Open();
-
-                            string nombre = txbNombreContacto.Text.ToString();
-                            string apellido = txbApellidoContacto.Text.ToString();
-                            string documento = txbDocumento.Text.ToString();
-                            string idTipoDocumento = ddlTipoDocumento.SelectedItem.Value.ToString();
-                            string celular = txbCelular.Text.ToString();
-
-                            using (MySqlCommand cmd = new MySqlCommand(strQuery, conn))
-                            {
-                                cmd.Parameters.AddWithValue("@Nombre", nombre);
-                                cmd.Parameters.AddWithValue("@Apellido", apellido);
-                                cmd.Parameters.AddWithValue("@Documento", documento);
-                                cmd.Parameters.AddWithValue("@TipoDoc", idTipoDocumento);
-                                cmd.Parameters.AddWithValue("@Celular", celular);
-                                cmd.Parameters.AddWithValue("@TipoGestion", tipoGestion);
-                                cmd.Parameters.AddWithValue("@IdCanalVenta", Session["idCanalVenta"].ToString());
-                                cmd.Parameters.AddWithValue("@IdUsuarioAsigna", Session["idUsuario"].ToString());
-
-                                cmd.ExecuteNonQuery();
-
-                                Response.Redirect("prospectoscrm");
-                            }
+                            string script = @"
+                                Swal.fire({
+                                    title: '¡Registro exitoso!',
+                                    text: 'Registrado en la tabla PregestionCRM.',
+                                    icon: 'success',
+                                    timer: 3000, // 3 segundos
+                                    showConfirmButton: false,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    window.location.href = 'prospectoscrm';
+                                });
+                                ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
                         }
                     }
                 }

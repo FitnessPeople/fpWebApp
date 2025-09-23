@@ -223,7 +223,7 @@
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th width="5%">Id</th>
+                                                    <th width="5%" data-type="number">ID</th>
                                                     <th>Ciudad Sede</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
