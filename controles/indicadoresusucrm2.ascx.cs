@@ -59,7 +59,7 @@ namespace fpWebApp.controles
                 nombreMes = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(nombreMes);
                 ltNomMesActual.Text = $"Objetivo mes {nombreMes} {anio}";
                 //////////////////////////////////////////////////////////////////////////////////////////////////////
-               
+
 
                 ///////////////////////////////////////////////META CANAL DE VENTA //////////////////////////////////
                 DataTable dt = cg.ConsultarMetasComerciales();
@@ -194,7 +194,7 @@ namespace fpWebApp.controles
                 int brechames = valorVendidoMes - valorMetaAsesorMes;
                 ltBrechaMes.Text = brechames.ToString("C0", new CultureInfo("es-CO"));
 
-                int brechahoy =  valorVendidoHoy - valorMetaAsesorHoy;
+                int brechahoy = valorVendidoHoy - valorMetaAsesorHoy;
                 ltBrechaHoy.Text = brechahoy.ToString("C0", new CultureInfo("es-CO"));
                 /////////////////////////////////////////////////////////////////////////////////////
             }
@@ -272,7 +272,7 @@ namespace fpWebApp.controles
                                 foreach (var fila in g)
                                 {
                                     int valorMetaHoy = 0;
-                                  
+
                                     if (perfilUsuario == 4 && tipoSedeUsuario == "Deluxe")
                                         valorMetaHoy = Convert.ToInt32(fila["MetaAsesorDeluxeDia"]);
                                     else if (perfilUsuario == 4 && tipoSedeUsuario == "Premium")
@@ -287,7 +287,7 @@ namespace fpWebApp.controles
                                         valorMetaHoy = Convert.ToInt32(fila["MetaSedeDia"]); //
 
                                     metaAcumulada += valorMetaHoy;
-                                    ventasAcumuladas += Convert.ToDecimal(fila["TotalVendidoDia"]);
+                                    ventasAcumuladas += Convert.ToDecimal(fila["VentaDia"]);
                                 }
 
                                 return new
