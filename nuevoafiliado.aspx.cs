@@ -78,6 +78,14 @@ namespace fpWebApp
                             ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDoc"].ToString())));
                             txbTelefono.Text = dt.Rows[0]["TelefonoContacto"].ToString();
                             txbEmail.Text = dt.Rows[0]["EmailContacto"].ToString();
+                            
+                            var fecNac = dt.Rows[0]["FecNacAfiliado"];
+                            if (fecNac == DBNull.Value || string.IsNullOrWhiteSpace(fecNac.ToString()))                            
+                                txbFechaNac.Text = "";                          
+                            else                            
+                                txbFechaNac.Text = Convert.ToDateTime(fecNac).ToString("yyyy-MM-dd");
+                            ddlGenero.SelectedIndex = Convert.ToInt32(ddlGenero.Items.IndexOf(ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString())));
+
                             ddlEmpresaConvenio.SelectedValue = dt.Rows[0]["idEmpresaCRM"].ToString();
                             Session["idcrm"] = dt.Rows[0]["idContacto"].ToString();
                         }
