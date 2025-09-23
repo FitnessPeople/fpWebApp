@@ -14,7 +14,7 @@ namespace fpWebApp.controles
             if (dt.Rows.Count > 0)
             {
                 lblNombrePerfil.Text = dt.Rows[0]["Perfil"].ToString();
-                if (dt.Rows[0]["idCanalVenta"].ToString()=="0") lblNombreSede.Text = dt.Rows[0]["NombreSede"].ToString();
+                if (dt.Rows[0]["idCanalVenta"].ToString() == "0" || dt.Rows[0]["idCanalVenta"].ToString() == "12" || dt.Rows[0]["idCanalVenta"].ToString() == "13" || dt.Rows[0]["idCanalVenta"].ToString() == "14") lblNombreSede.Text = dt.Rows[0]["NombreSede"].ToString();
                 else
                     lblNombreSede.Text = dt.Rows[0]["NombreCanalVenta"].ToString();
             }
