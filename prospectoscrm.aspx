@@ -38,6 +38,9 @@
         }
     </style>
 
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         function changeClass() {
             // Activa el menú principal
@@ -165,7 +168,7 @@
                                                     <div class="row">
                                                         <div class="col-lg-6">
                                                             <label>Documento:</label>
-                                                            <asp:TextBox ID="txbDocumento" ClientIDMode="Static" CssClass="form-control input-sm" runat="server" placeholder="#" autocomplete="off" spellcheck="false"></asp:TextBox>
+                                                            <asp:TextBox ID="txbDocumento" ClientIDMode="Static" CssClass="form-control input-sm" runat="server" placeholder="#" autocomplete="off" spellcheck="false" required></asp:TextBox>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label>Tipo de Documento:</label>
@@ -181,12 +184,12 @@
                                                         <div class="col-lg-6">
                                                             <label>Nombre(s):</label>
                                                             <asp:TextBox ID="txbNombreContacto" runat="server"
-                                                                CssClass="form-control input-sm" placeholder="Nombre(s)"></asp:TextBox>
+                                                                CssClass="form-control input-sm" placeholder="Nombre(s)" required></asp:TextBox>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label>Apellidos(s):</label>
                                                             <asp:TextBox ID="txbApellidoContacto" runat="server"
-                                                                CssClass="form-control input-sm" placeholder="Apellido(s)"></asp:TextBox>
+                                                                CssClass="form-control input-sm" placeholder="Apellido(s)" required></asp:TextBox>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -196,7 +199,7 @@
                                                             <label>Celular:</label>
                                                             <asp:TextBox ID="txbCelular" CssClass="form-control input-sm"
                                                                 runat="server" placeholder="Celular"
-                                                                autocomplete="off" spellcheck="false"></asp:TextBox>
+                                                                autocomplete="off" spellcheck="false" required></asp:TextBox>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -334,7 +337,7 @@
                                                                     <i class="fa fa-file-excel m-r-xs"></i>EXCEL
                                                                 </a>
                                                                 <asp:LinkButton ID="lnkAsignar" runat="server" Style="font-size: 12px;"
-                                                                    CssClass="btn btn-primary pull-right dim m-l-md" Visible="true"
+                                                                    CssClass="btn btn-primary pull-right dim m-l-md" Visible="false"
                                                                     CausesValidation="true" ValidationGroup="asignar">
                         <i class="fa fa-user-plus m-r-xs"></i>ASIGNAR
                                                                 </asp:LinkButton>

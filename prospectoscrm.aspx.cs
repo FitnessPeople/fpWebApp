@@ -2,6 +2,8 @@
 using System;
 using System.Configuration;
 using System.Data;
+using System.Web.Services.Description;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace fpWebApp
@@ -37,6 +39,10 @@ namespace fpWebApp
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             btnAgregar.Visible = true;
+                        }
+                        if (ViewState["Borrar"].ToString() == "1")
+                        {
+                            lnkAsignar.Visible = true;
                         }
                     }
                     ListaProspectos();
@@ -159,41 +165,103 @@ namespace fpWebApp
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
+            // Consultar si el prospecto existe en la tabla Afiliados.
+            clasesglobales cg = new clasesglobales();
+            DataTable dt1 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(txbDocumento.Text.ToString()));
 
-
-            string strQuery = @"INSERT INTO pregestioncrm 
-                (FechaHoraPregestion, NombreContacto, ApellidoContacto, DocumentoContacto, 
-                idTipoDocumentoContacto, CelularContacto, idTipoGestion, idCanalVenta, idUsuarioAsigna) 
-                VALUES (NOW(), @Nombre, @Apellido, @Documento, 
-                @TipoDoc, @Celular, @TipoGestion, @IdCanalVenta, @IdUsuarioAsigna)";
-
-            string connString = ConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-            string tipoGestion = "4";
-
-            using (MySqlConnection conn = new MySqlConnection(connString))
+            if (dt1.Rows.Count > 0)
             {
-                conn.Open();
+                string script = @"
+                    Swal.fire({
+                        title: 'Mensaje',
+                        text: 'Ya existe un afiliado registrado con este documento.',
+                        icon: 'error'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                                            
+                        }
+                    });
+                    ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+            }
+            else
+            {
+                // Consultar si el prospecto existe en la tabla ContactosCRM.
+                DataTable dt2 = cg.ConsultarContactosCRMPorDocumento(Convert.ToInt32(txbDocumento.Text.ToString()));
 
-                string nombre = txbNombreContacto.Text.ToString();
-                string apellido = txbApellidoContacto.Text.ToString();
-                string documento = txbDocumento.Text.ToString();
-                string idTipoDocumento = ddlTipoDocumento.SelectedItem.Value.ToString();
-                string celular = txbCelular.Text.ToString();
-
-                using (MySqlCommand cmd = new MySqlCommand(strQuery, conn))
+                if (dt2.Rows.Count > 0)
                 {
-                    cmd.Parameters.AddWithValue("@Nombre", nombre);
-                    cmd.Parameters.AddWithValue("@Apellido", apellido);
-                    cmd.Parameters.AddWithValue("@Documento", documento);
-                    cmd.Parameters.AddWithValue("@TipoDoc", idTipoDocumento);
-                    cmd.Parameters.AddWithValue("@Celular", celular);
-                    cmd.Parameters.AddWithValue("@TipoGestion", tipoGestion);
-                    cmd.Parameters.AddWithValue("@IdCanalVenta", Session["idCanalVenta"].ToString());
-                    cmd.Parameters.AddWithValue("@IdUsuarioAsigna", Session["idUsuario"].ToString());
+                    string script = @"
+                        Swal.fire({
+                            title: 'Mensaje',
+                            text: 'Ya existe un contacto en el CRM registrado con este documento.',
+                            icon: 'error'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                            
+                            }
+                        });
+                        ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                }
+                else
+                {
+                    // Consultar si el prospecto existe en la tabla PregestionCRM.
+                    DataTable dt3 = cg.ConsultarPregestionCRMPorDocumento(Convert.ToInt32(txbDocumento.Text.ToString()));
 
-                    cmd.ExecuteNonQuery();
+                    if (dt3.Rows.Count > 0)
+                    {
+                        string script = @"
+                        Swal.fire({
+                            title: 'Mensaje',
+                            text: 'Ya existe este documento en PregestionCRM.',
+                            icon: 'error'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                            
+                            }
+                        });
+                        ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                    }
+                    else
+                    {
+                        string strQuery = @"INSERT INTO pregestioncrm 
+                        (FechaHoraPregestion, NombreContacto, ApellidoContacto, DocumentoContacto, 
+                        idTipoDocumentoContacto, CelularContacto, idTipoGestion, idCanalVenta, idUsuarioAsigna) 
+                        VALUES (NOW(), @Nombre, @Apellido, @Documento, 
+                        @TipoDoc, @Celular, @TipoGestion, @IdCanalVenta, @IdUsuarioAsigna)";
 
-                    Response.Redirect("prospectoscrm");
+                        string connString = ConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                        string tipoGestion = "4";
+
+                        using (MySqlConnection conn = new MySqlConnection(connString))
+                        {
+                            conn.Open();
+
+                            string nombre = txbNombreContacto.Text.ToString();
+                            string apellido = txbApellidoContacto.Text.ToString();
+                            string documento = txbDocumento.Text.ToString();
+                            string idTipoDocumento = ddlTipoDocumento.SelectedItem.Value.ToString();
+                            string celular = txbCelular.Text.ToString();
+
+                            using (MySqlCommand cmd = new MySqlCommand(strQuery, conn))
+                            {
+                                cmd.Parameters.AddWithValue("@Nombre", nombre);
+                                cmd.Parameters.AddWithValue("@Apellido", apellido);
+                                cmd.Parameters.AddWithValue("@Documento", documento);
+                                cmd.Parameters.AddWithValue("@TipoDoc", idTipoDocumento);
+                                cmd.Parameters.AddWithValue("@Celular", celular);
+                                cmd.Parameters.AddWithValue("@TipoGestion", tipoGestion);
+                                cmd.Parameters.AddWithValue("@IdCanalVenta", Session["idCanalVenta"].ToString());
+                                cmd.Parameters.AddWithValue("@IdUsuarioAsigna", Session["idUsuario"].ToString());
+
+                                cmd.ExecuteNonQuery();
+
+                                Response.Redirect("prospectoscrm");
+                            }
+                        }
+                    }
                 }
             }
         }
