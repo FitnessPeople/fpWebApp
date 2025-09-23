@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -259,44 +260,44 @@ namespace fpWebApp.controles
 
                 if (dt.Rows.Count > 0)
                 {
-                    // Agrupar por día
-                    var datosPorDia = dt.AsEnumerable()
-                        .GroupBy(r => Convert.ToDateTime(r["Fecha"]).Day)
-                        .ToDictionary(
-                            g => g.Key,
-                            g =>
-                            {
-                                decimal metaAcumulada = 0;
-                                decimal ventasAcumuladas = 0;
+                   
+                   var datosPorDia = dt.AsEnumerable()
+                       .GroupBy(r => Convert.ToDateTime(r["Fecha"]).Day)
+                       .ToDictionary(
+                           g => g.Key,
+                           g =>
+                           {
+                               decimal metaAcumulada = 0;
+                               decimal ventasAcumuladas = 0;
 
-                                foreach (var fila in g)
-                                {
-                                    int valorMetaHoy = 0;
+                               foreach (var fila in g)
+                               {
+                                   int valorMetaHoy = 0;
 
-                                    if (perfilUsuario == 4 && tipoSedeUsuario == "Deluxe")
-                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorDeluxeDia"]);
-                                    else if (perfilUsuario == 4 && tipoSedeUsuario == "Premium")
-                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorPremiumDia"]);
-                                    else if (perfilUsuario == 4 && tipoSedeUsuario == "Elite")
-                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorEliteDia"]);
-                                    else if (perfilUsuario == 2)
-                                        valorMetaHoy = Convert.ToInt32(fila["MetaDirectorSedeDia"]);
-                                    else if (perfilUsuario == 4 && idCanalVenta == 12)
-                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorOnlineDia"]);
-                                    else
-                                        valorMetaHoy = Convert.ToInt32(fila["MetaSedeDia"]); //
+                                   if (perfilUsuario == 4 && tipoSedeUsuario == "Deluxe")
+                                       valorMetaHoy = Convert.ToInt32(fila["MetaAsesorDeluxeDia"]);
+                                   else if (perfilUsuario == 4 && tipoSedeUsuario == "Premium")
+                                       valorMetaHoy = Convert.ToInt32(fila["MetaAsesorPremiumDia"]);
+                                   else if (perfilUsuario == 4 && tipoSedeUsuario == "Elite")
+                                       valorMetaHoy = Convert.ToInt32(fila["MetaAsesorEliteDia"]);
+                                   else if (perfilUsuario == 2)
+                                       valorMetaHoy = Convert.ToInt32(fila["MetaDirectorSedeDia"]);
+                                   else if (perfilUsuario == 4 && idCanalVenta == 12)
+                                       valorMetaHoy = Convert.ToInt32(fila["MetaAsesorOnlineDia"]);
+                                   else
+                                       valorMetaHoy = Convert.ToInt32(fila["MetaSedeDia"]); //
 
-                                    metaAcumulada += valorMetaHoy;
-                                    ventasAcumuladas += Convert.ToDecimal(fila["VentaDia"]);
-                                }
+                                   metaAcumulada += valorMetaHoy;
+                                   ventasAcumuladas += Convert.ToDecimal(fila["VentaDia"]);
+                               }
 
-                                return new
-                                {
-                                    Metas = metaAcumulada,
-                                    Ventas = ventasAcumuladas
-                                };
-                            }
-                        );
+                               return new
+                               {
+                                   Metas = metaAcumulada,
+                                   Ventas = ventasAcumuladas
+                               };
+                           }
+                       );
 
                     int diasDelMes = DateTime.DaysInMonth(_anio, _mes);
 
