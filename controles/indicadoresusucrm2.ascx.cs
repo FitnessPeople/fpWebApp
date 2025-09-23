@@ -16,7 +16,7 @@ namespace fpWebApp.controles
         {
             int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
             ConsultarContactosActivosPorUsuario(idUsuario);
-            ObtenerGraficaEstrategiasPorMes();
+            ObtenerGraficaVentasVsMetasAsesor();
         }
 
         private void ConsultarContactosActivosPorUsuario(int idUsuario)
@@ -227,7 +227,7 @@ namespace fpWebApp.controles
         public string metasJson { get; set; }
         public string ventasJson { get; set; }
 
-        private void ObtenerGraficaEstrategiasPorMes()
+        private void ObtenerGraficaVentasVsMetasAsesor()
         {
             int idUsuario = 0;
             int idCanalVenta = 0;
@@ -287,7 +287,7 @@ namespace fpWebApp.controles
                                         valorMetaHoy = Convert.ToInt32(fila["MetaSedeDia"]); //
 
                                     metaAcumulada += valorMetaHoy;
-                                    ventasAcumuladas += Convert.ToDecimal(fila["TotalVendidoDia"]);
+                                    ventasAcumuladas += Convert.ToDecimal(fila["VentaDia"]);
                                 }
 
                                 return new
