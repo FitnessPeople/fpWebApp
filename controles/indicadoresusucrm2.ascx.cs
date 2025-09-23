@@ -279,12 +279,12 @@ namespace fpWebApp.controles
                                         valorMetaHoy = Convert.ToInt32(fila["MetaAsesorPremiumDia"]);
                                     else if (perfilUsuario == 4 && tipoSedeUsuario == "Elite")
                                         valorMetaHoy = Convert.ToInt32(fila["MetaAsesorEliteDia"]);
-                                    else if (perfilUsuario == 2)
+                                    else if (perfilUsuario == 2 || perfilUsuario == 11 || perfilUsuario == 36)
                                         valorMetaHoy = Convert.ToInt32(fila["MetaDirectorSedeDia"]);
                                     else if (perfilUsuario == 4 && idCanalVenta == 12)
                                         valorMetaHoy = Convert.ToInt32(fila["MetaAsesorOnlineDia"]);
                                     else
-                                        valorMetaHoy = Convert.ToInt32(fila["MetaSedeDia"]); //
+                                        valorMetaHoy = Convert.ToInt32(fila["MetaSedeDia"]); 
 
                                     metaAcumulada += valorMetaHoy;
                                     ventasAcumuladas += Convert.ToDecimal(fila["VentaDia"]);
