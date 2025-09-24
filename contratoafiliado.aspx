@@ -26,10 +26,11 @@
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
     <script>
-        var quill;
+        var quill1;
+        var quill2;
 
         document.addEventListener("DOMContentLoaded", function () {
-            quill = new Quill("#editor1", {
+            quill1 = new Quill("#editor1", {
                 theme: "snow",
                 modules: {
                     toolbar: [
@@ -42,7 +43,7 @@
                 }
             });
 
-            quill.on('text-change', function (delta, oldDelta, source) {
+            quill1.on('text-change', function (delta, oldDelta, source) {
                 var editorContenido = document.getElementById("editor1");
                 if (source === 'user') {
                     const scrollTop = editorContenido.scrollTop;
@@ -54,17 +55,17 @@
 
             var contenidoGuardado = document.getElementById('<%= hiddenEditor1.ClientID %>').value;
             if (contenidoGuardado.trim() !== "") {
-                quill.root.innerHTML = contenidoGuardado;
+                quill1.root.innerHTML = contenidoGuardado;
             }
         });
 
         function guardarContenidoEditor1() {
-            var contenido = quill.root.innerHTML;
+            var contenido = quill1.root.innerHTML;
             document.getElementById('<%= hiddenEditor1.ClientID %>').value = contenido;
         }
 
         document.addEventListener("DOMContentLoaded", function () {
-            quill = new Quill("#editor2", {
+            quill2 = new Quill("#editor2", {
                 theme: "snow",
                 modules: {
                     toolbar: [
@@ -77,7 +78,7 @@
                 }
             });
 
-            quill.on('text-change', function (delta, oldDelta, source) {
+            quill2.on('text-change', function (delta, oldDelta, source) {
                 var editorContenido = document.getElementById("editor2");
                 if (source === 'user') {
                     const scrollTop = editorContenido.scrollTop;
@@ -89,12 +90,12 @@
 
             var contenidoGuardado = document.getElementById('<%= hiddenEditor2.ClientID %>').value;
             if (contenidoGuardado.trim() !== "") {
-                quill.root.innerHTML = contenidoGuardado;
+                quill2.root.innerHTML = contenidoGuardado;
             }
         });
 
         function guardarContenidoEditor2() {
-            var contenido = quill.root.innerHTML;
+            var contenido = quill2.root.innerHTML;
             document.getElementById('<%= hiddenEditor2.ClientID %>').value = contenido;
         }
 
