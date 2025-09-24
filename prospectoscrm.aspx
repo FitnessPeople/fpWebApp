@@ -43,18 +43,10 @@
 
     <script>
         function changeClass() {
-            // Activa el menú principal
             var element1 = document.querySelector("#prospectoscrm");
-            if (element1) {
-                element1.classList.add("active");
-            }
-
-            // Despliega el submenú
+            element1.classList.replace("old", "active");
             var element2 = document.querySelector("#crm");
-            if (element2) {
-                element2.classList.add("show"); // en Bootstrap el desplegado es con "show"
-                element2.classList.remove("collapse");
-            }
+            element2.classList.remove("collapse");
         }
     </script>
 </head>
@@ -365,7 +357,7 @@
 
                                                 <asp:GridView ID="gvProspectos" runat="server" AutoGenerateColumns="False"
                                                     AllowPaging="True" PageSize="10" 
-                                                    OnPageIndexChanging="gvProspectos_PageIndexChanging1"
+                                                    OnPageIndexChanging="gvProspectos_PageIndexChanging"
                                                     AllowSorting="true" OnSorting="gvProspectos_Sorting" 
                                                     OnRowCreated="gvProspectos_RowCreated" 
                                                     OnRowDataBound="gvProspectos_RowDataBound" 

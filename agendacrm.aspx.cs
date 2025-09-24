@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -30,9 +31,7 @@ namespace fpWebApp
                     }
                     if (ViewState["Consulta"].ToString() == "1")
                     {
-                        CargarAgenda();
-
-                        //CargarSedes();
+                        //CargarAgenda();
                     }
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
@@ -166,19 +165,25 @@ namespace fpWebApp
             DataTable dt = cg.ConsultarAgendaCRM();
 
             _strEventos = "events: [\r\n";
+            IFormatProvider provider = new CultureInfo("en-US");
 
             if (dt.Rows.Count > 0)
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
+                    DateTime dtIni = Convert.ToDateTime(dt.Rows[i]["FechaProximoCon1"].ToString(), provider);
+                    DateTime dtFin = Convert.ToDateTime(dt.Rows[i]["FechaProximoCon1"].ToString(), provider);
+
+                    string strFechaHoraIni = String.Format("{0:yyyy-MM-ddTHH:mm:ss}", dtIni);
+                    string strFechaHoraFin = String.Format("{0:yyyy-MM-ddTHH:mm:ss}", dtFin);
+
                     _strEventos += "{\r\n";
                     _strEventos += "id: '" + dt.Rows[i]["idContacto"].ToString() + "',\r\n";
                     _strEventos += "doc: '" + dt.Rows[i]["DocumentoAfiliado"].ToString() + "',\r\n";
                     _strEventos += "title: '" + dt.Rows[i]["NombreContacto"].ToString() + "',\r\n";
-                    _strEventos += "start: '" + dt.Rows[i]["FechaProximoCon1"].ToString() + "',\r\n";
-                    _strEventos += "end: '" + dt.Rows[i]["FechaProximoCon1"].ToString() + "',\r\n";
+                    _strEventos += "start: '" + strFechaHoraIni + "',\r\n";
+                    _strEventos += "end: '" + strFechaHoraFin + "',\r\n";
                     _strEventos += "idEstadoCRM: '" + dt.Rows[i]["idEstadoCRM"].ToString() + "',\r\n";
-
 
                     if (dt.Rows[i]["idContacto"].ToString() != "")
                     {
@@ -201,6 +206,7 @@ namespace fpWebApp
 
             AgregarFestivos(_strEventos, "2025");
 
+            _strEventos += "],\r\n";
         }
 
         private string AgregarFestivos(string eventos, string anho)
@@ -379,8 +385,6 @@ namespace fpWebApp
                 _strEventos += "allDay: true,\r\n";
                 _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
-
-                _strEventos += "],\r\n";
             }
 
             if (anho == "2026")

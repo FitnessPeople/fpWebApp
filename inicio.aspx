@@ -445,6 +445,11 @@
             }, 2600);
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+    <script type="text/javascript">
+        const jsConfetti = new JSConfetti()
+        //jsConfetti.addConfetti()
+    </script>
 
 </body>
 

@@ -37,11 +37,11 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
-    <style>
+    <%--<style>
         .fc-event, .fc-event-title {
             color: white !important;
         }
-    </style>
+    </style>--%>
     <style>
         .modal-body {
             max-height: 70vh; /* Usa un 70% del alto de la ventana */
@@ -92,18 +92,10 @@
 
     <script>
         function changeClass() {
-            // Activa el menú principal
             var element1 = document.querySelector("#agendacrm");
-            if (element1) {
-                element1.classList.add("active");
-            }
-
-            // Despliega el submenú
+            element1.classList.replace("old", "active");
             var element2 = document.querySelector("#crm");
-            if (element2) {
-                element2.classList.add("show"); // en Bootstrap el desplegado es con "show"
-                element2.classList.remove("collapse");
-            }
+            element2.classList.remove("collapse");
         }
     </script>
 </head>
@@ -692,10 +684,11 @@
             var calendarEl = document.getElementById('calendar');
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
-                eventClick: function (event, jsEvent, view) {
+                eventClick: function (info) {
+                    //console.log(info.event.doc);
                     $('.modal').modal('hide');
                     var documento = $('#hdnDocumentoAfiliado').val() || '';
-                    window.location.href = 'crmnuevocontacto.aspx?editid=' + encodeURIComponent(event.id) + '&evento=1' + '&documento=' + encodeURIComponent(event.doc);
+                    window.location.href = 'crmnuevocontacto.aspx?editid=' + encodeURIComponent(info.event.id) + '&evento=1' + '&documento=' + encodeURIComponent(info.event.extendedProps.doc);
                 },
                 height: 700,
                 initialView: 'dayGridMonth',

@@ -30,7 +30,7 @@ namespace fpWebApp
                         btnAgregar.Visible = false;
                         if (ViewState["Consulta"].ToString() == "1")
                         {
-                            
+                            ListaProspectos();
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
@@ -38,6 +38,7 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
+                            ListaProspectos();
                             btnAgregar.Visible = true;
                         }
                         if (ViewState["Borrar"].ToString() == "1")
@@ -45,66 +46,11 @@ namespace fpWebApp
                             lnkAsignar.Visible = true;
                         }
                     }
-                    ListaProspectos();
+                    
                     CargarTipoDocumento();
 
                     ltTitulo.Text = "Agregar prospecto";
 
-                    if (Request.QueryString.Count > 0)
-                    {
-                        //rpProspectos.Visible = false;
-                        if (Request.QueryString["editid"] != null)
-                        {
-                            //Editar
-                            clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ConsultarEpsPorId(int.Parse(Request.QueryString["editid"].ToString()));
-                            if (dt.Rows.Count > 0)
-                            {
-                                txbNombreContacto.Text = dt.Rows[0]["NombreEps"].ToString();
-                                btnAgregar.Text = "Actualizar";
-                                ltTitulo.Text = "Actualizar EPS";
-                            }
-                        }
-                        if (Request.QueryString["deleteid"] != null)
-                        {
-                            clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ValidarEpsTablas(int.Parse(Request.QueryString["deleteid"].ToString()));
-                            if (dt.Rows.Count > 0)
-                            {
-                                ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                    "<div class=\"alert alert-danger alert-dismissable\">" +
-                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Esta EPS no se puede borrar, hay empleados asociados a ella." +
-                                    "</div></div>";
-
-                                DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarEpsPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
-                                if (dt1.Rows.Count > 0)
-                                {
-                                    txbNombreContacto.Text = dt1.Rows[0]["NombreEps"].ToString();
-                                    txbNombreContacto.Enabled = false;
-                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                    btnAgregar.Enabled = false;
-                                    ltTitulo.Text = "Borrar EPS";
-                                }
-                                dt1.Dispose();
-                            }
-                            else
-                            {
-                                //Borrar
-                                DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarEpsPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
-                                if (dt1.Rows.Count > 0)
-                                {
-                                    txbNombreContacto.Text = dt1.Rows[0]["NombreEps"].ToString();
-                                    txbNombreContacto.Enabled = false;
-                                    btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                    ltTitulo.Text = "Borrar EPS";
-                                }
-                                dt1.Dispose();
-                            }
-                        }
-                    }
                 }
                 else
                 {
@@ -139,7 +85,7 @@ namespace fpWebApp
         private void ListaProspectos()
         {
             clasesglobales cg = new clasesglobales();
-            //DataTable dt = cg.ConsultarEpss();
+            //DataTable dt = cg.ConsultarProspectosCRM();
 
             string strQuery = "SELECT *, DATEDIFF(FechaHoraPregestion, CURDATE()) AS hacecuanto " +
                 "FROM pregestioncrm pg, tiposgestioncrm tg " +
@@ -266,11 +212,11 @@ namespace fpWebApp
             //CargarCanalesVenta();
             if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
             {
-                //listaAfiliados("Todas");
+                ListaProspectos();
             }
             else
             {
-                //listaAfiliados(Session["idSede"].ToString());
+                ListaProspectos();
             }
         }
 
@@ -309,22 +255,6 @@ namespace fpWebApp
             }
         }
 
-        protected void gvProspectos_PageIndexChanging1(object sender, GridViewPageEventArgs e)
-        {
-            gvProspectos.PageIndex = e.NewPageIndex;
-
-            //CargarCanalesVenta();
-            //CargarSedes();
-            if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
-            {
-                //listaAfiliados("Todas");
-            }
-            else
-            {
-                //listaAfiliados(Session["idSede"].ToString());
-            }
-        }
-
         protected void gvProspectos_Sorting(object sender, GridViewSortEventArgs e)
         {
             // Alternar dirección
@@ -337,48 +267,13 @@ namespace fpWebApp
             }
 
             // Obtener y ordenar datos
-            string strQueryAdd = "";
-            string strQueryAdd2 = "";
-            string strLimit = "5000";
-            string strSede = "";
+            
 
-            if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
-            {
-                strSede = "Todas";
-            }
-            else
-            {
-                strSede = Session["idSede"].ToString();
-            }
 
-            if (strSede != "Todas")
-            {
-                strQueryAdd = "AND a.idSede = " + strSede;
-            }
-
-            //if (ddlDias.SelectedItem.Value.ToString() == "-30")
-            //{
-            //    strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) <= -30 ";
-            //}
-
-            //if (ddlDias.SelectedItem.Value.ToString() == "30")
-            //{
-            //    strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) > -30 AND DATEDIFF(FechaFinalPlan, CURDATE()) < 30 ";
-            //}
-
-            //if (ddlDias.SelectedItem.Value.ToString() == "31")
-            //{
-            //    strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) > 31 ";
-            //}
-
-            string strQuery = "SELECT *, DATEDIFF(FechaFinalPlan, CURDATE()) AS diasquefaltan " +
-                "FROM Afiliados a " +
-                "LEFT JOIN sedes s ON s.idSede = a.idSede " +
-                "LEFT JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado " +
-                "WHERE 1=1 " + strQueryAdd + " " + strQueryAdd2 + " " +
-                "AND a.DocumentoAfiliado NOT IN (SELECT documentoContacto FROM pregestioncrm) " +
-                "ORDER BY DATEDIFF(FechaFinalPlan, CURDATE()) DESC " +
-                "LIMIT " + strLimit + "";
+            string strQuery = "SELECT *, DATEDIFF(FechaHoraPregestion, CURDATE()) AS hacecuanto " +
+                "FROM pregestioncrm pg, tiposgestioncrm tg " +
+                "WHERE pg.idTipoGestion = 4 " +
+                "AND pg.idTipoGestion = tg.idTipoGestionCRM ";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
             DataView dv = dt.DefaultView;

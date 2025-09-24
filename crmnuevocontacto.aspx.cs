@@ -127,7 +127,18 @@ namespace fpWebApp
                                     else
                                         ddlGenero.SelectedItem.Value = "0";
 
-                                    DateTime fechaNacimiento = Convert.ToDateTime(dt.Rows[0]["FecNacAfiliado"]);
+                                    //DateTime fechaNacimiento = Convert.ToDateTime(dt.Rows[0]["FecNacAfiliado"]);
+                                    DateTime fechaNacimiento;
+
+                                    if (dt.Rows[0]["FecNacAfiliado"] == DBNull.Value ||
+                                        string.IsNullOrWhiteSpace(dt.Rows[0]["FecNacAfiliado"].ToString()))
+                                    {
+                                        fechaNacimiento = DateTime.MinValue; // o la fecha por defecto que quieras
+                                    }
+                                    else
+                                    {
+                                        fechaNacimiento = Convert.ToDateTime(dt.Rows[0]["FecNacAfiliado"]);
+                                    }
                                     DateTime hoy = DateTime.Today;
 
                                     if (fechaNacimiento == new DateTime(1900, 1, 1))

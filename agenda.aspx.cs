@@ -160,6 +160,8 @@ namespace fpWebApp
 
             AgregarFestivos(_strEventos, "2025");
 
+            _strEventos += "],\r\n";
+
         }
 
         /// <summary>
@@ -344,8 +346,6 @@ namespace fpWebApp
                 _strEventos += "allDay: true,\r\n";
                 _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
-
-                _strEventos += "],\r\n";
             }
 
             if (anho == "2026")
