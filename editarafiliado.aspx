@@ -343,7 +343,7 @@
                                                 <div class="form-group">
                                                     <label>Teléfono de contacto:</label>
                                                     <asp:TextBox ID="txbTelefonoContacto" CssClass="form-control input-sm" runat="server" placeholder="Teléfono"
-                                                        autocomplete="off" spellcheck="false"></asp:TextBox>
+                                                        spellcheck="false" autocomplete="new-password" autocorrect="off"   autocapitalize="off"></asp:TextBox>
                                                 </div>
                                             </div>
                                         </div>
