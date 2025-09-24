@@ -46,14 +46,14 @@ namespace fpWebApp
                         }
                     }
                     CargarTipoDocumento();
-                    ListaEstadosCRM();
+                    ListaProspectosEmpresas();
                     ListaColoresCRM();
                     ListaIconosCRM();
 
                     ltTitulo.Text = "Agregar prospecto empresa";
                     if (Request.QueryString.Count > 0)
                     {
-                        rpEstadosCRM.Visible = false;
+                        rpEmpresasCRM.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
@@ -251,14 +251,22 @@ namespace fpWebApp
             }
         }
 
-        private void ListaEstadosCRM()
+        private void ListaProspectosEmpresas()
         {
-            DataTable dt = new DataTable();
-            clasesglobales cg = new clasesglobales();
-            dt = cg.ConsultarEstadossCRM();
-            rpEstadosCRM.DataSource = dt;
-            rpEstadosCRM.DataBind();
-            dt.Dispose();
+            try
+            {
+                DataTable dt = new DataTable();
+                clasesglobales cg = new clasesglobales();
+                dt = cg.ConsultarEmpresasCRM();
+                rpEmpresasCRM.DataSource = dt;
+                rpEmpresasCRM.DataBind();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message.ToString();
+            }
+
         }
 
 
@@ -419,6 +427,9 @@ namespace fpWebApp
             return strData;
         }
 
+        protected void rpEmpresasCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
 
+        }
     }
 }
