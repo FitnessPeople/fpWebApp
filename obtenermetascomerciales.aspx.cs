@@ -25,7 +25,7 @@ namespace fpWebApp
             var lista = new List<object>();
             foreach (DataRow row in dt.Rows)
             {
-                int metaDia = Convert.ToInt32(row["metaDia"]);
+                int metaDia = Convert.ToInt32(row["metaSedeDia"]);
                 //int pagado = (row["pagado"] == DBNull.Value || row["pagado"] == null) ? 0 : Convert.ToInt32(row["pagado"]);
                 int pagado = Convert.ToInt32(row["pagado"]);
                 int intDiferencia = Convert.ToInt32(row["metaSedeDia"]) - pagado;
@@ -43,7 +43,7 @@ namespace fpWebApp
                 {
                     id = row["idEstacionalidad"],
                     title = "Meta: $ " + String.Format("{0:N0}", row["metaSedeDia"]),
-                    valor = row["Valor"],
+                    valor = row["Presupuesto"],
                     ventas = Convert.ToInt32(row["pagado"]),
                     description = "Meta: $ " + String.Format("{0:N0}", row["metaSedeDia"]) + "\r\n" +
                     "Ventas: $ " + String.Format("{0:N0}", pagado) + "\r\n" +

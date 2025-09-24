@@ -228,6 +228,7 @@
                                             data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados" >
                                             <thead>
                                                 <tr>
+                                                    <th width="5%" data-type="number">ID</th>
                                                     <th width="25%">Página</th>
                                                     <th width="25%">ASPX</th>
                                                     <th width="20%">Categoría</th>
@@ -239,6 +240,7 @@
                                                 <asp:Repeater ID="rpPaginas" runat="server" OnItemDataBound="rpPaginas_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
+                                                            <td><%# Eval("idPagina") %></td>
                                                             <td><%# Eval("Pagina") %></td>
                                                             <td><%# Eval("NombreAspx") %></td>
                                                             <td><%# Eval("NombreCategoriaPagina") %></td>
