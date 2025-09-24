@@ -982,6 +982,7 @@
     <Content Include="productostienda.aspx" />
     <Content Include="profesiones.aspx" />
     <Content Include="prospectoscrm.aspx" />
+    <Content Include="prospectosempresas.aspx" />
     <Content Include="recuperacionclave.aspx" />
     <Content Include="redactarcorreo.aspx" />
     <Content Include="reporteestrategiascrmmarketing.aspx" />
@@ -1999,6 +2000,13 @@
     </Compile>
     <Compile Include="prospectoscrm.aspx.designer.cs">
       <DependentUpon>prospectoscrm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="prospectosempresas.aspx.cs">
+      <DependentUpon>prospectosempresas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="prospectosempresas.aspx.designer.cs">
+      <DependentUpon>prospectosempresas.aspx</DependentUpon>
     </Compile>
     <Compile Include="recuperacionclave.aspx.cs">
       <DependentUpon>recuperacionclave.aspx</DependentUpon>
