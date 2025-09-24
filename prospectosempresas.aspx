@@ -210,9 +210,9 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <i class="fa fa-user-tie text-info"></i>
-                                                            <label for="nombreContacto" class="col-form-label">Teleéfono:</label>
+                                                            <label for="TelefonoContacto" class="col-form-label">Teleéfono:</label>
                                                             <input type="text" runat="server" id="Text1" class="form-control"
-                                                                oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
+                                                               spellcheck="false" autocomplete="off" />
                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txbNombreContacto"
                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                         </div>
@@ -221,13 +221,15 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <i class="fa fa-envelope text-info"></i>
-                                                            <label for="nombreContacto" class="col-form-label">Correo:</label>
-                                                            <input type="text" runat="server" id="Text2" class="form-control"
-                                                                oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
-                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txbNombreContacto"
+                                                            <label for="correoEmpresa" class="col-form-label">Correo:</label>
+                                                            <input type="email" runat="server" id="txbCorreoEmpresa" class="form-control"
+                                                                style="text-transform: lowercase;" spellcheck="false" autocomplete="off" />
+                                                            <asp:RequiredFieldValidator ID="rfvCorreoEmpresa" runat="server" ControlToValidate="txbCorreoEmpresa"
                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                         </div>
                                                     </div>
+
+
 
 
                                                 </div>
@@ -291,22 +293,19 @@
                                                     <th>Nombre empresa</th>
                                                     <th>Teléfono</th>
                                                     <th>Correo</th>
+                                                    <th>Ciudad</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpEstadosCRM" runat="server" OnItemDataBound="rpEstadosCRM_ItemDataBound">
+                                                <asp:Repeater ID="rpEmpresasCRM" runat="server" OnItemDataBound="rpEmpresasCRM_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
-                                                            <td><%# Eval("NombreEstadoCRM") %></td>
-                                                            <td>
-                                                                <span class='badge badge-<%# Eval("ColorEstadoCRM") %>'>
-                                                                    <%# Eval("ColorEstadoCRM") %>
-                                                                </span>
-
-                                                            </td>
-                                                            <td><%# Eval("IconoMinEstadoCRM") %></td>
-                                                            <td><%# Eval("IconoMinEstadoCRM") %></td>
+                                                            <td><%# Eval("DocumentoEmpresa") %></td>
+                                                            <td><%# Eval("NombreEmpresaCRM") %></td>
+                                                            <td><%# Eval("CelularEmpresa") %></td>
+                                                            <td><%# Eval("CorreoEmpresa") %></td>
+                                                            <td><%# Eval("NombreCiudad") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
@@ -318,10 +317,17 @@
                                             </tbody>
                                         </table>
 
+
+
+
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                                                             <%--    <input type="text" id="inputNit" placeholder="Escribe el NIT" />--%>
+                                          <button id="btnConsultar">Consultar empresa</button>
+                                          <pre id="salida"></pre>
                     </form>
                     <%--Fin Contenido!!!!--%>
                 </div>
@@ -405,7 +411,38 @@
         });
     </script>--%>
 
+  <script>
+      document.getElementById("btnConsultar").addEventListener("click", async () => {
+          const nit = document.getElementById("txbDocumento").value.trim();
+          if (!nit) {
+              alert("Ingresa un NIT");
+              return;
+          }
 
+          const recurso = "f9nk-qw9u"; // dataset
+          const url = `https://www.datos.gov.co/resource/${recurso}.json?identificacion=${encodeURIComponent(nit)}`;
+          console.log("Consultando:", url);
+
+          try {
+              const response = await fetch(url);
+              if (!response.ok) {
+                  throw new Error("HTTP error: " + response.status);
+              }
+              const datos = await response.json();
+              console.log("Datos obtenidos:", datos);
+
+              if (datos.length === 0) {
+                  document.getElementById("salida").textContent = "No se encontró información para ese NIT.";
+              } else {
+                  // Mostrar en formato bonito
+                  document.getElementById("salida").textContent = JSON.stringify(datos, null, 2);
+              }
+          } catch (err) {
+              console.error("Error al consultar:", err);
+              document.getElementById("salida").textContent = "Error: " + err;
+          }
+      });
+  </script>
 
 </body>
 
