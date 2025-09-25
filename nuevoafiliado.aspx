@@ -173,7 +173,7 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Nro. de Documento:</label>
-                                                    <asp:TextBox ID="txbDocumento" CssClass="form-control input-sm" runat="server" placeholder="Documento" 
+                                                    <asp:TextBox ID="txbDocumento" CssClass="form-control input-sm" runat="server" placeholder="#" 
                                                         TabIndex="1" autocomplete="off" spellcheck="false" ></asp:TextBox>
                                                 </div>
                                             </div>

@@ -52,6 +52,9 @@ namespace fpWebApp
                             txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
                             txbFechaFin.Attributes.Add("type", "date");
                             txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+
+                            Session.Add("fechaIni", txbFechaIni.Value.ToString());
+                            Session.Add("fechaFin", txbFechaFin.Value.ToString());
                         }
                     }
                     listaTransacciones();
@@ -279,18 +282,20 @@ namespace fpWebApp
             {
                 // TODO: Arreglar datos quemados
                 string consultaSQL = @"SELECT a.DocumentoAfiliado AS 'Documento de Afiliado', CONCAT_WS(' ', a.NombreAfiliado, a.ApellidoAfiliado) AS 'Nombre de Afiliado', 
-                                       pa.Valor AS 'Valor', pa.idReferencia AS 'Nro. de Referencia', mp.NombreMedioPago AS 'Tipo de Pago', 
-                                       pa.Banco AS 'Entidad Bancaría', pa.FechaHoraPago AS 'Fecha de Pago', pa.estadoPago AS 'Estado', 
-                                       u.NombreUsuario AS 'Nombre de Usuario', cv.NombreCanalVenta AS 'Canal de Venta'
-                                       FROM pagosplanafiliado pa
-                                       INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
-                                       INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
-                                       INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
-                                       INNER JOIN empleados e ON e.DocumentoEmpleado = u.idEmpleado
-                                       INNER JOIN canalesventa cv ON cv.idCanalVenta = e.idCanalVenta 
-                                       INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
-                                       WHERE DATE(pa.FechaHoraPago) BETWEEN '2025-09-01' AND '2025-09-30' 
-                                       ORDER BY pa.FechaHoraPago DESC;";
+                        pa.Valor AS 'Valor', pa.idReferencia AS 'Nro. de Referencia', mp.NombreMedioPago AS 'Tipo de Pago', 
+                        pa.Banco AS 'Entidad Bancaría', pa.FechaHoraPago AS 'Fecha de Pago', pa.estadoPago AS 'Estado', 
+                        u.NombreUsuario AS 'Nombre de Usuario', cv.NombreCanalVenta AS 'Canal de Venta' 
+                        FROM pagosplanafiliado pa
+                        INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
+                        INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
+                        INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
+                        INNER JOIN empleados e ON e.DocumentoEmpleado = u.idEmpleado
+                        INNER JOIN canalesventa cv ON cv.idCanalVenta = e.idCanalVenta 
+                        INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
+                        WHERE DATE(pa.FechaHoraPago) 
+                            BETWEEN '"  + txbFechaIni.Value.ToString() + @"' 
+                            AND '"  + txbFechaFin.Value.ToString() + @"'  
+                        ORDER BY pa.FechaHoraPago DESC;";
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(consultaSQL);
@@ -394,6 +399,8 @@ namespace fpWebApp
 
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
+            Session["fechaIni"] = txbFechaIni.Value.ToString();
+            Session["fechaFin"] = txbFechaFin.Value.ToString();
             listaTransaccionesPorFecha(Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
         }
     }

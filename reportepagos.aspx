@@ -6,6 +6,8 @@
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
 <%@ Register Src="~/controles/indicadores01.ascx" TagPrefix="uc1" TagName="indicadores01" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
+<%@ Register Src="~/controles/indicadoresreportespagos.ascx" TagPrefix="uc1" TagName="indicadoresreportespagos" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -175,6 +177,7 @@
 
                         <div class="row" id="divContenido" runat="server">
                             <div class="col-lg-12">
+                                <uc1:indicadoresreportespagos runat="server" id="indicadoresreportespagos" />
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5>Transacciones: Recibir pagos</h5>
@@ -195,12 +198,21 @@
                                                 <div class="form-group">                                               
                                                     <asp:DropDownList ID="ddlTipoPago" runat="server" AppendDataBoundItems="true"
                                                         DataTextField="TipoDocumento" DataValueField="idTipoDoc" CssClass="form-control input-sm">
-                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                        <%--<asp:ListItem Text="Seleccione" Value=""></asp:ListItem>--%>
                                                         <asp:ListItem Text="Efectivo" Value="1"></asp:ListItem>
                                                         <asp:ListItem Text="Transferencia" Value="2"></asp:ListItem>
                                                         <asp:ListItem Text="Datafono" Value="3"></asp:ListItem>
                                                         <asp:ListItem Text="Pago en línea" Value="4"></asp:ListItem>
                                                  </asp:DropDownList>
+                                                </div>
+                                                <div id="filtros">
+                                                  <label for="filtroDoc">Filtrar por Valor:</label>
+                                                  <select id="filtroDoc">
+                                                    <option value="">-- Todos --</option>
+                                                    <option value="$ 2.">$ 2.000</option>
+                                                    <option value="$ 89">$ 89.000</option>
+                                                    <option value="$ 99">$ 99.000</option>
+                                                  </select>
                                                 </div>
                                             </div>
                                             <div class="col-lg-2">
@@ -232,13 +244,13 @@
                                             data-filter-min="3" data-filter-placeholder="Buscar" 
                                             data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10" 
                                             data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300" 
-                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
+                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados" id="miTabla">
                                             <thead>
                                                 <tr>
                                                     <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">Id Pago</th>
                                                     <th>Documento</th>
                                                     <th>Afiliado</th>
-                                                    <th data-breakpoints="xs sm md">Valor</th>
+                                                    <th data-breakpoints="xs sm md" data-name="Valor">Valor</th>
                                                     <th data-breakpoints="xs sm md">Tipo Pago</th>
                                                     <th data-breakpoints="xs sm md">Referencia</th>
                                                     <th data-breakpoints="xs sm md">Fecha</th>
@@ -276,6 +288,9 @@
                                             </asp:Repeater>
                                             </tbody>
                                         </table>
+
+                                        <p>Total registros: <span id="totalRegistros"></span></p>
+                                        <p>Registros visibles: <span id="registrosVisibles"></span></p>
                                     </div>
                                 </div>
                             </div>
@@ -300,15 +315,90 @@
     <!-- FooTable -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
+    <!-- Jquery Validate -->
+    <script src="js/plugins/validate/jquery.validate.min.js"></script>
+
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
     <!-- Page-Level Scripts -->
     <script>
-        $('.footable').footable();
+        //$('.footable').footable();
+
+        //const miTabla = document.getElementById('miTabla');
+        //const tbody = miTabla.tBodies[0];
+        //const numeroRegistros = tbody.rows.length;
+
+        //console.log("Número total de registros:", numeroRegistros);
     </script>
 
+    <script>
+        //$(function () {
+        //    const $tabla = $('#miTabla');
+
+        //    // Inicializa footable
+        //    $tabla.footable();
+
+        //    // Total fijo (todas las filas del tbody)
+        //    const total = $tabla.find('tbody tr').length;
+        //    $('#totalRegistros').text(total);
+
+        //    // Cada vez que cambie el filtro
+        //    $tabla.on('after.ft.filtering', function (e) {
+        //        const visibles = $tabla.find('tbody tr:not(.footable-filtered)').length;
+        //        $('#registrosVisibles').text(visibles);
+        //    });
+
+        //    // Para que arranque mostrando el valor inicial
+        //    const inicial = $tabla.find('tbody tr:not(.footable-filtered)').length;
+        //    $('#registrosVisibles').text(inicial);
+        //});
+    </script>
+
+    <script>
+        $(function () {
+            const $tabla = $('#miTabla');
+            $tabla.footable(); // Inicializar
+
+            // Obtener instancia de FooTable y su plugin de filtros
+            const ft = $tabla.data('footable');
+            const filtering = ft.use(FooTable.Filtering);
+
+            // Evento change del combo
+            $('#filtroDoc').on('input', function () {
+                const valor_ = $(this).val();
+                console.log(valor_);
+
+                if (valor_ === '') {
+                    // Sin filtro → mostrar todos
+                    filtering.removeFilter('valor');
+                } else {
+                    // Aplicar filtro solo en la columna "Documento"
+                    filtering.addFilter('valor', valor_, ['Valor']);
+                }
+
+                // Redibujar la tabla
+                ft.draw();
+            });
+        });
+    </script>
+
+    <script>
+        $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" })
+
+        $("#form").validate({
+            rules: {
+                ddlTipoPago: {
+                    required: true,
+                },
+            },
+            messages: {
+                ddlTipoPago: "*",
+            }
+        });
+
+    </script>
 
 </body>
 
