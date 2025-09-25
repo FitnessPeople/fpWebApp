@@ -33,7 +33,8 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <asp:TextBox ID="txbEmail" CssClass="form-control" runat="server" placeholder="Usuario" required></asp:TextBox>
+                            <%--<asp:TextBox ID="txbEmail" CssClass="form-control" runat="server" placeholder="Usuario" required></asp:TextBox>--%>
+                            <asp:TextBox ID="txbEmail" CssClass="form-control" runat="server" placeholder="Identificacion" required></asp:TextBox>
                         </div>
                     </div>
                     <div class="col-lg-6">
