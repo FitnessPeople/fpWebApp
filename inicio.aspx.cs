@@ -21,6 +21,19 @@ namespace fpWebApp
                 //Session["usuario"] = "sistemas@fitnesspeoplecmd.com";
                 //Session["idSede"] = "11";
 
+                DateTime fechaObjetivo = Convert.ToDateTime(Session["fechaNac"]);
+                int diaObjetivo = fechaObjetivo.Day;
+                int mesObjetivo = fechaObjetivo.Month;
+
+                DateTime hoy = DateTime.Now;
+
+                if (hoy.Day == diaObjetivo && hoy.Month == mesObjetivo)
+                {
+                    // Ejecutar el script en el navegador
+                    ScriptManager.RegisterStartupScript(this, GetType(),
+                        "confettiScript", "lanzarConfetti();", true);
+                }
+
                 if (Request.QueryString["idPerfil"] != null)
                 {
                     Session["idPerfil"] = Convert.ToInt16(Request.QueryString["idPerfil"].ToString());
@@ -31,7 +44,7 @@ namespace fpWebApp
                 }
 
                 DateTime fechaActual = DateTime.Now;
-                DateTime fechaDestino = new DateTime(2025, 8, 29);
+                DateTime fechaDestino = new DateTime(2025, 10, 31);
                 TimeSpan diferencia = fechaDestino - fechaActual;
                 _strDiaZero = Convert.ToInt32(diferencia.TotalDays).ToString();
 

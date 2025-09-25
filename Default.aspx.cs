@@ -18,21 +18,21 @@ namespace fpWebApp
             bool boolReturnValue = false;
             UserName = UserName.Replace("'", "");
 
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ValidarUsuario(UserName, Password);
+
             //string strQuery = "SELECT u.*, e.*, p.* " +
             //    "FROM Usuarios u " +
             //    "LEFT JOIN Empleados p ON u.idEmpleado = p.DocumentoEmpleado " +
             //    "LEFT JOIN Empresas e ON u.idEmpresa = e.idEmpresa " +
             //    "WHERE u.EmailUsuario = '" + UserName + "' " +
             //    "AND u.ClaveUsuario = '" + Password + "' ";
-            string strQuery = "SELECT u.*, e.*, p.* " +
-                "FROM Usuarios u " +
-                "LEFT JOIN Empleados p ON u.idEmpleado = p.DocumentoEmpleado " +
-                "LEFT JOIN Empresas e ON u.idEmpresa = e.idEmpresa " +
-                "WHERE u.idEmpleado = '" + UserName + "' " +
-                "AND u.ClaveUsuario = '" + Password + "' ";
-
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            //string strQuery = "SELECT u.*, e.*, p.* " +
+            //    "FROM Usuarios u " +
+            //    "LEFT JOIN Empleados p ON u.idEmpleado = p.DocumentoEmpleado " +
+            //    "LEFT JOIN Empresas e ON u.idEmpresa = e.idEmpresa " +
+            //    "WHERE u.idEmpleado = '" + UserName + "' " +
+            //    "AND u.ClaveUsuario = '" + Password + "' ";
 
             string strMensaje;
 
@@ -55,6 +55,9 @@ namespace fpWebApp
                     Session["idPerfil"] = dt.Rows[0]["idPerfil"].ToString();
                     Session["usuario"] = dt.Rows[0]["EmailUsuario"].ToString();
                     //Session["idSede"] = dt.Rows[0]["idSede"].ToString();
+                    Session["fechaNac"] = string.IsNullOrEmpty(dt.Rows[0]["FechaNacEmpleado"]?.ToString())
+                        ? "2001-01-01"
+                        : dt.Rows[0]["FechaNacEmpleado"].ToString();
                     Session["idSede"] = string.IsNullOrEmpty(dt.Rows[0]["idSede"]?.ToString())
                         ? "11"   // Sede Administrativa
                         : dt.Rows[0]["idSede"].ToString();

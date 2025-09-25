@@ -39,6 +39,14 @@
     <script src="js/plugins/flot/jquery.flot.symbol.js"></script>
     <script src="js/plugins/flot/jquery.flot.time.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+    <script type="text/javascript">
+        function lanzarConfetti() {
+            const jsConfetti = new JSConfetti()
+            jsConfetti.addConfetti()
+        }
+    </script>
+
     <script>
         function changeClass() {
             var element = document.querySelector("#inicio");
@@ -70,6 +78,9 @@
                         </li>
                     </ol>
                 </div>
+                <form runat="server" id="form1">
+                    <asp:ScriptManager runat="server" />
+                </form>
                 <div class="col-sm-2">
                 </div>
                 <%--Fin Breadcrumb!!!--%>
@@ -444,11 +455,6 @@
                 toastr.success('Puedes usar CTRL+L para bloquear la aplicación', 'Píldora');
             }, 2600);
         });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
-    <script type="text/javascript">
-        const jsConfetti = new JSConfetti()
-        //jsConfetti.addConfetti()
     </script>
 
 </body>

@@ -262,7 +262,10 @@ namespace fpWebApp
             }
             DateTime dtFechaIni = Convert.ToDateTime(dt.Rows[0]["FechaInicio"].ToString());
             txbFechaInicio.Text = dtFechaIni.ToString("yyyy-MM-dd");
-            DateTime dtFechaFin = Convert.ToDateTime(dt.Rows[0]["FechaFinal"].ToString());
+            string strFechaFin = string.IsNullOrEmpty(dt.Rows[0]["FechaFinal"]?.ToString())
+                ? "2001-01-01" 
+                : dt.Rows[0]["FechaFinal"].ToString();
+            DateTime dtFechaFin = Convert.ToDateTime(strFechaFin);
             txbFechaFinal.Text = dtFechaFin.ToString("yyyy-MM-dd");
             ddlSedes.SelectedIndex = Convert.ToInt32(ddlSedes.Items.IndexOf(ddlSedes.Items.FindByValue(dt.Rows[0]["idSede"].ToString())));
             int sueldo = (dt.Rows[0]["Sueldo"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["Sueldo"]) : 0;
