@@ -10,6 +10,7 @@ using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using System.Windows.Media.Media3D;
 using DocumentFormat.OpenXml.Presentation;
 using NPOI.SS.Formula.Functions;
 
@@ -1167,6 +1168,79 @@ namespace fpWebApp
         }
 
 
+        //protected void ddlAfiliadoOrigen_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    if (ddlAfiliadoOrigen.SelectedItem.Value.ToString() != "")
+        //    {
+        //        clasesglobales cg = new clasesglobales();
+        //        DataTable dt = new DataTable();
+        //        DataTable dt1 = new DataTable();
+        //        DataTable dt2 = new DataTable();
+
+        //        var map = ViewState["DocToIdPreg"] as Dictionary<string, int>;
+        //        if (map != null && map.TryGetValue(ddlAfiliadoOrigen.SelectedValue, out int idPregestion))
+        //        {
+        //            Session["idPregestion"] = idPregestion;
+        //        }
+
+        //        bool esAfiliado = false;
+        //        Session["esAfiliado"] = esAfiliado.ToString();
+
+
+        //        int documento = 0;
+        //        string[] strDocumento = ddlAfiliadoOrigen.SelectedItem.Value.ToString().Split('-');
+        //        if (int.TryParse(strDocumento[0], out documento))
+        //        {
+        //            dt = cg.ConsultarAfiliadoPorDocumento(documento);
+
+        //        }
+
+        //        dt2 = cg.ConsultarPoliticaTiempoLeadCRM(txbDocumento.Text, 6);
+        //        dt1 = cg.ConsultarTipoAfiliadoBasico();
+
+        //        try
+        //        {
+        //            if (dt.Rows.Count > 0)
+        //            {
+        //                esAfiliado = true;
+        //                Session["esAfiliado"] = esAfiliado.ToString();
+        //                txbDocumento.Text = documento.ToString();
+        //                ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
+        //                txbNombreContacto.Value = dt.Rows[0]["NombreAfiliado"].ToString();
+        //                txbApellidoContacto.Value = dt.Rows[0]["ApellidoAfiliado"].ToString();
+        //                if (dt.Rows[0]["idGenero"].ToString() != "")
+        //                    ddlGenero.SelectedIndex = Convert.ToInt32(ddlGenero.Items.IndexOf(ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString())));
+        //                else
+        //                    ddlGenero.SelectedItem.Value = "0";
+
+        //                DateTime fechaNacimiento = Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]);
+        //                DateTime hoy = DateTime.Today;
+
+        //                int edad = hoy.Year - fechaNacimiento.Year;
+        //                if (fechaNacimiento.Date > hoy.AddYears(-edad))
+        //                {
+        //                    edad--;
+        //                }
+
+        //                txbFecNac.Text = fechaNacimiento.ToString("dd/MM/yyyy");
+        //                txbEdad.Text = edad.ToString() + " años";
+        //                txbTelefonoContacto.Value = dt.Rows[0]["CelularAfiliado"].ToString();
+        //                txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString();
+        //                ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString())));
+        //                ddlTiposAfiliado.SelectedValue = "2";//Afiliado en renovación
+
+        //                CargarPlanesAfiliadPregestion(dt.Rows[0]["idAfiliado"].ToString());
+        //            }
+        //            dt.Dispose();
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            string mensaje = ex.Message.ToString();
+        //        }
+        //    }
+
+        //}
+
         protected void ddlAfiliadoOrigen_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlAfiliadoOrigen.SelectedItem.Value.ToString() != "")
@@ -1174,6 +1248,7 @@ namespace fpWebApp
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = new DataTable();
                 DataTable dt1 = new DataTable();
+                DataTable dt2 = new DataTable();
 
                 var map = ViewState["DocToIdPreg"] as Dictionary<string, int>;
                 if (map != null && map.TryGetValue(ddlAfiliadoOrigen.SelectedValue, out int idPregestion))
@@ -1184,7 +1259,6 @@ namespace fpWebApp
                 bool esAfiliado = false;
                 Session["esAfiliado"] = esAfiliado.ToString();
 
-
                 int documento = 0;
                 string[] strDocumento = ddlAfiliadoOrigen.SelectedItem.Value.ToString().Split('-');
                 if (int.TryParse(strDocumento[0], out documento))
@@ -1192,10 +1266,28 @@ namespace fpWebApp
                     dt = cg.ConsultarAfiliadoPorDocumento(documento);
                 }
 
+                
+                dt2 = cg.ConsultarPoliticaTiempoLeadCRM(txbDocumento.Text, 6);
                 dt1 = cg.ConsultarTipoAfiliadoBasico();
 
                 try
-                {
+                {                   
+                    if (dt2.Rows.Count > 0)
+                    {
+                        int idUsuarioAsignado = Convert.ToInt32(dt2.Rows[0]["idUsuario"]);
+                        int idUsuarioActual = Convert.ToInt32(Session["idUsuario"]); 
+
+                        int dias = Convert.ToInt32(dt2.Rows[0]["DiasTranscurridos"]);
+
+                        if (idUsuarioAsignado != idUsuarioActual && dias <= 6)
+                        {                            
+                            ScriptManager.RegisterStartupScript(this, GetType(), "alertGestion",
+                                "Swal.fire('Contacto en gestión', '⚠️ El contacto está siendo gestionado por otro asesor', 'warning');", true);
+                            return;
+                        }
+                    }
+
+                    
                     if (dt.Rows.Count > 0)
                     {
                         esAfiliado = true;
@@ -1204,6 +1296,7 @@ namespace fpWebApp
                         ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
                         txbNombreContacto.Value = dt.Rows[0]["NombreAfiliado"].ToString();
                         txbApellidoContacto.Value = dt.Rows[0]["ApellidoAfiliado"].ToString();
+
                         if (dt.Rows[0]["idGenero"].ToString() != "")
                             ddlGenero.SelectedIndex = Convert.ToInt32(ddlGenero.Items.IndexOf(ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString())));
                         else
@@ -1211,7 +1304,6 @@ namespace fpWebApp
 
                         DateTime fechaNacimiento = Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]);
                         DateTime hoy = DateTime.Today;
-
                         int edad = hoy.Year - fechaNacimiento.Year;
                         if (fechaNacimiento.Date > hoy.AddYears(-edad))
                         {
@@ -1234,7 +1326,28 @@ namespace fpWebApp
                     string mensaje = ex.Message.ToString();
                 }
             }
-
         }
+
+
+        [System.Web.Services.WebMethod]
+        public static string ValidarContacto(string documento)
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt2 = cg.ConsultarPoliticaTiempoLeadCRM(documento, 6);
+
+            if (dt2.Rows.Count > 0)
+            {
+                int idEstadoCRM = Convert.ToInt32(dt2.Rows[0]["idEstadoCRM"]);
+                int dias = Convert.ToInt32(dt2.Rows[0]["DiasTranscurridos"]);
+
+                if ( dias <= 6)
+                {
+                    return "bloqueado";
+                }              
+            }
+            return "ok";
+        }
+
+
     }
 }

@@ -889,7 +889,7 @@
                                                                                 <i class="fa fa-edit"></i></a>
                                                                             <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-left m-r-xs" title="Eliminar"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
-                                                                            <a runat="server" id="btnNuevoAfiliado" href="#" class="btn btn-outline btn-success pull-left" title="Venta"
+                                                                            <a runat="server" id="btnNuevoAfiliado" href="#" class="btn btn-outline btn-success pull-left" title="Vender"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" data-idcrm='<%# Eval("idContacto") %>'
                                                                                 data-documento='<%# Eval("DocumentoAfiliado") %>' onclick="redirigirNuevoAfiliado(this, event)">
                                                                                 <i class="fa fa-id-card"></i></a>
@@ -1605,8 +1605,33 @@
         });
     </script>
 
+ <script>
+    $('#txbDocumento').on('change blur', function () {
+    var documento = $(this).val().trim();
+    if (documento.length === 0) return;
 
-
+    // Llamada AJAX a tu WebMethod
+    $.ajax({
+        type: "POST",
+        url: "crmnuevocontacto.aspx/ValidarContacto",
+        data: JSON.stringify({ documento: documento }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            if (response.d === "bloqueado") {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Atención',
+                    text: 'El contacto está siendo gestionado por otro asesor'
+                });
+            }
+        },
+        error: function () {
+            console.error("Error al validar el contacto");
+        }
+    });
+});
+ </script>
 
 </body>
 
