@@ -127,8 +127,8 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarCiudadesCol();
 
-            ddlCiudadEmpresa.DataSource = dt;
-            ddlCiudadEmpresa.DataBind();
+            ddlCiudades.DataSource = dt;
+            ddlCiudades.DataBind();
 
             dt.Dispose();
         }
@@ -171,10 +171,16 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultartiposDocumento();
-            ddlTipoDocumento.DataSource = dt;
+
+            DataView dv = new DataView(dt);
+            dv.RowFilter = "idTipoDoc = 7";
+
+            ddlTipoDocumento.DataSource = dv;
             ddlTipoDocumento.DataBind();
+
             dt.Dispose();
         }
+
 
 
         private void ListaProspectosEmpresas()
@@ -253,7 +259,7 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.InsertarEmpresaCRM(txbNombreEmpresa.Value , Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
-                            txbDocumento.Text, txbCelularEmpresa.Value, txbCorreoEmpresa.Value, Convert.ToInt32( ddlCiudadEmpresa.SelectedItem.Value.ToString()),
+                            txbDocumento.Text, txbCelularEmpresa.Value, txbCorreoEmpresa.Value, Convert.ToInt32(ddlCiudades.SelectedItem.Value.ToString()),
                             txaObservaciones.Value, Convert.ToInt32(Session["idUsuario".ToString()]),  out salida, out mensaje);
 
                         cg.InsertarLog(Session["idusuario"].ToString(), "prospectos empresas", "Agrega", "El usuario agregó un nuevo prospecto empresa crm: " + "" + ".", "", "");

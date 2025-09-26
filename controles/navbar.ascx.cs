@@ -10,11 +10,20 @@ namespace fpWebApp.controles
         {
             clasesglobales cg = new clasesglobales();
 
+            string etiqueta = Session["Cargo"].ToString();
             DataTable dt = cg.ConsultarUsuarioSedePerfilPorId(Convert.ToInt32(Session["idUsuario"]));
             if (dt.Rows.Count > 0)
             {
                 lblNombrePerfil.Text = dt.Rows[0]["Perfil"].ToString();
-                if (dt.Rows[0]["idCanalVenta"].ToString() == "0" || dt.Rows[0]["idCanalVenta"].ToString() == "12" || dt.Rows[0]["idCanalVenta"].ToString() == "13" || dt.Rows[0]["idCanalVenta"].ToString() == "14") lblNombreSede.Text = dt.Rows[0]["NombreSede"].ToString();
+                if (dt.Rows[0]["idCanalVenta"].ToString() == "1")
+                {
+                    lblNombreSede.Text = dt.Rows[0]["NombreSede"].ToString();                   
+                }
+                else if (dt.Rows[0]["idCanalVenta"].ToString() == "12" || dt.Rows[0]["idCanalVenta"].ToString() == "13" || dt.Rows[0]["idCanalVenta"].ToString() == "14")
+                {
+                    lblNombreSede.Text = dt.Rows[0]["NombreSede"].ToString();
+                    etiqueta = dt.Rows[0]["NombreCanalVenta"].ToString();
+                }
                 else
                     lblNombreSede.Text = dt.Rows[0]["NombreCanalVenta"].ToString();
             }
@@ -22,7 +31,7 @@ namespace fpWebApp.controles
             if (Session["idUsuario"] != null)
             {
                 ltNombreUsuario.Text = Session["NombreUsuario"].ToString();
-                ltCargo.Text = Session["Cargo"].ToString();
+                ltCargo.Text = etiqueta;
                 if (Session["Foto"].ToString() != "")
                 {
                     ltFoto.Text = "<img alt=\"image\" class=\"img-circle circle-border\" width=\"48px\" src=\"img/empleados/" + Session["Foto"].ToString() + "\" />";

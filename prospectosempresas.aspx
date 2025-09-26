@@ -20,9 +20,7 @@
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
-    <%-- <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
-    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
-    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />--%>
+
 
     <link href="css/plugins/dataTables/datatables.min.css" rel="stylesheet" />
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
@@ -78,7 +76,7 @@
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                     <i class="fa fa-city modal-icon" style="color: #1C84C6;"></i>
                     <h4 class="modal-title">Guía para visualizar estados crm</h4>
-                    <small class="font-bold">¡Bienvenido! Te explicamos cómo gestionarlos estados crm de manera clara y eficiente.</small>
+                    <small class="font-bold">¡Bienvenido! Te explicamos cómo gestionar los prospectos de emepresas clara y eficiente.</small>
                 </div>
                 <div class="modal-body">
                     <p>
@@ -186,33 +184,64 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Nro. de Documento</label>
-                                                            <asp:TextBox ID="txbDocumento" ClientIDMode="Static" CssClass="form-control input-sm" runat="server" placeholder="#"></asp:TextBox>
+                                                            <asp:TextBox ID="txbDocumento" TextMode="Number" MaxLength="12" ClientIDMode="Static" CssClass="form-control input-sm" runat="server" placeholder="#"
+                                                                spellcheck="false" autocomplete="new-password" autocorrect="off" autocapitalize="off"></asp:TextBox>
                                                             <asp:RequiredFieldValidator ID="rfvNumDoc" runat="server" ControlToValidate="txbDocumento"
                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic">
+                                                            </asp:RequiredFieldValidator>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <div class="form-group">
+                                                            <label>DV</label>
+                                                            <asp:TextBox ID="txxbDigitoVerificacion" ClientIDMode="Static" CssClass="form-control input-sm" runat="server" placeholder="#"></asp:TextBox>
+                                                            <asp:RequiredFieldValidator ID="rfvDigitoVerfica" runat="server" ControlToValidate="txxbDigitoVerificacion"
+                                                                ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" TextMode="Number" MaxLength="1">
                                                             </asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-sm-12">
                                                         <div class="form-group">
+                                                            <i class="fa fa-building text-info"></i>
+                                                            <label for="NombreEmpresaComercial" class="col-form-label">Nombre comercial:</label>
+                                                            <input type="text" runat="server" id="txbNombreEmpresaComercial" class="form-control"
+                                                                oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
+                                                            <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txbNombreEmpresaComercial"
+                                                                ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
                                                             <i class="fa fa-industry text-info"></i>
-                                                            <label for="nombreContacto" class="col-form-label">Nombre de la empresa:</label>
+                                                            <label for="txbNombreEmpresa" class="col-form-label">Razon social:</label>
                                                             <input type="text" runat="server" id="txbNombreEmpresa" class="form-control"
                                                                 oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
-                                                            <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txbNombreEmpresa"
+                                                            <asp:RequiredFieldValidator ID="rfvNombreEmpresa" runat="server" ControlToValidate="txbNombreEmpresa"
+                                                                ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <i class="fa fa-person text-info"></i>
+                                                            <label for="NombreEmpresaComercial" class="col-form-label">Nombre del contacto:</label>
+                                                            <input type="text" runat="server" id="Text1" class="form-control"
+                                                                oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
+                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txbNombreEmpresaComercial"
                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                         </div>
                                                     </div>
 
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <i class="fa fa-user-tie text-info"></i>
+                                                            <i class="fa fa-phone text-info"></i>
                                                             <label for="txbCelularEmpresa" class="col-form-label">Celular:</label>
                                                             <input type="text" runat="server" id="txbCelularEmpresa" class="form-control"
-                                                                spellcheck="false" autocomplete="off" />
+                                                                spellcheck="false" autocorrect="off" autocapitalize="off" />
                                                             <asp:RequiredFieldValidator ID="rfvCelularEmpresa" runat="server" ControlToValidate="txbCelularEmpresa"
                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                         </div>
@@ -223,7 +252,8 @@
                                                             <i class="fa fa-envelope text-info"></i>
                                                             <label for="correoEmpresa" class="col-form-label">Correo:</label>
                                                             <input type="email" runat="server" id="txbCorreoEmpresa" class="form-control"
-                                                                style="text-transform: lowercase;" spellcheck="false" autocomplete="off" />
+                                                                style="text-transform: lowercase;"
+                                                                spellcheck="false" autocorrect="off" autocapitalize="off" />
                                                             <asp:RequiredFieldValidator ID="rfvCorreoEmpresa" runat="server" ControlToValidate="txbCorreoEmpresa"
                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                         </div>
@@ -232,23 +262,23 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Ciudad:</label>
-                                                            <asp:DropDownList ID="ddlCiudadEmpresa" runat="server"
-                                                                AppendDataBoundItems="true" DataTextField="NombreCiudad"
-                                                                DataValueField="idCiudad" CssClass="chosen-select form-control input-sm">
+                                                            <asp:DropDownList ID="ddlCiudades" runat="server" AppendDataBoundItems="true" DataTextField="NombreCiudad"
+                                                                DataValueField="idCiudad" CssClass="form-control input-sm m-b">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
-                                                            <asp:RequiredFieldValidator ID="rfvCiudad" runat="server" ControlToValidate="ddlCiudadEmpresa"
+                                                            <asp:RequiredFieldValidator ID="rfvCiudad" runat="server" ControlToValidate="ddlCiudades"
                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                         </div>
                                                     </div>
-
-                                                    <div class="form-group">
-                                                        <i class="fas fa-pen text-info"></i>
-                                                        <label for="message-text" class="col-form-label">Observaciones:</label>
-                                                        <textarea id="txaObservaciones" runat="server" rows="3"
-                                                            cssclass="form-control input-sm" class="form-control" placeholder="Escribe tu comentario…"></textarea>
-                                                        <asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ControlToValidate="txaObservaciones"
-                                                            ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <i class="fas fa-pen text-info"></i>
+                                                            <label for="message-text" class="col-form-label">Oferta:</label>
+                                                            <textarea id="txaObservaciones" runat="server" rows="3"
+                                                                cssclass="form-control input-sm" class="form-control" placeholder="Escribe tu comentario…"></textarea>
+                                                            <asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ControlToValidate="txaObservaciones"
+                                                                ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
+                                                        </div>
                                                     </div>
 
                                                 </div>
@@ -335,18 +365,10 @@
                                                 </asp:Repeater>
                                             </tbody>
                                         </table>
-
-
-
-
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <%--    <input type="text" id="inputNit" placeholder="Escribe el NIT" />--%>
-                        <button id="btnConsultar">Consultar empresa</button>
-                        <pre id="salida"></pre>
                     </form>
                     <%--Fin Contenido!!!!--%>
                 </div>
@@ -365,7 +387,6 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
-    <%--<script src="js/plugins/footable/footable.all.min.js"></script>--%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
     <!-- Custom and plugin javascript -->
@@ -373,62 +394,13 @@
     <script src="js/plugins/pace/pace.min.js"></script>
 
 
+
     <!-- Page-Level Scripts -->
     <script>
         $('.footable').footable();
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-    <%--    <script>        
-        $(".select2_demo_1").select2();
-        function formatText(icon) {
-            return $('<span><i class="fa ' + $(icon.element).data('icon') + '" style="color: ' + $(icon.element).data('color') + '"></i> ' + icon.text + '</span>');
-        };
-        $(document).ready(function () {
-            $('#ddlColor').select2({
-                width: '100%',
-                templateSelection: formatText,
-                templateResult: formatText
-            });
-        });
-    </script>--%>
+    <%--    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>--%>
 
-    <%--    <script>
-        $(document).ready(function () {
-            $('#<%= ddlColores.ClientID %>').select2({
-                templateResult: formatOption,
-                templateSelection: formatOption,
-                escapeMarkup: function (m) { return m; } // Permite HTML
-            });
-
-            function formatOption(state) {
-                if (!state.id) return state.text;
-
-                var color = $(state.element).data('color');
-                var icon = $(state.element).data('icon');
-
-                // Aplica color solo al icono
-                return "<span>" + state.text + " <i class='" + icon + "' style='color:" + color + ";'></i></span>";
-
-            }
-        });
-    </script>--%>
-
-    <%--    <script>
-        $(document).ready(function () {
-            $('#<%= ddlIconos.ClientID %>').select2({
-                templateResult: formatOption,
-                templateSelection: formatOption,
-                escapeMarkup: function (m) { return m; }
-            });
-
-            function formatOption(state) {
-                if (!state.id) return state.text;
-                var color = $(state.element).data('color');
-                var icon = $(state.element).data('icon');
-                return "<span><i class='" + icon + "' style='color:" + color + ";'></i> " + state.text + "</span>";
-            }
-        });
-    </script>--%>
 
     <script>
         document.getElementById("btnConsultar").addEventListener("click", async () => {
@@ -460,6 +432,16 @@
                 console.error("Error al consultar:", err);
                 document.getElementById("salida").textContent = "Error: " + err;
             }
+        });
+    </script>
+    <!-- Chosen -->
+    <script src="js/plugins/chosen/chosen.jquery.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const input = document.getElementById("txxbDigitoVerificacion");
+            input.addEventListener("input", function () {
+                this.value = this.value.replace(/[^0-9]/g, '').slice(0, 1);
+            });
         });
     </script>
 

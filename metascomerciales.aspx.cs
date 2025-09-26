@@ -67,7 +67,7 @@ namespace fpWebApp
                                 }
                                 ddlMes.SelectedIndex = Convert.ToInt16(ddlMes.Items.IndexOf(ddlMes.Items.FindByValue(dt.Rows[0]["mes"].ToString())));
                                 ddlAnnio.SelectedIndex = Convert.ToInt16(ddlAnnio.Items.IndexOf(ddlAnnio.Items.FindByValue(dt.Rows[0]["annio"].ToString())));
-                                int presupuesto = (dt.Rows[0]["Valor"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["Valor"]) : 0;
+                                int presupuesto = (dt.Rows[0]["Presupuesto"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["Presupuesto"]) : 0;
                                 txbPresupuesto.Text = presupuesto.ToString("C0", new CultureInfo("es-CO"));
                                 btnAgregar.Text = "Actualizar";
                                 ltTitulo.Text = "Actualizar meta comercial";
@@ -90,7 +90,7 @@ namespace fpWebApp
                                     ddlCanalVenta.SelectedItem.Value = "";
                                 }
                                 ddlCanalVenta.Enabled = false;
-                                txbPresupuesto.Text = dt.Rows[0]["Valor"].ToString();
+                                txbPresupuesto.Text = dt.Rows[0]["Presupuesto"].ToString();
                                 txbPresupuesto.Enabled = false;
                                 ddlMes.Enabled = false;
                                 ddlAnnio.Enabled = false;
@@ -227,7 +227,7 @@ namespace fpWebApp
                         string strNewData = TraerData();
                         cg.InsertarLog(Session["idusuario"].ToString(), "MetasComerciales", "Modifica", "El usuario modificó la nueva meta comercial: " +
                                 "Canal de venta: " + ddlCanalVenta.SelectedItem.Text.ToString() + ", Mes: " + ddlMes.SelectedItem.Text.ToString() + ", " +
-                                "Año: " + ddlAnnio.SelectedItem.Text.ToString() + ", Valor: $ " + Regex.Replace(txbPresupuesto.Text, @"[^\d]", ""), strInitData, strNewData);
+                                "Año: " + ddlAnnio.SelectedItem.Text.ToString() + ", Presupuesto: $ " + Regex.Replace(txbPresupuesto.Text, @"[^\d]", ""), strInitData, strNewData);
                     }
                     if (Request.QueryString["deleteid"] != null)
                     {
@@ -278,7 +278,7 @@ namespace fpWebApp
                     }
                     cg.InsertarLog(Session["idusuario"].ToString(), "MetasComerciales", "Agrega", "El usuario agregó una nueva meta comercial: " +
                         "Canal de venta: " + ddlCanalVenta.SelectedItem.Text.ToString() + ", todo el año, " +
-                        "Año: " + ddlAnnio.SelectedItem.Text.ToString() + ", Valor: $ " + Regex.Replace(txbPresupuesto.Text, @"[^\d]", ""), "", "");
+                        "Año: " + ddlAnnio.SelectedItem.Text.ToString() + ", Presupuesto: $ " + Regex.Replace(txbPresupuesto.Text, @"[^\d]", ""), "", "");
 
                     Response.Redirect("metascomerciales");
                 }
@@ -298,7 +298,7 @@ namespace fpWebApp
 
                             cg.InsertarLog(Session["idusuario"].ToString(), "MetasComerciales", "Agrega", "El usuario agregó una nueva meta comercial: " +
                                 "Canal de venta: " + ddlCanalVenta.SelectedItem.Text.ToString() + ", Mes: " + ddlMes.SelectedItem.Text.ToString() + ", " +
-                                "Año: " + ddlAnnio.SelectedItem.Text.ToString() + ", Valor: $ " + Regex.Replace(txbPresupuesto.Text, @"[^\d]", ""), "", "");
+                                "Año: " + ddlAnnio.SelectedItem.Text.ToString() + ", Presupuesto: $ " + Regex.Replace(txbPresupuesto.Text, @"[^\d]", ""), "", "");
                         }
                         catch (Exception ex)
                         {
@@ -331,7 +331,7 @@ namespace fpWebApp
         {
             try
             {
-                string consultaSQL = @"SELECT mc.idMeta, mc.idCanalVenta, cv.NombreCanalVenta, mc.Mes, mc.Annio, mc.Valor  
+                string consultaSQL = @"SELECT mc.idMeta, mc.idCanalVenta, cv.NombreCanalVenta, mc.Mes, mc.Annio, mc.Presupuesto  
 	                                   FROM metascomerciales mc, canalesventa cv 
                                        WHERE mc.idCanalVenta = cv.idCanalVenta 
 	                                   ORDER BY idCanalVenta, Annio, Mes;";

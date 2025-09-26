@@ -181,7 +181,8 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Tipo de Documento:</label>
-                                                    <asp:DropDownList ID="ddlTipoDocumento" runat="server" AppendDataBoundItems="true" DataTextField="TipoDocumento" DataValueField="idTipoDoc" CssClass="form-control input-sm m-b">
+                                                    <asp:DropDownList ID="ddlTipoDocumento" runat="server" AppendDataBoundItems="true" DataTextField="TipoDocumento" 
+                                                        DataValueField="idTipoDoc" CssClass="form-control input-sm m-b">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
