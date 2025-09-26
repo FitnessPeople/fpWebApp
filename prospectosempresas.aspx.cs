@@ -47,8 +47,7 @@ namespace fpWebApp
                     }
                     CargarTipoDocumento();
                     ListaProspectosEmpresas();
-                    ListaColoresCRM();
-                    ListaIconosCRM();
+                    CargarCiudad();
 
                     ltTitulo.Text = "Agregar prospecto empresa";
                     if (Request.QueryString.Count > 0)
@@ -123,17 +122,15 @@ namespace fpWebApp
             }
         }
 
-        private bool ValidarCiudad(string strNombre)
+        private void CargarCiudad()
         {
-            bool bExiste = false;
-            DataTable dt = new DataTable();
             clasesglobales cg = new clasesglobales();
-            dt = cg.ConsultarCiudadSedePorNombre(strNombre);
-            if (dt.Rows.Count > 0)
-            {
-                bExiste = true;
-            }
-            return bExiste;
+            DataTable dt = cg.ConsultarCiudadesCol();
+
+            ddlCiudadEmpresa.DataSource = dt;
+            ddlCiudadEmpresa.DataBind();
+
+            dt.Dispose();
         }
 
         private bool ValidarEstado(string strNombre)
@@ -178,78 +175,7 @@ namespace fpWebApp
             ddlTipoDocumento.DataBind();
             dt.Dispose();
         }
-        private void ListaColoresCRM()
-        {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("ColorEstadoCRM", typeof(string));
-            dt.Columns.Add("ColorHexaCRM", typeof(string));
-            dt.Columns.Add("IconoMinEstadoCRM", typeof(string));
-            dt.Columns.Add("idEstadoCRM", typeof(string));
 
-            dt.Rows.Add("primary", "#1c84c6", "fa fa-circle", "1");
-            dt.Rows.Add("info", "#23c6c8", "fa fa-circle", "2");
-            dt.Rows.Add("success", "#1ab394", "fa fa-circle", "3");
-            dt.Rows.Add("warning", "#f8ac59", "fa fa-circle", "4");
-            dt.Rows.Add("danger", "#ed5565", "fa fa-circle", "5");
-            dt.Rows.Add("secondary", "#6c757d", "fa fa-circle", "7");
-
-            // Cargar al DropDownList
-            //ddlColores.Items.Clear();
-            //ddlColores.Items.Add(new ListItem("Seleccione", ""));
-
-            foreach (DataRow row in dt.Rows)
-            {
-                ListItem item = new ListItem
-                {
-                    Text = row["ColorEstadoCRM"].ToString(), // solo el texto
-                    Value = row["ColorHexaCRM"].ToString()
-                };
-
-                item.Attributes["style"] = $"color: {row["ColorHexaCRM"]};";
-                item.Attributes["data-icon"] = row["IconoMinEstadoCRM"].ToString();
-                item.Attributes["data-color"] = row["ColorHexaCRM"].ToString();
-
-                //ddlColores.Items.Add(item);
-            }
-        }
-
-        private void ListaIconosCRM()
-        {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("NombreEstadoCRM", typeof(string));
-            dt.Columns.Add("ColorHexaCRM", typeof(string)); // Puedes usar un color genérico o fijo
-            dt.Columns.Add("IconoMinEstadoCRM", typeof(string));
-            dt.Columns.Add("IconoMaxEstadoCRM", typeof(string)); // Nueva columna
-            dt.Columns.Add("idEstadoCRM", typeof(string));
-
-            string colorNeutro = "#6c757d"; // Gris Bootstrap
-
-            // Agregamos el mismo ícono para el min y generamos el max agregando fa-5x
-            dt.Rows.Add("Apuntar", colorNeutro, "fa-solid fa-hand-point-up", "fa-solid fa-hand-point-up fa-5x", "1");
-            dt.Rows.Add("Enviar", colorNeutro, "fa-solid fa-paper-plane", "fa-solid fa-paper-plane fa-5x", "2");
-            dt.Rows.Add("Acuerdo", colorNeutro, "fa-solid fa-handshake", "fa-solid fa-handshake fa-5x", "3");
-            dt.Rows.Add("Sin acuerdo", colorNeutro, "fa-solid fa-handshake-slash", "fa-solid fa-handshake-slash fa-5x", "4");
-            dt.Rows.Add("Orden", colorNeutro, "fa-brands fa-first-order", "fa-solid fa-brands fa-first-order fa-5x", "4");
-
-            //ddlIconos.Items.Clear();
-            //ddlIconos.Items.Add(new ListItem("Seleccione", ""));
-
-            foreach (DataRow row in dt.Rows)
-            {
-                ListItem item = new ListItem
-                {
-                    Text = row["NombreEstadoCRM"].ToString(),
-                    Value = row["IconoMinEstadoCRM"].ToString()
-                };
-
-                item.Attributes["style"] = $"color: {row["ColorHexaCRM"]};";
-                item.Attributes["data-icon"] = row["IconoMinEstadoCRM"].ToString();
-                item.Attributes["data-icon-max"] = row["IconoMaxEstadoCRM"].ToString(); // Atributo adicional
-                item.Attributes["data-color"] = row["ColorHexaCRM"].ToString();
-
-                //ddlIconos.Items.Add(item);
-            }
-        }
 
         private void ListaProspectosEmpresas()
         {
@@ -304,7 +230,7 @@ namespace fpWebApp
                     string respuesta = cg.ActualizarCiudadSede(int.Parse(Request.QueryString["editid"].ToString()), "");
 
                     string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "ciudades sedes", "Modifica", "El usuario modificó la ciudad sede: " +"" + ".", strInitData, strNewData);
+                    cg.InsertarLog(Session["idusuario"].ToString(), "prospecto empresa", "Modifica", "El usuario modificó  el prospecto empresa: " + "" + ".", strInitData, strNewData);
                 }
 
                 if (Request.QueryString["deleteid"] != null)
@@ -315,8 +241,8 @@ namespace fpWebApp
             }
             else
             {
-                if (!ValidarEstado(""))
-                {
+                //if (!ValidarEstado(""))
+                //{
 
                     ////string iconoMin = ddlIconos.SelectedItem.Value;
                     //string htmlIconoMin = $"<i class=\"{iconoMin}\"></i>";
@@ -326,22 +252,24 @@ namespace fpWebApp
 
                     try
                     {
-                        //string respuesta = cg.InsertarEstadoCRM(txbNombreEstado.Text, ddlColores.SelectedItem.Text.ToString(), htmlIconoMax, htmlIconoMin, ddlColores.SelectedItem.Value.ToString(), out salida, out mensaje);
+                        string respuesta = cg.InsertarEmpresaCRM(txbNombreEmpresa.Value , Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
+                            txbDocumento.Text, txbCelularEmpresa.Value, txbCorreoEmpresa.Value, Convert.ToInt32( ddlCiudadEmpresa.SelectedItem.Value.ToString()),
+                            txaObservaciones.Value, Convert.ToInt32(Session["idUsuario".ToString()]),  out salida, out mensaje);
 
-                        cg.InsertarLog(Session["idusuario"].ToString(), "ciudades sedes", "Agrega", "El usuario agregó un nuevo nombre de estado crm: " + "" + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "prospectos empresas", "Agrega", "El usuario agregó un nuevo prospecto empresa crm: " + "" + ".", "", "");
 
                         if (salida)
                         {
                             string script = @"
                                 Swal.fire({
-                                    title: 'El estado CRM se creó de forma exitosa',
+                                    title: 'Empresa prospecto credada correctamente!',
                                     text: '" + mensaje.Replace("'", "\\'") + @"',
                                     icon: 'success',
                                     timer: 3000, // 3 segundos
                                     showConfirmButton: false,
                                     timerProgressBar: true
                                 }).then(() => {
-                                    window.location.href = 'estadoscrm';
+                                    window.location.href = 'prospectosempresas';
                                 });
                                 ";
 
@@ -356,7 +284,7 @@ namespace fpWebApp
                                 icon: 'error'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                  window.location.href = 'estadoscrm';
+                                  window.location.href = 'prospectosempresas';
                                 }
                             });
                         ";
@@ -375,23 +303,23 @@ namespace fpWebApp
                         ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                     }
                     // Response.Redirect("estadoscrm");
-                }
-                else
-                {
-                    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    "Ya existe un estado con ese nombre." +
-                    "</div>";
-                }
+                //}
+                //else
+                //{
+                //    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                //    "Ya existe un prospecto empresa con ese nombre." +
+                //    "</div>";
+                //}
             }
         }
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
             try
             {
-                string consultaSQL = @"SELECT NombreCiudadSede AS 'Sedes en Ciudades'
-		                               FROM ciudadessedes
-		                               ORDER BY NombreCiudadSede;";
+                string consultaSQL = @"SELECT *
+		                               FROM empresascrm
+		                               ORDER BY NombreEmpresaCRM;";
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(consultaSQL);

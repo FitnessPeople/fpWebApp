@@ -200,9 +200,9 @@
                                                         <div class="form-group">
                                                             <i class="fa fa-industry text-info"></i>
                                                             <label for="nombreContacto" class="col-form-label">Nombre de la empresa:</label>
-                                                            <input type="text" runat="server" id="txbNombreContacto" class="form-control"
+                                                            <input type="text" runat="server" id="txbNombreEmpresa" class="form-control"
                                                                 oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
-                                                            <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txbNombreContacto"
+                                                            <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txbNombreEmpresa"
                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                         </div>
                                                     </div>
@@ -210,10 +210,10 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <i class="fa fa-user-tie text-info"></i>
-                                                            <label for="TelefonoContacto" class="col-form-label">Teleéfono:</label>
-                                                            <input type="text" runat="server" id="Text1" class="form-control"
-                                                               spellcheck="false" autocomplete="off" />
-                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txbNombreContacto"
+                                                            <label for="txbCelularEmpresa" class="col-form-label">Celular:</label>
+                                                            <input type="text" runat="server" id="txbCelularEmpresa" class="form-control"
+                                                                spellcheck="false" autocomplete="off" />
+                                                            <asp:RequiredFieldValidator ID="rfvCelularEmpresa" runat="server" ControlToValidate="txbCelularEmpresa"
                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                         </div>
                                                     </div>
@@ -229,13 +229,32 @@
                                                         </div>
                                                     </div>
 
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Ciudad:</label>
+                                                            <asp:DropDownList ID="ddlCiudadEmpresa" runat="server"
+                                                                AppendDataBoundItems="true" DataTextField="NombreCiudad"
+                                                                DataValueField="idCiudad" CssClass="chosen-select form-control input-sm">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                            <asp:RequiredFieldValidator ID="rfvCiudad" runat="server" ControlToValidate="ddlCiudadEmpresa"
+                                                                ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
+                                                        </div>
+                                                    </div>
 
-
+                                                    <div class="form-group">
+                                                        <i class="fas fa-pen text-info"></i>
+                                                        <label for="message-text" class="col-form-label">Observaciones:</label>
+                                                        <textarea id="txaObservaciones" runat="server" rows="3"
+                                                            cssclass="form-control input-sm" class="form-control" placeholder="Escribe tu comentario…"></textarea>
+                                                        <asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ControlToValidate="txaObservaciones"
+                                                            ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
+                                                    </div>
 
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <a href="estadoscrm" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <a href="prospectosempresas" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
                                                         OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
@@ -325,9 +344,9 @@
                             </div>
                         </div>
 
-                                                             <%--    <input type="text" id="inputNit" placeholder="Escribe el NIT" />--%>
-                                          <button id="btnConsultar">Consultar empresa</button>
-                                          <pre id="salida"></pre>
+                        <%--    <input type="text" id="inputNit" placeholder="Escribe el NIT" />--%>
+                        <button id="btnConsultar">Consultar empresa</button>
+                        <pre id="salida"></pre>
                     </form>
                     <%--Fin Contenido!!!!--%>
                 </div>
@@ -373,7 +392,7 @@
         });
     </script>--%>
 
-<%--    <script>
+    <%--    <script>
         $(document).ready(function () {
             $('#<%= ddlColores.ClientID %>').select2({
                 templateResult: formatOption,
@@ -394,7 +413,7 @@
         });
     </script>--%>
 
-<%--    <script>
+    <%--    <script>
         $(document).ready(function () {
             $('#<%= ddlIconos.ClientID %>').select2({
                 templateResult: formatOption,
@@ -411,38 +430,38 @@
         });
     </script>--%>
 
-  <script>
-      document.getElementById("btnConsultar").addEventListener("click", async () => {
-          const nit = document.getElementById("txbDocumento").value.trim();
-          if (!nit) {
-              alert("Ingresa un NIT");
-              return;
-          }
+    <script>
+        document.getElementById("btnConsultar").addEventListener("click", async () => {
+            const nit = document.getElementById("txbDocumento").value.trim();
+            if (!nit) {
+                alert("Ingresa un NIT");
+                return;
+            }
 
-          const recurso = "f9nk-qw9u"; // dataset
-          const url = `https://www.datos.gov.co/resource/${recurso}.json?identificacion=${encodeURIComponent(nit)}`;
-          console.log("Consultando:", url);
+            const recurso = "f9nk-qw9u"; // dataset
+            const url = `https://www.datos.gov.co/resource/${recurso}.json?identificacion=${encodeURIComponent(nit)}`;
+            console.log("Consultando:", url);
 
-          try {
-              const response = await fetch(url);
-              if (!response.ok) {
-                  throw new Error("HTTP error: " + response.status);
-              }
-              const datos = await response.json();
-              console.log("Datos obtenidos:", datos);
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error("HTTP error: " + response.status);
+                }
+                const datos = await response.json();
+                console.log("Datos obtenidos:", datos);
 
-              if (datos.length === 0) {
-                  document.getElementById("salida").textContent = "No se encontró información para ese NIT.";
-              } else {
-                  // Mostrar en formato bonito
-                  document.getElementById("salida").textContent = JSON.stringify(datos, null, 2);
-              }
-          } catch (err) {
-              console.error("Error al consultar:", err);
-              document.getElementById("salida").textContent = "Error: " + err;
-          }
-      });
-  </script>
+                if (datos.length === 0) {
+                    document.getElementById("salida").textContent = "No se encontró información para ese NIT.";
+                } else {
+                    // Mostrar en formato bonito
+                    document.getElementById("salida").textContent = JSON.stringify(datos, null, 2);
+                }
+            } catch (err) {
+                console.error("Error al consultar:", err);
+                document.getElementById("salida").textContent = "Error: " + err;
+            }
+        });
+    </script>
 
 </body>
 

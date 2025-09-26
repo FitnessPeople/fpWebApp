@@ -7557,8 +7557,8 @@ int valor, string observaciones, string estado)
             return dt;
         }
 
-        public string InsertarEmpresaCRM(string nombreEmpresaCRM, string paginaWeb, int idContacto, int idUsuario,
-         string observacionesEmp, string estadoEmpresaCRM, int idCiudad, out bool respuesta, out string mensaje)
+        public string InsertarEmpresaCRM(string nombreEmpresaCRM, int idTipoDoc , string docEmpresa, string celularEmpresa,
+         string correoEmpresa, int idCiudad, string observacionesEmp, int idUsuario, out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -7572,12 +7572,13 @@ int valor, string observaciones, string estado)
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_nombre_empresa_crm", nombreEmpresaCRM);
-                        cmd.Parameters.AddWithValue("@p_paginaWeb", paginaWeb);
-                        cmd.Parameters.AddWithValue("@p_id_contacto", idContacto);
-                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
-                        cmd.Parameters.AddWithValue("@p_observaciones_emp", observacionesEmp);
-                        cmd.Parameters.AddWithValue("@p_estado_empresa_crm", estadoEmpresaCRM);
+                        cmd.Parameters.AddWithValue("@p_id_tipo_doc", idTipoDoc);
+                        cmd.Parameters.AddWithValue("@p_doc_empresa", docEmpresa);
+                        cmd.Parameters.AddWithValue("@p_celular_empresa", celularEmpresa);
+                        cmd.Parameters.AddWithValue("@p_correo_empresa", correoEmpresa);
                         cmd.Parameters.AddWithValue("@p_id_ciudad", idCiudad);
+                        cmd.Parameters.AddWithValue("@p_observsciones_emp", observacionesEmp);          
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);          
 
 
                         // Parámetro de salida
@@ -7602,8 +7603,8 @@ int valor, string observaciones, string estado)
             return mensaje;
         }
 
-        public string ActualizarEmpresaCRM(int idEmpresaCRM, string nombreEmpresaCRM, string paginaWeb, int idContacto, int idUsuario,
-        string observacionesEmp, string estadoEmpresaCRM, int idCiudad, out bool respuesta, out string mensaje)
+        public string ActualizarEmpresaCRM(int idEmpresaCRM, string nombreEmpresaCRM, int idTipoDoc, string docEmpresa, string celularEmpresa,
+         string correoEmpresa, int idCiudad, string observacionesEmp, int idUsuario, out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -7618,12 +7619,12 @@ int valor, string observaciones, string estado)
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_id_empresa_crm", idEmpresaCRM);
                         cmd.Parameters.AddWithValue("@p_nombre_empresa_crm", nombreEmpresaCRM);
-                        cmd.Parameters.AddWithValue("@p_paginaWeb", paginaWeb);
-                        cmd.Parameters.AddWithValue("@p_id_contacto", idContacto);
-                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
-                        cmd.Parameters.AddWithValue("@p_observaciones_emp", observacionesEmp);
-                        cmd.Parameters.AddWithValue("@p_estado_empresa_crm", estadoEmpresaCRM);
+                        cmd.Parameters.AddWithValue("@p_id_tipo_doc", idTipoDoc);
+                        cmd.Parameters.AddWithValue("@p_doc_empresa", docEmpresa);
+                        cmd.Parameters.AddWithValue("@p_celular_empresa", celularEmpresa);
+                        cmd.Parameters.AddWithValue("@p_correo_empresa", correoEmpresa);
                         cmd.Parameters.AddWithValue("@p_id_ciudad", idCiudad);
+                        cmd.Parameters.AddWithValue("@p_observsciones_emp", observacionesEmp);
 
 
                         // Parámetro de salida
@@ -7666,22 +7667,17 @@ int valor, string observaciones, string estado)
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         cmd.Parameters.AddWithValue("@p_id_empresa_crm", idEmpresaCMR);
-                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
-                        cmd.Parameters.AddWithValue("@p_usuario", Usuario);
 
-                        // ParámetroS de salida
+                        // Parámetro de salida
                         MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
                         pMensaje.Direction = ParameterDirection.Output;
                         cmd.Parameters.Add(pMensaje);
 
-                        MySqlParameter pRespuesta = new MySqlParameter("@p_respuesta", MySqlDbType.Bit);
-                        pRespuesta.Direction = ParameterDirection.Output;
-                        cmd.Parameters.Add(pRespuesta);
-
                         cmd.ExecuteNonQuery();
-
                         mensaje = pMensaje.Value?.ToString();
-                        respuesta = Convert.ToBoolean(pRespuesta.Value);
+
+                        if (mensaje == "OK") respuesta = true;
+                        else respuesta = false;
                     }
                 }
             }
