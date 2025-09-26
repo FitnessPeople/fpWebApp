@@ -13,7 +13,6 @@ namespace fpWebApp
 {
     public partial class reportepagos : System.Web.UI.Page
     {
-        public string valorTotal { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
             CultureInfo culture = new CultureInfo("es-CO");
@@ -53,12 +52,11 @@ namespace fpWebApp
                             txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
                             txbFechaFin.Attributes.Add("type", "date");
                             txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-
-                            Session.Add("fechaIni", txbFechaIni.Value.ToString());
-                            Session.Add("fechaFin", txbFechaFin.Value.ToString());
                         }
                     }
                     listaTransacciones();
+                    VentasWeb();
+                    VentasCounter();
                 }
                 else
                 {
@@ -99,9 +97,9 @@ namespace fpWebApp
             rpPagos.DataSource = dt;
             rpPagos.DataBind();
             dt.Dispose();
-            //Session["valorTotal"] = valorTotal;
-            indicadoresreportespagos.MiValor = valorTotal.ToString();
-            Session["totalRegistros"] = totalRegistros;
+
+            ltCuantos1.Text = "$ " + String.Format("{0:N0}", valorTotal);
+            ltRegistros1.Text = totalRegistros.ToString();
         }
 
         private void listaTransaccionesPorFecha(int tipoPago, int valor, string fechaIni, string fechaFin)
@@ -113,8 +111,96 @@ namespace fpWebApp
             //ltValortotalWompi.Text = valorTotal.ToString("C0");
             dt.Dispose();
 
-            indicadoresreportespagos.MiValor = valorTotal.ToString();
-            //Session["totalRegistros"] = totalRegistros;
+            ltCuantos1.Text = "$ " + String.Format("{0:N0}", valorTotal);
+            ltRegistros1.Text = "";
+        }
+
+        private void VentasWeb()
+        {
+            string strQuery = "";
+            if (rblValor.SelectedValue.ToString() == "")
+            {
+                strQuery = @"SELECT  
+                SUM(pa.Valor) sumatoria 
+                FROM pagosplanafiliado pa
+                    INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
+                    INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
+                    INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
+                    INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
+                WHERE pa.idMedioPago = 4 
+                AND DATE(pa.FechaHoraPago) 
+                BETWEEN IFNULL(NULLIF('2025-09-01', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
+                AND IFNULL(NULLIF('2025-09-30', ''), CURDATE()) 
+                AND u.idUsuario = 156 ";
+            }
+            else
+            {
+                strQuery = @"SELECT  
+                SUM(pa.Valor) sumatoria 
+                FROM pagosplanafiliado pa
+                    INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
+                    INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
+                    INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
+                    INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
+                WHERE pa.idMedioPago = 4 
+                AND DATE(pa.FechaHoraPago) 
+                BETWEEN IFNULL(NULLIF('2025-09-01', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
+                AND IFNULL(NULLIF('2025-09-30', ''), CURDATE()) 
+                AND u.idUsuario = 156 
+                AND pa.Valor = " + rblValor.SelectedValue.ToString();
+            }
+                
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+            
+            dt.Dispose();
+
+            ltCuantos2.Text = "$ " + String.Format("{0:N0}", Convert.ToInt32(dt.Rows[0]["sumatoria"].ToString()));
+            ltRegistros2.Text = "";
+        }
+
+        private void VentasCounter()
+        {
+            string strQuery = "";
+            if (rblValor.SelectedValue.ToString() == "")
+            {
+                strQuery = @"SELECT  
+                SUM(pa.Valor) sumatoria 
+                FROM pagosplanafiliado pa
+                    INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
+                    INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
+                    INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
+                    INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
+                WHERE pa.idMedioPago = 4 
+                AND DATE(pa.FechaHoraPago) 
+                BETWEEN IFNULL(NULLIF('2025-09-01', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
+                AND IFNULL(NULLIF('2025-09-30', ''), CURDATE()) 
+                AND u.idUsuario = 152 ";
+            }
+            else
+            {
+                strQuery = @"SELECT  
+                SUM(pa.Valor) sumatoria 
+                FROM pagosplanafiliado pa
+                    INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
+                    INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
+                    INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
+                    INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
+                WHERE pa.idMedioPago = 4 
+                AND DATE(pa.FechaHoraPago) 
+                BETWEEN IFNULL(NULLIF('2025-09-01', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
+                AND IFNULL(NULLIF('2025-09-30', ''), CURDATE()) 
+                AND u.idUsuario = 152
+                AND pa.Valor = " + rblValor.SelectedValue.ToString();
+            }
+                
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            dt.Dispose();
+
+            ltCuantos3.Text = "$ " + String.Format("{0:N0}", Convert.ToInt32(dt.Rows[0]["sumatoria"].ToString()));
+            ltRegistros3.Text = "";
         }
 
         private string listarDetalle(int idAfiliadoPlan)
@@ -406,8 +492,6 @@ namespace fpWebApp
 
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
-            //Session["fechaIni"] = txbFechaIni.Value.ToString();
-            //Session["fechaFin"] = txbFechaFin.Value.ToString();
             if (rblValor.SelectedItem != null)
             {
                 listaTransaccionesPorFecha(

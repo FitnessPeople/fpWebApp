@@ -6,7 +6,7 @@
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
 <%@ Register Src="~/controles/indicadores01.ascx" TagPrefix="uc1" TagName="indicadores01" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
-<%@ Register Src="~/controles/indicadoresreportespagos.ascx" TagPrefix="uc1" TagName="indicadoresreportespagos" %>
+<%--<%@ Register Src="~/controles/indicadoresreportespagos.ascx" TagPrefix="uc1" TagName="indicadoresreportespagos" %>--%>
 
 
 <!DOCTYPE html>
@@ -177,7 +177,92 @@
 
                         <div class="row" id="divContenido" runat="server">
                             <div class="col-lg-12">
-                                <uc1:indicadoresreportespagos runat="server" ID="indicadoresreportespagos"/>
+                                <%--<uc1:indicadoresreportespagos runat="server" ID="indicadoresreportespagos"/>--%>
+
+                                <!-- INDICADORES INICIO -->
+
+                                <%--
+                                    ****************
+                                    Indicadores: 
+                                        Total ventas
+                                        Total ventas por web
+                                        Total ventas por counter
+                                        Total ventas por plan
+                                    ****************
+                                --%>
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title">
+                                                <span class="label label-success pull-right">Mes actual</span>
+                                                <h5>Ventas totales</h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h1 class="no-margins">
+                                                    <asp:Literal ID="ltCuantos1" runat="server"></asp:Literal></h1>
+                                                <div class="stat-percent font-bold text-success">
+                                                    <asp:Literal ID="ltRegistros1" runat="server"></asp:Literal>
+                                                    registros <%--<i class="fa fa-bolt"></i>--%>
+                                                </div>
+                                                <small>&nbsp;</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title">
+                                                <span class="label label-info pull-right">Mes actual</span>
+                                                <h5>Ventas Web</h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h1 class="no-margins">
+                                                    <asp:Literal ID="ltCuantos2" runat="server"></asp:Literal></h1>
+                                                <div class="stat-percent font-bold text-success">
+                                                    <asp:Literal ID="ltRegistros2" runat="server"></asp:Literal>
+                                                    registros <%--<i class="fa fa-bolt"></i>--%>
+                                                </div>
+                                                <small>&nbsp;</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title">
+                                                <span class="label label-primary pull-right">Mes actual</span>
+                                                <h5>Ventas Counter</h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h1 class="no-margins">
+                                                    <asp:Literal ID="ltCuantos3" runat="server"></asp:Literal></h1>
+                                                <div class="stat-percent font-bold text-success">
+                                                    <asp:Literal ID="ltRegistros3" runat="server"></asp:Literal>
+                                                    registros <%--<i class="fa fa-bolt"></i>--%>
+                                                </div>
+                                                <small>&nbsp;</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title">
+                                                <span class="label label-danger pull-right">Mes actual</span>
+                                                <h5>Ventas </h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h1 class="no-margins">
+                                                    <asp:Literal ID="ltCuantos4" runat="server"></asp:Literal></h1>
+                                                <div class="stat-percent font-bold text-success">
+                                                    <asp:Literal ID="ltRegistros4" runat="server"></asp:Literal>
+                                                    registros <%--<i class="fa fa-bolt"></i>--%>
+                                                </div>
+                                                <small>&nbsp;</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- INDICADORES FINAL -->
+
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5>Transacciones: Recibir pagos</h5>
@@ -288,8 +373,8 @@
                                             </tbody>
                                         </table>
 
-                                        <p>Total registros: <span id="totalRegistros"></span></p>
-                                        <p>Registros visibles: <span id="registrosVisibles"></span></p>
+                                        <%--<p>Total registros: <span id="totalRegistros"></span></p>
+                                        <p>Registros visibles: <span id="registrosVisibles"></span></p>--%>
                                     </div>
                                 </div>
                             </div>
