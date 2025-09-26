@@ -135,13 +135,21 @@
 
                             <div class="row">
                               <div class="col-lg-6">
-                               <div class="col-md-4"> 
+                                  <div class="col-md-3">
+                                      <div id="filtros">
+                                        <asp:RadioButtonList ID="rblValor" runat="server">
+                                            <asp:ListItem Value="2000" Text="2000"></asp:ListItem>
+                                            <asp:ListItem Value="89000" Text="89000"></asp:ListItem>
+                                        </asp:RadioButtonList>
+                                    </div>
+                                  </div>
+                               <div class="col-md-3"> 
                                    <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker"/>                              
                                </div>
-                               <div class="col-md-4">                                    
+                               <div class="col-md-3">                                    
                                  <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker"  />
                                </div>
-                               <div class="col-md-4">
+                               <div class="col-md-3">
                                 <label><br/></label>
                                     <asp:Button ID="btnFiltrar" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrar_Click" />
                               </div>

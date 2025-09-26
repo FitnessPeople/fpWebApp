@@ -5,6 +5,7 @@ namespace fpWebApp.controles
 {
     public partial class indicadoresreportespagos : System.Web.UI.UserControl
     {
+        public string MiValor { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
             TotalVentas();
@@ -15,18 +16,17 @@ namespace fpWebApp.controles
 
         private void TotalVentas()
         {
-            // OJO pasar a Procedimiento Almacenado
-            string strQuery = @"SELECT SUM(pa.Valor) AS totalventas 
-                FROM pagosplanafiliado pa
-                WHERE DATE(pa.FechaHoraPago) 
-                    BETWEEN '" + Session["fechaIni"].ToString() + @"' 
-                    AND '" + Session["fechaFin"].ToString() + @"' ";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            //// OJO pasar a Procedimiento Almacenado
+            //string strQuery = @"SELECT SUM(pa.Valor) AS totalventas 
+            //    FROM pagosplanafiliado pa
+            //    WHERE DATE(pa.FechaHoraPago) 
+            //        BETWEEN '" + Session["fechaIni"].ToString() + @"' 
+            //        AND '" + Session["fechaFin"].ToString() + @"' ";
+            //clasesglobales cg = new clasesglobales();
+            //DataTable dt = cg.TraerDatos(strQuery);
 
-            ltCuantos1.Text = String.Format("{0:C0}", dt.Rows[0]["totalventas"].ToString());
-
-            dt.Dispose();
+            ltCuantos1.Text = "$ " + String.Format("{0:N0}", MiValor);
+            ltRegistros.Text = Session["totalRegistros"].ToString();
         }
     }
 }

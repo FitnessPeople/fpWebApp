@@ -13,6 +13,7 @@ namespace fpWebApp
 {
     public partial class reportepagos : System.Web.UI.Page
     {
+        public string valorTotal { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
             CultureInfo culture = new CultureInfo("es-CO");
@@ -98,16 +99,22 @@ namespace fpWebApp
             rpPagos.DataSource = dt;
             rpPagos.DataBind();
             dt.Dispose();
+            //Session["valorTotal"] = valorTotal;
+            indicadoresreportespagos.MiValor = valorTotal.ToString();
+            Session["totalRegistros"] = totalRegistros;
         }
 
-        private void listaTransaccionesPorFecha(int tipoPago, string fechaIni, string fechaFin)
+        private void listaTransaccionesPorFecha(int tipoPago, int valor, string fechaIni, string fechaFin)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, fechaIni, fechaFin, out decimal valorTotal);
+            DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, valor, fechaIni, fechaFin, out decimal valorTotal);
             rpPagos.DataSource = dt;
             rpPagos.DataBind();
             //ltValortotalWompi.Text = valorTotal.ToString("C0");
             dt.Dispose();
+
+            indicadoresreportespagos.MiValor = valorTotal.ToString();
+            //Session["totalRegistros"] = totalRegistros;
         }
 
         private string listarDetalle(int idAfiliadoPlan)
@@ -399,9 +406,16 @@ namespace fpWebApp
 
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
-            Session["fechaIni"] = txbFechaIni.Value.ToString();
-            Session["fechaFin"] = txbFechaFin.Value.ToString();
-            listaTransaccionesPorFecha(Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+            //Session["fechaIni"] = txbFechaIni.Value.ToString();
+            //Session["fechaFin"] = txbFechaFin.Value.ToString();
+            if (rblValor.SelectedItem != null)
+            {
+                listaTransaccionesPorFecha(
+                    Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()),
+                    Convert.ToInt32(rblValor.SelectedValue.ToString()),
+                    txbFechaIni.Value.ToString(),
+                    txbFechaFin.Value.ToString());
+            }
         }
     }
 }

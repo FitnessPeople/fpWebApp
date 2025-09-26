@@ -24,6 +24,15 @@ namespace fpWebApp.controles
         protected global::System.Web.UI.WebControls.Literal ltCuantos1;
 
         /// <summary>
+        /// Control ltRegistros.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltRegistros;
+
+        /// <summary>
         /// Control ltCuantos2.
         /// </summary>
         /// <remarks>

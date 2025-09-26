@@ -72,27 +72,27 @@
                     <p>
                         <b>Paso 1: Filtra los pagos</b><br />
                         Usa el buscador para encontrar pagos específicos.<br />
-                        <i class="fa-solid fa-magnifying-glass"></i> Filtra por: 
-                        <i class="fa-solid fa-hashtag" style="color: #0D6EFD;"></i> <b>ID Pago</b>, 
-                        <i class="fa-solid fa-address-card" style="color: #0D6EFD;"></i> <b>Documento</b>, 
-                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Afiliado</b> o 
-                        <i class="fa-solid fa-sack-dollar" style="color: #0D6EFD;"></i> <b>Valor</b><br />
-                        <i class="fa-solid fa-money-check-dollar" style="color: #0D6EFD;"></i> <b>Tipo de Pago</b>
-                        <i class="fa-solid fa-money-check-dollar" style="color: #0D6EFD;"></i> <b>Referencia</b>
-                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i> <b>Fecha</b>
-                        <i class="fa-solid fa-circle" style="color: #0D6EFD;"></i> <b>Estado </b>
-                        <i class="fa-solid fa-user-group" style="color: #0D6EFD;"></i> <b>Usuario</b>
-                        <i class="fa-solid fa-phone" style="color: #0D6EFD;"></i> <b>Canal</b>
-                        <i class="fa-solid fa-receipt" style="color: #0D6EFD;"></i> <b>Detalle.</b><br />
-                        <i class="fa-solid fa-magnifying-glass"></i> Filtrar por: <b>Tipo de pago</b><br />
+                        <i class="fa-solid fa-magnifying-glass"></i>Filtra por: 
+                        <i class="fa-solid fa-hashtag" style="color: #0D6EFD;"></i><b>ID Pago</b>, 
+                        <i class="fa-solid fa-address-card" style="color: #0D6EFD;"></i><b>Documento</b>, 
+                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i><b>Afiliado</b> o 
+                        <i class="fa-solid fa-sack-dollar" style="color: #0D6EFD;"></i><b>Valor</b><br />
+                        <i class="fa-solid fa-money-check-dollar" style="color: #0D6EFD;"></i><b>Tipo de Pago</b>
+                        <i class="fa-solid fa-money-check-dollar" style="color: #0D6EFD;"></i><b>Referencia</b>
+                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i><b>Fecha</b>
+                        <i class="fa-solid fa-circle" style="color: #0D6EFD;"></i><b>Estado </b>
+                        <i class="fa-solid fa-user-group" style="color: #0D6EFD;"></i><b>Usuario</b>
+                        <i class="fa-solid fa-phone" style="color: #0D6EFD;"></i><b>Canal</b>
+                        <i class="fa-solid fa-receipt" style="color: #0D6EFD;"></i><b>Detalle.</b><br />
+                        <i class="fa-solid fa-magnifying-glass"></i>Filtrar por: <b>Tipo de pago</b><br />
                         En el menú desplegable, selecciona:<br />
-                        <i class="fa-solid fa-money-bill" style="color: #0D6EFD;"></i> <b>Efectivo</b>
-                        <i class="fa-solid fa-money-bill-transfer" style="color: #0D6EFD;"></i> <b>Transferencia</b>
-                        <i class="fa-solid fa-money-check-dollar" style="color: #0D6EFD;"></i> <b>Datáfono</b>
-                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i> <b>Wompi</b><br />
-                        <i class="fa-solid fa-magnifying-glass"></i> Filtrar por: <b>Rango de fechas</b><br />
+                        <i class="fa-solid fa-money-bill" style="color: #0D6EFD;"></i><b>Efectivo</b>
+                        <i class="fa-solid fa-money-bill-transfer" style="color: #0D6EFD;"></i><b>Transferencia</b>
+                        <i class="fa-solid fa-money-check-dollar" style="color: #0D6EFD;"></i><b>Datáfono</b>
+                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i><b>Wompi</b><br />
+                        <i class="fa-solid fa-magnifying-glass"></i>Filtrar por: <b>Rango de fechas</b><br />
                         Usa los calendarios para seleccionar:<br />
-                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i> <b>Desde:</b> Fecha inicial - <b>Hasta:</b> Fecha final
+                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i><b>Desde:</b> Fecha inicial - <b>Hasta:</b> Fecha final
                     <br />
                         <br />
                         <b>Paso 2: Revisa los resultados</b><br />
@@ -101,11 +101,11 @@
                         <br />
                         <b>Paso 3: Exporta a excel</b><br />
                         Al lado opuesto del buscador encontrarás un botón útil.<br />
-                        <i class="fa-solid fa-file-export" style="color: #212529;"></i> <b>Exportar a Excel:</b> 
+                        <i class="fa-solid fa-file-export" style="color: #212529;"></i><b>Exportar a Excel:</b>
                         Genera un archivo Excel con los datos visibles en la tabla.
                     <br />
                         <br />
-                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i>Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -177,7 +177,7 @@
 
                         <div class="row" id="divContenido" runat="server">
                             <div class="col-lg-12">
-                                <uc1:indicadoresreportespagos runat="server" id="indicadoresreportespagos" />
+                                <uc1:indicadoresreportespagos runat="server" ID="indicadoresreportespagos"/>
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5>Transacciones: Recibir pagos</h5>
@@ -189,13 +189,22 @@
                                     </div>
                                     <div class="ibox-content">
                                         <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
-                                            <div class="col-lg-3">
+                                            <div class="col-lg-2">
                                                 <div class="form-group">
                                                     <div class="form-group" id="filter-form-container"></div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-2">
-                                                <div class="form-group">                                               
+                                                <div id="filtros">
+                                                    <asp:RadioButtonList ID="rblValor" runat="server" RepeatDirection="Horizontal">
+                                                        <asp:ListItem Value="2000" Text="$ 2.000"></asp:ListItem>
+                                                        <asp:ListItem Value="89000" Text="$ 89.000"></asp:ListItem>
+                                                        <asp:ListItem Value="99000" Text="$ 99.000"></asp:ListItem>
+                                                    </asp:RadioButtonList>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
                                                     <asp:DropDownList ID="ddlTipoPago" runat="server" AppendDataBoundItems="true"
                                                         DataTextField="TipoDocumento" DataValueField="idTipoDoc" CssClass="form-control input-sm">
                                                         <%--<asp:ListItem Text="Seleccione" Value=""></asp:ListItem>--%>
@@ -203,34 +212,25 @@
                                                         <asp:ListItem Text="Transferencia" Value="2"></asp:ListItem>
                                                         <asp:ListItem Text="Datafono" Value="3"></asp:ListItem>
                                                         <asp:ListItem Text="Pago en línea" Value="4"></asp:ListItem>
-                                                 </asp:DropDownList>
-                                                </div>
-                                                <div id="filtros">
-                                                  <label for="filtroDoc">Filtrar por Valor:</label>
-                                                  <select id="filtroDoc">
-                                                    <option value="">-- Todos --</option>
-                                                    <option value="$ 2.">$ 2.000</option>
-                                                    <option value="$ 89">$ 89.000</option>
-                                                    <option value="$ 99">$ 99.000</option>
-                                                  </select>
+                                                    </asp:DropDownList>
                                                 </div>
                                             </div>
                                             <div class="col-lg-2">
-                                               <div class="form-group">
-                                                   <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker" />
-                                               </div>
+                                                <div class="form-group">
+                                                    <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker" />
+                                                </div>
                                             </div>
                                             <div class="col-lg-2">
-                                               <div class="form-group">
-                                                   <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker" /> 
-                                               </div>
-                                           </div>
-                                             <div class="col-lg-1">
-                                               <div class="form-group">
-                                                <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn btn-primary btn-sm" OnClick="btnBuscar_Click" />
-                                               </div>
-                                           </div>
-                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1">
+                                                <div class="form-group">
+                                                    <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn btn-primary btn-sm" OnClick="btnBuscar_Click" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1">
                                                 <asp:LinkButton ID="lbExportarExcel" runat="server"
                                                     CausesValidation="false"
                                                     CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
@@ -240,17 +240,17 @@
                                             </div>
                                         </div>
 
-                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
-                                            data-filter-min="3" data-filter-placeholder="Buscar" 
-                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10" 
-                                            data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300" 
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                            data-filter-min="3" data-filter-placeholder="Buscar"
+                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
+                                            data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300"
                                             data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados" id="miTabla">
                                             <thead>
                                                 <tr>
                                                     <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">Id Pago</th>
                                                     <th>Documento</th>
                                                     <th>Afiliado</th>
-                                                    <th data-breakpoints="xs sm md" data-name="Valor">Valor</th>
+                                                    <th data-breakpoints="xs sm md">Valor</th>
                                                     <th data-breakpoints="xs sm md">Tipo Pago</th>
                                                     <th data-breakpoints="xs sm md">Referencia</th>
                                                     <th data-breakpoints="xs sm md">Fecha</th>
@@ -261,31 +261,30 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                             <asp:Repeater ID="rpPagos" runat="server">
-                                               <ItemTemplate>
-                                                    <tr class="feed-element">
-                                                        <td><%# Eval("idAfiliadoPlan") %></td>
-                                                        <td><%# Eval("DocumentoAfiliado") %></td>
-                                                        <td><%# Eval("NombreAfiliado") %></td>
-                                                        <td><%# Eval("Valor", "{0:C0}") %></td>
-                                                        <td><%# Eval("NombreMedioPago") %></td>
-                                                        <td><%# Eval("IdReferencia") %></td>
-                                                        <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
-                                                        <td><%# Eval("EstadoPago") %></td>
-                                                        <td><%# Eval("Usuario") %></td>            
-                                                        <td><%# Eval("CanalVenta") %></td>            
-                                                        <td>
-                                                            <asp:Button ID="btnDetalle" runat="server" Text="Ver"
-                                                                CssClass="btn btn-primary"
-                                                                CommandArgument='<%# Eval("idAfiliadoPlan") %>'
-                                                                OnCommand="btnDetalle_Command"
-                                                                CommandName="mostrarDetalle"
-                                                                Visible='<%# Eval("NombreMedioPago").ToString() == "Pago en línea" %>' 
-                                                                 />
-                                                        </td>
-                                                    </tr>
-                                                </ItemTemplate>
-                                            </asp:Repeater>
+                                                <asp:Repeater ID="rpPagos" runat="server">
+                                                    <ItemTemplate>
+                                                        <tr class="feed-element">
+                                                            <td><%# Eval("idAfiliadoPlan") %></td>
+                                                            <td><%# Eval("DocumentoAfiliado") %></td>
+                                                            <td><%# Eval("NombreAfiliado") %></td>
+                                                            <td><%# Eval("Valor", "{0:C0}") %></td>
+                                                            <td><%# Eval("NombreMedioPago") %></td>
+                                                            <td><%# Eval("IdReferencia") %></td>
+                                                            <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
+                                                            <td><%# Eval("EstadoPago") %></td>
+                                                            <td><%# Eval("Usuario") %></td>
+                                                            <td><%# Eval("CanalVenta") %></td>
+                                                            <td>
+                                                                <asp:Button ID="btnDetalle" runat="server" Text="Ver"
+                                                                    CssClass="btn btn-primary"
+                                                                    CommandArgument='<%# Eval("idAfiliadoPlan") %>'
+                                                                    OnCommand="btnDetalle_Command"
+                                                                    CommandName="mostrarDetalle"
+                                                                    Visible='<%# Eval("NombreMedioPago").ToString() == "Pago en línea" %>' />
+                                                            </td>
+                                                        </tr>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
                                             </tbody>
                                         </table>
 
@@ -324,64 +323,13 @@
 
     <!-- Page-Level Scripts -->
     <script>
-        //$('.footable').footable();
+        $('.footable').footable();
 
-        //const miTabla = document.getElementById('miTabla');
-        //const tbody = miTabla.tBodies[0];
-        //const numeroRegistros = tbody.rows.length;
+        const miTabla = document.getElementById('miTabla');
+        const tbody = miTabla.tBodies[0];
+        const numeroRegistros = tbody.rows.length;
 
-        //console.log("Número total de registros:", numeroRegistros);
-    </script>
-
-    <script>
-        //$(function () {
-        //    const $tabla = $('#miTabla');
-
-        //    // Inicializa footable
-        //    $tabla.footable();
-
-        //    // Total fijo (todas las filas del tbody)
-        //    const total = $tabla.find('tbody tr').length;
-        //    $('#totalRegistros').text(total);
-
-        //    // Cada vez que cambie el filtro
-        //    $tabla.on('after.ft.filtering', function (e) {
-        //        const visibles = $tabla.find('tbody tr:not(.footable-filtered)').length;
-        //        $('#registrosVisibles').text(visibles);
-        //    });
-
-        //    // Para que arranque mostrando el valor inicial
-        //    const inicial = $tabla.find('tbody tr:not(.footable-filtered)').length;
-        //    $('#registrosVisibles').text(inicial);
-        //});
-    </script>
-
-    <script>
-        $(function () {
-            const $tabla = $('#miTabla');
-            $tabla.footable(); // Inicializar
-
-            // Obtener instancia de FooTable y su plugin de filtros
-            const ft = $tabla.data('footable');
-            const filtering = ft.use(FooTable.Filtering);
-
-            // Evento change del combo
-            $('#filtroDoc').on('input', function () {
-                const valor_ = $(this).val();
-                console.log(valor_);
-
-                if (valor_ === '') {
-                    // Sin filtro → mostrar todos
-                    filtering.removeFilter('valor');
-                } else {
-                    // Aplicar filtro solo en la columna "Documento"
-                    filtering.addFilter('valor', valor_, ['Valor']);
-                }
-
-                // Redibujar la tabla
-                ft.draw();
-            });
-        });
+        console.log("Número total de registros:", numeroRegistros);
     </script>
 
     <script>

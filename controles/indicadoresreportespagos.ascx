@@ -17,7 +17,7 @@
             </div>
             <div class="ibox-content">
                 <h1 class="no-margins"><asp:Literal ID="ltCuantos1" runat="server"></asp:Literal></h1>
-                <div class="stat-percent font-bold text-success">15 registros <%--<i class="fa fa-bolt"></i>--%></div>
+                <div class="stat-percent font-bold text-success"><asp:Literal ID="ltRegistros" runat="server"></asp:Literal> registros <%--<i class="fa fa-bolt"></i>--%></div>
                 <small>&nbsp;</small>
             </div>
         </div>
