@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Globalization;
+using System.Transactions;
 
 namespace fpWebApp
 {
@@ -155,7 +156,10 @@ namespace fpWebApp
             
             dt.Dispose();
 
-            ltCuantos2.Text = "$ " + String.Format("{0:N0}", Convert.ToInt32(dt.Rows[0]["sumatoria"].ToString()));
+            int valor = 0;
+            int.TryParse(dt.Rows[0]["sumatoria"]?.ToString(), out valor);
+
+            ltCuantos2.Text = "$ " + String.Format("{0:N0}", valor);
             ltRegistros2.Text = "";
         }
 
@@ -199,7 +203,10 @@ namespace fpWebApp
 
             dt.Dispose();
 
-            ltCuantos3.Text = "$ " + String.Format("{0:N0}", Convert.ToInt32(dt.Rows[0]["sumatoria"].ToString()));
+            int valor = 0;
+            int.TryParse(dt.Rows[0]["sumatoria"]?.ToString(), out valor);
+
+            ltCuantos3.Text = "$ " + String.Format("{0:N0}", valor);
             ltRegistros3.Text = "";
         }
 
@@ -268,15 +275,16 @@ namespace fpWebApp
                         break;
                     case "Pago en línea":
 
-                        DataTable dti = cg.ConsultarUrl(idempresa);//1-Wompi 2-Armatura 
+                        DataTable dti = cg.ConsultarUrl(idempresa);
 
                         if (dt.Rows.Count > 0)
                         {
-                            parametro = dt.Rows[0]["IdReferencia"].ToString();
+                            //parametro = dt.Rows[0]["IdReferencia"].ToString();
+                            parametro = dt.Rows[0]["DataIdTransaction"].ToString();
                             nomAfiliado = dt.Rows[0]["NombreAfiliado"].ToString();
                         }
 
-                        string url = dti.Rows[0]["urlTest"].ToString() + parametro;
+                        string url = dti.Rows[0]["urlTest"].ToString() + "/transactions/" + parametro;
                         string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
                         JToken token = JToken.Parse(respuesta[0]);
                         string prettyJson = token.ToString(Formatting.Indented);
@@ -307,8 +315,8 @@ namespace fpWebApp
                                 URLRedireccion = jsonData["data"]["redirect_url"]?.ToString(),
                                 PaymentLinkId = jsonData["data"]["payment_link_id"]?.ToString(),
                                 PublicKeyComercio = jsonData["data"]["merchant"]["public_key"]?.ToString(),
-                                EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString(),
-                                Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
+                                EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString() }
+                                //Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
                             };
 
                             sb.Append("<table class=\"table table-bordered table-striped\">");
@@ -499,6 +507,8 @@ namespace fpWebApp
                     Convert.ToInt32(rblValor.SelectedValue.ToString()),
                     txbFechaIni.Value.ToString(),
                     txbFechaFin.Value.ToString());
+                VentasCounter();
+                VentasWeb();
             }
         }
     }
