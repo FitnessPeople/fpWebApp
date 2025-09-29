@@ -169,16 +169,24 @@ namespace fpWebApp
         }
         private void CargarTipoDocumento()
         {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultartiposDocumento();
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultartiposDocumento();
 
-            DataView dv = new DataView(dt);
-            dv.RowFilter = "idTipoDoc = 7";
+                DataView dv = new DataView(dt);
+                dv.RowFilter = "idTipoDoc = 7";
 
-            ddlTipoDocumento.DataSource = dv;
-            ddlTipoDocumento.DataBind();
+                ddlTipoDocumento.DataSource = dv;
+                ddlTipoDocumento.DataBind();
 
-            dt.Dispose();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message.ToString();
+            }
+
         }
 
 
@@ -258,9 +266,10 @@ namespace fpWebApp
 
                     try
                     {
-                        string respuesta = cg.InsertarEmpresaCRM(txbNombreEmpresa.Value , Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
-                            txbDocumento.Text, txbCelularEmpresa.Value, txbCorreoEmpresa.Value, Convert.ToInt32(ddlCiudades.SelectedItem.Value.ToString()),
-                            txaObservaciones.Value, Convert.ToInt32(Session["idUsuario".ToString()]),  out salida, out mensaje);
+                        string respuesta = cg.InsertarEmpresaCRM(txbRazonSocial.Value , Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
+                        txbDocumento.Text, txbDigitoVerificacion.Text, txbCelularEmpresa.Value.ToString(), txbCorreoEmpresa.Value.ToString(), 
+                        Convert.ToInt32(ddlCiudades.SelectedItem.Value.ToString()), txaObservaciones.Value, Convert.ToInt32(Session["idUsuario".ToString()]),
+                        txbNombreComercialEmpresa.Value.ToString(), txbNombreContacto.Value.ToString(), txbCargoContacto.Value.ToString(),out salida, out mensaje);
 
                         cg.InsertarLog(Session["idusuario"].ToString(), "prospectos empresas", "Agrega", "El usuario agregó un nuevo prospecto empresa crm: " + "" + ".", "", "");
 

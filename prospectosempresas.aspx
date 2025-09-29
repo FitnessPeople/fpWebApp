@@ -197,44 +197,61 @@
                                                     <div class="col-sm-2">
                                                         <div class="form-group">
                                                             <label>DV</label>
-                                                            <asp:TextBox ID="txxbDigitoVerificacion" ClientIDMode="Static" CssClass="form-control input-sm" runat="server" placeholder="#"></asp:TextBox>
-                                                            <asp:RequiredFieldValidator ID="rfvDigitoVerfica" runat="server" ControlToValidate="txxbDigitoVerificacion"
+                                                            <asp:TextBox ID="txbDigitoVerificacion" ClientIDMode="Static" CssClass="form-control input-sm" runat="server" placeholder="#"></asp:TextBox>
+                                                            <asp:RequiredFieldValidator ID="rfvDigitoVerfica" runat="server" ControlToValidate="txbDigitoVerificacion"
                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" TextMode="Number" MaxLength="1">
                                                             </asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-sm-12">
-                                                        <div class="form-group">
-                                                            <i class="fa fa-building text-info"></i>
-                                                            <label for="NombreEmpresaComercial" class="col-form-label">Nombre comercial:</label>
-                                                            <input type="text" runat="server" id="txbNombreEmpresaComercial" class="form-control"
-                                                                oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
-                                                            <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txbNombreEmpresaComercial"
-                                                                ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
-                                                        </div>
-                                                    </div>
+
 
                                                     <div class="col-sm-12">
                                                         <div class="form-group">
                                                             <i class="fa fa-industry text-info"></i>
-                                                            <label for="txbNombreEmpresa" class="col-form-label">Razon social:</label>
-                                                            <input type="text" runat="server" id="txbNombreEmpresa" class="form-control"
+                                                            <label for="txbRazonSocial" class="col-form-label">Razon social:</label>
+                                                            <input type="text" runat="server" id="txbRazonSocial" class="form-control"
                                                                 oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
-                                                            <asp:RequiredFieldValidator ID="rfvNombreEmpresa" runat="server" ControlToValidate="txbNombreEmpresa"
+                                                            <asp:RequiredFieldValidator ID="rfvNombreEmpresa" runat="server" ControlToValidate="txbRazonSocial"
                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                         </div>
                                                     </div>
+
+
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <i class="fa fa-building text-info"></i>
+                                                            <label for="NombreComercialEmpresa" class="col-form-label">Nombre comercial:</label>
+                                                            <input type="text" runat="server" id="txbNombreComercialEmpresa" class="form-control"
+                                                                oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
+                                                            <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txbNombreComercialEmpresa"
+                                                                ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
+                                                        </div>
+                                                    </div>
+
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <i class="fa fa-person text-info"></i>
-                                                            <label for="NombreEmpresaComercial" class="col-form-label">Nombre del contacto:</label>
-                                                            <input type="text" runat="server" id="Text1" class="form-control"
+                                                            <label for="NombreContacto" class="col-form-label">Nombre del contacto:</label>
+                                                            <input type="text" runat="server" id="txbNombreContacto" class="form-control"
                                                                 oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
-                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txbNombreEmpresaComercial"
+                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txbNombreContacto"
                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                         </div>
                                                     </div>
+
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <i class="fa fa-building text-info"></i>
+                                                            <label for="CargoContacto" class="col-form-label">Cargo del contacto:</label>
+                                                            <input type="text" runat="server" id="txbCargoContacto" class="form-control"
+                                                                oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
+                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txbCargoContacto"
+                                                                ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
+                                                        </div>
+                                                    </div>
+
+
 
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
