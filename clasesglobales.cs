@@ -7607,8 +7607,9 @@ int valor, string observaciones, string estado)
             return mensaje;
         }
 
-        public string ActualizarEmpresaCRM(int idEmpresaCRM, string nombreEmpresaCRM, int idTipoDoc, string docEmpresa, string celularEmpresa,
-         string correoEmpresa, int idCiudad, string observacionesEmp, int idUsuario, out bool respuesta, out string mensaje)
+        public string ActualizarEmpresaCRM(int idEmpresaCRM, string nombreEmpresaCRM, int idTipoDoc, string docEmpresa, string digitoVerificacion,
+         string celularEmpresa, string correoEmpresa, int idCiudad, string observacionesEmp, int idUsuario, string nombreComercial, string nombreContacto, 
+         string nombreCargo, out bool respuesta, out string mensaje)
         {
             mensaje = string.Empty;
             respuesta = false;
@@ -7625,11 +7626,15 @@ int valor, string observaciones, string estado)
                         cmd.Parameters.AddWithValue("@p_nombre_empresa_crm", nombreEmpresaCRM);
                         cmd.Parameters.AddWithValue("@p_id_tipo_doc", idTipoDoc);
                         cmd.Parameters.AddWithValue("@p_doc_empresa", docEmpresa);
+                        cmd.Parameters.AddWithValue("@p_digito", digitoVerificacion);
                         cmd.Parameters.AddWithValue("@p_celular_empresa", celularEmpresa);
                         cmd.Parameters.AddWithValue("@p_correo_empresa", correoEmpresa);
                         cmd.Parameters.AddWithValue("@p_id_ciudad", idCiudad);
                         cmd.Parameters.AddWithValue("@p_observaciones_emp", observacionesEmp);
-
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_nombre_comercial", nombreComercial);
+                        cmd.Parameters.AddWithValue("@p_nombre_contacto", nombreContacto);
+                        cmd.Parameters.AddWithValue("@p_cargo_contacto", nombreCargo);
 
                         // Parámetro de salida
                         MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);

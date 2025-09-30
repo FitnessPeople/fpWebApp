@@ -53,24 +53,37 @@ namespace fpWebApp
                     if (Request.QueryString.Count > 0)
                     {
                         rpEmpresasCRM.Visible = false;
+                        bool respuesta = false;
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
                             clasesglobales cg = new clasesglobales();
                             DataTable dt = new DataTable();
-                            dt = cg.ConsultarEstadoCRMPorID(int.Parse(Request.QueryString["editid"].ToString()));
-                            if (dt.Rows.Count > 0)
+                            
+                            dt = cg.ConsultarEmpresaCRMPorId(int.Parse(Request.QueryString["editid"].ToString()),out respuesta);
+                            if (dt.Rows.Count > 0 && respuesta)
                             {
-                                //txbNombreEstado.Text = dt.Rows[0]["NombreEstadoCRM"].ToString();
-                                //ListItem item = ddlColores.Items.FindByText(dt.Rows[0]["ColorEstadoCRM"].ToString());
-                                //if (item != null) ddlColores.SelectedIndex = ddlColores.Items.IndexOf(item);
-
-                                //ListItem itemI = ddlIconos.Items.FindByText(dt.Rows[0]["ColorEstadoCRM"].ToString());
-                                //if (itemI != null) ddlIconos.SelectedIndex = ddlIconos.Items.IndexOf(item);
-
+                                if (dt.Rows[0]["idTipoDocumento"].ToString() != "")
+                                    ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
+                                else
+                                    ddlTipoDocumento.SelectedItem.Value = "0";
+                                ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
+                                txbDocumento.Text = dt.Rows[0]["DocumentoEmpresa"].ToString();
+                                txbDigitoVerificacion.Text = dt.Rows[0]["digitoverificacion"].ToString();
+                                txbRazonSocial.Value = dt.Rows[0]["NombreEmpresaCRM"].ToString();
+                                txbNombreComercialEmpresa.Value = dt.Rows[0]["NombreComercial"].ToString();
+                                txbNombreContacto.Value = dt.Rows[0]["NombreContacto"].ToString();
+                                txbCargoContacto.Value = dt.Rows[0]["CargoContacto"].ToString();
+                                txbCelularEmpresa.Value = dt.Rows[0]["CelularEmpresa"].ToString();
+                                txbCorreoEmpresa.Value = dt.Rows[0]["CorreoEmpresa"].ToString();
+                                if (dt.Rows[0]["idCiudad"].ToString() != "")
+                                    ddlCiudades.SelectedIndex = Convert.ToInt32(ddlCiudades.Items.IndexOf(ddlCiudades.Items.FindByValue(dt.Rows[0]["idCiudad"].ToString())));
+                                else
+                                    ddlCiudades.SelectedItem.Value = "0";
+                                txaObservaciones.Value = dt.Rows[0]["ObservacionesEmp"].ToString();
 
                                 btnAgregar.Text = "Actualizar";
-                                ltTitulo.Text = "Actualizar Estado CRM";
+                                ltTitulo.Text = "Actualizar empresa prospecto";
                             }
                         }
                         if (Request.QueryString["deleteid"] != null)
@@ -86,8 +99,8 @@ namespace fpWebApp
                                     "</div></div>";
 
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarCiudadSedePorId(int.Parse(Request.QueryString["deleteid"].ToString()));
-                                if (dt.Rows.Count > 0)
+                                dt1 = cg.ConsultarEmpresaCRMPorId(int.Parse(Request.QueryString["deleteid"].ToString()),out respuesta);
+                                if (dt.Rows.Count > 0 && respuesta)
                                 {
                                     //txbNombreEstado.Text = dt1.Rows[0]["NombreCiudadSede"].ToString();
                                     //txbNombreEstado.Enabled = false;
@@ -101,11 +114,28 @@ namespace fpWebApp
                             {
                                 //Borrar
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarCiudadSedePorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt1 = cg.ConsultarEmpresaCRMPorId(int.Parse(Request.QueryString["deleteid"].ToString()), out respuesta);
                                 if (dt1.Rows.Count > 0)
                                 {
-                                    //txbNombreEstado.Text = dt1.Rows[0]["NombreCiudadSede"].ToString();
-                                    //txbNombreEstado.Enabled = false;
+                                    if (dt1.Rows[0]["idTipoDocumento"].ToString() != "")
+                                        ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt1.Rows[0]["idTipoDocumento"].ToString())));
+                                    else
+                                        ddlTipoDocumento.SelectedItem.Value = "0";
+                                    ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt1.Rows[0]["idTipoDocumento"].ToString())));
+                                    txbDocumento.Text = dt1.Rows[0]["DocumentoEmpresa"].ToString();
+                                    txbDigitoVerificacion.Text = dt1.Rows[0]["digitoverificacion"].ToString();
+                                    txbRazonSocial.Value = dt1.Rows[0]["NombreEmpresaCRM"].ToString();
+                                    txbNombreComercialEmpresa.Value = dt1.Rows[0]["NombreComercial"].ToString();
+                                    txbNombreContacto.Value = dt1.Rows[0]["NombreContacto"].ToString();
+                                    txbCargoContacto.Value = dt1.Rows[0]["CargoContacto"].ToString();
+                                    txbCelularEmpresa.Value = dt1.Rows[0]["CelularEmpresa"].ToString();
+                                    txbCorreoEmpresa.Value = dt1.Rows[0]["CorreoEmpresa"].ToString();
+                                    if (dt1.Rows[0]["idCiudad"].ToString() != "")
+                                        ddlCiudades.SelectedIndex = Convert.ToInt32(ddlCiudades.Items.IndexOf(ddlCiudades.Items.FindByValue(dt1.Rows[0]["idCiudad"].ToString())));
+                                    else
+                                        ddlCiudades.SelectedItem.Value = "0";
+                                    txaObservaciones.Value = dt1.Rows[0]["ObservacionesEmp"].ToString();
+
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     ltTitulo.Text = "Borrar Estado CRM";
                                 }
@@ -209,26 +239,6 @@ namespace fpWebApp
 
         }
 
-
-        protected void rpEstadosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                if (ViewState["CrearModificar"].ToString() == "1")
-                {
-                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "estadoscrm?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    btnEditar.Visible = true;
-                }
-                if (ViewState["Borrar"].ToString() == "1")
-                {
-                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "estadoscrm?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    btnEliminar.Visible = true;
-                }
-            }
-        }
-
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
@@ -249,9 +259,10 @@ namespace fpWebApp
 
                 if (Request.QueryString["deleteid"] != null)
                 {
-                    string respuesta = cg.EliminarCiudadSede(int.Parse(Request.QueryString["deleteid"].ToString()));
+                    string respuesta = cg.EliminarEmpresaCRM(int.Parse(Request.QueryString["deleteid"].ToString()), 
+                        Convert.ToInt32(Session["idUsuario"].ToString()), Session["NombreUsuario"].ToString(), out salida, out mensaje );
                 }
-                Response.Redirect("estadoscrm");
+                Response.Redirect("prospectosempresas");
             }
             else
             {
@@ -266,10 +277,11 @@ namespace fpWebApp
 
                     try
                     {
-                        string respuesta = cg.InsertarEmpresaCRM(txbRazonSocial.Value , Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
-                        txbDocumento.Text, txbDigitoVerificacion.Text, txbCelularEmpresa.Value.ToString(), txbCorreoEmpresa.Value.ToString(), 
+                        string respuesta = cg.InsertarEmpresaCRM(txbRazonSocial.Value.ToString().Trim().ToUpper(), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
+                        txbDocumento.Text, txbDigitoVerificacion.Text, txbCelularEmpresa.Value.ToString(), txbCorreoEmpresa.Value.ToString().Trim().ToLower(), 
                         Convert.ToInt32(ddlCiudades.SelectedItem.Value.ToString()), txaObservaciones.Value, Convert.ToInt32(Session["idUsuario".ToString()]),
-                        txbNombreComercialEmpresa.Value.ToString(), txbNombreContacto.Value.ToString(), txbCargoContacto.Value.ToString(),out salida, out mensaje);
+                        txbNombreComercialEmpresa.Value.ToString().Trim().ToUpper(), txbNombreContacto.Value.ToString().Trim().ToUpper(), 
+                        txbCargoContacto.Value.ToString().Trim().ToUpper(), out salida, out mensaje);
 
                         cg.InsertarLog(Session["idusuario"].ToString(), "prospectos empresas", "Agrega", "El usuario agregó un nuevo prospecto empresa crm: " + "" + ".", "", "");
 
@@ -277,7 +289,7 @@ namespace fpWebApp
                         {
                             string script = @"
                                 Swal.fire({
-                                    title: 'Empresa prospecto credada correctamente!',
+                                    title: 'La empresa prospecto se creó correctamente.',
                                     text: '" + mensaje.Replace("'", "\\'") + @"',
                                     icon: 'success',
                                     timer: 3000, // 3 segundos
@@ -357,22 +369,59 @@ namespace fpWebApp
 
         private string TraerData()
         {
+            bool respuesta = false;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarCiudadSedePorId(int.Parse(Request.QueryString["editid"].ToString()));
+
+            int idEmpresaProspecto = 0;
+
+            
+           if (!string.IsNullOrEmpty(Request.QueryString["editid"]))
+            {
+                    idEmpresaProspecto = Convert.ToInt32(Request.QueryString["editid"].ToString());
+            }
+            else if (!string.IsNullOrEmpty(Request.QueryString["deleteid"]))
+            {
+                idEmpresaProspecto = Convert.ToInt32(Request.QueryString["deleteid"].ToString());
+            }
+           
+            DataTable dt = cg.ConsultarEmpresaCRMPorId(idEmpresaProspecto, out respuesta);
 
             string strData = "";
-            foreach (DataColumn column in dt.Columns)
+            if (dt.Rows.Count > 0 && respuesta)
             {
-                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+                foreach (DataColumn column in dt.Columns)
+                {
+                    strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+                }
+                dt.Dispose();
             }
-            dt.Dispose();
-
             return strData;
         }
 
+
+
+
+
         protected void rpEmpresasCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                if (ViewState["CrearModificar"].ToString() == "1")
+                {
+                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("href", "prospectosempresas?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Visible = true;
+                }
+                if (ViewState["Borrar"].ToString() == "1")
+                {
+                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                    btnEliminar.Attributes.Add("href", "prospectosempresas?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminar.Visible = true;
+                }
+            }
         }
+
+
+
     }
 }
