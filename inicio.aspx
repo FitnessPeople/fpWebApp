@@ -452,7 +452,7 @@
                     showMethod: 'slideDown',
                     timeOut: 3000
                 };
-                toastr.success('Puedes usar CTRL+L para bloquear la aplicación', 'Píldora');
+                //toastr.success('Puedes usar CTRL+L para bloquear la aplicación', 'Píldora');
             }, 2600);
         });
     </script>
