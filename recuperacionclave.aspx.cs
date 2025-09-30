@@ -12,11 +12,11 @@ namespace fpWebApp
                 lblAnho.Text = DateTime.Now.Year.ToString();
                 if (Request.QueryString["u"] != null && Request.QueryString["p"] != null)
                 {
-                    ltUsuario.Text = Request.QueryString["u"].ToString();
+                    //ltUsuario.Text = Request.QueryString["u"].ToString();
                     string strUsuario = Request.QueryString["u"].ToString();
                     string strClave = Request.QueryString["p"].ToString();
                     string strQuery = "SELECT * FROM usuarios " +
-                        "WHERE EmailUsuario = '" + strUsuario + "' " +
+                        "WHERE idEmpleado = '" + strUsuario + "' " +
                         "AND ClaveUsuario = '" + strClave + "' ";
 
                     clasesglobales cg = new clasesglobales();
@@ -42,7 +42,7 @@ namespace fpWebApp
             string strHashClave = cg.ComputeSha256Hash(strNuevaClave);
 
             string strQuery = "UPDATE Usuarios SET ClaveUsuario = '" + strHashClave + "' " +
-                "WHERE EmailUsuario = '" + Request.QueryString["u"].ToString() + "' ";
+                "WHERE idEmpleado = '" + Request.QueryString["u"].ToString() + "' ";
 
             string strRespuesta = cg.TraerDatosStr(strQuery);
 

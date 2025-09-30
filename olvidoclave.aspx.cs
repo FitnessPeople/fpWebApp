@@ -28,7 +28,8 @@ namespace fpWebApp
                 strMensaje += "https://fpadmin.fitnesspeoplecolombia.com/recuperacionclave?u=" + usuario + "&p=" + dt.Rows[0]["ClaveUsuario"].ToString() + "\r\n\r\n";
                 //strMensaje += "http://localhost/recuperacionclave?u=" + usuario + "&p=" + dt.Rows[0]["ClaveUsuario"].ToString() + "\r\n\r\n";
                 strMensaje += "Att. Sistemas Fitness People.\r\n";
-                cg.EnviarCorreo("sistemas@fitnesspeoplecmd.com", usuario, "Recuperación de clave", strMensaje);
+                //cg.EnviarCorreo("sistemas@fitnesspeoplecmd.com", usuario, "Recuperación de clave", strMensaje);
+                cg.EnviarCorreo("sistemas@fitnesspeoplecmd.com", dt.Rows[0]["EmailUsuario"].ToString(), "Recuperación de clave", strMensaje);
 
                 strMensaje = "Ha solicitado la recuperación de su clave.<br />";
                 strMensaje += "Revise su correo electrónico y siga las instrucciones.<br />";
