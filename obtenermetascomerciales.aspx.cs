@@ -19,7 +19,7 @@ namespace fpWebApp
 
             clasesglobales cg = new clasesglobales();
 
-            DataTable dt = cg.ConsultarEstacionalidadPorDia(Convert.ToInt32(filtro), Convert.ToInt32(Request.QueryString["mes"].ToString()), Convert.ToInt32(Request.QueryString["anio"].ToString()));
+            DataTable dt = cg.ConsultarMetaComercialMensual(Convert.ToInt32(filtro), Convert.ToInt32(Request.QueryString["mes"].ToString()), Convert.ToInt32(Request.QueryString["anio"].ToString()));
 
 
             var lista = new List<object>();

@@ -131,16 +131,21 @@ namespace fpWebApp
                 List<string> nombres = new List<string>();
                 List<int> cantidades = new List<int>();
                 List<string> colores = new List<string>();
+                int cuantos = 0;
 
                 foreach (DataRow row in dt.Rows)
                 {
+                    cuantos += 1;
                     nombres.Add(row["Genero"].ToString());
                     cantidades.Add(Convert.ToInt32(row["cuantos"]));
 
-                    Random random = new Random();
-                    int randomInt = random.Next(0x1000000);
-                    string hexColor = String.Format("#{0:X6}", randomInt);
-                    colores.Add(hexColor);
+                    string color = cg.GenerateColor(cuantos, Math.Max(1, Convert.ToInt32(row["cuantos"])));
+
+                    //Random random = new Random();
+                    //int randomInt = random.Next(0x1000000);
+                    //string hexColor = String.Format("#{0:X6}", randomInt);
+                    //colores.Add(hexColor);
+                    colores.Add(color);
                 }
 
                 var serializer = new JavaScriptSerializer();
@@ -180,16 +185,21 @@ namespace fpWebApp
                 List<string> nombres = new List<string>();
                 List<int> cantidades = new List<int>();
                 List<string> colores = new List<string>();
+                int cuantos = 0;
 
                 foreach (DataRow row in dt.Rows)
                 {
+                    cuantos += 1;
                     nombres.Add(row["NombreCiudad"].ToString());
                     cantidades.Add(Convert.ToInt32(row["cuantos"]));
 
-                    Random random = new Random();
-                    int randomInt = random.Next(0x1000000);
-                    string hexColor = String.Format("#{0:X6}", randomInt);
-                    colores.Add(hexColor);
+                    string color = cg.GenerateColor(cuantos, Math.Max(1, Convert.ToInt32(row["cuantos"])));
+
+                    //Random random = new Random();
+                    //int randomInt = random.Next(0x1000000);
+                    //string hexColor = String.Format("#{0:X6}", randomInt);
+                    //colores.Add(hexColor);
+                    colores.Add(color);
                 }
 
                 var serializer = new JavaScriptSerializer();

@@ -179,7 +179,7 @@
                                                 <%--<th data-breakpoints="xs sm">Cargo</th>--%>
                                                 <%--<th data-breakpoints="xs sm">Sede</th>--%>
                                                 <%--<th data-hide="phone,tablet">Cargo</th>--%>
-                                                <%--<th data-type="date" data-breakpoints="xs sm">Cumpleaños</th>--%>
+                                                <th data-type="date" data-breakpoints="xs sm">Cumpleaños</th>
                                                 <th class="text-nowrap" data-breakpoints="xs sm">Estado</th>
                                                 <%--<th data-breakpoints="all" data-title="Info"></th>--%>
                                                 <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
@@ -199,7 +199,7 @@
                                                         <%--<td><a href="cargos" title="Ir a Cargos"><i class="fa fa-user-nurse m-r-xs font-bold"></i><%# Eval("Cargo") %></a></td>--%>
                                                         <%--<td><%# Eval("NombreSede") %></td>--%>
                                                         <%--<td><i class="fa fa-user-tie m-r-xs font-bold"></i><%# Eval("CargoEmpleado") %></td>--%>
-                                                        <%--<td><%# Eval("icono") %><%# Eval("FechaNacEmpleado", "{0:dd MMM}") %></td>--%>
+                                                        <td><%# Eval("icono") %><%# Eval("FechaNacEmpleado", "{0:dd MMM}") %></td>
                                                         <td><span class="badge badge-<%# Eval("label") %>"><%# Eval("Estado") %></span></td>
                                                         <%--<td class="table-bordered">
                                                             <table class="table table-bordered">
@@ -1283,19 +1283,19 @@
                                     <div class="ibox-content">
                                         <div class="row text-center">
                                             <div class="col-lg-3">
-                                                <canvas id="doughnutChart1" width="140" height="80" style="margin: 18px auto 0"></canvas>
+                                                <canvas id="doughnutChart1" width="150" height="80" style="margin: 18px auto 0"></canvas>
                                                 <h5>Géneros</h5>
                                             </div>
                                             <div class="col-lg-3">
-                                                <canvas id="doughnutChart2" width="140" height="80" style="margin: 18px auto 0"></canvas>
-                                                <h5>Ciudad</h5>
+                                                <canvas id="doughnutChart2" width="150" height="80" style="margin: 18px auto 0"></canvas>
+                                                <h5>Ciudades</h5>
                                             </div>
                                             <div class="col-lg-3">
-                                                <canvas id="doughnutChart3" width="140" height="80" style="margin: 18px auto 0"></canvas>
+                                                <canvas id="doughnutChart3" width="150" height="80" style="margin: 18px auto 0"></canvas>
                                                 <h5>Estado civil</h5>
                                             </div>
                                             <div class="col-lg-3">
-                                                <canvas id="doughnutChart4" width="140" height="80" style="margin: 18px auto 0"></canvas>
+                                                <canvas id="doughnutChart4" width="150" height="80" style="margin: 18px auto 0"></canvas>
                                                 <h5>Tipo de contrato</h5>
                                             </div>
                                         </div>

@@ -89,7 +89,7 @@ namespace fpWebApp.controles
                     perfilUsuario = Convert.ToInt32(dt6.Rows[0]["IdPerfil"].ToString());
 
 
-                    DataTable dt7 = cg.ConsultarEstacionalidadPorDia(idCanalVenta, mes, anio);
+                    DataTable dt7 = cg.ConsultarMetaComercialMensual(idCanalVenta, mes, anio);
 
                     if (dt7.Rows.Count > 0)
                     {

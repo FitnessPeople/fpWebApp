@@ -33,18 +33,10 @@
 
     <script>
         function changeClass() {
-            // Activa el menú principal
             var element1 = document.querySelector("#empleados");
-            if (element1) {
-                element1.classList.add("active");
-            }
-
-            // Despliega el submenú
+            element1.classList.replace("old", "active");
             var element2 = document.querySelector("#sistema");
-            if (element2) {
-                element2.classList.add("show"); // en Bootstrap el desplegado es con "show"
-                element2.classList.remove("collapse");
-            }
+            element2.classList.remove("collapse");
         }
     </script>
 
@@ -665,10 +657,36 @@
                 ddlCargo: {
                     required: true
                 },
+                ddlNivelEstudio: {
+                    required: true
+                },
+                ddlProfesion: {
+                    required: true
+                },
                 ddlEstadoCivil: {
                     required: true
                 },
                 ddlGenero: {
+                    required: true
+                },
+                txbEstratoSocioeconomico: {
+                    required: true,
+                    minlength: 1
+                },
+                ddlTipoVivienda: {
+                    required: true
+                },
+                txbNroPersonasNucleo: {
+                    required: true,
+                    minlength: 1
+                },
+                ddlActividadExtra: {
+                    required: true
+                },
+                ddlConsumoLicor: {
+                    required: true
+                },
+                ddlMedioTransporte: {
                     required: true
                 },
                 txbContrato: {
@@ -714,9 +732,6 @@
             },
             messages: {
                 ddlCiudadEmpleado: "*",
-                txbContrato: "Campo requerido.",
-                ddlGrupo: "Campo requerido.",
-                ddlCargo: "Campo requerido.",
             }
         });
 

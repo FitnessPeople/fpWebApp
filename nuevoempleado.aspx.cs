@@ -50,7 +50,9 @@ namespace fpWebApp
                         CargarEmpresasFP();
                         CargarCanalesVenta();
                         CargarCargos();
+                        CargarProfesiones();
                         CargarEstadoCivil();
+                        CargarGeneros();
                         CargarGeneros();
                     }
                     else
@@ -179,6 +181,15 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        private void CargarProfesiones()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarProfesiones();
+            ddlProfesion.DataSource = dt;
+            ddlProfesion.DataBind();
+            dt.Dispose();
+        }
+
         private void CargarEmpresasFP()
         {
             clasesglobales cg = new clasesglobales();
@@ -256,17 +267,44 @@ namespace fpWebApp
                 try
                 {
                     clasesglobales cg = new clasesglobales();
-                    string mensaje = cg.InsertarNuevoEmpleado(txbDocumento.Text.ToString(), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
-                        txbNombre.Text.ToString(), txbTelefono.Text.ToString(), txbTelefonoCorp.Text.ToString(), txbEmail.Text.ToString(), 
-                        txbEmailCorp.Text.ToString(), txbDireccion.Text.ToString(),
-                        Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), txbFechaNac.Text.ToString(), strFilename, txbContrato.Text.ToString(),
-                        ddlTipoContrato.SelectedItem.Value.ToString(), Convert.ToInt32(ddlempresasFP.SelectedItem.Value.ToString()),
-                        Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), txbFechaInicio.Text.ToString(), txbFechaFinal.Text.ToString(),
-                        Convert.ToInt32(Regex.Replace(txbSueldo.Text, @"[^\d]", "")), ddlGrupo.SelectedItem.Value.ToString(), Convert.ToInt32(ddlEps.SelectedItem.Value.ToString()),
-                        Convert.ToInt32(ddlFondoPension.SelectedItem.Value.ToString()), Convert.ToInt32(ddlArl.SelectedItem.Value.ToString()),
-                        Convert.ToInt32(ddlCajaComp.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCesantias.SelectedItem.Value.ToString()), "Activo",
-                        Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value.ToString()),
-                        Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()));
+                    string mensaje = cg.InsertarNuevoEmpleado(txbDocumento.Text.ToString(), 
+                        Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
+                        txbNombre.Text.ToString(), 
+                        txbTelefono.Text.ToString(), 
+                        txbTelefonoCorp.Text.ToString(), 
+                        txbEmail.Text.ToString(), 
+                        txbEmailCorp.Text.ToString(), 
+                        txbDireccion.Text.ToString(),
+                        Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), 
+                        txbFechaNac.Text.ToString(), 
+                        strFilename, 
+                        txbContrato.Text.ToString(),
+                        ddlTipoContrato.SelectedItem.Value.ToString(), 
+                        Convert.ToInt32(ddlempresasFP.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), 
+                        txbFechaInicio.Text.ToString(), 
+                        txbFechaFinal.Text.ToString(),
+                        Convert.ToInt32(Regex.Replace(txbSueldo.Text, @"[^\d]", "")), 
+                        ddlGrupo.SelectedItem.Value.ToString(), 
+                        Convert.ToInt32(ddlEps.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(ddlFondoPension.SelectedItem.Value.ToString()), 
+                        Convert.ToInt32(ddlArl.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(ddlCajaComp.SelectedItem.Value.ToString()), 
+                        Convert.ToInt32(ddlCesantias.SelectedItem.Value.ToString()), 
+                        "Activo",
+                        Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()), 
+                        Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()), 
+                        Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(ddlProfesion.SelectedItem.Value.ToString()),
+                        ddlNivelEstudio.SelectedItem.Value.ToString(),
+                        Convert.ToInt32(txbEstratoSocioeconomico.Text.ToString()),
+                        ddlTipoVivienda.SelectedItem.Value.ToString(),
+                        Convert.ToInt32(txbNroPersonasNucleo.Text.ToString()),
+                        ddlActividadExtra.SelectedItem.Value.ToString(),
+                        ddlConsumoLicor.SelectedItem.Value.ToString(),
+                        ddlMedioTransporte.SelectedItem.Value.ToString()
+                        );
 
                     if (mensaje == "OK")
                     {

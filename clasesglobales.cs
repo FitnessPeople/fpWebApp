@@ -489,6 +489,42 @@ namespace fpWebApp
             }
         }
 
+        /// <summary>
+        /// Generador HSL -> HEX
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="total"></param>
+        /// <returns></returns>
+        public string GenerateColor(int index, int total)
+        {
+            double hue = (index * 360.0) / Math.Max(1, total);
+            double s = 0.65;
+            double l = 0.55;
+
+            double c = (1 - Math.Abs(2 * l - 1)) * s;
+            double hPrime = hue / 60.0;
+            double x = c * (1 - Math.Abs(hPrime % 2 - 1));
+            double r1 = 0, g1 = 0, b1 = 0;
+
+            if (0 <= hPrime && hPrime < 1) { r1 = c; g1 = x; b1 = 0; }
+            else if (1 <= hPrime && hPrime < 2) { r1 = x; g1 = c; b1 = 0; }
+            else if (2 <= hPrime && hPrime < 3) { r1 = 0; g1 = c; b1 = x; }
+            else if (3 <= hPrime && hPrime < 4) { r1 = 0; g1 = x; b1 = c; }
+            else if (4 <= hPrime && hPrime < 5) { r1 = x; g1 = 0; b1 = c; }
+            else { r1 = c; g1 = 0; b1 = x; }
+
+            double m = l - c / 2.0;
+            int r = (int)Math.Round((r1 + m) * 255);
+            int g = (int)Math.Round((g1 + m) * 255);
+            int b = (int)Math.Round((b1 + m) * 255);
+
+            r = Math.Max(0, Math.Min(255, r));
+            g = Math.Max(0, Math.Min(255, g));
+            b = Math.Max(0, Math.Min(255, b));
+
+            return $"#{r:X2}{g:X2}{b:X2}";
+        }
+
 
         #endregion
 
@@ -6416,7 +6452,9 @@ int valor, string observaciones, string estado)
         public string InsertarNuevoEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado, string telEmpleadoCorp,
             string emailEmpleado, string emailEmpleadoCorp, string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato,
             string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
-            int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo)
+            int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo, 
+            int idProfesion, string nivelEstudio, int estratoSocial, string tipoVivienda, int nroPersonas,
+            string actividadExtra, string consumeLicor, string medioTransporte)
         {
             string respuesta = string.Empty;
             try
@@ -6457,6 +6495,14 @@ int valor, string observaciones, string estado)
                         cmd.Parameters.AddWithValue("@p_estado_civil", idEstadoCivil);
                         cmd.Parameters.AddWithValue("@p_canal_venta", idCanalVenta);
                         cmd.Parameters.AddWithValue("@p_id_cargo", idCargo);
+                        cmd.Parameters.AddWithValue("@p_id_profesion", idProfesion);
+                        cmd.Parameters.AddWithValue("@p_nivel_estudio", nivelEstudio);
+                        cmd.Parameters.AddWithValue("@p_estrato_social", estratoSocial);
+                        cmd.Parameters.AddWithValue("@p_tipo_vivienda", tipoVivienda);
+                        cmd.Parameters.AddWithValue("@p_nro_personas", nroPersonas);
+                        cmd.Parameters.AddWithValue("@p_actividad_extra", actividadExtra);
+                        cmd.Parameters.AddWithValue("@p_consume_licor", consumeLicor);
+                        cmd.Parameters.AddWithValue("@p_medio_transporte", medioTransporte);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -6557,7 +6603,9 @@ int valor, string observaciones, string estado)
             string telEmpleado, string telEmpleadoCorp, string emailEmpleado, string emailEmpleadoCorp,
             string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato,
             string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
-            int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo)
+            int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, 
+            int idCanalVenta, int idCargo, int idProfesion, string nivelEstudio, int estratoSocial, string tipoVivienda, int nroPersonas, 
+            string actividadExtra, string consumeLicor, string medioTransporte)
         {
             string respuesta = string.Empty;
             try
@@ -6600,6 +6648,14 @@ int valor, string observaciones, string estado)
                         cmd.Parameters.AddWithValue("@p_estado_civil", idEstadoCivil);
                         cmd.Parameters.AddWithValue("@p_canal_venta", idCanalVenta);
                         cmd.Parameters.AddWithValue("@p_id_cargo", idCargo);
+                        cmd.Parameters.AddWithValue("@p_id_profesion", idProfesion);
+                        cmd.Parameters.AddWithValue("@p_nivel_estudio", nivelEstudio);
+                        cmd.Parameters.AddWithValue("@p_estrato_social", estratoSocial);
+                        cmd.Parameters.AddWithValue("@p_tipo_vivienda", tipoVivienda);
+                        cmd.Parameters.AddWithValue("@p_nro_personas", nroPersonas);
+                        cmd.Parameters.AddWithValue("@p_actividad_extra", actividadExtra);
+                        cmd.Parameters.AddWithValue("@p_consume_licor", consumeLicor);
+                        cmd.Parameters.AddWithValue("@p_medio_transporte", medioTransporte);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -9017,7 +9073,7 @@ int valor, string observaciones, string estado)
             return dt;
         }
 
-        public DataTable ConsultarEstacionalidadPorDia(int idCanalVenta, int mes, int annio)
+        public DataTable ConsultarMetaComercialMensual(int idCanalVenta, int mes, int annio)
         {
             DataTable dt = new DataTable();
             try
@@ -9025,7 +9081,7 @@ int valor, string observaciones, string estado)
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_ESTACIONALIDAD_POR_DIA", mysqlConexion))
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_META_COMERCIAL_MENSUAL", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);
@@ -9049,6 +9105,39 @@ int valor, string observaciones, string estado)
 
             return dt;
         }
+
+        public DataTable ConsultarEstacionalidadPorDia(int mes, int annio)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_ESTACIONALIDAD_POR_DIA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_mes", mes);
+                        cmd.Parameters.AddWithValue("@p_annio", annio);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
         public DataTable ConsultarVentasVsMetasPorUusuarioCRM(int idCanalVenta, int mes, int annio, int idUsuario)
         {
             DataTable dt = new DataTable();

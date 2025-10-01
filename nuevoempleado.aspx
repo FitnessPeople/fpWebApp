@@ -30,18 +30,10 @@
 
     <script>
         function changeClass() {
-            // Activa el menú principal
             var element1 = document.querySelector("#empleados");
-            if (element1) {
-                element1.classList.add("active");
-            }
-
-            // Despliega el submenú
+            element1.classList.replace("old", "active");
             var element2 = document.querySelector("#sistema");
-            if (element2) {
-                element2.classList.add("show"); // en Bootstrap el desplegado es con "show"
-                element2.classList.remove("collapse");
-            }
+            element2.classList.remove("collapse");
         }
     </script>
 </head>
@@ -246,6 +238,33 @@
                                                     </div>
                                                 </div>
 
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Nivel de Estudio</label>
+                                                            <asp:DropDownList ID="ddlNivelEstudio" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:ListItem Text="Primaria" Value="Primaria"></asp:ListItem>
+                                                                <asp:ListItem Text="Bachiller" Value="Bachiller"></asp:ListItem>
+                                                                <asp:ListItem Text="Técnico" Value="Técnico"></asp:ListItem>
+                                                                <asp:ListItem Text="Tecnólogo" Value="Tecnólogo"></asp:ListItem>
+                                                                <asp:ListItem Text="Profesional" Value="Profesional"></asp:ListItem>
+                                                                <asp:ListItem Text="Especialización" Value="Especialización"></asp:ListItem>
+                                                                <asp:ListItem Text="Doctorado" Value="Doctorado"></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Profesión</label>
+                                                            <asp:DropDownList ID="ddlProfesion" runat="server" AppendDataBoundItems="true"
+                                                                DataTextField="Profesion" DataValueField="idProfesion" CssClass="form-control input-sm">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                                  <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
@@ -284,7 +303,80 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <div class="col-sm-6">
+
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Estrato socioeconómico</label>
+                                                            <asp:TextBox ID="txbEstratoSocioeconomico" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Tipo de Vivienda</label>
+                                                            <asp:DropDownList ID="ddlTipoVivienda" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:ListItem Text="Propia" Value="Propia"></asp:ListItem>
+                                                                <asp:ListItem Text="Arriendo" Value="Arriendo"></asp:ListItem>
+                                                                <asp:ListItem Text="Familiar" Value="Familiar"></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Nro. personas nucleo familiar</label>
+                                                            <asp:TextBox ID="txbNroPersonasNucleo" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Actividad extra</label>
+                                                            <asp:DropDownList ID="ddlActividadExtra" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:ListItem Text="Estudiar" Value="Estudiar"></asp:ListItem>
+                                                                <asp:ListItem Text="Emprendimiento" Value="Emprendimiento"></asp:ListItem>
+                                                                <asp:ListItem Text="Actividades de hogar" Value="Actividades de hogar"></asp:ListItem>
+                                                                <asp:ListItem Text="Deporte" Value="Deporte"></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Consume licor</label>
+                                                            <asp:DropDownList ID="ddlConsumoLicor" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:ListItem Text="Ocasional" Value="Ocasional"></asp:ListItem>
+                                                                <asp:ListItem Text="Semanal" Value="Semanal"></asp:ListItem>
+                                                                <asp:ListItem Text="Quincenal" Value="Quincenal"></asp:ListItem>
+                                                                <asp:ListItem Text="Mensual" Value="Mensual"></asp:ListItem>
+                                                                <asp:ListItem Text="Nunca" Value="Nunca"></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Medio de transporte</label>
+                                                            <asp:DropDownList ID="ddlMedioTransporte" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:ListItem Text="Público" Value="Público"></asp:ListItem>
+                                                                <asp:ListItem Text="Bicicleta" Value="Bicicleta"></asp:ListItem>
+                                                                <asp:ListItem Text="Patineta eléctrica" Value="Patineta eléctrica"></asp:ListItem>
+                                                                <asp:ListItem Text="Moto" Value="Moto"></asp:ListItem>
+                                                                <asp:ListItem Text="Vehículo" Value="Vehículo"></asp:ListItem>
+                                                                <asp:ListItem Text="A pie" Value="A pie"></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
@@ -479,7 +571,7 @@
                 },
                 txbDocumento: {
                     required: true,
-                    minlength: 5
+                    minlength: 3
                 },
                 ddlTipoDocumento: {
                     required: true
@@ -488,16 +580,9 @@
                     required: true,
                     minlength: 10
                 },
-                //txbTelefonoCorp: {
-                //    required: true,
-                //    minlength: 10
-                //},
                 txbEmail: {
                     required: true,
                 },
-                //txbEmailCorp: {
-                //    required: true,
-                //},
                 txbDireccion: {
                     required: true,
                     minlength: 10
@@ -506,15 +591,42 @@
                     required: true
                 },
                 txbFechaNac: {
-                    required: true,
+                    required: true
                 },
-                txbCiudad: {
-                    required: true,
-                    minlength: 4
+                ddlCargo: {
+                    required: true
                 },
-                txbCargo: {
+                ddlNivelEstudio: {
+                    required: true
+                },
+                ddlProfesion: {
+                    required: true
+                },
+                ddlEstadoCivil: {
+                    required: true
+                },
+                ddlGenero: {
+                    required: true
+                },
+                txbEstratoSocioeconomico: {
                     required: true,
-                    minlength: 5
+                    minlength: 1
+                },
+                ddlTipoVivienda: {
+                    required: true
+                },
+                txbNroPersonasNucleo: {
+                    required: true,
+                    minlength: 1
+                },
+                ddlActividadExtra: {
+                    required: true
+                },
+                ddlConsumoLicor: {
+                    required: true
+                },
+                ddlMedioTransporte: {
+                    required: true
                 },
                 txbContrato: {
                     required: true,
@@ -523,13 +635,13 @@
                 ddlTipoContrato: {
                     required: true
                 },
+                ddlSedes: {
+                    required: true
+                },
                 txbFechaInicio: {
                     required: true
                 },
                 txbFechaFinal: {
-                    required: true
-                },
-                ddlSedes: {
                     required: true
                 },
                 txbSueldo: {
@@ -553,19 +665,7 @@
                 ddlCesantias: {
                     required: true
                 },
-                ddlCanalVenta: {
-                    required: true
-                },
-                ddlempresasFP: {
-                    required: true
-                },
-                ddlCargo: {
-                    required: true
-                },
-                ddlEstadoCivil: {
-                    required: true
-                },
-                ddlGenero: {
+                ddlEmpresasFP: {
                     required: true
                 },
             },
