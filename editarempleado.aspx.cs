@@ -43,6 +43,7 @@ namespace fpWebApp
                         CargarEmpresasFP();
                         CargarCanalesVenta();
                         CargarCargos();
+                        CargarProfesiones();
                         CargarEstadoCivil();
                         CargarGeneros();
                         CargarEmpleado();
@@ -119,8 +120,8 @@ namespace fpWebApp
 
         private void CargarEps()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarEpss();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEpss();
             ddlEps.DataSource = dt;
             ddlEps.DataBind();
             dt.Dispose();
@@ -128,8 +129,8 @@ namespace fpWebApp
 
         private void CargarFondoPension()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarPensiones();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPensiones();
             ddlFondoPension.DataSource = dt;
             ddlFondoPension.DataBind();
             dt.Dispose();
@@ -137,8 +138,8 @@ namespace fpWebApp
 
         private void CargarArl()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarArls();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarArls();
             ddlArl.DataSource = dt;
             ddlArl.DataBind();
             dt.Dispose();
@@ -157,8 +158,8 @@ namespace fpWebApp
 
         private void CargarCesantias()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarCesantias();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCesantias();
             ddlCesantias.DataSource = dt;
             ddlCesantias.DataBind();
             dt.Dispose();
@@ -166,8 +167,8 @@ namespace fpWebApp
 
         private void CargarCanalesVenta()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarCanalesVenta();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCanalesVenta();
             ddlCanalVenta.DataSource = dt;
             ddlCanalVenta.DataBind();
             dt.Dispose();
@@ -175,17 +176,26 @@ namespace fpWebApp
 
         private void CargarCargos()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarCargos();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCargos();
             ddlCargo.DataSource = dt;
             ddlCargo.DataBind();
             dt.Dispose();
         }
 
+        private void CargarProfesiones()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarProfesiones();
+            ddlProfesion.DataSource = dt;
+            ddlProfesion.DataBind();
+            dt.Dispose();
+        }
+
         private void CargarEmpresasFP()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarEmpresasFP();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEmpresasFP();
             ddlEmpresasFP.DataSource = dt;
             ddlEmpresasFP.DataBind();
             dt.Dispose();
@@ -193,8 +203,8 @@ namespace fpWebApp
 
         private void CargarEstadoCivil()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarEstadosCiviles();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEstadosCiviles();
             ddlEstadoCivil.DataSource = dt;
             ddlEstadoCivil.DataBind();
             dt.Dispose();
@@ -202,8 +212,8 @@ namespace fpWebApp
 
         private void CargarGeneros()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarGeneros();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarGeneros();
             ddlGenero.DataSource = dt;
             ddlGenero.DataBind();
             dt.Dispose();
@@ -245,6 +255,12 @@ namespace fpWebApp
                 dtFecha = Convert.ToDateTime(dt.Rows[0]["FechaNacEmpleado"].ToString());
             }
             txbFechaNac.Text = dtFecha.ToString("yyyy-MM-dd");
+            txbCargo.Text = dt.Rows[0]["Cargo"].ToString();
+            txbProfesion.Text = dt.Rows[0]["Profesion"].ToString();
+            if (dt.Rows[0]["NivelEstudio"].ToString() != "")
+            {
+                ddlNivelEstudio.SelectedIndex = Convert.ToInt16(ddlNivelEstudio.Items.IndexOf(ddlNivelEstudio.Items.FindByText(dt.Rows[0]["NivelEstudio"].ToString())));
+            }
             ltCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
             if (dt.Rows[0]["FotoEmpleado"].ToString() != "")
             {
@@ -254,6 +270,24 @@ namespace fpWebApp
             else
             {
                 imgFoto.Src = "img/empleados/nofoto.png";
+            }
+            txbEstratoSocioeconomico.Text = dt.Rows[0]["EstratoSocioeconomico"].ToString();
+            if (dt.Rows[0]["TipoVivienda"].ToString() != "")
+            {
+                ddlTipoVivienda.SelectedIndex = Convert.ToInt16(ddlTipoVivienda.Items.IndexOf(ddlTipoVivienda.Items.FindByText(dt.Rows[0]["TipoVivienda"].ToString())));
+            }
+            txbNroPersonasNucleo.Text = dt.Rows[0]["PersonasNucleoFamiliar"].ToString();
+            if (dt.Rows[0]["ActividadExtra"].ToString() != "")
+            {
+                ddlActividadExtra.SelectedIndex = Convert.ToInt16(ddlActividadExtra.Items.IndexOf(ddlActividadExtra.Items.FindByText(dt.Rows[0]["ActividadExtra"].ToString())));
+            }
+            if (dt.Rows[0]["ConsumeLicor"].ToString() != "")
+            {
+                ddlConsumoLicor.SelectedIndex = Convert.ToInt16(ddlConsumoLicor.Items.IndexOf(ddlConsumoLicor.Items.FindByText(dt.Rows[0]["ConsumeLicor"].ToString())));
+            }
+            if (dt.Rows[0]["MedioTransporte"].ToString() != "")
+            {
+                ddlMedioTransporte.SelectedIndex = Convert.ToInt16(ddlMedioTransporte.Items.IndexOf(ddlMedioTransporte.Items.FindByText(dt.Rows[0]["MedioTransporte"].ToString())));
             }
             txbContrato.Text = dt.Rows[0]["NroContrato"].ToString();
             if (dt.Rows[0]["TipoContrato"].ToString() != "")
@@ -327,6 +361,11 @@ namespace fpWebApp
             if (dt.Rows[0]["idCargo"].ToString() != "")
             {
                 ddlCargo.SelectedIndex = Convert.ToInt32(ddlCargo.Items.IndexOf(ddlCargo.Items.FindByValue(dt.Rows[0]["idCargo"].ToString())));
+            }
+
+            if (dt.Rows[0]["idProfesion"].ToString() != "")
+            {
+                ddlProfesion.SelectedIndex = Convert.ToInt32(ddlProfesion.Items.IndexOf(ddlProfesion.Items.FindByValue(dt.Rows[0]["idProfesion"].ToString())));
             }
 
             dt.Dispose();

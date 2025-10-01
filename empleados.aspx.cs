@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Web.Script.Serialization;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -42,6 +44,8 @@ namespace fpWebApp
                         }
                     }
                     listaEmpleados();
+                    CantidadGenero();
+                    CantidadCiudad();
                     //ActualizarEstadoxFechaFinal();
                     //indicadores01.Visible = false;
                 }
@@ -50,6 +54,29 @@ namespace fpWebApp
                     Response.Redirect("logout.aspx");
                 }
             }
+        }
+
+        private void ValidarPermisos(string strPagina)
+        {
+            ViewState["SinPermiso"] = "1";
+            ViewState["Consulta"] = "0";
+            ViewState["Exportar"] = "0";
+            ViewState["CrearModificar"] = "0";
+            ViewState["Borrar"] = "0";
+
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
+
+            if (dt.Rows.Count > 0)
+            {
+                ViewState["SinPermiso"] = dt.Rows[0]["SinPermiso"].ToString();
+                ViewState["Consulta"] = dt.Rows[0]["Consulta"].ToString();
+                ViewState["Exportar"] = dt.Rows[0]["Exportar"].ToString();
+                ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
+                ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
+            }
+
+            dt.Dispose();
         }
 
         private void ActualizarEstadoxFechaFinal()
@@ -81,27 +108,101 @@ namespace fpWebApp
             
             rpEmpleados.DataSource = dt;
             rpEmpleados.DataBind();
+
+            rpTabEmpleados.DataSource = dt;
+            rpTabEmpleados.DataBind();
+
             dt.Dispose();
         }
 
-        private void ValidarPermisos(string strPagina)
+        private void CantidadGenero()
         {
-            ViewState["SinPermiso"] = "1";
-            ViewState["Consulta"] = "0";
-            ViewState["Exportar"] = "0";
-            ViewState["CrearModificar"] = "0";
-            ViewState["Borrar"] = "0";
-
+            string strGeneros = @"SELECT e.idGenero, g.Genero, COUNT(*) AS cuantos  
+                FROM empleados e 
+                RIGHT JOIN generos g ON e.idGenero = g.idGenero 
+                GROUP BY g.idGenero";
+            
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
+            
+            DataTable dt = cg.TraerDatos(strGeneros);
 
             if (dt.Rows.Count > 0)
             {
-                ViewState["SinPermiso"] = dt.Rows[0]["SinPermiso"].ToString();
-                ViewState["Consulta"] = dt.Rows[0]["Consulta"].ToString();
-                ViewState["Exportar"] = dt.Rows[0]["Exportar"].ToString();
-                ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
-                ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
+                List<string> nombres = new List<string>();
+                List<int> cantidades = new List<int>();
+                List<string> colores = new List<string>();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    nombres.Add(row["Genero"].ToString());
+                    cantidades.Add(Convert.ToInt32(row["cuantos"]));
+
+                    Random random = new Random();
+                    int randomInt = random.Next(0x1000000);
+                    string hexColor = String.Format("#{0:X6}", randomInt);
+                    colores.Add(hexColor);
+                }
+
+                var serializer = new JavaScriptSerializer();
+                string nombresJson = serializer.Serialize(nombres);
+                string cantidadesJson = serializer.Serialize(cantidades);
+                string coloresJson = serializer.Serialize(colores);
+
+                ClientScript.RegisterStartupScript(
+                    this.GetType(),
+                    "dataChart",
+                    $"var nombres = {nombresJson}; var cantidades = {cantidadesJson}; var colores = {coloresJson};",
+                    true
+                );
+            }
+
+            dt.Dispose();
+        }
+
+        private void CantidadCiudad()
+        {
+            string strGeneros = @"SELECT idCiudadEmpleado, NombreCiudad, COUNT(*) AS cuantos  
+                FROM empleados e, ciudades c  
+                WHERE e.idCiudadEmpleado = c.idCiudad 
+                AND idCiudadEmpleado IN (
+                SELECT idCiudadEmpleado 
+                FROM empleados 
+                WHERE idCiudadEmpleado IS NOT NULL 
+                GROUP BY idCiudadEmpleado) 
+                GROUP BY idCiudadEmpleado";
+
+            clasesglobales cg = new clasesglobales();
+
+            DataTable dt = cg.TraerDatos(strGeneros);
+
+            if (dt.Rows.Count > 0)
+            {
+                List<string> nombres = new List<string>();
+                List<int> cantidades = new List<int>();
+                List<string> colores = new List<string>();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    nombres.Add(row["NombreCiudad"].ToString());
+                    cantidades.Add(Convert.ToInt32(row["cuantos"]));
+
+                    Random random = new Random();
+                    int randomInt = random.Next(0x1000000);
+                    string hexColor = String.Format("#{0:X6}", randomInt);
+                    colores.Add(hexColor);
+                }
+
+                var serializer = new JavaScriptSerializer();
+                string nombresJson = serializer.Serialize(nombres);
+                string cantidadesJson = serializer.Serialize(cantidades);
+                string coloresJson = serializer.Serialize(colores);
+
+                ClientScript.RegisterStartupScript(
+                    this.GetType(),
+                    "dataChart1",
+                    $"var nombres1 = {nombresJson}; var cantidades1 = {cantidadesJson}; var colores1 = {coloresJson};",
+                    true
+                );
             }
 
             dt.Dispose();

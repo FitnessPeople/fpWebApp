@@ -170,16 +170,16 @@
                                         data-empty="Sin resultados">
                                         <thead>
                                             <tr>
-                                                <th data-sortable="false">Documento</th>
                                                 <th data-breakpoints="xs"></th>
                                                 <th>Nombre</th>
+                                                <th data-sortable="false">Documento</th>
                                                 <th data-breakpoints="xs">Teléfono corporativo</th>
-                                                <th data-breakpoints="xs sm">Teléfono personal</th>
+                                                <%--<th data-breakpoints="xs sm">Teléfono personal</th>--%>
                                                 <%--<th data-breakpoints="xs sm md">Correo</th>--%>
-                                                <th data-breakpoints="xs sm">Cargo</th>
-                                                <th data-breakpoints="xs sm">Sede</th>
+                                                <%--<th data-breakpoints="xs sm">Cargo</th>--%>
+                                                <%--<th data-breakpoints="xs sm">Sede</th>--%>
                                                 <%--<th data-hide="phone,tablet">Cargo</th>--%>
-                                                <th data-type="date" data-breakpoints="xs sm">Cumpleaños</th>
+                                                <%--<th data-type="date" data-breakpoints="xs sm">Cumpleaños</th>--%>
                                                 <th class="text-nowrap" data-breakpoints="xs sm">Estado</th>
                                                 <%--<th data-breakpoints="all" data-title="Info"></th>--%>
                                                 <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
@@ -189,17 +189,17 @@
                                             <asp:Repeater ID="rpEmpleados" runat="server" OnItemDataBound="rpEmpleados_ItemDataBound">
                                                 <ItemTemplate>
                                                     <tr>
-                                                        <td><%# Eval("DocumentoEmpleado") %></td>
                                                         <td class="client-avatar">
                                                             <img alt="image" src="img/empleados/<%# Eval("FotoEmpleado") %>"></td>
-                                                        <td><%# Eval("NombreEmpleado") %></td>
+                                                        <td><a data-toggle="tab" href='#contact-<%# Eval("DocumentoEmpleado") %>' class="client-link"><%# Eval("NombreEmpleado") %></a></td>
+                                                        <td><%# Eval("DocumentoEmpleado") %></td>
                                                         <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoCorporativo") %>" target="_blank"><%# Eval("TelefonoCorporativo") %></a></td>
-                                                        <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoEmpleado") %>" target="_blank"><%# Eval("TelefonoEmpleado") %></a></td>
+                                                        <%--<td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoEmpleado") %>" target="_blank"><%# Eval("TelefonoEmpleado") %></a></td>--%>
                                                         <%--<td><i class="fa fa-envelope m-r-xs font-bold"></i><a href="mailto:<%# Eval("EmailCorporativo") %>" title="Enviar correo"><%# Eval("EmailCorporativo") %></a></td>--%>
-                                                        <td><a href="cargos" title="Ir a Cargos"><i class="fa fa-user-nurse m-r-xs font-bold"></i><%# Eval("Cargo") %></a></td>
-                                                        <td><%# Eval("NombreSede") %></td>
+                                                        <%--<td><a href="cargos" title="Ir a Cargos"><i class="fa fa-user-nurse m-r-xs font-bold"></i><%# Eval("Cargo") %></a></td>--%>
+                                                        <%--<td><%# Eval("NombreSede") %></td>--%>
                                                         <%--<td><i class="fa fa-user-tie m-r-xs font-bold"></i><%# Eval("CargoEmpleado") %></td>--%>
-                                                        <td><%# Eval("icono") %><%# Eval("FechaNacEmpleado", "{0:dd MMM}") %></td>
+                                                        <%--<td><%# Eval("icono") %><%# Eval("FechaNacEmpleado", "{0:dd MMM}") %></td>--%>
                                                         <td><span class="badge badge-<%# Eval("label") %>"><%# Eval("Estado") %></span></td>
                                                         <%--<td class="table-bordered">
                                                             <table class="table table-bordered">
@@ -247,6 +247,138 @@
 
                                 <div class="ibox-content">
                                     <div class="tab-content">
+                                        <asp:Repeater ID="rpTabEmpleados" runat="server">
+                                            <ItemTemplate>
+                                                <div id='contact-<%# Eval("DocumentoEmpleado") %>' class="tab-pane">
+                                                    <div class="row m-b-lg">
+                                                        <div class="col-lg-4 text-center">
+                                                            <h3><%# Eval("NombreEmpleado") %></h3>
+                                                            <div class="m-b-sm">
+                                                                <img alt="image" class="img-circle" src="img/empleados/<%# Eval("FotoEmpleado") %>" style="width: 62px" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-8">
+                                                            <strong>Acerca de mi</strong>
+                                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                                            <button type="button" class="btn btn-primary btn-sm btn-block">
+                                                                <i class="fa fa-envelope m-r-xs"></i>Enviar mensaje</button>
+                                                            <button type="button" class="btn btn-danger btn-sm btn-block">
+                                                                <i class="fa fa-rotate m-r-xs"></i>Cambiar estado</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="client-detail">
+                                                        <div class="full-height-scroll">
+                                                            <strong>Detalles</strong>
+
+                                                            <ul class="list-group clear-list">
+                                                                <li class="list-group-item fist-item">
+                                                                    <span class="pull-right">09:00 pm </span>
+                                                                    Please contact me
+                                                                </li>
+                                                                <li class="list-group-item">
+                                                                    <span class="pull-right">10:16 am </span>
+                                                                    Sign a contract
+                                                                </li>
+                                                                <li class="list-group-item">
+                                                                    <span class="pull-right">08:22 pm </span>
+                                                                    Open new shop
+                                                                </li>
+                                                                <li class="list-group-item">
+                                                                    <span class="pull-right">11:06 pm </span>
+                                                                    Call back to Sylvia
+                                                                </li>
+                                                                <li class="list-group-item">
+                                                                    <span class="pull-right">12:00 am </span>
+                                                                    Write a letter to Sandra
+                                                                </li>
+                                                            </ul>
+                                                            <strong>Notes</strong>
+                                                            <p>
+                                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua.
+                                       
+                                                            </p>
+                                                            <hr />
+                                                            <strong>Timeline activity</strong>
+                                                            <div id="vertical-timeline" class="vertical-container dark-timeline">
+                                                                <div class="vertical-timeline-block">
+                                                                    <div class="vertical-timeline-icon gray-bg">
+                                                                        <i class="fa fa-coffee"></i>
+                                                                    </div>
+                                                                    <div class="vertical-timeline-content">
+                                                                        <p>
+                                                                            Conference on the sales results for the previous year.
+           
+                                                                        </p>
+                                                                        <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="vertical-timeline-block">
+                                                                    <div class="vertical-timeline-icon gray-bg">
+                                                                        <i class="fa fa-briefcase"></i>
+                                                                    </div>
+                                                                    <div class="vertical-timeline-content">
+                                                                        <p>
+                                                                            Many desktop publishing packages and web page editors now use Lorem.
+           
+                                                                        </p>
+                                                                        <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="vertical-timeline-block">
+                                                                    <div class="vertical-timeline-icon gray-bg">
+                                                                        <i class="fa fa-bolt"></i>
+                                                                    </div>
+                                                                    <div class="vertical-timeline-content">
+                                                                        <p>
+                                                                            There are many variations of passages of Lorem Ipsum available.
+           
+                                                                        </p>
+                                                                        <span class="vertical-date small text-muted">06:10 pm - 11.03.2014 </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="vertical-timeline-block">
+                                                                    <div class="vertical-timeline-icon navy-bg">
+                                                                        <i class="fa fa-warning"></i>
+                                                                    </div>
+                                                                    <div class="vertical-timeline-content">
+                                                                        <p>
+                                                                            The generated Lorem Ipsum is therefore.
+           
+                                                                        </p>
+                                                                        <span class="vertical-date small text-muted">02:50 pm - 03.10.2014 </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="vertical-timeline-block">
+                                                                    <div class="vertical-timeline-icon gray-bg">
+                                                                        <i class="fa fa-coffee"></i>
+                                                                    </div>
+                                                                    <div class="vertical-timeline-content">
+                                                                        <p>
+                                                                            Conference on the sales results for the previous year.
+           
+                                                                        </p>
+                                                                        <span class="vertical-date small text-muted">2:10 pm - 12.06.2014 </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="vertical-timeline-block">
+                                                                    <div class="vertical-timeline-icon gray-bg">
+                                                                        <i class="fa fa-briefcase"></i>
+                                                                    </div>
+                                                                    <div class="vertical-timeline-content">
+                                                                        <p>
+                                                                            Many desktop publishing packages and web page editors now use Lorem.
+           
+                                                                        </p>
+                                                                        <span class="vertical-date small text-muted">4:20 pm - 10.05.2014 </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ItemTemplate>
+                                        </asp:Repeater>
                                         <div id="contact-1" class="tab-pane active">
                                             <div class="row m-b-lg">
                                                 <div class="col-lg-4 text-center">
@@ -259,7 +391,7 @@
                                                 </div>
                                                 <div class="col-lg-8">
                                                     <strong>About me
-                                            </strong>
+                                                    </strong>
 
                                                     <p>
                                                         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -282,23 +414,23 @@
                                                         <li class="list-group-item fist-item">
                                                             <span class="pull-right">09:00 pm </span>
                                                             Please contact me
-                                            </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right">10:16 am </span>
                                                             Sign a contract
-                                            </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right">08:22 pm </span>
                                                             Open new shop
-                                            </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right">11:06 pm </span>
                                                             Call back to Sylvia
-                                            </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right">12:00 am </span>
                                                             Write a letter to Sandra
-                                            </li>
+                                                        </li>
                                                     </ul>
                                                     <strong>Notes</strong>
                                                     <p>
@@ -397,7 +529,7 @@
                                                 </div>
                                                 <div class="col-lg-8">
                                                     <strong>About me
-                                            </strong>
+                                                    </strong>
 
                                                     <p>
                                                         Many desktop publishing packages and web page editors now use Lorem Ipsum as their default tempor incididunt model text.
@@ -419,23 +551,23 @@
                                                         <li class="list-group-item fist-item">
                                                             <span class="pull-right">09:00 pm </span>
                                                             Lorem Ipsum available
-                                                </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right">10:16 am </span>
                                                             Latin words, combined
-                                                </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right">08:22 pm </span>
                                                             Open new shop
-                                                </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right">11:06 pm </span>
                                                             The generated Lorem Ipsum
-                                                </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right">12:00 am </span>
                                                             Content here, content here
-                                                </li>
+                                                        </li>
                                                     </ul>
                                                     <strong>Notes</strong>
                                                     <p>
@@ -521,7 +653,7 @@
                                                 </div>
                                                 <div class="col-lg-8">
                                                     <strong>About me
-                                            </strong>
+                                                    </strong>
 
                                                     <p>
                                                         Latin professor at Hampden-Sydney College in Virginia, looked  embarrassing hidden in the middle.
@@ -543,23 +675,23 @@
                                                         <li class="list-group-item fist-item">
                                                             <span class="pull-right">09:00 pm </span>
                                                             Aldus PageMaker including
-                                                </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right">10:16 am </span>
                                                             Finibus Bonorum et Malorum
-                                                </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right">08:22 pm </span>
                                                             Write a letter to Sandra
-                                                </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right">11:06 pm </span>
                                                             Standard chunk of Lorem
-                                                </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right">12:00 am </span>
                                                             Open new shop
-                                                </li>
+                                                        </li>
                                                     </ul>
                                                     <strong>Notes</strong>
                                                     <p>
@@ -657,7 +789,7 @@
                                                 </div>
                                                 <div class="col-lg-8">
                                                     <strong>About me
-                                            </strong>
+                                                    </strong>
 
                                                     <p>
                                                         Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero,written in 45 BC. This book is a treatise on.
@@ -679,23 +811,23 @@
                                                         <li class="list-group-item fist-item">
                                                             <span class="pull-right">09:00 pm </span>
                                                             The point of using
-                                                </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right">10:16 am </span>
                                                             Lorem Ipsum is that it has
-                                                </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right">08:22 pm </span>
                                                             Text, and a search for 'lorem ipsum'
-                                                </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right">11:06 pm </span>
                                                             Passages of Lorem Ipsum
-                                                </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right">12:00 am </span>
                                                             If you are going
-                                                </li>
+                                                        </li>
                                                     </ul>
                                                     <strong>Notes</strong>
                                                     <p>
@@ -805,15 +937,15 @@
                                                         <li class="list-group-item fist-item">
                                                             <span class="pull-right"><span class="label label-primary">NEW</span> </span>
                                                             The point of using
-                                                </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right"><span class="label label-warning">WAITING</span></span>
                                                             Lorem Ipsum is that it has
-                                                </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right"><span class="label label-danger">BLOCKED</span> </span>
                                                             If you are going
-                                                </li>
+                                                        </li>
                                                     </ul>
                                                     <strong>Notes</strong>
                                                     <p>
@@ -923,15 +1055,15 @@
                                                         <li class="list-group-item fist-item">
                                                             <span class="pull-right"><span class="label label-warning">WAITING</span> </span>
                                                             Aldus PageMaker
-                                                </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right"><span class="label label-primary">NEW</span> </span>
                                                             Lorem Ipsum, you need to be sure
-                                                </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right"><span class="label label-danger">BLOCKED</span> </span>
                                                             The generated Lorem Ipsum
-                                                </li>
+                                                        </li>
                                                     </ul>
                                                     <strong>Notes</strong>
                                                     <p>
@@ -1041,15 +1173,15 @@
                                                         <li class="list-group-item fist-item">
                                                             <span class="pull-right"><span class="label label-danger">BLOCKED</span> </span>
                                                             Hidden in the middle of text
-                                                </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right"><span class="label label-primary">NEW</span> </span>
                                                             Non-characteristic words etc.
-                                                </li>
+                                                        </li>
                                                         <li class="list-group-item">
                                                             <span class="pull-right"><span class="label label-warning">WAITING</span> </span>
                                                             Bonorum et Malorum
-                                                </li>
+                                                        </li>
                                                     </ul>
                                                     <strong>Notes</strong>
                                                     <p>
@@ -1128,6 +1260,62 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="wrapper wrapper-content animated fadeInRight">
+                        <%--<div class="row">
+                            <div class="col-lg-12">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Estado de Agendas por Sede</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div id="barras"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>--%>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Empleados por genero</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="row text-center">
+                                            <div class="col-lg-3">
+                                                <canvas id="doughnutChart1" width="140" height="80" style="margin: 18px auto 0"></canvas>
+                                                <h5>Géneros</h5>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <canvas id="doughnutChart2" width="140" height="80" style="margin: 18px auto 0"></canvas>
+                                                <h5>Ciudad</h5>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <canvas id="doughnutChart3" width="140" height="80" style="margin: 18px auto 0"></canvas>
+                                                <h5>Estado civil</h5>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <canvas id="doughnutChart4" width="140" height="80" style="margin: 18px auto 0"></canvas>
+                                                <h5>Tipo de contrato</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <%--<div class="col-lg-6">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Porcentaje de Agendas por Estado</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div>
+                                            <div id="pie"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>--%>
+                        </div>
+                    </div>
                     <%--Fin Contenido!!!!--%>
                 </div>
             </div>
@@ -1158,9 +1346,57 @@
     <!-- jQuery UI -->
     <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
 
+    <!-- Gráficas -->
+    <!-- ChartJS-->
+    <script src="js/plugins/chartJs/Chart.min.js"></script>
+    <script src="js/demo/chartjs-demo.js"></script>
+
+    <!-- d3 and c3 charts -->
+    <script src="js/plugins/d3/d3.min.js"></script>
+    <script src="js/plugins/c3/c3.min.js"></script>
+
     <!-- Page-Level Scripts -->
     <script>
         $('.footable').footable();
+    </script>
+
+    <script>
+
+        $(function () {
+
+            var doughnutData = {
+                labels: nombres,
+                datasets: [{
+                    data: cantidades,
+                    backgroundColor: colores
+                }]
+            };
+
+
+            var doughnutOptions = {
+                responsive: false,
+                legend: {
+                    display: false
+                }
+            };
+
+
+            var ctx4 = document.getElementById("doughnutChart1").getContext("2d");
+            new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+
+            var doughnutData = {
+                labels: nombres1,
+                datasets: [{
+                    data: cantidades1,
+                    backgroundColor: colores1
+                }]
+            };
+
+            var ctx4 = document.getElementById("doughnutChart2").getContext("2d");
+            new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+
+        });
+
     </script>
 
 </body>
