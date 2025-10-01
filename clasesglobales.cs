@@ -22,6 +22,7 @@ using System.Text;
 using System.Web;
 using System.Web.Configuration;
 using System.Drawing;
+using System.Web.Services.Description;
 
 namespace fpWebApp
 {
@@ -7129,6 +7130,79 @@ int valor, string observaciones, string estado)
             return dt;
         }
 
+        public DataTable ValidarEmpresaCRMPorId(int idEmpresCRM, out bool respuesta, out string mensaje)
+        {
+            DataTable dt = new DataTable();
+            mensaje = string.Empty;
+            respuesta = false;
+
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_VALIDAR_EMPRESA_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_empresa_CRM", idEmpresCRM);
+
+                        MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
+                        pMensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pMensaje);
+
+                        cmd.ExecuteNonQuery();
+                        mensaje = pMensaje.Value?.ToString();
+
+                        if (mensaje == "OK") respuesta = true;
+                        else respuesta = false;
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+                respuesta = false;
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarEmpresasCRMPorNombre(string nombreEmpresaCRM)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_EMPRESA_CRM_POR_NOMBRE", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_nombre_empresa_crm", nombreEmpresaCRM);
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
         public DataTable ConsultarEstadossCRM()
         {
             DataTable dt = new DataTable();
@@ -7166,7 +7240,6 @@ int valor, string observaciones, string estado)
             try
             {
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
                     mysqlConexion.Open();
