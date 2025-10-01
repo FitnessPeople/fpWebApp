@@ -6,6 +6,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using System.Windows.Media.Media3D;
+using DocumentFormat.OpenXml.Office2013.Drawing.ChartStyle;
 
 namespace fpWebApp
 {
@@ -58,9 +60,9 @@ namespace fpWebApp
                         {
                             //Editar
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = new DataTable();
-                            
-                            dt = cg.ConsultarEmpresaCRMPorId(int.Parse(Request.QueryString["editid"].ToString()),out respuesta);
+                            System.Data.DataTable dt = new System.Data.DataTable();
+
+                            dt = cg.ConsultarEmpresaCRMPorId(int.Parse(Request.QueryString["editid"].ToString()), out respuesta);
                             if (dt.Rows.Count > 0 && respuesta)
                             {
                                 if (dt.Rows[0]["idTipoDocumento"].ToString() != "")
@@ -89,21 +91,40 @@ namespace fpWebApp
                         if (Request.QueryString["deleteid"] != null)
                         {
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ValidarCiudadSedesTablas(Request.QueryString["deleteid"].ToString());
-                            if (dt.Rows.Count > 0)
+                            string mensaje = string.Empty;
+
+                            System.Data.DataTable dt = cg.ValidarEmpresaCRMPorId(Convert.ToInt32(Request.QueryString["deleteid"].ToString()), out respuesta, out mensaje);
+                            if (!respuesta)
                             {
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +
                                     "<div class=\"alert alert-danger alert-dismissable\">" +
                                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Este estado no se puede borrar, hay registros asociados a él." +
+                                    mensaje +
                                     "</div></div>";
 
-                                DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarEmpresaCRMPorId(int.Parse(Request.QueryString["deleteid"].ToString()),out respuesta);
+                                System.Data.DataTable dt1 = new System.Data.DataTable();
+                                dt1 = cg.ConsultarEmpresaCRMPorId(int.Parse(Request.QueryString["deleteid"].ToString()), out respuesta);
                                 if (dt.Rows.Count > 0 && respuesta)
                                 {
-                                    //txbNombreEstado.Text = dt1.Rows[0]["NombreCiudadSede"].ToString();
-                                    //txbNombreEstado.Enabled = false;
+                                    if (dt1.Rows[0]["idTipoDocumento"].ToString() != "")
+                                        ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt1.Rows[0]["idTipoDocumento"].ToString())));
+                                    else
+                                        ddlTipoDocumento.SelectedItem.Value = "0";
+                                    ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt1.Rows[0]["idTipoDocumento"].ToString())));
+                                    txbDocumento.Text = dt1.Rows[0]["DocumentoEmpresa"].ToString();
+                                    txbDigitoVerificacion.Text = dt1.Rows[0]["digitoverificacion"].ToString();
+                                    txbRazonSocial.Value = dt1.Rows[0]["NombreEmpresaCRM"].ToString();
+                                    txbNombreComercialEmpresa.Value = dt1.Rows[0]["NombreComercial"].ToString();
+                                    txbNombreContacto.Value = dt1.Rows[0]["NombreContacto"].ToString();
+                                    txbCargoContacto.Value = dt1.Rows[0]["CargoContacto"].ToString();
+                                    txbCelularEmpresa.Value = dt1.Rows[0]["CelularEmpresa"].ToString();
+                                    txbCorreoEmpresa.Value = dt1.Rows[0]["CorreoEmpresa"].ToString();
+                                    if (dt1.Rows[0]["idCiudad"].ToString() != "")
+                                        ddlCiudades.SelectedIndex = Convert.ToInt32(ddlCiudades.Items.IndexOf(ddlCiudades.Items.FindByValue(dt1.Rows[0]["idCiudad"].ToString())));
+                                    else
+                                        ddlCiudades.SelectedItem.Value = "0";
+                                    txaObservaciones.Value = dt1.Rows[0]["ObservacionesEmp"].ToString();
+
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     btnAgregar.Enabled = false;
                                     ltTitulo.Text = "Borrar Estado CRM";
@@ -113,7 +134,7 @@ namespace fpWebApp
                             else
                             {
                                 //Borrar
-                                DataTable dt1 = new DataTable();
+                                System.Data.DataTable dt1 = new System.Data.DataTable();
                                 dt1 = cg.ConsultarEmpresaCRMPorId(int.Parse(Request.QueryString["deleteid"].ToString()), out respuesta);
                                 if (dt1.Rows.Count > 0)
                                 {
@@ -155,25 +176,12 @@ namespace fpWebApp
         private void CargarCiudad()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarCiudadesCol();
+            System.Data.DataTable dt = cg.ConsultarCiudadesCol();
 
             ddlCiudades.DataSource = dt;
             ddlCiudades.DataBind();
 
             dt.Dispose();
-        }
-
-        private bool ValidarEstado(string strNombre)
-        {
-            bool bExiste = false;
-            DataTable dt = new DataTable();
-            clasesglobales cg = new clasesglobales();
-            dt = cg.ConsultarEstadoCRMPorNombre(strNombre);
-            if (dt.Rows.Count > 0)
-            {
-                bExiste = true;
-            }
-            return bExiste;
         }
 
         private void ValidarPermisos(string strPagina)
@@ -185,7 +193,7 @@ namespace fpWebApp
             ViewState["Borrar"] = "0";
 
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
+            System.Data.DataTable dt = cg1.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -202,7 +210,7 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultartiposDocumento();
+                System.Data.DataTable dt = cg.ConsultartiposDocumento();
 
                 DataView dv = new DataView(dt);
                 dv.RowFilter = "idTipoDoc = 7";
@@ -225,7 +233,7 @@ namespace fpWebApp
         {
             try
             {
-                DataTable dt = new DataTable();
+                System.Data.DataTable dt = new System.Data.DataTable();
                 clasesglobales cg = new clasesglobales();
                 dt = cg.ConsultarEmpresasCRM();
                 rpEmpresasCRM.DataSource = dt;
@@ -251,36 +259,136 @@ namespace fpWebApp
 
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarCiudadSede(int.Parse(Request.QueryString["editid"].ToString()), "");
+                    try
+                    {
+                        string respuesta = cg.ActualizarEmpresaCRM(int.Parse(Request.QueryString["editid"].ToString()), txbRazonSocial.Value.ToString().Trim().ToUpper(),
+                        Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, txbDigitoVerificacion.Text, txbCelularEmpresa.Value.ToString(),
+                        txbCorreoEmpresa.Value.ToString().Trim().ToLower(), Convert.ToInt32(ddlCiudades.SelectedItem.Value.ToString()), txaObservaciones.Value,
+                        Convert.ToInt32(Session["idUsuario".ToString()]), txbNombreComercialEmpresa.Value.ToString().Trim().ToUpper(), txbNombreContacto.Value.ToString().Trim().ToUpper(),
+                        txbCargoContacto.Value.ToString().Trim().ToUpper(), out salida, out mensaje);
 
-                    string strNewData = TraerData();
-                    cg.InsertarLog(Session["idusuario"].ToString(), "prospecto empresa", "Modifica", "El usuario modificó  el prospecto empresa: " + "" + ".", strInitData, strNewData);
+                        if (salida)
+                        {
+                            string strNewData = TraerData();
+                            cg.InsertarLog(Session["idusuario"].ToString(), "prospecto empresa", "Modifica", "El usuario modificó  el prospecto empresa: " + "" + ".", strInitData, strNewData);
+
+
+                            string script = @"
+                                Swal.fire({
+                                    title: 'Registro actualizado correctamente.',
+                                    text: '" + mensaje.Replace("'", "\\'") + @"',
+                                    icon: 'success',
+                                    timer: 3000, // 3 segundos
+                                    showConfirmButton: false,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    window.location.href = 'prospectosempresas';
+                                });
+                                ";
+
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                        }
+                        else
+                        {
+                            string script = @"
+                            Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                  window.location.href = 'prospectosempresas';
+                                }
+                            });
+                        ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        string script = @"
+                        Swal.fire({
+                        title: 'Error',
+                        text: 'Ha ocurrido un error inesperado." + ex.Message.ToString() + @"',
+                        icon: 'error'
+                    });
+                    ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+
+                    }
                 }
 
                 if (Request.QueryString["deleteid"] != null)
                 {
-                    string respuesta = cg.EliminarEmpresaCRM(int.Parse(Request.QueryString["deleteid"].ToString()), 
-                        Convert.ToInt32(Session["idUsuario"].ToString()), Session["NombreUsuario"].ToString(), out salida, out mensaje );
+                    try
+                    {
+                        string respuesta = cg.EliminarEmpresaCRM(int.Parse(Request.QueryString["deleteid"].ToString()),
+                        Convert.ToInt32(Session["idUsuario"].ToString()), Session["NombreUsuario"].ToString(), out salida, out mensaje);
+
+                        if (salida)
+                        {
+                            string strNewData = TraerData();
+                            cg.InsertarLog(Session["idusuario"].ToString(), "prospecto empresa", "Modifica", "El usuario modificó  el prospecto empresa: " + "" + ".", strInitData, strNewData);
+
+
+                            string script = @"
+                                Swal.fire({
+                                    title: 'Registro eliminado correctamente.',
+                                    text: '" + mensaje.Replace("'", "\\'") + @"',
+                                    icon: 'success',
+                                    timer: 3000, // 3 segundos
+                                    showConfirmButton: false,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    window.location.href = 'prospectosempresas';
+                                });
+                                ";
+
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                        }
+                        else
+                        {
+                            string script = @"
+                            Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                  window.location.href = 'prospectosempresas';
+                                }
+                            });
+                        ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        string script = @"
+                        Swal.fire({
+                        title: 'Error',
+                        text: 'Ha ocurrido un error inesperado." + ex.Message.ToString() + @"',
+                        icon: 'error'
+                    });
+                    ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                    }
+
                 }
-                Response.Redirect("prospectosempresas");
+
             }
             else
             {
-                //if (!ValidarEstado(""))
-                //{
-
-                    ////string iconoMin = ddlIconos.SelectedItem.Value;
-                    //string htmlIconoMin = $"<i class=\"{iconoMin}\"></i>";
-
-                    //string iconoMax = iconoMin.Contains("fa-5x") ? iconoMin : iconoMin + " fa-5x";
-                    //string htmlIconoMax = $"<i class=\"{iconoMax}\"></i>";
-
+                System.Data.DataTable dt3 = new System.Data.DataTable();
+                dt3 = cg.ConsultarEmpresasCRMPorNombre(txbRazonSocial.Value.ToString());
+                if (dt3.Rows.Count == 0)
+                {
                     try
                     {
                         string respuesta = cg.InsertarEmpresaCRM(txbRazonSocial.Value.ToString().Trim().ToUpper(), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
-                        txbDocumento.Text, txbDigitoVerificacion.Text, txbCelularEmpresa.Value.ToString(), txbCorreoEmpresa.Value.ToString().Trim().ToLower(), 
+                        txbDocumento.Text, txbDigitoVerificacion.Text, txbCelularEmpresa.Value.ToString(), txbCorreoEmpresa.Value.ToString().Trim().ToLower(),
                         Convert.ToInt32(ddlCiudades.SelectedItem.Value.ToString()), txaObservaciones.Value, Convert.ToInt32(Session["idUsuario".ToString()]),
-                        txbNombreComercialEmpresa.Value.ToString().Trim().ToUpper(), txbNombreContacto.Value.ToString().Trim().ToUpper(), 
+                        txbNombreComercialEmpresa.Value.ToString().Trim().ToUpper(), txbNombreContacto.Value.ToString().Trim().ToUpper(),
                         txbCargoContacto.Value.ToString().Trim().ToUpper(), out salida, out mensaje);
 
                         cg.InsertarLog(Session["idusuario"].ToString(), "prospectos empresas", "Agrega", "El usuario agregó un nuevo prospecto empresa crm: " + "" + ".", "", "");
@@ -329,17 +437,18 @@ namespace fpWebApp
                     ";
                         ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                     }
-                    // Response.Redirect("estadoscrm");
-                //}
-                //else
-                //{
-                //    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                //    "Ya existe un prospecto empresa con ese nombre." +
-                //    "</div>";
-                //}
+                    // Response.Redirect("empresasprospectos");
+                }
+                else
+                {
+                    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                    "Ya existe un prospecto empresa con ese nombre." +
+                    "</div>";
+                }
             }
         }
+
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
             try
@@ -349,7 +458,7 @@ namespace fpWebApp
 		                               ORDER BY NombreEmpresaCRM;";
 
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.TraerDatos(consultaSQL);
+                System.Data.DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"CiudadesSedes_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
@@ -374,17 +483,17 @@ namespace fpWebApp
 
             int idEmpresaProspecto = 0;
 
-            
-           if (!string.IsNullOrEmpty(Request.QueryString["editid"]))
+
+            if (!string.IsNullOrEmpty(Request.QueryString["editid"]))
             {
-                    idEmpresaProspecto = Convert.ToInt32(Request.QueryString["editid"].ToString());
+                idEmpresaProspecto = Convert.ToInt32(Request.QueryString["editid"].ToString());
             }
             else if (!string.IsNullOrEmpty(Request.QueryString["deleteid"]))
             {
                 idEmpresaProspecto = Convert.ToInt32(Request.QueryString["deleteid"].ToString());
             }
-           
-            DataTable dt = cg.ConsultarEmpresaCRMPorId(idEmpresaProspecto, out respuesta);
+
+            System.Data.DataTable dt = cg.ConsultarEmpresaCRMPorId(idEmpresaProspecto, out respuesta);
 
             string strData = "";
             if (dt.Rows.Count > 0 && respuesta)
