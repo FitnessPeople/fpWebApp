@@ -167,20 +167,6 @@
     <div class="col-lg-2 d-flex mt-3">
         <div class="ibox flex-fill w-100">
             <div class="ibox-content">
-                <h5>Brecha hoy</h5>
-                <div class="valor-numero">
-                    <asp:Literal ID="ltBrechaHoy" runat="server"></asp:Literal>
-                </div>
-                <div class="stat-percent font-bold text-danger">
-                    12% <i class="fa fa-level-down"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-2 d-flex mt-3">
-        <div class="ibox flex-fill w-100">
-            <div class="ibox-content">
                 <h5>Brecha mes</h5>
                 <div class="valor-numero">
                     <asp:Literal ID="ltBrechaMes" runat="server"></asp:Literal>
@@ -188,6 +174,20 @@
                 <div class="stat-percent font-bold text-danger">
                     12% <i class="fa fa-level-down"></i>
                     <small>Otros</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="col-lg-2 d-flex mt-3">
+        <div class="ibox flex-fill w-100">
+            <div class="ibox-content">
+                <h5>Brecha hoy</h5>
+                <div class="valor-numero">
+                    <asp:Literal ID="ltBrechaHoy" runat="server"></asp:Literal>
+                </div>
+                <div class="stat-percent font-bold text-danger">
+                    12% <i class="fa fa-level-down"></i>
                 </div>
             </div>
         </div>

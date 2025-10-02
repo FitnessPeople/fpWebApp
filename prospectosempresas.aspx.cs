@@ -476,13 +476,9 @@ namespace fpWebApp
         {
             try
             {
-                string consultaSQL = @"SELECT *
-		                               FROM empresascrm
-		                               ORDER BY NombreEmpresaCRM;";
-
                 clasesglobales cg = new clasesglobales();
-                System.Data.DataTable dt = cg.TraerDatos(consultaSQL);
-                string nombreArchivo = $"CiudadesSedes_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+                System.Data.DataTable dt = cg.ConsultarEmpresasCRM();
+                string nombreArchivo = $"Empresas_prospecto{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
                 {
