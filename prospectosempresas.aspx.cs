@@ -235,7 +235,30 @@ namespace fpWebApp
             {
                 System.Data.DataTable dt = new System.Data.DataTable();
                 clasesglobales cg = new clasesglobales();
-                dt = cg.ConsultarEmpresasCRM();
+
+                int idUsuario = Convert.ToInt32(Session["idUsuario"]);
+                System.Data.DataTable dt1 = cg.ConsultarUsuarioSedePerfilPorId(idUsuario);
+                int idPerfil = Convert.ToInt32(dt1.Rows[0]["idPerfil"]);
+
+                if (idPerfil == 36)
+                {
+                    phAsesorHeader.Visible = true;
+                    rpEmpresasCRM.ItemDataBound += (s, e) =>
+                    {
+                        if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+                        {
+                            PlaceHolder phCol = (PlaceHolder)e.Item.FindControl("phAsesorCol");
+                            if (phCol != null) phCol.Visible = true;
+                        }
+                    };
+
+                    dt = cg.ConsultarEmpresasCRM();
+                }
+                else
+                {
+                    dt = cg.ConsultarEmpresasCRMPorUsuario(idUsuario); 
+                }
+
                 rpEmpresasCRM.DataSource = dt;
                 rpEmpresasCRM.DataBind();
                 dt.Dispose();
@@ -244,8 +267,8 @@ namespace fpWebApp
             {
                 string mensaje = ex.Message.ToString();
             }
-
         }
+
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
@@ -414,7 +437,7 @@ namespace fpWebApp
                         {
                             string script = @"
                             Swal.fire({
-                                title: 'Error',
+                                title: 'Warning',
                                 text: '" + mensaje.Replace("'", "\\'") + @"',
                                 icon: 'error'
                             }).then((result) => {
@@ -515,17 +538,59 @@ namespace fpWebApp
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
+                DataRowView row = (DataRowView)e.Item.DataItem;
+
+                // 👉 Configuración de botones
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
                     HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "prospectosempresas?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Attributes.Add("href", "prospectosempresas?editid=" + row.Row[0].ToString());
                     btnEditar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
                     HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "prospectosempresas?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEliminar.Attributes.Add("href", "prospectosempresas?deleteid=" + row.Row[0].ToString());
                     btnEliminar.Visible = true;
+                }
+
+                // 👉 Cálculo de "Hace cuánto"
+                if (row["FechaCreacion"] != DBNull.Value)
+                {
+                    DateTime fechaCreacion = Convert.ToDateTime(row["FechaCreacion"]);
+                    TimeSpan diferencia = DateTime.Now - fechaCreacion;
+
+                    string leyenda;
+                    if (diferencia.TotalMinutes < 1)
+                    {
+                        leyenda = "Hace menos de un minuto";
+                    }
+                    else if (diferencia.TotalMinutes < 60)
+                    {
+                        leyenda = $"Hace {(int)diferencia.TotalMinutes} minuto{((int)diferencia.TotalMinutes == 1 ? "" : "s")}";
+                    }
+                    else if (diferencia.TotalHours < 24)
+                    {
+                        leyenda = $"Hace {(int)diferencia.TotalHours} hora{((int)diferencia.TotalHours == 1 ? "" : "s")}";
+                    }
+                    else if (diferencia.TotalDays < 30)
+                    {
+                        leyenda = $"Hace {(int)diferencia.TotalDays} día{((int)diferencia.TotalDays == 1 ? "" : "s")}";
+                    }
+                    else if (diferencia.TotalDays < 365)
+                    {
+                        int meses = (int)(diferencia.TotalDays / 30);
+                        leyenda = $"Hace {meses} mes{(meses == 1 ? "" : "es")}";
+                    }
+                    else
+                    {
+                        int años = (int)(diferencia.TotalDays / 365);
+                        leyenda = $"Hace {años} año{(años == 1 ? "" : "s")}";
+                    }
+
+                    Literal ltTiempo = (Literal)e.Item.FindControl("ltTiempoTranscurrido");
+                    if (ltTiempo != null)
+                        ltTiempo.Text = leyenda;
                 }
             }
         }

@@ -360,32 +360,59 @@
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th>Identificación</i></th>
+                                                    <th>Identificación</th>
                                                     <th>Nombre empresa</th>
                                                     <th>Teléfono</th>
-                                                    <th>Correo</th>
                                                     <th>Ciudad</th>
+                                                    <th data-breakpoints="xs">HaceCuanto</th>
+
+                                                    <asp:PlaceHolder ID="phAsesorHeader" runat="server" Visible="false">
+                                                        <th data-breakpoints="xs">Asesor</th>
+                                                    </asp:PlaceHolder>
+
+                                                    <th data-breakpoints="all" data-title="Más Información"></th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <asp:Repeater ID="rpEmpresasCRM" runat="server" OnItemDataBound="rpEmpresasCRM_ItemDataBound">
                                                     <ItemTemplate>
-                                                        <tr class="feed-element">
-                                                            <td><%# Eval("DocumentoEmpresa") %></td>
-                                                            <td><%# Eval("NombreEmpresaCRM") %></td>
+                                                        <tr>
+                                                            <td><%# Eval("DocumentoEmpresa") %> - <%# Eval("digitoverificacion") %></td>
+                                                            <td><%# Eval("NombreComercial") %></td>
                                                             <td><%# Eval("CelularEmpresa") %></td>
-                                                            <td><%# Eval("CorreoEmpresa") %></td>
                                                             <td><%# Eval("NombreCiudad") %></td>
                                                             <td>
+                                                                <asp:Literal ID="ltTiempoTranscurrido" runat="server"></asp:Literal></td>
+
+                                                            <asp:PlaceHolder ID="phAsesorCol" runat="server" Visible="false">
+                                                                <td><%# Eval("NombreUsuario") %></td>
+                                                            </asp:PlaceHolder>
+
+                                                            <td>
+                                                                <table class="table table-bordered table-striped">
+                                                                    <tr>
+                                                                        <th width="25%"><i class="fa fa-mobile m-r-xs"></i>Razon social</th>
+                                                                        <th width="25%"><i class="fa fa-mobile m-r-xs"></i>Correo</th>
+                                                                        <th width="50%" class="text-nowrap"><i class="fa fa-handshake m-r-xs"></i>Oferta</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><%# Eval("NombreEmpresaCRM") %></td>
+                                                                        <td><%# Eval("CorreoEmpresa") %></td>
+                                                                        <td><%# Eval("ObservacionesEmp") %></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" ><i class="fa fa-trash"></i></a>
                                                                 <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a></td>
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" ><i class="fa fa-edit"></i></a></td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
                                             </tbody>
+
                                         </table>
                                     </div>
                                 </div>
