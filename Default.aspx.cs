@@ -13,6 +13,74 @@ namespace fpWebApp
             txbEmail.Focus();
         }
 
+        protected void btnIngresar_Click(object sender, EventArgs e)
+        {
+            //string usuario = txbEmail.Text.ToString() + ddlDominio.SelectedItem.Value.ToString();
+            string usuario = txbEmail.Text.ToString();
+            string clave = txbPassword.Text.ToString();
+
+            clasesglobales cg = new clasesglobales();
+            string strHashClave = cg.ComputeSha256Hash(clave);
+
+            if (YourValidationFunction(usuario, strHashClave))
+            {
+                divUsuario.Visible = false;
+                divPassword.Visible = false;
+                btnIngresar.Visible = false;
+
+                // Crear Código
+                int longitudCodigo = 6;
+                string codigo = cg.GenerarCodigo(longitudCodigo);
+
+                ltCodigo.Text = codigo;   // Quitar esta línea de código cuando se ponga en producción
+
+                // Si ya tiene código con fecha de hoy, no se pide el codigo... Solo pide el código una vez por día.
+
+                string strQuery = "SELECT FechaCodigoIngreso FROM usuarios WHERE idUsuario = " + Session["idUsuario"].ToString();
+                DataTable dt = cg.TraerDatos(strQuery);
+
+                string strFechaIngreso = dt.Rows[0]["FechaCodigoIngreso"].ToString();
+
+                if (strFechaIngreso != "")
+                {
+                    if (Convert.ToDateTime(strFechaIngreso) == DateTime.Now.Date)
+                    {
+                        cg.InsertarLog(Session["idusuario"].ToString(), "usuarios", "Login", "El usuario inicio sesión.", "", "");
+                        Response.Redirect("micuenta");
+                    }
+                    else
+                    {
+                        //Inserta el código en la tabla usuarios
+                        strQuery = "UPDATE usuarios " +
+                            "SET CodigoIngreso = '" + codigo + "', FechaCodigoIngreso = CURDATE() " +
+                            "WHERE idUsuario = " + Session["idUsuario"].ToString();
+                        cg.TraerDatosStr(strQuery);
+
+                        //Enviar por correo
+                        //cg.EnviarCorreo("info@fitnesspeoplecmd.com", Session["usuario"].ToString(), "Clave acceso", "Clave de acceso: " + codigo);
+
+                        //Mostrar div para escribir el código
+                        divCodigo.Visible = true;
+                    }
+                }
+                else
+                {
+                    //Inserta el código en la tabla usuarios
+                    strQuery = "UPDATE usuarios " +
+                        "SET CodigoIngreso = '" + codigo + "', FechaCodigoIngreso = CURDATE() " +
+                        "WHERE idUsuario = " + Session["idUsuario"].ToString();
+                    cg.TraerDatosStr(strQuery);
+
+                    //Enviar por correo
+                    //cg.EnviarCorreo("info@fitnesspeoplecmd.com", Session["usuario"].ToString(), "Clave acceso", "Clave de acceso: " + codigo);
+
+                    //Mostrar div para escribir el código
+                    divCodigo.Visible = true;
+                }
+
+            }
+        }
+
         private bool YourValidationFunction(string UserName, string Password)
         {
             bool boolReturnValue = false;
@@ -78,73 +146,6 @@ namespace fpWebApp
             dt.Dispose();
 
             return boolReturnValue;
-        }
-
-        protected void btnIngresar_Click(object sender, EventArgs e)
-        {
-            //string usuario = txbEmail.Text.ToString() + ddlDominio.SelectedItem.Value.ToString();
-            string usuario = txbEmail.Text.ToString();
-            string clave = txbPassword.Text.ToString();
-
-            clasesglobales cg = new clasesglobales();
-            string strHashClave = cg.ComputeSha256Hash(clave);
-
-            if (YourValidationFunction(usuario, strHashClave))
-            {
-                divUsuario.Visible = false;
-                divPassword.Visible = false;
-                
-                // Crear Código
-                int longitudCodigo = 6;
-                string codigo = cg.GenerarCodigo(longitudCodigo);
-
-                ltCodigo.Text = codigo;   // Quitar esta línea de código cuando se ponga en producción
-
-                // Si ya tiene código con fecha de hoy, no se pide el codigo... Solo pide el código una vez por día.
-
-                string strQuery = "SELECT FechaCodigoIngreso FROM usuarios WHERE idUsuario = " + Session["idUsuario"].ToString();
-                DataTable dt = cg.TraerDatos(strQuery);
-
-                string strFechaIngreso = dt.Rows[0]["FechaCodigoIngreso"].ToString();
-
-                if (strFechaIngreso != "")
-                {
-                    if (Convert.ToDateTime(strFechaIngreso) == DateTime.Now.Date)
-                    {
-                        cg.InsertarLog(Session["idusuario"].ToString(), "usuarios", "Login", "El usuario inicio sesión.", "", "");
-                        Response.Redirect("micuenta");
-                    }
-                    else
-                    {
-                        //Inserta el código en la tabla usuarios
-                        strQuery = "UPDATE usuarios " +
-                            "SET CodigoIngreso = '" + codigo + "', FechaCodigoIngreso = CURDATE() " +
-                            "WHERE idUsuario = " + Session["idUsuario"].ToString();
-                        cg.TraerDatosStr(strQuery);
-
-                        //Enviar por correo
-                        //cg.EnviarCorreo("info@fitnesspeoplecmd.com", Session["usuario"].ToString(), "Clave acceso", "Clave de acceso: " + codigo);
-
-                        //Mostrar div para escribir el código
-                        divCodigo.Visible = true;
-                    }
-                }
-                else
-                {
-                    //Inserta el código en la tabla usuarios
-                    strQuery = "UPDATE usuarios " +
-                        "SET CodigoIngreso = '" + codigo + "', FechaCodigoIngreso = CURDATE() " +
-                        "WHERE idUsuario = " + Session["idUsuario"].ToString();
-                    cg.TraerDatosStr(strQuery);
-
-                    //Enviar por correo
-                    //cg.EnviarCorreo("info@fitnesspeoplecmd.com", Session["usuario"].ToString(), "Clave acceso", "Clave de acceso: " + codigo);
-
-                    //Mostrar div para escribir el código
-                    divCodigo.Visible = true;
-                }
-
-            }
         }
 
         protected void btnIngresarCodigo_Click(object sender, EventArgs e)

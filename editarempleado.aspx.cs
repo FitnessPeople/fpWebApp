@@ -294,7 +294,12 @@ namespace fpWebApp
             {
                 ddlTipoContrato.SelectedIndex = Convert.ToInt16(ddlTipoContrato.Items.IndexOf(ddlTipoContrato.Items.FindByText(dt.Rows[0]["TipoContrato"].ToString())));
             }
-            DateTime dtFechaIni = Convert.ToDateTime(dt.Rows[0]["FechaInicio"].ToString());
+            //DateTime dtFechaIni = Convert.ToDateTime(dt.Rows[0]["FechaInicio"].ToString());
+
+            DateTime dtFechaIni = dt.Rows[0]["FechaInicio"] == DBNull.Value
+                ? DateTime.MinValue
+                : Convert.ToDateTime(dt.Rows[0]["FechaInicio"]);
+
             txbFechaInicio.Text = dtFechaIni.ToString("yyyy-MM-dd");
             string strFechaFin = string.IsNullOrEmpty(dt.Rows[0]["FechaFinal"]?.ToString())
                 ? "2001-01-01" 

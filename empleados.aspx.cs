@@ -272,5 +272,21 @@ namespace fpWebApp
                 Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
             }
         }
+
+        protected void rpTabEmpleados_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                DataRowView row = (DataRowView)e.Item.DataItem;
+                int idUsuario = Convert.ToInt32(row["idUsuario"]);
+
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.TraerDatos("SELECT * FROM logs WHERE idUsuario = " + idUsuario.ToString());
+
+                Repeater rpActividades = (Repeater)e.Item.FindControl("rpActividades");
+                rpActividades.DataSource = dt;
+                rpActividades.DataBind();
+            }
+        }
     }
 }
