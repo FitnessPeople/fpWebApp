@@ -123,15 +123,6 @@ namespace fpWebApp.controles
         protected global::System.Web.UI.WebControls.Literal ltVendidoMes;
 
         /// <summary>
-        /// Control ltBrechaHoy.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltBrechaHoy;
-
-        /// <summary>
         /// Control ltBrechaMes.
         /// </summary>
         /// <remarks>
@@ -139,5 +130,14 @@ namespace fpWebApp.controles
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltBrechaMes;
+
+        /// <summary>
+        /// Control ltBrechaHoy.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltBrechaHoy;
     }
 }

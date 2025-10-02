@@ -913,7 +913,7 @@ namespace fpWebApp
                     }
                 }
 
-                // Manejamos la fecha de creación para mostrar el tiempo transcurrido
+               //Tiempo transcurrido
                 if (row["FechaCreacion"] != DBNull.Value)
                 {
                     DateTime fechaPrimerContacto = Convert.ToDateTime(row["FechaCreacion"]);
