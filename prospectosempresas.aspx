@@ -385,7 +385,7 @@
                                                                 <table class="table table-bordered table-striped">
                                                                     <tr>
                                                                         <th width="25%"><i class="fa fa-mobile m-r-xs"></i>Razon social</th>
-                                                                        <th width="25%"><i class="fa fa-mobile m-r-xs"></i>Correo</th>
+                                                                        <th width="25%"><i class="fa fa-envelope m-r-xs"></i>Correo</th>
                                                                         <th width="50%" class="text-nowrap"><i class="fa fa-handshake m-r-xs"></i>Oferta</th>
                                                                     </tr>
                                                                     <tr>
@@ -396,10 +396,13 @@
                                                                 </table>
                                                             </td>
                                                             <td>
+                                                                <a runat="server" id="btnNuevoConvenio" href="#" class="btn btn-outline btn-success pull-right m-r-xs"  title="Negociar"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" data-idcrm='<%# Eval("idEmpresaCRM") %>'><i class="fa fa-handshake"></i> </a>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" ><i class="fa fa-trash"></i></a>
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" title="Eliminar"><i class="fa fa-trash"></i></a>
                                                                 <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" ><i class="fa fa-edit"></i></a></td>
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" title="Editar"><i class="fa fa-edit"></i></a>                                                      
+                                                            </td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
