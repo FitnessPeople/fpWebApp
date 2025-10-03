@@ -4677,7 +4677,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public DataTable ConsultarPagosPorTipo(int tipoPago, int valor, string fechaIni, string fechaFin, out decimal valorTotal)
+        public DataTable ConsultarPagosPorTipo(int tipoPago, int idPlan, string fechaIni, string fechaFin, out decimal valorTotal)
         {
             DataTable dt = new DataTable();
             valorTotal = 0;
@@ -4693,7 +4693,7 @@ namespace fpWebApp
 
                         // Parámetros de entrada
                         cmd.Parameters.AddWithValue("@p_tipo_pago", tipoPago);
-                        cmd.Parameters.AddWithValue("@p_valor", valor);
+                        cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
                         cmd.Parameters.AddWithValue("@p_fecha_ini", fechaIni);
                         cmd.Parameters.AddWithValue("@p_fecha_fin", fechaFin);
 

@@ -280,7 +280,11 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-2">
-                                                <div id="filtros">
+                                                <div>
+                                                    <asp:DropDownList ID="ddlPlanes" DataTextField="NombrePlan" DataValueField="idPlan"
+                                                        runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
+                                                        <asp:ListItem Text="Seleccione" Value="0"></asp:ListItem>
+                                                    </asp:DropDownList>
                                                     <asp:RadioButtonList ID="rblValor" runat="server" RepeatDirection="Horizontal">
                                                         <asp:ListItem Value="2000" Text="$ 2.000"></asp:ListItem>
                                                         <asp:ListItem Value="89000" Text="$ 89.000"></asp:ListItem>
@@ -337,6 +341,7 @@
                                                     <th>Afiliado</th>
                                                     <th data-breakpoints="xs sm md">Valor</th>
                                                     <th data-breakpoints="xs sm md">Tipo Pago</th>
+                                                    <th data-breakpoints="xs sm md">Plan</th>
                                                     <th data-breakpoints="xs sm md">Referencia</th>
                                                     <th data-breakpoints="xs sm md">Fecha</th>
                                                     <th data-breakpoints="xs sm md">Estado</th>
@@ -354,6 +359,7 @@
                                                             <td><%# Eval("NombreAfiliado") %></td>
                                                             <td><%# Eval("Valor", "{0:C0}") %></td>
                                                             <td><%# Eval("NombreMedioPago") %></td>
+                                                            <td><%# Eval("NombrePlan") %></td>
                                                             <td><%# Eval("IdReferencia") %></td>
                                                             <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
                                                             <td><%# Eval("EstadoPago") %></td>

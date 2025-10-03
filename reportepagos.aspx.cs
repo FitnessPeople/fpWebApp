@@ -40,6 +40,7 @@ namespace fpWebApp
                         if (ViewState["Consulta"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
+                            CargarPlanes();
                             //lbExportarExcel.Visible = false;
                         }
                         if (ViewState["Exportar"].ToString() == "1")
@@ -53,6 +54,7 @@ namespace fpWebApp
                             txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
                             txbFechaFin.Attributes.Add("type", "date");
                             txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+                            CargarPlanes();
                         }
                     }
                     listaTransacciones();
@@ -89,6 +91,17 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        private void CargarPlanes()
+        {
+            ddlPlanes.Items.Clear();
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPlanesVigentes();
+
+            ddlPlanes.DataSource = dt;
+            ddlPlanes.DataBind();
+            dt.Dispose();
+        }
+
         private void listaTransacciones()
         {
             decimal valorTotal = 0;
@@ -103,24 +116,32 @@ namespace fpWebApp
             ltRegistros1.Text = totalRegistros.ToString();
         }
 
-        private void listaTransaccionesPorFecha(int tipoPago, int valor, string fechaIni, string fechaFin)
+        private void listaTransaccionesPorFecha(int tipoPago, int idPlan, string fechaIni, string fechaFin)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, valor, fechaIni, fechaFin, out decimal valorTotal);
+            DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, idPlan, fechaIni, fechaFin, out decimal valorTotal);
             rpPagos.DataSource = dt;
             rpPagos.DataBind();
             //ltValortotalWompi.Text = valorTotal.ToString("C0");
             dt.Dispose();
 
-            ltCuantos1.Text = "$ " + String.Format("{0:N0}", valorTotal);
+            decimal sumatoriaValor = 0;
+
+            if (dt.Rows.Count > 0)
+            {
+                object suma = dt.Compute("SUM(Valor)", "");
+                sumatoriaValor = suma != DBNull.Value ? Convert.ToDecimal(suma) : 0;
+            }
+
+            ltCuantos1.Text = "$ " + String.Format("{0:N0}", sumatoriaValor);
             ltRegistros1.Text = "";
         }
 
         private void VentasWeb()
         {
             string strQuery = "";
-            if (rblValor.SelectedValue.ToString() == "")
-            {
+            //if (rblValor.SelectedValue.ToString() == "")
+            //{
                 strQuery = @"SELECT  
                 SUM(pa.Valor) sumatoria 
                 FROM pagosplanafiliado pa
@@ -128,28 +149,30 @@ namespace fpWebApp
                     INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
                     INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
                     INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
+                    INNER JOIN planes p ON p.idPlan = ap.idPlan 
                 WHERE pa.idMedioPago = 4 
                 AND DATE(pa.FechaHoraPago) 
-                BETWEEN IFNULL(NULLIF('2025-09-01', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
-                AND IFNULL(NULLIF('2025-09-30', ''), CURDATE()) 
-                AND u.idUsuario = 156 ";
-            }
-            else
-            {
-                strQuery = @"SELECT  
-                SUM(pa.Valor) sumatoria 
-                FROM pagosplanafiliado pa
-                    INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
-                    INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
-                    INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
-                    INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
-                WHERE pa.idMedioPago = 4 
-                AND DATE(pa.FechaHoraPago) 
-                BETWEEN IFNULL(NULLIF('2025-09-01', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
-                AND IFNULL(NULLIF('2025-09-30', ''), CURDATE()) 
+                BETWEEN IFNULL(NULLIF('" + txbFechaIni.Value.ToString() + @"', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
+                AND IFNULL(NULLIF('" + txbFechaFin.Value.ToString() + @"', ''), CURDATE()) 
                 AND u.idUsuario = 156 
-                AND pa.Valor = " + rblValor.SelectedValue.ToString();
-            }
+                AND ap.idPlan = " + ddlPlanes.SelectedValue.ToString();
+            //}
+            //else
+            //{
+            //    strQuery = @"SELECT  
+            //    SUM(pa.Valor) sumatoria 
+            //    FROM pagosplanafiliado pa
+            //        INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
+            //        INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
+            //        INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
+            //        INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
+            //    WHERE pa.idMedioPago = 4 
+            //    AND DATE(pa.FechaHoraPago) 
+            //    BETWEEN IFNULL(NULLIF('" + txbFechaIni.Value.ToString() + @"', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
+            //    AND IFNULL(NULLIF('" + txbFechaFin.Value.ToString() + @"', ''), CURDATE()) 
+            //    AND u.idUsuario = 156 
+            //    AND pa.Valor = " + rblValor.SelectedValue.ToString();
+            //}
                 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
@@ -166,8 +189,8 @@ namespace fpWebApp
         private void VentasCounter()
         {
             string strQuery = "";
-            if (rblValor.SelectedValue.ToString() == "")
-            {
+            //if (rblValor.SelectedValue.ToString() == "")
+            //{
                 strQuery = @"SELECT  
                 SUM(pa.Valor) sumatoria 
                 FROM pagosplanafiliado pa
@@ -175,28 +198,30 @@ namespace fpWebApp
                     INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
                     INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
                     INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
+                    INNER JOIN planes p ON p.idPlan = ap.idPlan 
                 WHERE pa.idMedioPago = 4 
                 AND DATE(pa.FechaHoraPago) 
-                BETWEEN IFNULL(NULLIF('2025-09-01', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
-                AND IFNULL(NULLIF('2025-09-30', ''), CURDATE()) 
-                AND u.idUsuario = 152 ";
-            }
-            else
-            {
-                strQuery = @"SELECT  
-                SUM(pa.Valor) sumatoria 
-                FROM pagosplanafiliado pa
-                    INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
-                    INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
-                    INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
-                    INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
-                WHERE pa.idMedioPago = 4 
-                AND DATE(pa.FechaHoraPago) 
-                BETWEEN IFNULL(NULLIF('2025-09-01', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
-                AND IFNULL(NULLIF('2025-09-30', ''), CURDATE()) 
-                AND u.idUsuario = 152
-                AND pa.Valor = " + rblValor.SelectedValue.ToString();
-            }
+                BETWEEN IFNULL(NULLIF('" + txbFechaIni.Value.ToString() + @"', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
+                AND IFNULL(NULLIF('" + txbFechaFin.Value.ToString() + @"', ''), CURDATE()) 
+                AND u.idUsuario = 152 
+                AND ap.idPlan = " + ddlPlanes.SelectedValue.ToString();
+            //}
+            //else
+            //{
+            //    strQuery = @"SELECT  
+            //    SUM(pa.Valor) sumatoria 
+            //    FROM pagosplanafiliado pa
+            //        INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
+            //        INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
+            //        INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
+            //        INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
+            //    WHERE pa.idMedioPago = 4 
+            //    AND DATE(pa.FechaHoraPago) 
+            //    BETWEEN IFNULL(NULLIF('" + txbFechaIni.Value.ToString() + @"', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
+            //    AND IFNULL(NULLIF('" + txbFechaFin.Value.ToString() + @"', ''), CURDATE()) 
+            //    AND u.idUsuario = 152
+            //    AND pa.Valor = " + rblValor.SelectedValue.ToString();
+            //}
                 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
@@ -500,16 +525,26 @@ namespace fpWebApp
 
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
-            if (rblValor.SelectedItem != null)
-            {
+            //if (rblValor.SelectedItem != null)
+            //{
                 listaTransaccionesPorFecha(
                     Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()),
-                    Convert.ToInt32(rblValor.SelectedValue.ToString()),
+                    Convert.ToInt32(ddlPlanes.SelectedValue.ToString()),
                     txbFechaIni.Value.ToString(),
                     txbFechaFin.Value.ToString());
                 VentasCounter();
                 VentasWeb();
-            }
+            //}
+            //else
+            //{
+            //    listaTransaccionesPorFecha(
+            //        Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()),
+            //        0,
+            //        txbFechaIni.Value.ToString(),
+            //        txbFechaFin.Value.ToString());
+            //    VentasCounter();
+            //    VentasWeb();
+            //}
         }
     }
 }

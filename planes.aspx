@@ -339,6 +339,7 @@
                                                 <tr>
                                                     <th>Nombre</th>
                                                     <th data-breakpoints="xs">Descripción</th>
+                                                    <th data-breakpoints="xs">Tipo Pago</th>
                                                     <th data-breakpoints="xs">Meses</th>
                                                     <th data-breakpoints="xs">Vigencia</th>
                                                     <th data-breakpoints="xs" class="text-right">Precio</th>
@@ -353,6 +354,7 @@
                                                         <tr class="feed-element">
                                                             <td><span class="btn btn-<%# Eval("NombreColorPlan") %> btn-outline btn-block btn-sm" style="font-size: 12px;"><%# Eval("NombrePlan") %></span></td>
                                                             <td><i class="fa fa-note-sticky m-r-xs font-bold"></i><%# Eval("DescripcionPlan") %></td>
+                                                            <td><%# Eval("DebitoAutomatico") %></td>
                                                             <td><%# Eval("TotalMeses") %></td>
                                                             <td><%# String.Format("{0:d MMM 'de' yyyy} a {1:d MMM 'de' yyyy}", Eval("FechaInicial"), Eval("FechaFinal")) %></td>
                                                             <td style="text-align: right;">$<%# Eval("PrecioTotal","{0:N0}") %></td>
