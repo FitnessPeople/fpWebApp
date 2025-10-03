@@ -45,18 +45,10 @@
 
     <script>
         function changeClass() {
-            // Activa el menú principal
             var element1 = document.querySelector("#gympass");
-            if (element1) {
-                element1.classList.add("active");
-            }
-
-            // Despliega el submenú
+            element1.classList.replace("old", "active");
             var element2 = document.querySelector("#sistema");
-            if (element2) {
-                element2.classList.add("show"); // en Bootstrap el desplegado es con "show"
-                element2.classList.remove("collapse");
-            }
+            element2.classList.remove("collapse");
         }
     </script>
 
