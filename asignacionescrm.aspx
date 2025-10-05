@@ -41,56 +41,64 @@
             /*font-weight: bold;*/
         }
 
-        /* Enlaces normales */
-        .paginador a {
-            /*margin: 0 5px;
+            /* Enlaces normales */
+            .paginador a {
+                /*margin: 0 5px;
         padding: 5px 10px;
         color: #007bff;
         text-decoration: none;
         border: 1px solid #ccc;
         border-radius: 5px;*/
-            background-color: #FFFFFF;
-            border: 1px solid #DDDDDD;
-            color: inherit;
-            float: left;
-            line-height: 1.42857;
-            margin-left: -1px;
-            padding: 4px 7px;
-            position: relative;
-            text-decoration: none;
-        }
+                background-color: #FFFFFF;
+                border: 1px solid #DDDDDD;
+                color: inherit;
+                float: left;
+                line-height: 1.42857;
+                margin-left: -1px;
+                padding: 4px 7px;
+                position: relative;
+                text-decoration: none;
+            }
 
-        /* Enlace activo (página actual) */
-        .paginador span {
-            /*margin: 0 5px;
+            /* Enlace activo (página actual) */
+            .paginador span {
+                /*margin: 0 5px;
         padding: 5px 10px;
         color: white;
         background-color: #007bff;
         border-radius: 5px;*/
-            background-color: #FFFFFF;
-            border: 1px solid #DDDDDD;
-            color: inherit;
-            float: left;
-            line-height: 1.42857;
-            margin-left: -1px;
-            padding: 4px 7px;
-            position: relative;
-            text-decoration: none;
-        }
+                background-color: #FFFFFF;
+                border: 1px solid #DDDDDD;
+                color: inherit;
+                float: left;
+                line-height: 1.42857;
+                margin-left: -1px;
+                padding: 4px 7px;
+                position: relative;
+                text-decoration: none;
+            }
 
-        /* Hover en los enlaces */
-        .paginador a:hover {
-            background-color: #e0e0e0;
-            border-color: #999;
-        }
+            /* Hover en los enlaces */
+            .paginador a:hover {
+                background-color: #e0e0e0;
+                border-color: #999;
+            }
     </style>
 
     <script>
         function changeClass() {
+            // Activa el menú principal
             var element1 = document.querySelector("#asignacionescrm");
-            element1.classList.replace("old", "active");
+            if (element1) {
+                element1.classList.add("active");
+            }
+
+            // Despliega el submenú
             var element2 = document.querySelector("#crm");
-            element2.classList.remove("collapse");
+            if (element2) {
+                element2.classList.add("show"); // en Bootstrap el desplegado es con "show"
+                element2.classList.remove("collapse");
+            }
         }
     </script>
 </head>
@@ -214,13 +222,17 @@
                                                 <div class="form-group">
                                                     <label class="col-lg-2 control-label">Canal de venta:</label>
                                                     <div class="col-lg-10">
-                                                        <asp:DropDownList ID="ddlCanalVenta" runat="server" 
-                                                            AppendDataBoundItems="true" 
-                                                            CssClass="form-control input-sm m-b" 
-                                                            OnSelectedIndexChanged="ddlCanalVenta_SelectedIndexChanged" 
+                                                        <asp:DropDownList ID="ddlCanalVenta" runat="server"
+                                                            AppendDataBoundItems="true"
+                                                            CssClass="form-control input-sm m-b"
+                                                            OnSelectedIndexChanged="ddlCanalVenta_SelectedIndexChanged"
                                                             AutoPostBack="true">
                                                             <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                         </asp:DropDownList>
+                                                        <asp:RequiredFieldValidator ID="rfvCanalVenta" runat="server" 
+                                                            ControlToValidate="ddlCanalVenta" ErrorMessage="* Campo requerido" InitialValue=""
+                                                            EnableClientScript="true" CssClass="text-danger font-bold" ValidationGroup="asignar">
+                                                        </asp:RequiredFieldValidator>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -234,13 +246,17 @@
                                                             <asp:ListItem Text="Menos de 30 días vencido" Value="30"></asp:ListItem>
                                                             <asp:ListItem Text="Más de 30 días por vencer" Value="31"></asp:ListItem>
                                                         </asp:DropDownList>
+                                                        <asp:RequiredFieldValidator ID="rfvddlDias" runat="server" 
+                                                            ControlToValidate="ddlDias" ErrorMessage="* Campo requerido" InitialValue=""
+                                                            EnableClientScript="true" CssClass="text-danger font-bold" ValidationGroup="asignar">
+                                                        </asp:RequiredFieldValidator>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col-lg-2 control-label">Mostrar</label>
                                                     <div class="col-lg-10">
                                                         <asp:RadioButtonList ID="rblPageSize" runat="server" AutoPostBack="true"
-                                                            RepeatDirection="Horizontal" 
+                                                            RepeatDirection="Horizontal"
                                                             OnSelectedIndexChanged="rblPageSize_SelectedIndexChanged">
                                                             <asp:ListItem Text="&nbsp;10" Value="10" Selected="True" />
                                                             <asp:ListItem Text="&nbsp;50" Value="50" />
@@ -261,8 +277,8 @@
                                                             CssClass="form-control input-sm m-b">
                                                             <asp:ListItem Text="Seleccione" Value="" Selected="True" />
                                                         </asp:DropDownList>
-                                                        <asp:RequiredFieldValidator ID="rfvAsesor" runat="server" 
-                                                            ControlToValidate="ddlAsesores" ErrorMessage="Campo requerido." InitialValue="" 
+                                                        <asp:RequiredFieldValidator ID="rfvAsesor" runat="server"
+                                                            ControlToValidate="ddlAsesores" ErrorMessage="Campo requerido." InitialValue=""
                                                             EnableClientScript="true" CssClass="text-danger font-bold" ValidationGroup="asignar">
                                                         </asp:RequiredFieldValidator>
                                                     </div>
@@ -284,7 +300,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <!-- Imagen de carga -->
-                                                    <div id="divCargando" style="display:none; text-align:center;">
+                                                    <div id="divCargando" style="display: none; text-align: center;">
                                                         <div class="sk-spinner sk-spinner-cube-grid">
                                                             <div class="sk-cube"></div>
                                                             <div class="sk-cube"></div>
@@ -302,12 +318,12 @@
 
                                         </div>
 
-                                        <asp:GridView ID="gvAfiliados" runat="server" AutoGenerateColumns="False" 
-                                            AllowPaging="True" PageSize="10" OnPageIndexChanging="gvAfiliados_PageIndexChanging" 
-                                            AllowSorting="true" OnSorting="gvAfiliados_Sorting" 
-                                            OnRowCreated="gvAfiliados_RowCreated" 
-                                            OnRowDataBound="gvAfiliados_RowDataBound" 
-                                            CssClass="table table-striped list-group-item-text" 
+                                        <asp:GridView ID="gvAfiliados" runat="server" AutoGenerateColumns="False"
+                                            AllowPaging="True" PageSize="10" OnPageIndexChanging="gvAfiliados_PageIndexChanging"
+                                            AllowSorting="true" OnSorting="gvAfiliados_Sorting"
+                                            OnRowCreated="gvAfiliados_RowCreated"
+                                            OnRowDataBound="gvAfiliados_RowDataBound"
+                                            CssClass="table table-striped list-group-item-text"
                                             DataKeyNames="IdAfiliado,NombreAfiliado,ApellidoAfiliado,DocumentoAfiliado,idTipoDocumento,CelularAfiliado,diasquefaltan"
                                             BorderStyle="None" GridLines="None"
                                             PagerSettings-Mode="NumericFirstLast"
@@ -328,17 +344,17 @@
 
                                                 <%--Otras columnas--%>
                                                 <asp:BoundField DataField="IdAfiliado" HeaderText="ID" Visible="false" />
-                                                <asp:BoundField DataField="NombreAfiliado" HeaderText="Nombres" 
+                                                <asp:BoundField DataField="NombreAfiliado" HeaderText="Nombres"
                                                     SortExpression="NombreAfiliado" />
-                                                <asp:BoundField DataField="ApellidoAfiliado" HeaderText="Apellidos" 
+                                                <asp:BoundField DataField="ApellidoAfiliado" HeaderText="Apellidos"
                                                     SortExpression="ApellidoAfiliado" />
-                                                <asp:BoundField DataField="DocumentoAfiliado" HeaderText="Documento" 
+                                                <asp:BoundField DataField="DocumentoAfiliado" HeaderText="Documento"
                                                     SortExpression="DocumentoAfiliado" />
-                                                <asp:BoundField DataField="idTipoDocumento" HeaderText="TipoDocumento" 
+                                                <asp:BoundField DataField="idTipoDocumento" HeaderText="TipoDocumento"
                                                     SortExpression="idTipoDocumento" Visible="False" />
-                                                <asp:BoundField DataField="CelularAfiliado" HeaderText="Celular" 
+                                                <asp:BoundField DataField="CelularAfiliado" HeaderText="Celular"
                                                     SortExpression="CelularAfiliado" />
-                                                <asp:BoundField DataField="diasquefaltan" HeaderText="Días plan" 
+                                                <asp:BoundField DataField="diasquefaltan" HeaderText="Días plan"
                                                     SortExpression="diasquefaltan" />
                                                 <asp:TemplateField HeaderText="Estado" SortExpression="EstadoPlan">
                                                     <ItemTemplate>
