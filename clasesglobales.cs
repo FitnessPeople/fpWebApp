@@ -5244,9 +5244,11 @@ namespace fpWebApp
         }
 
         public string InsertarAfiliadoPlan(int idAfiliado, int idPlan, string fechaInicio, string fechaFin, int meses,
-int valor, string observaciones, string estado)
+            int valor, string observaciones, string estado, out int ultimoRegistro)
         {
-            string respuesta = string.Empty;
+            string mensaje = "";
+            ultimoRegistro = 0; // Inicializamos
+
             try
             {
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
@@ -5259,6 +5261,7 @@ int valor, string observaciones, string estado)
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
+                        // Parámetros de entrada
                         cmd.Parameters.AddWithValue("@p_id_afiliado", idAfiliado);
                         cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
                         cmd.Parameters.AddWithValue("@p_fecha_inicio", fechaInicio);
@@ -5268,18 +5271,36 @@ int valor, string observaciones, string estado)
                         cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
                         cmd.Parameters.AddWithValue("@p_estado", estado);
 
+                        // Parámetros de salida
+                        var pUltimoRegistro = new MySqlParameter("@p_ultimo_registro", MySqlDbType.Int32)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
+                        cmd.Parameters.Add(pUltimoRegistro);
+
+                        var pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
+                        cmd.Parameters.Add(pMensaje);
+
+                        // Ejecutar procedimiento
                         cmd.ExecuteNonQuery();
-                        respuesta = "OK";
+
+                        // Leer valores de salida
+                        ultimoRegistro = Convert.ToInt32(pUltimoRegistro.Value);
+                        mensaje = pMensaje.Value?.ToString();
                     }
                 }
             }
             catch (Exception ex)
             {
-                respuesta = "ERROR: " + ex.Message;
+                mensaje = "ERROR: " + ex.Message;
             }
 
-            return respuesta;
+            return mensaje;
         }
+
 
         public DataTable ConsultarAfiliadoPlanPorDocumento(string nroDocumento)
         {
