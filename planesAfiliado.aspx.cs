@@ -1,5 +1,4 @@
-﻿using Antlr.Runtime.Tree;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -9,11 +8,9 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using WebPage.Services;
 
 namespace fpWebApp
 {
@@ -208,7 +205,7 @@ namespace fpWebApp
 
             string strFechaHoy = string.Format("{0:yyyy-MM-dd}", DateTime.Now);
 
-            parametro = "transactions?from_date=2025-09-01&until_date=2025-09-17&page=1&page_size=50&order_by=created_at&order=DESC";
+            parametro = "?from_date=2025-01-01&until_date=2025-03-11&page=1&page_size=50&order_by=created_at&order=DESC";
             //parametro = "?from_date=" + strFechaHoy + "&until_date=" + strFechaHoy + "&page=1&page_size=10&order_by=created_at&order=DESC";
 
             string url = dti.Rows[0]["urlTest"].ToString() + parametro;
@@ -222,11 +219,8 @@ namespace fpWebApp
 
                 List<Datum> listaDatos = new List<Datum>();
 
-                JArray dataArray = (JArray)jsonData["data"];
-
-                foreach (JObject item in dataArray)
+                foreach (var item in jsonData["data"])
                 {
-                    JObject customerData = item["customer_data"] as JObject;
                     listaDatos.Add(new Datum
                     {
                         //id = item["id"]?.ToString(),
@@ -239,9 +233,9 @@ namespace fpWebApp
                         payment_method_type = item["payment_method_type"]?.ToString(),
                         status = item["status"]?.ToString(),
                         status_message = item["status_message"]?.ToString(),
-                        device_id = customerData?["device_id"]?.ToString() ?? "",
-                        full_name = customerData?["full_name"]?.ToString() ?? "",
-                        phone_number = customerData?["phone_number"]?.ToString() ?? ""
+                        device_id = item["customer_data"]?["device_id"]?.ToString(),
+                        full_name = item["customer_data"]?["full_name"]?.ToString(),
+                        phone_number = item["customer_data"]?["phone_number"]?.ToString()
                     });
                 }
 
@@ -423,14 +417,8 @@ namespace fpWebApp
             string strDataWompi = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + intPrecio.ToString()));
             //lbEnlaceWompi.Text = "https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi;
             lbEnlaceWompi.Text = "<b>Enlace de pago Wompi:</b> <br />";
-            string payload = $"idPlan={HttpUtility.UrlEncode(ViewState["idPlan"].ToString())}&idVendedor={HttpUtility.UrlEncode(Session["idUsuario"].ToString())}";
-            string token = UrlEncryptor.Encrypt(payload);
-            //lbEnlaceWompi.Text += AcortarURL($"https://fitnesspeoplecolombia.com/register?data={HttpUtility.UrlEncode(token)}");
-            lbEnlaceWompi.Text += "https://fitnesspeoplecolombia.com/register?idPlan=" + ViewState["idPlan"].ToString() + "&idVendedor=" + Session["idUsuario"].ToString();
-            //hdEnlaceWompi.Value = AcortarURL($"https://fitnesspeoplecolombia.com/register?data={HttpUtility.UrlEncode(token)}");
-            hdEnlaceWompi.Value = "https://fitnesspeoplecolombia.com/register?idPlan=" + ViewState["idPlan"].ToString() + "&idVendedor=" + Session["idUsuario"].ToString();
-            //lbEnlaceWompi.Text += AcortarURL("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
-            //hdEnlaceWompi.Value = AcortarURL("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
+            lbEnlaceWompi.Text += AcortarURL("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
+            hdEnlaceWompi.Value = AcortarURL("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
             btnPortapaleles.Visible = true;
         }
 
@@ -643,18 +631,19 @@ namespace fpWebApp
                                     DateTime fechainicio = Convert.ToDateTime(txbFechaInicio.Text.ToString());
                                     DateTime fechafinal = fechainicio.AddMonths(Convert.ToInt16(ViewState["meses"].ToString()));
                                     fechafinal = fechafinal.AddDays(Convert.ToInt16(ViewState["DiasCortesia"].ToString()));
+                                    int idAfiliadoPlan = 0;
 
                                     string rta = cg.InsertarAfiliadoPlan(Convert.ToInt32(Session["IdAfiliado"].ToString()), Convert.ToInt32(ViewState["idPlan"].ToString()),
                                         txbFechaInicio.Text.ToString(), String.Format("{0:yyyy-MM-dd}", fechafinal), Convert.ToInt32(ViewState["meses"].ToString()),
-                                        Convert.ToInt32(ViewState["precioTotal"].ToString()), ViewState["observaciones"].ToString(), "Activo");
+                                        Convert.ToInt32(ViewState["precioTotal"].ToString()), ViewState["observaciones"].ToString(), "Activo", out idAfiliadoPlan);
 
                                     if (rta == "OK")
                                     {
-                                        DataTable dt1 = cg.ConsultarUltimoAfilEnAfiliadosPlan();
-                                        int idAfiliado = 0;
-                                        if (dt1.Rows.Count > 0) idAfiliado = Convert.ToInt32(dt1.Rows[0]["idAfiliadoPlan"].ToString());
+                                        //DataTable dt1 = cg.ConsultarUltimoAfilEnAfiliadosPlan();
+                                        
+                                        //if (dt1.Rows.Count > 0) idAfiliadoPlan = Convert.ToInt32(dt1.Rows[0]["idAfiliadoPlan"].ToString());
                                         DataTable dt6 = cg.ConsultarUsuarioSedePerfilPorId(Convert.ToInt32(Session["idUsuario"].ToString()));
-                                        if(dt6.Rows.Count > 0) idCanalVenta = Convert.ToInt32(dt6.Rows[0]["idCanalVenta"].ToString());
+                                        if (dt6.Rows.Count > 0) idCanalVenta = Convert.ToInt32(dt6.Rows[0]["idCanalVenta"].ToString());
 
                                         //Consultamos los medios de pago
                                         DataTable dt2 = cg.ConsultarMediosDePago();
@@ -686,17 +675,17 @@ namespace fpWebApp
                                             strBanco = "Ninguno";
                                         }
 
-                                        string respuesta = cg.InsertarPagoPlanAfiliado(idAfiliado, Convert.ToInt32(ViewState["precioTotal"].ToString()),
+                                        string respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, Convert.ToInt32(ViewState["precioTotal"].ToString()),
                                             Convert.ToInt32(strTipoPago), strReferencia, strBanco, Convert.ToInt32(Session["idUsuario"].ToString()), "Aprobado", "", idCanalVenta, Convert.ToInt32(Session["idcrm"]));
 
-                                        DataTable dt3 = cg.ConsultarAfiliadoEstadoActivo(Convert.ToInt32(dt1.Rows[0]["idAfiliado"].ToString()));
-                                        string respuesta1 = cg.ActualizarEstadoCRMPagoPlan(Convert.ToInt32(Session["idcrm"].ToString()), dt3.Rows[0]["NombrePlan"].ToString(), Convert.ToInt32(dt3.Rows[0]["PrecioTotal"].ToString()), Convert.ToInt32(Session["idUsuario"].ToString()), 3);
+                                        DataTable dt3 = cg.ConsultarAfiliadoEstadoActivo(idAfiliadoPlan);
+                                        string respuesta1 = cg.ActualizarEstadoCRMPagoPlan(Convert.ToInt32(Session["idcrm"].ToString()), dt3.Rows[0]["NombrePlan"].ToString(), Convert.ToInt32(dt3.Rows[0]["Valor"].ToString()), Convert.ToInt32(Session["idUsuario"].ToString()), 3);
 
                                         if (respuesta == "OK" && respuesta1 == "OK")
                                         {
                                             DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(int.Parse(Session["IdAfiliado"].ToString()));
                                             DocAfiliado = dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString();
-                                            cg.InsertarLog(Session["idusuario"].ToString(), "afiliadosplanes", "Agrega", "El usuario agregó un nuevo plan al afiliado con documento: " + dt3.Rows[0]["PrecioTotal"].ToString() + ".", "", "");
+                                            cg.InsertarLog(Session["idusuario"].ToString(), "afiliadosplanes", "Agrega", "El usuario agregó un nuevo plan al afiliado con documento: " + dt3.Rows[0]["Valor"].ToString() + ".", "", "");
 
                                             string script = @"
                                             Swal.fire({
@@ -714,14 +703,14 @@ namespace fpWebApp
 
                                             /////////////////////////////// ENVÍO DE CORREO ///////////////////////////////////////////////////////////////////////////////////////////
 
-                                            string strString = Convert.ToBase64String(Encoding.Unicode.GetBytes(dt3.Rows[0]["DocumentoAfiliado"].ToString() + "_" + dt3.Rows[0]["precio"].ToString()));
+                                            string strString = Convert.ToBase64String(Encoding.Unicode.GetBytes(dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString() + "_" + dt3.Rows[0]["Valor"].ToString()));
 
                                             string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
                                             strMensaje += "Descripción del plan.\r\n\r\n";
                                             strMensaje += "Por favor, agradecemos realice el pago a través del siguiente enlace: \r\n";
                                             strMensaje += "https://fitnesspeoplecolombia.com/wompiplan?code=" + strString;
 
-                                            cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", dt3.Rows[0]["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
+                                            cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", dtAfiliado.Rows[0]["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
 
                                             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

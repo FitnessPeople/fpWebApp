@@ -607,7 +607,7 @@
                                                                     <div class="col-sm-6" id="empresa">
                                                                         <div class="form-group">
                                                                             <i class="fas fa-industry text-info"></i>
-                                                                            <label for="Empresa" class="col-form-label">Empresa / Persona:</label>
+                                                                            <label for="Empresa" class="col-form-label">Comercial / Corporativo:</label>
                                                                             <asp:DropDownList ID="ddlEmpresa" DataTextField="NombreEmpresaCRM" DataValueField="idEmpresaCRM"
                                                                                 runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
@@ -863,11 +863,11 @@
                                                                             <table class="table table-bordered table-striped">
                                                                                 <tr>
                                                                                     <%-- <th width="25%"><i class="fa fa-city m-r-xs"></i>Ciudad</th>--%>
-                                                                                    <th width="25%"><i class="fa fa-mobile m-r-xs"></i>Archivo propuesta</th>
+                                                                                    <th width="25%"><i class="fa fa-mobile m-r-xs"></i>Datos del contacto</th>
                                                                                     <th width="50%" class="text-nowrap"><i class="fa fa-clock m-r-xs"></i>Historial</th>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td><%# Eval("ArchivoPropuesta") %></td>
+                                                                                    <td>Identificación:<%# Eval("DocumentoAfiliado") %></td>
                                                                                     <td><%# Eval("HistorialHTML2") %></td>
                                                                                 </tr>
                                                                             </table>
@@ -1595,25 +1595,60 @@
         });
     </script>
 
- <script>
-    $('#txbDocumento').on('change blur', function () {
-    var documento = $(this).val().trim();
-    if (documento.length === 0) return;
+    <script type="text/javascript">
+        var idUsuario = '<%= Session["idUsuario"] %>';
+    </script>
 
-    // Llamada AJAX a tu WebMethod
-    $.ajax({
-        type: "POST",
+<script type="text/javascript">
+    var idUsuario = '<%= Session["idUsuario"] %>'; // del backend ASPX
+</script>
+
+<script>
+        $('#txbDocumento').on('change blur', function () {
+    var documento = $(this).val().trim();
+        if (documento.length === 0) return;
+
+        $.ajax({
+            type: "POST",
         url: "crmnuevocontacto.aspx/ValidarContacto",
-        data: JSON.stringify({ documento: documento }),
+        data: JSON.stringify({documento: documento, idUsuario: parseInt(idUsuario) }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (response) {
-            if (response.d === "bloqueado") {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Atención',
-                    text: 'El contacto está siendo gestionado por otro asesor'
-                });
+            const result = response.d;
+
+        function limpiarCamposContacto() {
+            $('#txbNombreContacto').val('');
+        $('#txbApellidoContacto').val('');
+        $('#txbCorreoContacto').val('');
+        $('#txbTelefonoContacto').val('');
+            }
+
+        if (result === "bloqueado") {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Atención',
+                text: 'El contacto está siendo gestionado por otro asesor.'
+            });
+        limpiarCamposContacto();
+            }
+        else if (result === "propio") {
+            Swal.fire({
+                icon: 'info',
+                title: 'CRM en gestión por usted',
+                text: 'Ya tienes un CRM creado para este documento.'
+            });
+            }
+        else if (result === "planVendido") {
+            Swal.fire({
+                icon: 'success',
+                title: 'Contacto con plan activo',
+                text: 'El contacto ya tiene un plan vendido o una negociación aceptada.'
+            });
+        limpiarCamposContacto();
+            }
+        else if (result === "ok") {
+            console.log("Contacto libre, puede continuar");
             }
         },
         error: function () {
@@ -1621,7 +1656,10 @@
         }
     });
 });
- </script>
+</script>
+
+
+
 
 </body>
 
