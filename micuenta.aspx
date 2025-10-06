@@ -134,418 +134,8 @@
                                 </div>
                             </div>
                         </div>
-                        <%--<div class="col-md-3">
-                            <table class="table small m-b-xs">
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <strong>142</strong> Projects
-                                        </td>
-                                        <td>
-                                            <strong>22</strong> Followers
-                                        </td>
-
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>61</strong> Comments
-                                        </td>
-                                        <td>
-                                            <strong>54</strong> Articles
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <strong>154</strong> Tags
-                                        </td>
-                                        <td>
-                                            <strong>32</strong> Friends
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-3">
-                            <small>Sales in last 24h</small>
-                            <h2 class="no-margins">206 480</h2>
-                            <div id="sparkline1"></div>
-                        </div>--%>
-
 
                     </div>
-
-                    <%--<div class="row">
-
-                        <div class="col-lg-3">
-
-                            <div class="ibox">
-                                <div class="ibox-content">
-                                    <h3>Acerca de mi</h3>
-
-                                    <p class="small">
-                                        There are many variations of passages of Lorem Ipsum available, but the majority have
-                                suffered alteration in some form, by injected humour, or randomised words which don't.
-                               
-                                        <br />
-                                        <br />
-                                        If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't
-                                anything embarrassing
-                           
-                                    </p>
-
-                                    <p class="small font-bold">
-                                        <span><i class="fa fa-circle text-navy"></i>Online status</span>
-                                    </p>
-
-                                </div>
-                            </div>
-
-                            <div class="ibox">
-                                <div class="ibox-content">
-                                    <h3>Compañeros</h3>
-                                    <p class="small">
-                                        If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't
-                                anything embarrassing
-                           
-                                    </p>
-                                    <div class="user-friends">
-                                        <a href="">
-                                            <img alt="image" class="img-circle" src="img/a3.jpg"></a>
-                                        <a href="">
-                                            <img alt="image" class="img-circle" src="img/a1.jpg"></a>
-                                        <a href="">
-                                            <img alt="image" class="img-circle" src="img/a2.jpg"></a>
-                                        <a href="">
-                                            <img alt="image" class="img-circle" src="img/a4.jpg"></a>
-                                        <a href="">
-                                            <img alt="image" class="img-circle" src="img/a5.jpg"></a>
-                                        <a href="">
-                                            <img alt="image" class="img-circle" src="img/a6.jpg"></a>
-                                        <a href="">
-                                            <img alt="image" class="img-circle" src="img/a7.jpg"></a>
-                                        <a href="">
-                                            <img alt="image" class="img-circle" src="img/a8.jpg"></a>
-                                        <a href="">
-                                            <img alt="image" class="img-circle" src="img/a2.jpg"></a>
-                                        <a href="">
-                                            <img alt="image" class="img-circle" src="img/a1.jpg"></a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="ibox">
-                                <div class="ibox-content">
-                                    <h3>Documentos</h3>
-                                    <ul class="list-unstyled file-list">
-                                        <li><a href=""><i class="fa fa-file"></i>Project_document.docx</a></li>
-                                        <li><a href=""><i class="fa fa-file-image"></i>Logo_zender_company.jpg</a></li>
-                                        <li><a href=""><i class="fab fa-stack-exchange"></i>Email_from_Alex.mln</a></li>
-                                        <li><a href=""><i class="fa fa-file"></i>Contract_20_11_2014.docx</a></li>
-                                        <li><a href=""><i class="fa fa-file-powerpoint"></i>Presentation.pptx</a></li>
-                                        <li><a href=""><i class="fa fa-file"></i>10_08_2015.docx</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div class="ibox">
-                                <div class="ibox-content">
-                                    <h3>Private message</h3>
-
-                                    <p class="small">
-                                        Send private message to Alex Smith
-                           
-                                    </p>
-
-                                    <div class="form-group">
-                                        <label>Subject</label>
-                                        <input type="email" class="form-control" placeholder="Message subject">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Message</label>
-                                        <textarea class="form-control" placeholder="Your message" rows="3"></textarea>
-                                    </div>
-                                    <button class="btn btn-primary btn-block">Send</button>
-
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="col-lg-5">
-
-                            <div class="social-feed-box">
-
-                                <div class="pull-right social-action dropdown">
-                                    <button data-toggle="dropdown" class="dropdown-toggle btn-white">
-                                        <i class="fa fa-angle-down"></i>
-                                    </button>
-                                    <ul class="dropdown-menu m-t-xs">
-                                        <li><a href="#">Config</a></li>
-                                    </ul>
-                                </div>
-                                <div class="social-avatar">
-                                    <a href="" class="pull-left">
-                                        <img alt="image" src="img/a1.jpg">
-                                    </a>
-                                    <div class="media-body">
-                                        <a href="#">Andrew Williams
-                                        </a>
-                                        <small class="text-muted">Today 4:21 pm - 12.06.2014</small>
-                                    </div>
-                                </div>
-                                <div class="social-body">
-                                    <p>
-                                        Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                default model text, and a search for 'lorem ipsum' will uncover many web sites still
-                                in their infancy. Packages and web page editors now use Lorem Ipsum as their
-                                default model text.
-                           
-                                    </p>
-
-                                    <div class="btn-group">
-                                        <button class="btn btn-white btn-xs"><i class="fa fa-thumbs-up"></i>Like this!</button>
-                                        <button class="btn btn-white btn-xs"><i class="fa fa-comments"></i>Comment</button>
-                                        <button class="btn btn-white btn-xs"><i class="fa fa-share"></i>Share</button>
-                                    </div>
-                                </div>
-                                <div class="social-footer">
-                                    <div class="social-comment">
-                                        <a href="" class="pull-left">
-                                            <img alt="image" src="img/a1.jpg">
-                                        </a>
-                                        <div class="media-body">
-                                            <a href="#">Andrew Williams
-                                            </a>
-                                            Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words.
-                                   
-                                            <br />
-                                            <a href="#" class="small"><i class="fa fa-thumbs-up"></i>26 Like this!</a> -
-                                   
-                                            <small class="text-muted">12.06.2014</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="social-comment">
-                                        <a href="" class="pull-left">
-                                            <img alt="image" src="img/a2.jpg">
-                                        </a>
-                                        <div class="media-body">
-                                            <a href="#">Andrew Williams
-                                            </a>
-                                            Making this the first true generator on the Internet. It uses a dictionary of.
-                                   
-                                            <br />
-                                            <a href="#" class="small"><i class="fa fa-thumbs-up"></i>11 Like this!</a> -
-                                   
-                                            <small class="text-muted">10.07.2014</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="social-comment">
-                                        <a href="" class="pull-left">
-                                            <img alt="image" src="img/a3.jpg">
-                                        </a>
-                                        <div class="media-body">
-                                            <textarea class="form-control" placeholder="Write comment..."></textarea>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="social-feed-box">
-
-                                <div class="pull-right social-action dropdown">
-                                    <button data-toggle="dropdown" class="dropdown-toggle btn-white">
-                                        <i class="fa fa-angle-down"></i>
-                                    </button>
-                                    <ul class="dropdown-menu m-t-xs">
-                                        <li><a href="#">Config</a></li>
-                                    </ul>
-                                </div>
-                                <div class="social-avatar">
-                                    <a href="" class="pull-left">
-                                        <img alt="image" src="img/a6.jpg">
-                                    </a>
-                                    <div class="media-body">
-                                        <a href="#">Andrew Williams
-                                        </a>
-                                        <small class="text-muted">Today 4:21 pm - 12.06.2014</small>
-                                    </div>
-                                </div>
-                                <div class="social-body">
-                                    <p>
-                                        Many desktop publishing packages and web page editors now use Lorem Ipsum as their
-                                default model text, and a search for 'lorem ipsum' will uncover many web sites still
-                                in their infancy. Packages and web page editors now use Lorem Ipsum as their
-                                default model text.
-                           
-                                    </p>
-                                    <p>
-                                        Lorem Ipsum as their
-                                default model text, and a search for 'lorem ipsum' will uncover many web sites still
-                                in their infancy. Packages and web page editors now use Lorem Ipsum as their
-                                default model text.
-                           
-                                    </p>
-                                    <img src="img/gallery/3.jpg" class="img-responsive">
-                                    <div class="btn-group">
-                                        <button class="btn btn-white btn-xs"><i class="fa fa-thumbs-up"></i>Like this!</button>
-                                        <button class="btn btn-white btn-xs"><i class="fa fa-comments"></i>Comment</button>
-                                        <button class="btn btn-white btn-xs"><i class="fa fa-share"></i>Share</button>
-                                    </div>
-                                </div>
-                                <div class="social-footer">
-                                    <div class="social-comment">
-                                        <a href="" class="pull-left">
-                                            <img alt="image" src="img/a1.jpg">
-                                        </a>
-                                        <div class="media-body">
-                                            <a href="#">Andrew Williams
-                                            </a>
-                                            Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words.
-                                   
-                                            <br />
-                                            <a href="#" class="small"><i class="fa fa-thumbs-up"></i>26 Like this!</a> -
-                                   
-                                            <small class="text-muted">12.06.2014</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="social-comment">
-                                        <a href="" class="pull-left">
-                                            <img alt="image" src="img/a2.jpg">
-                                        </a>
-                                        <div class="media-body">
-                                            <a href="#">Andrew Williams
-                                            </a>
-                                            Making this the first true generator on the Internet. It uses a dictionary of.
-                                   
-                                            <br />
-                                            <a href="#" class="small"><i class="fa fa-thumbs-up"></i>11 Like this!</a> -
-                                   
-                                            <small class="text-muted">10.07.2014</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="social-comment">
-                                        <a href="" class="pull-left">
-                                            <img alt="image" src="img/a8.jpg">
-                                        </a>
-                                        <div class="media-body">
-                                            <a href="#">Andrew Williams
-                                            </a>
-                                            Making this the first true generator on the Internet. It uses a dictionary of.
-                                   
-                                            <br />
-                                            <a href="#" class="small"><i class="fa fa-thumbs-up"></i>11 Like this!</a> -
-                                   
-                                            <small class="text-muted">10.07.2014</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="social-comment">
-                                        <a href="" class="pull-left">
-                                            <img alt="image" src="img/a3.jpg">
-                                        </a>
-                                        <div class="media-body">
-                                            <textarea class="form-control" placeholder="Write comment..."></textarea>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-
-
-                        </div>
-                        <div class="col-lg-4 m-b-lg">
-                            <div id="vertical-timeline" class="vertical-container light-timeline no-margins">
-                                <div class="vertical-timeline-block">
-                                    <div class="vertical-timeline-icon navy-bg">
-                                        <i class="fa fa-briefcase"></i>
-                                    </div>
-
-                                    <div class="vertical-timeline-content">
-                                        <h2>Meeting</h2>
-                                        <p>
-                                            Conference on the sales results for the previous year. Monica please examine sales trends in marketing and products. Below please find the current status of the sale.
-                               
-                                        </p>
-                                        <a href="#" class="btn btn-sm btn-primary">More info</a>
-                                        <span class="vertical-date">Today
-                                            <br>
-                                            <small>Dec 24</small>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="vertical-timeline-block">
-                                    <div class="vertical-timeline-icon blue-bg">
-                                        <i class="fa fa-file-text"></i>
-                                    </div>
-
-                                    <div class="vertical-timeline-content">
-                                        <h2>Send documents to Mike</h2>
-                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since.</p>
-                                        <a href="#" class="btn btn-sm btn-success">Download document </a>
-                                        <span class="vertical-date">Today
-                                            <br>
-                                            <small>Dec 24</small>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="vertical-timeline-block">
-                                    <div class="vertical-timeline-icon lazur-bg">
-                                        <i class="fa fa-coffee"></i>
-                                    </div>
-
-                                    <div class="vertical-timeline-content">
-                                        <h2>Coffee Break</h2>
-                                        <p>Go to shop and find some products. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's. </p>
-                                        <a href="#" class="btn btn-sm btn-info">Read more</a>
-                                        <span class="vertical-date">Yesterday
-                                            <br>
-                                            <small>Dec 23</small></span>
-                                    </div>
-                                </div>
-
-                                <div class="vertical-timeline-block">
-                                    <div class="vertical-timeline-icon yellow-bg">
-                                        <i class="fa fa-phone"></i>
-                                    </div>
-
-                                    <div class="vertical-timeline-content">
-                                        <h2>Phone with Jeronimo</h2>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? Iste voluptatibus minus veritatis qui ut.</p>
-                                        <span class="vertical-date">Yesterday
-                                            <br>
-                                            <small>Dec 23</small></span>
-                                    </div>
-                                </div>
-
-                                <div class="vertical-timeline-block">
-                                    <div class="vertical-timeline-icon navy-bg">
-                                        <i class="fa fa-comments"></i>
-                                    </div>
-
-                                    <div class="vertical-timeline-content">
-                                        <h2>Chat with Monica and Sandra</h2>
-                                        <p>Web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). </p>
-                                        <span class="vertical-date">Yesterday
-                                            <br>
-                                            <small>Dec 23</small></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>--%>
 
                     <div class="ibox float-e-margins" runat="server">
                         <div class="ibox-title">
@@ -591,7 +181,7 @@
                                                 <div class="form-group">
                                                     <label>Clave de acceso al sistema</label>
                                                     <div class="input-group">
-                                                        <asp:TextBox ID="txbClave" name="txbClave" CssClass="form-control input-sm" runat="server" placeholder="Clave" TextMode="Password" ></asp:TextBox>
+                                                        <asp:TextBox ID="txbClave" name="txbClave" CssClass="form-control input-sm" runat="server" placeholder="Clave" TextMode="Password"></asp:TextBox>
                                                         <span class="input-group-btn">
                                                             <span type="button" class="btn btn-default input-sm"><i class="fa fa-eye" id="togglePassword"></i></span>
                                                         </span>
@@ -600,7 +190,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
@@ -659,9 +249,54 @@
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                     <label>Ciudad</label>
-                                                    <asp:DropDownList ID="ddlCiudadEmpleado" runat="server" 
-                                                        AppendDataBoundItems="true" DataTextField="NombreCiudad" 
+                                                    <asp:DropDownList ID="ddlCiudadEmpleado" runat="server"
+                                                        AppendDataBoundItems="true" DataTextField="NombreCiudad"
                                                         DataValueField="idCiudad" CssClass="chosen-select input-sm">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Fecha de Nacimiento</label>
+                                                    <asp:TextBox ID="txbFechaNac" CssClass="form-control input-sm" runat="server" placeholder="Fecha nacimiento"></asp:TextBox>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Cargo</label>
+                                                    <asp:DropDownList ID="ddlCargo" runat="server" AppendDataBoundItems="true"
+                                                        DataTextField="NombreCargo" DataValueField="idCargo" CssClass="form-control input-sm">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Nivel de Estudio</label>
+                                                    <asp:DropDownList ID="ddlNivelEstudio" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                        <asp:ListItem Text="Primaria" Value="Primaria"></asp:ListItem>
+                                                        <asp:ListItem Text="Bachiller" Value="Bachiller"></asp:ListItem>
+                                                        <asp:ListItem Text="Técnico" Value="Técnico"></asp:ListItem>
+                                                        <asp:ListItem Text="Tecnólogo" Value="Tecnólogo"></asp:ListItem>
+                                                        <asp:ListItem Text="Profesional" Value="Profesional"></asp:ListItem>
+                                                        <asp:ListItem Text="Especialización" Value="Especialización"></asp:ListItem>
+                                                        <asp:ListItem Text="Doctorado" Value="Doctorado"></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Profesión</label>
+                                                    <asp:DropDownList ID="ddlProfesion" runat="server" AppendDataBoundItems="true"
+                                                        DataTextField="Profesion" DataValueField="idProfesion" CssClass="form-control input-sm">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
@@ -680,31 +315,15 @@
                                                     <span class="fileinput-exists input-sm">Cambiar</span>
                                                     <input type="file" name="fileFoto" id="fileFoto" accept="image/*">
                                                 </span>
-                                                <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm" 
+                                                <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm"
                                                     data-dismiss="fileinput">Quitar</a>
                                             </div>
                                             <asp:Literal ID="ltFotoEmpleado" runat="server"></asp:Literal>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
+
                                         <div class="row">
-                                               <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label>Fecha de Nacimiento</label>
-                                                        <asp:TextBox ID="txbFechaNac" CssClass="form-control input-sm" runat="server" placeholder="Fecha nacimiento"></asp:TextBox>
-                                                    </div>
-                                                </div>
-                                                 <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label>Cargo</label>
-                                                        <asp:DropDownList ID="ddlCargo" runat="server" AppendDataBoundItems="true"
-                                                            DataTextField="NombreCargo" DataValueField="idCargo" CssClass="form-control input-sm">
-                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                        </asp:DropDownList>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                           <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Estado civil</label>
@@ -728,8 +347,79 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
+                                                    <label>Estrato socioeconómico</label>
+                                                    <asp:TextBox ID="txbEstratoSocioeconomico" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Tipo de Vivienda</label>
+                                                    <asp:DropDownList ID="ddlTipoVivienda" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                        <asp:ListItem Text="Propia" Value="Propia"></asp:ListItem>
+                                                        <asp:ListItem Text="Arriendo" Value="Arriendo"></asp:ListItem>
+                                                        <asp:ListItem Text="Familiar" Value="Familiar"></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Nro. personas nucleo familiar</label>
+                                                    <asp:TextBox ID="txbNroPersonasNucleo" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Actividad extra</label>
+                                                    <asp:DropDownList ID="ddlActividadExtra" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                        <asp:ListItem Text="Estudiar" Value="Estudiar"></asp:ListItem>
+                                                        <asp:ListItem Text="Emprendimiento" Value="Emprendimiento"></asp:ListItem>
+                                                        <asp:ListItem Text="Actividades de hogar" Value="Actividades de hogar"></asp:ListItem>
+                                                        <asp:ListItem Text="Deporte" Value="Deporte"></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Consume licor</label>
+                                                    <asp:DropDownList ID="ddlConsumoLicor" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                        <asp:ListItem Text="Ocasional" Value="Ocasional"></asp:ListItem>
+                                                        <asp:ListItem Text="Semanal" Value="Semanal"></asp:ListItem>
+                                                        <asp:ListItem Text="Quincenal" Value="Quincenal"></asp:ListItem>
+                                                        <asp:ListItem Text="Mensual" Value="Mensual"></asp:ListItem>
+                                                        <asp:ListItem Text="Nunca" Value="Nunca"></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Medio de transporte</label>
+                                                    <asp:DropDownList ID="ddlMedioTransporte" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                        <asp:ListItem Text="Público" Value="Público"></asp:ListItem>
+                                                        <asp:ListItem Text="Bicicleta" Value="Bicicleta"></asp:ListItem>
+                                                        <asp:ListItem Text="Patineta eléctrica" Value="Patineta eléctrica"></asp:ListItem>
+                                                        <asp:ListItem Text="Moto" Value="Moto"></asp:ListItem>
+                                                        <asp:ListItem Text="Vehículo" Value="Vehículo"></asp:ListItem>
+                                                        <asp:ListItem Text="A pie" Value="A pie"></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
                                                     <label>EPS</label>
-                                                    <asp:DropDownList ID="ddlEps" runat="server" AppendDataBoundItems="true" 
+                                                    <asp:DropDownList ID="ddlEps" runat="server" AppendDataBoundItems="true"
                                                         DataTextField="NombreEps" DataValueField="idEps" CssClass="form-control input-sm">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
@@ -882,7 +572,7 @@
             "La clave debe tener entre 8 y 20 caracteres con letras mayúsculas, letras minúsculas y al menos un número."
         );
 
-        
+
         $("#form").validate({
             rules: {
                 txbNombre: {
@@ -922,10 +612,36 @@
                 ddlCargo: {
                     required: true
                 },
+                ddlNivelEstudio: {
+                    required: true
+                },
+                ddlProfesion: {
+                    required: true
+                },
                 ddlEstadoCivil: {
                     required: true
                 },
                 ddlGenero: {
+                    required: true
+                },
+                txbEstratoSocioeconomico: {
+                    required: true,
+                    minlength: 1
+                },
+                ddlTipoVivienda: {
+                    required: true
+                },
+                txbNroPersonasNucleo: {
+                    required: true,
+                    minlength: 1
+                },
+                ddlActividadExtra: {
+                    required: true
+                },
+                ddlConsumoLicor: {
+                    required: true
+                },
+                ddlMedioTransporte: {
                     required: true
                 },
                 ddlSedes: {

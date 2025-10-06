@@ -46,6 +46,8 @@ namespace fpWebApp
                     listaEmpleados();
                     CantidadGenero();
                     CantidadCiudad();
+                    CantidadEstadoCivil();
+                    CantidadTipoContrato();
                     //ActualizarEstadoxFechaFinal();
                     //indicadores01.Visible = false;
                 }
@@ -155,8 +157,8 @@ namespace fpWebApp
 
                 ClientScript.RegisterStartupScript(
                     this.GetType(),
-                    "dataChart",
-                    $"var nombres = {nombresJson}; var cantidades = {cantidadesJson}; var colores = {coloresJson};",
+                    "dataChart1",
+                    $"var nombres1 = {nombresJson}; var cantidades1 = {cantidadesJson}; var colores1 = {coloresJson};",
                     true
                 );
             }
@@ -166,7 +168,7 @@ namespace fpWebApp
 
         private void CantidadCiudad()
         {
-            string strGeneros = @"SELECT idCiudadEmpleado, NombreCiudad, COUNT(*) AS cuantos  
+            string strCiudades = @"SELECT idCiudadEmpleado, NombreCiudad, COUNT(*) AS cuantos  
                 FROM empleados e, ciudades c  
                 WHERE e.idCiudadEmpleado = c.idCiudad 
                 AND idCiudadEmpleado IN (
@@ -178,7 +180,7 @@ namespace fpWebApp
 
             clasesglobales cg = new clasesglobales();
 
-            DataTable dt = cg.TraerDatos(strGeneros);
+            DataTable dt = cg.TraerDatos(strCiudades);
 
             if (dt.Rows.Count > 0)
             {
@@ -209,8 +211,115 @@ namespace fpWebApp
 
                 ClientScript.RegisterStartupScript(
                     this.GetType(),
-                    "dataChart1",
-                    $"var nombres1 = {nombresJson}; var cantidades1 = {cantidadesJson}; var colores1 = {coloresJson};",
+                    "dataChart2",
+                    $"var nombres2 = {nombresJson}; var cantidades2 = {cantidadesJson}; var colores2 = {coloresJson};",
+                    true
+                );
+            }
+
+            dt.Dispose();
+        }
+
+        private void CantidadEstadoCivil()
+        {
+            string strEstadoCivil = @"SELECT e.idEstadoCivil, EstadoCivil, COUNT(*) AS cuantos  
+                FROM empleados e, EstadoCivil ec  
+                WHERE e.idEstadoCivil = ec.idEstadoCivil 
+                AND e.idEstadoCivil IN (
+                SELECT idEstadoCivil 
+                FROM empleados 
+                WHERE idEstadoCivil IS NOT NULL 
+                GROUP BY idEstadoCivil) 
+                GROUP BY idEstadoCivil";
+
+            clasesglobales cg = new clasesglobales();
+
+            DataTable dt = cg.TraerDatos(strEstadoCivil);
+
+            if (dt.Rows.Count > 0)
+            {
+                List<string> nombres = new List<string>();
+                List<int> cantidades = new List<int>();
+                List<string> colores = new List<string>();
+                int cuantos = 0;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    cuantos += 1;
+                    nombres.Add(row["EstadoCivil"].ToString());
+                    cantidades.Add(Convert.ToInt32(row["cuantos"]));
+
+                    string color = cg.GenerateColor(cuantos, Math.Max(1, Convert.ToInt32(row["cuantos"])));
+
+                    //Random random = new Random();
+                    //int randomInt = random.Next(0x1000000);
+                    //string hexColor = String.Format("#{0:X6}", randomInt);
+                    //colores.Add(hexColor);
+                    colores.Add(color);
+                }
+
+                var serializer = new JavaScriptSerializer();
+                string nombresJson = serializer.Serialize(nombres);
+                string cantidadesJson = serializer.Serialize(cantidades);
+                string coloresJson = serializer.Serialize(colores);
+
+                ClientScript.RegisterStartupScript(
+                    this.GetType(),
+                    "dataChart3",
+                    $"var nombres3 = {nombresJson}; var cantidades3 = {cantidadesJson}; var colores3 = {coloresJson};",
+                    true
+                );
+            }
+
+            dt.Dispose();
+        }
+
+        private void CantidadTipoContrato()
+        {
+            string strTipoContrato = @"SELECT TipoContrato, COUNT(*) AS cuantos  
+                FROM empleados e  
+                WHERE TipoContrato IN (
+                SELECT TipoContrato 
+                FROM empleados 
+                WHERE TipoContrato IS NOT NULL 
+                GROUP BY TipoContrato) 
+                GROUP BY TipoContrato";
+
+            clasesglobales cg = new clasesglobales();
+
+            DataTable dt = cg.TraerDatos(strTipoContrato);
+
+            if (dt.Rows.Count > 0)
+            {
+                List<string> nombres = new List<string>();
+                List<int> cantidades = new List<int>();
+                List<string> colores = new List<string>();
+                int cuantos = 0;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    cuantos += 1;
+                    nombres.Add(row["TipoContrato"].ToString());
+                    cantidades.Add(Convert.ToInt32(row["cuantos"]));
+
+                    string color = cg.GenerateColor(cuantos, Math.Max(1, Convert.ToInt32(row["cuantos"])));
+
+                    //Random random = new Random();
+                    //int randomInt = random.Next(0x1000000);
+                    //string hexColor = String.Format("#{0:X6}", randomInt);
+                    //colores.Add(hexColor);
+                    colores.Add(color);
+                }
+
+                var serializer = new JavaScriptSerializer();
+                string nombresJson = serializer.Serialize(nombres);
+                string cantidadesJson = serializer.Serialize(cantidades);
+                string coloresJson = serializer.Serialize(colores);
+
+                ClientScript.RegisterStartupScript(
+                    this.GetType(),
+                    "dataChart4",
+                    $"var nombres4 = {nombresJson}; var cantidades4 = {cantidadesJson}; var colores4 = {coloresJson};",
                     true
                 );
             }

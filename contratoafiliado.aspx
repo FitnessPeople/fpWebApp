@@ -21,7 +21,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- CSS de Quill -->
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+    <%--<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">--%>
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
     <!-- JS de Quill -->
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
@@ -103,6 +104,19 @@
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
+
+    <style>
+        .ql-align-center {
+            text-align: center !important;
+        }
+        .ql-align-right {
+            text-align: right !important;
+        }
+        .ql-align-justify {
+            text-align: justify !important;
+        }
+
+    </style>
 
     <script>
         function changeClass() {
@@ -279,7 +293,7 @@
 
                                                 <h5>Previsualización</h5>
 
-                                                <p><asp:Literal ID="ltContrato2" runat="server"></asp:Literal></p>
+                                                <asp:Literal ID="ltContrato2" runat="server"></asp:Literal>
 
                                             </div>
                                         </div>

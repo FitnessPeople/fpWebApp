@@ -41,6 +41,7 @@ namespace fpWebApp
                     CargarCajaComp();
                     CargarCesantias();
                     CargarCargos();
+                    CargarProfesiones();
                     CargarEstadoCivil();
                     CargarGeneros();
                     CargarEmpleado();
@@ -146,6 +147,15 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        private void CargarProfesiones()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarProfesiones();
+            ddlProfesion.DataSource = dt;
+            ddlProfesion.DataBind();
+            dt.Dispose();
+        }
+
         //private void CargarEmpresasFP()
         //{
         //    clasesglobales cg1 = new clasesglobales();
@@ -215,6 +225,31 @@ namespace fpWebApp
                 dtFecha = Convert.ToDateTime(dt.Rows[0]["FechaNacEmpleado"].ToString());
             }
             txbFechaNac.Text = dtFecha.ToString("yyyy-MM-dd");
+
+            if (dt.Rows[0]["NivelEstudio"].ToString() != "")
+            {
+                ddlNivelEstudio.SelectedIndex = Convert.ToInt16(ddlNivelEstudio.Items.IndexOf(ddlNivelEstudio.Items.FindByText(dt.Rows[0]["NivelEstudio"].ToString())));
+            }
+
+            txbEstratoSocioeconomico.Text = dt.Rows[0]["EstratoSocioeconomico"].ToString();
+            if (dt.Rows[0]["TipoVivienda"].ToString() != "")
+            {
+                ddlTipoVivienda.SelectedIndex = Convert.ToInt16(ddlTipoVivienda.Items.IndexOf(ddlTipoVivienda.Items.FindByText(dt.Rows[0]["TipoVivienda"].ToString())));
+            }
+            txbNroPersonasNucleo.Text = dt.Rows[0]["PersonasNucleoFamiliar"].ToString();
+            if (dt.Rows[0]["ActividadExtra"].ToString() != "")
+            {
+                ddlActividadExtra.SelectedIndex = Convert.ToInt16(ddlActividadExtra.Items.IndexOf(ddlActividadExtra.Items.FindByText(dt.Rows[0]["ActividadExtra"].ToString())));
+            }
+            if (dt.Rows[0]["ConsumeLicor"].ToString() != "")
+            {
+                ddlConsumoLicor.SelectedIndex = Convert.ToInt16(ddlConsumoLicor.Items.IndexOf(ddlConsumoLicor.Items.FindByText(dt.Rows[0]["ConsumeLicor"].ToString())));
+            }
+            if (dt.Rows[0]["MedioTransporte"].ToString() != "")
+            {
+                ddlMedioTransporte.SelectedIndex = Convert.ToInt16(ddlMedioTransporte.Items.IndexOf(ddlMedioTransporte.Items.FindByText(dt.Rows[0]["MedioTransporte"].ToString())));
+            }
+
             ddlSedes.SelectedIndex = Convert.ToInt32(ddlSedes.Items.IndexOf(ddlSedes.Items.FindByValue(dt.Rows[0]["idSede"].ToString())));
             
             if (dt.Rows[0]["idEps"].ToString() != "")
@@ -255,6 +290,11 @@ namespace fpWebApp
             if (dt.Rows[0]["idCargo"].ToString() != "")
             {
                 ddlCargo.SelectedIndex = Convert.ToInt32(ddlCargo.Items.IndexOf(ddlCargo.Items.FindByValue(dt.Rows[0]["idCargo"].ToString())));
+            }
+
+            if (dt.Rows[0]["idProfesion"].ToString() != "")
+            {
+                ddlProfesion.SelectedIndex = Convert.ToInt32(ddlProfesion.Items.IndexOf(ddlProfesion.Items.FindByValue(dt.Rows[0]["idProfesion"].ToString())));
             }
 
             ltFotoEmpleado.Text = "<img src=\"img/empleados/" + dt.Rows[0]["FotoEmpleado"].ToString() + "\" class=\"img-circle circle-border m-b-md\" width=\"220px\" alt=\"profile\" />";
@@ -310,15 +350,33 @@ namespace fpWebApp
 
                 string mensaje = cg.ActualizarEmpleadoNuevo(txbDocumento.Text.ToString(), 
                     Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()),
-                    txbNombre.Text.ToString(), txbTelefono.Text.ToString(), txbTelefonoCorp.Text.ToString(),
-                    txbEmail.Text.ToString(), txbEmailCorp.Text.ToString(), txbDireccion.Text.ToString(),
-                    Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), txbFechaNac.Text.ToString(), strFilename, 
+                    txbNombre.Text.ToString(), 
+                    txbTelefono.Text.ToString(), 
+                    txbTelefonoCorp.Text.ToString(),
+                    txbEmail.Text.ToString(), 
+                    txbEmailCorp.Text.ToString(), 
+                    txbDireccion.Text.ToString(),
+                    Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), 
+                    txbFechaNac.Text.ToString(), 
+                    strFilename, 
                     Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), 
                     Convert.ToInt32(ddlEps.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlFondoPension.SelectedItem.Value.ToString()), Convert.ToInt32(ddlArl.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlCajaComp.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCesantias.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()), strHashClave);
+                    Convert.ToInt32(ddlFondoPension.SelectedItem.Value.ToString()), 
+                    Convert.ToInt32(ddlArl.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(ddlCajaComp.SelectedItem.Value.ToString()), 
+                    Convert.ToInt32(ddlCesantias.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()), 
+                    Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value.ToString()),
+                    Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()), 
+                    strHashClave, 
+                    Convert.ToInt32(ddlProfesion.SelectedItem.Value.ToString()),
+                    ddlNivelEstudio.SelectedItem.Value.ToString(),
+                    Convert.ToInt32(txbEstratoSocioeconomico.Text.ToString()),
+                    ddlTipoVivienda.SelectedItem.Value.ToString(),
+                    Convert.ToInt32(txbNroPersonasNucleo.Text.ToString()),
+                    ddlActividadExtra.SelectedItem.Value.ToString(),
+                    ddlConsumoLicor.SelectedItem.Value.ToString(),
+                    ddlMedioTransporte.SelectedItem.Value.ToString());
 
                 string strNewData = TraerData();
 
@@ -365,7 +423,7 @@ namespace fpWebApp
                         text: 'Ha ocurrido un error inesperado. " + ex.Message.ToString() + @"',
                         icon: 'error'
                     }).then(() => {
-                        window.location.href = 'editarempleado?" + Session["idEmpleado"].ToString() + @"';
+                        window.location.href = 'inicio';
                     });
                     ";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);

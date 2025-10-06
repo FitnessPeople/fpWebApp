@@ -53,7 +53,6 @@ namespace fpWebApp
                         CargarProfesiones();
                         CargarEstadoCivil();
                         CargarGeneros();
-                        CargarGeneros();
                     }
                     else
                     {

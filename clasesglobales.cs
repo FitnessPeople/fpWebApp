@@ -5030,8 +5030,8 @@ namespace fpWebApp
             return dt;
         }
 
-        public string InsertarPlan(string nombrePlan, string descripcionPlan, int precioTotal, int precioBase, int meses, 
-            int mesesCortesia, string color, int idUsuario, double diasCongelamiento, string fechaInicio, 
+        public string InsertarPlan(string nombrePlan, string descripcionPlan, int precioTotal, int precioBase, int meses,
+            int mesesCortesia, string color, int idUsuario, double diasCongelamiento, string fechaInicio,
             string fechaFinal, int permanente, int debitoAutomatico)
         {
             string respuesta = string.Empty;
@@ -5073,7 +5073,7 @@ namespace fpWebApp
 
         public string ActualizarPlan(int idPlan, string nombre, string descripcion, int precioTotal, int precioBase, int meses, int mesesCortesia,
             string color, int idUsuario, int diasCongelamiento, string fechaInicial, string fechaFinal, int permanente, int debitoAutomatico)
-        {   
+        {
             string respuesta = string.Empty;
             try
             {
@@ -5116,7 +5116,7 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarPlanWeb(int idPlan, string tituloPlan, string descripcionPlanWeb, 
+        public string ActualizarPlanWeb(int idPlan, string tituloPlan, string descripcionPlanWeb,
             string bannerWeb, string imagenMarketing, string enlacePago)
         {
             string respuesta = string.Empty;
@@ -6453,7 +6453,7 @@ int valor, string observaciones, string estado)
         public string InsertarNuevoEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado, string telEmpleadoCorp,
             string emailEmpleado, string emailEmpleadoCorp, string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato,
             string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
-            int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo, 
+            int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo,
             int idProfesion, string nivelEstudio, int estratoSocial, string tipoVivienda, int nroPersonas,
             string actividadExtra, string consumeLicor, string medioTransporte)
         {
@@ -6548,10 +6548,12 @@ int valor, string observaciones, string estado)
             return dt;
         }
 
-        public string ActualizarEmpleadoNuevo(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, 
-            string telEmpleado, string telEmpleadoCorp, string emailEmpleado, string emailEmpleadoCorp, 
+        public string ActualizarEmpleadoNuevo(string documentoEmpleado, int tipoDocumento, string nombreEmpleado,
+            string telEmpleado, string telEmpleadoCorp, string emailEmpleado, string emailEmpleadoCorp,
             string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, int idSede, int idEps,
-            int idFondo, int idArl, int idCajaCompensa, int idCesantias, int idGenero, int idEstadoCivil, int idCargo, string claveUsuario)
+            int idFondo, int idArl, int idCajaCompensa, int idCesantias, int idGenero, int idEstadoCivil, int idCargo, string claveUsuario, 
+            int idProfesion, string nivelEstudio, int estratoSocial, string tipoVivienda, int nroPersonas,
+            string actividadExtra, string consumeLicor, string medioTransporte)
         {
             string respuesta = string.Empty;
             try
@@ -6586,6 +6588,14 @@ int valor, string observaciones, string estado)
                         cmd.Parameters.AddWithValue("@p_estado_civil", idEstadoCivil);
                         cmd.Parameters.AddWithValue("@p_id_cargo", idCargo);
                         cmd.Parameters.AddWithValue("@p_clave_usuario", claveUsuario);
+                        cmd.Parameters.AddWithValue("@p_id_profesion", idProfesion);
+                        cmd.Parameters.AddWithValue("@p_nivel_estudio", nivelEstudio);
+                        cmd.Parameters.AddWithValue("@p_estrato_social", estratoSocial);
+                        cmd.Parameters.AddWithValue("@p_tipo_vivienda", tipoVivienda);
+                        cmd.Parameters.AddWithValue("@p_nro_personas", nroPersonas);
+                        cmd.Parameters.AddWithValue("@p_actividad_extra", actividadExtra);
+                        cmd.Parameters.AddWithValue("@p_consume_licor", consumeLicor);
+                        cmd.Parameters.AddWithValue("@p_medio_transporte", medioTransporte);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
