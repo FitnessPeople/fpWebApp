@@ -858,6 +858,7 @@ namespace fpWebApp
 
         protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
+            string estadoPanAfiliado = string.Empty;
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 DataRowView row = (DataRowView)e.Item.DataItem;
@@ -875,7 +876,8 @@ namespace fpWebApp
                     if (dtAfiliado.Rows.Count > 0)
                     {
                         int idAfiliado = Convert.ToInt32(dtAfiliado.Rows[0]["idAfiliado"]);
-                        DataTable dtEstadoActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+                        DataTable crmnuevocontacto = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+                        if(crmnuevocontacto.Rows.Count>0) estadoPanAfiliado = crmnuevocontacto.Rows[0]["EstadoPlan"].ToString();
 
                         // Encontrar los tres botones
                         //HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
@@ -883,8 +885,9 @@ namespace fpWebApp
                         HtmlAnchor btnNuevoAfiliado = (HtmlAnchor)e.Item.FindControl("btnNuevoAfiliado");
 
                         // Si el afiliado tiene plan activo, ocultar todos los botones
-                        if (dtEstadoActivo.Rows.Count > 0)
+                        if (estadoPanAfiliado=="Activo")
                         {
+
                             if (btnEditar != null) btnEditar.Visible = false;
                             if (btnEliminar != null) btnEliminar.Visible = false;
                             if (btnNuevoAfiliado != null) btnNuevoAfiliado.Visible = false;
@@ -910,7 +913,10 @@ namespace fpWebApp
                                 btnNuevoAfiliado.Visible = true;
                             }
                         }
+
                     }
+                    btnEditar.Visible = true;
+                    btnEliminar.Visible = true;
                 }
 
                //Tiempo transcurrido
