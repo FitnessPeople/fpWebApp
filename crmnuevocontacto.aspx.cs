@@ -12,6 +12,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Windows.Media.Media3D;
 using DocumentFormat.OpenXml.Presentation;
+using MySqlX.XDevAPI;
 using NPOI.SS.Formula.Functions;
 
 namespace fpWebApp
@@ -1336,23 +1337,49 @@ namespace fpWebApp
 
 
         [System.Web.Services.WebMethod]
-        public static string ValidarContacto(string documento)
+        public static string ValidarContacto(string documento, int idUsuario)
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt2 = cg.ConsultarPoliticaTiempoLeadCRM(documento, 6);
 
             if (dt2.Rows.Count > 0)
             {
-                int idEstadoCRM = Convert.ToInt32(dt2.Rows[0]["idEstadoCRM"]);
-                int dias = Convert.ToInt32(dt2.Rows[0]["DiasTranscurridos"]);
+                bool tienePlanVendido = false;
+                bool esPropio = false;
+                bool bloqueadoPorOtro = false;
 
-                if ( dias <= 6)
+                foreach (DataRow row in dt2.Rows)
                 {
-                    return "bloqueado";
-                }              
+                    int idEstadoCRM = Convert.ToInt32(row["idEstadoCRM"]);
+                    int dias = Convert.ToInt32(row["DiasTranscurridos"]);
+                    int idUsuarioCreaCRM = Convert.ToInt32(row["idUsuario"]);
+
+                    if (idEstadoCRM == 3)
+                    {
+                        tienePlanVendido = true;
+                        continue;
+                    }
+                    if (idUsuarioCreaCRM == idUsuario)
+                    {
+                        esPropio = true;
+                    }
+                    if (idUsuarioCreaCRM != idUsuario && dias <= 6)
+                    {
+                        bloqueadoPorOtro = true;
+                    }
+                }
+
+                if (tienePlanVendido)
+                    return "planVendido";  
+                else if (esPropio)
+                    return "propio";       
+                else if (bloqueadoPorOtro)
+                    return "bloqueado";   
             }
+
             return "ok";
         }
+
 
 
     }
