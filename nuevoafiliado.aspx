@@ -31,10 +31,18 @@
 
     <script>
         function changeClass() {
+            // Activa el menú principal
             var element1 = document.querySelector("#nuevoafiliado");
-            element1.classList.replace("old", "active");
+            if (element1) {
+                element1.classList.add("active");
+            }
+
+            // Despliega el submenú
             var element2 = document.querySelector("#afiliados2");
-            element2.classList.remove("collapse");
+            if (element2) {
+                element2.classList.add("show"); // en Bootstrap el desplegado es con "show"
+                element2.classList.remove("collapse");
+            }
         }
     </script>
 </head>
@@ -165,7 +173,7 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Nro. de Documento:</label>
-                                                    <asp:TextBox ID="txbDocumento" CssClass="form-control input-sm" runat="server" placeholder="#" 
+                                                    <asp:TextBox ID="txbDocumento" CssClass="form-control input-sm" runat="server" placeholder="Documento" 
                                                         TabIndex="1" autocomplete="off" spellcheck="false" ></asp:TextBox>
                                                 </div>
                                             </div>
