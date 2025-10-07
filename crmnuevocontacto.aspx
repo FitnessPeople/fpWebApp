@@ -922,7 +922,7 @@
                                                                 </p>                                                                
                                                              
                                                                 <div class="text-left">
-                                                                    <asp:Button ID="btnActualizarYRedirigir" runat="server" Text="Ir a afiliaciones"
+                                                                    <asp:Button ID="btnActualizarYRedirigir" runat="server" Text="Comenzar Venta"
                                                                         OnClick="btnActualizarYRedirigir_Click" CssClass="btn btn-success btn-sm" />
                                                                 </div>
                                                             </div>

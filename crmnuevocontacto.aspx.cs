@@ -1083,10 +1083,41 @@ namespace fpWebApp
                 string mensajeValidacion = string.Empty;
                 if (txaObservaciones.Value == "") txaObservaciones.Value = "Se redirige a proceso de afiliaciones";
 
+
                 if (ddlEmpresa.SelectedItem.Value != "")
                     ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
                 else
                     ddlEmpresa.SelectedItem.Value = "0";
+
+                DateTime fecNacCli;
+                System.Text.RegularExpressions.Match match = Regex.Match(txbEdad.Text, @"\d+");
+
+                int edad;
+
+                if (match.Success && int.TryParse(match.Value, out edad))
+                {
+                    txbEdad.Text = edad.ToString(); // Deja solo el número limpio en la caja
+                }
+                else
+                {
+                    edad = 0;
+                    txbEdad.Text = "0";
+                }
+
+                if (string.IsNullOrEmpty(txbFecNac.Text))
+                {
+                    fecNacCli = new DateTime(1900, 1, 1);
+                    txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    fecNacCli = DateTime.Parse(txbFecNac.Text);
+                }
+
+                txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
+
+
+
 
                 try
                 {

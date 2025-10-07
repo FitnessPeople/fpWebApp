@@ -251,10 +251,10 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-user-tie text-success m-r-sm"></i>CRM Contactos / Empresas</h2>
+                    <h2><i class="fa fa-user-tie text-success m-r-sm"></i>CRM Lista</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li class="active"><strong>CRM Contactos / Empresas</strong></li>
+                        <li class="active"><strong>CRM / Lista contactos CRM</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -611,7 +611,7 @@
                                                                         </li>
                                                                         <li class="list-group-item">
                                                                             <span class="pull-right"><span class="label label-warning">WAITING</span></span>
-                                                                            <%# Eval("TelefonoContacto") %>
+                                                                            <%# Eval("CelularEmpresa") %>
                                                                         </li>
                                                                         <li class="list-group-item">
                                                                             <span class="pull-right"><span class="label label-success">ACCEPTED</span> </span>
