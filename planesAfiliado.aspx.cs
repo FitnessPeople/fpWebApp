@@ -574,6 +574,7 @@ namespace fpWebApp
         /// <param name="e"></param>
         protected void lbAgregarPlan_Click(object sender, EventArgs e)
         {
+            int idAfiliado = Convert.ToInt32(Session["IdAfiliado"].ToString());
             int idCanalVenta = 0;
             if (ViewState["nombrePlan"] != null)
             {
@@ -581,7 +582,7 @@ namespace fpWebApp
                 {
                     // Consultar si este usuario tiene un plan activo y cual es su fecha de inicio y fecha final.
                     clasesglobales cg = new clasesglobales();
-                    DataTable dt = cg.ConsultarAfiliadoEstadoActivo(Convert.ToInt32(Session["IdAfiliado"].ToString()));
+                    DataTable dt = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
                     if (dt.Rows.Count > 0)
                     {
                         string script = @"
@@ -678,7 +679,7 @@ namespace fpWebApp
                                         string respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, Convert.ToInt32(ViewState["precioTotal"].ToString()),
                                             Convert.ToInt32(strTipoPago), strReferencia, strBanco, Convert.ToInt32(Session["idUsuario"].ToString()), "Aprobado", "", idCanalVenta, Convert.ToInt32(Session["idcrm"]));
 
-                                        DataTable dt3 = cg.ConsultarAfiliadoEstadoActivo(idAfiliadoPlan);
+                                        DataTable dt3 = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
                                         string respuesta1 = cg.ActualizarEstadoCRMPagoPlan(Convert.ToInt32(Session["idcrm"].ToString()), dt3.Rows[0]["NombrePlan"].ToString(), Convert.ToInt32(dt3.Rows[0]["Valor"].ToString()), Convert.ToInt32(Session["idUsuario"].ToString()), 3);
 
                                         if (respuesta == "OK" && respuesta1 == "OK")
