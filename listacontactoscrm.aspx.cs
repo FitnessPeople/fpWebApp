@@ -90,6 +90,7 @@ namespace fpWebApp
                         ConsultarEmpresasCRM();
                         ListaEstadosCRM();
                         ListaContactos();
+                        ltFechaHoy.Text = DateTime.Now.ToString("h:mm tt - dd.MM.yyyy").ToLower();
                     }
                 }
                 else
@@ -133,15 +134,28 @@ namespace fpWebApp
 
         private void ListaContactos()
         {
-            decimal valorTotal = 0;
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarContactosCRM(out valorTotal);
+            try
+            {
+                decimal valorTotal = 0;
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarContactosCRM(out valorTotal);
+                if(dt.Rows.Count > 0)
+                {
+                    rpContactosCRM.DataSource = dt;
+                    rpContactosCRM.DataBind();
 
-            rpContactosCRM.DataSource = dt;
-            rpContactosCRM.DataBind();
+                    //ltValorTotal.Text = valorTotal.ToString("C0");
+                    dt.Dispose();
+                }
 
-            //ltValorTotal.Text = valorTotal.ToString("C0");
-            dt.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message.ToString();
+               
+            }
+
         }
         private void ConsultarEmpresasCRM()
         {
@@ -156,12 +170,20 @@ namespace fpWebApp
         }
         private void CargarDatosEmpresaCRM(int idEmpresaCMR)
         {
-            bool respuesta = false;
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEmpresaCRMPorId(idEmpresaCMR, out respuesta);
-            rpContenidoEmpresaCRM.DataSource = dt;
-            rpContenidoEmpresaCRM.DataBind();
-            dt.Dispose();
+            try
+            {
+                bool respuesta = false;
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarEmpresaCRMPorId(idEmpresaCMR, out respuesta);
+                rpContenidoEmpresaCRM.DataSource = dt;
+                rpContenidoEmpresaCRM.DataBind();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message.ToString();
+            }
+
         }
         private void ListaEstadosCRM()
         {

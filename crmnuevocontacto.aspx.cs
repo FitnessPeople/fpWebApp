@@ -10,9 +10,7 @@ using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using System.Windows.Media.Media3D;
 using DocumentFormat.OpenXml.Presentation;
-using MySqlX.XDevAPI;
 using NPOI.SS.Formula.Functions;
 
 namespace fpWebApp
@@ -123,24 +121,14 @@ namespace fpWebApp
                                     txbNombreContacto.Value = row["NombreContacto"].ToString();
                                     txbApellidoContacto.Value = row["ApellidoContacto"].ToString();
                                     ltNombreContacto.Text = row["NombreContacto"].ToString() + " " + row["ApellidoContacto"].ToString();
+                                    imgFoto.ImageUrl = row["Foto"].ToString();
 
                                     if (row["idGenero"].ToString() != "")
                                         ddlGenero.SelectedIndex = Convert.ToInt32(ddlGenero.Items.IndexOf(ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString())));
                                     else
                                         ddlGenero.SelectedItem.Value = "0";
 
-                                    //DateTime fechaNacimiento = Convert.ToDateTime(dt.Rows[0]["FecNacAfiliado"]);
-                                    DateTime fechaNacimiento;
-
-                                    if (dt.Rows[0]["FecNacAfiliado"] == DBNull.Value ||
-                                        string.IsNullOrWhiteSpace(dt.Rows[0]["FecNacAfiliado"].ToString()))
-                                    {
-                                        fechaNacimiento = DateTime.MinValue; // o la fecha por defecto que quieras
-                                    }
-                                    else
-                                    {
-                                        fechaNacimiento = Convert.ToDateTime(dt.Rows[0]["FecNacAfiliado"]);
-                                    }
+                                    DateTime fechaNacimiento = Convert.ToDateTime(dt.Rows[0]["FecNacAfiliado"]);
                                     DateTime hoy = DateTime.Today;
 
                                     if (fechaNacimiento == new DateTime(1900, 1, 1))
@@ -232,7 +220,11 @@ namespace fpWebApp
 
                                     ddlCanalesMarketing.SelectedIndex = Convert.ToInt32(ddlCanalesMarketing.Items.IndexOf(ddlCanalesMarketing.Items.FindByValue(dt.Rows[0]["idCanalMarketing"].ToString())));
                                     ddlPlanes.SelectedIndex = Convert.ToInt32(ddlPlanes.Items.IndexOf(ddlPlanes.Items.FindByValue(dt.Rows[0]["idPlan"].ToString())));
-                                    ltPlan.Text = row["NombrePlan"].ToString();
+                                    decimal precio = Convert.ToDecimal(row["PrecioTotal"]);
+
+                                    ltPlan.Text = row["NombrePlan"].ToString() + " de " + precio.ToString("C0", new System.Globalization.CultureInfo("es-CO"));
+
+
                                     //rblMesesPlan.SelectedIndex = Convert.ToInt32(rblMesesPlan.Items.IndexOf(rblMesesPlan.Items.FindByValue(dt.Rows[0]["MesesPlan"].ToString())));
                                 }
                             }
@@ -859,7 +851,6 @@ namespace fpWebApp
 
         protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            string estadoPanAfiliado = string.Empty;
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 DataRowView row = (DataRowView)e.Item.DataItem;
@@ -877,8 +868,7 @@ namespace fpWebApp
                     if (dtAfiliado.Rows.Count > 0)
                     {
                         int idAfiliado = Convert.ToInt32(dtAfiliado.Rows[0]["idAfiliado"]);
-                        DataTable crmnuevocontacto = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
-                        if(crmnuevocontacto.Rows.Count>0) estadoPanAfiliado = crmnuevocontacto.Rows[0]["EstadoPlan"].ToString();
+                        DataTable dtEstadoActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
 
                         // Encontrar los tres botones
                         //HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
@@ -886,9 +876,8 @@ namespace fpWebApp
                         HtmlAnchor btnNuevoAfiliado = (HtmlAnchor)e.Item.FindControl("btnNuevoAfiliado");
 
                         // Si el afiliado tiene plan activo, ocultar todos los botones
-                        if (estadoPanAfiliado=="Activo")
+                        if (dtEstadoActivo.Rows.Count > 0)
                         {
-
                             if (btnEditar != null) btnEditar.Visible = false;
                             if (btnEliminar != null) btnEliminar.Visible = false;
                             if (btnNuevoAfiliado != null) btnNuevoAfiliado.Visible = false;
@@ -914,13 +903,10 @@ namespace fpWebApp
                                 btnNuevoAfiliado.Visible = true;
                             }
                         }
-
                     }
-                    btnEditar.Visible = true;
-                    btnEliminar.Visible = true;
                 }
 
-               //Tiempo transcurrido
+                // Manejamos la fecha de creación para mostrar el tiempo transcurrido
                 if (row["FechaCreacion"] != DBNull.Value)
                 {
                     DateTime fechaPrimerContacto = Convert.ToDateTime(row["FechaCreacion"]);
@@ -978,19 +964,18 @@ namespace fpWebApp
                 txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
                 txbValorMes.Enabled = false;
 
-                //string observaciones = fila[0]["DescripcionPlan"].ToString();
-                string observaciones ="" ;
-                txaObservaciones.InnerText = observaciones;
+                string observaciones = fila[0]["DescripcionPlan"].ToString();
+                //txaObservaciones.InnerText = observaciones;
 
-                int mesesPlan = Convert.ToInt32(fila[0]["Meses"]); 
+                int mesesPlan = Convert.ToInt32(fila[0]["Meses"]); // Asegúrate que esta columna está en tu tabla
 
-                //if (ViewState["DebitoAutomatico"] != null && int.TryParse(ViewState["DebitoAutomatico"].ToString(), out DebitoAutomatico))
-                //{
-                //    if (DebitoAutomatico == 1)
-                //    {
-                //        total = precioBase * 12;
-                //    }
-                //}
+                if (ViewState["DebitoAutomatico"] != null && int.TryParse(ViewState["DebitoAutomatico"].ToString(), out DebitoAutomatico))
+                {
+                    if (DebitoAutomatico == 1)
+                    {
+                        total = precioBase * 12;
+                    }
+                }
                 txbValorPropuesta.Text = $"${total:N0}";
             }
         }
@@ -1175,79 +1160,6 @@ namespace fpWebApp
         }
 
 
-        //protected void ddlAfiliadoOrigen_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    if (ddlAfiliadoOrigen.SelectedItem.Value.ToString() != "")
-        //    {
-        //        clasesglobales cg = new clasesglobales();
-        //        DataTable dt = new DataTable();
-        //        DataTable dt1 = new DataTable();
-        //        DataTable dt2 = new DataTable();
-
-        //        var map = ViewState["DocToIdPreg"] as Dictionary<string, int>;
-        //        if (map != null && map.TryGetValue(ddlAfiliadoOrigen.SelectedValue, out int idPregestion))
-        //        {
-        //            Session["idPregestion"] = idPregestion;
-        //        }
-
-        //        bool esAfiliado = false;
-        //        Session["esAfiliado"] = esAfiliado.ToString();
-
-
-        //        int documento = 0;
-        //        string[] strDocumento = ddlAfiliadoOrigen.SelectedItem.Value.ToString().Split('-');
-        //        if (int.TryParse(strDocumento[0], out documento))
-        //        {
-        //            dt = cg.ConsultarAfiliadoPorDocumento(documento);
-
-        //        }
-
-        //        dt2 = cg.ConsultarPoliticaTiempoLeadCRM(txbDocumento.Text, 6);
-        //        dt1 = cg.ConsultarTipoAfiliadoBasico();
-
-        //        try
-        //        {
-        //            if (dt.Rows.Count > 0)
-        //            {
-        //                esAfiliado = true;
-        //                Session["esAfiliado"] = esAfiliado.ToString();
-        //                txbDocumento.Text = documento.ToString();
-        //                ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
-        //                txbNombreContacto.Value = dt.Rows[0]["NombreAfiliado"].ToString();
-        //                txbApellidoContacto.Value = dt.Rows[0]["ApellidoAfiliado"].ToString();
-        //                if (dt.Rows[0]["idGenero"].ToString() != "")
-        //                    ddlGenero.SelectedIndex = Convert.ToInt32(ddlGenero.Items.IndexOf(ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString())));
-        //                else
-        //                    ddlGenero.SelectedItem.Value = "0";
-
-        //                DateTime fechaNacimiento = Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]);
-        //                DateTime hoy = DateTime.Today;
-
-        //                int edad = hoy.Year - fechaNacimiento.Year;
-        //                if (fechaNacimiento.Date > hoy.AddYears(-edad))
-        //                {
-        //                    edad--;
-        //                }
-
-        //                txbFecNac.Text = fechaNacimiento.ToString("dd/MM/yyyy");
-        //                txbEdad.Text = edad.ToString() + " años";
-        //                txbTelefonoContacto.Value = dt.Rows[0]["CelularAfiliado"].ToString();
-        //                txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString();
-        //                ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString())));
-        //                ddlTiposAfiliado.SelectedValue = "2";//Afiliado en renovación
-
-        //                CargarPlanesAfiliadPregestion(dt.Rows[0]["idAfiliado"].ToString());
-        //            }
-        //            dt.Dispose();
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            string mensaje = ex.Message.ToString();
-        //        }
-        //    }
-
-        //}
-
         protected void ddlAfiliadoOrigen_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlAfiliadoOrigen.SelectedItem.Value.ToString() != "")
@@ -1255,7 +1167,6 @@ namespace fpWebApp
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = new DataTable();
                 DataTable dt1 = new DataTable();
-                DataTable dt2 = new DataTable();
 
                 var map = ViewState["DocToIdPreg"] as Dictionary<string, int>;
                 if (map != null && map.TryGetValue(ddlAfiliadoOrigen.SelectedValue, out int idPregestion))
@@ -1266,6 +1177,7 @@ namespace fpWebApp
                 bool esAfiliado = false;
                 Session["esAfiliado"] = esAfiliado.ToString();
 
+
                 int documento = 0;
                 string[] strDocumento = ddlAfiliadoOrigen.SelectedItem.Value.ToString().Split('-');
                 if (int.TryParse(strDocumento[0], out documento))
@@ -1273,28 +1185,10 @@ namespace fpWebApp
                     dt = cg.ConsultarAfiliadoPorDocumento(documento);
                 }
 
-                
-                dt2 = cg.ConsultarPoliticaTiempoLeadCRM(txbDocumento.Text, 6);
                 dt1 = cg.ConsultarTipoAfiliadoBasico();
 
                 try
-                {                   
-                    if (dt2.Rows.Count > 0)
-                    {
-                        int idUsuarioAsignado = Convert.ToInt32(dt2.Rows[0]["idUsuario"]);
-                        int idUsuarioActual = Convert.ToInt32(Session["idUsuario"]); 
-
-                        int dias = Convert.ToInt32(dt2.Rows[0]["DiasTranscurridos"]);
-
-                        if (idUsuarioAsignado != idUsuarioActual && dias <= 6)
-                        {                            
-                            ScriptManager.RegisterStartupScript(this, GetType(), "alertGestion",
-                                "Swal.fire('Contacto en gestión', '⚠️ El contacto está siendo gestionado por otro asesor', 'warning');", true);
-                            return;
-                        }
-                    }
-
-                    
+                {
                     if (dt.Rows.Count > 0)
                     {
                         esAfiliado = true;
@@ -1303,7 +1197,6 @@ namespace fpWebApp
                         ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
                         txbNombreContacto.Value = dt.Rows[0]["NombreAfiliado"].ToString();
                         txbApellidoContacto.Value = dt.Rows[0]["ApellidoAfiliado"].ToString();
-
                         if (dt.Rows[0]["idGenero"].ToString() != "")
                             ddlGenero.SelectedIndex = Convert.ToInt32(ddlGenero.Items.IndexOf(ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString())));
                         else
@@ -1311,6 +1204,7 @@ namespace fpWebApp
 
                         DateTime fechaNacimiento = Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]);
                         DateTime hoy = DateTime.Today;
+
                         int edad = hoy.Year - fechaNacimiento.Year;
                         if (fechaNacimiento.Date > hoy.AddYears(-edad))
                         {
@@ -1334,7 +1228,6 @@ namespace fpWebApp
                 }
             }
         }
-
 
         [System.Web.Services.WebMethod]
         public static string ValidarContacto(string documento, int idUsuario)
@@ -1370,11 +1263,11 @@ namespace fpWebApp
                 }
 
                 if (tienePlanVendido)
-                    return "planVendido";  
+                    return "planVendido";
                 else if (esPropio)
-                    return "propio";       
+                    return "propio";
                 else if (bloqueadoPorOtro)
-                    return "bloqueado";   
+                    return "bloqueado";
             }
 
             return "ok";

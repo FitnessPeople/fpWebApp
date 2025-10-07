@@ -406,10 +406,10 @@
                             <div class="col-sm-8">
                                 <div class="ibox">
                                     <div class="ibox-content">
-                                        <span class="text-muted small pull-right">Last modification: <i class="fa fa-clock-o"></i>2:10 pm - 12.06.2014</span>
-                                        <h2>CRM</h2>
+                                        <span class="text-muted small pull-right">Fitness People: <i class="fa fa-clock-o"></i><asp:Literal ID="ltFechaHoy" runat="server"></asp:Literal></span>
+                                        <h2>Contactos CRM Disponibles</h2>
                                         <p>
-                                            All clients need to be verified before you can send email and set a project.
+                                            Visualiza los contactos abiertos para gestión. Solo podrás continuar una vez verificada la información del cliente.
                                         </p>
 
                                         <div style="display: flex; align-items: center;">
@@ -421,10 +421,7 @@
                                                     </button>
                                                 </span>
                                             </div>
-
-
-
-                                            <%--                                            <button type="button" class="btn btn-success m-l-md"
+                                            <%-- <button type="button" class="btn btn-success m-l-md"
                                                 data-toggle="modal" data-target="#ModalContacto" data-whatever="@fat">
                                                 <i class="fa fa-plus"></i> Nuevo
                                             </button>--%>
@@ -446,16 +443,16 @@
                                                                         <ItemTemplate>
                                                                             <tr class="feed-element">
                                                                                 <td class="client-avatar">
-                                                                                    <img alt="image" src="img/a4.jpg">
+                                                                                    <img alt="image" src=<%# Eval("Foto") %>>
                                                                                 </td>
                                                                                 <td>
                                                                                     <a href='listacontactoscrm.aspx?idContacto=<%# Eval("IdContacto") %>' class="client-link">
-                                                                                        <%# Eval("NombreContacto") %>
+                                                                                        <%# Eval("NombreContacto") %> <%# Eval("ApellidoContacto") %>
                                                                                     </a>
                                                                                 </td>
                                                                                 <td><%# GetTelefonoHTML(Eval("TelefonoContacto")) %></a></td>
-                                                                                <td class="contact-type"><i class="fa fa-envelope"></i></td>
-                                                                                <td><%# Eval("NombreEmpresaCRM") %> </td>
+                                                                                <td class="contact-type"><%# Eval("NombreEstadoVenta") %></td>
+                                                                                <td><%# Eval("NombrePlan") %> </td>
                                                                                 <td><span class='badge badge-<%# Eval("ColorEstadoCRM")%>'>
                                                                                     <%# Eval("NombreEstadoCRM") %></span>
                                                                                 </td>
@@ -486,7 +483,7 @@
                                                                                 </a></td>
                                                                                 <td><%# Eval("NombreContacto") %></td>
                                                                                 <td><i class="fa fa-flag"></i><%# Eval("NombreCiudad") %></td>
-                                                                                <td class="client-status"><span class="label label-primary"><%# Eval("EstadoEmpresaCRM") %></span></td>
+                                                                                <td class="client-status"><span class="label label-primary"><%# Eval("ObservacionesEmp") %></span></td>
                                                                             </tr>
                                                                         </tbody>
                                                                     </ItemTemplate>
@@ -514,9 +511,9 @@
                                                             <div id='<%# Eval("IdContacto") %>' class='tab-pane <%# Eval("IdContacto").ToString() == Session["contactoId"]?.ToString() ? "active" : "" %>'>
                                                                 <div class="row m-b-lg">
                                                                     <div class="col-lg-4 text-center">
-                                                                        <h2><%# Eval("NombreContacto") %></h2>
+                                                                        <h2><%# Eval("NombreContacto") %> </h2>
                                                                         <div class="m-b-sm">
-                                                                            <img alt="image" class="img-circle" src="img/a3.jpg"
+                                                                            <img alt="image" class="img-circle" src=<%# Eval("Foto") %>
                                                                                 style="width: 62px">
                                                                         </div>
                                                                     </div>
@@ -534,7 +531,7 @@
                                                                         <div class="d-flex justify-content-end mt-2">
                                                                             <button type="button" class="btn btn-primary" tooltip="Agregar información"
                                                                                 data-toggle="modal" data-target="#ModalContacto" data-whatever="@fat">
-                                                                                <i class="fa fa-edit"></i>Agregar información
+                                                                                <i class="fa fa-edit"></i>Gestionar contacto
                                                                             </button>
                                                                         </div>
                                                                     </div>
@@ -559,7 +556,7 @@
                                                                             </li>
                                                                         </ul>
                                                                         <hr />
-                                                                        <strong>Notas</strong>
+                                                                        <strong>Notas del cliente</strong>
                                                                         <p>
                                                                             Entreno por las noches
                                                                             Entreno fines de semana.
@@ -593,7 +590,7 @@
                                                                 <h2><%# Eval("NombreEmpresaCRM") %></h2>
                                                                 <%# FormatearUbicacion(Eval("NombreCiudad"), Eval("NombreEstado")) %>
                                                                 <p>
-                                                                    <%# GetEnlaceWeb(Eval("paginaWeb")) %>
+                                                                    <%# GetEnlaceWeb(Eval("ObservacionesEmp")) %>
                                                                 </p>
                                                                 <div>
                                                                     <small>Active project completion with: 48%</small>
@@ -610,7 +607,7 @@
                                                                     <ul class="list-group clear-list">
                                                                         <li class="list-group-item fist-item">
                                                                             <span class="pull-right"><span class="label label-primary">NEW</span> </span>
-                                                                            <%# Eval("NombreContacto") %>
+                                                                            <%# Eval("NombreContacto") %> 
                                                                         </li>
                                                                         <li class="list-group-item">
                                                                             <span class="pull-right"><span class="label label-warning">WAITING</span></span>

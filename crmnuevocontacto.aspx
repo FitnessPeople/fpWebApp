@@ -143,11 +143,21 @@
 
     <script>
         function changeClass() {
+            // Activa el menú principal
             var element1 = document.querySelector("#crmnuevocontacto");
-            element1.classList.replace("old", "active");
+            if (element1) {
+                element1.classList.add("active");
+            }
+
+            // Despliega el submenú
             var element2 = document.querySelector("#crm");
-            element2.classList.remove("collapse");
+            if (element2) {
+                element2.classList.add("show"); // en Bootstrap el desplegado es con "show"
+                element2.classList.remove("collapse");
+            }
         }
+
+
     </script>
 
 </head>
@@ -571,7 +581,7 @@
                                                                     <div class="col-sm-4">
                                                                         <div class="form-group">
                                                                             <i class="fa-solid fa-calendar-days text-info"></i>
-                                                                            <label for="FechaNac" class="col-form-label">F. Nacimiento:</label>
+                                                                            <label for="FechaNac" class="col-form-label">F. Nac.:</label>
                                                                             <asp:TextBox ID="txbFecNac" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>                                                                           
                                                                         </div>
                                                                     </div>
@@ -607,11 +617,11 @@
                                                                     <div class="col-sm-6" id="empresa">
                                                                         <div class="form-group">
                                                                             <i class="fas fa-industry text-info"></i>
-                                                                            <label for="Empresa" class="col-form-label">Comercial / Corporativo:</label>
+                                                                            <label for="Empresa" class="col-form-label">Empresa / Persona:</label>
                                                                             <asp:DropDownList ID="ddlEmpresa" DataTextField="NombreEmpresaCRM" DataValueField="idEmpresaCRM"
                                                                                 runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                                <asp:ListItem Text="Counter / Online" Value="0"></asp:ListItem>
+                                                                                <asp:ListItem Text="No aplica" Value="0"></asp:ListItem>
                                                                             </asp:DropDownList>
                                                                             <asp:RequiredFieldValidator ID="rfvEmpresa" runat="server" ControlToValidate="ddlEmpresa"
                                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
@@ -647,7 +657,7 @@
                                                                     <div class="col-sm-6" id="estrategia">
                                                                         <div class="form-group">
                                                                             <i class="fa-solid fa-arrows-to-eye text-info"></i>
-                                                                            <label for="Estrategia" class="col-form-label">Campaña de marketing:</label>
+                                                                            <label for="Estrategia" class="col-form-label">Estrategia de marketing:</label>
                                                                             <asp:DropDownList ID="ddlEstrategia" DataTextField="NombreEstrategia" DataValueField="idEstrategia"
                                                                                 runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
@@ -874,12 +884,12 @@
                                                                         </td>
                                                                         <td style="display: flex; flex-wrap: nowrap;">
 
-                                                                            <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-left m-r-xs" title="Editar"
+                                                                            <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-left m-r-xs"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" onclientclick="ocultarContador(); return true;">
                                                                                 <i class="fa fa-edit"></i></a>
-                                                                            <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-left m-r-xs" title="Eliminar"
+                                                                            <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-left m-r-xs"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
-                                                                            <a runat="server" id="btnNuevoAfiliado" href="#" class="btn btn-outline btn-success pull-left" title="Vender"
+                                                                            <a runat="server" id="btnNuevoAfiliado" href="#" class="btn btn-outline btn-success pull-left"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" data-idcrm='<%# Eval("idContacto") %>'
                                                                                 data-documento='<%# Eval("DocumentoAfiliado") %>' onclick="redirigirNuevoAfiliado(this, event)">
                                                                                 <i class="fa fa-id-card"></i></a>
@@ -899,8 +909,7 @@
                                                                     <asp:Literal ID="ltNombreContacto" runat="server"></asp:Literal></h2>
 
                                                                 <div class="m-b-sm">
-                                                                    <img alt="image" class="img-circle" src="img/a4.jpg"
-                                                                        style="width: 62px">
+                                                                    <asp:Image ID="imgFoto" runat="server" CssClass="img-circle m-b-sm" Width="92px" />
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-8">
@@ -1345,7 +1354,8 @@
 
             $.getJSON("/obtenerafiliados?search=" + encodeURIComponent(documento), function (data) {
                 console.log("Datos devueltos:", data);
-   
+
+                // ✅ Usa la propiedad id porque así se llama en tu JSON
                 const existe = data.some(item => String(item.id) === String(documento));
 
                 console.log("¿Existe?:", existe);
@@ -1390,10 +1400,13 @@
                 $("#primerContacto").hide();
                 $("#canalMarkYTipoCli").hide();
                 $("#metodosPagoYObjetivos").hide();
-                $("#planesYValorMes").hide();
+                $("#planesYValorMes").show();
                 $("#valorPropuestaYArchivo").hide();
                 $("#btnCancelar_").hide();
                 $("#btnVolverAgenda").show(); // Muestra el botón solo si viene del evento
+                $("#generoyfechanac").hide(); 
+                $("#estrategia").hide(); 
+
                 const hoy = new Date().toLocaleDateString("es-CO"); // Formato local
                 const mensaje = '✏️...';
                 ;
@@ -1408,6 +1421,7 @@
                         "background-color": "#fdfdfd",
                         "color": "#333"
                     })
+                    .attr("rows", 10) // 
                     .show();
 
             }
@@ -1485,7 +1499,7 @@
     <!-- ChartJS-->
     <script src="js/plugins/chartJs/Chart.min.js"></script>
 
-<%--    <script>
+    <script>
         $(document).ready(function () {
 
             var lineData = {
@@ -1519,7 +1533,7 @@
             new Chart(ctx, { type: 'line', data: lineData, options: lineOptions });
 
         });
-    </script>--%>
+    </script>
 
     <script>
         $(document).ready(function () {
@@ -1599,65 +1613,60 @@
         var idUsuario = '<%= Session["idUsuario"] %>';
     </script>
 
-<script type="text/javascript">
-    var idUsuario = '<%= Session["idUsuario"] %>'; // del backend ASPX
-</script>
-
-<script>
+    <script>
         $('#txbDocumento').on('change blur', function () {
-    var documento = $(this).val().trim();
-        if (documento.length === 0) return;
+            var documento = $(this).val().trim();
+            if (documento.length === 0) return;
 
-        $.ajax({
-            type: "POST",
-        url: "crmnuevocontacto.aspx/ValidarContacto",
-        data: JSON.stringify({documento: documento, idUsuario: parseInt(idUsuario) }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (response) {
-            const result = response.d;
+            $.ajax({
+                type: "POST",
+                url: "crmnuevocontacto.aspx/ValidarContacto",
+                data: JSON.stringify({ documento: documento, idUsuario: parseInt(idUsuario) }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    const result = response.d;
 
-        function limpiarCamposContacto() {
-            $('#txbNombreContacto').val('');
-        $('#txbApellidoContacto').val('');
-        $('#txbCorreoContacto').val('');
-        $('#txbTelefonoContacto').val('');
-            }
+                    function limpiarCamposContacto() {
+                        $('#txbNombreContacto').val('');
+                        $('#txbApellidoContacto').val('');
+                        $('#txbCorreoContacto').val('');
+                        $('#txbTelefonoContacto').val('');
+                    }
 
-        if (result === "bloqueado") {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Atención',
-                text: 'El contacto está siendo gestionado por otro asesor.'
+                    if (result === "bloqueado") {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Atención',
+                            text: 'El contacto está siendo gestionado por otro asesor.'
+                        });
+                        limpiarCamposContacto();
+                    }
+                    else if (result === "propio") {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'CRM en gestión por usted',
+                            text: 'Ya tienes un CRM creado para este documento.'
+                        });
+                    }
+                    else if (result === "planVendido") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Contacto con plan activo',
+                            text: 'El contacto ya tiene un plan vendido o una negociación aceptada.'
+                        });
+                        limpiarCamposContacto();
+                    }
+                    else if (result === "ok") {
+                        console.log("Contacto libre, puede continuar");
+                    }
+                },
+                error: function () {
+                    console.error("Error al validar el contacto");
+                }
             });
-        limpiarCamposContacto();
-            }
-        else if (result === "propio") {
-            Swal.fire({
-                icon: 'info',
-                title: 'CRM en gestión por usted',
-                text: 'Ya tienes un CRM creado para este documento.'
-            });
-            }
-        else if (result === "planVendido") {
-            Swal.fire({
-                icon: 'success',
-                title: 'Contacto con plan activo',
-                text: 'El contacto ya tiene un plan vendido o una negociación aceptada.'
-            });
-        limpiarCamposContacto();
-            }
-        else if (result === "ok") {
-            console.log("Contacto libre, puede continuar");
-            }
-        },
-        error: function () {
-            console.error("Error al validar el contacto");
-        }
-    });
-});
-</script>
-
+        });
+    </script>
 
 
 
