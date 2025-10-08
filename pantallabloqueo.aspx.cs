@@ -17,9 +17,9 @@ namespace fpWebApp
 
         protected void btnDesbloquear_Click(object sender, EventArgs e)
         {
-            if (Session["usuario"] != null)
+            if (Session["emailUsuario"] != null)
             {
-                string usuario = Session["usuario"].ToString();
+                string usuario = Session["emailUsuario"].ToString();
                 string clave = txbPassword.Text.ToString();
 
                 clasesglobales cg = new clasesglobales();

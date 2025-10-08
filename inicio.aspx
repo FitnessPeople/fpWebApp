@@ -255,31 +255,48 @@
                                                 <div class="ibox-content">
                                                     <ul class="todo-list m-t small-list">
                                                         <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-check-square"></i></a>
-                                                            <span class="m-l-xs todo-completed">Lanzamiento promociones.</span>
-
+                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                            <span class="m-l-xs">idUsuario: <asp:Literal ID="ltIdUsuario" runat="server"></asp:Literal></span>
                                                         </li>
                                                         <li>
                                                             <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">Agregar planes comerciales.</span>
-
+                                                            <span class="m-l-xs">NombreUsuario: <asp:Literal ID="ltNombreUsuario" runat="server"></asp:Literal></span>
                                                         </li>
                                                         <li>
                                                             <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">Send documents to Mike</span>
-                                                            <small class="label label-primary"><i class="fa fa-clock-o"></i>1 mins</small>
+                                                            <span class="m-l-xs">idEmpresa: <asp:Literal ID="ltIdEmpresa" runat="server"></asp:Literal></span>
                                                         </li>
                                                         <li>
                                                             <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">Go to the doctor dr Smith</span>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-check-square"></i></a>
-                                                            <span class="m-l-xs todo-completed">Plan vacation</span>
+                                                            <span class="m-l-xs">Cargo: <asp:Literal ID="ltCargo" runat="server"></asp:Literal></span>
                                                         </li>
                                                         <li>
                                                             <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">Create Nuevas stuff</span>
+                                                            <span class="m-l-xs">Foto: <asp:Literal ID="ltFoto" runat="server"></asp:Literal></span>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                            <span class="m-l-xs">idPerfil: <asp:Literal ID="ltIdPerfil" runat="server"></asp:Literal></span>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                            <span class="m-l-xs">emailUsuario: <asp:Literal ID="ltEmailUsuario" runat="server"></asp:Literal></span>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                            <span class="m-l-xs">fechaNac: <asp:Literal ID="ltFechaNac" runat="server"></asp:Literal></span>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                            <span class="m-l-xs">idSede: <asp:Literal ID="ltIdSede" runat="server"></asp:Literal></span>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                            <span class="m-l-xs">idCanalVenta: <asp:Literal ID="ltIdCanalVenta" runat="server"></asp:Literal></span>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                            <span class="m-l-xs">idEmpleado: <asp:Literal ID="ltIdEmpleado" runat="server"></asp:Literal></span>
                                                         </li>
                                                     </ul>
                                                 </div>

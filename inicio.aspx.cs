@@ -12,6 +12,18 @@ namespace fpWebApp
         {
             if (!IsPostBack)
             {
+                ltIdUsuario.Text = Session["idUsuario"].ToString();
+                ltNombreUsuario.Text = Session["NombreUsuario"].ToString();
+                ltIdEmpresa.Text = Session["idEmpresa"].ToString();
+                ltCargo.Text = Session["Cargo"].ToString();
+                ltFoto.Text = Session["Foto"].ToString();
+                ltIdPerfil.Text = Session["idPerfil"].ToString();
+                ltEmailUsuario.Text = Session["emailUsuario"].ToString();
+                ltFechaNac.Text = Session["fechaNac"].ToString();
+                ltIdSede.Text = Session["idSede"].ToString();
+                ltIdCanalVenta.Text = Session["idCanalVenta"].ToString();
+                ltIdEmpleado.Text = Session["idEmpleado"].ToString();
+
                 //Session["idUsuario"] = 147;
                 //Session["NombreUsuario"] = "Christian Morales";
                 //Session["idEmpresa"] = 1;
@@ -19,7 +31,7 @@ namespace fpWebApp
                 //Session["Foto"] = "chrismo.jpg";
                 //Session["idPerfil"] = 1;
                 //Session["usuario"] = "sistemas@fitnesspeoplecmd.com";
-                //Session["idSede"] = "11";
+                //Session[""] = "11";
 
                 DateTime fechaObjetivo = Convert.ToDateTime(Session["fechaNac"]);
                 int diaObjetivo = fechaObjetivo.Day;

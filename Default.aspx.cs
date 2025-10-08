@@ -22,7 +22,7 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             string strHashClave = cg.ComputeSha256Hash(clave);
 
-            if (YourValidationFunction(usuario, strHashClave))
+            if (ValidacionUsuario(usuario, strHashClave))
             {
                 divUsuario.Visible = false;
                 divPassword.Visible = false;
@@ -81,7 +81,7 @@ namespace fpWebApp
             }
         }
 
-        private bool YourValidationFunction(string UserName, string Password)
+        private bool ValidacionUsuario(string UserName, string Password)
         {
             bool boolReturnValue = false;
             UserName = UserName.Replace("'", "");
@@ -89,29 +89,17 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ValidarUsuario(UserName, Password);
 
-            //string strQuery = "SELECT u.*, e.*, p.* " +
-            //    "FROM Usuarios u " +
-            //    "LEFT JOIN Empleados p ON u.idEmpleado = p.DocumentoEmpleado " +
-            //    "LEFT JOIN Empresas e ON u.idEmpresa = e.idEmpresa " +
-            //    "WHERE u.EmailUsuario = '" + UserName + "' " +
-            //    "AND u.ClaveUsuario = '" + Password + "' ";
-            //string strQuery = "SELECT u.*, e.*, p.* " +
-            //    "FROM Usuarios u " +
-            //    "LEFT JOIN Empleados p ON u.idEmpleado = p.DocumentoEmpleado " +
-            //    "LEFT JOIN Empresas e ON u.idEmpresa = e.idEmpresa " +
-            //    "WHERE u.idEmpleado = '" + UserName + "' " +
-            //    "AND u.ClaveUsuario = '" + Password + "' ";
-
-            string strMensaje;
+            //string strMensaje;
 
             if (dt.Rows.Count > 0)
             {
                 if (dt.Rows[0]["EstadoUsuario"].ToString() == "Inactivo")
                 {
-                    strMensaje = "Usuario inactivo.<br />";
-                    strMensaje += "<a class=\"alert-link\" href=\"soporte\">Consulte al administrador.</a>.";
-                    ltMensaje.Text = strMensaje;
-                    divMensaje.Visible = true;
+                    MostrarAlerta("Usuario inactivo", "Consulte al administrador", "error");
+                    //strMensaje = "Usuario inactivo.<br />";
+                    //strMensaje += "<a class=\"alert-link\" href=\"soporte\">Consulte al administrador.</a>.";
+                    //ltMensaje.Text = strMensaje;
+                    //divMensaje.Visible = true;
                 }
                 else
                 {
@@ -121,7 +109,7 @@ namespace fpWebApp
                     Session["Cargo"] = dt.Rows[0]["CargoUsuario"].ToString();
                     Session["Foto"] = dt.Rows[0]["FotoEmpleado"].ToString();
                     Session["idPerfil"] = dt.Rows[0]["idPerfil"].ToString();
-                    Session["usuario"] = dt.Rows[0]["EmailUsuario"].ToString();
+                    Session["emailUsuario"] = dt.Rows[0]["EmailUsuario"].ToString();
                     //Session["idSede"] = dt.Rows[0]["idSede"].ToString();
                     Session["fechaNac"] = string.IsNullOrEmpty(dt.Rows[0]["FechaNacEmpleado"]?.ToString())
                         ? "2001-01-01"
@@ -129,18 +117,20 @@ namespace fpWebApp
                     Session["idSede"] = string.IsNullOrEmpty(dt.Rows[0]["idSede"]?.ToString())
                         ? "11"   // Sede Administrativa
                         : dt.Rows[0]["idSede"].ToString();
-                    Session["idCanalVenta"] = dt.Rows[0]["idCanalVenta"].ToString();
+                    Session["idCanalVenta"] = string.IsNullOrEmpty(dt.Rows[0]["idCanalVenta"]?.ToString())
+                        ? "12"   // Online
+                        : dt.Rows[0]["idCanalVenta"].ToString();
                     Session["idEmpleado"] = dt.Rows[0]["idEmpleado"].ToString();
                     boolReturnValue = true;
                 }
             }
             else
             {
-                //strMensaje = "Email o contraseña errada.<br />";
-                strMensaje = "Identificación o contraseña errada.<br />";
-                strMensaje += "<a class=\"alert-link\" href=\"#\">Intente nuevamente</a>.";
-                ltMensaje.Text = strMensaje;
-                divMensaje.Visible = true;
+                MostrarAlerta("Identificación o contraseña errada.", "Intente nuevamente.", "error");
+                //strMensaje = "Identificación o contraseña errada.<br />";
+                //strMensaje += "<a class=\"alert-link\" href=\"#\">Intente nuevamente</a>.";
+                //ltMensaje.Text = strMensaje;
+                //divMensaje.Visible = true;
             }
 
             dt.Dispose();
@@ -148,15 +138,30 @@ namespace fpWebApp
             return boolReturnValue;
         }
 
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
+        {
+            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+            string script = $@"
+            Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{tipo}', 
+                background: '#3C3C3C', 
+                showCloseButton: true, 
+                confirmButtonText: 'Aceptar', 
+                customClass: {{
+                    popup: 'alert',
+                    confirmButton: 'btn-confirm-alert'
+                }},
+            }});";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
+        }
+
         protected void btnIngresarCodigo_Click(object sender, EventArgs e)
         {
-            string strMensaje;
-            string strQuery = "SELECT * FROM usuarios " +
-                "WHERE idUsuario = " + Session["idUsuario"].ToString() + " " +
-                "AND CodigoIngreso = '" + txbCodigo.Text.ToString() + "' ";
-
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.RevisarCodigo(Convert.ToInt32(Session["idUsuario"].ToString()), txbCodigo.Text.ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -166,10 +171,11 @@ namespace fpWebApp
             }
             else
             {
-                strMensaje = "Código errado.<br />";
-                strMensaje += "<a class=\"alert-link\" href=\"#\">Intente nuevamente</a>.";
-                ltMensaje.Text = strMensaje;
-                divMensaje.Visible = true;
+                MostrarAlerta("Código errado.", "Intente nuevamente.", "error");
+                //strMensaje = "Código errado.<br />";
+                //strMensaje += "<a class=\"alert-link\" href=\"#\">Intente nuevamente</a>.";
+                //ltMensaje.Text = strMensaje;
+                //divMensaje.Visible = true;
             }
         }
     }

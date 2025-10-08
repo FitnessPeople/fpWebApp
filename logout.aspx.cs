@@ -14,7 +14,7 @@ namespace fpWebApp
             Session.RemoveAll();
             Session.Abandon();
             Session.Clear();
-            Response.Redirect("default.aspx");
+            Response.Redirect("default");
         }
     }
 }
