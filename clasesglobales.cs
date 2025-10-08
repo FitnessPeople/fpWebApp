@@ -5243,11 +5243,70 @@ namespace fpWebApp
             return dt;
         }
 
+        //public string InsertarAfiliadoPlan(int idAfiliado, int idPlan, string fechaInicio, string fechaFin, int meses,
+        //    int valor, string observaciones, string estado, out int ultimoRegistro)
+        //{
+        //    string mensaje = "";
+        //    ultimoRegistro = 0; // Inicializamos
+
+        //    try
+        //    {
+        //        string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+        //        using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+        //        {
+        //            mysqlConexion.Open();
+
+        //            using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_AFILIADO_PLAN", mysqlConexion))
+        //            {
+        //                cmd.CommandType = CommandType.StoredProcedure;
+
+        //                // Parámetros de entrada
+        //                cmd.Parameters.AddWithValue("@p_id_afiliado", idAfiliado);
+        //                cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
+        //                cmd.Parameters.AddWithValue("@p_fecha_inicio", fechaInicio);
+        //                cmd.Parameters.AddWithValue("@p_fecha_fin", fechaFin);
+        //                cmd.Parameters.AddWithValue("@p_meses", meses);
+        //                cmd.Parameters.AddWithValue("@p_valor", valor);
+        //                cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
+        //                cmd.Parameters.AddWithValue("@p_estado", estado);
+
+        //                // Parámetros de salida
+        //                var pUltimoRegistro = new MySqlParameter("@p_ultimo_registro", MySqlDbType.Int32)
+        //                {
+        //                    Direction = ParameterDirection.Output
+        //                };
+        //                cmd.Parameters.Add(pUltimoRegistro);
+
+        //                var pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300)
+        //                {
+        //                    Direction = ParameterDirection.Output
+        //                };
+        //                cmd.Parameters.Add(pMensaje);
+
+        //                // Ejecutar procedimiento
+        //                cmd.ExecuteNonQuery();
+
+        //                // Leer valores de salida
+        //                ultimoRegistro = Convert.ToInt32(pUltimoRegistro.Value);
+        //                mensaje = pMensaje.Value?.ToString();
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        mensaje = "ERROR: " + ex.Message;
+        //    }
+
+        //    return mensaje;
+        //}
+
+
         public string InsertarAfiliadoPlan(int idAfiliado, int idPlan, string fechaInicio, string fechaFin, int meses,
-            int valor, string observaciones, string estado, out int ultimoRegistro)
+        int valor, string observaciones, string estado)
         {
             string mensaje = "";
-            ultimoRegistro = 0; // Inicializamos
+            int idAfiliadoPlan = 0;
 
             try
             {
@@ -5270,34 +5329,22 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_valor", valor);
                         cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
                         cmd.Parameters.AddWithValue("@p_estado", estado);
-
-                        // Parámetros de salida
-                        var pUltimoRegistro = new MySqlParameter("@p_ultimo_registro", MySqlDbType.Int32)
+                        
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            Direction = ParameterDirection.Output
-                        };
-                        cmd.Parameters.Add(pUltimoRegistro);
-
-                        var pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300)
-                        {
-                            Direction = ParameterDirection.Output
-                        };
-                        cmd.Parameters.Add(pMensaje);
-
-                        // Ejecutar procedimiento
-                        cmd.ExecuteNonQuery();
-
-                        // Leer valores de salida
-                        ultimoRegistro = Convert.ToInt32(pUltimoRegistro.Value);
-                        mensaje = pMensaje.Value?.ToString();
+                            if (reader.Read())
+                            {
+                                idAfiliadoPlan = Convert.ToInt32(reader["idAfiliadoPlan"]);
+                            }
+                        }
                     }
-                }
+                }  
+                mensaje = $"OK|{idAfiliadoPlan}";
             }
             catch (Exception ex)
             {
                 mensaje = "ERROR: " + ex.Message;
             }
-
             return mensaje;
         }
 

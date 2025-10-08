@@ -583,7 +583,7 @@ namespace fpWebApp
                     // Consultar si este usuario tiene un plan activo y cual es su fecha de inicio y fecha final.
                     clasesglobales cg = new clasesglobales();
                     DataTable dt = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
-                    if (dt.Rows.Count > 0)
+                    if (dt.Rows[0]["EstadoPlan"].ToString() =="Activo")
                     {
                         string script = @"
                             Swal.fire({
@@ -636,12 +636,14 @@ namespace fpWebApp
 
                                     string rta = cg.InsertarAfiliadoPlan(Convert.ToInt32(Session["IdAfiliado"].ToString()), Convert.ToInt32(ViewState["idPlan"].ToString()),
                                         txbFechaInicio.Text.ToString(), String.Format("{0:yyyy-MM-dd}", fechafinal), Convert.ToInt32(ViewState["meses"].ToString()),
-                                        Convert.ToInt32(ViewState["precioTotal"].ToString()), ViewState["observaciones"].ToString(), "Activo", out idAfiliadoPlan);
+                                        Convert.ToInt32(ViewState["precioTotal"].ToString()), ViewState["observaciones"].ToString(), "Activo");
 
-                                    if (rta == "OK")
+
+                                    if (rta.StartsWith("OK"))
                                     {
+                                        idAfiliadoPlan = int.Parse(rta.Split('|')[1]);
                                         //DataTable dt1 = cg.ConsultarUltimoAfilEnAfiliadosPlan();
-                                        
+
                                         //if (dt1.Rows.Count > 0) idAfiliadoPlan = Convert.ToInt32(dt1.Rows[0]["idAfiliadoPlan"].ToString());
                                         DataTable dt6 = cg.ConsultarUsuarioSedePerfilPorId(Convert.ToInt32(Session["idUsuario"].ToString()));
                                         if (dt6.Rows.Count > 0) idCanalVenta = Convert.ToInt32(dt6.Rows[0]["idCanalVenta"].ToString());

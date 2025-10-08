@@ -32,6 +32,7 @@ namespace fpWebApp
 
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
+
                         btnAgregarYRedirigir.Visible = false;
                         btnVolver.Visible = false;
                         DateTime dt14 = DateTime.Now.AddYears(-14);
@@ -70,6 +71,8 @@ namespace fpWebApp
                         btnCancelar.Visible = false;
                         btnAgregarYRedirigir.Visible = true;
                         btnVolver.Visible = true;
+                        txbNombre.Text = string.Empty;
+                        txbApellido.Text = string.Empty;
                         if (dt.Rows.Count > 0)
                         {
                             txbNombre.Text = dt.Rows[0]["NombreContacto"].ToString();
