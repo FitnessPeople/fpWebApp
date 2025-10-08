@@ -242,8 +242,8 @@ namespace fpWebApp
                     ddlEmpresa.Enabled = false;
                     txbFechaPrim.Disabled = true;
                     txbCorreoContacto.Disabled = true;
-                    txbValorPropuesta.Enabled = false;
-                    ArchivoPropuesta.Disabled = true;
+                    //txbValorPropuesta.Enabled = false;
+                    //ArchivoPropuesta.Disabled = true;
                     string telefono = Convert.ToString(row["TelefonoContacto"]);
                     if (!string.IsNullOrEmpty(telefono) && telefono.Length == 10)
                     {
@@ -263,7 +263,7 @@ namespace fpWebApp
                     txbFechaPrim.Value = Convert.ToDateTime(row["FechaPrimerCon"]).ToString("yyyy-MM-dd");
                     txbFechaProx.Value = Convert.ToDateTime(row["FechaProximoCon"]).ToString("yyyy-MM-dd");
                     int ValorPropuesta = Convert.ToInt32(dt.Rows[0]["ValorPropuesta"]);
-                    txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
+                    //txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
                     //txaObservaciones.Value = row["observaciones"].ToString().Trim();
                 }
             }
@@ -448,7 +448,7 @@ namespace fpWebApp
                 string correo = txbCorreoContacto.Value?.ToString().Trim();
                 string fechaPrim = txbFechaPrim?.Value?.ToString().Trim();
                 string fechaProx = txbFechaProx?.Value?.ToString().Trim();
-                string valorPropuestaTexto = Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "");
+               //string valorPropuestaTexto = Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "");
                 string empresa = ddlEmpresa.SelectedItem?.Value;
                 string statusLead = ddlStatusLead.SelectedItem?.Value;
 
@@ -459,8 +459,8 @@ namespace fpWebApp
                     string.IsNullOrWhiteSpace(empresa) ||
                     string.IsNullOrWhiteSpace(statusLead) ||
                     string.IsNullOrWhiteSpace(fechaPrim) ||
-                    string.IsNullOrWhiteSpace(fechaProx) ||
-                    string.IsNullOrWhiteSpace(valorPropuestaTexto))
+                    string.IsNullOrWhiteSpace(fechaProx) )
+                    //string.IsNullOrWhiteSpace(valorPropuestaTexto))
                 {
                     mensajeValidacion = "Todos los campos son obligatorios.";
 
@@ -636,6 +636,28 @@ namespace fpWebApp
                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
             }
         }
+
+        protected void btnGestionarContacto_Command(object sender, CommandEventArgs e)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                     
+                int idContacto = Convert.ToInt32(e.CommandArgument);               
+                int idUsuario = Convert.ToInt32(Session["idUsuario"]);               
+                respuesta =  cg.ActualizarUsuarioGestionaCRM(idContacto, idUsuario);
+               
+                Response.Redirect("crmnuevocontacto.aspx");
+            }
+            catch (Exception ex)            
+            {              
+                Console.WriteLine("Error: " + ex.Message);
+            }
+        }
+
+
+
 
 
     }
