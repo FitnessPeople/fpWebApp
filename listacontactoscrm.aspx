@@ -358,7 +358,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
+                                                <%--                                                <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <i class="fa fa-dollar text-info"></i>
@@ -374,7 +374,7 @@
                                                             <input type="file" runat="server" class="form-control" id="ArchivoPropuesta" placeholder="subir archivo">
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>--%>
                                                 <div class="form-group">
                                                     <i class="fas fa-pen text-info"></i>
                                                     <label for="message-text" class="col-form-label">Contexto de la negociación:</label>
@@ -394,6 +394,9 @@
                                                 <asp:Button ID="btnActualizar" runat="server" OnClick="btnActualizar_Click"
                                                     Text="Actualizar" Visible="true"
                                                     class="btn btn-primary mb-3" />
+
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -524,7 +527,8 @@
                                                                     <div class="col-lg-8">
                                                                         <strong>Acerca de mí</strong><br />
                                                                         <p>
-                                                                            Edad: <%# Convert.ToInt32(Eval("Edad")) > 0 ? Eval("Edad") : "No disponible" %> - Género: <%# Eval("Genero") ?? "No especificado" %> </p>
+                                                                            Edad: <%# Convert.ToInt32(Eval("Edad")) > 0 ? Eval("Edad") : "No disponible" %> - Género: <%# Eval("Genero") ?? "No especificado" %>
+                                                                        </p>
                                                                         <p class="contact-type" style="display: inline-flex; align-items: center; margin-bottom: 10px;">
                                                                             <i class="fa fa-envelope" style="margin-right: 5px;"></i>
                                                                             <span><%# Eval("EmailContacto") %></span>
@@ -532,12 +536,18 @@
                                                                         <p><%# Eval("NombreTipoAfiliado") %></p>
                                                                         <p>Mi objetivo es  <%# Eval("Objetivo") %></p>
 
-                                                                        <!-- Botón alineado a la derecha -->
                                                                         <div class="d-flex justify-content-end mt-2">
-                                                                            <button type="button" class="btn btn-primary" tooltip="Agregar información"
-                                                                                data-toggle="modal" data-target="#ModalContacto" data-whatever="@fat">
+
+<%--                                                                            <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Agregar información" onclick="confirmarGestion()">
                                                                                 <i class="fa fa-edit"></i>Gestionar contacto
-                                                                            </button>
+                                                                            </button>--%>
+
+                                                                            <asp:LinkButton ID="btnGestionarContacto" runat="server"  CssClass="btn btn-primary" CommandName="Gestionar" CommandArgument='<%# Eval("idContacto") %>'
+                                                                                OnCommand="btnGestionarContacto_Command" data-toggle="tooltip" data-placement="top"  title="Agregar información" OnClientClick="return confirmarGestion();">
+                                                                                <i class="fa fa-edit"></i> Gestionar contacto
+                                                                            </asp:LinkButton>
+
+
                                                                         </div>
                                                                     </div>
 
@@ -780,6 +790,17 @@
             });
         });
     </script>
+<script type="text/javascript">
+    function confirmarGestion() {
+        return confirm("¿Está seguro de gestionar el contacto seleccionado?");
+    }
+
+    // Inicializa tooltips (si usas Bootstrap)
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+
 
 
 </body>
