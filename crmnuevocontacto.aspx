@@ -1646,7 +1646,7 @@
                         Swal.fire({
                             icon: 'info',
                             title: 'CRM en gestión por usted',
-                            text: 'Ya tienes un CRM creado para este documento.'
+                            text: 'Ya tienes un contacto creado para este documento.'
                         });
                     }
                     else if (result === "planVendido") {

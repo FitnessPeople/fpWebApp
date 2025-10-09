@@ -99,9 +99,9 @@ namespace fpWebApp
                             txbNombreContacto.Disabled = false;
                             txbApellidoContacto.Disabled = false;
                             txbDocumento.Enabled = false;
-                            ddlTipoDocumento.Enabled = false;
-                            txbTelefonoContacto.Disabled = true;
-                            txbCorreoContacto.Disabled = true;
+                            //ddlTipoDocumento.Enabled = false;
+                            //txbTelefonoContacto.Disabled = true;
+                            //txbCorreoContacto.Disabled = true;
                             txbFechaPrim.Disabled = true;
                             btnAgregar.Text = "Actualizar";
 
@@ -858,7 +858,7 @@ namespace fpWebApp
                 HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
                 HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
 
-                // Obtener documento del afiliado desde el campo del Repeater
+
                 int documentoAfiliado;
                 if (int.TryParse(row["DocumentoAfiliado"].ToString(), out documentoAfiliado))
                 {
@@ -871,16 +871,19 @@ namespace fpWebApp
                         DataTable dtEstadoActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
 
                         // Encontrar los tres botones
-                        //HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                        //HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                        btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                        btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
                         HtmlAnchor btnNuevoAfiliado = (HtmlAnchor)e.Item.FindControl("btnNuevoAfiliado");
 
                         // Si el afiliado tiene plan activo, ocultar todos los botones
                         if (dtEstadoActivo.Rows.Count > 0)
                         {
-                            if (btnEditar != null) btnEditar.Visible = false;
-                            if (btnEliminar != null) btnEliminar.Visible = false;
-                            if (btnNuevoAfiliado != null) btnNuevoAfiliado.Visible = false;
+                            if (dtEstadoActivo.Rows[0]["EstadoPlan"].ToString() == "Activo")
+                            {
+                                if (btnEditar != null) btnEditar.Visible = false;
+                                if (btnEliminar != null) btnEliminar.Visible = false;
+                                if (btnNuevoAfiliado != null) btnNuevoAfiliado.Visible = false;
+                            }
                         }
                         else
                         {
@@ -904,12 +907,42 @@ namespace fpWebApp
                             }
                         }
                     }
+                    else
+                    {
+                        // Mostrar botones solo si no tiene plan activo y según permisos
+                        if (ViewState["CrearModificar"].ToString() == "1" && btnEditar != null)
+                        {
+                            btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + row.Row[0].ToString());
+                            btnEditar.Visible = true;
+                        }
+
+                        if (ViewState["Borrar"].ToString() == "1" && btnEliminar != null)
+                        {
+                            btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + row.Row[0].ToString());
+                            btnEliminar.Visible = true;
+                        }
+
+                        //if (btnNuevoAfiliado != null)
+                        //{
+                        //    // Este botón se muestra sin permisos adicionales
+                        //    btnNuevoAfiliado.Visible = true;
+                        //}
+
+                    }
+
+
+
+
+
+
+
                 }
 
+
                 // Manejamos la fecha de creación para mostrar el tiempo transcurrido
-                if (row["FechaCreacion"] != DBNull.Value)
+                if (row["FechaGestion"] != DBNull.Value)
                 {
-                    DateTime fechaPrimerContacto = Convert.ToDateTime(row["FechaCreacion"]);
+                    DateTime fechaPrimerContacto = Convert.ToDateTime(row["FechaGestion"]);
                     TimeSpan diferencia = DateTime.Now - fechaPrimerContacto;
 
                     string leyenda = "";

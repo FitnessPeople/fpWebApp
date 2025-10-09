@@ -628,10 +628,10 @@
                                                                             <span class="pull-right"><span class="label label-warning">WAITING</span></span>
                                                                             <%# Eval("CelularEmpresa") %>
                                                                         </li>
-                                                                        <li class="list-group-item">
+<%--                                                                        <li class="list-group-item">
                                                                             <span class="pull-right"><span class="label label-success">ACCEPTED</span> </span>
                                                                             Valor Propuesta:<%# FormatearCOP(Eval("ValorPropuesta")) %>
-                                                                        </li>
+                                                                        </li>--%>
                                                                         <li class="list-group-item">
                                                                             <span class="pull-right"><span class="label label-danger">BLOCKED</span> </span>
                                                                             Asesor: <%# Eval("NombreUsuario") %>
