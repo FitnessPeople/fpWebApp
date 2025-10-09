@@ -9422,9 +9422,38 @@ namespace fpWebApp
             return dt;
         }
 
-        public string ActualizarUsuarioGestionaCRM(int idContacto, int idUsuarioAsignado )
+        //public string ActualizarUsuarioGestionaCRM(int idContacto, int idUsuarioAsignado )
+        //{
+        //    string respuesta = string.Empty;
+        //    try
+        //    {
+        //        string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+        //        using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+        //        {
+        //            mysqlConexion.Open();
+        //            using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_USUARIO_GESTIONA_CRM", mysqlConexion))
+        //            {
+        //                cmd.CommandType = CommandType.StoredProcedure;
+        //                cmd.Parameters.AddWithValue("@p_id_contacto", idContacto);
+        //                cmd.Parameters.AddWithValue("@p_id_usuario", idUsuarioAsignado);
+        //                cmd.ExecuteNonQuery();
+        //                respuesta = "OK";
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        respuesta = "ERROR: " + ex.Message;
+        //    }
+
+        //    return respuesta;
+        //}
+
+        public string ActualizarUsuarioGestionaCRM(int idContacto, int idUsuarioAsignado)
         {
             string respuesta = string.Empty;
+            string _mensaje = string.Empty;
+
             try
             {
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
@@ -9436,8 +9465,16 @@ namespace fpWebApp
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_id_contacto", idContacto);
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuarioAsignado);
+
+                        // Parámetro de salida
+                        MySqlParameter mensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar,300);
+                        mensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(mensaje);
+
                         cmd.ExecuteNonQuery();
-                        respuesta = "OK";
+                        _mensaje = mensaje.Value.ToString();
+
+                        respuesta = _mensaje;
                     }
                 }
             }

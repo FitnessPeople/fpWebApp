@@ -851,9 +851,11 @@ namespace fpWebApp
 
         protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
+           
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 DataRowView row = (DataRowView)e.Item.DataItem;
+                Literal ltInfoAfiliado = (Literal)e.Item.FindControl("ltInfoAfiliado");
 
                 HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
                 HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
@@ -878,12 +880,58 @@ namespace fpWebApp
                         // Si el afiliado tiene plan activo, ocultar todos los botones
                         if (dtEstadoActivo.Rows.Count > 0)
                         {
+                            string nombrePlan = dtEstadoActivo.Rows[0]["NombrePlan"].ToString();
+                            DateTime fechaFinal;
+                            string fechaFormateada = string.Empty;
+                            if (DateTime.TryParse(dtEstadoActivo.Rows[0]["FechaFinalPlan"].ToString(), out fechaFinal))
+                            {
+                                fechaFormateada = fechaFinal.ToString("dd 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-ES"));
+                            }
+
+                            decimal valorPlan;
+                            string valorFormateado = string.Empty;
+                            if (decimal.TryParse(dtEstadoActivo.Rows[0]["Valor"].ToString(), out valorPlan))
+                            {
+                                valorFormateado = valorPlan.ToString("C0", new System.Globalization.CultureInfo("es-CO"));
+                            }
+
+                            string infoExtra = $"El usuario ha tenido planes anteriores <b>{nombrePlan}</b> " +
+                            $"con fecha final el día <b>{fechaFormateada}</b> " +
+                            $"por un valor de <b>{valorFormateado}</b>.";
+
+                            ltInfoAfiliado.Text = infoExtra;
+
                             if (dtEstadoActivo.Rows[0]["EstadoPlan"].ToString() == "Activo")
                             {
                                 if (btnEditar != null) btnEditar.Visible = false;
                                 if (btnEliminar != null) btnEliminar.Visible = false;
                                 if (btnNuevoAfiliado != null) btnNuevoAfiliado.Visible = false;
                             }
+                            else {
+
+                                // Mostrar botones solo si no tiene plan activo y según permisos
+                                if (ViewState["CrearModificar"].ToString() == "1" && btnEditar != null)
+                                {
+                                    btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + row.Row[0].ToString());
+                                    btnEditar.Visible = true;
+                                }
+
+                                if (ViewState["Borrar"].ToString() == "1" && btnEliminar != null)
+                                {
+                                    btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + row.Row[0].ToString());
+                                    btnEliminar.Visible = true;
+                                }
+
+                                if (btnNuevoAfiliado != null)
+                                {
+                                    // Este botón se muestra sin permisos adicionales
+                                    btnNuevoAfiliado.Visible = true;
+                                }
+
+                            }
+
+
+
                         }
                         else
                         {
@@ -905,7 +953,7 @@ namespace fpWebApp
                                 // Este botón se muestra sin permisos adicionales
                                 btnNuevoAfiliado.Visible = true;
                             }
-                        }
+                        }                        
                     }
                     else
                     {
@@ -921,25 +969,15 @@ namespace fpWebApp
                             btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + row.Row[0].ToString());
                             btnEliminar.Visible = true;
                         }
-
+                        ltInfoAfiliado.Text = "No se encontraron planes anteriores para este usuario.";
                         //if (btnNuevoAfiliado != null)
                         //{
                         //    // Este botón se muestra sin permisos adicionales
                         //    btnNuevoAfiliado.Visible = true;
                         //}
-
                     }
-
-
-
-
-
-
-
                 }
 
-
-                // Manejamos la fecha de creación para mostrar el tiempo transcurrido
                 if (row["FechaGestion"] != DBNull.Value)
                 {
                     DateTime fechaPrimerContacto = Convert.ToDateTime(row["FechaGestion"]);
