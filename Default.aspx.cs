@@ -36,8 +36,7 @@ namespace fpWebApp
 
                 // Si ya tiene código con fecha de hoy, no se pide el codigo... Solo pide el código una vez por día.
 
-                string strQuery = "SELECT FechaCodigoIngreso FROM usuarios WHERE idUsuario = " + Session["idUsuario"].ToString();
-                DataTable dt = cg.TraerDatos(strQuery);
+                DataTable dt = cg.ConsultarFechaCodigo(Convert.ToInt32(Session["idUsuario"].ToString()));
 
                 string strFechaIngreso = dt.Rows[0]["FechaCodigoIngreso"].ToString();
 
@@ -50,11 +49,7 @@ namespace fpWebApp
                     }
                     else
                     {
-                        //Inserta el código en la tabla usuarios
-                        strQuery = "UPDATE usuarios " +
-                            "SET CodigoIngreso = '" + codigo + "', FechaCodigoIngreso = CURDATE() " +
-                            "WHERE idUsuario = " + Session["idUsuario"].ToString();
-                        cg.TraerDatosStr(strQuery);
+                        cg.ActualizarCodigoUsuario(Convert.ToInt32(Session["idUsuario"].ToString()), codigo);
 
                         //Enviar por correo
                         //cg.EnviarCorreo("info@fitnesspeoplecmd.com", Session["usuario"].ToString(), "Clave acceso", "Clave de acceso: " + codigo);
@@ -65,11 +60,7 @@ namespace fpWebApp
                 }
                 else
                 {
-                    //Inserta el código en la tabla usuarios
-                    strQuery = "UPDATE usuarios " +
-                        "SET CodigoIngreso = '" + codigo + "', FechaCodigoIngreso = CURDATE() " +
-                        "WHERE idUsuario = " + Session["idUsuario"].ToString();
-                    cg.TraerDatosStr(strQuery);
+                    cg.ActualizarCodigoUsuario(Convert.ToInt32(Session["idUsuario"].ToString()), codigo);
 
                     //Enviar por correo
                     //cg.EnviarCorreo("info@fitnesspeoplecmd.com", Session["usuario"].ToString(), "Clave acceso", "Clave de acceso: " + codigo);
@@ -96,10 +87,6 @@ namespace fpWebApp
                 if (dt.Rows[0]["EstadoUsuario"].ToString() == "Inactivo")
                 {
                     MostrarAlerta("Usuario inactivo", "Consulte al administrador", "error");
-                    //strMensaje = "Usuario inactivo.<br />";
-                    //strMensaje += "<a class=\"alert-link\" href=\"soporte\">Consulte al administrador.</a>.";
-                    //ltMensaje.Text = strMensaje;
-                    //divMensaje.Visible = true;
                 }
                 else
                 {
@@ -127,10 +114,6 @@ namespace fpWebApp
             else
             {
                 MostrarAlerta("Identificación o contraseña errada.", "Intente nuevamente.", "error");
-                //strMensaje = "Identificación o contraseña errada.<br />";
-                //strMensaje += "<a class=\"alert-link\" href=\"#\">Intente nuevamente</a>.";
-                //ltMensaje.Text = strMensaje;
-                //divMensaje.Visible = true;
             }
 
             dt.Dispose();
@@ -172,10 +155,6 @@ namespace fpWebApp
             else
             {
                 MostrarAlerta("Código errado.", "Intente nuevamente.", "error");
-                //strMensaje = "Código errado.<br />";
-                //strMensaje += "<a class=\"alert-link\" href=\"#\">Intente nuevamente</a>.";
-                //ltMensaje.Text = strMensaje;
-                //divMensaje.Visible = true;
             }
         }
     }

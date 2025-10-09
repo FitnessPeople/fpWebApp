@@ -249,7 +249,7 @@
                                     <div class="tab-content">
                                         <asp:Repeater ID="rpTabEmpleados" runat="server" OnItemDataBound="rpTabEmpleados_ItemDataBound">
                                             <ItemTemplate>
-                                                <div id='contact-<%# Eval("DocumentoEmpleado") %>' class="tab-pane">
+                                                <div id='contact-<%# Eval("DocumentoEmpleado") %>' class='tab-pane <%# Eval("DocumentoEmpleado").ToString() == ViewState["EmployeeDoc"]?.ToString() ? "active" : "" %>'>
                                                     <div class="row m-b-lg">
                                                         <div class="ibox-content text-center">
                                                             <h2><%# Eval("NombreEmpleado") %></h2>
@@ -436,7 +436,7 @@
                             <div class="col-lg-12">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Empleados por genero</h5>
+                                        <h5>Estadísticas</h5>
                                     </div>
                                     <div class="ibox-content">
                                         <div class="row text-center">
@@ -468,12 +468,12 @@
                             <div class="col-lg-12">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Empleados por genero</h5>
+                                        <h5>Estadísticas</h5>
                                     </div>
                                     <div class="ibox-content">
                                         <div class="row text-center">
                                             <div class="col-lg-3">
-                                                <canvas id="doughnutChart5" width="150" height="80" style="margin: 18px auto 0"></canvas>
+                                                <canvas id="barChart" height="140"></canvas>
                                                 <h5>Nivel estudio</h5>
                                             </div>
                                             <div class="col-lg-3">
@@ -600,6 +600,35 @@
 
             var ctx4 = document.getElementById("doughnutChart4").getContext("2d");
             new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+
+
+            var barData = {
+                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                datasets: [
+                    {
+                        label: "Data 1",
+                        backgroundColor: 'rgba(220, 220, 220, 0.5)',
+                        pointBorderColor: "#fff",
+                        data: [65, 59, 80, 81, 56, 55, 40]
+                    },
+                    {
+                        label: "Data 2",
+                        backgroundColor: 'rgba(26,179,148,0.5)',
+                        borderColor: "rgba(26,179,148,0.7)",
+                        pointBackgroundColor: "rgba(26,179,148,1)",
+                        pointBorderColor: "#fff",
+                        data: [28, 48, 40, 19, 86, 27, 90]
+                    }
+                ]
+            };
+
+            var barOptions = {
+                responsive: true
+            };
+
+
+            var ctx2 = document.getElementById("barChart").getContext("2d");
+            new Chart(ctx2, { type: 'bar', data: barData, options: barOptions });
         });
 
     </script>

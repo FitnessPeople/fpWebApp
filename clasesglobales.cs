@@ -10532,6 +10532,65 @@ namespace fpWebApp
             return dt;
         }
 
+        public DataTable ConsultarFechaCodigo(int idUsuario)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_FECHA_CODIGO_USUARIO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+            return dt;
+        }
+
+        public string ActualizarCodigoUsuario(int idUsuario, string codigo)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_CODIGO_USUARIO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_codigo_ingreso", codigo);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
         #endregion
 
     }

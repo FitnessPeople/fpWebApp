@@ -107,7 +107,13 @@ namespace fpWebApp
             {
                 dt = cg.ConsultarEmpleadosPorSede(Session["idSede"].ToString());
             }
-            
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                string firstRow = dt.Rows[0]["DocumentoEmpleado"].ToString();
+                ViewState.Add("EmployeeDoc", firstRow);
+            }
+
             rpEmpleados.DataSource = dt;
             rpEmpleados.DataBind();
 

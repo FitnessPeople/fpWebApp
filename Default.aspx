@@ -68,11 +68,6 @@
                 </div>
                 <asp:Button ID="btnIngresar" runat="server" CssClass="btn btn-warning1 block full-width m-b font-bold" Text="INGRESAR" OnClick="btnIngresar_Click" />
 
-                <div class="alert alert-danger alert-dismissable" runat="server" id="divMensaje" visible="false">
-                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                </div>
-
                 <div class="alert alert-danger alert-dismissable" runat="server" id="divCodigo" visible="false">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
                     <asp:Literal ID="ltCodigo" runat="server"></asp:Literal>
