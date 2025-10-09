@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Data;
+using System.Drawing;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DocumentFormat.OpenXml.Math;
 
 namespace fpWebApp
 {
@@ -637,28 +640,94 @@ namespace fpWebApp
             }
         }
 
+        //protected void btnGestionarContacto_Command(object sender, CommandEventArgs e)
+        //{
+
+        //    string respuesta = string.Empty;
+        //    try
+        //    {
+        //        clasesglobales cg = new clasesglobales();
+
+        //        int idContacto = Convert.ToInt32(e.CommandArgument);               
+        //        int idUsuario = Convert.ToInt32(Session["idUsuario"]);               
+        //        respuesta =  cg.ActualizarUsuarioGestionaCRM(idContacto, idUsuario);
+        //        if (respuesta == "OK")
+        //        {
+        //            Response.Redirect("crmnuevocontacto.aspx");
+        //        }
+        //        else
+        //        {
+        //            ScriptManager.RegisterStartupScript(this, this.GetType(), "alerta",
+        //                $"alert('{respuesta}');", true);
+        //        }
+        //    }
+        //    catch (Exception ex)            
+        //    {              
+        //        Console.WriteLine("Error: " + ex.Message);
+        //    }
+        //}
+
         protected void btnGestionarContacto_Command(object sender, CommandEventArgs e)
         {
             string respuesta = string.Empty;
+
             try
             {
                 clasesglobales cg = new clasesglobales();
-                     
-                int idContacto = Convert.ToInt32(e.CommandArgument);               
-                int idUsuario = Convert.ToInt32(Session["idUsuario"]);               
-                respuesta =  cg.ActualizarUsuarioGestionaCRM(idContacto, idUsuario);
-               
-                Response.Redirect("crmnuevocontacto.aspx");
+
+                int idContacto = Convert.ToInt32(e.CommandArgument);
+                int idUsuario = Convert.ToInt32(Session["idUsuario"]);
+
+                respuesta = cg.ActualizarUsuarioGestionaCRM(idContacto, idUsuario);
+
+                // Si fue exitosa la gestión
+                if (respuesta == "OK")
+                {                  
+                    string script = @"
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Gestión completada',
+                            text: 'El contacto fue tomado correctamente.',
+                            confirmButtonText: 'Continuar'
+                        }).then(() => {
+                            window.location.href = 'crmnuevocontacto.aspx';
+                        });
+                    ";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "swalOk", script, true);
+                }
+                else
+                {
+                    string mensajeSeguro = HttpUtility.JavaScriptStringEncode(respuesta);
+                    string script = $@"
+                        Swal.fire({{
+                            icon: 'info',
+                            title: 'Contacto no disponible',
+                            text: '{mensajeSeguro}',
+                            confirmButtonText: 'Entendido'
+                        }}).then(() => {{
+                            window.location.href = 'listacontactoscrm.aspx';
+                        }});
+                    ";
+
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "swalError", script, true);
+                }
             }
-            catch (Exception ex)            
-            {              
-                Console.WriteLine("Error: " + ex.Message);
+            catch (Exception ex)
+            {
+                string script = $@"
+                    Swal.fire({{
+                        icon: 'error',
+                        title: 'Error inesperado',
+                        text: '{ex.Message.Replace("'", "\\'")}',
+                        confirmButtonText: 'Aceptar'
+                    }});
+                ";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "swalCatch", script, true);
+                }
             }
-        }
 
 
 
 
-
-    }
+}
 }

@@ -877,7 +877,7 @@
                                                                                     <th width="50%" class="text-nowrap"><i class="fa fa-clock m-r-xs"></i>Historial</th>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td>Identificación:<%# Eval("DocumentoAfiliado") %></td>
+                                                                                    <td>Identificación:<%# Eval("DocumentoAfiliado") %> Otros datos: <asp:Literal ID="ltInfoAfiliado" runat="server"></asp:Literal></td>
                                                                                     <td><%# Eval("HistorialHTML2") %></td>
                                                                                 </tr>
                                                                             </table>
