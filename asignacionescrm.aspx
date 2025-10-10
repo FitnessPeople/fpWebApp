@@ -227,7 +227,7 @@
                                                             CssClass="form-control input-sm m-b"
                                                             OnSelectedIndexChanged="ddlCanalVenta_SelectedIndexChanged"
                                                             AutoPostBack="true">
-                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            <%--<asp:ListItem Text="Seleccione" Value=""></asp:ListItem>--%>
                                                         </asp:DropDownList>
                                                         <asp:RequiredFieldValidator ID="rfvCanalVenta" runat="server" 
                                                             ControlToValidate="ddlCanalVenta" ErrorMessage="* Campo requerido" InitialValue=""
@@ -354,6 +354,8 @@
                                                     SortExpression="idTipoDocumento" Visible="False" />
                                                 <asp:BoundField DataField="CelularAfiliado" HeaderText="Celular"
                                                     SortExpression="CelularAfiliado" />
+                                                <asp:BoundField DataField="NombreCanalVenta" HeaderText="Canal de venta"
+                                                    SortExpression="NombreCanalVenta" />
                                                 <asp:BoundField DataField="diasquefaltan" HeaderText="Días plan"
                                                     SortExpression="diasquefaltan" />
                                                 <asp:TemplateField HeaderText="Estado" SortExpression="EstadoPlan">
@@ -385,8 +387,8 @@
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-    <!-- FooTable -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
+    <%--<!-- FooTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>--%>
 
     <!-- Peity -->
     <script src="js/plugins/peity/jquery.peity.min.js"></script>
@@ -401,11 +403,11 @@
 
     <!-- Page-Level Scripts -->
     <script>
-        $('.footable').footable({
-            "paging": {
-                "size": 10
-            }
-        });
+        //$('.footable').footable({
+        //    "paging": {
+        //        "size": 10
+        //    }
+        //});
 
         function seleccionarTodos(chkHeader) {
             var grid = document.getElementById('<%= gvAfiliados.ClientID %>');
@@ -427,13 +429,13 @@
             }
         }
 
-        var table = FooTable.get(".footable"); // Reemplaza con el ID o selector de tu tabla
+        //var table = FooTable.get(".footable"); // Reemplaza con el ID o selector de tu tabla
 
-        if (table) {
-            console.log(table);
-            table.options.paging.limit = 20; // Cambia el valor a lo que necesites
-            table.draw(); // Redibuja la tabla con la nueva configuración
-        }
+        //if (table) {
+        //    console.log(table);
+        //    table.options.paging.limit = 20; // Cambia el valor a lo que necesites
+        //    table.draw(); // Redibuja la tabla con la nueva configuración
+        //}
 
         var prm = Sys.WebForms.PageRequestManager.getInstance();
 

@@ -73,7 +73,7 @@
                         La tabla muestra toda la <b>información clave</b> de cada afiliado.<br />
                         En la columna <b>Acciones</b> encontrarás estas opciones:<br />
                         <i class="fa fa-edit" style="color: #1AB394;"></i><b>Editar:</b> Modifica los <b>datos</b> del afiliado.<br />
-                        <i class="fa fa-trash" style="color: #DC3545;"></i><b>Eliminar:</b> Da de <b>baja</b> al afiliado.<br />
+                        <%--<i class="fa fa-trash" style="color: #DC3545;"></i><b>Eliminar:</b> Da de <b>baja</b> al afiliado.<br />--%>
                         <i class="fa fa-ticket" style="color: #23C6C8;"></i><b>Asignar Plan:</b> Selecciona o <b>cambia</b> su plan actual.<br />
                         <i class="fa fa-right-left" style="color: #F8AC59;"></i><b>Traspaso:</b> Transfiere el plan <b>de un afiliado a otro</b>.<br />
                         <i class="fa fa-gift" style="color: #0D6EFD;"></i><b>Cortesía:</b> Asigna <b>beneficios</b> especiales.<br />
@@ -312,11 +312,11 @@
                                                             title="Editar afiliado">
                                                             <i class="fa fa-edit"></i>
                                                         </button>
-                                                        <button runat="server" id="btnEliminar" class="btn btn-outline btn-danger pull-left m-r-xs"
+                                                        <%--<button runat="server" id="btnEliminar" class="btn btn-outline btn-danger pull-left m-r-xs"
                                                             style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"
                                                             title="Eliminar afiliado">
                                                             <i class="fa fa-trash"></i>
-                                                        </button>
+                                                        </button>--%>
                                                         <button runat="server" id="btnPlan" class="btn btn-outline btn-info pull-left m-r-xs"
                                                             style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
                                                             title="Planes" visible="false">

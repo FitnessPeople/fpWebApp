@@ -1,16 +1,9 @@
-﻿using DocumentFormat.OpenXml.Presentation;
-using DocumentFormat.OpenXml.Wordprocessing;
-using MySql.Data.MySqlClient;
-using NPOI.OpenXmlFormats.Spreadsheet;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
-using System.Web.Services.Description;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using ZstdSharp.Unsafe;
+
 
 namespace fpWebApp
 {
@@ -83,11 +76,15 @@ namespace fpWebApp
         }
         private void CargarCanalesVentaSedes()
         {
+            ddlCanalVenta.Items.Clear();
+            System.Web.UI.WebControls.ListItem li = new System.Web.UI.WebControls.ListItem("Seleccione", "");
+            ddlCanalVenta.Items.Add(li);
+
             try
             {
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = new DataTable();
-                dt = cg.ConsultarCanalesVentaSedes();
+                //dt = cg.ConsultarCanalesVentaSedes();
 
                 if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
                 {
@@ -99,7 +96,7 @@ namespace fpWebApp
                 }
 
                 ddlCanalVenta.DataTextField = "NombreCanalVenta";
-                ddlCanalVenta.DataValueField = "idSede";
+                ddlCanalVenta.DataValueField = "idCanalVenta";
                 ddlCanalVenta.DataSource = dt;
                 ddlCanalVenta.DataBind();
 
@@ -207,7 +204,7 @@ namespace fpWebApp
                 {
                     if (!string.IsNullOrEmpty(field.SortExpression))
                     {
-                        // Restaurar texto original (puedes usar un diccionario si son dinámicos)
+                        // Restaurar texto original (para que no se repita el icono ▼ ni ▲) 
                         switch (field.SortExpression)
                         {
                             case "IdAfiliado":
@@ -221,6 +218,9 @@ namespace fpWebApp
                                 break;
                             case "diasquefaltan":
                                 field.HeaderText = "Días plan";
+                                break;
+                            case "NombreCanalVenta":
+                                field.HeaderText = "Canal de venta";
                                 break;
                             case "EstadoPlan":
                                 field.HeaderText = "Estado";

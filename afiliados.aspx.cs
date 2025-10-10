@@ -197,9 +197,9 @@ namespace fpWebApp
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
-                    HtmlButton btnEliminar = (HtmlButton)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("onClick", "window.location.href='eliminarafiliado?deleteid=" + ((DataRowView)e.Item.DataItem).Row["idAfiliado"].ToString() + "'");
-                    btnEliminar.Visible = true;
+                    //HtmlButton btnEliminar = (HtmlButton)e.Item.FindControl("btnEliminar");
+                    //btnEliminar.Attributes.Add("onClick", "window.location.href='eliminarafiliado?deleteid=" + ((DataRowView)e.Item.DataItem).Row["idAfiliado"].ToString() + "'");
+                    //btnEliminar.Visible = true;
                 }
             }
         }

@@ -8974,7 +8974,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public DataTable ConsultarDiasFaltanPlanPregestionCRM(string idSede, int dias)
+        public DataTable ConsultarDiasFaltanPlanPregestionCRM(string idCanalVenta, int dias)
         {
             DataTable dt = new DataTable();
             try
@@ -8985,7 +8985,7 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_DIAS_FALTAN_PLAN_PREGESTION_CRM", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@p_id_sede", idSede);
+                        cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);
                         cmd.Parameters.AddWithValue("@p_dias", dias);
 
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))

@@ -476,6 +476,27 @@
                 });
             });
         });
+
+
+        function seleccionarTodos(chkHeader) {
+            var grid = document.getElementById('<%= gvProspectos.ClientID %>');
+            var inputs = grid.getElementsByTagName("input");
+
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].type === "checkbox" && inputs[i] !== chkHeader) {
+                    inputs[i].checked = chkHeader.checked;
+                }
+            }
+        }
+
+        function seleccionarCheckbox(fila, event) {
+            if (event.target.type !== 'checkbox') {
+                var chk = fila.querySelector("input[type='checkbox']");
+                if (chk) {
+                    chk.checked = !chk.checked;
+                }
+            }
+        }
     </script>
 
 </body>

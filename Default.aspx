@@ -35,6 +35,7 @@
             <p class="text-white">
                 ¡Nuestra app está lista, construida desde cero!<br />
                 Se avecinan muchas funciones y mejoras.
+                <br />(Servidor: CaminoWeb)
             </p>
             <form class="m-t" role="form" id="form1" runat="server">
                 <div class="row" runat="server" id="divUsuario">

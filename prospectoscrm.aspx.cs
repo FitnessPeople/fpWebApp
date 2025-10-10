@@ -304,24 +304,30 @@ namespace fpWebApp
                 {
                     if (!string.IsNullOrEmpty(field.SortExpression))
                     {
-                        // Restaurar texto original (puedes usar un diccionario si son dinámicos)
+                        // Restaurar texto original (para que no se repita el icono ▼ ni ▲) 
                         switch (field.SortExpression)
                         {
-                            case "IdAfiliado":
+                            case "idPregestion":
                                 field.HeaderText = "ID";
                                 break;
-                            case "NombreAfiliado":
+                            case "NombreContacto":
                                 field.HeaderText = "Nombres";
                                 break;
-                            case "ApellidoAfiliado":
+                            case "ApellidoContacto":
                                 field.HeaderText = "Apellidos";
                                 break;
-                            case "diasquefaltan":
+                            case "DocumentoContacto":
+                                field.HeaderText = "Documento";
+                                break;
+                            case "CelularContacto":
+                                field.HeaderText = "Celular";
+                                break;
+                            case "hacecuanto":
                                 field.HeaderText = "Días plan";
                                 break;
-                            case "EstadoPlan":
-                                field.HeaderText = "Estado";
-                                break;
+                            //case "EstadoPlan":
+                            //    field.HeaderText = "Estado";
+                            //    break;
                         }
 
                         // Si esta es la columna ordenada, agregar el ícono
