@@ -583,17 +583,17 @@ namespace fpWebApp
                     // Consultar si este usuario tiene un plan activo y cual es su fecha de inicio y fecha final.
                     clasesglobales cg = new clasesglobales();
                     DataTable dt = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
-                    if (dt.Rows[0]["EstadoPlan"].ToString() =="Activo")
+                    if (dt.Rows[0]["EstadoPlan"].ToString() == "Activo")
                     {
-                        string script = @"
-                            Swal.fire({
-                                title: 'Mensaje',
-                                text: 'Este afiliado ya tiene un plan activo, hasta el " + string.Format("{0:dd MMM yyyy}", dt.Rows[0]["FechaFinalPlan"]) + @".',
-                                icon: 'error'
-                            }).then(() => {
-                            });
-                            ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                        string fechaFinal = string.Format("{0:dd MMM yyyy}", dt.Rows[0]["FechaFinalPlan"]);
+                        string script = $@"
+                            Swal.fire({{
+                                title: 'Plan activo',
+                                text: 'El afiliado ya tiene un plan activo hasta el {fechaFinal}. Modifique la fecha de inicio para continuar.',
+                                icon: 'warning'
+                            }});
+                        ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "PlanActivo", script, true);
                     }
                     else
                     {

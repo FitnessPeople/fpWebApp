@@ -90,7 +90,7 @@
             const valor = document.getElementById('txbValorPropuesta').value.trim();
             const status = document.getElementById('ddlStatusLead').value;
 
-            //const boton = document.getElementById('<%= btnAgregar.ClientID %>');
+<%--            //const boton = document.getElementById('<%= btnAgregar.ClientID %>');--%>
 
             const camposCompletos =
                 nombre !== "" &&
@@ -383,7 +383,7 @@
                                                     </textarea>
                                                 </div>
                                             </div>
-                                            <div class="modal-footer">
+<%--                                            <div class="modal-footer">
                                                 <asp:Literal ID="ltMensajeVal" runat="server"></asp:Literal>
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"
                                                     onclick="window.location.reload();">
@@ -397,7 +397,7 @@
 
 
 
-                                            </div>
+                                            </div>--%>
                                         </div>
                                     </div>
                                 </div>
@@ -538,12 +538,13 @@
                                                                             <i class="fa fa-envelope" style="margin-right: 5px;"></i>
                                                                             <span><%# Eval("EmailContacto") %></span>
                                                                         </p>
+                                                                         <p><%# Eval("InfoAfiliado") %></p>
                                                                         <p><%# Eval("NombreTipoAfiliado") %></p>
                                                                         <p>Mi objetivo es  <%# Eval("Objetivo") %></p>
 
                                                                         <div class="d-flex justify-content-end mt-2">
 
-                                                                            <%--                                                                            <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Agregar información" onclick="confirmarGestion()">
+                                                                            <%--<button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Agregar información" onclick="confirmarGestion()">
                                                                                 <i class="fa fa-edit"></i>Gestionar contacto
                                                                             </button>--%>
 

@@ -889,7 +889,7 @@
                                                                                 <i class="fa fa-edit"></i></a>
                                                                             <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-left m-r-xs"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
-                                                                            <a runat="server" id="btnNuevoAfiliado" href="#" class="btn btn-outline btn-success pull-left"
+                                                                            <a runat="server" id="btnNuevoAfiliado" href="#" class="btn btn-outline btn-success pull-left" title="Vender"
                                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" data-idcrm='<%# Eval("idContacto") %>'
                                                                                 data-documento='<%# Eval("DocumentoAfiliado") %>' onclick="redirigirNuevoAfiliado(this, event)">
                                                                                 <i class="fa fa-id-card"></i></a>

@@ -17,12 +17,13 @@ namespace fpWebApp.controles
                 lblNombrePerfil.Text = dt.Rows[0]["Perfil"].ToString();
                 if (dt.Rows[0]["idCanalVenta"].ToString() == "1")
                 {
-                    lblNombreSede.Text = dt.Rows[0]["NombreSede"].ToString();                   
+                    lblNombreSede.Text = dt.Rows[0]["NombreSede"].ToString();
+                    etiqueta = "Canal de ventas: " + dt.Rows[0]["NombreCanalVenta"].ToString();
                 }
                 else if (dt.Rows[0]["idCanalVenta"].ToString() == "12" || dt.Rows[0]["idCanalVenta"].ToString() == "13" || dt.Rows[0]["idCanalVenta"].ToString() == "14")
                 {
                     lblNombreSede.Text = dt.Rows[0]["NombreSede"].ToString();
-                    etiqueta = dt.Rows[0]["NombreCanalVenta"].ToString();
+                    etiqueta = "Canal de ventas: " + dt.Rows[0]["NombreCanalVenta"].ToString();
                 }
                 else
                     lblNombreSede.Text = dt.Rows[0]["NombreCanalVenta"].ToString();
