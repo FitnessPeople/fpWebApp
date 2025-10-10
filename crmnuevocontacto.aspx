@@ -95,7 +95,6 @@
         }
     </style>
 
-
     <%--    Formatear telefono --%>
     <script>
         function formatearTelefono(input) {
@@ -230,11 +229,11 @@
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row animated fadeInDown">
                     <%--Inicio Contenido!!!!--%>
-                    <uc1:indicadoresusucrm2 runat="server" id="indicadoresusucrm2" />
+                    <uc1:indicadoresusucrm2 runat="server" ID="indicadoresusucrm2" />
                     <%-- //////////////////////////////////GRÁFICAS//////////////////////////////////////////////////--%>
 
                     <%--Gráfica asesor--%>
-<%--                    <div class="row d-flex">
+                    <%--                    <div class="row d-flex">
                         <!-- Gráfica -->
                         <div class="col-lg-6 d-flex">
                             <div class="ibox flex-fill w-100">
@@ -412,7 +411,7 @@
                                                         <asp:UpdatePanel ID="upAfiliado" runat="server" UpdateMode="Conditional">
                                                             <ContentTemplate>
 
-<%--                                                                <div class="crm-align-row">
+                                                                <%--                                                                <div class="crm-align-row">
                                                                     <div class="crm-align-cell" style="width: 80%;" id="btnAfiliadoBus">
                                                                         <div class="form-group">
                                                                             <label>Afiliado origen</label>
@@ -448,7 +447,7 @@
                                                                     </div>
                                                                 </div>--%>
 
-                                                                  <div class="crm-align-row">
+                                                                <div class="crm-align-row">
                                                                     <div class="crm-align-cell" style="width: 80%;" id="btnAfiliadoBus">
                                                                         <div class="form-group">
                                                                             <label>Contactos asignados</label>
@@ -559,7 +558,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="row" id="generoyfechanac">
-                                                                    <div class="col-sm-4" >
+                                                                    <div class="col-sm-4">
                                                                         <div class="form-group">
                                                                             <i class="fa-solid fa-user-group text-info"></i></i>
                                                                             <label for="Genero" class="col-form-label">Género:</label>
@@ -575,14 +574,14 @@
                                                                         <div class="form-group">
                                                                             <i class="fa-solid fa-arrow-up-9-1 text-info"></i>
                                                                             <label for="Edad" class="col-form-label">Edad:</label>
-                                                                              <asp:TextBox ID="txbEdad" ClientIDMode="Static" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>
+                                                                            <asp:TextBox ID="txbEdad" ClientIDMode="Static" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-sm-4">
                                                                         <div class="form-group">
                                                                             <i class="fa-solid fa-calendar-days text-info"></i>
                                                                             <label for="FechaNac" class="col-form-label">F. Nac.:</label>
-                                                                            <asp:TextBox ID="txbFecNac" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>                                                                           
+                                                                            <asp:TextBox ID="txbFecNac" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -877,7 +876,8 @@
                                                                                     <th width="50%" class="text-nowrap"><i class="fa fa-clock m-r-xs"></i>Historial</th>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td>Identificación:<%# Eval("DocumentoAfiliado") %> Otros datos: <asp:Literal ID="ltInfoAfiliado" runat="server"></asp:Literal></td>
+                                                                                    <td>Identificación:<%# Eval("DocumentoAfiliado") %> Otros datos:
+                                                                                        <asp:Literal ID="ltInfoAfiliado" runat="server"></asp:Literal></td>
                                                                                     <td><%# Eval("HistorialHTML2") %></td>
                                                                                 </tr>
                                                                             </table>
@@ -1404,8 +1404,8 @@
                 $("#valorPropuestaYArchivo").hide();
                 $("#btnCancelar_").hide();
                 $("#btnVolverAgenda").show(); // Muestra el botón solo si viene del evento
-                $("#generoyfechanac").hide(); 
-                $("#estrategia").hide(); 
+                $("#generoyfechanac").hide();
+                $("#estrategia").hide();
 
                 const hoy = new Date().toLocaleDateString("es-CO"); // Formato local
                 const mensaje = '✏️...';
