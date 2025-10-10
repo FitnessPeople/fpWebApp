@@ -207,6 +207,7 @@
                                                 <tr>
                                                     <th width="5%" data-type="number">ID</th>
                                                     <th>Canales de venta</th>                                                  
+                                                    <th>Sede Canal</th>                                                  
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
@@ -216,6 +217,7 @@
                                                         <tr class="feed-element">                                                        
                                                             <td><%# Eval("idCanalVenta") %></td>
                                                             <td><%# Eval("NombreCanalVenta") %></td>
+                                                            <td><%# Eval("NombreSede") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
