@@ -895,11 +895,13 @@ namespace fpWebApp
                                 valorFormateado = valorPlan.ToString("C0", new System.Globalization.CultureInfo("es-CO"));
                             }
 
-                            string infoExtra = $"El usuario ha tenido planes anteriores <b>{nombrePlan}</b> " +
-                            $"con fecha final el día <b>{fechaFormateada}</b> " +
-                            $"por un valor de <b>{valorFormateado}</b>.";
+                            string infoExtra = $"El cliente ha tenido planes anteriores <b>{nombrePlan}</b> " +
+                                               $"con fecha final el día <b>{fechaFormateada}</b> " +
+                                               $"por un valor de <b>{valorFormateado}</b>.";
 
-                            ltInfoAfiliado.Text = infoExtra;
+                            ltInfoAfiliado.Text = $"<span style='display:block; text-align:justify;'>{infoExtra}</span>";
+
+
 
                             if (dtEstadoActivo.Rows[0]["EstadoPlan"].ToString() == "Activo")
                             {

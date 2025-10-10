@@ -36,7 +36,7 @@ namespace fpWebApp
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
                         ListaEstadosCRM();
-                        CargarAgenda();
+                        CargarAgenda(Convert.ToInt32(Session["idUsuario"]));
                         CargarDatosContacto(0);
 
 
@@ -159,10 +159,10 @@ namespace fpWebApp
             rptContenido.DataBind();
         }
 
-        private void CargarAgenda()
+        private void CargarAgenda(int idUsuario)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarAgendaCRM();
+            DataTable dt = cg.ConsultarAgendaCRM(idUsuario);
 
             _strEventos = "events: [\r\n";
             IFormatProvider provider = new CultureInfo("en-US");

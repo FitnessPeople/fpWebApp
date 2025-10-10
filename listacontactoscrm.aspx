@@ -457,6 +457,11 @@
                                                                                     </a>
                                                                                 </td>
                                                                                 <td><%# GetTelefonoHTML(Eval("TelefonoContacto")) %></a></td>
+                                                                                <td>
+                                                                                    <%# (Eval("Edad") == DBNull.Value || Convert.ToInt32(Eval("Edad")) == 0) 
+                                                                                      ? "N/D" 
+                                                                                      : Eval("Edad") + " años" %>
+                                                                                </td>
                                                                                 <td class="contact-type"><%# Eval("NombreEstadoVenta") %></td>
                                                                                 <td><%# Eval("NombrePlan") %> </td>
                                                                                 <td><span class='badge badge-<%# Eval("ColorEstadoCRM")%>'>
@@ -538,12 +543,12 @@
 
                                                                         <div class="d-flex justify-content-end mt-2">
 
-<%--                                                                            <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Agregar información" onclick="confirmarGestion()">
+                                                                            <%--                                                                            <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Agregar información" onclick="confirmarGestion()">
                                                                                 <i class="fa fa-edit"></i>Gestionar contacto
                                                                             </button>--%>
 
-                                                                            <asp:LinkButton ID="btnGestionarContacto" runat="server"  CssClass="btn btn-primary" CommandName="Gestionar" CommandArgument='<%# Eval("idContacto") %>'
-                                                                                OnCommand="btnGestionarContacto_Command" data-toggle="tooltip" data-placement="top"  title="Agregar información" OnClientClick="return confirmarGestion();">
+                                                                            <asp:LinkButton ID="btnGestionarContacto" runat="server" CssClass="btn btn-primary" CommandName="Gestionar" CommandArgument='<%# Eval("idContacto") %>'
+                                                                                OnCommand="btnGestionarContacto_Command" data-toggle="tooltip" data-placement="top" title="Agregar información" OnClientClick="return confirmarGestion();">
                                                                                 <i class="fa fa-edit"></i> Gestionar contacto
                                                                             </asp:LinkButton>
 
@@ -573,9 +578,8 @@
                                                                         <hr />
                                                                         <strong>Notas del cliente</strong>
                                                                         <p>
-                                                                            Entreno por las noches
-                                                                            Entreno fines de semana.
-                                                                            He completado 300 asistencias.
+                                                                            Contacto creado el <%# ((DateTime)Eval("FechaCreacion")).ToString("dddd d 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-ES")) %><hr />
+                                                                            Preferencias Entreno por las noches, fines de semana y he completado N asistencias.
                                                                         </p>
 
                                                                         <%-- <strong>Medio de pago sugerido</strong>
@@ -628,7 +632,7 @@
                                                                             <span class="pull-right"><span class="label label-warning">WAITING</span></span>
                                                                             <%# Eval("CelularEmpresa") %>
                                                                         </li>
-<%--                                                                        <li class="list-group-item">
+                                                                        <%--                                                                        <li class="list-group-item">
                                                                             <span class="pull-right"><span class="label label-success">ACCEPTED</span> </span>
                                                                             Valor Propuesta:<%# FormatearCOP(Eval("ValorPropuesta")) %>
                                                                         </li>--%>
@@ -790,16 +794,16 @@
             });
         });
     </script>
-<script type="text/javascript">
-    function confirmarGestion() {
-        return confirm("¿Está seguro de gestionar el contacto seleccionado?");
-    }
+    <script type="text/javascript">
+        function confirmarGestion() {
+            return confirm("¿Está seguro de gestionar el contacto seleccionado?");
+        }
 
-    // Inicializa tooltips (si usas Bootstrap)
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-</script>
+        // Inicializa tooltips (si usas Bootstrap)
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
 
 
 

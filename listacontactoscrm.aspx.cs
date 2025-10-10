@@ -93,7 +93,7 @@ namespace fpWebApp
                         ConsultarEmpresasCRM();
                         ListaEstadosCRM();
                         ListaContactos();
-                        ltFechaHoy.Text = DateTime.Now.ToString("h:mm tt - dd.MM.yyyy").ToLower();
+                        ltFechaHoy.Text = DateTime.Now.ToString("h:mm tt - dd.MM.yyyy").ToLower();                        
                     }
                 }
                 else
@@ -150,7 +150,7 @@ namespace fpWebApp
                     //ltValorTotal.Text = valorTotal.ToString("C0");
                     dt.Dispose();
                 }
-
+               
 
             }
             catch (Exception ex)

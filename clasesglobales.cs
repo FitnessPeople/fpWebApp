@@ -7674,7 +7674,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public DataTable ConsultarAgendaCRM()
+        public DataTable ConsultarAgendaCRM(int idUsuario)
         {
             DataTable dt = new DataTable();
 
@@ -7686,6 +7686,7 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CONTACTOS_CRM_POR_PROX_FECHA", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
                         {
                             mysqlConexion.Open();
