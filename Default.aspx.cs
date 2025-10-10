@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Web.Services.Description;
 using System.Web.UI;
 
 namespace fpWebApp
@@ -77,46 +78,53 @@ namespace fpWebApp
             bool boolReturnValue = false;
             UserName = UserName.Replace("'", "");
 
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ValidarUsuario(UserName, Password);
-
-            //string strMensaje;
-
-            if (dt.Rows.Count > 0)
+            try
             {
-                if (dt.Rows[0]["EstadoUsuario"].ToString() == "Inactivo")
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ValidarUsuario(UserName, Password);
+
+                if (dt.Rows.Count > 0)
                 {
-                    MostrarAlerta("Usuario inactivo", "Consulte al administrador", "error");
+                    if (dt.Rows[0]["EstadoUsuario"].ToString() == "Inactivo")
+                    {
+                        MostrarAlerta("Usuario inactivo", "Consulte al administrador", "error");
+                    }
+                    else
+                    {
+                        Session["idUsuario"] = dt.Rows[0]["idUsuario"].ToString();
+                        Session["NombreUsuario"] = dt.Rows[0]["NombreUsuario"].ToString();
+                        Session["idEmpresa"] = dt.Rows[0]["idEmpresa"].ToString();
+                        Session["Cargo"] = dt.Rows[0]["CargoUsuario"].ToString();
+                        Session["Foto"] = dt.Rows[0]["FotoEmpleado"].ToString();
+                        Session["idPerfil"] = dt.Rows[0]["idPerfil"].ToString();
+                        Session["emailUsuario"] = dt.Rows[0]["EmailUsuario"].ToString();
+                        //Session["idSede"] = dt.Rows[0]["idSede"].ToString();
+                        Session["fechaNac"] = string.IsNullOrEmpty(dt.Rows[0]["FechaNacEmpleado"]?.ToString())
+                            ? "2001-01-01"
+                            : dt.Rows[0]["FechaNacEmpleado"].ToString();
+                        Session["idSede"] = string.IsNullOrEmpty(dt.Rows[0]["idSede"]?.ToString())
+                            ? "11"   // Sede Administrativa
+                            : dt.Rows[0]["idSede"].ToString();
+                        Session["idCanalVenta"] = string.IsNullOrEmpty(dt.Rows[0]["idCanalVenta"]?.ToString())
+                            ? "12"   // Online
+                            : dt.Rows[0]["idCanalVenta"].ToString();
+                        Session["idEmpleado"] = dt.Rows[0]["idEmpleado"].ToString();
+                        boolReturnValue = true;
+                    }
                 }
                 else
                 {
-                    Session["idUsuario"] = dt.Rows[0]["idUsuario"].ToString();
-                    Session["NombreUsuario"] = dt.Rows[0]["NombreUsuario"].ToString();
-                    Session["idEmpresa"] = dt.Rows[0]["idEmpresa"].ToString();
-                    Session["Cargo"] = dt.Rows[0]["CargoUsuario"].ToString();
-                    Session["Foto"] = dt.Rows[0]["FotoEmpleado"].ToString();
-                    Session["idPerfil"] = dt.Rows[0]["idPerfil"].ToString();
-                    Session["emailUsuario"] = dt.Rows[0]["EmailUsuario"].ToString();
-                    //Session["idSede"] = dt.Rows[0]["idSede"].ToString();
-                    Session["fechaNac"] = string.IsNullOrEmpty(dt.Rows[0]["FechaNacEmpleado"]?.ToString())
-                        ? "2001-01-01"
-                        : dt.Rows[0]["FechaNacEmpleado"].ToString();
-                    Session["idSede"] = string.IsNullOrEmpty(dt.Rows[0]["idSede"]?.ToString())
-                        ? "11"   // Sede Administrativa
-                        : dt.Rows[0]["idSede"].ToString();
-                    Session["idCanalVenta"] = string.IsNullOrEmpty(dt.Rows[0]["idCanalVenta"]?.ToString())
-                        ? "12"   // Online
-                        : dt.Rows[0]["idCanalVenta"].ToString();
-                    Session["idEmpleado"] = dt.Rows[0]["idEmpleado"].ToString();
-                    boolReturnValue = true;
+                    MostrarAlerta("Identificación o contraseña errada.", "Intente nuevamente.", "error");
                 }
-            }
-            else
-            {
-                MostrarAlerta("Identificación o contraseña errada.", "Intente nuevamente.", "error");
-            }
 
-            dt.Dispose();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                MostrarAlerta("Error de conexión.", ex.Message.ToString(), "warning");
+            }
+            
+            //string strMensaje;
 
             return boolReturnValue;
         }
