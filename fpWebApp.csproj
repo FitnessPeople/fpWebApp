@@ -950,6 +950,7 @@
     <Content Include="logout.aspx" />
     <Content Include="metascomerciales.aspx" />
     <Content Include="micuenta.aspx" />
+    <Content Include="negociarconvenio.aspx" />
     <Content Include="noasistenciaagendagympass.aspx" />
     <Content Include="nuevaempresaafiliada.aspx" />
     <Content Include="nuevahistoriaclinica.aspx" />
@@ -1783,6 +1784,13 @@
     </Compile>
     <Compile Include="micuenta.aspx.designer.cs">
       <DependentUpon>micuenta.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="negociarconvenio.aspx.cs">
+      <DependentUpon>negociarconvenio.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="negociarconvenio.aspx.designer.cs">
+      <DependentUpon>negociarconvenio.aspx</DependentUpon>
     </Compile>
     <Compile Include="noasistenciaagendagympass.aspx.cs">
       <DependentUpon>noasistenciaagendagympass.aspx</DependentUpon>

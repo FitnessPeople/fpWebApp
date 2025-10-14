@@ -11,7 +11,7 @@ namespace fpWebApp
 {
 
 
-    public partial class prospectosempresas
+    public partial class negociarconvenio
     {
 
         /// <summary>
@@ -24,22 +24,13 @@ namespace fpWebApp
         protected global::fpWebApp.controles.navbar navbar1;
 
         /// <summary>
-        /// Control header.
+        /// Control header1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.header header;
-
-        /// <summary>
-        /// Control indicadores02.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::fpWebApp.controles.indicadores02 indicadores02;
+        protected global::fpWebApp.controles.header header1;
 
         /// <summary>
         /// Control divMensaje.
@@ -78,6 +69,15 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContenido;
 
         /// <summary>
+        /// Control ltMensaje.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltMensaje;
+
+        /// <summary>
         /// Control ltTitulo.
         /// </summary>
         /// <remarks>
@@ -87,202 +87,103 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltTitulo;
 
         /// <summary>
-        /// Control ddlTipoDocumento.
+        /// Control ddlTipoEstrategias.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlTipoDocumento;
+        protected global::System.Web.UI.WebControls.DropDownList ddlTipoEstrategias;
 
         /// <summary>
-        /// Control rfvTipoDoc.
+        /// Control rfvTipoEstrategia.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTipoDoc;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTipoEstrategia;
 
         /// <summary>
-        /// Control txbDocumento.
+        /// Control hiddenEditor.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbDocumento;
+        protected global::System.Web.UI.WebControls.HiddenField hiddenEditor;
 
         /// <summary>
-        /// Control rfvNumDoc.
+        /// Control txbValorPresupuesto.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvNumDoc;
+        protected global::System.Web.UI.WebControls.TextBox txbValorPresupuesto;
 
         /// <summary>
-        /// Control txbDigitoVerificacion.
+        /// Control rfvValorPresupuesto.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbDigitoVerificacion;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvValorPresupuesto;
 
         /// <summary>
-        /// Control rfvDigitoVerfica.
+        /// Control txbFechaIni.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDigitoVerfica;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbFechaIni;
 
         /// <summary>
-        /// Control txbRazonSocial.
+        /// Control rfvFechaIni.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbRazonSocial;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvFechaIni;
 
         /// <summary>
-        /// Control rfvNombreEmpresa.
+        /// Control txbFechaFin.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvNombreEmpresa;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbFechaFin;
 
         /// <summary>
-        /// Control txbNombreComercialEmpresa.
+        /// Control rfvFechaFin.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbNombreComercialEmpresa;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvFechaFin;
 
         /// <summary>
-        /// Control rfvNombre.
+        /// Control chblPlanes.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvNombre;
+        protected global::System.Web.UI.WebControls.CheckBoxList chblPlanes;
 
         /// <summary>
-        /// Control txbNombreContacto.
+        /// Control cvPlanes.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbNombreContacto;
-
-        /// <summary>
-        /// Control RequiredFieldValidator2.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
-
-        /// <summary>
-        /// Control txbCargoContacto.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbCargoContacto;
-
-        /// <summary>
-        /// Control RequiredFieldValidator1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
-
-        /// <summary>
-        /// Control txbCelularEmpresa.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbCelularEmpresa;
-
-        /// <summary>
-        /// Control rfvCelularEmpresa.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCelularEmpresa;
-
-        /// <summary>
-        /// Control txbCorreoEmpresa.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl txbCorreoEmpresa;
-
-        /// <summary>
-        /// Control rfvCorreoEmpresa.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCorreoEmpresa;
-
-        /// <summary>
-        /// Control ddlCiudades.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCiudades;
-
-        /// <summary>
-        /// Control rfvCiudad.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCiudad;
-
-        /// <summary>
-        /// Control txaObservaciones.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTextArea txaObservaciones;
-
-        /// <summary>
-        /// Control rfvObservaciones.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvObservaciones;
+        protected global::System.Web.UI.WebControls.CustomValidator cvPlanes;
 
         /// <summary>
         /// Control btnAgregar.
@@ -292,15 +193,6 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAgregar;
-
-        /// <summary>
-        /// Control ltMensaje.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltMensaje;
 
         /// <summary>
         /// Control divBotonesLista.
@@ -321,39 +213,21 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.LinkButton lbExportarExcel;
 
         /// <summary>
-        /// Control phAsesorHeader.
+        /// Control rpEstrategias.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phAsesorHeader;
+        protected global::System.Web.UI.WebControls.Repeater rpEstrategias;
 
         /// <summary>
-        /// Control rpEmpresasCRM.
+        /// Control rightsidebar1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpEmpresasCRM;
-
-        /// <summary>
-        /// Control footer.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::fpWebApp.controles.footer footer;
-
-        /// <summary>
-        /// Control rightsidebar.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::fpWebApp.controles.rightsidebar rightsidebar;
+        protected global::fpWebApp.controles.rightsidebar rightsidebar1;
     }
 }

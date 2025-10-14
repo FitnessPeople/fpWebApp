@@ -39,7 +39,7 @@
         function changeClass() {
             var element1 = document.querySelector("#empresasafiliadas");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#afiliados2");
+            var element2 = document.querySelector("#corporativo");
             element2.classList.remove("collapse");
         }
     </script>
