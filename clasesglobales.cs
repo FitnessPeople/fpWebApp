@@ -5800,7 +5800,8 @@ namespace fpWebApp
             return dt;
         }
 
-        public string InsertarMetaComercial(int idCanalVenta, int Mes, int Annio, int Valor, int idUsuario)
+        public string InsertarMetaComercial(int idCanalVenta, int Mes, int Annio,
+            int Valor, int Deluxe, int Premium, int Elite, int Director, int Online, int idUsuario)
         {
             string respuesta = string.Empty;
             try
@@ -5816,6 +5817,11 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_mes", Mes);
                         cmd.Parameters.AddWithValue("@p_annio", Annio);
                         cmd.Parameters.AddWithValue("@p_valor", Valor);
+                        cmd.Parameters.AddWithValue("@p_deluxe", Deluxe);
+                        cmd.Parameters.AddWithValue("@p_premium", Premium);
+                        cmd.Parameters.AddWithValue("@p_elite", Elite);
+                        cmd.Parameters.AddWithValue("@p_director", Director);
+                        cmd.Parameters.AddWithValue("@p_online", Online);
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
 
                         cmd.ExecuteNonQuery();
@@ -5831,7 +5837,8 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarMetaComercial(int idMeta, int idCanalVenta, int Mes, int Annio, int Valor, int idUsuario)
+        public string ActualizarMetaComercial(int idMeta, int idCanalVenta, int Mes, int Annio, 
+            int Valor, int Deluxe, int Premium, int Elite, int Director, int Online,  int idUsuario)
         {
             string respuesta = string.Empty;
             try
@@ -5848,6 +5855,11 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_mes", Mes);
                         cmd.Parameters.AddWithValue("@p_annio", Annio);
                         cmd.Parameters.AddWithValue("@p_valor", Valor);
+                        cmd.Parameters.AddWithValue("@p_deluxe", Deluxe);
+                        cmd.Parameters.AddWithValue("@p_premium", Premium);
+                        cmd.Parameters.AddWithValue("@p_elite", Elite);
+                        cmd.Parameters.AddWithValue("@p_director", Director);
+                        cmd.Parameters.AddWithValue("@p_online", Online);
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
 
                         cmd.ExecuteNonQuery();
@@ -10115,7 +10127,7 @@ namespace fpWebApp
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_AFILIADO_CON_PLAN_ACTIVO ", mysqlConexion))
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_AFILIADO_CON_PLAN_ACTIVO", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_id_afiliado", idAfiliado);

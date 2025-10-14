@@ -25,6 +25,12 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style type="text/css" media="print">
         body {
             visibility: hidden;
@@ -189,9 +195,48 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>Presupuesto:</label>
+                                                    <label>Presupuesto mensual:</label>
                                                     <asp:TextBox ID="txbPresupuesto" runat="server" CssClass="form-control input-sm" 
-                                                        onkeyup="formatCurrency(this)" onblur="keepFormatted(this)"></asp:TextBox>
+                                                        onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XXX.000.000"></asp:TextBox>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>Asesor Deluxe:</label>
+                                                            <asp:TextBox ID="txbAsesorDeluxe" runat="server" CssClass="form-control input-sm" 
+                                                                onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>Asesor Premium:</label>
+                                                            <asp:TextBox ID="txbAsesorPremium" runat="server" CssClass="form-control input-sm" 
+                                                                onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label>Asesor Elite:</label>
+                                                            <asp:TextBox ID="txbAsesorElite" runat="server" CssClass="form-control input-sm" 
+                                                                onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Director sede:</label>
+                                                            <asp:TextBox ID="txbDirectorSede" runat="server" CssClass="form-control input-sm" 
+                                                                onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Asesor Online:</label>
+                                                            <asp:TextBox ID="txbAsesorOnline" runat="server" CssClass="form-control input-sm" 
+                                                                onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <a href="metascomerciales" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
@@ -246,9 +291,14 @@
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th width="50%">Canal de venta</th>
-                                                    <th width="20%">Mes / Año</th>
-                                                    <th width="20%">Valor</th>
+                                                    <th>Canal de venta</th>
+                                                    <th>Mes / Año</th>
+                                                    <th style="text-align: right;">Valor</th>
+                                                    <th style="text-align: right;">Deluxe</th>
+                                                    <th style="text-align: right;">Premium</th>
+                                                    <th style="text-align: right;">Elite</th>
+                                                    <th style="text-align: right;">Online</th>
+                                                    <th style="text-align: right;">Dir. Sede</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
@@ -258,7 +308,12 @@
                                                         <tr class="feed-element">
                                                             <td><%# Eval("NombreCanalVenta") %></td>
                                                             <td><%# ObtenerNombreMes(Eval("Mes")) %> - <%# Eval("Annio") %></td>
-                                                            <td style="text-align: right;"><%# Eval("Presupuesto", "{0:N0}") %></td>
+                                                            <td style="text-align: right;">$ <%# Eval("Presupuesto", "{0:N0}") %></td>
+                                                            <td style="text-align: right;">$ <%# Eval("MetaAsesorDeluxe", "{0:N0}") %></td>
+                                                            <td style="text-align: right;">$ <%# Eval("MetaAsesorPremium", "{0:N0}") %></td>
+                                                            <td style="text-align: right;">$ <%# Eval("MetaAsesorElite", "{0:N0}") %></td>
+                                                            <td style="text-align: right;">$ <%# Eval("MetaAsesorOnline", "{0:N0}") %></td>
+                                                            <td style="text-align: right;">$ <%# Eval("MetaDirectorSede", "{0:N0}") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>

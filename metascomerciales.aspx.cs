@@ -2,6 +2,7 @@
 using System.Data;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -68,7 +69,17 @@ namespace fpWebApp
                                 ddlMes.SelectedIndex = Convert.ToInt16(ddlMes.Items.IndexOf(ddlMes.Items.FindByValue(dt.Rows[0]["mes"].ToString())));
                                 ddlAnnio.SelectedIndex = Convert.ToInt16(ddlAnnio.Items.IndexOf(ddlAnnio.Items.FindByValue(dt.Rows[0]["annio"].ToString())));
                                 int presupuesto = (dt.Rows[0]["Presupuesto"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["Presupuesto"]) : 0;
+                                int metaAsesorDeluxe = (dt.Rows[0]["MetaAsesorDeluxe"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["MetaAsesorDeluxe"]) : 0;
+                                int metaAsesorPremium  = (dt.Rows[0]["MetaAsesorPremium"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["MetaAsesorPremium"]) : 0;
+                                int metaAsesorElite = (dt.Rows[0]["MetaAsesorElite"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["MetaAsesorElite"]) : 0;
+                                int metaDirectorSede = (dt.Rows[0]["MetaDirectorSede"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["MetaDirectorSede"]) : 0;
+                                int metaAsesorOnline = (dt.Rows[0]["MetaAsesorOnline"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["MetaAsesorOnline"]) : 0;
                                 txbPresupuesto.Text = presupuesto.ToString("C0", new CultureInfo("es-CO"));
+                                txbAsesorDeluxe.Text = metaAsesorDeluxe.ToString("C0", new CultureInfo("es-CO"));
+                                txbAsesorPremium.Text = metaAsesorPremium.ToString("C0", new CultureInfo("es-CO"));
+                                txbAsesorElite.Text = metaAsesorElite.ToString("C0", new CultureInfo("es-CO"));
+                                txbDirectorSede.Text = metaDirectorSede.ToString("C0", new CultureInfo("es-CO"));
+                                txbAsesorOnline.Text = metaAsesorOnline.ToString("C0", new CultureInfo("es-CO"));
                                 btnAgregar.Text = "Actualizar";
                                 ltTitulo.Text = "Actualizar meta comercial";
                             }
@@ -221,6 +232,11 @@ namespace fpWebApp
                             Convert.ToInt32(ddlMes.SelectedItem.Value.ToString()),
                             Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString()),
                             Convert.ToInt32(Regex.Replace(txbPresupuesto.Text, @"[^\d]", "")),
+                            Convert.ToInt32(Regex.Replace(txbAsesorDeluxe.Text, @"[^\d]", "")), 
+                            Convert.ToInt32(Regex.Replace(txbAsesorPremium.Text, @"[^\d]", "")), 
+                            Convert.ToInt32(Regex.Replace(txbAsesorElite.Text, @"[^\d]", "")), 
+                            Convert.ToInt32(Regex.Replace(txbDirectorSede.Text, @"[^\d]", "")), 
+                            Convert.ToInt32(Regex.Replace(txbAsesorOnline.Text, @"[^\d]", "")), 
                             Convert.ToInt32(Session["idUsuario"].ToString())
                             );
 
@@ -237,10 +253,11 @@ namespace fpWebApp
                 }
                 else
                 {
-                    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    "Ya existe un registro para misma fecha y el mismo canal de venta." +
-                    "</div>";
+                    MostrarAlerta("Error", "Ya existe un registro para misma fecha y el mismo canal de venta.", "error");
+                    //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                    //"<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                    //"Ya existe un registro para misma fecha y el mismo canal de venta." +
+                    //"</div>";
                 }
 
                 
@@ -258,6 +275,11 @@ namespace fpWebApp
                                 i+1,
                                 Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString()),
                                 Convert.ToInt32(Regex.Replace(txbPresupuesto.Text, @"[^\d]", "")),
+                                Convert.ToInt32(Regex.Replace(txbAsesorDeluxe.Text, @"[^\d]", "")),
+                                Convert.ToInt32(Regex.Replace(txbAsesorPremium.Text, @"[^\d]", "")),
+                                Convert.ToInt32(Regex.Replace(txbAsesorElite.Text, @"[^\d]", "")),
+                                Convert.ToInt32(Regex.Replace(txbDirectorSede.Text, @"[^\d]", "")),
+                                Convert.ToInt32(Regex.Replace(txbAsesorOnline.Text, @"[^\d]", "")),
                                 Convert.ToInt32(Session["idUsuario"].ToString())
                                 );
                         }
@@ -270,10 +292,11 @@ namespace fpWebApp
                                 mensajeExcepcionInterna = ex.InnerException.Message;
                                 Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
                             }
-                            ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                            "Excepción interna." +
-                            "</div>";
+                            MostrarAlerta("Error", ex.Message.ToString(), "error");
+                            //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                            //"<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                            //"Excepción interna." +
+                            //"</div>";
                         }
                     }
                     cg.InsertarLog(Session["idusuario"].ToString(), "MetasComerciales", "Agrega", "El usuario agregó una nueva meta comercial: " +
@@ -293,6 +316,11 @@ namespace fpWebApp
                                 Convert.ToInt32(ddlMes.SelectedItem.Value.ToString()),
                                 Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString()),
                                 Convert.ToInt32(Regex.Replace(txbPresupuesto.Text, @"[^\d]", "")),
+                                Convert.ToInt32(Regex.Replace(txbAsesorDeluxe.Text, @"[^\d]", "")),
+                                Convert.ToInt32(Regex.Replace(txbAsesorPremium.Text, @"[^\d]", "")),
+                                Convert.ToInt32(Regex.Replace(txbAsesorElite.Text, @"[^\d]", "")),
+                                Convert.ToInt32(Regex.Replace(txbDirectorSede.Text, @"[^\d]", "")),
+                                Convert.ToInt32(Regex.Replace(txbAsesorOnline.Text, @"[^\d]", "")),
                                 Convert.ToInt32(Session["idUsuario"].ToString())
                                 );
 
@@ -309,22 +337,44 @@ namespace fpWebApp
                                 mensajeExcepcionInterna = ex.InnerException.Message;
                                 //Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
                             }
-                            ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                            "Excepción interna." +
-                            "</div>";
+                            MostrarAlerta("Error", ex.Message.ToString(), "error");
+                            //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                            //"<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                            //"Excepción interna." +
+                            //"</div>";
                         }
                         Response.Redirect("metascomerciales");
                     }
                     else
                     {
-                        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                            "Ya existe una meta comercial para ese canal de venta en el mismo mes y año." +
-                            "</div>";
+                        MostrarAlerta("Error", "Ya existe una meta comercial para ese canal de venta en el mismo mes y año.", "error");
+                        //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                        //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        //    "Ya existe una meta comercial para ese canal de venta en el mismo mes y año." +
+                        //    "</div>";
                     }
                 }
             }
+        }
+
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
+        {
+            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+            string script = $@"
+            Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{tipo}', 
+                background: '#3C3C3C', 
+                showCloseButton: true, 
+                confirmButtonText: 'Aceptar', 
+                customClass: {{
+                    popup: 'alert',
+                    confirmButton: 'btn-confirm-alert'
+                }},
+            }});";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
         }
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)

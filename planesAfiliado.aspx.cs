@@ -583,17 +583,20 @@ namespace fpWebApp
                     // Consultar si este usuario tiene un plan activo y cual es su fecha de inicio y fecha final.
                     clasesglobales cg = new clasesglobales();
                     DataTable dt = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
-                    if (dt.Rows[0]["EstadoPlan"].ToString() == "Activo")
+                    if (dt.Rows.Count > 0)
                     {
-                        string fechaFinal = string.Format("{0:dd MMM yyyy}", dt.Rows[0]["FechaFinalPlan"]);
-                        string script = $@"
-                            Swal.fire({{
-                                title: 'Plan activo',
-                                text: 'El afiliado ya tiene un plan activo hasta el {fechaFinal}. Modifique la fecha de inicio para continuar.',
-                                icon: 'warning'
-                            }});
-                        ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "PlanActivo", script, true);
+                        if (dt.Rows[0]["EstadoPlan"].ToString() == "Activo")
+                        {
+                            string fechaFinal = string.Format("{0:dd MMM yyyy}", dt.Rows[0]["FechaFinalPlan"]);
+                            string script = $@"
+                                Swal.fire({{
+                                    title: 'Plan activo',
+                                    text: 'El afiliado ya tiene un plan activo hasta el {fechaFinal}. Modifique la fecha de inicio para continuar.',
+                                    icon: 'warning'
+                                }});
+                            ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "PlanActivo", script, true);
+                        }
                     }
                     else
                     {
@@ -713,7 +716,7 @@ namespace fpWebApp
                                             strMensaje += "Por favor, agradecemos realice el pago a través del siguiente enlace: \r\n";
                                             strMensaje += "https://fitnesspeoplecolombia.com/wompiplan?code=" + strString;
 
-                                            cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", dtAfiliado.Rows[0]["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
+                                            //cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", dtAfiliado.Rows[0]["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
 
                                             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

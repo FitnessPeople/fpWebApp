@@ -123,6 +123,51 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbPresupuesto;
 
         /// <summary>
+        /// Control txbAsesorDeluxe.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbAsesorDeluxe;
+
+        /// <summary>
+        /// Control txbAsesorPremium.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbAsesorPremium;
+
+        /// <summary>
+        /// Control txbAsesorElite.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbAsesorElite;
+
+        /// <summary>
+        /// Control txbDirectorSede.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbDirectorSede;
+
+        /// <summary>
+        /// Control txbAsesorOnline.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbAsesorOnline;
+
+        /// <summary>
         /// Control btnAgregar.
         /// </summary>
         /// <remarks>
