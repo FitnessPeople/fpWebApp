@@ -3,6 +3,7 @@
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
+<%@ Register Src="~/controles/indicadores02.ascx" TagPrefix="uc1" TagName="indicadores02" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
 
@@ -54,7 +55,7 @@
         function changeClass() {
             var element1 = document.querySelector("#prospectosempresas");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#crm");
+            var element2 = document.querySelector("#corporativo");
             element2.classList.remove("collapse");
         }
     </script>
@@ -107,7 +108,7 @@
     </div>
     <div id="wrapper">
 
-        <uc1:navbar runat="server" ID="navbar" />
+        <uc1:navbar runat="server" ID="navbar1" />
 
         <div id="page-wrapper" class="gray-bg">
             <div class="row border-bottom">
@@ -131,7 +132,7 @@
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row animated fadeInDown">
                     <%--Inicio Contenido!!!!--%>
-
+                    <uc1:indicadores02 runat="server" ID="indicadores02" />
                     <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
                         <div class="p-xs">
                             <div class="pull-left m-r-md">
