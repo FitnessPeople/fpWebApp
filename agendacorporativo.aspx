@@ -155,7 +155,7 @@
                             <div class="col-sm-4">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Agregar disponibilidad</h5>
+                                        <h5>Agregar visita</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -175,8 +175,7 @@
                                                         OnSelectedIndexChanged="ddlEmpresas_SelectedIndexChanged" DataValueField="idEmpresa" DataTextField="NombreEmpresa"
                                                         AutoPostBack="true" AppendDataBoundItems="true">
                                                          <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                     
+                                                    </asp:DropDownList>                                                     
                                                 </div>
                                             </div>
 
@@ -225,7 +224,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row">
+<%--                                        <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-horizontal">
                                                     <div class="form-group m-b-mb">
@@ -244,7 +243,7 @@
                                             </div>
 
 
-                                        </div>
+                                        </div>--%>
                                         <div class="row">
                                             <div class="form-group">
                                                 <i class="fas fa-pen text-info"></i>
