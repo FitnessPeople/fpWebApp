@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using ZstdSharp.Unsafe;
 
 namespace fpWebApp
 {
@@ -46,7 +47,7 @@ namespace fpWebApp
                         {
                             btnAgregar.Visible = true;
                         }
-
+                        lblMensaje.Visible = false ;
                         txbFechaIni.Attributes.Add("type", "date");
                         txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-dd");
                         txbFechaFin.Attributes.Add("type", "date");
@@ -56,7 +57,7 @@ namespace fpWebApp
 
                     CargarDiccionarios();
                     listaEstrategias();
-                    CargartiposEstrategias();
+                    //CargartiposEstrategias();
                     CargarPlanes();
                     ListaCanalesDeVenta();
 
@@ -73,7 +74,7 @@ namespace fpWebApp
                             if (dt.Rows.Count > 0)
                             {
                                 //txbNombreEstrategia.Text = dt.Rows[0]["NombreEstrategia"].ToString();
-                                ddlTipoEstrategias.SelectedIndex = ddlTipoEstrategias.Items.IndexOf(ddlTipoEstrategias.Items.FindByValue(dt.Rows[0]["idTipoEstrategia"].ToString()));
+                                ddlEmpresas.SelectedIndex = ddlEmpresas.Items.IndexOf(ddlEmpresas.Items.FindByValue(dt.Rows[0]["idTipoEstrategia"].ToString()));
 
                                 hiddenEditor.Value = dt.Rows[0]["DescripcionEstrategia"].ToString();
 
@@ -116,7 +117,7 @@ namespace fpWebApp
                             DataTable dt = cg.ValidarEstrategiaMarketingTablas(int.Parse(Request.QueryString["deleteid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                lblMensaje.Text = "<div class=\"ibox-content\">" +
                                     "<div class=\"alert alert-danger alert-dismissable\">" +
                                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
                                     "Esta estrategia no se puede borrar, hay registros asociados a ella." +
@@ -129,8 +130,8 @@ namespace fpWebApp
                                     //txbNombreEstrategia.Text = dt1.Rows[0]["NombreEstrategia"].ToString();
                                     //txbNombreEstrategia.Enabled = false;
 
-                                    ddlTipoEstrategias.SelectedIndex = ddlTipoEstrategias.Items.IndexOf(ddlTipoEstrategias.Items.FindByValue(dt1.Rows[0]["idTipoEstrategia"].ToString()));
-                                    ddlTipoEstrategias.Enabled = false;
+                                    ddlEmpresas.SelectedIndex = ddlEmpresas.Items.IndexOf(ddlEmpresas.Items.FindByValue(dt1.Rows[0]["idTipoEstrategia"].ToString()));
+                                    ddlEmpresas.Enabled = false;
 
                                     hiddenEditor.Value = dt1.Rows[0]["DescripcionEstrategia"].ToString();
 
@@ -180,8 +181,8 @@ namespace fpWebApp
                                     //txbNombreEstrategia.Text = dt1.Rows[0]["NombreEstrategia"].ToString();
                                     //txbNombreEstrategia.Enabled = false;
 
-                                    ddlTipoEstrategias.SelectedIndex = ddlTipoEstrategias.Items.IndexOf(ddlTipoEstrategias.Items.FindByValue(dt1.Rows[0]["idTipoEstrategia"].ToString()));
-                                    ddlTipoEstrategias.Enabled = false;
+                                    ddlEmpresas.SelectedIndex = ddlEmpresas.Items.IndexOf(ddlEmpresas.Items.FindByValue(dt1.Rows[0]["idTipoEstrategia"].ToString()));
+                                    ddlEmpresas.Enabled = false;
 
                                     hiddenEditor.Value = dt1.Rows[0]["DescripcionEstrategia"].ToString();
 
@@ -287,6 +288,27 @@ namespace fpWebApp
         }
 
 
+        private void listaEmpresasAfiliadas()
+        {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarEmpresasYProspectosCorporativos();
+
+                ddlEmpresas.DataSource = dt;
+                ddlEmpresas.DataBind();
+
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                lblMensaje.Visible = true;
+                lblMensaje.Text = "Ocurrió un error al cargar las empresas. Por favor intente nuevamente.";
+                lblMensaje.CssClass = "text-danger";
+            }
+
+
+        }
         private string ConvertirIdsANombres(string ids, Dictionary<int, string> diccionario)
         {
             if (string.IsNullOrEmpty(ids)) return "";
@@ -324,8 +346,8 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarTiposEstrategiasMarketing();
-            ddlTipoEstrategias.DataSource = dt;
-            ddlTipoEstrategias.DataBind();
+            ddlEmpresas.DataSource = dt;
+            ddlEmpresas.DataBind();
             dt.Dispose();
         }
 
@@ -407,7 +429,7 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.ActualizarEstrategiaMarketing(Convert.ToInt32(Request.QueryString["editid"].ToString()), "",
-                        contenidoEditor, txbFechaIni.Value, txbFechaFin.Value, canalesObtenidos, Convert.ToInt32(ddlTipoEstrategias.SelectedItem.Value.ToString()),
+                        contenidoEditor, txbFechaIni.Value, txbFechaFin.Value, canalesObtenidos, Convert.ToInt32(ddlEmpresas.SelectedItem.Value.ToString()),
                         planesObtenidos, Convert.ToDecimal(Regex.Replace(txbValorPresupuesto.Text, @"[^\d]", "")), out salida, out mensaje);
 
                         if (salida)
@@ -669,6 +691,11 @@ namespace fpWebApp
                 }
 
             }
+        }
+
+        protected void ddlEmpresas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

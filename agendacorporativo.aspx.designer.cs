@@ -11,26 +11,35 @@ namespace fpWebApp
 {
 
 
-    public partial class negociarconvenio
+    public partial class agendacorporativo
     {
 
         /// <summary>
-        /// Control navbar1.
+        /// Control btnEliminar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.navbar navbar1;
+        protected global::System.Web.UI.HtmlControls.HtmlButton btnEliminar;
 
         /// <summary>
-        /// Control header1.
+        /// Control navbar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.header header1;
+        protected global::fpWebApp.controles.navbar navbar;
+
+        /// <summary>
+        /// Control header.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::fpWebApp.controles.header header;
 
         /// <summary>
         /// Control divMensaje.
@@ -78,13 +87,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Label lblMensaje;
 
         /// <summary>
-        /// Control ltTitulo.
+        /// Control divCrear.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltTitulo;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCrear;
 
         /// <summary>
         /// Control ddlEmpresas.
@@ -96,22 +105,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlEmpresas;
 
         /// <summary>
-        /// Control rfvTipoEstrategia.
+        /// Control txbLugar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTipoEstrategia;
-
-        /// <summary>
-        /// Control hiddenEditor.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hiddenEditor;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbLugar;
 
         /// <summary>
         /// Control txbFechaIni.
@@ -123,15 +123,6 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlInputText txbFechaIni;
 
         /// <summary>
-        /// Control rfvFechaIni.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvFechaIni;
-
-        /// <summary>
         /// Control txbFechaFin.
         /// </summary>
         /// <remarks>
@@ -141,93 +132,75 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlInputText txbFechaFin;
 
         /// <summary>
-        /// Control rfvFechaFin.
+        /// Control txbHoraIni.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvFechaFin;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbHoraIni;
 
         /// <summary>
-        /// Control txbValorPresupuesto.
+        /// Control txbHoraFin.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbValorPresupuesto;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbHoraFin;
 
         /// <summary>
-        /// Control rfvValorPresupuesto.
+        /// Control txaObservaciones.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvValorPresupuesto;
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea txaObservaciones;
 
         /// <summary>
-        /// Control chblPlanes.
+        /// Control rfvObservaciones.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList chblPlanes;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvObservaciones;
 
         /// <summary>
-        /// Control cvPlanes.
+        /// Control ltSede.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator cvPlanes;
+        protected global::System.Web.UI.WebControls.Literal ltSede;
 
         /// <summary>
-        /// Control btnAgregar.
+        /// Control ddlSedes.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAgregar;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSedes;
 
         /// <summary>
-        /// Control divBotonesLista.
+        /// Control footer.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBotonesLista;
+        protected global::fpWebApp.controles.footer footer;
 
         /// <summary>
-        /// Control lbExportarExcel.
+        /// Control rightsidebar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbExportarExcel;
-
-        /// <summary>
-        /// Control rpEstrategias.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpEstrategias;
-
-        /// <summary>
-        /// Control rightsidebar1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::fpWebApp.controles.rightsidebar rightsidebar1;
+        protected global::fpWebApp.controles.rightsidebar rightsidebar;
     }
 }

@@ -171,10 +171,11 @@
 
                     <form role="form" id="form" runat="server">
                         <div class="row" id="divContenido" runat="server">
+
                             <div class="col-lg-4">
                                 <div class="ibox float-e-margins">
                                     <div class="form-group">
-                                        <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                        <asp:Label ID="lblMensaje" runat="server" Text="Label"></asp:Label>                                       
                                     </div>
                                     <div class="ibox-title">
                                         <h5>
@@ -205,10 +206,11 @@
                                                     <div class="col-sm-12">
                                                         <div class="form-group">
                                                             <label>Empresa:</label>
-                                                            <asp:DropDownList ID="ddlTipoEstrategias" runat="server" CssClass="form-control input-sm"
-                                                                DataTextField="NombreTipoEstrategia" DataValueField="idTipoEstrategia" AppendDataBoundItems="true">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                            </asp:DropDownList>
+                                                     <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEmpresas" runat="server"
+                                                        OnSelectedIndexChanged="ddlEmpresas_SelectedIndexChanged" DataValueField="idEmpresa" DataTextField="NombreEmpresa"
+                                                        AutoPostBack="true" AppendDataBoundItems="true">
+                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                    </asp:DropDownList>  
                                                             <asp:RequiredFieldValidator ID="rfvTipoEstrategia" runat="server" ErrorMessage="* Campo requerido"
                                                                 ControlToValidate="ddlTipoEstrategias" ValidationGroup="agregar"
                                                                 CssClass="font-bold text-danger" Display="Dynamic">
@@ -221,20 +223,6 @@
                                                     <label>Descripción de la negociación:</label>
                                                     <div id="editor" cssclass="form-control input-sm"></div>
                                                     <asp:HiddenField ID="hiddenEditor" runat="server" />
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <i class="fa fa-dollar text-info"></i>
-                                                            <label for="ValorPresupuesto" class="col-form-label">Presupuesto estimado:</label>
-                                                            <asp:TextBox ID="txbValorPresupuesto" CssClass="form-control input-sm" runat="server" placeholder="$0"
-                                                                onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
-                                                            <asp:RequiredFieldValidator ID="rfvValorPresupuesto" runat="server" ErrorMessage="* Campo requerido" 
-                                                                ControlToValidate="txbValorPresupuesto" ValidationGroup="agregar"
-                                                                 CssClass="font-bold text-danger" Display="Dynamic" />
-                                                        </div>
-                                                    </div>
                                                 </div>
 
                                                 <div class="row">
@@ -256,6 +244,21 @@
                                                             <asp:RequiredFieldValidator ID="rfvFechaFin" runat="server" ControlToValidate="txbFechaFin"
                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic">
                                                             </asp:RequiredFieldValidator>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <i class="fa fa-dollar text-info"></i>
+                                                            <label for="ValorPresupuesto" class="col-form-label">Porcentaje descuento %:</label>
+                                                            <asp:TextBox ID="txbValorPresupuesto" CssClass="form-control input-sm" runat="server" placeholder="5%"
+                                                                onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
+                                                            <asp:RequiredFieldValidator ID="rfvValorPresupuesto" runat="server" ErrorMessage="* Campo requerido" 
+                                                                ControlToValidate="txbValorPresupuesto" ValidationGroup="agregar"
+                                                                 CssClass="font-bold text-danger" Display="Dynamic" />
                                                         </div>
                                                     </div>
                                                 </div>
