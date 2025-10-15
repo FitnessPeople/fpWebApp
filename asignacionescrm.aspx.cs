@@ -1,8 +1,9 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
-using System;
+﻿using System;
 using System.Data;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 
 namespace fpWebApp
@@ -15,6 +16,8 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
+                    int idPerfil = Convert.ToInt32(Session["idPerfil"].ToString());
+                    int idCanalVenta = Convert.ToInt32(Session["idCanalVenta"].ToString());
                     ValidarPermisos("Afiliados");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
@@ -24,14 +27,21 @@ namespace fpWebApp
                     }
                     if (ViewState["Consulta"].ToString() == "1")
                     {
-                        CargarAsesoresPorSede();
+                        
                         CargarCanalesVentaSedes();
-                        if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
+                        if (idPerfil==1 || idPerfil == 18 || idPerfil == 21 || idPerfil == 37) // Usuario Directivo
                         {
+                            CargarAsesoresPorSede(idCanalVenta);
+
                             listaAfiliados("Todas");
                         }
                         else
                         {
+                            CargarAsesoresPorSede(Convert.ToInt32(idCanalVenta));                           
+                            if (idCanalVenta == 12 || idCanalVenta ==13 || idCanalVenta == 14)
+                            {
+                                listaAfiliados("Todas");
+                            }
                             listaAfiliados(Session["idSede"].ToString());
                         }
 
@@ -109,16 +119,35 @@ namespace fpWebApp
 
         }
 
-        private void CargarAsesoresPorSede()
+        private void CargarAsesoresPorSede(int idCanalVenta)
         {
             clasesglobales cg = new clasesglobales();
 
             try
             {
                 int idSede = Convert.ToInt32(Session["idSede"].ToString());
-                DataTable dt = cg.ConsultaCargarAsesoresPorSede(idSede);
+                DataTable dt = cg.ConsultaCargarAsesoresPorSede(idSede); // trae todos los asesores de la sede
 
+                // Si idCanalVenta > 0, filtramos por ese canal
+                if (idCanalVenta > 0)
+                {
+                    var filteredRows = dt.AsEnumerable()
+                                         .Where(r => r.Field<int>("idCanalVenta") == idCanalVenta);
+
+                    if (filteredRows.Any())
+                    {
+                        dt = filteredRows.CopyToDataTable(); // crea un nuevo DataTable con los registros filtrados
+                    }
+                    else
+                    {
+                        dt = dt.Clone(); // tabla vacía si no hay coincidencias
+                    }
+                }
+
+                // Cargar DropDownList con los registros filtrados
                 ddlAsesores.DataSource = dt;
+                ddlAsesores.DataTextField = "NombreUsuario";
+                ddlAsesores.DataValueField = "idUsuario";
                 ddlAsesores.DataBind();
 
                 dt.Dispose();
@@ -128,6 +157,7 @@ namespace fpWebApp
                 string mensaje = ex.Message.ToString();
             }
         }
+
 
 
         private void listaAfiliados(string strSede)
