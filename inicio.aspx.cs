@@ -12,57 +12,58 @@ namespace fpWebApp
         {
             if (!IsPostBack)
             {
-                ltIdUsuario.Text = Session["idUsuario"].ToString();
-                ltNombreUsuario.Text = Session["NombreUsuario"].ToString();
-                ltIdEmpresa.Text = Session["idEmpresa"].ToString();
-                ltCargo.Text = Session["Cargo"].ToString();
-                ltFoto.Text = Session["Foto"].ToString();
-                ltIdPerfil.Text = Session["idPerfil"].ToString();
-                ltEmailUsuario.Text = Session["emailUsuario"].ToString();
-                ltFechaNac.Text = Session["fechaNac"].ToString();
-                ltIdSede.Text = Session["idSede"].ToString();
-                ltIdCanalVenta.Text = Session["idCanalVenta"].ToString();
-                ltIdEmpleado.Text = Session["idEmpleado"].ToString();
-
-                //Session["idUsuario"] = 147;
-                //Session["NombreUsuario"] = "Christian Morales";
-                //Session["idEmpresa"] = 1;
-                //Session["Cargo"] = "WebMaster";
-                //Session["Foto"] = "chrismo.jpg";
-                //Session["idPerfil"] = 1;
-                //Session["usuario"] = "sistemas@fitnesspeoplecmd.com";
-                //Session[""] = "11";
-
-                DateTime fechaObjetivo = Convert.ToDateTime(Session["fechaNac"]);
-                int diaObjetivo = fechaObjetivo.Day;
-                int mesObjetivo = fechaObjetivo.Month;
-
-                DateTime hoy = DateTime.Now;
-
-                if (hoy.Day == diaObjetivo && hoy.Month == mesObjetivo)
-                {
-                    // Ejecutar el script en el navegador
-                    ScriptManager.RegisterStartupScript(this, GetType(),
-                        "confettiScript", "lanzarConfetti();", true);
-                }
-
-                if (Request.QueryString["idPerfil"] != null)
-                {
-                    Session["idPerfil"] = Convert.ToInt16(Request.QueryString["idPerfil"].ToString());
-                }
-                if (Request.QueryString["idUsuario"] != null)
-                {
-                    Session["idUsuario"] = Convert.ToInt16(Request.QueryString["idUsuario"].ToString());
-                }
-
-                DateTime fechaActual = DateTime.Now;
-                DateTime fechaDestino = new DateTime(2025, 10, 31);
-                TimeSpan diferencia = fechaDestino - fechaActual;
-                _strDiaZero = Convert.ToInt32(diferencia.TotalDays).ToString();
-
-                Control ctrInicio = new Control();
                 if (Session["idUsuario"] != null)
                 {
+                    ltIdUsuario.Text = Session["idUsuario"].ToString();
+                    ltNombreUsuario.Text = Session["NombreUsuario"].ToString();
+                    ltIdEmpresa.Text = Session["idEmpresa"].ToString();
+                    ltCargo.Text = Session["Cargo"].ToString();
+                    ltFoto.Text = Session["Foto"].ToString();
+                    ltIdPerfil.Text = Session["idPerfil"].ToString();
+                    ltEmailUsuario.Text = Session["emailUsuario"].ToString();
+                    ltFechaNac.Text = Session["fechaNac"].ToString();
+                    ltIdSede.Text = Session["idSede"].ToString();
+                    ltIdCanalVenta.Text = Session["idCanalVenta"].ToString();
+                    ltIdEmpleado.Text = Session["idEmpleado"].ToString();
+
+                    //Session["idUsuario"] = 147;
+                    //Session["NombreUsuario"] = "Christian Morales";
+                    //Session["idEmpresa"] = 1;
+                    //Session["Cargo"] = "WebMaster";
+                    //Session["Foto"] = "chrismo.jpg";
+                    //Session["idPerfil"] = 1;
+                    //Session["usuario"] = "sistemas@fitnesspeoplecmd.com";
+                    //Session[""] = "11";
+
+                    DateTime fechaObjetivo = Convert.ToDateTime(Session["fechaNac"]);
+                    int diaObjetivo = fechaObjetivo.Day;
+                    int mesObjetivo = fechaObjetivo.Month;
+
+                    DateTime hoy = DateTime.Now;
+
+                    if (hoy.Day == diaObjetivo && hoy.Month == mesObjetivo)
+                    {
+                        // Ejecutar el script en el navegador
+                        ScriptManager.RegisterStartupScript(this, GetType(),
+                            "confettiScript", "lanzarConfetti();", true);
+                    }
+
+                    if (Request.QueryString["idPerfil"] != null)
+                    {
+                        Session["idPerfil"] = Convert.ToInt16(Request.QueryString["idPerfil"].ToString());
+                    }
+                    if (Request.QueryString["idUsuario"] != null)
+                    {
+                        Session["idUsuario"] = Convert.ToInt16(Request.QueryString["idUsuario"].ToString());
+                    }
+
+                    DateTime fechaActual = DateTime.Now;
+                    DateTime fechaDestino = new DateTime(2025, 10, 31);
+                    TimeSpan diferencia = fechaDestino - fechaActual;
+                    _strDiaZero = Convert.ToInt32(diferencia.TotalDays).ToString();
+
+                    Control ctrInicio = new Control();
+
                     if (Session["idPerfil"].ToString() == "1")
                     {
                         ctrInicio = LoadControl("controles/indicadores01.ascx");

@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Web.Services;
+using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
@@ -22,7 +23,7 @@ namespace fpWebApp
                     }
                     if (ViewState["Consulta"].ToString() == "1")
                     {
-                        //CargarSedes();
+                        CargarCanalesVentaSedes();
                     }
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
@@ -64,8 +65,37 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        protected void ddlCanalVenta_SelectedIndexChanged(object sender, EventArgs e)
+        private void CargarCanalesVentaSedes()
         {
+            ddlCanalVenta.Items.Clear();
+            //ListItem li = new ListItem("Seleccione", "");
+            //ddlCanalVenta.Items.Add(li);
+
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = new DataTable();
+
+                if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
+                {
+                    dt = cg.ConsultarCanalesVentaSedes();
+                }
+                else
+                {
+                    dt = cg.ConsultarCanalesVentaSedesPorId(Convert.ToInt32(Session["idSede"].ToString()));
+                }
+
+                ddlCanalVenta.DataTextField = "NombreCanalVenta";
+                ddlCanalVenta.DataValueField = "idCanalVenta";
+                ddlCanalVenta.DataSource = dt;
+                ddlCanalVenta.DataBind();
+
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message.ToString();
+            }
 
         }
     }

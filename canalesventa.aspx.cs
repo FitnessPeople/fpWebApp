@@ -58,6 +58,7 @@ namespace fpWebApp
                                 btnAgregar.Text = "Actualizar";
                                 ltTitulo.Text = "Actualizar Canal de venta";
                             }
+                            dt.Dispose();
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
@@ -98,6 +99,7 @@ namespace fpWebApp
                                 }
                                 dt1.Dispose();
                             }
+                            dt.Dispose();
                         }
                     }
                 }

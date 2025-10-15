@@ -21,7 +21,6 @@ namespace fpWebApp
 
             DataTable dt = cg.ConsultarMetaComercialMensual(Convert.ToInt32(filtro), Convert.ToInt32(Request.QueryString["mes"].ToString()), Convert.ToInt32(Request.QueryString["anio"].ToString()));
 
-
             var lista = new List<object>();
             foreach (DataRow row in dt.Rows)
             {

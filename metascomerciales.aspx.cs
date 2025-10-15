@@ -220,8 +220,8 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)  // Viene a editar o a borrar el registro
             {
-                if (!ValidarMetaComercial())
-                {
+                //if (!ValidarMetaComercial())
+                //{
                     string strInitData = TraerData();
 
                     if (Request.QueryString["editid"] != null)
@@ -250,15 +250,15 @@ namespace fpWebApp
                         string respuesta = cg.EliminarMetaComercial(int.Parse(Request.QueryString["deleteid"].ToString()));
                     }
                     Response.Redirect("metascomerciales");
-                }
-                else
-                {
-                    MostrarAlerta("Error", "Ya existe un registro para misma fecha y el mismo canal de venta.", "error");
-                    //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                    //"<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    //"Ya existe un registro para misma fecha y el mismo canal de venta." +
-                    //"</div>";
-                }
+                //}
+                //else
+                //{
+                //    MostrarAlerta("Error", "Ya existe un registro para misma fecha y el mismo canal de venta.", "error");
+                //    //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                //    //"<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                //    //"Ya existe un registro para misma fecha y el mismo canal de venta." +
+                //    //"</div>";
+                //}
 
                 
             }

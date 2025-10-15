@@ -232,9 +232,15 @@
                             <div class="col-lg-9">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5><i class="fa fa-percent text-danger"></i> Metas diarias </h5>
+                                        <h5><i class="fa fa-percent text-danger"></i> Metas por día</h5>
                                     </div>
                                     <div class="ibox-content">
+                                        <asp:DropDownList ID="ddlCanalVenta" runat="server"
+                                            AppendDataBoundItems="true"
+                                            CssClass="form-control input-sm m-b"
+                                            OnSelectedIndexChanged="ddlCanalVenta_SelectedIndexChanged"
+                                            AutoPostBack="true">
+                                        </asp:DropDownList>
                                         <div id="calendar"></div>
                                     </div>
                                 </div>
@@ -294,6 +300,7 @@
             brechaDiv.innerHTML = ''; // limpiar lista anterior
             cumplimientoDiv.innerHTML = ''; // limpiar lista anterior
             promedioDiarioDiv.innerHTML = ''; // limpiar lista anterior
+            ventasNecesariasDiv.innerHTML = ''; // limpiar lista anterior
 
             let sumaVentasMes = 0;
             let valor = 0;
@@ -401,11 +408,12 @@
                     // info.end   = fin del rango visible
                     var month = info.start.getMonth() + 1; // meses 0–11
                     var year = info.start.getFullYear();
+                    var canalVenta = document.getElementById('ddlCanalVenta').value;
 
                     $.ajax({
                         url: 'obtenermetascomerciales.aspx',
                         method: 'GET',
-                        data: { mes: month, anio: year },
+                        data: { mes: month, anio: year, filtro: canalVenta },
                         success: function (events) {
                             successCallback(events); // entregamos eventos al calendario
                             realizarCalculosConExtendedProps(events, calendar);
@@ -501,6 +509,12 @@
             });
 
             calendar.render();
+
+            // 🔁 Recargar eventos cuando cambie el dropdown
+            document.getElementById('ddlCanalVenta').addEventListener('change', function () {
+                calendar.refetchEvents();
+            });
+
             });
         });
 
