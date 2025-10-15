@@ -32,12 +32,11 @@ namespace fpWebApp
                         if (idPerfil==1 || idPerfil == 18 || idPerfil == 21 || idPerfil == 37) // Usuario Directivo
                         {
                             CargarAsesoresPorSede(idCanalVenta);
-
                             listaAfiliados("Todas");
                         }
                         else
                         {
-                            CargarAsesoresPorSede(Convert.ToInt32(idCanalVenta));                           
+                            CargarAsesoresPorSede(idCanalVenta);                           
                             if (idCanalVenta == 12 || idCanalVenta ==13 || idCanalVenta == 14)
                             {
                                 listaAfiliados("Todas");
@@ -94,7 +93,6 @@ namespace fpWebApp
             {
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = new DataTable();
-                //dt = cg.ConsultarCanalesVentaSedes();
 
                 if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
                 {
@@ -126,9 +124,8 @@ namespace fpWebApp
             try
             {
                 int idSede = Convert.ToInt32(Session["idSede"].ToString());
-                DataTable dt = cg.ConsultaCargarAsesoresPorSede(idSede); // trae todos los asesores de la sede
+                DataTable dt = cg.ConsultaCargarAsesoresPorSede(idSede); 
 
-                // Si idCanalVenta > 0, filtramos por ese canal
                 if (idCanalVenta > 0)
                 {
                     var filteredRows = dt.AsEnumerable()
@@ -136,15 +133,13 @@ namespace fpWebApp
 
                     if (filteredRows.Any())
                     {
-                        dt = filteredRows.CopyToDataTable(); // crea un nuevo DataTable con los registros filtrados
+                        dt = filteredRows.CopyToDataTable(); 
                     }
                     else
                     {
-                        dt = dt.Clone(); // tabla vacía si no hay coincidencias
+                        dt = dt.Clone(); 
                     }
                 }
-
-                // Cargar DropDownList con los registros filtrados
                 ddlAsesores.DataSource = dt;
                 ddlAsesores.DataTextField = "NombreUsuario";
                 ddlAsesores.DataValueField = "idUsuario";
