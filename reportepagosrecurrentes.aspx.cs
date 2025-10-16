@@ -21,8 +21,8 @@ namespace fpWebApp
 {
 	public partial class reportepagosrecurrentes : System.Web.UI.Page
 	{
-        static int idIntegracion = 1; // Pruebas
-        //static int idIntegracion = 4; // Producción
+        //static int idIntegracion = 1; // Pruebas
+        static int idIntegracion = 4; // Producción
 
         protected string Url
         {
@@ -84,7 +84,7 @@ namespace fpWebApp
                         if (ViewState["Consulta"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            CargarPlanes();
+                            //CargarPlanes();
                             //lbExportarExcel.Visible = false;
                         }
                         if (ViewState["Exportar"].ToString() == "1")
@@ -94,7 +94,7 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-                            CargarPlanes();
+                            //CargarPlanes();
                         }
                     }
                     listaTransacciones();
@@ -142,16 +142,16 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void CargarPlanes()
-        {
-            ddlPlanes.Items.Clear();
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanesWeb();
+        //private void CargarPlanes()
+        //{
+        //    ddlPlanes.Items.Clear();
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarPlanesWeb();
 
-            ddlPlanes.DataSource = dt;
-            ddlPlanes.DataBind();
-            dt.Dispose();
-        }
+        //    ddlPlanes.DataSource = dt;
+        //    ddlPlanes.DataBind();
+        //    dt.Dispose();
+        //}
 
         private void listaTransacciones()
         {
@@ -162,13 +162,17 @@ namespace fpWebApp
                                 ap.idAfiliadoPlan, 
                                 a.DocumentoAfiliado, a.NombreAfiliado, a.EmailAfiliado,
                                 u.idUsuario, 
-                                p.NombrePlan 
+                                p.idPlan, p.NombrePlan 
                             FROM PagosPlanAfiliado ppa
                             INNER JOIN (
                                 SELECT DataIdFuente, MAX(fechaHoraPago) AS UltimoPago
                                 FROM PagosPlanAfiliado
+                                WHERE MONTH(fechaHoraPago) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
+                                  AND YEAR(fechaHoraPago) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)
                                 GROUP BY DataIdFuente
-                            ) ult ON ppa.DataIdFuente = ult.DataIdFuente AND ppa.fechaHoraPago = ult.UltimoPago
+                            ) ult 
+                                ON ppa.DataIdFuente = ult.DataIdFuente 
+                                AND ppa.fechaHoraPago = ult.UltimoPago
                             INNER JOIN AfiliadosPlanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan
                             INNER JOIN Afiliados a ON a.idAfiliado = ap.idAfiliado 
                             INNER JOIN Usuarios u ON u.idUsuario = ppa.idUsuario  
@@ -365,19 +369,12 @@ namespace fpWebApp
                 // Recuperamos los datos ocultos
                 int idAfiliadoPlan = Convert.ToInt32(((HiddenField)item.FindControl("hfIdAfiliadoPlan")).Value);
                 int idVendedor = Convert.ToInt32(((HiddenField)item.FindControl("hfIdVendedor")).Value);
+                int idPlan = Convert.ToInt32(((HiddenField)item.FindControl("hfIdPlan")).Value);
                 int valor = Convert.ToInt32(((HiddenField)item.FindControl("hfValor")).Value);
                 string fuentePago = ((HiddenField)item.FindControl("hfFuentePago")).Value;
                 string correo = ((HiddenField)item.FindControl("hfEmail")).Value;
                 string nombrePlan = ((HiddenField)item.FindControl("hfNombrePlan")).Value;
                 string documentoAfiliado = ((HiddenField)item.FindControl("hfDocumentoAfiliado")).Value;
-
-                //int idAfiliadoPlan = Convert.ToInt32(hfIdAfiliadoPlan.Value);
-                //int idVendedor = Convert.ToInt32(hfIdVendedor.Value);
-                //int valor = Convert.ToInt32(hfValor.Value);
-                //string fuentePago = hfFuentePago.Value;
-                //string correo = hfEmail.Value;
-                //string nombrePlan = hfNombrePlan.Value;
-                //string documentoAfiliado = hfDocumentoAfiliado.Value;
 
                 // Validaciones básicas
                 if (string.IsNullOrEmpty(fuentePago))
@@ -386,19 +383,29 @@ namespace fpWebApp
                     return;
                 }
 
-                int monto = Convert.ToInt32($"{valor}00");
-                string moneda = "COP";
+                if (idPlan == 12)
+                {
+                    if (valor == 2000)
+                    {
+                        valor = 89000 - valor;
+                    }
+                    else
+                    {
+                        valor = 89000;
+                    }
+                }
 
+                int monto = valor * 100;
                 string referencia = $"{documentoAfiliado}-{DateTime.Now.ToString("yyyyMMddHHmmss")}";
-
+                string descripcion = $"Cobro recurrente del plan {nombrePlan}";
 
                 bool pagoExitoso = await CrearTransaccionRecurrenteAsync(
                     amount_in_cents: monto,
-                    currency: moneda,
+                    currency: "COP",
                     customer_email: correo, 
                     reference: referencia,
                     payment_source_id: Convert.ToInt32(fuentePago),
-                    descripcion: $"Cobro recurrente del plan {nombrePlan}"
+                    descripcion: descripcion
                 );
 
                 // Si fue exitoso, registramos el pago

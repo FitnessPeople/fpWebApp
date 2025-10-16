@@ -56,6 +56,8 @@
            });
        });
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body onload="changeClass()">
@@ -137,7 +139,7 @@
                 <%--Fin Breadcrumb!!!--%>
             </div>
             <div class="wrapper wrapper-content animated fadeInRight">
-                <div class="row animated fadeInDown">
+                <div class="animated fadeInDown">
                     <%--Inicio Contenido!!!!--%>
 
                     <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
@@ -176,90 +178,74 @@
                         </div>
 
                         <div class="row" id="divContenido" runat="server">
-                                <div class="ibox float-e-margins">
-                                    <div class="ibox-title">
-                                        <h5>Transacciones: Recibir pagos</h5>
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-up"></i>
-                                            </a>
-                                        </div>
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>Transacciones: Recibir pagos</h5>
+                                    <div class="ibox-tools">
+                                        <a class="collapse-link">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </a>
                                     </div>
-                                    <div class="ibox-content">
-                                        <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
-                                            <div class="col-lg-8">
-                                                <div class="form-group">
-                                                    <div class="form-group" id="filter-form-container"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4">
-                                                <div>
-                                                    <asp:DropDownList ID="ddlPlanes" DataTextField="NombrePlan" DataValueField="idPlan"
-                                                        runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
-                                                        <asp:ListItem Text="Seleccione" Value="0"></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                    <%--<asp:RadioButtonList ID="rblValor" runat="server" RepeatDirection="Horizontal">
-                                                        <asp:ListItem Value="2000" Text="$ 2.000"></asp:ListItem>
-                                                        <asp:ListItem Value="89000" Text="$ 89.000"></asp:ListItem>
-                                                        <asp:ListItem Value="99000" Text="$ 99.000"></asp:ListItem>
-                                                    </asp:RadioButtonList>--%>
-                                                </div>
+                                </div>
+                                <div class="ibox-content">
+                                    <div class="" style="font-size: 12px;" runat="server" id="divBotonesLista">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <div class="form-group" id="filter-form-container"></div>
                                             </div>
                                         </div>
-
-                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
-                                            data-filter-min="3" data-filter-placeholder="Buscar"
-                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
-                                            data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300"
-                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados" id="miTabla">
-                                            <thead>
-                                                <tr>
-                                                    <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">Id Pago</th>
-                                                    <th>Documento</th>
-                                                    <th>Afiliado</th>
-                                                    <th data-breakpoints="xs sm md">Valor</th>
-                                                    <th data-breakpoints="xs sm md">Plan</th>
-                                                    <th data-breakpoints="xs sm md">Fuente de Pago</th>
-                                                    <th data-breakpoints="xs sm md">Fecha</th>
-                                                    <th data-breakpoints="xs sm md">Acciones</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <asp:Repeater ID="rpPagos" runat="server">
-                                                    <ItemTemplate>
-                                                        <tr class="feed-element">
-                                                            <td><%# Eval("idAfiliadoPlan") %></td>
-                                                            <td><%# Eval("DocumentoAfiliado") %></td>
-                                                            <td><%# Eval("NombreAfiliado") %></td>
-                                                            <td><%# Eval("Valor", "{0:C0}") %></td>
-                                                            <td><%# Eval("NombrePlan") %></td>
-                                                            <td><%# Eval("DataIdFuente") %></td>
-                                                            <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
-                                                            <td>
-                                                                <asp:Button ID="btnCobrar" runat="server" Text="Cobrar"
-                                                                    CssClass="btn btn-primary"
-                                                                    CommandArgument='<%# Eval("idPago") %>'
-                                                                    OnCommand="btnCobrar_Click"
-                                                                    OnClientClick="return ejecutarPago();" />
-
-                                                                <!-- Hidden fields con información adicional -->
-                                                                <asp:HiddenField ID="hfIdAfiliadoPlan" runat="server" Value='<%# Eval("idAfiliadoPlan") %>' />
-                                                                <asp:HiddenField ID="hfIdVendedor" runat="server" Value='<%# Eval("idUsuario") %>' />
-                                                                <asp:HiddenField ID="hfValor" runat="server" Value='<%# Eval("Valor") %>' />
-                                                                <asp:HiddenField ID="hfFuentePago" runat="server" Value='<%# Eval("DataIdFuente") %>' />
-                                                                <asp:HiddenField ID="hfEmail" runat="server" Value='<%# Eval("EmailAfiliado") %>' />
-                                                                <asp:HiddenField ID="hfNombrePlan" runat="server" Value='<%# Eval("NombrePlan") %>' />
-                                                                <asp:HiddenField ID="hfDocumentoAfiliado" runat="server" Value='<%# Eval("DocumentoAfiliado") %>' />
-                                                            </td>
-                                                        </tr>
-                                                    </ItemTemplate>
-                                                </asp:Repeater>
-                                            </tbody>
-                                        </table>
-
-                                        <%--<p>Total registros: <span id="totalRegistros"></span></p>
-                                        <p>Registros visibles: <span id="registrosVisibles"></span></p>--%>
                                     </div>
+
+                                    <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                        data-filter-min="3" data-filter-placeholder="Buscar"
+                                        data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
+                                        data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300"
+                                        data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados" id="miTabla">
+                                        <thead>
+                                            <tr>
+                                                <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">Id Pago</th>
+                                                <th>Documento</th>
+                                                <th>Afiliado</th>
+                                                <th data-breakpoints="xs sm md">Valor</th>
+                                                <th data-breakpoints="xs sm md">Plan</th>
+                                                <th data-breakpoints="xs sm md">Fuente de Pago</th>
+                                                <th data-breakpoints="xs sm md">Fecha</th>
+                                                <th data-breakpoints="xs sm md">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <asp:Repeater ID="rpPagos" runat="server">
+                                                <ItemTemplate>
+                                                    <tr class="feed-element">
+                                                        <td><%# Eval("idAfiliadoPlan") %></td>
+                                                        <td><%# Eval("DocumentoAfiliado") %></td>
+                                                        <td><%# Eval("NombreAfiliado") %></td>
+                                                        <td><%# Eval("Valor", "{0:C0}") %></td>
+                                                        <td><%# Eval("NombrePlan") %></td>
+                                                        <td><%# Eval("DataIdFuente") %></td>
+                                                        <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
+                                                        <td>
+                                                            <asp:Button ID="btnCobrar" runat="server" Text="Cobrar"
+                                                                CssClass="btn btn-primary"
+                                                                CommandArgument='<%# Eval("idPago") %>'
+                                                                OnCommand="btnCobrar_Click"
+                                                                OnClientClick="return confirmarCobro(this);" />
+
+                                                            <!-- Hidden fields con información adicional -->
+                                                            <asp:HiddenField ID="hfIdAfiliadoPlan" runat="server" Value='<%# Eval("idAfiliadoPlan") %>' />
+                                                            <asp:HiddenField ID="hfIdVendedor" runat="server" Value='<%# Eval("idUsuario") %>' />
+                                                            <asp:HiddenField ID="hfIdPlan" runat="server" Value='<%# Eval("idPlan") %>' />
+                                                            <asp:HiddenField ID="hfValor" runat="server" Value='<%# Eval("Valor") %>' />
+                                                            <asp:HiddenField ID="hfFuentePago" runat="server" Value='<%# Eval("DataIdFuente") %>' />
+                                                            <asp:HiddenField ID="hfEmail" runat="server" Value='<%# Eval("EmailAfiliado") %>' />
+                                                            <asp:HiddenField ID="hfNombrePlan" runat="server" Value='<%# Eval("NombrePlan") %>' />
+                                                            <asp:HiddenField ID="hfDocumentoAfiliado" runat="server" Value='<%# Eval("DocumentoAfiliado") %>' />
+                                                        </td>
+                                                    </tr>
+                                                </ItemTemplate>
+                                            </asp:Repeater>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -271,7 +257,6 @@
         </div>
         <uc1:rightsidebar runat="server" ID="rightsidebar" />
     </div>
-
 
 
     <!-- Mainly scripts -->
@@ -316,6 +301,120 @@
         });
 
     </script>
+
+    <script>
+
+        function mostrarAlerta(titulo, mensaje, tipo, opcionesExtras = {}) {
+            Swal.fire({
+                title: titulo,
+                text: mensaje,
+                icon: tipo,
+                background: '#3C3C3C',
+                showCloseButton: true,
+                confirmButtonText: 'Aceptar',
+                customClass: {
+                    popup: 'alert',
+                    confirmButton: 'btn-confirm-alert'
+                },
+                ...opcionesExtras
+            });
+        }
+
+        function confirmarCobro(btn) {
+            event.preventDefault(); // Evita el postback inmediato
+
+            btn.disabled = true;
+
+            Swal.fire({
+                title: "¿Confirmar cobro?",
+                text: "¿Deseas realizar el cobro recurrente a este afiliado?",
+                icon: "question", 
+                background: '#3C3C3C',
+                showCancelButton: true,
+                confirmButtonText: "Sí, realizar cobro",
+                cancelButtonText: "Cancelar",
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Ejecuta el postback manualmente para ese botón específico
+                    __doPostBack(btn.name, '');
+                }
+            });
+
+            return false; // Evita que el postback ocurra hasta que el usuario confirme
+        }
+
+    </script>
+
+    <style>
+
+        /*-------- 3.14 SweetAlert --------*/
+        body.swal2-shown {
+	        padding-right: 0 !important;
+	        overflow-y: auto !important;
+        }
+
+        .alert {
+	        color: #FFFFFF; /* Color de texto del popup */
+	        border: 1px solid #FFFFFF;
+        }
+
+        .swal2-close {
+	        color: #E3FF00; /* botón de cerrar */
+        }
+
+        .swal2-close:hover{
+	        color: #E3FF00;
+        }
+
+        .swal2-icon {
+	        border-color: #E3FF00 !important;
+	        color: #E3FF00 !important;
+        }
+
+	        /* SUCCESS */
+	        .swal2-icon.swal2-success {
+		        border-color: #E3FF00 !important;
+	        }
+
+		        .swal2-icon.swal2-success [class^='swal2-success-line'] {
+			        background-color: #E3FF00 !important;
+		        }
+
+		        .swal2-icon.swal2-success .swal2-success-ring {
+			        border: 0.25em solid #E3FF00 !important;
+		        }
+
+	        /* ERROR */
+	        .swal2-icon.swal2-error [class^='swal2-x-mark-line'] {
+		        background-color: #E3FF00 !important;
+	        }
+
+	        /* WARNING */
+	        .swal2-icon.swal2-warning {
+		        border-color: #E3FF00 !important;
+		        color: #E3FF00 !important;
+	        }
+
+	        /* INFO */
+	        .swal2-icon.swal2-info {
+		        border-color: #E3FF00 !important;
+		        color: #E3FF00 !important;
+	        }
+
+	        /* QUESTION */
+	        .swal2-icon.swal2-question {
+		        border-color: #E3FF00 !important;
+		        color: #E3FF00 !important;
+	        }
+
+        .swal2-loader {
+	        border-color: #E3FF00 !important; /* color del borde */
+	        border-top-color: transparent !important; /* hace efecto de giro */
+        }
+
+    </style>
 
 </body>
 
