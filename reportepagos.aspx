@@ -194,7 +194,7 @@
                                     <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
-                                                <span class="label label-success pull-right">Mes actual</span>
+                                                <%--<span class="label label-success pull-right">Mes actual</span>--%>
                                                 <h5>Ventas totales</h5>
                                             </div>
                                             <div class="ibox-content">
@@ -211,7 +211,7 @@
                                     <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
-                                                <span class="label label-info pull-right">Mes actual</span>
+                                                <%--<span class="label label-info pull-right">Mes actual</span>--%>
                                                 <h5>Ventas Web</h5>
                                             </div>
                                             <div class="ibox-content">
@@ -228,7 +228,7 @@
                                     <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
-                                                <span class="label label-primary pull-right">Mes actual</span>
+                                                <%--<span class="label label-primary pull-right">Mes actual</span>--%>
                                                 <h5>Ventas Counter</h5>
                                             </div>
                                             <div class="ibox-content">
@@ -245,7 +245,7 @@
                                     <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
-                                                <span class="label label-danger pull-right">Mes actual</span>
+                                                <%--<span class="label label-danger pull-right">Mes actual</span>--%>
                                                 <h5>Ventas </h5>
                                             </div>
                                             <div class="ibox-content">
@@ -283,13 +283,7 @@
                                                 <div>
                                                     <asp:DropDownList ID="ddlPlanes" DataTextField="NombrePlan" DataValueField="idPlan"
                                                         runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
-                                                        <asp:ListItem Text="Seleccione" Value="0"></asp:ListItem>
                                                     </asp:DropDownList>
-                                                    <asp:RadioButtonList ID="rblValor" runat="server" RepeatDirection="Horizontal">
-                                                        <asp:ListItem Value="2000" Text="$ 2.000"></asp:ListItem>
-                                                        <asp:ListItem Value="89000" Text="$ 89.000"></asp:ListItem>
-                                                        <asp:ListItem Value="99000" Text="$ 99.000"></asp:ListItem>
-                                                    </asp:RadioButtonList>
                                                 </div>
                                             </div>
                                             <div class="col-lg-2">

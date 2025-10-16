@@ -130,7 +130,7 @@
                                   <div class="col-md-3">
                                       <div id="filtros">
                                         <asp:RadioButtonList ID="rblValor" runat="server">
-                                            <asp:ListItem Value="2000" Text="2000"></asp:ListItem>
+                                            <asp:ListItem Value="2000" Text="2000" Selected="True"></asp:ListItem>
                                             <asp:ListItem Value="89000" Text="89000"></asp:ListItem>
                                         </asp:RadioButtonList>
                                     </div>

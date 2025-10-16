@@ -57,7 +57,12 @@ namespace fpWebApp
                             CargarPlanes();
                         }
                     }
-                    listaTransacciones();
+                    //listaTransacciones();
+                    listaTransaccionesPorFecha(
+                        Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()),
+                        Convert.ToInt32(ddlPlanes.SelectedValue.ToString()),
+                        txbFechaIni.Value.ToString(),
+                        txbFechaFin.Value.ToString());
                     VentasWeb();
                     VentasCounter();
                 }
@@ -94,6 +99,8 @@ namespace fpWebApp
         private void CargarPlanes()
         {
             ddlPlanes.Items.Clear();
+            ListItem li = new ListItem("Todos", "0");
+            ddlPlanes.Items.Add(li);
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarPlanesVigentes();
 
@@ -122,8 +129,6 @@ namespace fpWebApp
             DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, idPlan, fechaIni, fechaFin, out decimal valorTotal);
             rpPagos.DataSource = dt;
             rpPagos.DataBind();
-            //ltValortotalWompi.Text = valorTotal.ToString("C0");
-            dt.Dispose();
 
             decimal sumatoriaValor = 0;
 
@@ -134,105 +139,114 @@ namespace fpWebApp
             }
 
             ltCuantos1.Text = "$ " + String.Format("{0:N0}", sumatoriaValor);
-            ltRegistros1.Text = "";
+            ltRegistros1.Text = dt.Rows.Count.ToString();
+            dt.Dispose();
         }
 
         private void VentasWeb()
         {
             string strQuery = "";
-            //if (rblValor.SelectedValue.ToString() == "")
-            //{
-                strQuery = @"SELECT  
-                SUM(pa.Valor) sumatoria 
+
+            if (ddlPlanes.SelectedValue.ToString() == "0")
+            {
+                strQuery = @"SELECT pa.Valor 
                 FROM pagosplanafiliado pa
                     INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
                     INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
                     INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
                     INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
                     INNER JOIN planes p ON p.idPlan = ap.idPlan 
-                WHERE pa.idMedioPago = 4 
+                WHERE pa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()) + @" 
+                AND DATE(pa.FechaHoraPago) 
+                BETWEEN IFNULL(NULLIF('" + txbFechaIni.Value.ToString() + @"', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
+                AND IFNULL(NULLIF('" + txbFechaFin.Value.ToString() + @"', ''), CURDATE()) 
+                AND u.idUsuario = 156";
+            }
+            else
+            {
+                strQuery = @"SELECT pa.Valor 
+                FROM pagosplanafiliado pa
+                    INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
+                    INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
+                    INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
+                    INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
+                    INNER JOIN planes p ON p.idPlan = ap.idPlan 
+                WHERE pa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()) + @" 
                 AND DATE(pa.FechaHoraPago) 
                 BETWEEN IFNULL(NULLIF('" + txbFechaIni.Value.ToString() + @"', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
                 AND IFNULL(NULLIF('" + txbFechaFin.Value.ToString() + @"', ''), CURDATE()) 
                 AND u.idUsuario = 156 
                 AND ap.idPlan = " + ddlPlanes.SelectedValue.ToString();
-            //}
-            //else
-            //{
-            //    strQuery = @"SELECT  
-            //    SUM(pa.Valor) sumatoria 
-            //    FROM pagosplanafiliado pa
-            //        INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
-            //        INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
-            //        INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
-            //        INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
-            //    WHERE pa.idMedioPago = 4 
-            //    AND DATE(pa.FechaHoraPago) 
-            //    BETWEEN IFNULL(NULLIF('" + txbFechaIni.Value.ToString() + @"', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
-            //    AND IFNULL(NULLIF('" + txbFechaFin.Value.ToString() + @"', ''), CURDATE()) 
-            //    AND u.idUsuario = 156 
-            //    AND pa.Valor = " + rblValor.SelectedValue.ToString();
-            //}
+            }
                 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
-            
+
+            decimal sumatoriaValor = 0;
+
+            if (dt.Rows.Count > 0)
+            {
+                object suma = dt.Compute("SUM(Valor)", "");
+                sumatoriaValor = suma != DBNull.Value ? Convert.ToDecimal(suma) : 0;
+            }
+
+            ltCuantos2.Text = "$ " + String.Format("{0:N0}", sumatoriaValor);
+            ltRegistros2.Text = dt.Rows.Count.ToString();
+
             dt.Dispose();
-
-            int valor = 0;
-            int.TryParse(dt.Rows[0]["sumatoria"]?.ToString(), out valor);
-
-            ltCuantos2.Text = "$ " + String.Format("{0:N0}", valor);
-            ltRegistros2.Text = "";
         }
 
         private void VentasCounter()
         {
             string strQuery = "";
-            //if (rblValor.SelectedValue.ToString() == "")
-            //{
-                strQuery = @"SELECT  
-                SUM(pa.Valor) sumatoria 
+
+            if (ddlPlanes.SelectedValue.ToString() == "0")
+            {
+                strQuery = @"SELECT pa.Valor 
                 FROM pagosplanafiliado pa
                     INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
                     INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
                     INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
                     INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
                     INNER JOIN planes p ON p.idPlan = ap.idPlan 
-                WHERE pa.idMedioPago = 4 
+                WHERE pa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()) + @" 
+                AND DATE(pa.FechaHoraPago) 
+                BETWEEN IFNULL(NULLIF('" + txbFechaIni.Value.ToString() + @"', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
+                AND IFNULL(NULLIF('" + txbFechaFin.Value.ToString() + @"', ''), CURDATE()) 
+                AND u.idUsuario = 152";
+            }
+            else
+            {
+                strQuery = @"SELECT pa.Valor 
+                FROM pagosplanafiliado pa
+                    INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
+                    INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
+                    INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
+                    INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
+                    INNER JOIN planes p ON p.idPlan = ap.idPlan 
+                WHERE pa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()) + @" 
                 AND DATE(pa.FechaHoraPago) 
                 BETWEEN IFNULL(NULLIF('" + txbFechaIni.Value.ToString() + @"', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
                 AND IFNULL(NULLIF('" + txbFechaFin.Value.ToString() + @"', ''), CURDATE()) 
                 AND u.idUsuario = 152 
                 AND ap.idPlan = " + ddlPlanes.SelectedValue.ToString();
-            //}
-            //else
-            //{
-            //    strQuery = @"SELECT  
-            //    SUM(pa.Valor) sumatoria 
-            //    FROM pagosplanafiliado pa
-            //        INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
-            //        INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
-            //        INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
-            //        INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
-            //    WHERE pa.idMedioPago = 4 
-            //    AND DATE(pa.FechaHoraPago) 
-            //    BETWEEN IFNULL(NULLIF('" + txbFechaIni.Value.ToString() + @"', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
-            //    AND IFNULL(NULLIF('" + txbFechaFin.Value.ToString() + @"', ''), CURDATE()) 
-            //    AND u.idUsuario = 152
-            //    AND pa.Valor = " + rblValor.SelectedValue.ToString();
-            //}
+            }
                 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
+            decimal sumatoriaValor = 0;
+
+            if (dt.Rows.Count > 0)
+            {
+                object suma = dt.Compute("SUM(Valor)", "");
+                sumatoriaValor = suma != DBNull.Value ? Convert.ToDecimal(suma) : 0;
+            }
+
+            ltCuantos3.Text = "$ " + String.Format("{0:N0}", sumatoriaValor);
+            ltRegistros3.Text = dt.Rows.Count.ToString();
+
             dt.Dispose();
-
-            int valor = 0;
-            int.TryParse(dt.Rows[0]["sumatoria"]?.ToString(), out valor);
-
-            ltCuantos3.Text = "$ " + String.Format("{0:N0}", valor);
-            ltRegistros3.Text = "";
         }
 
         private string listarDetalle(int idAfiliadoPlan)
