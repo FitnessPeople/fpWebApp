@@ -171,11 +171,12 @@
 
                     <form role="form" id="form" runat="server">
                         <div class="row" id="divContenido" runat="server">
+                          <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
 
                             <div class="col-lg-4">
                                 <div class="ibox float-e-margins">
                                     <div class="form-group">
-                                        <asp:Label ID="lblMensaje" runat="server" Text="Label"></asp:Label>                                       
+                                        <asp:Label ID="lblMensaje" runat="server" Text="Label"></asp:Label>
                                     </div>
                                     <div class="ibox-title">
                                         <h5>
@@ -192,7 +193,7 @@
 
 
                                                 <div class="row">
-    <%--                                                <div class="col-lg-6">
+                                                    <%--                                                <div class="col-lg-6">
                                                         <div class="form-group">
                                                             <label>Nombre:</label>
                                                             <asp:TextBox ID="txbNombreEstrategia" runat="server" CssClass="form-control input-sm"></asp:TextBox>
@@ -206,21 +207,21 @@
                                                     <div class="col-sm-12">
                                                         <div class="form-group">
                                                             <label>Empresa:</label>
-                                                     <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEmpresas" runat="server"
-                                                        OnSelectedIndexChanged="ddlEmpresas_SelectedIndexChanged" DataValueField="idEmpresa" DataTextField="NombreEmpresa"
-                                                        AutoPostBack="true" AppendDataBoundItems="true">
-                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                    </asp:DropDownList>  
-                                                            <asp:RequiredFieldValidator ID="rfvTipoEstrategia" runat="server" ErrorMessage="* Campo requerido"
+                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEmpresas" runat="server"
+                                                                OnSelectedIndexChanged="ddlEmpresas_SelectedIndexChanged" DataValueField="idEmpresa" DataTextField="NombreEmpresa"
+                                                                AutoPostBack="true" AppendDataBoundItems="true">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                            <%--                                                            <asp:RequiredFieldValidator ID="rfvTipoEstrategia" runat="server" ErrorMessage="* Campo requerido"
                                                                 ControlToValidate="ddlTipoEstrategias" ValidationGroup="agregar"
                                                                 CssClass="font-bold text-danger" Display="Dynamic">
-                                                            </asp:RequiredFieldValidator>
+                                                            </asp:RequiredFieldValidator>--%>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label>Descripción de la negociación:</label>
+                                                    <label>Descripción de la negociación / condiciones:</label>
                                                     <div id="editor" cssclass="form-control input-sm"></div>
                                                     <asp:HiddenField ID="hiddenEditor" runat="server" />
                                                 </div>
@@ -248,26 +249,102 @@
                                                     </div>
                                                 </div>
 
-                                                
+
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <i class="fa fa-dollar text-info"></i>
                                                             <label for="ValorPresupuesto" class="col-form-label">Porcentaje descuento %:</label>
                                                             <asp:TextBox ID="txbValorPresupuesto" CssClass="form-control input-sm" runat="server" placeholder="5%"
-                                                                onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
-                                                            <asp:RequiredFieldValidator ID="rfvValorPresupuesto" runat="server" ErrorMessage="* Campo requerido" 
+                                                                autocomplete="off"></asp:TextBox>
+                                                            <asp:RequiredFieldValidator ID="rfvValorPresupuesto" runat="server" ErrorMessage="* Campo requerido"
                                                                 ControlToValidate="txbValorPresupuesto" ValidationGroup="agregar"
-                                                                 CssClass="font-bold text-danger" Display="Dynamic" />
+                                                                CssClass="font-bold text-danger" Display="Dynamic" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="ValorPresupuesto" class="col-form-label">Retorno administrativo?:</label>
+                                                            <div class="col-sm-10">
+                                                                <label class="checkbox-inline">
+                                                                    <div class="i-checks">
+                                                                        <label>
+                                                                            <input type="radio" value="option1" name="a">
+                                                                            <i></i>Sí
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="i-checks">
+                                                                        <label>
+                                                                            <input type="radio" checked="" value="option2" name="a">
+                                                                            <i></i>No</label>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <div class="row">
 
+                                                <asp:Panel ID="pnlPlanesAfiliado" runat="server" Visible="false">
+                                                    <div class="row">
+                                                        <div class="ibox-content">
+                                                            <ul class="todo-list small-list">
+                                                                <asp:Repeater ID="rpPlanesAfiliado" runat="server">
+                                                                    <ItemTemplate>
+                                                                        <li>
+                                                                            <div class="i-checks">
+                                                                                <small class="label label-<%# Eval("label1") %> pull-right"><%# Eval("DiasQueFaltan") %></small>
+                                                                                <label>
+                                                                                    <%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
+                                                                                </label>
+                                                                                <br />
+                                                                                <div class="progress progress-striped active">
+                                                                                    <div style='width: <%# Eval("Porcentaje1") %>%' class="progress-bar progress-bar-success"></div>
+                                                                                    <div style='width: <%# Eval("Porcentaje2") %>%' class="progress-bar progress-bar-warning"></div>
+                                                                                </div>
+                                                                                <small class="text-muted"><%# Eval("FechaInicioPlan", "{0:dd MMM yyyy}") %> - <%# Eval("FechaFinalPlan", "{0:dd MMM yyyy}") %></small>
+                                                                            </div>
+                                                                        </li>
+                                                                    </ItemTemplate>
+                                                                </asp:Repeater>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </asp:Panel>
+
+                                                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                                                    <ContentTemplate>
+                                                        <div class="row" id="planesYValorMes">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <i class="fa fa-ticket text-info"></i>
+                                                                    <label for="Planes" class="col-form-label">Planes:</label>
+                                                                    <asp:DropDownList ID="ddlPlanes" DataTextField="NombrePlan" DataValueField="idPlan"
+                                                                        runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm" OnSelectedIndexChanged="ddlPlanes_SelectedIndexChanged" AutoPostBack="true">
+                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="ddlPlanes"
+                                                                        ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <i class="fa fa-dollar text-info"></i>
+                                                                    <label for="ValorMes" class="col-form-label">Valor mes:</label>
+                                                                    <asp:TextBox ID="txbValorMes" CssClass="form-control input-sm" runat="server" placeholder="$0"
+                                                                        onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off" Style="background-color: #e3ff00;"></asp:TextBox>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </ContentTemplate>
+                                                </asp:UpdatePanel>
+
+                                                <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label for="chblPlanes" class="col-form-label">Elija los planes a aplicar estrategia:</label>
+                                                            <label for="chblPlanes" class="col-form-label">Elija los planes a aplicar descuento:</label>
                                                             <br />
                                                             <asp:CheckBoxList ID="chblPlanes" runat="server" RepeatDirection="Vertical" CssClass="todo-list m-t">
                                                             </asp:CheckBoxList>
@@ -279,7 +356,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
-   <%--                                                     <div class="form-group">
+                                                        <%--                                                     <div class="form-group">
 
                                                             <label for="chblCanales" class="col-form-label">Elija los canales de venta a aplicar:</label>
                                                             <br />
@@ -363,14 +440,14 @@
                                                                         <th width="25%"><i class="fa fa-city m-r-xs"></i>Canales de venta</th>
                                                                         <th width="25%"><i class="fa fa-mobile m-r-xs"></i>Planes</th>
                                                                         <th width="25%"><i class="fa fa-mobile m-r-xs"></i>Presupuesto</th>
-                                                                        <th width="50%" class="text-nowrap"><i class="fa fa-clock m-r-xs"></i>Descripción</th>                                                                        
+                                                                        <th width="50%" class="text-nowrap"><i class="fa fa-clock m-r-xs"></i>Descripción</th>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><%# Eval("CanalesVenta") %></td>
                                                                         <td><%# Eval("Planes") %></td>
                                                                         <td><%# string.Format(new System.Globalization.CultureInfo("es-CO"), "{0:C0}", Eval("ValorPresupuesto")) %></td>
                                                                         <td><%# Eval("DescripcionEstrategia") %></td>
-                                                                        
+
                                                                     </tr>
                                                                 </table>
                                                             </td>
