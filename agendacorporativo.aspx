@@ -224,7 +224,7 @@
                                             </div>
                                         </div>
 
-<%--                                        <div class="row">
+                                        <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-horizontal">
                                                     <div class="form-group m-b-mb">
@@ -243,7 +243,7 @@
                                             </div>
 
 
-                                        </div>--%>
+                                        </div>
                                         <div class="row">
                                             <div class="form-group">
                                                 <i class="fas fa-pen text-info"></i>

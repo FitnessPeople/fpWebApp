@@ -148,7 +148,7 @@
                         <%--Traspasos--%>
                         <div class="ibox float-e-margins" id="divTraspasos" runat="server">
                             <div class="ibox-title">
-                                <h5><i class="fa fa-right-left"></i>Autorización de traspaso</h5>
+                                <h5><i class="fa fa-right-left m-r-sm"></i>Autorización de traspaso</h5>
                             </div>
                             <div class="ibox-content">
                                 <div class="row">

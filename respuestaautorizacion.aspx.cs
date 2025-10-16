@@ -51,7 +51,7 @@ namespace fpWebApp
                 "CONCAT(a2.NombreAfiliado, ' ', a2.ApellidoAfiliado) nomAfilDestino, t.Observaciones, u.NombreUsuario, t.FechaTraspaso, " +
                 "DATEDIFF(CURDATE(), FechaTraspaso) AS hacecuanto, " +
                 "IF(DATEDIFF(CURDATE(), FechaTraspaso)<5,'pie1',IF(DATEDIFF(CURDATE(), FechaTraspaso)<10,'pie2',IF(DATEDIFF(CURDATE(), FechaTraspaso)<15,'pie3','pie3'))) badge," +
-                "t.idAfiliadoPlan, t.FechaInicioTraspaso, t.DocumentoRespaldo " +
+                "t.idAfiliadoPlan, t.FechaInicioTraspaso, t.DocumentoRespaldo, t.idAfiliadoOrigen, t.idAfiliadoDestino " +
                 "FROM traspasoplanes t, Afiliados a1, Afiliados a2, AfiliadosPlanes ap, Usuarios u " +
                 "WHERE t.EstadoTraspaso = 'En proceso' " +
                 "AND t.idAfiliadoPlan = ap.idAfiliadoPlan " +
@@ -64,6 +64,8 @@ namespace fpWebApp
 
             if (dt.Rows.Count > 0)
             {
+                ViewState.Add("idAfiliadoOrigen", dt.Rows[0]["idAfiliadoOrigen"].ToString());
+                ViewState.Add("idAfiliadoDestino", dt.Rows[0]["idAfiliadoDestino"].ToString());
                 ltAfiliadoOrigen.Text = dt.Rows[0]["nomAfilOrigen"].ToString();
                 ltAfiliadoDestino.Text = dt.Rows[0]["nomAfilDestino"].ToString();
                 CargarPlanAfiliado(dt.Rows[0]["idAfiliadoPlan"].ToString());
@@ -294,19 +296,30 @@ namespace fpWebApp
             string strInitData = TraerDataTraspaso();
             try
             {
-                string strQuery = "UPDATE Cortesias SET " +
-                    "EstadoCortesia = '" + ViewState["EstadoCortesia"].ToString() + "', " +
-                    "RazonesCortesia = '" + txbRespuestaCortesia.Text.ToString() + "', " +
+                string strQuery = "UPDATE TraspasoPlanes SET " +
+                    "EstadoTraspaso = '" + ViewState["EstadoTraspaso"].ToString() + "', " +
+                    "Razones = '" + txbRespuestaTraspaso.Text.ToString() + "', " +
                     "idusuarioAutoriza = " + Session["idUsuario"].ToString() + ", " +
                     "FechaRespuesta = Now() " +
-                    "WHERE idCortesia = " + Request.QueryString["idCortesia"].ToString();
+                    "WHERE idTraspaso = " + Request.QueryString["idTraspaso"].ToString();
                 clasesglobales cg = new clasesglobales();
                 string mensaje = cg.TraerDatosStr(strQuery);
                 string strNewData = TraerDataTraspaso();
 
-                cg.InsertarLog(Session["idusuario"].ToString(), "Cortesias", "Modifica", "El usuario dio respuesta a la autorización de la cortesía.", strInitData, strNewData);
+                cg.InsertarLog(Session["idusuario"].ToString(), "Traspasos", "Modifica", "El usuario dio respuesta a la autorización del traspaso. ", strInitData, strNewData);
 
-                // Actualizar plan con la cortesía. Agregar los días al final del plan.
+                if (ViewState["EstadoTraspaso"].ToString() == "Autorizado")
+                {
+                    // Actualizar plan con el traspaso. Se quita el plan al usuario de origen y se le pone al usuario destino.
+                    strQuery = "UPDATE AfiliadosPlanes " +
+                        "SET idAfiliado = " + ViewState["idAfiliadoDestino"].ToString() + ", " +
+                        "ObservacionesPlan = CONCAT(ObservacionesPlan,' - Traspaso de plan.') " +
+                        "WHERE idAfiliado " + ViewState["idAfiliadoOrigen"].ToString() + " " +
+                        "AND EstadoPlan = 'Activo' ";
+
+                    mensaje = cg.TraerDatosStr(strQuery);
+
+                }
 
                 Response.Redirect("autorizaciones");
             }
@@ -325,11 +338,11 @@ namespace fpWebApp
                 "t.FechaTraspaso, t.FechaInicioTraspaso, t.Observaciones, t.EstadoTraspaso, " +
                 "IF(t.Razones IS NULL, '-.', t.Razones) AS RespuestaTraspaso, " +
                 "u2.NombreUsuario AS UsuarioQueAutoriza, t.FechaRespuesta " +
-                "FROM TraspasosPlanes t " +
+                "FROM TraspasoPlanes t " +
                 "LEFT JOIN Afiliados a1 ON a1.idAfiliado = t.idAfiliadoOrigen " +
                 "LEFT JOIN Afiliados a2 ON a2.idAfiliado = t.idAfiliadoDestino " +
-                "LEFT JOIN Usuarios u1 ON u1.idUsuario = c.idUsuario " +
-                "LEFT JOIN Usuarios u2 ON u2.idUsuario = c.idUsuarioAutoriza " +
+                "LEFT JOIN Usuarios u1 ON u1.idUsuario = t.idUsuario " +
+                "LEFT JOIN Usuarios u2 ON u2.idUsuario = t.idUsuarioAutoriza " +
                 "WHERE idTraspaso = " + Request.QueryString["idTraspaso"].ToString();
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
