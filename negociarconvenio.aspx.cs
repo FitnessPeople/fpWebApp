@@ -57,9 +57,11 @@ namespace fpWebApp
 
                     CargarDiccionarios();
                     listaEstrategias();
+                    listaEmpresasAfiliadas();
                     //CargartiposEstrategias();
                     CargarPlanes();
                     ListaCanalesDeVenta();
+                    CargarPlanes1();
 
                     ltTitulo.Text = "Establecer condiciones";
 
@@ -262,6 +264,66 @@ namespace fpWebApp
 
             dt.Dispose();
         }
+        private void CargarPlanes1()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPlanesVigentes();
+
+            ddlPlanes.DataSource = dt;
+            ddlPlanes.DataBind();
+            dt.Dispose();
+        }
+
+        protected void ddlPlanes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(ddlPlanes.SelectedValue) || ddlPlanes.SelectedValue == "0")
+            {
+                //txbValorPropuesta.Text = "Por favor selecciona un plan válido.";
+                ViewState["precioBase"] = null;
+                ViewState["Meses"] = null;
+                ViewState["MesesCortesia"] = null;
+                ViewState["DebitoAutomatico"] = null;
+                return;
+            }
+
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPlanes();
+            var fila = dt.Select("IdPlan = " + ddlPlanes.SelectedValue);
+            if (fila.Length > 0)
+            {
+                ViewState["precioBase"] = fila[0]["PrecioBase"];
+                ViewState["precioTotal"] = fila[0]["precioTotal"];
+                ViewState["Meses"] = fila[0]["Meses"];
+                ViewState["MesesCortesia"] = fila[0]["MesesCortesia"];
+                ViewState["DebitoAutomatico"] = fila[0]["DebitoAutomatico"];
+
+                int meses = Convert.ToInt32(ViewState["Meses"]);
+                int cortesia = Convert.ToInt32(ViewState["MesesCortesia"]);
+                int totalMeses = meses + cortesia;
+                double total = Convert.ToDouble(ViewState["precioTotal"]);
+                int precioBase = Convert.ToInt32(ViewState["precioBase"]);
+                int DebitoAutomatico = Convert.ToInt32(ViewState["DebitoAutomatico"]);
+
+                int ValorMes = Convert.ToInt32(fila[0]["PrecioBase"]);
+                txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
+                txbValorMes.Enabled = false;
+
+                string observaciones = fila[0]["DescripcionPlan"].ToString();
+                //txaObservaciones.InnerText = observaciones;
+
+                int mesesPlan = Convert.ToInt32(fila[0]["Meses"]); // Asegúrate que esta columna está en tu tabla
+
+                if (ViewState["DebitoAutomatico"] != null && int.TryParse(ViewState["DebitoAutomatico"].ToString(), out DebitoAutomatico))
+                {
+                    if (DebitoAutomatico == 1)
+                    {
+                        total = precioBase * 12;
+                    }
+                }
+              //  txbValorPropuesta.Text = $"${total:N0}";
+            }
+        }
+
         private void ListaCanalesDeVenta()
         {
             clasesglobales cg = new clasesglobales();
