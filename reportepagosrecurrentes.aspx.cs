@@ -94,16 +94,10 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-                            txbFechaIni.Attributes.Add("type", "date");
-                            txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
-                            txbFechaFin.Attributes.Add("type", "date");
-                            txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
                             CargarPlanes();
                         }
                     }
                     listaTransacciones();
-                    VentasWeb();
-                    VentasCounter();
                 }
                 else
                 {
@@ -161,10 +155,14 @@ namespace fpWebApp
 
         private void listaTransacciones()
         {
-            
             clasesglobales cg = new clasesglobales();
 
-            string query = @"SELECT *
+            string query = @"SELECT 
+                                ppa.idPago, ppa.Valor, ppa.DataIdFuente, ppa.FechaHoraPago,
+                                ap.idAfiliadoPlan, 
+                                a.DocumentoAfiliado, a.NombreAfiliado, a.EmailAfiliado,
+                                u.idUsuario, 
+                                p.NombrePlan 
                             FROM PagosPlanAfiliado ppa
                             INNER JOIN (
                                 SELECT DataIdFuente, MAX(fechaHoraPago) AS UltimoPago
@@ -184,428 +182,177 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void listaTransaccionesPorFecha(int tipoPago, int idPlan, string fechaIni, string fechaFin)
-        {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, idPlan, fechaIni, fechaFin, out decimal valorTotal);
-            rpPagos.DataSource = dt;
-            rpPagos.DataBind();
-            //ltValortotalWompi.Text = valorTotal.ToString("C0");
-            dt.Dispose();
+        //private string listarDetalle(int idAfiliadoPlan)
+        //{
+        //    string parametro = string.Empty;
+        //    string nomAfiliado = string.Empty;
+        //    string mensaje = string.Empty;
+        //    string tipoPago = string.Empty;
+        //    StringBuilder sb = new StringBuilder();
+        //    clasesglobales cg = new clasesglobales();
+        //    //int idempresa = 1; //Wompi pruebas 
+        //    int idempresa = 4; //Wompi produccion
 
-            decimal sumatoriaValor = 0;
-
-            if (dt.Rows.Count > 0)
-            {
-                object suma = dt.Compute("SUM(Valor)", "");
-                sumatoriaValor = suma != DBNull.Value ? Convert.ToDecimal(suma) : 0;
-            }
-        }
-
-        private void VentasWeb()
-        {
-            string strQuery = "";
-            //if (rblValor.SelectedValue.ToString() == "")
-            //{
-            strQuery = @"SELECT  
-                SUM(pa.Valor) sumatoria 
-                FROM pagosplanafiliado pa
-                    INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
-                    INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
-                    INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
-                    INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
-                    INNER JOIN planes p ON p.idPlan = ap.idPlan 
-                WHERE pa.idMedioPago = 4 
-                AND DATE(pa.FechaHoraPago) 
-                BETWEEN IFNULL(NULLIF('" + txbFechaIni.Value.ToString() + @"', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
-                AND IFNULL(NULLIF('" + txbFechaFin.Value.ToString() + @"', ''), CURDATE()) 
-                AND u.idUsuario = 156 
-                AND ap.idPlan = " + ddlPlanes.SelectedValue.ToString();
-            //}
-            //else
-            //{
-            //    strQuery = @"SELECT  
-            //    SUM(pa.Valor) sumatoria 
-            //    FROM pagosplanafiliado pa
-            //        INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
-            //        INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
-            //        INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
-            //        INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
-            //    WHERE pa.idMedioPago = 4 
-            //    AND DATE(pa.FechaHoraPago) 
-            //    BETWEEN IFNULL(NULLIF('" + txbFechaIni.Value.ToString() + @"', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
-            //    AND IFNULL(NULLIF('" + txbFechaFin.Value.ToString() + @"', ''), CURDATE()) 
-            //    AND u.idUsuario = 156 
-            //    AND pa.Valor = " + rblValor.SelectedValue.ToString();
-            //}
-
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
-            dt.Dispose();
-
-            int valor = 0;
-            int.TryParse(dt.Rows[0]["sumatoria"]?.ToString(), out valor);
-        }
-
-        private void VentasCounter()
-        {
-            string strQuery = "";
-            //if (rblValor.SelectedValue.ToString() == "")
-            //{
-            strQuery = @"SELECT  
-                SUM(pa.Valor) sumatoria 
-                FROM pagosplanafiliado pa
-                    INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
-                    INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
-                    INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
-                    INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
-                    INNER JOIN planes p ON p.idPlan = ap.idPlan 
-                WHERE pa.idMedioPago = 4 
-                AND DATE(pa.FechaHoraPago) 
-                BETWEEN IFNULL(NULLIF('" + txbFechaIni.Value.ToString() + @"', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
-                AND IFNULL(NULLIF('" + txbFechaFin.Value.ToString() + @"', ''), CURDATE()) 
-                AND u.idUsuario = 152 
-                AND ap.idPlan = " + ddlPlanes.SelectedValue.ToString();
-            //}
-            //else
-            //{
-            //    strQuery = @"SELECT  
-            //    SUM(pa.Valor) sumatoria 
-            //    FROM pagosplanafiliado pa
-            //        INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
-            //        INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
-            //        INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
-            //        INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
-            //    WHERE pa.idMedioPago = 4 
-            //    AND DATE(pa.FechaHoraPago) 
-            //    BETWEEN IFNULL(NULLIF('" + txbFechaIni.Value.ToString() + @"', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
-            //    AND IFNULL(NULLIF('" + txbFechaFin.Value.ToString() + @"', ''), CURDATE()) 
-            //    AND u.idUsuario = 152
-            //    AND pa.Valor = " + rblValor.SelectedValue.ToString();
-            //}
-
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
-            dt.Dispose();
-
-            int valor = 0;
-            int.TryParse(dt.Rows[0]["sumatoria"]?.ToString(), out valor);
-        }
-
-        private string listarDetalle(int idAfiliadoPlan)
-        {
-            string parametro = string.Empty;
-            string nomAfiliado = string.Empty;
-            string mensaje = string.Empty;
-            string tipoPago = string.Empty;
-            StringBuilder sb = new StringBuilder();
-            clasesglobales cg = new clasesglobales();
-            //int idempresa = 1; //Wompi pruebas 
-            int idempresa = 4; //Wompi produccion
-
-            try
-            {
-                DataTable dt = cg.ConsultarPagosPorId(idAfiliadoPlan);
-                tipoPago = dt.Rows[0]["NombreMedioPago"].ToString();
+        //    try
+        //    {
+        //        DataTable dt = cg.ConsultarPagosPorId(idAfiliadoPlan);
+        //        tipoPago = dt.Rows[0]["NombreMedioPago"].ToString();
 
 
-                switch (tipoPago)
-                {
+        //        switch (tipoPago)
+        //        {
 
-                    case "Efectivo":
-                        sb.Append("<table class=\"table table-bordered table-striped\">");
-                        sb.Append("<tr>");
-                        sb.Append("<th>ID</th><th>Documento afiliado</th><th>Nombre afiliado</th><th>Tipo pago</th><th>Valor</th><th>Fecha Cre.</th>");
-                        sb.Append("<th>Estado</th><th>Usuario</th><th>Canal de Venta</th>");
-                        sb.Append("</tr>");
-                        sb.Append("<tr>");
-                        sb.Append($"<td>{dt.Rows[0]["idAfiliadoPlan"].ToString()}</td>");
-                        sb.Append($"<td>{dt.Rows[0]["DocumentoAfiliado"].ToString()}</td>");
-                        sb.Append($"<td>{dt.Rows[0]["NombreAfiliado"].ToString()}</td>");
-                        sb.Append($"<td>{dt.Rows[0]["NombreMedioPago"].ToString()}</td>");
-                        sb.Append($"<td>{dt.Rows[0]["Valor"].ToString()}</td>");
-                        sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaHoraPago"].ToString())) + "</td>");
-                        sb.Append($"<td>{"Aprobado"}</td>");
-                        sb.Append($"<td>{dt.Rows[0]["Usuario"].ToString()}</td>");
-                        sb.Append($"<td>{dt.Rows[0]["CanalVenta"].ToString()}</td>");
-                        sb.Append("</tr>");
-                        sb.Append("</table>");
-                        break;
-                    case "Transferencia":
-                        sb.Append("<table class=\"table table-bordered table-striped\">");
-                        sb.Append("<tr>");
-                        sb.Append("<th>ID</th><th>Documento afiliado</th><th>Nombre afiliado</th><th>Tipo pago</th><th>Valor</th><th>Fecha Cre.</th>");
-                        sb.Append("<th>Banco</th><th>Estado</th><th>Usuario</th><th>Canal de Venta</th>");
-                        sb.Append("</tr>");
-                        sb.Append("<tr>");
-                        sb.Append($"<td>{dt.Rows[0]["idAfiliadoPlan"].ToString()}</td>");
-                        sb.Append($"<td>{dt.Rows[0]["DocumentoAfiliado"].ToString()}</td>");
-                        sb.Append($"<td>{dt.Rows[0]["NombreAfiliado"].ToString()}</td>");
-                        sb.Append($"<td>{dt.Rows[0]["NombreMedioPago"].ToString()}</td>");
-                        sb.Append($"<td>{dt.Rows[0]["Valor"].ToString()}</td>");
-                        sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaHoraPago"].ToString())) + "</td>");
-                        sb.Append($"<td>{dt.Rows[0]["Banco"].ToString()}</td>");
-                        sb.Append($"<td>{"Aprobado"}</td>");
-                        sb.Append($"<td>{dt.Rows[0]["Usuario"].ToString()}</td>");
-                        sb.Append($"<td>{dt.Rows[0]["CanalVenta"].ToString()}</td>");
-                        sb.Append("</tr>");
-                        sb.Append("</table>");
+        //            case "Efectivo":
+        //                sb.Append("<table class=\"table table-bordered table-striped\">");
+        //                sb.Append("<tr>");
+        //                sb.Append("<th>ID</th><th>Documento afiliado</th><th>Nombre afiliado</th><th>Tipo pago</th><th>Valor</th><th>Fecha Cre.</th>");
+        //                sb.Append("<th>Estado</th><th>Usuario</th><th>Canal de Venta</th>");
+        //                sb.Append("</tr>");
+        //                sb.Append("<tr>");
+        //                sb.Append($"<td>{dt.Rows[0]["idAfiliadoPlan"].ToString()}</td>");
+        //                sb.Append($"<td>{dt.Rows[0]["DocumentoAfiliado"].ToString()}</td>");
+        //                sb.Append($"<td>{dt.Rows[0]["NombreAfiliado"].ToString()}</td>");
+        //                sb.Append($"<td>{dt.Rows[0]["NombreMedioPago"].ToString()}</td>");
+        //                sb.Append($"<td>{dt.Rows[0]["Valor"].ToString()}</td>");
+        //                sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaHoraPago"].ToString())) + "</td>");
+        //                sb.Append($"<td>{"Aprobado"}</td>");
+        //                sb.Append($"<td>{dt.Rows[0]["Usuario"].ToString()}</td>");
+        //                sb.Append($"<td>{dt.Rows[0]["CanalVenta"].ToString()}</td>");
+        //                sb.Append("</tr>");
+        //                sb.Append("</table>");
+        //                break;
+        //            case "Transferencia":
+        //                sb.Append("<table class=\"table table-bordered table-striped\">");
+        //                sb.Append("<tr>");
+        //                sb.Append("<th>ID</th><th>Documento afiliado</th><th>Nombre afiliado</th><th>Tipo pago</th><th>Valor</th><th>Fecha Cre.</th>");
+        //                sb.Append("<th>Banco</th><th>Estado</th><th>Usuario</th><th>Canal de Venta</th>");
+        //                sb.Append("</tr>");
+        //                sb.Append("<tr>");
+        //                sb.Append($"<td>{dt.Rows[0]["idAfiliadoPlan"].ToString()}</td>");
+        //                sb.Append($"<td>{dt.Rows[0]["DocumentoAfiliado"].ToString()}</td>");
+        //                sb.Append($"<td>{dt.Rows[0]["NombreAfiliado"].ToString()}</td>");
+        //                sb.Append($"<td>{dt.Rows[0]["NombreMedioPago"].ToString()}</td>");
+        //                sb.Append($"<td>{dt.Rows[0]["Valor"].ToString()}</td>");
+        //                sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaHoraPago"].ToString())) + "</td>");
+        //                sb.Append($"<td>{dt.Rows[0]["Banco"].ToString()}</td>");
+        //                sb.Append($"<td>{"Aprobado"}</td>");
+        //                sb.Append($"<td>{dt.Rows[0]["Usuario"].ToString()}</td>");
+        //                sb.Append($"<td>{dt.Rows[0]["CanalVenta"].ToString()}</td>");
+        //                sb.Append("</tr>");
+        //                sb.Append("</table>");
 
-                        break;
-                    case "Datafono":
+        //                break;
+        //            case "Datafono":
 
-                        break;
-                    case "Pago en línea":
+        //                break;
+        //            case "Pago en línea":
 
-                        DataTable dti = cg.ConsultarUrl(idempresa);
+        //                DataTable dti = cg.ConsultarUrl(idempresa);
 
-                        if (dt.Rows.Count > 0)
-                        {
-                            //parametro = dt.Rows[0]["IdReferencia"].ToString();
-                            parametro = dt.Rows[0]["DataIdTransaction"].ToString();
-                            nomAfiliado = dt.Rows[0]["NombreAfiliado"].ToString();
-                        }
+        //                if (dt.Rows.Count > 0)
+        //                {
+        //                    //parametro = dt.Rows[0]["IdReferencia"].ToString();
+        //                    parametro = dt.Rows[0]["DataIdTransaction"].ToString();
+        //                    nomAfiliado = dt.Rows[0]["NombreAfiliado"].ToString();
+        //                }
 
-                        string url = dti.Rows[0]["urlTest"].ToString() + "/transactions/" + parametro;
-                        string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
-                        JToken token = JToken.Parse(respuesta[0]);
-                        string prettyJson = token.ToString(Formatting.Indented);
+        //                string url = dti.Rows[0]["urlTest"].ToString() + "/transactions/" + parametro;
+        //                string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
+        //                JToken token = JToken.Parse(respuesta[0]);
+        //                string prettyJson = token.ToString(Formatting.Indented);
 
-                        if (mensaje == "Ok") //Verifica respuesta ok
-                        {
-                            JObject jsonData = JObject.Parse(prettyJson);
+        //                if (mensaje == "Ok") //Verifica respuesta ok
+        //                {
+        //                    JObject jsonData = JObject.Parse(prettyJson);
 
-                            List<pagoswompidet> listaPagos = new List<pagoswompidet>
-                        {
-                            new pagoswompidet
-                            {
-                                Id = jsonData["data"]["id"]?.ToString(),
-                                FechaCreacion = jsonData["data"]["created_at"]?.ToString(),
-                                FechaFinalizacion = jsonData["data"]["finalized_at"]?.ToString(),
-                                Valor = ((jsonData["data"]["amount_in_cents"]?.Value<int>() ?? 0) / 100).ToString("N0") + " " + jsonData["data"]["currency"]?.ToString(),
-                                Moneda = jsonData["data"]["currency"]?.ToString(),
-                                MetodoPago = jsonData["data"]["payment_method_type"]?.ToString(),
-                                Estado = jsonData["data"]["status"]?.ToString(),
-                                Referencia = jsonData["data"]["reference"]?.ToString(),
-                                NombreTarjeta = jsonData["data"]["payment_method"]["extra"]["name"]?.ToString(),
-                                UltimosDigitos = jsonData["data"]["payment_method"]["extra"]["last_four"]?.ToString(),
-                                MarcaTarjeta = jsonData["data"]["payment_method"]["extra"]["brand"]?.ToString(),
-                                TipoTarjeta = jsonData["data"]["payment_method"]["extra"]["card_type"]?.ToString(),
-                                NombreComercio = jsonData["data"]["merchant"]["name"]?.ToString(),
-                                ContactoComercio = jsonData["data"]["merchant"]["contact_name"]?.ToString(),
-                                TelefonoComercio = jsonData["data"]["merchant"]["phone_number"]?.ToString(),
-                                URLRedireccion = jsonData["data"]["redirect_url"]?.ToString(),
-                                PaymentLinkId = jsonData["data"]["payment_link_id"]?.ToString(),
-                                PublicKeyComercio = jsonData["data"]["merchant"]["public_key"]?.ToString(),
-                                EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString() }
-                                //Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
-                            };
+        //                    List<pagoswompidet> listaPagos = new List<pagoswompidet>
+        //                {
+        //                    new pagoswompidet
+        //                    {
+        //                        Id = jsonData["data"]["id"]?.ToString(),
+        //                        FechaCreacion = jsonData["data"]["created_at"]?.ToString(),
+        //                        FechaFinalizacion = jsonData["data"]["finalized_at"]?.ToString(),
+        //                        Valor = ((jsonData["data"]["amount_in_cents"]?.Value<int>() ?? 0) / 100).ToString("N0") + " " + jsonData["data"]["currency"]?.ToString(),
+        //                        Moneda = jsonData["data"]["currency"]?.ToString(),
+        //                        MetodoPago = jsonData["data"]["payment_method_type"]?.ToString(),
+        //                        Estado = jsonData["data"]["status"]?.ToString(),
+        //                        Referencia = jsonData["data"]["reference"]?.ToString(),
+        //                        NombreTarjeta = jsonData["data"]["payment_method"]["extra"]["name"]?.ToString(),
+        //                        UltimosDigitos = jsonData["data"]["payment_method"]["extra"]["last_four"]?.ToString(),
+        //                        MarcaTarjeta = jsonData["data"]["payment_method"]["extra"]["brand"]?.ToString(),
+        //                        TipoTarjeta = jsonData["data"]["payment_method"]["extra"]["card_type"]?.ToString(),
+        //                        NombreComercio = jsonData["data"]["merchant"]["name"]?.ToString(),
+        //                        ContactoComercio = jsonData["data"]["merchant"]["contact_name"]?.ToString(),
+        //                        TelefonoComercio = jsonData["data"]["merchant"]["phone_number"]?.ToString(),
+        //                        URLRedireccion = jsonData["data"]["redirect_url"]?.ToString(),
+        //                        PaymentLinkId = jsonData["data"]["payment_link_id"]?.ToString(),
+        //                        PublicKeyComercio = jsonData["data"]["merchant"]["public_key"]?.ToString(),
+        //                        EmailComercio = jsonData["data"]["merchant"]["email"]?.ToString() }
+        //                        //Estado3DS = jsonData["data"]["payment_method"]["extra"]["three_ds_auth"]["three_ds_auth"]["current_step_status"]?.ToString()                                }
+        //                    };
 
-                            sb.Append("<table class=\"table table-bordered table-striped\">");
-                            sb.Append("<tr>");
-                            sb.Append("<th>ID</th><th>Afiliado</th><th>Fecha Cre.</th><th>Fecha Fin.</th><th>Valor</th>");
-                            sb.Append("<th>Método Pago</th><th>Estado</th><th>Referencia</th><th>Usuario</th><th>Canal de Venta</th>");
-                            sb.Append("</tr>");
+        //                    sb.Append("<table class=\"table table-bordered table-striped\">");
+        //                    sb.Append("<tr>");
+        //                    sb.Append("<th>ID</th><th>Afiliado</th><th>Fecha Cre.</th><th>Fecha Fin.</th><th>Valor</th>");
+        //                    sb.Append("<th>Método Pago</th><th>Estado</th><th>Referencia</th><th>Usuario</th><th>Canal de Venta</th>");
+        //                    sb.Append("</tr>");
 
-                            foreach (var pago in listaPagos)
-                            {
-                                sb.Append("<tr>");
-                                sb.Append($"<td>{pago.Id}</td>");
-                                sb.Append($"<td>{nomAfiliado}</td>");
-                                sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.FechaCreacion)) + "</td>");
-                                sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.FechaFinalizacion)) + "</td>");
-                                sb.Append($"<td>{pago.Valor}</td>");
-                                sb.Append($"<td>{pago.MetodoPago}</td>");
-                                sb.Append($"<td>{pago.Estado}</td>");
-                                sb.Append($"<td>{pago.Referencia}</td>");
-                                sb.Append($"<td>{dt.Rows[0]["Usuario"].ToString()}</td>");
-                                sb.Append($"<td>{dt.Rows[0]["CanalVenta"].ToString()}</td>");
-                                sb.Append("</tr>");
-                            }
+        //                    foreach (var pago in listaPagos)
+        //                    {
+        //                        sb.Append("<tr>");
+        //                        sb.Append($"<td>{pago.Id}</td>");
+        //                        sb.Append($"<td>{nomAfiliado}</td>");
+        //                        sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.FechaCreacion)) + "</td>");
+        //                        sb.Append($"<td>" + String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(pago.FechaFinalizacion)) + "</td>");
+        //                        sb.Append($"<td>{pago.Valor}</td>");
+        //                        sb.Append($"<td>{pago.MetodoPago}</td>");
+        //                        sb.Append($"<td>{pago.Estado}</td>");
+        //                        sb.Append($"<td>{pago.Referencia}</td>");
+        //                        sb.Append($"<td>{dt.Rows[0]["Usuario"].ToString()}</td>");
+        //                        sb.Append($"<td>{dt.Rows[0]["CanalVenta"].ToString()}</td>");
+        //                        sb.Append("</tr>");
+        //                    }
 
-                            sb.Append("</table>");
+        //                    sb.Append("</table>");
 
-                            //return sb.ToString();
-                        }
-                        else
-                        {
-                            return prettyJson;
-                        }
-                        break;
-                    default:
-                        prettyJson = JsonConvert.SerializeObject(new { error = "Sin datos del tipo de pago: " });
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message + " Error");
-            }
+        //                    //return sb.ToString();
+        //                }
+        //                else
+        //                {
+        //                    return prettyJson;
+        //                }
+        //                break;
+        //            default:
+        //                prettyJson = JsonConvert.SerializeObject(new { error = "Sin datos del tipo de pago: " });
+        //                break;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.Message + " Error");
+        //    }
 
-            return sb.ToString();
-        }
-
-        protected void rpPagos_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                if (ViewState["CrearModificar"].ToString() == "1")
-                {
-                    HtmlAnchor btnVer = (HtmlAnchor)e.Item.FindControl("btnVer");
-                    btnVer.Attributes.Add("href", "reportepagoswompi?verid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    btnVer.Visible = false;
-                }
-            }
-
-        }
-
-        protected void lbExportarExcel_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                // TODO: Arreglar datos quemados
-                string consultaSQL = @"SELECT a.DocumentoAfiliado AS 'Documento de Afiliado', CONCAT_WS(' ', a.NombreAfiliado, a.ApellidoAfiliado) AS 'Nombre de Afiliado', 
-                        pa.Valor AS 'Valor', pa.idReferencia AS 'Nro. de Referencia', mp.NombreMedioPago AS 'Tipo de Pago', 
-                        pa.Banco AS 'Entidad Bancaría', pa.FechaHoraPago AS 'Fecha de Pago', pa.estadoPago AS 'Estado', 
-                        u.NombreUsuario AS 'Nombre de Usuario', cv.NombreCanalVenta AS 'Canal de Venta' 
-                        FROM pagosplanafiliado pa
-                        INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
-                        INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
-                        INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
-                        INNER JOIN empleados e ON e.DocumentoEmpleado = u.idEmpleado
-                        INNER JOIN canalesventa cv ON cv.idCanalVenta = e.idCanalVenta 
-                        INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
-                        WHERE DATE(pa.FechaHoraPago) 
-                            BETWEEN '" + txbFechaIni.Value.ToString() + @"' 
-                            AND '" + txbFechaFin.Value.ToString() + @"'  
-                        ORDER BY pa.FechaHoraPago DESC;";
-
-                clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.TraerDatos(consultaSQL);
-                string nombreArchivo = $"ReportesPagos_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
-
-                if (dt.Rows.Count > 0)
-                {
-                    cg.ExportarExcel(dt, nombreArchivo);
-                }
-                else
-                {
-                    Response.Write("<script>alert('No existen registros para esta consulta');</script>");
-                }
-            }
-            catch (Exception ex)
-            {
-                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
-            }
+        //    return sb.ToString();
+        //}
 
 
-            //try
-            //{
-            //    // se instaló NPOI en nuguet
-            //    clasesglobales cg = new clasesglobales();
-            //    DataTable dt = cg.ConsultarPagosPorTipo(ddlTipoPago.SelectedValue.ToString(), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
-            //    if (dt.Rows.Count == 0)
-            //    {
-            //        dt = cg.ConsultarPagosRecientes(out decimal valorTotal, out int totalRegistros);
+        //protected void btnDetalle_Command(object sender, CommandEventArgs e)
+        //{
+        //    if (e.CommandName == "mostrarDetalle")
+        //    {
+        //        int idAfiliadoPlan = int.Parse(e.CommandArgument.ToString());
 
-            //    }
-            //    string nombreArchivo = $"{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+        //        Literal ltDetalleModal = (Literal)Page.FindControl("ltDetalleModal");
 
-            //    if (dt.Rows.Count > 0)
-            //    {
-            //        IWorkbook workbook = new XSSFWorkbook();
-            //        ISheet sheet = workbook.CreateSheet("Pagos");
+        //        if (ltDetalleModal != null)
+        //        {
+        //            ltDetalleModal.Text = listarDetalle(idAfiliadoPlan);
+        //        }
 
-            //        IRow headerRow = sheet.CreateRow(0);
-            //        for (int i = 0; i < dt.Columns.Count; i++)
-            //        {
-            //            ICell cell = headerRow.CreateCell(i);
-            //            cell.SetCellValue(dt.Columns[i].ColumnName);
-            //        }
-
-            //        for (int i = 0; i < dt.Rows.Count; i++)
-            //        {
-            //            IRow row = sheet.CreateRow(i + 1);
-            //            for (int j = 0; j < dt.Columns.Count; j++)
-            //            {
-            //                object value = dt.Rows[i][j];
-            //                row.CreateCell(j).SetCellValue(value != DBNull.Value ? value.ToString() : "");
-            //            }
-            //        }
-
-            //        for (int i = 0; i < dt.Columns.Count; i++)
-            //        {
-            //            sheet.AutoSizeColumn(i);
-            //        }
-
-            //        using (MemoryStream memoryStream = new MemoryStream())
-            //        {
-            //            workbook.Write(memoryStream);
-            //            workbook.Close();
-
-            //            byte[] byteArray = memoryStream.ToArray();
-
-            //            Response.Clear();
-            //            Response.Buffer = true;
-            //            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            //            Response.AddHeader("Content-Disposition", $"attachment; filename={nombreArchivo}.xlsx");
-            //            Response.BinaryWrite(byteArray);
-            //            Response.Flush();
-            //            HttpContext.Current.ApplicationInstance.CompleteRequest();
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
-            //}
-        }
-
-
-        protected void btnDetalle_Command(object sender, CommandEventArgs e)
-        {
-            if (e.CommandName == "mostrarDetalle")
-            {
-                int idAfiliadoPlan = int.Parse(e.CommandArgument.ToString());
-
-                Literal ltDetalleModal = (Literal)Page.FindControl("ltDetalleModal");
-
-                if (ltDetalleModal != null)
-                {
-                    ltDetalleModal.Text = listarDetalle(idAfiliadoPlan);
-                }
-
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "MostrarModal",
-                   "setTimeout(function() { $('#ModalDetalle').modal('show'); }, 500);", true);
-            }
-        }
-
-        protected void btnBuscar_Click(object sender, EventArgs e)
-        {
-            //if (rblValor.SelectedItem != null)
-            //{
-            listaTransaccionesPorFecha(
-                4,
-                Convert.ToInt32(ddlPlanes.SelectedValue.ToString()),
-                txbFechaIni.Value.ToString(),
-                txbFechaFin.Value.ToString());
-            VentasCounter();
-            VentasWeb();
-            //}
-            //else
-            //{
-            //    listaTransaccionesPorFecha(
-            //        Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()),
-            //        0,
-            //        txbFechaIni.Value.ToString(),
-            //        txbFechaFin.Value.ToString());
-            //    VentasCounter();
-            //    VentasWeb();
-            //}
-        }
-
+        //        ScriptManager.RegisterStartupScript(this, this.GetType(), "MostrarModal",
+        //           "setTimeout(function() { $('#ModalDetalle').modal('show'); }, 500);", true);
+        //    }
+        //}
 
         protected async void btnCobrar_Click(object sender, EventArgs e)
         {
@@ -616,21 +363,21 @@ namespace fpWebApp
                 RepeaterItem item = (RepeaterItem)btn.NamingContainer;
 
                 // Recuperamos los datos ocultos
-                HiddenField hfIdAfiliadoPlan = (HiddenField)item.FindControl("hfIdAfiliadoPlan");
-                HiddenField hfIdVendedor = (HiddenField)item.FindControl("hfIdVendedor");
-                HiddenField hfValor = (HiddenField)item.FindControl("hfValor");
-                HiddenField hfFuentePago = (HiddenField)item.FindControl("hfFuentePago");
-                HiddenField hfEmail = (HiddenField)item.FindControl("hfEmail");
-                HiddenField hfNombrePlan = (HiddenField)item.FindControl("hfNombrePlan");
-                HiddenField hfDocumentoAfiliado = (HiddenField)item.FindControl("hfDocumentoAfiliado");
+                int idAfiliadoPlan = Convert.ToInt32(((HiddenField)item.FindControl("hfIdAfiliadoPlan")).Value);
+                int idVendedor = Convert.ToInt32(((HiddenField)item.FindControl("hfIdVendedor")).Value);
+                int valor = Convert.ToInt32(((HiddenField)item.FindControl("hfValor")).Value);
+                string fuentePago = ((HiddenField)item.FindControl("hfFuentePago")).Value;
+                string correo = ((HiddenField)item.FindControl("hfEmail")).Value;
+                string nombrePlan = ((HiddenField)item.FindControl("hfNombrePlan")).Value;
+                string documentoAfiliado = ((HiddenField)item.FindControl("hfDocumentoAfiliado")).Value;
 
-                int idAfiliadoPlan = Convert.ToInt32(hfIdAfiliadoPlan.Value);
-                int idVendedor = Convert.ToInt32(hfIdVendedor.Value);
-                int valor = Convert.ToInt32(hfValor.Value);
-                string fuentePago = hfFuentePago.Value;
-                string correo = hfEmail.Value;
-                string nombrePlan = hfNombrePlan.Value;
-                string documentoAfiliado = hfDocumentoAfiliado.Value;
+                //int idAfiliadoPlan = Convert.ToInt32(hfIdAfiliadoPlan.Value);
+                //int idVendedor = Convert.ToInt32(hfIdVendedor.Value);
+                //int valor = Convert.ToInt32(hfValor.Value);
+                //string fuentePago = hfFuentePago.Value;
+                //string correo = hfEmail.Value;
+                //string nombrePlan = hfNombrePlan.Value;
+                //string documentoAfiliado = hfDocumentoAfiliado.Value;
 
                 // Validaciones básicas
                 if (string.IsNullOrEmpty(fuentePago))
@@ -642,8 +389,7 @@ namespace fpWebApp
                 int monto = Convert.ToInt32($"{valor}00");
                 string moneda = "COP";
 
-                string plan = hfNombrePlan.Value;
-                string referencia = $"{hfDocumentoAfiliado.Value}-{DateTime.Now.ToString("yyyyMMddHHmmss")}";
+                string referencia = $"{documentoAfiliado}-{DateTime.Now.ToString("yyyyMMddHHmmss")}";
 
 
                 bool pagoExitoso = await CrearTransaccionRecurrenteAsync(
@@ -652,7 +398,7 @@ namespace fpWebApp
                     customer_email: correo, 
                     reference: referencia,
                     payment_source_id: Convert.ToInt32(fuentePago),
-                    descripcion: $"Cobro recurrente del plan {plan}"
+                    descripcion: $"Cobro recurrente del plan {nombrePlan}"
                 );
 
                 // Si fue exitoso, registramos el pago
@@ -695,7 +441,7 @@ namespace fpWebApp
                     4,
                     referencia,
                     "Ninguno",
-                    idVendedor, // TODO: Cambiar cuando se realice lógica [Validar que si la persona que intenta comprar un plan por la página, PERO tiene un registro en el CRM del mismo plan que está comprando por web, no queda la compra por web, sino, tiene en cuenta el CRM realizado anteriormente]
+                    idVendedor, 
                     "Aprobado",
                     idSiigoFactura,
                     null,

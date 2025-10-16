@@ -187,12 +187,12 @@
                                     </div>
                                     <div class="ibox-content">
                                         <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
-                                            <div class="col-lg-2">
+                                            <div class="col-lg-8">
                                                 <div class="form-group">
                                                     <div class="form-group" id="filter-form-container"></div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-2">
+                                            <div class="col-lg-4">
                                                 <div>
                                                     <asp:DropDownList ID="ddlPlanes" DataTextField="NombrePlan" DataValueField="idPlan"
                                                         runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
@@ -205,37 +205,6 @@
                                                     </asp:RadioButtonList>--%>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-2">
-                                                <div class="form-group">
-                                                    <%--<asp:DropDownList ID="ddlTipoPago" runat="server" AppendDataBoundItems="true"
-                                                        DataTextField="TipoDocumento" DataValueField="idTipoDoc" CssClass="form-control input-sm">
-                                                        <asp:ListItem Text="Pago en línea" Value="4"></asp:ListItem>
-                                                    </asp:DropDownList>--%>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <div class="form-group">
-                                                    <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker" />
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <div class="form-group">
-                                                    <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker" />
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-1">
-                                                <div class="form-group">
-                                                    <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn btn-primary btn-sm" OnClick="btnBuscar_Click" />
-                                                </div>
-                                            </div>
-                                            <%--<div class="col-lg-1">
-                                                <asp:LinkButton ID="lbExportarExcel" runat="server"
-                                                    CausesValidation="false"
-                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
-                                                    OnClick="lbExportarExcel_Click">
-                                                    <i class="fa fa-file-excel"></i> EXCEL
-                                                </asp:LinkButton>
-                                            </div>--%>
                                         </div>
 
                                         <table class="footable table table-striped list-group-item-text" data-paging-size="10"
@@ -269,9 +238,9 @@
                                                             <td>
                                                                 <asp:Button ID="btnCobrar" runat="server" Text="Cobrar"
                                                                     CssClass="btn btn-primary"
-                                                                    CommandArgument='<%# Eval("idAfiliado") %>'
+                                                                    CommandArgument='<%# Eval("idPago") %>'
                                                                     OnCommand="btnCobrar_Click"
-                                                                    CommandName="" />
+                                                                    OnClientClick="return ejecutarPago();" />
 
                                                                 <!-- Hidden fields con información adicional -->
                                                                 <asp:HiddenField ID="hfIdAfiliadoPlan" runat="server" Value='<%# Eval("idAfiliadoPlan") %>' />
