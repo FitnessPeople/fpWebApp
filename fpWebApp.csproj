@@ -271,6 +271,7 @@
     <Content Include="cesantias.aspx" />
     <Content Include="ciudades.aspx" />
     <Content Include="ciudadessedes.aspx" />
+    <Content Include="clientecorporativo.aspx" />
     <Content Include="concursogympass.aspx" />
     <Content Include="congelaciones.aspx" />
     <Content Include="congelacionesAfil.aspx" />
@@ -983,6 +984,7 @@
     <Content Include="procesarfechas.aspx" />
     <Content Include="productostienda.aspx" />
     <Content Include="profesiones.aspx" />
+    <Content Include="prospectocorporativo.aspx" />
     <Content Include="prospectoscrm.aspx" />
     <Content Include="prospectosempresas.aspx" />
     <Content Include="pruebaapiempresa.aspx" />
@@ -1236,6 +1238,13 @@
       <DependentUpon>ciudadessedes.aspx</DependentUpon>
     </Compile>
     <Compile Include="clasesglobales.cs" />
+    <Compile Include="clientecorporativo.aspx.cs">
+      <DependentUpon>clientecorporativo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="clientecorporativo.aspx.designer.cs">
+      <DependentUpon>clientecorporativo.aspx</DependentUpon>
+    </Compile>
     <Compile Include="concursogympass.aspx.cs">
       <DependentUpon>concursogympass.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2019,6 +2028,13 @@
       <DependentUpon>profesiones.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="prospectocorporativo.aspx.cs">
+      <DependentUpon>prospectocorporativo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="prospectocorporativo.aspx.designer.cs">
+      <DependentUpon>prospectocorporativo.aspx</DependentUpon>
+    </Compile>
     <Compile Include="prospectoscrm.aspx.cs">
       <DependentUpon>prospectoscrm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

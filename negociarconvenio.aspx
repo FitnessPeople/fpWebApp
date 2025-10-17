@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="negociarconvenio.aspx.cs" Inherits="fpWebApp.negociarconvenio" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="negociarconvenio.aspx.cs" Inherits="fpWebApp.negociarconvenio" ValidateRequest="false" %>
 
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
@@ -78,6 +78,14 @@
             display: none
         }
     </style>
+
+<style>
+    #tablaPlanes .inputDescuento {
+    width: 80px !important;   /* o prueba 100px si quieres más ancho */
+    text-align: center;
+    margin: 0 auto;
+}
+ </style>
 
     <script>
         function changeClass() {
@@ -171,7 +179,7 @@
 
                     <form role="form" id="form" runat="server">
                         <div class="row" id="divContenido" runat="server">
-                          <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+                            <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
 
                             <div class="col-lg-4">
                                 <div class="ibox float-e-margins">
@@ -190,26 +198,13 @@
                                     <div class="ibox-content">
                                         <div class="row">
                                             <div class="col-lg-12">
-
-
                                                 <div class="row">
-                                                    <%--                                                <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label>Nombre:</label>
-                                                            <asp:TextBox ID="txbNombreEstrategia" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                            <asp:RequiredFieldValidator ID="rfvNombreEstrategia" runat="server" ErrorMessage="* Campo requerido"
-                                                                ControlToValidate="txbNombreEstrategia" ValidationGroup="agregar"
-                                                                CssClass="font-bold text-danger" Display="Dynamic">
-                                                            </asp:RequiredFieldValidator>
-                                                        </div>
-                                                    </div>--%>
-
                                                     <div class="col-sm-12">
                                                         <div class="form-group">
                                                             <label>Empresa:</label>
                                                             <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEmpresas" runat="server"
-                                                                OnSelectedIndexChanged="ddlEmpresas_SelectedIndexChanged" DataValueField="idEmpresa" DataTextField="NombreEmpresa"
-                                                                AutoPostBack="true" AppendDataBoundItems="true">
+                                                                DataValueField="idEmpresa" DataTextField="NombreEmpresa"
+                                                                AppendDataBoundItems="true">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
                                                             <%--                                                            <asp:RequiredFieldValidator ID="rfvTipoEstrategia" runat="server" ErrorMessage="* Campo requerido"
@@ -219,6 +214,25 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Prospecto:</label>
+                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="DropDownList1" runat="server"
+                                                                DataValueField="idEmpresa" DataTextField="NombreEmpresa"
+                                                                AutoPostBack="true" AppendDataBoundItems="true">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                            <%--                                                            <asp:RequiredFieldValidator ID="rfvTipoEstrategia" runat="server" ErrorMessage="* Campo requerido"
+                                                              ControlToValidate="ddlTipoEstrategias" ValidationGroup="agregar"
+                                                              CssClass="font-bold text-danger" Display="Dynamic">
+                                                          </asp:RequiredFieldValidator>--%>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
 
                                                 <div class="form-group">
                                                     <label>Descripción de la negociación / condiciones:</label>
@@ -249,21 +263,8 @@
                                                     </div>
                                                 </div>
 
-
                                                 <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <i class="fa fa-dollar text-info"></i>
-                                                            <label for="ValorPresupuesto" class="col-form-label">Porcentaje descuento %:</label>
-                                                            <asp:TextBox ID="txbValorPresupuesto" CssClass="form-control input-sm" runat="server" placeholder="5%"
-                                                                autocomplete="off"></asp:TextBox>
-                                                            <asp:RequiredFieldValidator ID="rfvValorPresupuesto" runat="server" ErrorMessage="* Campo requerido"
-                                                                ControlToValidate="txbValorPresupuesto" ValidationGroup="agregar"
-                                                                CssClass="font-bold text-danger" Display="Dynamic" />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-12">
                                                         <div class="form-group">
                                                             <label for="ValorPresupuesto" class="col-form-label">Retorno administrativo?:</label>
                                                             <div class="col-sm-10">
@@ -285,84 +286,51 @@
                                                     </div>
                                                 </div>
 
-
-                                                <asp:Panel ID="pnlPlanesAfiliado" runat="server" Visible="false">
-                                                    <div class="row">
-                                                        <div class="ibox-content">
-                                                            <ul class="todo-list small-list">
-                                                                <asp:Repeater ID="rpPlanesAfiliado" runat="server">
-                                                                    <ItemTemplate>
-                                                                        <li>
-                                                                            <div class="i-checks">
-                                                                                <small class="label label-<%# Eval("label1") %> pull-right"><%# Eval("DiasQueFaltan") %></small>
-                                                                                <label>
-                                                                                    <%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
-                                                                                </label>
-                                                                                <br />
-                                                                                <div class="progress progress-striped active">
-                                                                                    <div style='width: <%# Eval("Porcentaje1") %>%' class="progress-bar progress-bar-success"></div>
-                                                                                    <div style='width: <%# Eval("Porcentaje2") %>%' class="progress-bar progress-bar-warning"></div>
-                                                                                </div>
-                                                                                <small class="text-muted"><%# Eval("FechaInicioPlan", "{0:dd MMM yyyy}") %> - <%# Eval("FechaFinalPlan", "{0:dd MMM yyyy}") %></small>
-                                                                            </div>
-                                                                        </li>
-                                                                    </ItemTemplate>
-                                                                </asp:Repeater>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </asp:Panel>
-
-                                                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
-                                                    <ContentTemplate>
-                                                        <div class="row" id="planesYValorMes">
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <i class="fa fa-ticket text-info"></i>
-                                                                    <label for="Planes" class="col-form-label">Planes:</label>
-                                                                    <asp:DropDownList ID="ddlPlanes" DataTextField="NombrePlan" DataValueField="idPlan"
-                                                                        runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm" OnSelectedIndexChanged="ddlPlanes_SelectedIndexChanged" AutoPostBack="true">
-                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                    </asp:DropDownList>
-                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="ddlPlanes"
-                                                                        ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <i class="fa fa-dollar text-info"></i>
-                                                                    <label for="ValorMes" class="col-form-label">Valor mes:</label>
-                                                                    <asp:TextBox ID="txbValorMes" CssClass="form-control input-sm" runat="server" placeholder="$0"
-                                                                        onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off" Style="background-color: #e3ff00;"></asp:TextBox>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </ContentTemplate>
-                                                </asp:UpdatePanel>
-
                                                 <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="chblPlanes" class="col-form-label">Elija los planes a aplicar descuento:</label>
-                                                            <br />
-                                                            <asp:CheckBoxList ID="chblPlanes" runat="server" RepeatDirection="Vertical" CssClass="todo-list m-t">
-                                                            </asp:CheckBoxList>
-                                                            <asp:CustomValidator ID="cvPlanes" runat="server"
-                                                                ErrorMessage="* Seleccione al menos un plan"
-                                                                CssClass="font-bold text-danger"
-                                                                Display="Dynamic"
-                                                                OnServerValidate="cvPlanes_ServerValidate" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <%--                                                     <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <div class="ibox">
+                                                            <div class="ibox-title">
+                                                                <h5>Planes comerciales</h5>
+                                                            </div>
 
-                                                            <label for="chblCanales" class="col-form-label">Elija los canales de venta a aplicar:</label>
-                                                            <br />
-                                                            <asp:CheckBoxList ID="chblCanales" runat="server" RepeatDirection="Vertical" CssClass="todo-list m-t">
-                                                            </asp:CheckBoxList>
-                                                        </div>--%>
+                                                            <!-- AQUÍ VA LA TABLA -->
+                                                            <div class="ibox-content">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-bordered text-center" id="tablaPlanes">
+                                                                        <thead class="thead-light">
+                                                                            <tr>                                                                              
+                                                                                <th>#</th>
+                                                                                <th>Plan</th>
+                                                                                <th>Valor ($)</th>                                                                               
+                                                                                <th>Aplicar</th>
+                                                                                <th>Dscto.(%)</th>
+                                                                                <th>Valor (%)</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <asp:Repeater ID="rpPlanesVigentes" runat="server" OnItemDataBound="rpPlanesVigentes_ItemDataBound">
+                                                                                <ItemTemplate>
+                                                                            <tr>                                                                              
+                                                                                <td><%# Eval("idPlan") %></td>
+                                                                                <td><%# Eval("NombrePlan") %></td>
+                                                                                <td class="valor"><%# String.Format(new System.Globalization.CultureInfo("es-CO"), "{0:C0}", Eval("PrecioTotal")) %></td>                                                                               
+                                                                                <td>
+                                                                                    <input type="checkbox" class="chkDescuento"></td>
+                                                                                <td>
+                                                                                    <input type="number" class="form-control inputDescuento" min="0" max="100" disabled></td>
+                                                                                <td class="valorConDescuento">—</td>
+                                                                            </tr>
+                                                                             </ItemTemplate>
+                                                                            </asp:Repeater>
+
+                                                                        </tbody>
+                                                                    </table>
+                                                    
+
+                                                                </div>
+                                                            </div>
+                                                            <!-- FIN TABLA -->
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -466,6 +434,68 @@
                                 </div>
                             </div>
                         </div>
+
+                        <script>
+                            function inicializarDescuentos() {
+                                // Formateo de moneda colombiana
+                                function formatCOP(valor) {
+                                    return new Intl.NumberFormat("es-CO", {
+                                        style: "currency",
+                                        currency: "COP",
+                                        minimumFractionDigits: 0
+                                    }).format(valor);
+                                }
+
+                                // Convierte "$120.000" → 120000
+                                function parseCOP(texto) {
+                                    return Number(texto.replace(/[^0-9,-]+/g, '').replace(',', '.')) || 0;
+                                }
+
+                                document.querySelectorAll("#tablaPlanes tbody tr").forEach(fila => {
+                                    const chk = fila.querySelector(".chkDescuento");
+                                    const inputDesc = fila.querySelector(".inputDescuento");
+                                    const celdaValor = fila.querySelector(".valor");
+                                    const celdaValorConDesc = fila.querySelector(".valorConDescuento");
+                                    if (!chk || !inputDesc || !celdaValor || !celdaValorConDesc) return;
+
+                                    const valorBase = parseCOP(celdaValor.textContent.trim());
+                                    celdaValorConDesc.textContent = formatCOP(valorBase);
+
+                                    // Inicia deshabilitado
+                                    inputDesc.disabled = true;
+
+                                    chk.addEventListener("change", function () {
+                                        if (this.checked) {
+                                            inputDesc.disabled = false;
+                                            inputDesc.focus();
+                                        } else {
+                                            inputDesc.disabled = true;
+                                            inputDesc.value = "";
+                                            celdaValorConDesc.textContent = formatCOP(valorBase);
+                                        }
+                                    });
+
+                                    inputDesc.addEventListener("input", function () {
+                                        let porcentaje = parseFloat(this.value) || 0;
+                                        if (porcentaje < 0) porcentaje = 0;
+                                        if (porcentaje > 100) porcentaje = 100;
+                                        const nuevoValor = valorBase - (valorBase * porcentaje / 100);
+                                        celdaValorConDesc.textContent = formatCOP(nuevoValor);
+                                    });
+                                });
+                            }
+
+                            // Ejecutar al cargar completamente el DOM
+                            document.addEventListener("DOMContentLoaded", inicializarDescuentos);
+
+                            // Soporte para UpdatePanel (ScriptManager)
+                            if (typeof Sys !== "undefined" && Sys.WebForms) {
+                                Sys.WebForms.PageRequestManager.getInstance().add_endRequest(inicializarDescuentos);
+                            }
+                        </script>
+
+
+
                     </form>
                     <%--Fin Contenido!!!!--%>
                 </div>
@@ -492,6 +522,9 @@
     <script>
         $('.footable').footable();
     </script>
+
+
+
 
 </body>
 

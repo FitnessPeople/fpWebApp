@@ -54,14 +54,10 @@ namespace fpWebApp
                         txbFechaFin.Attributes.Add("min", DateTime.Now.ToString("yyyy-MM-dd"));
                         txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd");
                     }
-
-                    CargarDiccionarios();
+                                       
                     listaEstrategias();
-                    listaEmpresasAfiliadas();
-                    //CargartiposEstrategias();
-                    CargarPlanes();
-                    ListaCanalesDeVenta();
-                    CargarPlanes1();
+                    listaEmpresasAfiliadas();                    
+                    CargarPlanes();                   
 
                     ltTitulo.Text = "Establecer condiciones";
 
@@ -75,38 +71,18 @@ namespace fpWebApp
                             DataTable dt = cg.ConsultarEstrategiaMarketingPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                //txbNombreEstrategia.Text = dt.Rows[0]["NombreEstrategia"].ToString();
+                               
                                 ddlEmpresas.SelectedIndex = ddlEmpresas.Items.IndexOf(ddlEmpresas.Items.FindByValue(dt.Rows[0]["idTipoEstrategia"].ToString()));
 
                                 hiddenEditor.Value = dt.Rows[0]["DescripcionEstrategia"].ToString();
 
                                 decimal ValorPresupuesto = Convert.ToDecimal(dt.Rows[0]["ValorPresupuesto"]);
-                                txbValorPresupuesto.Text = ValorPresupuesto.ToString("C0", new CultureInfo("es-CO"));
+                             
 
                                 txbFechaIni.Value = Convert.ToDateTime(dt.Rows[0]["FechaInicio"]).ToString("yyyy-MM-dd");
                                 txbFechaFin.Value = Convert.ToDateTime(dt.Rows[0]["FechaFin"]).ToString("yyyy-MM-dd");
 
-                                // SELECCIONAR PLANES
-                                string[] planesSeleccionados = dt.Rows[0]["Planes"].ToString().Split(',');
-                                foreach (string planId in planesSeleccionados)
-                                {
-                                    ListItem item = chblPlanes.Items.FindByValue(planId.Trim());
-                                    if (item != null)
-                                    {
-                                        item.Selected = true;
-                                    }
-                                }
 
-                                // SELECCIONAR CANALES
-                                //string[] canalesSeleccionados = dt.Rows[0]["CanalesVenta"].ToString().Split(',');
-                                //foreach (string canalId in canalesSeleccionados)
-                                //{
-                                //    ListItem item = chblCanales.Items.FindByValue(canalId.Trim());
-                                //    if (item != null)
-                                //    {
-                                //        item.Selected = true;
-                                //    }
-                                //}
 
                                 btnAgregar.Text = "Actualizar";
                                 ltTitulo.Text = "Actualizar estrategia";
@@ -129,8 +105,6 @@ namespace fpWebApp
                                 dt1 = cg.ConsultarEstrategiaMarketingPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
-                                    //txbNombreEstrategia.Text = dt1.Rows[0]["NombreEstrategia"].ToString();
-                                    //txbNombreEstrategia.Enabled = false;
 
                                     ddlEmpresas.SelectedIndex = ddlEmpresas.Items.IndexOf(ddlEmpresas.Items.FindByValue(dt1.Rows[0]["idTipoEstrategia"].ToString()));
                                     ddlEmpresas.Enabled = false;
@@ -142,30 +116,6 @@ namespace fpWebApp
 
                                     txbFechaFin.Value = Convert.ToDateTime(dt1.Rows[0]["FechaFin"]).ToString("yyyy-MM-dd");
                                     txbFechaFin.Disabled = true;
-
-                                    // SELECCIONAR PLANES
-                                    string[] planesSeleccionados = dt1.Rows[0]["Planes"].ToString().Split(',');
-                                    foreach (string planId in planesSeleccionados)
-                                    {
-                                        ListItem item = chblPlanes.Items.FindByValue(planId.Trim());
-                                        if (item != null)
-                                        {
-                                            item.Selected = true;
-                                        }
-                                    }
-                                    chblPlanes.Enabled = false;
-
-                                    // SELECCIONAR CANALES
-                                    //string[] canalesSeleccionados = dt1.Rows[0]["CanalesVenta"].ToString().Split(',');
-                                    //foreach (string canalId in canalesSeleccionados)
-                                    //{
-                                    //    ListItem item = chblCanales.Items.FindByValue(canalId.Trim());
-                                    //    if (item != null)
-                                    //    {
-                                    //        item.Selected = true;
-                                    //    }
-                                    //}
-                                    //chblCanales.Enabled = false;
 
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     btnAgregar.Enabled = false;
@@ -180,8 +130,6 @@ namespace fpWebApp
                                 dt1 = cg.ConsultarEstrategiaMarketingPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
-                                    //txbNombreEstrategia.Text = dt1.Rows[0]["NombreEstrategia"].ToString();
-                                    //txbNombreEstrategia.Enabled = false;
 
                                     ddlEmpresas.SelectedIndex = ddlEmpresas.Items.IndexOf(ddlEmpresas.Items.FindByValue(dt1.Rows[0]["idTipoEstrategia"].ToString()));
                                     ddlEmpresas.Enabled = false;
@@ -193,33 +141,6 @@ namespace fpWebApp
 
                                     txbFechaFin.Value = Convert.ToDateTime(dt1.Rows[0]["FechaFin"]).ToString("yyyy-MM-dd");
                                     txbFechaFin.Disabled = true;
-
-                                    // SELECCIONAR PLANES
-                                    string[] planesSeleccionados = dt1.Rows[0]["Planes"].ToString().Split(',');
-                                    foreach (string planId in planesSeleccionados)
-                                    {
-                                        ListItem item = chblPlanes.Items.FindByValue(planId.Trim());
-                                        if (item != null)
-                                        {
-                                            item.Selected = true;
-                                        }
-                                    }
-                                    chblPlanes.Enabled = false;
-
-                                    // SELECCIONAR CANALES
-                                    //string[] canalesSeleccionados = dt1.Rows[0]["CanalesVenta"].ToString().Split(',');
-                                    //foreach (string canalId in canalesSeleccionados)
-                                    //{
-                                    //    ListItem item = chblCanales.Items.FindByValue(canalId.Trim());
-                                    //    if (item != null)
-                                    //    {
-                                    //        item.Selected = true;
-                                    //    }
-                                    //}
-                                    //chblCanales.Enabled = false;
-                                    //btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                                    //btnAgregar.Enabled = true;
-                                    //ltTitulo.Text = "Borrar Estrategia";
 
                                 }
                                 dt1.Dispose();
@@ -240,12 +161,6 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarEstrategiasMarketing();
 
-            foreach (DataRow row in dt.Rows)
-            {
-                row["Planes"] = ConvertirIdsANombres(row["Planes"].ToString(), dicPlanes);
-                row["CanalesVenta"] = ConvertirIdsANombres(row["CanalesVenta"].ToString(), dicCanales);
-            }
-
             rpEstrategias.DataSource = dt;
             rpEstrategias.DataBind();
 
@@ -256,100 +171,13 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarPlanesVigentes();
-
-            chblPlanes.DataSource = dt;
-            chblPlanes.DataTextField = "NombrePlan";
-            chblPlanes.DataValueField = "idPlan";
-            chblPlanes.DataBind();
-
-            dt.Dispose();
-        }
-        private void CargarPlanes1()
-        {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanesVigentes();
-
-            ddlPlanes.DataSource = dt;
-            ddlPlanes.DataBind();
-            dt.Dispose();
-        }
-
-        protected void ddlPlanes_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(ddlPlanes.SelectedValue) || ddlPlanes.SelectedValue == "0")
-            {
-                //txbValorPropuesta.Text = "Por favor selecciona un plan válido.";
-                ViewState["precioBase"] = null;
-                ViewState["Meses"] = null;
-                ViewState["MesesCortesia"] = null;
-                ViewState["DebitoAutomatico"] = null;
-                return;
-            }
-
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanes();
-            var fila = dt.Select("IdPlan = " + ddlPlanes.SelectedValue);
-            if (fila.Length > 0)
-            {
-                ViewState["precioBase"] = fila[0]["PrecioBase"];
-                ViewState["precioTotal"] = fila[0]["precioTotal"];
-                ViewState["Meses"] = fila[0]["Meses"];
-                ViewState["MesesCortesia"] = fila[0]["MesesCortesia"];
-                ViewState["DebitoAutomatico"] = fila[0]["DebitoAutomatico"];
-
-                int meses = Convert.ToInt32(ViewState["Meses"]);
-                int cortesia = Convert.ToInt32(ViewState["MesesCortesia"]);
-                int totalMeses = meses + cortesia;
-                double total = Convert.ToDouble(ViewState["precioTotal"]);
-                int precioBase = Convert.ToInt32(ViewState["precioBase"]);
-                int DebitoAutomatico = Convert.ToInt32(ViewState["DebitoAutomatico"]);
-
-                int ValorMes = Convert.ToInt32(fila[0]["PrecioBase"]);
-                txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
-                txbValorMes.Enabled = false;
-
-                string observaciones = fila[0]["DescripcionPlan"].ToString();
-                //txaObservaciones.InnerText = observaciones;
-
-                int mesesPlan = Convert.ToInt32(fila[0]["Meses"]); // Asegúrate que esta columna está en tu tabla
-
-                if (ViewState["DebitoAutomatico"] != null && int.TryParse(ViewState["DebitoAutomatico"].ToString(), out DebitoAutomatico))
-                {
-                    if (DebitoAutomatico == 1)
-                    {
-                        total = precioBase * 12;
-                    }
-                }
-              //  txbValorPropuesta.Text = $"${total:N0}";
-            }
-        }
-
-        private void ListaCanalesDeVenta()
-        {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarCanalesVenta();
-
-
-            DataRow[] filasFiltradas = dt.Select("idCanalVenta <> 1"); // Se excluye la opción 1 Ninguno
-
-            if (filasFiltradas.Length > 0)
-            {
-                dt = filasFiltradas.CopyToDataTable();
-            }
-            else
-            {
-                dt.Clear();
-            }
-
-            //chblCanales.DataSource = dt;
-            //chblCanales.DataTextField = "NombreCanalVenta";
-            //chblCanales.DataValueField = "idCanalVenta";
-            //chblCanales.DataBind();
+            rpPlanesVigentes.DataSource = dt;
+            rpPlanesVigentes.DataBind();
 
             dt.Dispose();
         }
 
-
+        
         private void listaEmpresasAfiliadas()
         {
             try
@@ -368,49 +196,6 @@ namespace fpWebApp
                 lblMensaje.Text = "Ocurrió un error al cargar las empresas. Por favor intente nuevamente.";
                 lblMensaje.CssClass = "text-danger";
             }
-
-
-        }
-        private string ConvertirIdsANombres(string ids, Dictionary<int, string> diccionario)
-        {
-            if (string.IsNullOrEmpty(ids)) return "";
-
-            var nombres = ids.Split(',')
-                             .Select(id => int.TryParse(id.Trim(), out int parsedId) && diccionario.ContainsKey(parsedId)
-                                 ? diccionario[parsedId]
-                                 : $"(ID {id})") // por si el id no existe
-                             .ToList();
-
-            return string.Join(", ", nombres);
-        }
-
-
-        private Dictionary<int, string> dicPlanes;
-        private Dictionary<int, string> dicCanales;
-
-        private void CargarDiccionarios()
-        {
-            clasesglobales cg = new clasesglobales();
-            DataTable dtCanales = cg.ConsultarCanalesVenta();
-
-            DataTable dtPlanes = cg.ConsultarPlanesVigentes();
-
-            dicCanales = dtCanales.AsEnumerable()
-                .ToDictionary(row => Convert.ToInt32(row["idCanalVenta"]), row => row["NombreCanalVenta"].ToString());
-
-
-            dicPlanes = dtPlanes.AsEnumerable()
-                .ToDictionary(row => Convert.ToInt32(row["idPlan"]), row => row["NombrePlan"].ToString());
-        }
-
-
-        private void CargartiposEstrategias()
-        {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarTiposEstrategiasMarketing();
-            ddlEmpresas.DataSource = dt;
-            ddlEmpresas.DataBind();
-            dt.Dispose();
         }
 
         private void ValidarPermisos(string strPagina)
@@ -436,20 +221,6 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private bool ValidarEstrategia(string strNombre)
-        {
-            bool bExiste = false;
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEstrategiaMarketingPorNombre(strNombre.ToString().Trim());
-
-            if (dt.Rows.Count > 0)
-            {
-                bExiste = true;
-            }
-
-            return bExiste;
-        }
-
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
@@ -465,34 +236,12 @@ namespace fpWebApp
                 {
                     List<int> planesSeleccionados = new List<int>();
 
-                    foreach (ListItem item in chblPlanes.Items)
-                    {
-                        if (item.Selected)
-                        {
-                            int idPlan = int.Parse(item.Value);
-                            planesSeleccionados.Add(idPlan);
-                        }
-                    }
-                    planesObtenidos = string.Join(",", planesSeleccionados);
-
-                    //List<int> canalesSeleccionados = new List<int>();
-
-                    //foreach (ListItem item in chblCanales.Items)
-                    //{
-                    //    if (item.Selected)
-                    //    {
-                    //        int idCanalVenta = int.Parse(item.Value);
-                    //        canalesSeleccionados.Add(idCanalVenta);
-                    //    }
-                    //}
-                    //canalesObtenidos = string.Join(",", canalesSeleccionados);
-
                     string strInitData = TraerData();
                     try
                     {
                         string respuesta = cg.ActualizarEstrategiaMarketing(Convert.ToInt32(Request.QueryString["editid"].ToString()), "",
                         contenidoEditor, txbFechaIni.Value, txbFechaFin.Value, canalesObtenidos, Convert.ToInt32(ddlEmpresas.SelectedItem.Value.ToString()),
-                        planesObtenidos, Convert.ToDecimal(Regex.Replace(txbValorPresupuesto.Text, @"[^\d]", "")), out salida, out mensaje);
+                        planesObtenidos, 1, out salida, out mensaje);
 
                         if (salida)
                         {
@@ -597,89 +346,7 @@ namespace fpWebApp
             }
             else
             {
-                //if (!ValidarEstrategia(txbNombreEstrategia.Text.ToString()))
-                //{
-                //    List<int> planesSeleccionados = new List<int>();
 
-                //    foreach (ListItem item in chblPlanes.Items)
-                //    {
-                //        if (item.Selected)
-                //        {
-                //            int idPlan = int.Parse(item.Value);
-                //            planesSeleccionados.Add(idPlan);
-                //        }
-                //    }
-                //    planesObtenidos = string.Join(",", planesSeleccionados);
-
-                //    List<int> canalesSeleccionados = new List<int>();
-
-                //    foreach (ListItem item in chblCanales.Items)
-                //    {
-                //        if (item.Selected)
-                //        {
-                //            int idCanalVenta = int.Parse(item.Value);
-                //            canalesSeleccionados.Add(idCanalVenta);
-                //        }
-                //    }
-                //    canalesObtenidos = string.Join(",", canalesSeleccionados);
-
-                //    try
-                //    {
-                //        string respuesta = cg.InsertarEstrategiaMarketing(txbNombreEstrategia.Text, contenidoEditor, txbFechaIni.Value, txbFechaFin.Value, canalesObtenidos,
-                //             Convert.ToInt32(ddlTipoEstrategias.SelectedItem.Value.ToString()), planesObtenidos, Convert.ToInt32(Session["idUsuario"].ToString()),
-                //             Convert.ToDecimal(Regex.Replace(txbValorPresupuesto.Text, @"[^\d]", "")), out salida, out mensaje);
-                //        if (salida)
-                //        {
-                //            string script = @"
-                //                    Swal.fire({
-                //                        title: '«¡Creada correctamente!»',
-                //                        text: '" + mensaje.Replace("'", "\\'") + @"',
-                //                        icon: 'success',
-                //                        timer: 3000, // 3 segundos
-                //                        showConfirmButton: false,
-                //                        timerProgressBar: true
-                //                    }).then(() => {
-                //                        window.location.href = 'estrategiasmarketing';
-                //                    });
-                //                    ";
-                //            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                //        }
-                //        else
-                //        {
-                //            string script = @"
-                //                    Swal.fire({
-                //                        title: 'Error',
-                //                        text: '" + mensaje.Replace("'", "\\'") + @"',
-                //                        icon: 'error'
-                //                    }).then((result) => {
-                //                        if (result.isConfirmed) {
-                //                          window.location.href = 'estrategiasmarketing';
-                //                        }
-                //                    });
-                //                ";
-                //            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-                //        }
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        mensaje = ex.Message.ToString();
-                //        string script = @"
-                //            Swal.fire({
-                //                title: 'Error',
-                //                text: '" + mensaje.Replace("'", "\\'") + @"',
-                //                icon: 'error'
-                //            });
-                //        ";
-                //        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                //    }
-                //}
-                //else
-                //{
-                //    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                //        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                //        "Ya existe una estrategia con ese nombre." +
-                //        "</div>";
-                //}
             }
 
         }
@@ -701,7 +368,7 @@ namespace fpWebApp
         protected void cvPlanes_ServerValidate(object source, ServerValidateEventArgs args)
         {
             // Verifica que al menos un ítem esté seleccionado
-            args.IsValid = chblPlanes.Items.Cast<ListItem>().Any(li => li.Selected);
+           // args.IsValid = chblPlanes.Items.Cast<ListItem>().Any(li => li.Selected);
         }
 
 
@@ -755,7 +422,7 @@ namespace fpWebApp
             }
         }
 
-        protected void ddlEmpresas_SelectedIndexChanged(object sender, EventArgs e)
+        protected void rpPlanesVigentes_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
 
         }
