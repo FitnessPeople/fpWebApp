@@ -169,6 +169,11 @@ namespace fpWebApp
                                 FROM PagosPlanAfiliado
                                 WHERE MONTH(fechaHoraPago) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
                                   AND YEAR(fechaHoraPago) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)
+                                  AND DataIdFuente NOT IN (
+                                      SELECT DataIdFuente
+                                      FROM PagosPlanAfiliado
+                                      WHERE fechaHoraPago > LAST_DAY(CURRENT_DATE - INTERVAL 1 MONTH)
+                                  )
                                 GROUP BY DataIdFuente
                             ) ult 
                                 ON ppa.DataIdFuente = ult.DataIdFuente 
@@ -396,16 +401,21 @@ namespace fpWebApp
                 }
 
                 int monto = valor * 100;
+                string moneda = "COP";
                 string referencia = $"{documentoAfiliado}-{DateTime.Now.ToString("yyyyMMddHHmmss")}";
                 string descripcion = $"Cobro recurrente del plan {nombrePlan}";
 
+                string concatenado = $"{referencia}{monto}{moneda}{IntegritySecret}";
+                string hash256 = ComputeSha256Hash(concatenado);
+
                 bool pagoExitoso = await CrearTransaccionRecurrenteAsync(
-                    amount_in_cents: monto,
-                    currency: "COP",
-                    customer_email: correo, 
-                    reference: referencia,
-                    payment_source_id: Convert.ToInt32(fuentePago),
-                    descripcion: descripcion
+                    monto,
+                    moneda,
+                    hash256,
+                    correo, 
+                    referencia,
+                    Convert.ToInt32(fuentePago),
+                    descripcion
                 );
 
                 // Si fue exitoso, registramos el pago
@@ -431,6 +441,24 @@ namespace fpWebApp
             {
                 MostrarAlerta("Error inesperado", "No fue posible realizar el cobro. Revisa los logs para más detalles.", "error");
                 System.Diagnostics.Debug.WriteLine($"[btnCobrar_Click] Error: {ex}");
+            }
+        }
+
+        static string ComputeSha256Hash(string rawData)
+        {
+            // Crea un SHA256
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                // ComputeHash - devuelve una matriz de bytes
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                // Convierte una matriz de bytes en una cadena
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
             }
         }
 
@@ -469,7 +497,7 @@ namespace fpWebApp
         // ==============================
         // MÉTODO PRINCIPAL DE COBRO RECURRENTE
         // ==============================
-        public async Task<bool> CrearTransaccionRecurrenteAsync(int amount_in_cents, string currency, string customer_email, string reference, int payment_source_id, string descripcion)
+        public async Task<bool> CrearTransaccionRecurrenteAsync(int amount_in_cents, string currency, string signature, string customer_email, string reference, int payment_source_id, string description)
         {
             try
             {
@@ -479,10 +507,11 @@ namespace fpWebApp
                 {
                     amount_in_cents = amount_in_cents,
                     currency = currency,
+                    signature = signature,
                     customer_email = customer_email,
                     reference = reference,
-                    description = descripcion,
-                    payment_source_id = payment_source_id,
+                    description = description,
+                    payment_source_id = payment_source_id, 
                     payment_method = new
                     {
                         installments = 1
@@ -644,6 +673,7 @@ namespace fpWebApp
             public string reference { get; set; }
             public string customer_email { get; set; }
             public string currency { get; set; }
+            public string signature { get; set; }
             public string payment_method_type { get; set; }
             public string status { get; set; }
             public string status_message { get; set; }
