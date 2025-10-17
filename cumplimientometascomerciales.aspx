@@ -238,7 +238,6 @@
                                         <asp:DropDownList ID="ddlCanalVenta" runat="server"
                                             AppendDataBoundItems="true"
                                             CssClass="form-control input-sm m-b"
-                                            OnSelectedIndexChanged="ddlCanalVenta_SelectedIndexChanged"
                                             AutoPostBack="true">
                                         </asp:DropDownList>
                                         <div id="calendar"></div>
