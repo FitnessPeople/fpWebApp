@@ -202,7 +202,7 @@ namespace fpWebApp
         private void ListaProspectos()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarProspectoClienteCorporativo("8902008771");
+            DataTable dt = cg.ConsultarProspectoClienteCorporativo("8902008771"); // opcion seleccionada de la lista
             ddlProspectos.DataSource = dt;
             ddlProspectos.DataBind();
             dt.Dispose();
