@@ -143,7 +143,7 @@
                         </asp:ScriptManager>
                         <div class="row" id="divContenido" runat="server">
                             <div class="form-group">
-                                <asp:Label ID="lblMensaje" runat="server" Text="Label"></asp:Label>
+                                <asp:Label ID="lblMensaje" runat="server" Text=""></asp:Label>
                             </div>
 
                             <div class="col-lg-5">
