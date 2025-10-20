@@ -9543,7 +9543,7 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PROSPECTO_POR__EMPRESA", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@p_id_contacto", doc_empresa);
+                        cmd.Parameters.AddWithValue("@p_doc_empresa", doc_empresa);
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
                         {
                             mysqlConexion.Open();
