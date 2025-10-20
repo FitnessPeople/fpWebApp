@@ -45,7 +45,7 @@
         function changeClass() {
             var element1 = document.querySelector("#clientecorporativo");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#crm");
+            var element2 = document.querySelector("#corporativo");
             element2.classList.remove("collapse");
         }
     </script>
