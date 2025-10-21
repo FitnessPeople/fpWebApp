@@ -57,7 +57,8 @@ namespace fpWebApp
                                        
                     listaEstrategias();
                     listaEmpresasAfiliadas();                    
-                    CargarPlanes();                   
+                    CargarPlanes();
+                    ListaProspectos();
 
                     ltTitulo.Text = "Establecer condiciones";
 
@@ -196,6 +197,15 @@ namespace fpWebApp
                 lblMensaje.Text = "Ocurrió un error al cargar las empresas. Por favor intente nuevamente.";
                 lblMensaje.CssClass = "text-danger";
             }
+        }
+
+        private void ListaProspectos()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarProspectoClienteCorporativo("8902008771"); // opcion seleccionada de la lista
+            ddlProspectos.DataSource = dt;
+            ddlProspectos.DataBind();
+            dt.Dispose();
         }
 
         private void ValidarPermisos(string strPagina)
