@@ -291,10 +291,10 @@
                                                     <asp:DropDownList ID="ddlTipoPago" runat="server" AppendDataBoundItems="true"
                                                         DataTextField="TipoDocumento" DataValueField="idTipoDoc" CssClass="form-control input-sm">
                                                         <%--<asp:ListItem Text="Seleccione" Value=""></asp:ListItem>--%>
+                                                        <asp:ListItem Text="Pago en línea" Value="4"></asp:ListItem>
                                                         <asp:ListItem Text="Efectivo" Value="1"></asp:ListItem>
                                                         <asp:ListItem Text="Transferencia" Value="2"></asp:ListItem>
                                                         <asp:ListItem Text="Datafono" Value="3"></asp:ListItem>
-                                                        <asp:ListItem Text="Pago en línea" Value="4"></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
@@ -373,12 +373,48 @@
                                             </tbody>
                                         </table>
 
-                                        <canvas id="miGrafico"></canvas>
-
                                         <%--<p>Total registros: <span id="totalRegistros"></span></p>
                                         <p>Registros visibles: <span id="registrosVisibles"></span></p>--%>
                                     </div>
                                 </div>
+
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Gráficos:</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <canvas id="miGrafico1"></canvas>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <canvas id="miGrafico2"></canvas>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <canvas id="miGrafico3"></canvas>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <canvas id="miGrafico4"></canvas>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <canvas id="miGrafico5"></canvas>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <canvas id="miGrafico6"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </form>
@@ -437,15 +473,28 @@
     </script>
 
     <script>
-        const ctx = document.getElementById('miGrafico');
+        function redondearSuperior(valor, base = 1000) {
+            return Math.ceil(valor / base) * base;
+        }
 
-        const data = {
-            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
+        // Grafico de Ventas y Cantidad Diaria x mes
+        const datos1 = <%= Grafico1 %>;
+
+        const ctx1 = document.getElementById('miGrafico1');
+
+        const maxVentas1 = Math.max(...datos1.ventas);
+        const maxCantidad1 = Math.max(...datos1.cantidad); 
+
+        const maxY11 = redondearSuperior(maxVentas1 * 1.1, 100000);
+        const maxY12 = Math.ceil(maxCantidad1 * 1.2);
+
+        const data1 = {
+            labels: datos1.labels, // nombres de canal
             datasets: [
                 {
                     type: 'bar',                // Tipo: Barras
-                    label: 'Ventas (en miles)',
-                    data: [50, 75, 60, 90, 120, 80],
+                    label: 'Ventas',
+                    data: datos1.ventas,
                     yAxisID: 'y1',              // Asociado al eje Y izquierdo
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
                     borderColor: 'rgb(54, 162, 235)',
@@ -453,8 +502,8 @@
                 },
                 {
                     type: 'line',               // Tipo: Línea
-                    label: 'Ganancias (%)',
-                    data: [10, 25, 20, 35, 40, 30],
+                    label: 'Cantidad',
+                    data: datos1.cantidad,
                     yAxisID: 'y2',              // Asociado al eje Y derecho
                     borderColor: 'rgb(255, 99, 132)',
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
@@ -464,8 +513,8 @@
             ]
         };
 
-        new Chart(ctx, {
-            data: data,
+        new Chart(ctx1, {
+            data: data1,
             options: {
                 responsive: true,
                 interaction: {
@@ -478,23 +527,389 @@
                         type: 'linear',
                         position: 'left',
                         min: 0,
-                        max: 150,
-                        title: { display: true, text: 'Ventas (miles)' },
+                        max: maxY11,
+                        title: { display: true, text: 'Ventas' },
                         grid: { drawOnChartArea: true }
                     },
                     y2: {
                         type: 'linear',
                         position: 'right',
                         min: 0,
-                        max: 50,
-                        title: { display: true, text: 'Ganancias (%)' },
+                        max: maxY12,
+                        title: { display: true, text: 'Cantidad' },
                         grid: { drawOnChartArea: false } // Evita duplicar líneas de cuadrícula
                     }
                 },
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Comparativo de Ventas y Ganancias'
+                        text: 'Comparativo de Ventas y Cantidad Diario'
+                    }
+                }
+            }
+        });
+
+
+        // Grafico de Ventas y Cantidad por Usuario
+        const datos2 = <%= Grafico2 %>;
+
+        const ctx2 = document.getElementById('miGrafico2');
+
+        const maxVentas2 = Math.max(...datos2.ventas);
+        const maxCantidad2 = Math.max(...datos2.cantidad);
+
+        const maxY21 = redondearSuperior(maxVentas2 * 1.1, 100000);
+        const maxY22 = Math.ceil(maxCantidad2 * 1.2);
+
+        const data2 = {
+            labels: datos2.labels, // nombres de canal
+            datasets: [
+                {
+                    type: 'bar',                // Tipo: Barras
+                    label: 'Ventas',
+                    data: datos2.ventas,
+                    yAxisID: 'y1',              // Asociado al eje Y izquierdo
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    borderWidth: 1
+                },
+                {
+                    type: 'line',               // Tipo: Línea
+                    label: 'Cantidad',
+                    data: datos2.cantidad,
+                    yAxisID: 'y2',              // Asociado al eje Y derecho
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    tension: 0,
+                    fill: false
+                }
+            ]
+        };
+
+        new Chart(ctx2, {
+            data: data2,
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                stacked: false,
+                scales: {
+                    y1: {
+                        type: 'linear',
+                        position: 'left',
+                        min: 0,
+                        max: maxY21,
+                        title: { display: true, text: 'Ventas' },
+                        grid: { drawOnChartArea: true }
+                    },
+                    y2: {
+                        type: 'linear',
+                        position: 'right',
+                        min: 0,
+                        max: maxY22,
+                        title: { display: true, text: 'Cantidad' },
+                        grid: { drawOnChartArea: false } // Evita duplicar líneas de cuadrícula
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Comparativo de Ventas y Cantidad por Usuario'
+                    }
+                }
+            }
+        });
+
+
+
+        // Grafico de Ventas y Cantidad por Canal de Venta
+        const datos3 = <%= Grafico3 %>;
+
+        const ctx3 = document.getElementById('miGrafico3');
+
+        const maxVentas3 = Math.max(...datos3.ventas);
+        const maxCantidad3 = Math.max(...datos3.cantidad);
+
+        const maxY31 = redondearSuperior(maxVentas3 * 1.1, 100000);
+        const maxY32 = Math.ceil(maxCantidad3 * 1.2);
+
+        const data3 = {
+            labels: datos3.labels, // nombres de canal
+            datasets: [
+                {
+                    type: 'bar',                // Tipo: Barras
+                    label: 'Ventas',
+                    data: datos3.ventas,
+                    yAxisID: 'y1',              // Asociado al eje Y izquierdo
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    borderWidth: 1
+                },
+                {
+                    type: 'line',               // Tipo: Línea
+                    label: 'Cantidad',
+                    data: datos3.cantidad,
+                    yAxisID: 'y2',              // Asociado al eje Y derecho
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    tension: 0,
+                    fill: false
+                }
+            ]
+        };
+
+        new Chart(ctx3, {
+            data: data3,
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                stacked: false,
+                scales: {
+                    y1: {
+                        type: 'linear',
+                        position: 'left',
+                        min: 0,
+                        max: maxY31,
+                        title: { display: true, text: 'Ventas' },
+                        grid: { drawOnChartArea: true }
+                    },
+                    y2: {
+                        type: 'linear',
+                        position: 'right',
+                        min: 0,
+                        max: maxY32,
+                        title: { display: true, text: 'Cantidad' },
+                        grid: { drawOnChartArea: false } // Evita duplicar líneas de cuadrícula
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Comparativo de Ventas y Cantidad por Canal de Venta'
+                    }
+                }
+            }
+        });
+
+
+        // Grafico de Ventas y Cantidad por Banco
+        const datos4 = <%= Grafico4 %>;
+
+        const ctx4 = document.getElementById('miGrafico4');
+
+        const maxVentas4 = Math.max(...datos4.ventas);
+        const maxCantidad4 = Math.max(...datos4.cantidad);
+
+        const maxY41 = redondearSuperior(maxVentas4 * 1.1, 100000);
+        const maxY42 = Math.ceil(maxCantidad4 * 1.2);
+
+        const data4 = {
+            labels: datos4.labels, // nombres de canal
+            datasets: [
+                {
+                    type: 'bar',                // Tipo: Barras
+                    label: 'Ventas',
+                    data: datos4.ventas,
+                    yAxisID: 'y1',              // Asociado al eje Y izquierdo
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    borderWidth: 1
+                },
+                {
+                    type: 'line',               // Tipo: Línea
+                    label: 'Cantidad',
+                    data: datos4.cantidad,
+                    yAxisID: 'y2',              // Asociado al eje Y derecho
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    tension: 0,
+                    fill: false
+                }
+            ]
+        };
+
+        new Chart(ctx4, {
+            data: data4,
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                stacked: false,
+                scales: {
+                    y1: {
+                        type: 'linear',
+                        position: 'left',
+                        min: 0,
+                        max: maxY41,
+                        title: { display: true, text: 'Ventas' },
+                        grid: { drawOnChartArea: true }
+                    },
+                    y2: {
+                        type: 'linear',
+                        position: 'right',
+                        min: 0,
+                        max: maxY42,
+                        title: { display: true, text: 'Cantidad' },
+                        grid: { drawOnChartArea: false } // Evita duplicar líneas de cuadrícula
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Comparativo de Ventas y Cantidad por Banco'
+                    }
+                }
+            }
+        });
+
+
+        // Grafico de Ventas y Cantidad por Medio de Pago
+        const datos5 = <%= Grafico5 %>;
+
+        const ctx5 = document.getElementById('miGrafico5');
+
+        const maxVentas5 = Math.max(...datos5.ventas);
+        const maxCantidad5 = Math.max(...datos5.cantidad);
+
+        const maxY51 = redondearSuperior(maxVentas5 * 1.1, 100000);
+        const maxY52 = Math.ceil(maxCantidad5 * 1.2);
+
+        const data5 = {
+            labels: datos5.labels, // nombres de canal
+            datasets: [
+                {
+                    type: 'bar',                // Tipo: Barras
+                    label: 'Ventas',
+                    data: datos5.ventas,
+                    yAxisID: 'y1',              // Asociado al eje Y izquierdo
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    borderWidth: 1
+                },
+                {
+                    type: 'line',               // Tipo: Línea
+                    label: 'Cantidad',
+                    data: datos5.cantidad,
+                    yAxisID: 'y2',              // Asociado al eje Y derecho
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    tension: 0,
+                    fill: false
+                }
+            ]
+        };
+
+        new Chart(ctx5, {
+            data: data5,
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                stacked: false,
+                scales: {
+                    y1: {
+                        type: 'linear',
+                        position: 'left',
+                        min: 0,
+                        max: maxY51,
+                        title: { display: true, text: 'Ventas' },
+                        grid: { drawOnChartArea: true }
+                    },
+                    y2: {
+                        type: 'linear',
+                        position: 'right',
+                        min: 0,
+                        max: maxY52,
+                        title: { display: true, text: 'Cantidad' },
+                        grid: { drawOnChartArea: false } // Evita duplicar líneas de cuadrícula
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Comparativo de Ventas y Cantidad por Medio de Pago'
+                    }
+                }
+            }
+        });
+
+
+        // Grafico de Ventas y Cantidad por Plan
+        const datos6 = <%= Grafico6 %>;
+
+        const ctx6 = document.getElementById('miGrafico6');
+
+        const maxVentas6 = Math.max(...datos6.ventas);
+        const maxCantidad6 = Math.max(...datos6.cantidad);
+
+        const maxY61 = redondearSuperior(maxVentas6 * 1.1, 100000);
+        const maxY62 = Math.ceil(maxCantidad6 * 1.2);
+
+        const data6 = {
+            labels: datos6.labels, // nombres de canal
+            datasets: [
+                {
+                    type: 'bar',                // Tipo: Barras
+                    label: 'Ventas',
+                    data: datos6.ventas,
+                    yAxisID: 'y1',              // Asociado al eje Y izquierdo
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    borderWidth: 1
+                },
+                {
+                    type: 'line',               // Tipo: Línea
+                    label: 'Cantidad',
+                    data: datos6.cantidad,
+                    yAxisID: 'y2',              // Asociado al eje Y derecho
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    tension: 0,
+                    fill: false
+                }
+            ]
+        };
+
+        new Chart(ctx6, {
+            data: data6,
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                stacked: false,
+                scales: {
+                    y1: {
+                        type: 'linear',
+                        position: 'left',
+                        min: 0,
+                        max: maxY61,
+                        title: { display: true, text: 'Ventas' },
+                        grid: { drawOnChartArea: true }
+                    },
+                    y2: {
+                        type: 'linear',
+                        position: 'right',
+                        min: 0,
+                        max: maxY62,
+                        title: { display: true, text: 'Cantidad' },
+                        grid: { drawOnChartArea: false } // Evita duplicar líneas de cuadrícula
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Comparativo de Ventas y Cantidad por Plan'
                     }
                 }
             }

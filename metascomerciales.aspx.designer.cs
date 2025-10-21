@@ -150,15 +150,6 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbAsesorElite;
 
         /// <summary>
-        /// Control txbDirectorSede.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbDirectorSede;
-
-        /// <summary>
         /// Control txbAsesorOnline.
         /// </summary>
         /// <remarks>
@@ -166,6 +157,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbAsesorOnline;
+
+        /// <summary>
+        /// Control txbDirectorSede.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbDirectorSede;
 
         /// <summary>
         /// Control btnAgregar.
