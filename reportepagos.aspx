@@ -160,7 +160,7 @@
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content animated bounceInRight">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Detalle de la transacción</h5>
+                                        <h5 class="modal-title">Detalle de pagos del afiliado</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -265,7 +265,7 @@
 
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Transacciones: Recibir pagos</h5>
+                                        <h5>Reporte de pagos:</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -373,6 +373,8 @@
                                             </tbody>
                                         </table>
 
+                                        <canvas id="miGrafico"></canvas>
+
                                         <%--<p>Total registros: <span id="totalRegistros"></span></p>
                                         <p>Registros visibles: <span id="registrosVisibles"></span></p>--%>
                                     </div>
@@ -405,6 +407,7 @@
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Page-Level Scripts -->
     <script>
@@ -431,6 +434,71 @@
             }
         });
 
+    </script>
+
+    <script>
+        const ctx = document.getElementById('miGrafico');
+
+        const data = {
+            labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
+            datasets: [
+                {
+                    type: 'bar',                // Tipo: Barras
+                    label: 'Ventas (en miles)',
+                    data: [50, 75, 60, 90, 120, 80],
+                    yAxisID: 'y1',              // Asociado al eje Y izquierdo
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    borderWidth: 1
+                },
+                {
+                    type: 'line',               // Tipo: Línea
+                    label: 'Ganancias (%)',
+                    data: [10, 25, 20, 35, 40, 30],
+                    yAxisID: 'y2',              // Asociado al eje Y derecho
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    tension: 0,
+                    fill: false
+                }
+            ]
+        };
+
+        new Chart(ctx, {
+            data: data,
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                stacked: false,
+                scales: {
+                    y1: {
+                        type: 'linear',
+                        position: 'left',
+                        min: 0,
+                        max: 150,
+                        title: { display: true, text: 'Ventas (miles)' },
+                        grid: { drawOnChartArea: true }
+                    },
+                    y2: {
+                        type: 'linear',
+                        position: 'right',
+                        min: 0,
+                        max: 50,
+                        title: { display: true, text: 'Ganancias (%)' },
+                        grid: { drawOnChartArea: false } // Evita duplicar líneas de cuadrícula
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Comparativo de Ventas y Ganancias'
+                    }
+                }
+            }
+        });
     </script>
 
 </body>

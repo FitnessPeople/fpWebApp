@@ -109,19 +109,19 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void listaTransacciones()
-        {
-            decimal valorTotal = 0;
-            int totalRegistros = 0;
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosRecientes(out valorTotal, out totalRegistros);
-            rpPagos.DataSource = dt;
-            rpPagos.DataBind();
-            dt.Dispose();
+        //private void listaTransacciones()
+        //{
+        //    decimal valorTotal = 0;
+        //    int totalRegistros = 0;
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarPagosRecientes(out valorTotal, out totalRegistros);
+        //    rpPagos.DataSource = dt;
+        //    rpPagos.DataBind();
+        //    dt.Dispose();
 
-            ltCuantos1.Text = "$ " + String.Format("{0:N0}", valorTotal);
-            ltRegistros1.Text = totalRegistros.ToString();
-        }
+        //    ltCuantos1.Text = "$ " + String.Format("{0:N0}", valorTotal);
+        //    ltRegistros1.Text = totalRegistros.ToString();
+        //}
 
         private void listaTransaccionesPorFecha(int tipoPago, int idPlan, string fechaIni, string fechaFin)
         {

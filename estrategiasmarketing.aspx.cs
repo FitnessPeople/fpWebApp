@@ -253,7 +253,7 @@ namespace fpWebApp
         private void CargarPlanes()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanesVigentes();
+            DataTable dt = cg.ConsultarPlanesVigentesVisibleCRM();
 
             chblPlanes.DataSource = dt;
             chblPlanes.DataTextField = "NombrePlan";
@@ -310,7 +310,7 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             DataTable dtCanales = cg.ConsultarCanalesVenta();
 
-            DataTable dtPlanes = cg.ConsultarPlanesVigentes();
+            DataTable dtPlanes = cg.ConsultarPlanesVigentesVisibleCRM();
 
             dicCanales = dtCanales.AsEnumerable()
                 .ToDictionary(row => Convert.ToInt32(row["idCanalVenta"]), row => row["NombreCanalVenta"].ToString());
