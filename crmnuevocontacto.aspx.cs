@@ -931,9 +931,6 @@ namespace fpWebApp
                                 }
 
                             }
-
-
-
                         }
                         else
                         {
