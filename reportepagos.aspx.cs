@@ -8,7 +8,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Globalization;
-using System.Transactions;
+using System.Threading;
 
 namespace fpWebApp
 {
@@ -24,14 +24,14 @@ namespace fpWebApp
         protected void Page_Load(object sender, EventArgs e)
         {
             CultureInfo culture = new CultureInfo("es-CO");
-            System.Threading.Thread.CurrentThread.CurrentCulture = culture;
-            System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
 
             if (!IsPostBack)
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Pagos");
+                    ValidarPermisos("Ingresos");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -63,15 +63,16 @@ namespace fpWebApp
                             txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
                             CargarPlanes();
                         }
+
+                        //listaTransacciones();
+                        listaTransaccionesPorFecha(
+                            Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()),
+                            Convert.ToInt32(ddlPlanes.SelectedValue.ToString()),
+                            txbFechaIni.Value.ToString(),
+                            txbFechaFin.Value.ToString());
+                        VentasWeb();
+                        VentasCounter();
                     }
-                    //listaTransacciones();
-                    listaTransaccionesPorFecha(
-                        Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()),
-                        Convert.ToInt32(ddlPlanes.SelectedValue.ToString()),
-                        txbFechaIni.Value.ToString(),
-                        txbFechaFin.Value.ToString());
-                    VentasWeb();
-                    VentasCounter();
                 }
                 else
                 {
@@ -159,7 +160,7 @@ namespace fpWebApp
 
         private void CrearGrafico1(string fechaIni)
         {
-            //Comparativo de Ventas y Cantidad Diario
+            //Comparativo de Pagos y Cantidad Diario
             clasesglobales cg = new clasesglobales();
             int anio = Convert.ToDateTime(fechaIni).Year;
             int mes = Convert.ToDateTime(fechaIni).Month;
@@ -215,8 +216,8 @@ namespace fpWebApp
                     COUNT(*) AS cuantos,
                     SUM(valor) AS sumatoria
                 FROM pagosplanafiliado ppa, usuarios u 
-                WHERE YEAR(FechaHoraPago) = 2025  
-                  AND MONTH(FechaHoraPago) = 9 
+                WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
+                  AND MONTH(FechaHoraPago) = " + mes.ToString() + @"
                   AND ppa.idUsuario = u.idUsuario 
                 GROUP BY ppa.idUsuario 
                 ORDER BY ppa.idUsuario;";
@@ -261,8 +262,8 @@ namespace fpWebApp
                     COUNT(*) AS cuantos,
                     SUM(valor) AS sumatoria
                 FROM pagosplanafiliado ppa, CanalesVenta cv  
-                WHERE YEAR(FechaHoraPago) = 2025  
-                  AND MONTH(FechaHoraPago) = 9 
+                WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
+                  AND MONTH(FechaHoraPago) = " + mes.ToString() + @"
                   AND ppa.idCanalVenta = cv.idCanalVenta  
                 GROUP BY ppa.idCanalVenta 
                 ORDER BY ppa.idCanalVenta;";
@@ -307,8 +308,8 @@ namespace fpWebApp
                     COUNT(*) AS cuantos,
                     SUM(valor) AS sumatoria
                 FROM pagosplanafiliado 
-                WHERE YEAR(FechaHoraPago) = 2025  
-                  AND MONTH(FechaHoraPago) = 9 
+                WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
+                  AND MONTH(FechaHoraPago) = " + mes.ToString() + @"
                 GROUP BY Banco 
                 ORDER BY Banco;";
 
@@ -352,8 +353,8 @@ namespace fpWebApp
                     COUNT(*) AS cuantos,
                     SUM(valor) AS sumatoria
                 FROM pagosplanafiliado ppa, MediosdePago mp 
-                WHERE YEAR(FechaHoraPago) = 2025  
-                  AND MONTH(FechaHoraPago) = 9 
+                WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
+                  AND MONTH(FechaHoraPago) = " + mes.ToString() + @"
                   AND ppa.idMedioPago = mp.idMedioPago 
                 GROUP BY ppa.idMedioPago 
                 ORDER BY ppa.idMedioPago;";
@@ -400,8 +401,8 @@ namespace fpWebApp
                 FROM pagosplanafiliado ppa 
                 INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan 
                 INNER JOIN planes p ON p.idPlan = ap.idPlan 
-                WHERE YEAR(FechaHoraPago) = 2025  
-                  AND MONTH(FechaHoraPago) = 9 
+                WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
+                  AND MONTH(FechaHoraPago) = " + mes.ToString() + @"
                 GROUP BY p.NombrePlan 
                 ORDER BY p.NombrePlan;";
 

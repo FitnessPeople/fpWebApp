@@ -1,0 +1,473 @@
+﻿using Newtonsoft.Json;
+using System;
+using System.Data;
+using System.Globalization;
+using System.Threading;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace fpWebApp
+{
+    public partial class reporteventas : System.Web.UI.Page
+    {
+        protected string Grafico1 = "{}";
+        protected string Grafico2 = "{}";
+        protected string Grafico3 = "{}";
+        protected string Grafico4 = "{}";
+        protected string Grafico5 = "{}";
+        protected string Grafico6 = "{}";
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            CultureInfo culture = new CultureInfo("es-CO");
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+
+            if (!IsPostBack)
+            {
+                if (Session["idUsuario"] != null)
+                {
+                    ValidarPermisos("Ventas");
+                    if (ViewState["SinPermiso"].ToString() == "1")
+                    {
+                        //No tiene acceso a esta página
+                        divMensaje.Visible = true;
+                        paginasperfil.Visible = true;
+                        divContenido.Visible = false;
+                    }
+                    else
+                    {
+                        //Si tiene acceso a esta página
+                        divBotonesLista.Visible = false;
+                        //btnAgregar.Visible = false;
+                        if (ViewState["Consulta"].ToString() == "1")
+                        {
+                            divBotonesLista.Visible = true;
+                            CargarPlanes();
+                            //lbExportarExcel.Visible = false;
+                        }
+                        if (ViewState["Exportar"].ToString() == "1")
+                        {
+                            divBotonesLista.Visible = true;
+                            //lbExportarExcel.Visible = true;
+                        }
+                        if (ViewState["CrearModificar"].ToString() == "1")
+                        {
+                            txbFechaIni.Attributes.Add("type", "date");
+                            txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
+                            txbFechaFin.Attributes.Add("type", "date");
+                            txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+                            CargarPlanes();
+
+                            CrearGrafico1(txbFechaIni.Value.ToString());
+                            CrearGrafico2(txbFechaIni.Value.ToString());
+                            CrearGrafico3(txbFechaIni.Value.ToString());
+                            CrearGrafico4(txbFechaIni.Value.ToString());
+                            CrearGrafico5(txbFechaIni.Value.ToString());
+                            CrearGrafico6(txbFechaIni.Value.ToString());
+                        }
+                    }
+                    listaVentas();
+                    //listaTransaccionesPorFecha(Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()),Convert.ToInt32(ddlPlanes.SelectedValue.ToString()),txbFechaIni.Value.ToString(),txbFechaFin.Value.ToString());
+                    //VentasWeb();
+                    //VentasCounter();
+                }
+                else
+                {
+                    Response.Redirect("logout.aspx");
+                }
+            }
+        }
+
+        private void ValidarPermisos(string strPagina)
+        {
+            ViewState["SinPermiso"] = "1";
+            ViewState["Consulta"] = "0";
+            ViewState["Exportar"] = "0";
+            ViewState["CrearModificar"] = "0";
+            ViewState["Borrar"] = "0";
+
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
+
+            if (dt.Rows.Count > 0)
+            {
+                ViewState["SinPermiso"] = dt.Rows[0]["SinPermiso"].ToString();
+                ViewState["Consulta"] = dt.Rows[0]["Consulta"].ToString();
+                ViewState["Exportar"] = dt.Rows[0]["Exportar"].ToString();
+                ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
+                ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
+            }
+
+            dt.Dispose();
+        }
+
+        private void CargarPlanes()
+        {
+            ddlPlanes.Items.Clear();
+            ListItem li = new ListItem("Todos", "0");
+            ddlPlanes.Items.Add(li);
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPlanesVigentes();
+
+            ddlPlanes.DataSource = dt;
+            ddlPlanes.DataBind();
+            dt.Dispose();
+        }
+
+        private void listaVentas()
+        {
+            string query = @"
+                SELECT  
+                    pa.*,
+                    a.DocumentoAfiliado,
+                    CONCAT_WS(' ', a.NombreAfiliado, a.ApellidoAfiliado) AS NombreAfiliado,
+                    CONCAT('$', FORMAT(pa.valor, 2)) AS Valor,
+                    u.NombreUsuario AS Usuario,
+                    cv.NombreCanalVenta AS CanalVenta, NombreMedioPago, p.NombrePlan  
+                FROM pagosplanafiliado pa
+	                INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
+	                INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
+	                INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
+	                INNER JOIN empleados e ON e.DocumentoEmpleado = u.idEmpleado
+	                INNER JOIN canalesventa cv ON cv.idCanalVenta = e.idCanalVenta 
+	                INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
+	                INNER JOIN planes p ON p.idPlan = ap.idPlan 
+                WHERE (pa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()) + @")
+	            AND DATE(pa.FechaHoraPago) BETWEEN '" + txbFechaIni.Value.ToString() + @"' 
+                    AND '" + txbFechaFin.Value.ToString() + @"' 
+	            AND ap.idPlan IN (18,19) 
+                ORDER BY pa.idPago DESC;";
+
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(query);
+            rpPagos.DataSource = dt;
+            rpPagos.DataBind();
+
+            decimal sumatoriaValor = 0;
+
+            if (dt.Rows.Count > 0)
+            {
+                object suma = dt.Compute("SUM(Valor)", "");
+                sumatoriaValor = suma != DBNull.Value ? Convert.ToDecimal(suma) : 0;
+            }
+
+            ltCuantos1.Text = "$ " + String.Format("{0:N0}", sumatoriaValor);
+            ltRegistros1.Text = dt.Rows.Count.ToString();
+            dt.Dispose();
+        }
+
+        private void CrearGrafico1(string fechaIni)
+        {
+            //Comparativo de Ventas y Cantidad Diario
+            clasesglobales cg = new clasesglobales();
+            int anio = Convert.ToDateTime(fechaIni).Year;
+            int mes = Convert.ToDateTime(fechaIni).Month;
+
+            string query = @"
+                SELECT COUNT(DISTINCT ppa.idAfiliadoPlan) AS cuantos, 
+                    DATE(ppa.FechaHoraPago) AS dia,
+                    SUM(ppa.valor) AS sumatoria 
+                FROM PagosPlanAfiliado ppa 
+                INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
+                WHERE ap.idPlan IN (18,19) 
+                    AND YEAR(FechaHoraPago) = " + anio.ToString() + @" 
+                  AND MONTH(FechaHoraPago) = " + mes.ToString() + @"
+                GROUP BY DATE(FechaHoraPago) 
+                ORDER BY dia;";
+
+            DataTable dt = cg.TraerDatos(query);
+
+            // Convertir los datos a listas para Chart.js
+            var labels = new System.Collections.Generic.List<string>();
+            var ventas = new System.Collections.Generic.List<decimal>();
+            var cantidad = new System.Collections.Generic.List<decimal>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                labels.Add(((DateTime)row["dia"]).ToString("dd MMM"));
+                ventas.Add(Convert.ToDecimal(row["sumatoria"]));
+                cantidad.Add(Convert.ToDecimal(row["cuantos"]));
+            }
+
+            // Crear objeto para enviar a JS
+            var datos = new
+            {
+                labels = labels,
+                ventas = ventas,
+                cantidad = cantidad
+            };
+
+            dt.Dispose();
+
+            Grafico1 = JsonConvert.SerializeObject(datos);
+        }
+
+        private void CrearGrafico2(string fechaIni)
+        {
+            //Comparativo de Ventas y Cantidad por Usuario
+            clasesglobales cg = new clasesglobales();
+            int anio = Convert.ToDateTime(fechaIni).Year;
+            int mes = Convert.ToDateTime(fechaIni).Month;
+
+            string query = @"
+                SELECT 
+                    ppa.idUsuario, u.NombreUsuario, 
+                    COUNT(*) AS cuantos,
+                    SUM(ppa.valor) AS sumatoria
+                FROM pagosplanafiliado ppa  
+                INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
+                INNER JOIN Usuarios u ON ppa.idUsuario = u.idUsuario 
+                WHERE ap.idPlan IN (18,19) 
+                  AND YEAR(FechaHoraPago) = 2025  
+                  AND MONTH(FechaHoraPago) = 9 
+                GROUP BY ppa.idUsuario 
+                ORDER BY ppa.idUsuario;";
+
+            DataTable dt = cg.TraerDatos(query);
+
+            // Convertir los datos a listas para Chart.js
+            var labels = new System.Collections.Generic.List<string>();
+            var ventas = new System.Collections.Generic.List<decimal>();
+            var cantidad = new System.Collections.Generic.List<decimal>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                labels.Add((row["NombreUsuario"]).ToString());
+                ventas.Add(Convert.ToDecimal(row["sumatoria"]));
+                cantidad.Add(Convert.ToDecimal(row["cuantos"]));
+            }
+
+            // Crear objeto para enviar a JS
+            var datos = new
+            {
+                labels = labels,
+                ventas = ventas,
+                cantidad = cantidad
+            };
+
+            dt.Dispose();
+
+            Grafico2 = JsonConvert.SerializeObject(datos);
+        }
+
+        private void CrearGrafico3(string fechaIni)
+        {
+            //Comparativo de Ventas y Cantidad por Canal de Venta
+            clasesglobales cg = new clasesglobales();
+            int anio = Convert.ToDateTime(fechaIni).Year;
+            int mes = Convert.ToDateTime(fechaIni).Month;
+
+            string query = @"
+                SELECT 
+                    ppa.idCanalVenta, cv.NombreCanalVenta, 
+                    COUNT(*) AS cuantos,
+                    SUM(ppa.valor) AS sumatoria
+                FROM pagosplanafiliado ppa 
+                INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
+                INNER JOIN CanalesVenta cv ON ppa.idCanalVenta = cv.idCanalVenta 
+                WHERE ap.idPlan IN (18,19) 
+                  AND YEAR(FechaHoraPago) = 2025  
+                  AND MONTH(FechaHoraPago) = 9 
+                GROUP BY ppa.idCanalVenta 
+                ORDER BY ppa.idCanalVenta;";
+
+            DataTable dt = cg.TraerDatos(query);
+
+            // Convertir los datos a listas para Chart.js
+            var labels = new System.Collections.Generic.List<string>();
+            var ventas = new System.Collections.Generic.List<decimal>();
+            var cantidad = new System.Collections.Generic.List<decimal>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                labels.Add((row["NombreCanalVenta"]).ToString());
+                ventas.Add(Convert.ToDecimal(row["sumatoria"]));
+                cantidad.Add(Convert.ToDecimal(row["cuantos"]));
+            }
+
+            dt.Dispose();
+
+            // Crear objeto para enviar a JS
+            var datos = new
+            {
+                labels = labels,
+                ventas = ventas,
+                cantidad = cantidad
+            };
+
+            Grafico3 = JsonConvert.SerializeObject(datos);
+        }
+
+        private void CrearGrafico4(string fechaIni)
+        {
+            //Comparativo de Ventas y Cantidad por Banco
+            clasesglobales cg = new clasesglobales();
+            int anio = Convert.ToDateTime(fechaIni).Year;
+            int mes = Convert.ToDateTime(fechaIni).Month;
+
+            string query = @"
+                SELECT 
+                    Banco, 
+                    COUNT(*) AS cuantos,
+                    SUM(ppa.valor) AS sumatoria
+                FROM pagosplanafiliado ppa 
+                INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
+                WHERE ap.idPlan IN (18,19) 
+                  AND YEAR(FechaHoraPago) = 2025  
+                  AND MONTH(FechaHoraPago) = 9 
+                GROUP BY Banco 
+                ORDER BY Banco;";
+
+            DataTable dt = cg.TraerDatos(query);
+
+            // Convertir los datos a listas para Chart.js
+            var labels = new System.Collections.Generic.List<string>();
+            var ventas = new System.Collections.Generic.List<decimal>();
+            var cantidad = new System.Collections.Generic.List<decimal>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                labels.Add((row["Banco"]).ToString());
+                ventas.Add(Convert.ToDecimal(row["sumatoria"]));
+                cantidad.Add(Convert.ToDecimal(row["cuantos"]));
+            }
+
+            dt.Dispose();
+
+            // Crear objeto para enviar a JS
+            var datos = new
+            {
+                labels = labels,
+                ventas = ventas,
+                cantidad = cantidad
+            };
+
+            Grafico4 = JsonConvert.SerializeObject(datos);
+        }
+
+        private void CrearGrafico5(string fechaIni)
+        {
+            //Comparativo de Ventas y Cantidad por Medio de Pago
+            clasesglobales cg = new clasesglobales();
+            int anio = Convert.ToDateTime(fechaIni).Year;
+            int mes = Convert.ToDateTime(fechaIni).Month;
+
+            string query = @"
+                SELECT 
+                    ppa.idMedioPago, mp.NombreMedioPago, 
+                    COUNT(*) AS cuantos,
+                    SUM(ppa.valor) AS sumatoria
+                FROM pagosplanafiliado ppa 
+                INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
+                INNER JOIN MediosdePago mp ON ppa.idMedioPago = mp.idMedioPago 
+                WHERE ap.idPlan IN (18,19) 
+                  AND YEAR(FechaHoraPago) = 2025  
+                  AND MONTH(FechaHoraPago) = 9 
+                GROUP BY ppa.idMedioPago 
+                ORDER BY ppa.idMedioPago;";
+
+            DataTable dt = cg.TraerDatos(query);
+
+            // Convertir los datos a listas para Chart.js
+            var labels = new System.Collections.Generic.List<string>();
+            var ventas = new System.Collections.Generic.List<decimal>();
+            var cantidad = new System.Collections.Generic.List<decimal>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                labels.Add((row["NombreMedioPago"]).ToString());
+                ventas.Add(Convert.ToDecimal(row["sumatoria"]));
+                cantidad.Add(Convert.ToDecimal(row["cuantos"]));
+            }
+
+            dt.Dispose();
+
+            // Crear objeto para enviar a JS
+            var datos = new
+            {
+                labels = labels,
+                ventas = ventas,
+                cantidad = cantidad
+            };
+
+            Grafico5 = JsonConvert.SerializeObject(datos);
+        }
+
+        private void CrearGrafico6(string fechaIni)
+        {
+            //Comparativo de Ventas y Cantidad por Plan
+            clasesglobales cg = new clasesglobales();
+            int anio = Convert.ToDateTime(fechaIni).Year;
+            int mes = Convert.ToDateTime(fechaIni).Month;
+
+            string query = @"
+                SELECT 
+                    p.NombrePlan, 
+                    COUNT(*) AS cuantos,
+                    SUM(ppa.valor) AS sumatoria
+                FROM pagosplanafiliado ppa 
+                INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
+                INNER JOIN planes p ON p.idPlan = ap.idPlan 
+                WHERE ap.idPlan IN (18,19) 
+                  AND YEAR(FechaHoraPago) = 2025  
+                  AND MONTH(FechaHoraPago) = 9 
+                GROUP BY p.NombrePlan 
+                ORDER BY p.NombrePlan;";
+
+            DataTable dt = cg.TraerDatos(query);
+
+            // Convertir los datos a listas para Chart.js
+            var labels = new System.Collections.Generic.List<string>();
+            var ventas = new System.Collections.Generic.List<decimal>();
+            var cantidad = new System.Collections.Generic.List<decimal>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                labels.Add((row["NombrePlan"]).ToString());
+                ventas.Add(Convert.ToDecimal(row["sumatoria"]));
+                cantidad.Add(Convert.ToDecimal(row["cuantos"]));
+            }
+
+            dt.Dispose();
+
+            // Crear objeto para enviar a JS
+            var datos = new
+            {
+                labels = labels,
+                ventas = ventas,
+                cantidad = cantidad
+            };
+
+            Grafico6 = JsonConvert.SerializeObject(datos);
+        }
+
+        protected void btnBuscar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void lbExportarExcel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnDetalle_Command(object sender, CommandEventArgs e)
+        {
+            if (e.CommandName == "mostrarDetalle")
+            {
+                int idAfiliadoPlan = int.Parse(e.CommandArgument.ToString());
+
+                Literal ltDetalleModal = (Literal)Page.FindControl("ltDetalleModal");
+
+                if (ltDetalleModal != null)
+                {
+                    //ltDetalleModal.Text = listarDetalle(idAfiliadoPlan);
+                }
+
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "MostrarModal",
+                   "setTimeout(function() { $('#ModalDetalle').modal('show'); }, 500);", true);
+            }
+        }
+    }
+}

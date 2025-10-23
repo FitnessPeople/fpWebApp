@@ -11,7 +11,7 @@ namespace fpWebApp
 {
 
 
-    public partial class reportepagos
+    public partial class reporteventas
     {
 
         /// <summary>
@@ -139,6 +139,24 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltRegistros3;
+
+        /// <summary>
+        /// Control ltCuantos4.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltCuantos4;
+
+        /// <summary>
+        /// Control ltRegistros4.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltRegistros4;
 
         /// <summary>
         /// Control divBotonesLista.
