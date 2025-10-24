@@ -433,6 +433,10 @@
                     required: true,
                     minlength: 10
                 },
+
+                ddlCiudadAfiliado: {
+                    required: true,                    
+                },
                 ddlGenero: {
                     required: true
                 },
