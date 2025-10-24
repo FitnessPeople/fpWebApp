@@ -234,7 +234,7 @@
                                     <thead>
                                         <tr>
                                             <%--<th data-sort-ignore="true">ID</th>--%>
-                                            <th data-sortable="false" data-breakpoints="xs" style="width: 110px;">Documento</th>
+                                            <th data-sortable="false" data-breakpoints="xs" style="width: 140px;">Documento</th>
                                             <th data-sortable="false" data-breakpoints="xs">Nombre</th>
                                             <th data-breakpoints="xs sm md" style="width: 110px;">Télefono</th>
                                             <th data-breakpoints="xs sm md">Correo</th>

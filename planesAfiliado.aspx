@@ -205,20 +205,20 @@
                             <table class="table small m-b-xs">
                                 <tbody>
                                     <tr>
-                                        <td><strong><i class="fab fa-whatsapp"></i></strong>
+                                        <td><strong><i class="fab fa-whatsapp m-r-sm"></i></strong>
                                             <asp:Literal ID="ltCelular" runat="server"></asp:Literal></td>
-                                        <td><strong><i class="fa fa-shield"></i></strong>Estado: 
+                                        <td><strong><i class="fa fa-shield m-r-sm"></i></strong>Estado: 
                                             <asp:Literal ID="ltEstado" runat="server"></asp:Literal></td>
                                     </tr>
                                     <tr>
-                                        <td><strong><i class="fa fa-building"></i></strong>Sede: 
+                                        <td><strong><i class="fa fa-building m-r-sm"></i></strong>Sede: 
                                             <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
-                                        <td><strong>54</strong> Días asistidos</td>
+                                        <td><strong><asp:Literal ID="ltAsistencias" runat="server"></asp:Literal></strong> Asistencias</td>
                                     </tr>
                                     <tr>
-                                        <td><strong><i class="fa fa-cake"></i></strong>
+                                        <td><strong><i class="fa fa-cake m-r-sm"></i></strong>
                                             <asp:Literal ID="ltCumple" runat="server"></asp:Literal></td>
-                                        <td><strong>2</strong> Congelaciones</td>
+                                        <td><strong><asp:Literal ID="ltCongelaciones" runat="server"></asp:Literal></strong> Congelaciones</td>
                                     </tr>
                                 </tbody>
                             </table>
