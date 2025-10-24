@@ -597,10 +597,11 @@ namespace fpWebApp
                             ";
                             ScriptManager.RegisterStartupScript(this, GetType(), "PlanActivo", script, true);
                         }
+                        dt.Dispose();
                     }
-                    else
-                    {
-                        if (txbTotal.Text.ToString() == "")
+                    //else
+                    //{
+                    if (txbTotal.Text.ToString() == "")
                         {
                             string script = @"
                                 Swal.fire({
@@ -762,8 +763,9 @@ namespace fpWebApp
                             }
                         }
                     }
-                    dt.Dispose();
-                }
+
+                    //}
+
                 else
                 {
                     string script = @"
