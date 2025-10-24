@@ -151,6 +151,12 @@ namespace fpWebApp.controles
                                 valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorOnlineDia"]);
                             }
 
+                            if (perfilUsuario == 21 || perfilUsuario == 1 || perfilUsuario == 37 || perfilUsuario == 23)
+                            {
+                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["Presupuesto"]);
+                                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaSedeDia"]);
+                            }
+
                             ltValorMetaAsesorMes.Text = valorMetaAsesorMes.ToString("C0", new CultureInfo("es-CO"));
                             ltValorMetaAsesorHoy.Text = valorMetaAsesorHoy.ToString("C0", new CultureInfo("es-CO"));
                         }
@@ -484,6 +490,13 @@ namespace fpWebApp.controles
 
                 if (dt.Rows.Count > 0)
                 {
+                    decimal totalVentasMes = 0;
+                    decimal totalMetaSedesMes = 0;
+              
+
+                    int diaHoy = hoy.Day;
+
+                    // Construir el diccionario por día (igual que antes)
                     var datosPorDia = dt.AsEnumerable()
                         .GroupBy(r => Convert.ToDateTime(r["Fecha"]).Day)
                         .ToDictionary(
@@ -493,31 +506,58 @@ namespace fpWebApp.controles
                                 decimal metaAcumulada = 0;
                                 decimal ventasAcumuladas = 0;
                                 decimal valorMetaSedes = 0;
+                                decimal _valorMetaHoy = 0;
 
                                 foreach (var fila in g)
                                 {
                                     decimal valorMetaHoy = Convert.ToDecimal(fila["MetaSedeDia"]);
+                                    _valorMetaHoy = valorMetaHoy;
                                     valorMetaSedes = Convert.ToDecimal(fila["PresupuestoMes"]);
 
                                     metaAcumulada += valorMetaHoy;
                                     ventasAcumuladas += Convert.ToDecimal(fila["VentaDia"]);
                                 }
 
-                                ltVendidoMes.Text = ventasAcumuladas.ToString("C0", new CultureInfo("es-CO"));
-
-                                decimal brechames = ventasAcumuladas - valorMetaSedes;
-                                ltBrechaMes.Text = brechames.ToString("C0", new CultureInfo("es-CO"));
-
-                                decimal brechahoy = metaAcumulada - ventasAcumuladas;
-                                ltBrechaHoy.Text = brechahoy.ToString("C0", new CultureInfo("es-CO"));
-                                ltValorMetaAsesorHoy.Text= valorMetaSedes.ToString("C0", new CultureInfo("es-CO"));
                                 return new
                                 {
                                     Metas = metaAcumulada,
-                                    Ventas = ventasAcumuladas
+                                    Ventas = ventasAcumuladas,
+                                    MetaSedeDia = _valorMetaHoy,
+                                    PresupuestoMes = valorMetaSedes
                                 };
                             }
                         );
+
+                    // Calcular totales del mes (sumando todas las entradas)
+                    foreach (var kv in datosPorDia)
+                    {
+                        totalVentasMes += kv.Value.Ventas;
+                        if (totalMetaSedesMes == 0 && kv.Value.PresupuestoMes != 0)
+                            totalMetaSedesMes = kv.Value.PresupuestoMes;
+                    }
+
+                    decimal ventasHoy = 0;
+                    decimal metaHoy = 0;
+
+                    if (datosPorDia.ContainsKey(diaHoy))
+                    {
+                        ventasHoy = datosPorDia[diaHoy].Ventas;
+                        metaHoy = datosPorDia[diaHoy].MetaSedeDia; 
+                    }
+
+
+                    ltVendidoMes.Text = totalVentasMes.ToString("C0", new CultureInfo("es-CO"));
+
+                    ltValorMetaAsesorMes.Text = totalMetaSedesMes.ToString("C0", new CultureInfo("es-CO"));
+
+                    ltValorMetaAsesorHoy.Text = metaHoy.ToString("C0", new CultureInfo("es-CO"));
+
+
+                    decimal brechames = totalVentasMes - totalMetaSedesMes;
+                    ltBrechaMes.Text = brechames.ToString("C0", new CultureInfo("es-CO"));
+
+                    decimal brechahoy =  ventasHoy - metaHoy;
+                    ltBrechaHoy.Text = brechahoy.ToString("C0", new CultureInfo("es-CO"));
 
                     int diasDelMes = DateTime.DaysInMonth(_anio, _mes);
 
@@ -538,6 +578,7 @@ namespace fpWebApp.controles
                     }
                 }
 
+
                 labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
                 metasJson = Newtonsoft.Json.JsonConvert.SerializeObject(metas);
                 ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
@@ -547,118 +588,6 @@ namespace fpWebApp.controles
                 string mensaje = ex.Message.ToString();
             }
         }
-
-        //private void ObtenerGraficaVentasVsMetasDirectorComercial()
-        //{
-        //    int idUsuario = 0;
-        //    int idCanalVenta = 0;
-        //    string tipoSedeUsuario = string.Empty;
-        //    int perfilUsuario = 0;
-        //    DateTime hoy = DateTime.Today;
-        //    int _mes = hoy.Month;
-        //    int _anio = hoy.Year;
-        //    ltFechaHoy.Text = hoy.ToString("dd.MM.yyyy");
-
-
-        //    try
-        //    {
-        //        idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
-        //        clasesglobales cg = new clasesglobales();
-        //        DataTable dt4 = cg.ConsultarUsuarioSedePerfilPorId(idUsuario);
-        //        if (dt4.Rows.Count > 0)
-        //        {
-        //            idCanalVenta = Convert.ToInt32(dt4.Rows[0]["idCanalVenta"].ToString());
-        //            tipoSedeUsuario = dt4.Rows[0]["TipoSede"].ToString();
-        //            perfilUsuario = Convert.ToInt32(dt4.Rows[0]["IdPerfil"].ToString());
-        //        }
-
-        //        DataTable dt = cg.ConsultarVentasVsMetasGlobal(_mes, _anio);
-
-        //        var labels = new List<string>();
-        //        var metas = new List<decimal>();
-        //        var ventas = new List<decimal>();
-
-        //        if (dt.Rows.Count > 0)
-        //        {
-
-        //            var datosPorDia = dt.AsEnumerable()
-        //                .GroupBy(r => Convert.ToDateTime(r["Fecha"]).Day)
-        //                .ToDictionary(
-        //                    g => g.Key,
-        //                    g =>
-        //                    {
-        //                        decimal metaAcumulada = 0;
-        //                        decimal ventasAcumuladas = 0;
-
-        //                        foreach (var fila in g)
-        //                        {
-        //                            int valorMetaHoy = 0;
-
-        //                            if (perfilUsuario == 4 && tipoSedeUsuario == "Deluxe")
-        //                                valorMetaHoy = Convert.ToInt32(fila["MetaAsesorDeluxeDia"]);
-        //                            else if (perfilUsuario == 4 && tipoSedeUsuario == "Premium")
-        //                                valorMetaHoy = Convert.ToInt32(fila["MetaAsesorPremiumDia"]);
-        //                            else if (perfilUsuario == 4 && tipoSedeUsuario == "Elite")
-        //                                valorMetaHoy = Convert.ToInt32(fila["MetaAsesorEliteDia"]);
-        //                            else if (perfilUsuario == 2)
-        //                                valorMetaHoy = Convert.ToInt32(fila["MetaDirectorSedeDia"]);
-        //                            else if (perfilUsuario == 4 && idCanalVenta == 12)
-        //                                valorMetaHoy = Convert.ToInt32(fila["MetaAsesorOnlineDia"]);
-        //                            else
-        //                                valorMetaHoy = Convert.ToInt32(fila["MetaSedeDia"]); //
-
-        //                            metaAcumulada += valorMetaHoy;
-        //                            ventasAcumuladas += Convert.ToDecimal(fila["VentaDia"]);
-        //                        }
-
-        //                        return new
-        //                        {
-        //                            Metas = metaAcumulada,
-        //                            Ventas = ventasAcumuladas
-        //                        };
-        //                    }
-        //                );
-
-        //            int diasDelMes = DateTime.DaysInMonth(_anio, _mes);
-
-        //            for (int dia = 1; dia <= diasDelMes; dia++)
-        //            {
-        //                labels.Add(dia.ToString());
-
-        //                if (datosPorDia.ContainsKey(dia))
-        //                {
-        //                    metas.Add(datosPorDia[dia].Metas);
-        //                    ventas.Add(datosPorDia[dia].Ventas);
-        //                }
-        //                else
-        //                {
-        //                    metas.Add(0);
-        //                    ventas.Add(0);
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            int diasDelMes = DateTime.DaysInMonth(_anio, _mes);
-        //            for (int dia = 1; dia <= diasDelMes; dia++)
-        //            {
-        //                labels.Add(dia.ToString());
-        //                metas.Add(0);
-        //                ventas.Add(0);
-        //            }
-        //        }
-
-        //        labelsJson = Newtonsoft.Json.JsonConvert.SerializeObject(labels);
-        //        metasJson = Newtonsoft.Json.JsonConvert.SerializeObject(metas);
-        //        ventasJson = Newtonsoft.Json.JsonConvert.SerializeObject(ventas);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        string mensaje = ex.Message.ToString();
-        //    }
-        //}
-
-
 
     }
 }
