@@ -189,16 +189,23 @@
                                 </div>
                                 <div class="ibox-content">
                                     <div class="" style="font-size: 12px;" runat="server" id="divBotonesLista">
-                                        <div class="col-lg-12">
+                                        <div class="col-lg-6">
                                             <div class="form-group">
                                                 <div class="form-group" id="filter-form-container"></div>
                                             </div>
                                         </div>
+                                        <div class="col-lg-6 form-horizontal">
+                                            <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
+                                                CssClass="btn btn-info pull-right dim m-l-md" style="font-size: 12px;"
+                                                OnClick="lbExportarExcel_Click">
+                                                        <i class="fa fa-file-excel"></i> EXCEL
+                                            </asp:LinkButton>
+                                        </div>
                                     </div>
 
-                                    <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                    <table class="footable table table-striped list-group-item-text" data-paging-size="20"
                                         data-filter-min="3" data-filter-placeholder="Buscar"
-                                        data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
+                                        data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="20"
                                         data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300"
                                         data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados" id="miTabla">
                                         <thead>
@@ -233,13 +240,15 @@
 
                                                             <!-- Hidden fields con información adicional -->
                                                             <asp:HiddenField ID="hfIdAfiliadoPlan" runat="server" Value='<%# Eval("idAfiliadoPlan") %>' />
-                                                            <asp:HiddenField ID="hfIdVendedor" runat="server" Value='<%# Eval("idUsuario") %>' />
+                                                            <asp:HiddenField ID="hfIdVendedor" runat="server" Value='<%# Eval("idUsuario") %>' /> 
+                                                            <asp:HiddenField ID="hfIdSede" runat="server" Value='<%# Eval("idSede") %>' />
                                                             <asp:HiddenField ID="hfIdPlan" runat="server" Value='<%# Eval("idPlan") %>' />
+                                                            <asp:HiddenField ID="hfCodSiigoPlan" runat="server" Value='<%# Eval("CodSiigoPlan") %>' />
+                                                            <asp:HiddenField ID="hfNombrePlan" runat="server" Value='<%# Eval("NombrePlan") %>' />
                                                             <asp:HiddenField ID="hfValor" runat="server" Value='<%# Eval("Valor") %>' />
                                                             <asp:HiddenField ID="hfFuentePago" runat="server" Value='<%# Eval("DataIdFuente") %>' />
-                                                            <asp:HiddenField ID="hfEmail" runat="server" Value='<%# Eval("EmailAfiliado") %>' />
-                                                            <asp:HiddenField ID="hfNombrePlan" runat="server" Value='<%# Eval("NombrePlan") %>' />
                                                             <asp:HiddenField ID="hfDocumentoAfiliado" runat="server" Value='<%# Eval("DocumentoAfiliado") %>' />
+                                                            <asp:HiddenField ID="hfEmail" runat="server" Value='<%# Eval("EmailAfiliado") %>' />
                                                         </td>
                                                     </tr>
                                                 </ItemTemplate>

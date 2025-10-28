@@ -397,10 +397,16 @@ namespace fpWebApp
                     range.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 }
 
-                // 3. Arreglar formato de fechas aplicando formato de fecha a las columnas 6 y 7 (desde fila 2 hasta la última fila con datos)
-                using (ExcelRange range = ws.Cells[2, 6, totalRows, 7])
+                // 3. Aplicar formato a todas las columnas de tipo fecha
+                for (int i = 0; i < dt.Columns.Count; i++)
                 {
-                    range.Style.Numberformat.Format = "dd/MM/yyyy";
+                    if (dt.Columns[i].DataType == typeof(DateTime))
+                    {
+                        using (ExcelRange range = ws.Cells[2, i + 1, totalRows, i + 1])
+                        {
+                            range.Style.Numberformat.Format = "dd/MM/yyyy HH:mm";
+                        }
+                    }
                 }
 
                 // 4. Autoajustar columnas
@@ -10688,6 +10694,103 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_ESTUDIAFIT_EXCEL", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        // Siigo API
+        public DataTable ConsultarCodigoSiigoPorDocumento(string docAfiliado)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_COD_SIIGO_POR_DOCUMENTO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_documento_afiliado", docAfiliado);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public string ActualizarIdSiigoFacturaDePagoPlanAfiliado(string idSiigoFactura, int idAfiliadoPlan)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open(); // Abrir conexión antes de usarla
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_ID_SIIGO_FACTURA_DE_PAGO_PLAN_AFILIADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Parámetros de entrada
+                        cmd.Parameters.AddWithValue("@p_id_siigo_factura", idSiigoFactura);
+                        cmd.Parameters.AddWithValue("@p_id_afiliado_plan", idAfiliadoPlan);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public DataTable ConsultarIntegracion(int idSede)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_INTEGRACION_POR_ID_SEDE", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_sede", idSede);
+
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
                         {
                             mysqlConexion.Open();
