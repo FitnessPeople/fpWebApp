@@ -33,7 +33,7 @@ namespace fpWebApp
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
                         txbDocumento.Attributes.Add("type", "number");
-                        txbTelefono.Attributes.Add("type", "number");
+                        //txbTelefono.Attributes.Add("type", "number");
                         txbTelefonoContacto.Attributes.Add("type", "number");
                         btnCancelar.Visible = true;
 

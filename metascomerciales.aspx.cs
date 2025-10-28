@@ -155,7 +155,7 @@ namespace fpWebApp
         {
             int numeroMes = Convert.ToInt32(mes);
             DateTime fecha = new DateTime(2025, numeroMes, 1);
-            return fecha.ToString("MMMM", new System.Globalization.CultureInfo("es-ES"));
+            return fecha.ToString("MMM", new System.Globalization.CultureInfo("es-ES"));
         }
 
         private void CargarCanalesVenta()

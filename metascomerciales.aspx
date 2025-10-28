@@ -176,7 +176,7 @@
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label>Año:</label>
                                                             <asp:DropDownList ID="ddlAnnio" runat="server" 
@@ -186,7 +186,7 @@
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-5">
                                                         <div class="form-group">
                                                             <label>&nbsp;</label>
                                                             <asp:CheckBox ID="chbTodoElAnnio" runat="server" 
@@ -200,24 +200,33 @@
                                                         onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XXX.000.000"></asp:TextBox>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label>Asesor Deluxe:</label>
                                                             <asp:TextBox ID="txbAsesorDeluxe" runat="server" CssClass="form-control input-sm" 
                                                                 onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label>Asesor Premium:</label>
                                                             <asp:TextBox ID="txbAsesorPremium" runat="server" CssClass="form-control input-sm" 
                                                                 onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4">
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label>Asesor Elite:</label>
                                                             <asp:TextBox ID="txbAsesorElite" runat="server" CssClass="form-control input-sm" 
+                                                                onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Asesor Online:</label>
+                                                            <asp:TextBox ID="txbAsesorOnline" runat="server" CssClass="form-control input-sm" 
                                                                 onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
                                                         </div>
                                                     </div>
@@ -231,11 +240,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Asesor Online:</label>
-                                                            <asp:TextBox ID="txbAsesorOnline" runat="server" CssClass="form-control input-sm" 
-                                                                onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
-                                                        </div>
+                                                        
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -282,7 +287,7 @@
                                             </div>
                                         </div>
 
-                                        <table class="footable table table-striped" data-paging-size="10"
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
                                             data-filter-min="3" data-filter-placeholder="Buscar"
                                             data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
                                             data-paging-limit="10" data-filtering="true"
@@ -293,7 +298,7 @@
                                                 <tr>
                                                     <th>Canal de venta</th>
                                                     <th>Mes / Año</th>
-                                                    <th style="text-align: right;">Valor</th>
+                                                    <th style="text-align: right;">Presupuesto</th>
                                                     <th style="text-align: right;">Deluxe</th>
                                                     <th style="text-align: right;">Premium</th>
                                                     <th style="text-align: right;">Elite</th>

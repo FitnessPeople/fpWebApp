@@ -79,16 +79,23 @@ namespace fpWebApp
                 if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
                 {
                     dt = cg.ConsultarCanalesVentaSedes();
+                    ListItem li = new ListItem("Todas", "0");
+                    ddlCanalVenta.Items.Add(li);
+
+                    ddlCanalVenta.DataTextField = "NombreCanalVenta";
+                    ddlCanalVenta.DataValueField = "idCanalVenta";
+                    ddlCanalVenta.DataSource = dt;
+                    ddlCanalVenta.DataBind();
                 }
                 else
                 {
                     dt = cg.ConsultarCanalesVentaSedesPorId(Convert.ToInt32(Session["idSede"].ToString()));
-                }
 
-                ddlCanalVenta.DataTextField = "NombreCanalVenta";
-                ddlCanalVenta.DataValueField = "idCanalVenta";
-                ddlCanalVenta.DataSource = dt;
-                ddlCanalVenta.DataBind();
+                    ddlCanalVenta.DataTextField = "NombreCanalVenta";
+                    ddlCanalVenta.DataValueField = "idCanalVenta";
+                    ddlCanalVenta.DataSource = dt;
+                    ddlCanalVenta.DataBind();
+                }
 
                 dt.Dispose();
             }

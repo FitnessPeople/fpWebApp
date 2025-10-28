@@ -45,7 +45,7 @@
         function changeClass() {
             var element1 = document.querySelector("#clientecorporativo");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#crm");
+            var element2 = document.querySelector("#corporativo");
             element2.classList.remove("collapse");
         }
     </script>
@@ -143,7 +143,7 @@
                         </asp:ScriptManager>
                         <div class="row" id="divContenido" runat="server">
                             <div class="form-group">
-                                <asp:Label ID="lblMensaje" runat="server" Text="Label"></asp:Label>
+                                <asp:Label ID="lblMensaje" runat="server" Text=""></asp:Label>
                             </div>
 
                             <div class="col-lg-5">

@@ -185,13 +185,16 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Teléfono:</label>
-                                                    <asp:TextBox ID="txbTelefono" CssClass="form-control input-sm" runat="server" placeholder="Teléfono"></asp:TextBox>
+                                                    <asp:TextBox ID="txbTelefono" CssClass="form-control input-sm" 
+                                                        runat="server" placeholder="Teléfono" 
+                                                        spellcheck="false" autocomplete="off"
+                                                        onkeyup="formatearTelefono(this)" maxlength="14"></asp:TextBox>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Email:</label>
-                                                    <asp:TextBox ID="txbEmail" CssClass="form-control input-sm" runat="server" placeholder="Email" required="*">
+                                                    <asp:TextBox ID="txbEmail" CssClass="form-control input-sm" runat="server" placeholder="Email">
                                                         autocomplete="off" spellcheck="false"
                                                     </asp:TextBox>
                                                 </div>
@@ -414,6 +417,10 @@
                     required: true,
                     minlength: 3
                 },
+                txbEmail: {
+                    required: true,
+                    email: true
+                },
                 txbApellido: {
                     required: true,
                     minlength: 3
@@ -432,6 +439,10 @@
                 txbDireccion: {
                     required: true,
                     minlength: 10
+                },
+
+                ddlCiudadAfiliado: {
+                    required: true,                    
                 },
                 ddlGenero: {
                     required: true
@@ -466,10 +477,28 @@
             messages: {
                 ddlCiudadAfiliado: "*",
                 ddlProfesiones: "*",
+                txbTelefono: "Maximo 14 números",
             }
         });
 
         $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
+    </script>
+    
+    <script>
+        function formatearTelefono(input) {
+            let num = input.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
+
+            // Si el número tiene 10 dígitos, es un celular
+            if (num.length === 10) {
+                input.value = num.substring(0, 3) + '-' + num.substring(3, 6) + '-' + num.substring(6, 10);
+            }
+            // Si el número tiene 7 o más dígitos, es un teléfono fijo
+            else if (num.length > 6) {
+                input.value = '(' + num.substring(0, 3) + ') ' + num.substring(3, 6) + '-' + num.substring(6, 10);
+            } else {
+                input.value = num;
+            }
+        }
     </script>
 
 </body>

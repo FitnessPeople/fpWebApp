@@ -73,7 +73,7 @@ namespace fpWebApp
         private void ListaPlanes()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanesVigentes();
+            DataTable dt = cg.ConsultarPlanesVigentesVisibleCRM();
             rpPlanes.DataSource = dt;
             rpPlanes.DataBind();
             dt.Dispose();
@@ -597,10 +597,11 @@ namespace fpWebApp
                             ";
                             ScriptManager.RegisterStartupScript(this, GetType(), "PlanActivo", script, true);
                         }
+                        dt.Dispose();
                     }
-                    else
-                    {
-                        if (txbTotal.Text.ToString() == "")
+                    //else
+                    //{
+                    if (txbTotal.Text.ToString() == "")
                         {
                             string script = @"
                                 Swal.fire({
@@ -684,7 +685,7 @@ namespace fpWebApp
                                         string respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, Convert.ToInt32(ViewState["precioTotal"].ToString()),
                                             Convert.ToInt32(strTipoPago), strReferencia, strBanco, Convert.ToInt32(Session["idUsuario"].ToString()), "Aprobado", "", idCanalVenta, Convert.ToInt32(Session["idcrm"]));
 
-                                        DataTable dt3 = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+                                        DataTable dt3 = cg.ConsultarAfiliadoEstadoActivo(int.Parse(Session["IdAfiliado"].ToString()));
                                         string respuesta1 = cg.ActualizarEstadoCRMPagoPlan(Convert.ToInt32(Session["idcrm"].ToString()), dt3.Rows[0]["NombrePlan"].ToString(), Convert.ToInt32(dt3.Rows[0]["Valor"].ToString()), Convert.ToInt32(Session["idUsuario"].ToString()), 3);
 
                                         if (respuesta == "OK" && respuesta1 == "OK")
@@ -762,8 +763,9 @@ namespace fpWebApp
                             }
                         }
                     }
-                    dt.Dispose();
-                }
+
+                    //}
+
                 else
                 {
                     string script = @"

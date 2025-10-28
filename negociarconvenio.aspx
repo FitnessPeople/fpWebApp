@@ -181,7 +181,7 @@
                         <div class="row" id="divContenido" runat="server">
                             <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
 
-                            <div class="col-lg-4">
+                            <div class="col-lg-5">
                                 <div class="ibox float-e-margins">
                                     <div class="form-group">
                                         <asp:Label ID="lblMensaje" runat="server" Text="Label"></asp:Label>
@@ -220,9 +220,9 @@
                                                     <div class="col-sm-12">
                                                         <div class="form-group">
                                                             <label>Prospecto:</label>
-                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="DropDownList1" runat="server"
-                                                                DataValueField="idEmpresa" DataTextField="NombreEmpresa"
-                                                                AutoPostBack="true" AppendDataBoundItems="true">
+                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlProspectos" runat="server"
+                                                                DataValueField="DocumentoContacto" DataTextField="NombreContacto"
+                                                                AppendDataBoundItems="true">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
                                                             <%--                                                            <asp:RequiredFieldValidator ID="rfvTipoEstrategia" runat="server" ErrorMessage="* Campo requerido"
@@ -348,7 +348,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-8">
+                            <div class="col-lg-7">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5>Negociación generada</h5>

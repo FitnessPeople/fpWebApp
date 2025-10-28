@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="reportepagos.aspx.cs" Inherits="fpWebApp.reportepagos" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="reporteventas.aspx.cs" Inherits="fpWebApp.reporteventas" %>
 
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
@@ -6,8 +6,6 @@
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
 <%@ Register Src="~/controles/indicadores01.ascx" TagPrefix="uc1" TagName="indicadores01" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
-<%--<%@ Register Src="~/controles/indicadoresreportespagos.ascx" TagPrefix="uc1" TagName="indicadoresreportespagos" %>--%>
-
 
 <!DOCTYPE html>
 <html>
@@ -17,7 +15,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Ingresos</title>
+    <title>Fitness People | Ventas</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
@@ -40,7 +38,7 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#reportepagos");
+            var element1 = document.querySelector("#reporteventas");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#reportes");
             element2.classList.remove("collapse");
@@ -65,12 +63,12 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                     <i class="fa fa-hand-holding-usd modal-icon" style="color: #1C84C6;"></i>
-                    <h4 class="modal-title">Guía para visualizar pagos realizados</h4>
-                    <small class="font-bold">¡Bienvenido! Te explicamos cómo consultar y filtrar los pagos registrados en el sistema de manera fácil y rápida.</small>
+                    <h4 class="modal-title">Guía para visualizar ventas realizadas</h4>
+                    <small class="font-bold">¡Bienvenido! Te explicamos cómo consultar y filtrar las ventas registradas en el sistema de manera fácil y rápida.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>Paso 1: Filtra los pagos</b><br />
+                        <b>Paso 1: Filtra las ventas</b><br />
                         Usa el buscador para encontrar pagos específicos.<br />
                         <i class="fa-solid fa-magnifying-glass"></i>Filtra por: 
                         <i class="fa-solid fa-hashtag" style="color: #0D6EFD;"></i><b>ID Pago</b>, 
@@ -125,11 +123,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fas fa-hand-holding-usd text-success m-r-sm"></i>Ingresos</h2>
+                    <h2><i class="fas fa-money-bill-trend-up text-success m-r-sm"></i>Ventas</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Reportes</li>
-                        <li class="active"><strong>Ingresos</strong></li>
+                        <li class="active"><strong>Ventas</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -195,7 +193,7 @@
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-success pull-right">Mes actual</span>--%>
-                                                <h5>Ingresos totales</h5>
+                                                <h5>Ventas totales <asp:Literal ID="ltMes1" runat="server"></asp:Literal></h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
@@ -212,7 +210,7 @@
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-info pull-right">Mes actual</span>--%>
-                                                <h5>Ingresos Web</h5>
+                                                <h5>Ventas Web <asp:Literal ID="ltMes2" runat="server"></asp:Literal></h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
@@ -229,7 +227,7 @@
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-primary pull-right">Mes actual</span>--%>
-                                                <h5>Ingresos Counter</h5>
+                                                <h5>Ventas Counter <asp:Literal ID="ltMes3" runat="server"></asp:Literal></h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
@@ -265,7 +263,7 @@
 
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Reporte de ingresos por afiliado:</h5>
+                                        <h5>Reporte de pagos <asp:Literal ID="ltMes4" runat="server"></asp:Literal>:</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -299,6 +297,23 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-2">
+                                                <asp:DropDownList ID="ddlMes" runat="server" AppendDataBoundItems="true"
+                                                    CssClass="form-control input-sm">
+                                                        <%--<asp:ListItem Text="Seleccione" Value=""></asp:ListItem>--%>
+                                                    <asp:ListItem Text="Septiembre" Value="9"></asp:ListItem>
+                                                    <asp:ListItem Text="Octubre" Value="10"></asp:ListItem>
+                                                    <asp:ListItem Text="Noviembre" Value="11"></asp:ListItem>
+                                                    <asp:ListItem Text="Diciembre" Value="12"></asp:ListItem>
+                                                </asp:DropDownList>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <asp:DropDownList ID="ddlAnnio" runat="server" AppendDataBoundItems="true"
+                                                    CssClass="form-control input-sm">
+                                                        <%--<asp:ListItem Text="Seleccione" Value=""></asp:ListItem>--%>
+                                                    <asp:ListItem Text="2025" Value="2025"></asp:ListItem>
+                                                </asp:DropDownList>
+                                            </div>
+                                            <%--<div class="col-lg-2">
                                                 <div class="form-group">
                                                     <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker" />
                                                 </div>
@@ -307,7 +322,7 @@
                                                 <div class="form-group">
                                                     <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker" />
                                                 </div>
-                                            </div>
+                                            </div>--%>
                                             <div class="col-lg-1">
                                                 <div class="form-group">
                                                     <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn btn-primary btn-sm" OnClick="btnBuscar_Click" />
@@ -316,7 +331,7 @@
                                             <div class="col-lg-1">
                                                 <asp:LinkButton ID="lbExportarExcel" runat="server"
                                                     CausesValidation="false"
-                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
+                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;" 
                                                     OnClick="lbExportarExcel_Click">
                                                     <i class="fa fa-file-excel"></i> EXCEL
                                                 </asp:LinkButton>
@@ -341,7 +356,7 @@
                                                     <th data-breakpoints="xs sm md">Estado</th>
                                                     <th data-breakpoints="xs sm md">Usuario</th>
                                                     <th data-breakpoints="xs sm md">Canal</th>
-                                                    <th data-breakpoints="xs sm md">Detalle</th>
+                                                    <%--<th data-breakpoints="xs sm md">Detalle</th>--%>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -359,14 +374,14 @@
                                                             <td><%# Eval("EstadoPago") %></td>
                                                             <td><%# Eval("Usuario") %></td>
                                                             <td><%# Eval("CanalVenta") %></td>
-                                                            <td>
+                                                            <%--<td>
                                                                 <asp:Button ID="btnDetalle" runat="server" Text="Ver"
                                                                     CssClass="btn btn-primary"
                                                                     CommandArgument='<%# Eval("idAfiliadoPlan") %>'
                                                                     OnCommand="btnDetalle_Command"
                                                                     CommandName="mostrarDetalle"
                                                                     Visible='<%# Eval("NombreMedioPago").ToString() == "Pago en línea" %>' />
-                                                            </td>
+                                                            </td>--%>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
@@ -380,7 +395,7 @@
 
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Gráficos:</h5>
+                                        <h5>Gráficos <asp:Literal ID="ltMes5" runat="server"></asp:Literal>:</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -477,7 +492,7 @@
             return Math.ceil(valor / base) * base;
         }
 
-        // Grafico de Ingresos y Cantidad Diaria x mes
+        // Grafico de Ventas y Cantidad Diaria x mes
         const datos1 = <%= Grafico1 %>;
 
         const ctx1 = document.getElementById('miGrafico1');
@@ -493,7 +508,7 @@
             datasets: [
                 {
                     type: 'bar',                // Tipo: Barras
-                    label: 'Ingresos',
+                    label: 'Ventas',
                     data: datos1.ventas,
                     yAxisID: 'y1',              // Asociado al eje Y izquierdo
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
@@ -528,7 +543,7 @@
                         position: 'left',
                         min: 0,
                         max: maxY11,
-                        title: { display: true, text: 'Ingresos' },
+                        title: { display: true, text: 'Ventas' },
                         grid: { drawOnChartArea: true }
                     },
                     y2: {
@@ -543,7 +558,7 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Comparativo de Ingresos y Cantidad por Día'
+                        text: 'Comparativo de Ventas y Cantidad Diario'
                     }
                 }
             }
@@ -566,7 +581,7 @@
             datasets: [
                 {
                     type: 'bar',                // Tipo: Barras
-                    label: 'Ingresos',
+                    label: 'Ventas',
                     data: datos2.ventas,
                     yAxisID: 'y1',              // Asociado al eje Y izquierdo
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
@@ -601,7 +616,7 @@
                         position: 'left',
                         min: 0,
                         max: maxY21,
-                        title: { display: true, text: 'Ingresos' },
+                        title: { display: true, text: 'Ventas' },
                         grid: { drawOnChartArea: true }
                     },
                     y2: {
@@ -616,7 +631,7 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Comparativo de Ingresos y Cantidad por Usuario'
+                        text: 'Comparativo de Ventas y Cantidad por Usuario'
                     }
                 }
             }
@@ -640,7 +655,7 @@
             datasets: [
                 {
                     type: 'bar',                // Tipo: Barras
-                    label: 'Ingresos',
+                    label: 'Ventas',
                     data: datos3.ventas,
                     yAxisID: 'y1',              // Asociado al eje Y izquierdo
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
@@ -675,7 +690,7 @@
                         position: 'left',
                         min: 0,
                         max: maxY31,
-                        title: { display: true, text: 'Ingresos' },
+                        title: { display: true, text: 'Ventas' },
                         grid: { drawOnChartArea: true }
                     },
                     y2: {
@@ -690,7 +705,7 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Comparativo de Ingresos y Cantidad por Canal de Venta'
+                        text: 'Comparativo de Ventas y Cantidad por Canal de Venta'
                     }
                 }
             }
@@ -713,7 +728,7 @@
             datasets: [
                 {
                     type: 'bar',                // Tipo: Barras
-                    label: 'Ingresos',
+                    label: 'Ventas',
                     data: datos4.ventas,
                     yAxisID: 'y1',              // Asociado al eje Y izquierdo
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
@@ -748,7 +763,7 @@
                         position: 'left',
                         min: 0,
                         max: maxY41,
-                        title: { display: true, text: 'Ingresos' },
+                        title: { display: true, text: 'Ventas' },
                         grid: { drawOnChartArea: true }
                     },
                     y2: {
@@ -763,7 +778,7 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Comparativo de Ingresos y Cantidad por Banco'
+                        text: 'Comparativo de Ventas y Cantidad por Banco'
                     }
                 }
             }
@@ -786,7 +801,7 @@
             datasets: [
                 {
                     type: 'bar',                // Tipo: Barras
-                    label: 'Ingresos',
+                    label: 'Ventas',
                     data: datos5.ventas,
                     yAxisID: 'y1',              // Asociado al eje Y izquierdo
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
@@ -821,7 +836,7 @@
                         position: 'left',
                         min: 0,
                         max: maxY51,
-                        title: { display: true, text: 'Ingresos' },
+                        title: { display: true, text: 'Ventas' },
                         grid: { drawOnChartArea: true }
                     },
                     y2: {
@@ -836,7 +851,7 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Comparativo de Ingresos y Cantidad por Medio de Pago'
+                        text: 'Comparativo de Ventas y Cantidad por Medio de Pago'
                     }
                 }
             }
@@ -859,7 +874,7 @@
             datasets: [
                 {
                     type: 'bar',                // Tipo: Barras
-                    label: 'Ingresos',
+                    label: 'Ventas',
                     data: datos6.ventas,
                     yAxisID: 'y1',              // Asociado al eje Y izquierdo
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
@@ -894,7 +909,7 @@
                         position: 'left',
                         min: 0,
                         max: maxY61,
-                        title: { display: true, text: 'Ingresos' },
+                        title: { display: true, text: 'Ventas' },
                         grid: { drawOnChartArea: true }
                     },
                     y2: {
@@ -909,7 +924,7 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Comparativo de Ingresos y Cantidad por Plan'
+                        text: 'Comparativo de Ventas y Cantidad por Plan'
                     }
                 }
             }

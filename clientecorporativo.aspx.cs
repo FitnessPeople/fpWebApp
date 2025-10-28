@@ -87,14 +87,7 @@ namespace fpWebApp
         private void ListaProspectos()
         {
             clasesglobales cg = new clasesglobales();
-            //DataTable dt = cg.ConsultarProspectosCRM();
-
-            string strQuery = "SELECT *, DATEDIFF(FechaHoraPregestion, CURDATE()) AS hacecuanto " +
-                "FROM pregestioncrm pg, tiposgestioncrm tg " +
-                "WHERE pg.idTipoGestion = 4 " +
-                "AND pg.idTipoGestion = tg.idTipoGestionCRM ";
-            DataTable dt = cg.TraerDatos(strQuery);
-
+            DataTable dt = cg.ConsultarProspectosCRM();
             gvProspectos.DataSource = dt;
             gvProspectos.DataBind();
             dt.Dispose();
@@ -270,7 +263,7 @@ namespace fpWebApp
             if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
             {
                 //listaAfiliados("Todas");
-            }
+            }   
             else
             {
                 //listaAfiliados(Session["idSede"].ToString());
@@ -286,18 +279,10 @@ namespace fpWebApp
             {
                 SortExpression = e.SortExpression;
                 SortDirection = "ASC";
-            }
+            } 
 
-            // Obtener y ordenar datos
-
-
-
-            string strQuery = "SELECT *, DATEDIFF(FechaHoraPregestion, CURDATE()) AS hacecuanto " +
-                "FROM pregestioncrm pg, tiposgestioncrm tg " +
-                "WHERE pg.idTipoGestion = 4 " +
-                "AND pg.idTipoGestion = tg.idTipoGestionCRM ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarProspectosCRM();
             DataView dv = dt.DefaultView;
             dv.Sort = $"{SortExpression} {SortDirection}";
 
@@ -367,9 +352,9 @@ namespace fpWebApp
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                // Añade un atributo onclick a cada fila
+
                 e.Row.Attributes["onclick"] = "seleccionarCheckbox(this, event)";
-                // Opcional: cambia el cursor al pasar
+           
                 e.Row.Attributes["style"] = "cursor:pointer;";
             }
 

@@ -8,23 +8,30 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Globalization;
-using System.Transactions;
+using System.Threading;
 
 namespace fpWebApp
 {
     public partial class reportepagos : System.Web.UI.Page
     {
+        protected string Grafico1 = "{}";
+        protected string Grafico2 = "{}";
+        protected string Grafico3 = "{}";
+        protected string Grafico4 = "{}";
+        protected string Grafico5 = "{}";
+        protected string Grafico6 = "{}";
+
         protected void Page_Load(object sender, EventArgs e)
         {
             CultureInfo culture = new CultureInfo("es-CO");
-            System.Threading.Thread.CurrentThread.CurrentCulture = culture;
-            System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
 
             if (!IsPostBack)
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Pagos");
+                    ValidarPermisos("Ingresos");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -56,15 +63,16 @@ namespace fpWebApp
                             txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
                             CargarPlanes();
                         }
+
+                        //listaTransacciones();
+                        listaTransaccionesPorFecha(
+                            Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()),
+                            Convert.ToInt32(ddlPlanes.SelectedValue.ToString()),
+                            txbFechaIni.Value.ToString(),
+                            txbFechaFin.Value.ToString());
+                        VentasWeb();
+                        VentasCounter();
                     }
-                    //listaTransacciones();
-                    listaTransaccionesPorFecha(
-                        Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()),
-                        Convert.ToInt32(ddlPlanes.SelectedValue.ToString()),
-                        txbFechaIni.Value.ToString(),
-                        txbFechaFin.Value.ToString());
-                    VentasWeb();
-                    VentasCounter();
                 }
                 else
                 {
@@ -109,19 +117,19 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void listaTransacciones()
-        {
-            decimal valorTotal = 0;
-            int totalRegistros = 0;
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosRecientes(out valorTotal, out totalRegistros);
-            rpPagos.DataSource = dt;
-            rpPagos.DataBind();
-            dt.Dispose();
+        //private void listaTransacciones()
+        //{
+        //    decimal valorTotal = 0;
+        //    int totalRegistros = 0;
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarPagosRecientes(out valorTotal, out totalRegistros);
+        //    rpPagos.DataSource = dt;
+        //    rpPagos.DataBind();
+        //    dt.Dispose();
 
-            ltCuantos1.Text = "$ " + String.Format("{0:N0}", valorTotal);
-            ltRegistros1.Text = totalRegistros.ToString();
-        }
+        //    ltCuantos1.Text = "$ " + String.Format("{0:N0}", valorTotal);
+        //    ltRegistros1.Text = totalRegistros.ToString();
+        //}
 
         private void listaTransaccionesPorFecha(int tipoPago, int idPlan, string fechaIni, string fechaFin)
         {
@@ -141,6 +149,288 @@ namespace fpWebApp
             ltCuantos1.Text = "$ " + String.Format("{0:N0}", sumatoriaValor);
             ltRegistros1.Text = dt.Rows.Count.ToString();
             dt.Dispose();
+
+            CrearGrafico1(fechaIni);
+            CrearGrafico2(fechaIni);
+            CrearGrafico3(fechaIni);
+            CrearGrafico4(fechaIni);
+            CrearGrafico5(fechaIni);
+            CrearGrafico6(fechaIni);
+        }
+
+        private void CrearGrafico1(string fechaIni)
+        {
+            //Comparativo de Pagos y Cantidad Diario
+            clasesglobales cg = new clasesglobales();
+            int anio = Convert.ToDateTime(fechaIni).Year;
+            int mes = Convert.ToDateTime(fechaIni).Month;
+
+            string query = @"
+                SELECT 
+                    DATE(FechaHoraPago) AS dia,
+                    COUNT(*) AS cuantos,
+                    SUM(valor) AS sumatoria
+                FROM pagosplanafiliado
+                WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
+                  AND MONTH(FechaHoraPago) = " + mes.ToString() + @"
+                GROUP BY DATE(FechaHoraPago) 
+                ORDER BY dia;";
+
+            DataTable dt = cg.TraerDatos(query);
+
+            // Convertir los datos a listas para Chart.js
+            var labels = new System.Collections.Generic.List<string>();
+            var ventas = new System.Collections.Generic.List<decimal>();
+            var cantidad = new System.Collections.Generic.List<decimal>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                labels.Add(((DateTime)row["dia"]).ToString("dd MMM"));
+                ventas.Add(Convert.ToDecimal(row["sumatoria"]));
+                cantidad.Add(Convert.ToDecimal(row["cuantos"]));
+            }
+
+            // Crear objeto para enviar a JS
+            var datos = new
+            {
+                labels = labels,
+                ventas = ventas,
+                cantidad = cantidad
+            };
+
+            dt.Dispose();
+
+            Grafico1 = JsonConvert.SerializeObject(datos);
+        }
+
+        private void CrearGrafico2(string fechaIni)
+        {
+            //Comparativo de Ventas y Cantidad por Usuario
+            clasesglobales cg = new clasesglobales();
+            int anio = Convert.ToDateTime(fechaIni).Year;
+            int mes = Convert.ToDateTime(fechaIni).Month;
+
+            string query = @"
+                SELECT 
+                    ppa.idUsuario, u.NombreUsuario, 
+                    COUNT(*) AS cuantos,
+                    SUM(valor) AS sumatoria
+                FROM pagosplanafiliado ppa, usuarios u 
+                WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
+                  AND MONTH(FechaHoraPago) = " + mes.ToString() + @"
+                  AND ppa.idUsuario = u.idUsuario 
+                GROUP BY ppa.idUsuario 
+                ORDER BY ppa.idUsuario;";
+
+            DataTable dt = cg.TraerDatos(query);
+
+            // Convertir los datos a listas para Chart.js
+            var labels = new System.Collections.Generic.List<string>();
+            var ventas = new System.Collections.Generic.List<decimal>();
+            var cantidad = new System.Collections.Generic.List<decimal>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                labels.Add((row["NombreUsuario"]).ToString());
+                ventas.Add(Convert.ToDecimal(row["sumatoria"]));
+                cantidad.Add(Convert.ToDecimal(row["cuantos"]));
+            }
+
+            // Crear objeto para enviar a JS
+            var datos = new
+            {
+                labels = labels,
+                ventas = ventas,
+                cantidad = cantidad
+            };
+
+            dt.Dispose();
+
+            Grafico2 = JsonConvert.SerializeObject(datos);
+        }
+
+        private void CrearGrafico3(string fechaIni)
+        {
+            //Comparativo de Ventas y Cantidad por Canal de Venta
+            clasesglobales cg = new clasesglobales();
+            int anio = Convert.ToDateTime(fechaIni).Year;
+            int mes = Convert.ToDateTime(fechaIni).Month;
+
+            string query = @"
+                SELECT 
+                    ppa.idCanalVenta, cv.NombreCanalVenta, 
+                    COUNT(*) AS cuantos,
+                    SUM(valor) AS sumatoria
+                FROM pagosplanafiliado ppa, CanalesVenta cv  
+                WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
+                  AND MONTH(FechaHoraPago) = " + mes.ToString() + @"
+                  AND ppa.idCanalVenta = cv.idCanalVenta  
+                GROUP BY ppa.idCanalVenta 
+                ORDER BY ppa.idCanalVenta;";
+
+            DataTable dt = cg.TraerDatos(query);
+
+            // Convertir los datos a listas para Chart.js
+            var labels = new System.Collections.Generic.List<string>();
+            var ventas = new System.Collections.Generic.List<decimal>();
+            var cantidad = new System.Collections.Generic.List<decimal>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                labels.Add((row["NombreCanalVenta"]).ToString());
+                ventas.Add(Convert.ToDecimal(row["sumatoria"]));
+                cantidad.Add(Convert.ToDecimal(row["cuantos"]));
+            }
+
+            dt.Dispose();
+
+            // Crear objeto para enviar a JS
+            var datos = new
+            {
+                labels = labels,
+                ventas = ventas,
+                cantidad = cantidad
+            };
+
+            Grafico3 = JsonConvert.SerializeObject(datos);
+        }
+
+        private void CrearGrafico4(string fechaIni)
+        {
+            //Comparativo de Ventas y Cantidad por Banco
+            clasesglobales cg = new clasesglobales();
+            int anio = Convert.ToDateTime(fechaIni).Year;
+            int mes = Convert.ToDateTime(fechaIni).Month;
+
+            string query = @"
+                SELECT 
+                    Banco, 
+                    COUNT(*) AS cuantos,
+                    SUM(valor) AS sumatoria
+                FROM pagosplanafiliado 
+                WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
+                  AND MONTH(FechaHoraPago) = " + mes.ToString() + @"
+                GROUP BY Banco 
+                ORDER BY Banco;";
+
+            DataTable dt = cg.TraerDatos(query);
+
+            // Convertir los datos a listas para Chart.js
+            var labels = new System.Collections.Generic.List<string>();
+            var ventas = new System.Collections.Generic.List<decimal>();
+            var cantidad = new System.Collections.Generic.List<decimal>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                labels.Add((row["Banco"]).ToString());
+                ventas.Add(Convert.ToDecimal(row["sumatoria"]));
+                cantidad.Add(Convert.ToDecimal(row["cuantos"]));
+            }
+
+            dt.Dispose();
+
+            // Crear objeto para enviar a JS
+            var datos = new
+            {
+                labels = labels,
+                ventas = ventas,
+                cantidad = cantidad
+            };
+
+            Grafico4 = JsonConvert.SerializeObject(datos);
+        }
+
+        private void CrearGrafico5(string fechaIni)
+        {
+            //Comparativo de Ventas y Cantidad por Medio de Pago
+            clasesglobales cg = new clasesglobales();
+            int anio = Convert.ToDateTime(fechaIni).Year;
+            int mes = Convert.ToDateTime(fechaIni).Month;
+
+            string query = @"
+                SELECT 
+                    ppa.idMedioPago, mp.NombreMedioPago, 
+                    COUNT(*) AS cuantos,
+                    SUM(valor) AS sumatoria
+                FROM pagosplanafiliado ppa, MediosdePago mp 
+                WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
+                  AND MONTH(FechaHoraPago) = " + mes.ToString() + @"
+                  AND ppa.idMedioPago = mp.idMedioPago 
+                GROUP BY ppa.idMedioPago 
+                ORDER BY ppa.idMedioPago;";
+
+            DataTable dt = cg.TraerDatos(query);
+
+            // Convertir los datos a listas para Chart.js
+            var labels = new System.Collections.Generic.List<string>();
+            var ventas = new System.Collections.Generic.List<decimal>();
+            var cantidad = new System.Collections.Generic.List<decimal>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                labels.Add((row["NombreMedioPago"]).ToString());
+                ventas.Add(Convert.ToDecimal(row["sumatoria"]));
+                cantidad.Add(Convert.ToDecimal(row["cuantos"]));
+            }
+
+            dt.Dispose();
+
+            // Crear objeto para enviar a JS
+            var datos = new
+            {
+                labels = labels,
+                ventas = ventas,
+                cantidad = cantidad
+            };
+
+            Grafico5 = JsonConvert.SerializeObject(datos);
+        }
+
+        private void CrearGrafico6(string fechaIni)
+        {
+            //Comparativo de Ventas y Cantidad por Plan
+            clasesglobales cg = new clasesglobales();
+            int anio = Convert.ToDateTime(fechaIni).Year;
+            int mes = Convert.ToDateTime(fechaIni).Month;
+
+            string query = @"
+                SELECT 
+                    p.NombrePlan, 
+                    COUNT(*) AS cuantos,
+                    SUM(ppa.valor) AS sumatoria
+                FROM pagosplanafiliado ppa 
+                INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan 
+                INNER JOIN planes p ON p.idPlan = ap.idPlan 
+                WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
+                  AND MONTH(FechaHoraPago) = " + mes.ToString() + @"
+                GROUP BY p.NombrePlan 
+                ORDER BY p.NombrePlan;";
+
+            DataTable dt = cg.TraerDatos(query);
+
+            // Convertir los datos a listas para Chart.js
+            var labels = new System.Collections.Generic.List<string>();
+            var ventas = new System.Collections.Generic.List<decimal>();
+            var cantidad = new System.Collections.Generic.List<decimal>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                labels.Add((row["NombrePlan"]).ToString());
+                ventas.Add(Convert.ToDecimal(row["sumatoria"]));
+                cantidad.Add(Convert.ToDecimal(row["cuantos"]));
+            }
+
+            dt.Dispose();
+
+            // Crear objeto para enviar a JS
+            var datos = new
+            {
+                labels = labels,
+                ventas = ventas,
+                cantidad = cantidad
+            };
+
+            Grafico6 = JsonConvert.SerializeObject(datos);
         }
 
         private void VentasWeb()

@@ -19,7 +19,21 @@ namespace fpWebApp
 
             clasesglobales cg = new clasesglobales();
 
-            DataTable dt = cg.ConsultarMetaComercialMensual(Convert.ToInt32(filtro), Convert.ToInt32(Request.QueryString["mes"].ToString()), Convert.ToInt32(Request.QueryString["anio"].ToString()));
+            DataTable dt = new DataTable();
+
+            if (filtro == "0")
+            {
+                //Consulta todos los canales
+                dt = cg.ConsultarMetaComercialMensualTodos(Convert.ToInt32(Request.QueryString["mes"].ToString()), Convert.ToInt32(Request.QueryString["anio"].ToString()));
+            }
+            else
+            {
+                //Consulta por canal
+                
+                dt = cg.ConsultarMetaComercialMensual(Convert.ToInt32(filtro), Convert.ToInt32(Request.QueryString["mes"].ToString()), Convert.ToInt32(Request.QueryString["anio"].ToString()));
+            }
+            
+            //DataTable dt = cg.ConsultarMetaComercialMensual(Convert.ToInt32(filtro), Convert.ToInt32(Request.QueryString["mes"].ToString()), Convert.ToInt32(Request.QueryString["anio"].ToString()));
 
             var lista = new List<object>();
             foreach (DataRow row in dt.Rows)
@@ -42,7 +56,7 @@ namespace fpWebApp
                 {
                     id = row["idEstacionalidad"],
                     title = "Meta: $ " + String.Format("{0:N0}", row["metaSedeDia"]),
-                    valor = row["Presupuesto"],
+                    valor = row["PresupuestoMes"],
                     ventas = Convert.ToInt32(row["pagado"]),
                     description = "Meta: $ " + String.Format("{0:N0}", row["metaSedeDia"]) + "\r\n" +
                     "Ventas: $ " + String.Format("{0:N0}", pagado) + "\r\n" +
