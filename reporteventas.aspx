@@ -189,11 +189,11 @@
                                     ****************
                                 --%>
                                 <div class="row">
-                                    <div class="col-lg-3">
+                                    <div class="col-lg-4">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-success pull-right">Mes actual</span>--%>
-                                                <h5>Ventas totales</h5>
+                                                <h5>Ventas totales <asp:Literal ID="ltMes1" runat="server"></asp:Literal></h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
@@ -206,11 +206,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3">
+                                    <div class="col-lg-4">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-info pull-right">Mes actual</span>--%>
-                                                <h5>Ventas Web</h5>
+                                                <h5>Ventas Web <asp:Literal ID="ltMes2" runat="server"></asp:Literal></h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
@@ -223,11 +223,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3">
+                                    <div class="col-lg-4">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-primary pull-right">Mes actual</span>--%>
-                                                <h5>Ventas Counter</h5>
+                                                <h5>Ventas Counter <asp:Literal ID="ltMes3" runat="server"></asp:Literal></h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
@@ -240,10 +240,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3">
+                                    <%--<div class="col-lg-3">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
-                                                <%--<span class="label label-danger pull-right">Mes actual</span>--%>
+                                                <span class="label label-danger pull-right">Mes actual</span>
                                                 <h5>Ventas </h5>
                                             </div>
                                             <div class="ibox-content">
@@ -251,19 +251,19 @@
                                                     <asp:Literal ID="ltCuantos4" runat="server"></asp:Literal></h1>
                                                 <div class="stat-percent font-bold text-success">
                                                     <asp:Literal ID="ltRegistros4" runat="server"></asp:Literal>
-                                                    registros <%--<i class="fa fa-bolt"></i>--%>
+                                                    registros <i class="fa fa-bolt"></i>
                                                 </div>
                                                 <small>&nbsp;</small>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>--%>
                                 </div>
 
                                 <!-- INDICADORES FINAL -->
 
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Reporte de pagos:</h5>
+                                        <h5>Reporte de pagos <asp:Literal ID="ltMes4" runat="server"></asp:Literal>:</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -297,6 +297,23 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-2">
+                                                <asp:DropDownList ID="ddlMes" runat="server" AppendDataBoundItems="true"
+                                                    CssClass="form-control input-sm">
+                                                        <%--<asp:ListItem Text="Seleccione" Value=""></asp:ListItem>--%>
+                                                    <asp:ListItem Text="Septiembre" Value="9"></asp:ListItem>
+                                                    <asp:ListItem Text="Octubre" Value="10"></asp:ListItem>
+                                                    <asp:ListItem Text="Noviembre" Value="11"></asp:ListItem>
+                                                    <asp:ListItem Text="Diciembre" Value="12"></asp:ListItem>
+                                                </asp:DropDownList>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <asp:DropDownList ID="ddlAnnio" runat="server" AppendDataBoundItems="true"
+                                                    CssClass="form-control input-sm">
+                                                        <%--<asp:ListItem Text="Seleccione" Value=""></asp:ListItem>--%>
+                                                    <asp:ListItem Text="2025" Value="2025"></asp:ListItem>
+                                                </asp:DropDownList>
+                                            </div>
+                                            <%--<div class="col-lg-2">
                                                 <div class="form-group">
                                                     <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker" />
                                                 </div>
@@ -305,7 +322,7 @@
                                                 <div class="form-group">
                                                     <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker" />
                                                 </div>
-                                            </div>
+                                            </div>--%>
                                             <div class="col-lg-1">
                                                 <div class="form-group">
                                                     <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn btn-primary btn-sm" OnClick="btnBuscar_Click" />
@@ -339,7 +356,7 @@
                                                     <th data-breakpoints="xs sm md">Estado</th>
                                                     <th data-breakpoints="xs sm md">Usuario</th>
                                                     <th data-breakpoints="xs sm md">Canal</th>
-                                                    <th data-breakpoints="xs sm md">Detalle</th>
+                                                    <%--<th data-breakpoints="xs sm md">Detalle</th>--%>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -357,14 +374,14 @@
                                                             <td><%# Eval("EstadoPago") %></td>
                                                             <td><%# Eval("Usuario") %></td>
                                                             <td><%# Eval("CanalVenta") %></td>
-                                                            <td>
+                                                            <%--<td>
                                                                 <asp:Button ID="btnDetalle" runat="server" Text="Ver"
                                                                     CssClass="btn btn-primary"
                                                                     CommandArgument='<%# Eval("idAfiliadoPlan") %>'
                                                                     OnCommand="btnDetalle_Command"
                                                                     CommandName="mostrarDetalle"
                                                                     Visible='<%# Eval("NombreMedioPago").ToString() == "Pago en línea" %>' />
-                                                            </td>
+                                                            </td>--%>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
@@ -378,7 +395,7 @@
 
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Gráficos:</h5>
+                                        <h5>Gráficos <asp:Literal ID="ltMes5" runat="server"></asp:Literal>:</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>

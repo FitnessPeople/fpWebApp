@@ -87,6 +87,15 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContenido;
 
         /// <summary>
+        /// Control ltMes1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltMes1;
+
+        /// <summary>
         /// Control ltCuantos1.
         /// </summary>
         /// <remarks>
@@ -103,6 +112,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltRegistros1;
+
+        /// <summary>
+        /// Control ltMes2.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltMes2;
 
         /// <summary>
         /// Control ltCuantos2.
@@ -123,6 +141,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltRegistros2;
 
         /// <summary>
+        /// Control ltMes3.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltMes3;
+
+        /// <summary>
         /// Control ltCuantos3.
         /// </summary>
         /// <remarks>
@@ -141,22 +168,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltRegistros3;
 
         /// <summary>
-        /// Control ltCuantos4.
+        /// Control ltMes4.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltCuantos4;
-
-        /// <summary>
-        /// Control ltRegistros4.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltRegistros4;
+        protected global::System.Web.UI.WebControls.Literal ltMes4;
 
         /// <summary>
         /// Control divBotonesLista.
@@ -186,22 +204,22 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlTipoPago;
 
         /// <summary>
-        /// Control txbFechaIni.
+        /// Control ddlMes.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbFechaIni;
+        protected global::System.Web.UI.WebControls.DropDownList ddlMes;
 
         /// <summary>
-        /// Control txbFechaFin.
+        /// Control ddlAnnio.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbFechaFin;
+        protected global::System.Web.UI.WebControls.DropDownList ddlAnnio;
 
         /// <summary>
         /// Control btnBuscar.
@@ -229,6 +247,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpPagos;
+
+        /// <summary>
+        /// Control ltMes5.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltMes5;
 
         /// <summary>
         /// Control footer.
