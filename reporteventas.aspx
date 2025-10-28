@@ -185,11 +185,11 @@
                                         Total ventas
                                         Total ventas por web
                                         Total ventas por counter
-                                        Total ventas por plan
+                                        Total ventas totales
                                     ****************
                                 --%>
                                 <div class="row">
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-success pull-right">Mes actual</span>--%>
@@ -200,13 +200,13 @@
                                                     <asp:Literal ID="ltCuantos1" runat="server"></asp:Literal></h1>
                                                 <div class="stat-percent font-bold text-success">
                                                     <asp:Literal ID="ltRegistros1" runat="server"></asp:Literal>
-                                                    registros <%--<i class="fa fa-bolt"></i>--%>
+                                                    registros
                                                 </div>
                                                 <small>&nbsp;</small>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-info pull-right">Mes actual</span>--%>
@@ -217,13 +217,13 @@
                                                     <asp:Literal ID="ltCuantos2" runat="server"></asp:Literal></h1>
                                                 <div class="stat-percent font-bold text-success">
                                                     <asp:Literal ID="ltRegistros2" runat="server"></asp:Literal>
-                                                    registros <%--<i class="fa fa-bolt"></i>--%>
+                                                    registros
                                                 </div>
                                                 <small>&nbsp;</small>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-primary pull-right">Mes actual</span>--%>
@@ -234,29 +234,29 @@
                                                     <asp:Literal ID="ltCuantos3" runat="server"></asp:Literal></h1>
                                                 <div class="stat-percent font-bold text-success">
                                                     <asp:Literal ID="ltRegistros3" runat="server"></asp:Literal>
-                                                    registros <%--<i class="fa fa-bolt"></i>--%>
+                                                    registros
                                                 </div>
                                                 <small>&nbsp;</small>
                                             </div>
                                         </div>
                                     </div>
-                                    <%--<div class="col-lg-3">
+                                    <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
-                                                <span class="label label-danger pull-right">Mes actual</span>
-                                                <h5>Ventas </h5>
+                                                <%--<span class="label label-danger pull-right">Mes actual</span>--%>
+                                                <h5>Ventas Totales</h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
                                                     <asp:Literal ID="ltCuantos4" runat="server"></asp:Literal></h1>
                                                 <div class="stat-percent font-bold text-success">
                                                     <asp:Literal ID="ltRegistros4" runat="server"></asp:Literal>
-                                                    registros <i class="fa fa-bolt"></i>
+                                                    registros
                                                 </div>
                                                 <small>&nbsp;</small>
                                             </div>
                                         </div>
-                                    </div>--%>
+                                    </div>
                                 </div>
 
                                 <!-- INDICADORES FINAL -->
