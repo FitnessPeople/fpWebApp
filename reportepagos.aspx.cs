@@ -9,6 +9,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Globalization;
 using System.Threading;
+using NPOI.SS.Formula.Functions;
 
 namespace fpWebApp
 {
@@ -107,7 +108,7 @@ namespace fpWebApp
         private void CargarPlanes()
         {
             ddlPlanes.Items.Clear();
-            ListItem li = new ListItem("Todos", "0");
+            ListItem li = new ListItem("Todos los planes", "0");
             ddlPlanes.Items.Add(li);
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarPlanesVigentes();
@@ -134,7 +135,7 @@ namespace fpWebApp
         private void listaTransaccionesPorFecha(int tipoPago, int idPlan, string fechaIni, string fechaFin)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, idPlan, fechaIni, fechaFin, out decimal valorTotal);
+            DataTable dt = cg.ConsultarPagosPorTipo(Convert.ToInt32(Session["idCanalVenta"].ToString()), tipoPago, idPlan, fechaIni, fechaFin, out decimal valorTotal);
             rpPagos.DataSource = dt;
             rpPagos.DataBind();
 
@@ -165,16 +166,34 @@ namespace fpWebApp
             int anio = Convert.ToDateTime(fechaIni).Year;
             int mes = Convert.ToDateTime(fechaIni).Month;
 
-            string query = @"
+            string query = "";
+            if (Session["idSede"].ToString() != "11")
+            {
+                query = @"
                 SELECT 
                     DATE(FechaHoraPago) AS dia,
                     COUNT(*) AS cuantos,
                     SUM(valor) AS sumatoria
                 FROM pagosplanafiliado
                 WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
-                  AND MONTH(FechaHoraPago) = " + mes.ToString() + @"
+                    AND MONTH(FechaHoraPago) = " + mes.ToString() + @" 
+                    AND idCanalVenta = " + Convert.ToInt32(Session["idCanalVenta"].ToString()) + @" 
                 GROUP BY DATE(FechaHoraPago) 
                 ORDER BY dia;";
+            }
+            else
+            {
+                query = @"
+                SELECT 
+                    DATE(FechaHoraPago) AS dia,
+                    COUNT(*) AS cuantos,
+                    SUM(valor) AS sumatoria
+                FROM pagosplanafiliado
+                WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
+                    AND MONTH(FechaHoraPago) = " + mes.ToString() + @" 
+                GROUP BY DATE(FechaHoraPago) 
+                ORDER BY dia;";
+            }
 
             DataTable dt = cg.TraerDatos(query);
 
@@ -209,18 +228,37 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             int anio = Convert.ToDateTime(fechaIni).Year;
             int mes = Convert.ToDateTime(fechaIni).Month;
+            string query = "";
 
-            string query = @"
+            if (Session["idSede"].ToString() != "11")
+            {
+                query = @"
                 SELECT 
                     ppa.idUsuario, u.NombreUsuario, 
                     COUNT(*) AS cuantos,
                     SUM(valor) AS sumatoria
                 FROM pagosplanafiliado ppa, usuarios u 
                 WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
-                  AND MONTH(FechaHoraPago) = " + mes.ToString() + @"
-                  AND ppa.idUsuario = u.idUsuario 
+                    AND MONTH(FechaHoraPago) = " + mes.ToString() + @" 
+                    AND ppa.idUsuario = u.idUsuario 
+                    AND idCanalVenta = " + Convert.ToInt32(Session["idCanalVenta"].ToString()) + @" 
                 GROUP BY ppa.idUsuario 
                 ORDER BY ppa.idUsuario;";
+            }
+            else
+            {
+                query = @"
+                SELECT 
+                    ppa.idUsuario, u.NombreUsuario, 
+                    COUNT(*) AS cuantos,
+                    SUM(valor) AS sumatoria
+                FROM pagosplanafiliado ppa, usuarios u 
+                WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
+                    AND MONTH(FechaHoraPago) = " + mes.ToString() + @" 
+                    AND ppa.idUsuario = u.idUsuario 
+                GROUP BY ppa.idUsuario 
+                ORDER BY ppa.idUsuario;";
+            }
 
             DataTable dt = cg.TraerDatos(query);
 
@@ -256,17 +294,37 @@ namespace fpWebApp
             int anio = Convert.ToDateTime(fechaIni).Year;
             int mes = Convert.ToDateTime(fechaIni).Month;
 
-            string query = @"
+            string query = "";
+
+            if (Session["idSede"].ToString() != "11")
+            {
+                query = @"
                 SELECT 
                     ppa.idCanalVenta, cv.NombreCanalVenta, 
                     COUNT(*) AS cuantos,
                     SUM(valor) AS sumatoria
                 FROM pagosplanafiliado ppa, CanalesVenta cv  
                 WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
-                  AND MONTH(FechaHoraPago) = " + mes.ToString() + @"
-                  AND ppa.idCanalVenta = cv.idCanalVenta  
+                    AND MONTH(FechaHoraPago) = " + mes.ToString() + @" 
+                    AND idCanalVenta = " + Convert.ToInt32(Session["idCanalVenta"].ToString()) + @" 
+                    AND ppa.idCanalVenta = cv.idCanalVenta 
                 GROUP BY ppa.idCanalVenta 
                 ORDER BY ppa.idCanalVenta;";
+            }
+            else
+            {
+                query = @"
+                SELECT 
+                    ppa.idCanalVenta, cv.NombreCanalVenta, 
+                    COUNT(*) AS cuantos,
+                    SUM(valor) AS sumatoria
+                FROM pagosplanafiliado ppa, CanalesVenta cv  
+                WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
+                    AND MONTH(FechaHoraPago) = " + mes.ToString() + @" 
+                    AND ppa.idCanalVenta = cv.idCanalVenta 
+                GROUP BY ppa.idCanalVenta 
+                ORDER BY ppa.idCanalVenta;";
+            }
 
             DataTable dt = cg.TraerDatos(query);
 
@@ -302,16 +360,35 @@ namespace fpWebApp
             int anio = Convert.ToDateTime(fechaIni).Year;
             int mes = Convert.ToDateTime(fechaIni).Month;
 
-            string query = @"
+            string query = "";
+
+            if (Session["idSede"].ToString() != "11")
+            {
+                query = @"
                 SELECT 
                     Banco, 
                     COUNT(*) AS cuantos,
                     SUM(valor) AS sumatoria
                 FROM pagosplanafiliado 
                 WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
-                  AND MONTH(FechaHoraPago) = " + mes.ToString() + @"
+                    AND MONTH(FechaHoraPago) = " + mes.ToString() + @" 
+                    AND idCanalVenta = " + Convert.ToInt32(Session["idCanalVenta"].ToString()) + @" 
                 GROUP BY Banco 
                 ORDER BY Banco;";
+            }
+            else
+            {
+                query = @"
+                SELECT 
+                    Banco, 
+                    COUNT(*) AS cuantos,
+                    SUM(valor) AS sumatoria
+                FROM pagosplanafiliado 
+                WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
+                    AND MONTH(FechaHoraPago) = " + mes.ToString() + @" 
+                GROUP BY Banco 
+                ORDER BY Banco;";
+            }
 
             DataTable dt = cg.TraerDatos(query);
 
@@ -347,17 +424,37 @@ namespace fpWebApp
             int anio = Convert.ToDateTime(fechaIni).Year;
             int mes = Convert.ToDateTime(fechaIni).Month;
 
-            string query = @"
+            string query = "";
+
+            if (Session["idSede"].ToString() != "11")
+            {
+                query = @"
                 SELECT 
                     ppa.idMedioPago, mp.NombreMedioPago, 
                     COUNT(*) AS cuantos,
                     SUM(valor) AS sumatoria
                 FROM pagosplanafiliado ppa, MediosdePago mp 
                 WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
-                  AND MONTH(FechaHoraPago) = " + mes.ToString() + @"
-                  AND ppa.idMedioPago = mp.idMedioPago 
+                    AND MONTH(FechaHoraPago) = " + mes.ToString() + @" 
+                    AND idCanalVenta = " + Convert.ToInt32(Session["idCanalVenta"].ToString()) + @" 
+                    AND ppa.idMedioPago = mp.idMedioPago 
                 GROUP BY ppa.idMedioPago 
                 ORDER BY ppa.idMedioPago;";
+            }
+            else
+            {
+                query = @"
+                SELECT 
+                    ppa.idMedioPago, mp.NombreMedioPago, 
+                    COUNT(*) AS cuantos,
+                    SUM(valor) AS sumatoria
+                FROM pagosplanafiliado ppa, MediosdePago mp 
+                WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
+                    AND MONTH(FechaHoraPago) = " + mes.ToString() + @" 
+                    AND ppa.idMedioPago = mp.idMedioPago 
+                GROUP BY ppa.idMedioPago 
+                ORDER BY ppa.idMedioPago;";
+            }
 
             DataTable dt = cg.TraerDatos(query);
 
@@ -393,7 +490,11 @@ namespace fpWebApp
             int anio = Convert.ToDateTime(fechaIni).Year;
             int mes = Convert.ToDateTime(fechaIni).Month;
 
-            string query = @"
+            string query = "";
+
+            if (Session["idSede"].ToString() != "11")
+            {
+                query = @"
                 SELECT 
                     p.NombrePlan, 
                     COUNT(*) AS cuantos,
@@ -402,9 +503,26 @@ namespace fpWebApp
                 INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan 
                 INNER JOIN planes p ON p.idPlan = ap.idPlan 
                 WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
-                  AND MONTH(FechaHoraPago) = " + mes.ToString() + @"
+                    AND MONTH(FechaHoraPago) = " + mes.ToString() + @" 
+                    AND idCanalVenta = " + Convert.ToInt32(Session["idCanalVenta"].ToString()) + @" 
                 GROUP BY p.NombrePlan 
                 ORDER BY p.NombrePlan;";
+            }
+            else
+            {
+                query = @"
+                SELECT 
+                    p.NombrePlan, 
+                    COUNT(*) AS cuantos,
+                    SUM(ppa.valor) AS sumatoria
+                FROM pagosplanafiliado ppa 
+                INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan 
+                INNER JOIN planes p ON p.idPlan = ap.idPlan 
+                WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
+                    AND MONTH(FechaHoraPago) = " + mes.ToString() + @" 
+                GROUP BY p.NombrePlan 
+                ORDER BY p.NombrePlan;";
+            }
 
             DataTable dt = cg.TraerDatos(query);
 

@@ -330,8 +330,8 @@
                                                                 </a>
                                                                 <asp:LinkButton ID="lnkAsignar" runat="server" Style="font-size: 12px;"
                                                                     CssClass="btn btn-primary pull-right dim m-l-md" Visible="false"
-                                                                    CausesValidation="true" ValidationGroup="asignar">
-                        <i class="fa fa-user-plus m-r-xs"></i>ASIGNAR
+                                                                   OnClick="lnkAsignar_Click" CausesValidation="true" ValidationGroup="asignar">
+                                                                     <i class="fa fa-user-plus m-r-xs"></i>ASIGNAR
                                                                 </asp:LinkButton>
                                                             </div>
                                                         </div>
@@ -362,7 +362,7 @@
                                                     OnRowCreated="gvProspectos_RowCreated" 
                                                     OnRowDataBound="gvProspectos_RowDataBound" 
                                                     CssClass="table table-striped list-group-item-text"
-                                                    DataKeyNames="idPregestion,NombreContacto,ApellidoContacto,DocumentoContacto,idTipoDocumentoContacto,CelularContacto,hacecuanto"
+                                                    DataKeyNames="idPregestion,NombreContacto,ApellidoContacto,DocumentoContacto,idTipoDocumentoContacto,CelularContacto"
                                                     BorderStyle="None" GridLines="None"
                                                     PagerSettings-Mode="NumericFirstLast"
                                                     PagerSettings-FirstPageText="«"
@@ -392,8 +392,8 @@
                                                             SortExpression="idTipoDocumentoContacto" Visible="False" />
                                                         <asp:BoundField DataField="CelularContacto" HeaderText="Celular"
                                                             SortExpression="CelularContacto" />
-                                                        <asp:BoundField DataField="hacecuanto" HeaderText="Hace cuanto"
-                                                            SortExpression="hacecuanto" />
+<%--                                                        <asp:BoundField DataField="hacecuanto" HeaderText="Hace cuanto"
+                                                            SortExpression="hacecuanto" />--%>
                                                         <%--<asp:TemplateField HeaderText="Estado" SortExpression="EstadoPlan">
                                                             <ItemTemplate>
                                                                 <asp:Label ID="lblEstado" runat="server" Text='<%# Eval("EstadoPlan") %>'></asp:Label>

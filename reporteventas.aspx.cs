@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DocumentFormat.OpenXml.Presentation;
+using Newtonsoft.Json;
 using System;
 using System.Data;
 using System.Globalization;
@@ -193,7 +194,7 @@ namespace fpWebApp
         private void CargarPlanes()
         {
             ddlPlanes.Items.Clear();
-            ListItem li = new ListItem("Todos", "0");
+            ListItem li = new ListItem("Todos los planes", "0");
             ddlPlanes.Items.Add(li);
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarPlanesVigentes();
@@ -205,13 +206,16 @@ namespace fpWebApp
 
         private void listaVentas()
         {
+            clasesglobales cg = new clasesglobales();
 
             ltMes1.Text = ddlMes.SelectedItem.Text.ToString() + " " + ddlAnnio.SelectedItem.Text.ToString();
             ltMes2.Text = ltMes1.Text;
             ltMes3.Text = ltMes1.Text;
             ltMes4.Text = ltMes1.Text;
             ltMes5.Text = ltMes1.Text;
-            
+
+            CalcularTotalesVentas();
+            HistorialCobrosRechazados();
 
             int annio = Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString());
             int mes = Convert.ToInt32(ddlMes.SelectedItem.Value.ToString());
@@ -282,7 +286,6 @@ namespace fpWebApp
                 AND MONTH(ap.FechaInicioPlan) IN (" + mes + @") 
                 ORDER BY idPago DESC";
 
-            clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(query);
             rpPagos.DataSource = dt;
             rpPagos.DataBind();
@@ -312,6 +315,105 @@ namespace fpWebApp
             CrearGrafico4(ddlMes.SelectedItem.Value);
             CrearGrafico5(ddlMes.SelectedItem.Value);
             CrearGrafico6(ddlMes.SelectedItem.Value);
+        }
+
+        private void CalcularTotalesVentas()
+        {
+            clasesglobales cg = new clasesglobales();
+
+            string strQuery = @"
+                SELECT 
+                    YEAR(FechaHoraPago) AS Anio,
+                    MONTH(FechaHoraPago) AS Mes,
+                    COUNT(*) AS TotalRegistros
+                FROM PagosPlanAfiliado
+                GROUP BY YEAR(FechaHoraPago), MONTH(FechaHoraPago)
+                ORDER BY Anio, Mes;
+                ";
+
+            decimal sumatoriaValor = 0;
+            decimal sumatoriaRegistros = 0;
+
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                string query = @"
+                SELECT ppa.idPago, ppa.idAfiliadoPlan, ppa.IdReferencia, ppa.FechaHoraPago, ppa.EstadoPago, ppa.Valor, 
+                    a.DocumentoAfiliado,
+                    CONCAT_WS(' ', a.NombreAfiliado, a.ApellidoAfiliado) AS NombreAfiliado,
+                    u.NombreUsuario AS Usuario,
+                    cv.NombreCanalVenta AS CanalVenta, NombreMedioPago, p.NombrePlan  
+                FROM PagosPlanAfiliado ppa 
+                INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
+                INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
+                INNER JOIN usuarios u ON u.idUsuario = ppa.idUsuario  
+                INNER JOIN empleados e ON e.DocumentoEmpleado = u.idEmpleado
+                INNER JOIN canalesventa cv ON cv.idCanalVenta = e.idCanalVenta 
+                INNER JOIN mediosdepago mp ON mp.idMedioPago = ppa.idMedioPago 
+                INNER JOIN planes p ON p.idPlan = ap.idPlan 
+                WHERE ppa.idUsuario NOT IN (156) 
+                AND (ppa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()) + @")
+                AND ap.idPlan IN (1, 17) 
+                AND MONTH(ppa.fechaHoraPago) = " + dr["Mes"].ToString() + @" 
+                AND YEAR(ppa.fechaHoraPago) = " + dr["Anio"].ToString() + @" 
+                AND MONTH(ap.FechaInicioPlan) IN (" + dr["Mes"].ToString() + @") 
+                UNION ALL
+                SELECT ppa.idPago, ppa.idAfiliadoPlan, ppa.IdReferencia, ppa.FechaHoraPago, ppa.EstadoPago, ppa.Valor, 
+                    a.DocumentoAfiliado,
+                    CONCAT_WS(' ', a.NombreAfiliado, a.ApellidoAfiliado) AS NombreAfiliado, 
+                    u.NombreUsuario AS Usuario,
+                    cv.NombreCanalVenta AS CanalVenta, NombreMedioPago, p.NombrePlan  
+                FROM PagosPlanAfiliado ppa 
+                INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
+                INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
+                INNER JOIN usuarios u ON u.idUsuario = ppa.idUsuario  
+                INNER JOIN empleados e ON e.DocumentoEmpleado = u.idEmpleado
+                INNER JOIN canalesventa cv ON cv.idCanalVenta = e.idCanalVenta 
+                INNER JOIN mediosdepago mp ON mp.idMedioPago = ppa.idMedioPago 
+                INNER JOIN planes p ON p.idPlan = ap.idPlan 
+                WHERE ppa.idUsuario = 156 
+                AND (ppa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()) + @")
+                AND ap.idPlan IN (18,19) 
+                AND MONTH(ppa.fechaHoraPago) = " + dr["Mes"].ToString() + @" 
+                AND YEAR(ppa.fechaHoraPago) = " + dr["Anio"].ToString() + @" 
+                AND MONTH(ap.FechaInicioPlan) IN (" + dr["Mes"].ToString() + @") 
+                ORDER BY idPago DESC";
+
+                DataTable dt1 = cg.TraerDatos(query);
+
+                if (dt1.Rows.Count > 0)
+                {
+                    object suma = dt1.Compute("SUM(Valor)", "");
+                    sumatoriaValor += suma != DBNull.Value ? Convert.ToDecimal(suma) : 0;
+                    sumatoriaRegistros += dt1.Rows.Count;
+                }
+            }
+
+            ltCuantos4.Text = "$ " + String.Format("{0:N0}", sumatoriaValor);
+            ltRegistros4.Text = sumatoriaRegistros.ToString();
+        }
+
+        private void HistorialCobrosRechazados()
+        {
+            clasesglobales cg = new clasesglobales();
+
+            string strQuery = @"
+                SELECT ap.idAfiliadoPlan, a.DocumentoAfiliado, CONCAT(a.NombreAfiliado, "" "", a.ApellidoAfiliado) AS NombreCompletoAfiliado, 
+                COUNT(a.idAfiliado) AS Intentos, MAX(hcr.FechaIntento) AS UltimoIntento, MAX(hcr.MensajeEstado) AS Mensaje 
+                FROM HistorialCobrosRechazados AS hcr 
+                INNER JOIN AfiliadosPlanes AS ap ON ap.idAfiliadoPlan = hcr.idAfiliadoPlan 
+                INNER JOIN Afiliados AS a ON a.idAfiliado = ap.idAfiliado 
+                GROUP BY ap.idAfiliadoPlan, a.DocumentoAfiliado, NombreCompletoAfiliado;
+                ";
+
+
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            ltCuantos.Text = dt.Rows.Count.ToString();
+
+            rpHistorialCobrosRechazados.DataSource = dt;
+            rpHistorialCobrosRechazados.DataBind();
         }
 
         private void CrearGrafico1(string fechaIni)

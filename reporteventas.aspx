@@ -185,11 +185,11 @@
                                         Total ventas
                                         Total ventas por web
                                         Total ventas por counter
-                                        Total ventas por plan
+                                        Total ventas totales
                                     ****************
                                 --%>
                                 <div class="row">
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-success pull-right">Mes actual</span>--%>
@@ -200,13 +200,13 @@
                                                     <asp:Literal ID="ltCuantos1" runat="server"></asp:Literal></h1>
                                                 <div class="stat-percent font-bold text-success">
                                                     <asp:Literal ID="ltRegistros1" runat="server"></asp:Literal>
-                                                    registros <%--<i class="fa fa-bolt"></i>--%>
+                                                    registros
                                                 </div>
                                                 <small>&nbsp;</small>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-info pull-right">Mes actual</span>--%>
@@ -217,13 +217,13 @@
                                                     <asp:Literal ID="ltCuantos2" runat="server"></asp:Literal></h1>
                                                 <div class="stat-percent font-bold text-success">
                                                     <asp:Literal ID="ltRegistros2" runat="server"></asp:Literal>
-                                                    registros <%--<i class="fa fa-bolt"></i>--%>
+                                                    registros
                                                 </div>
                                                 <small>&nbsp;</small>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-primary pull-right">Mes actual</span>--%>
@@ -234,29 +234,29 @@
                                                     <asp:Literal ID="ltCuantos3" runat="server"></asp:Literal></h1>
                                                 <div class="stat-percent font-bold text-success">
                                                     <asp:Literal ID="ltRegistros3" runat="server"></asp:Literal>
-                                                    registros <%--<i class="fa fa-bolt"></i>--%>
+                                                    registros
                                                 </div>
                                                 <small>&nbsp;</small>
                                             </div>
                                         </div>
                                     </div>
-                                    <%--<div class="col-lg-3">
+                                    <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
-                                                <span class="label label-danger pull-right">Mes actual</span>
-                                                <h5>Ventas </h5>
+                                                <%--<span class="label label-danger pull-right">Mes actual</span>--%>
+                                                <h5>Ventas Totales</h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
                                                     <asp:Literal ID="ltCuantos4" runat="server"></asp:Literal></h1>
                                                 <div class="stat-percent font-bold text-success">
                                                     <asp:Literal ID="ltRegistros4" runat="server"></asp:Literal>
-                                                    registros <i class="fa fa-bolt"></i>
+                                                    registros
                                                 </div>
                                                 <small>&nbsp;</small>
                                             </div>
                                         </div>
-                                    </div>--%>
+                                    </div>
                                 </div>
 
                                 <!-- INDICADORES FINAL -->
@@ -374,6 +374,62 @@
                                                             <td><%# Eval("EstadoPago") %></td>
                                                             <td><%# Eval("Usuario") %></td>
                                                             <td><%# Eval("CanalVenta") %></td>
+                                                            <%--<td>
+                                                                <asp:Button ID="btnDetalle" runat="server" Text="Ver"
+                                                                    CssClass="btn btn-primary"
+                                                                    CommandArgument='<%# Eval("idAfiliadoPlan") %>'
+                                                                    OnCommand="btnDetalle_Command"
+                                                                    CommandName="mostrarDetalle"
+                                                                    Visible='<%# Eval("NombreMedioPago").ToString() == "Pago en línea" %>' />
+                                                            </td>--%>
+                                                        </tr>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </tbody>
+                                        </table>
+
+                                        <%--<p>Total registros: <span id="totalRegistros"></span></p>
+                                        <p>Registros visibles: <span id="registrosVisibles"></span></p>--%>
+                                    </div>
+                                </div>
+
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Reporte de pagos rechazados (<asp:Literal ID="ltCuantos" runat="server"></asp:Literal>):</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                            data-paging="true" data-sorting="true" 
+                                            data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
+                                            data-filtering="false" data-filter-delay="300"
+                                            data-empty="Sin resultados" id="miTabla2">
+                                            <thead>
+                                                <tr>
+                                                    <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">ID</th>
+                                                    <th>Documento</th>
+                                                    <th>Afiliado</th>
+                                                    <th data-breakpoints="xs sm md">Intentos</th>
+                                                    <th data-breakpoints="xs sm md">Último intento</th>
+                                                    <th data-breakpoints="xs sm md">Mensaje</th>
+                                                    <%--<th data-breakpoints="xs sm md">Detalle</th>--%>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:Repeater ID="rpHistorialCobrosRechazados" runat="server">
+                                                    <ItemTemplate>
+                                                        <tr class="feed-element">
+                                                            <td><%# Eval("idAfiliadoPlan") %></td>
+                                                            <td><%# Eval("DocumentoAfiliado") %></td>
+                                                            <td><%# Eval("NombreCompletoAfiliado") %></td>
+                                                            <td><%# Eval("Intentos") %></td>
+                                                            <td><%# Eval("UltimoIntento") %></td>
+                                                            <td><%# Eval("Mensaje") %></td>
                                                             <%--<td>
                                                                 <asp:Button ID="btnDetalle" runat="server" Text="Ver"
                                                                     CssClass="btn btn-primary"

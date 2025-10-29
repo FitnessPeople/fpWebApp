@@ -83,7 +83,7 @@ namespace fpWebApp
         private void listaTransaccionesEfectivo(int tipoPago, string fechaIni, string fechaFin)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, Convert.ToInt32(rblValor.SelectedValue.ToString()), fechaIni, fechaFin, out decimal valorTotal);
+            DataTable dt = cg.ConsultarPagosPorTipo(Convert.ToInt32(Session["idCanalVenta"].ToString()), tipoPago, Convert.ToInt32(rblValor.SelectedValue.ToString()), fechaIni, fechaFin, out decimal valorTotal);
             rpTipoEfectivo.DataSource = dt;
             rpTipoEfectivo.DataBind();
             ltValorTotalEfe.Text = valorTotal.ToString("C0");
@@ -93,7 +93,7 @@ namespace fpWebApp
         private void listaTransaccionesDatafono(int tipoPago, string fechaIni, string fechaFin)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, Convert.ToInt32(rblValor.SelectedValue.ToString()), fechaIni, fechaFin, out decimal valorTotal);
+            DataTable dt = cg.ConsultarPagosPorTipo(Convert.ToInt32(Session["idCanalVenta"].ToString()), tipoPago, Convert.ToInt32(rblValor.SelectedValue.ToString()), fechaIni, fechaFin, out decimal valorTotal);
             rpTipoDatafono.DataSource = dt;
             rpTipoDatafono.DataBind();
             ltValorTotalData.Text = valorTotal.ToString("C0");
@@ -103,7 +103,7 @@ namespace fpWebApp
         private void listaTransaccionesTransferencia(int tipoPago, string fechaIni, string fechaFin)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosPorTipo(tipoPago, Convert.ToInt32(rblValor.SelectedValue.ToString()), fechaIni, fechaFin, out decimal valorTotal);
+            DataTable dt = cg.ConsultarPagosPorTipo(Convert.ToInt32(Session["idCanalVenta"].ToString()), tipoPago, Convert.ToInt32(rblValor.SelectedValue.ToString()), fechaIni, fechaFin, out decimal valorTotal);
             rpTransferencia.DataSource = dt;
             rpTransferencia.DataBind();
             ltValorTotalTrans.Text = valorTotal.ToString("C0");
@@ -225,7 +225,7 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarPagosPorTipo(1, Convert.ToInt32(rblValor.SelectedValue.ToString()), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+                DataTable dt = cg.ConsultarPagosPorTipo(Convert.ToInt32(Session["idCanalVenta"].ToString()), 1, Convert.ToInt32(rblValor.SelectedValue.ToString()), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
                 string nombreArchivo = $"Efectivo_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
@@ -287,7 +287,7 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarPagosPorTipo(4, Convert.ToInt32(rblValor.SelectedValue.ToString()), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+                DataTable dt = cg.ConsultarPagosPorTipo(Convert.ToInt32(Session["idCanalVenta"].ToString()), 4, Convert.ToInt32(rblValor.SelectedValue.ToString()), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
                 string nombreArchivo = $"Datafono_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
@@ -349,7 +349,7 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarPagosPorTipo(2, Convert.ToInt32(rblValor.SelectedValue.ToString()), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+                DataTable dt = cg.ConsultarPagosPorTipo(Convert.ToInt32(Session["idCanalVenta"].ToString()), 2, Convert.ToInt32(rblValor.SelectedValue.ToString()), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
                 string nombreArchivo = $"Transferencia_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
