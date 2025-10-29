@@ -395,6 +395,62 @@
 
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
+                                        <h5>Reporte de pagos rechazados (<asp:Literal ID="ltCuantos" runat="server"></asp:Literal>):</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                            data-paging="true" data-sorting="true" 
+                                            data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
+                                            data-filtering="false" data-filter-delay="300"
+                                            data-empty="Sin resultados" id="miTabla2">
+                                            <thead>
+                                                <tr>
+                                                    <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">ID</th>
+                                                    <th>Documento</th>
+                                                    <th>Afiliado</th>
+                                                    <th data-breakpoints="xs sm md">Intentos</th>
+                                                    <th data-breakpoints="xs sm md">Último intento</th>
+                                                    <th data-breakpoints="xs sm md">Mensaje</th>
+                                                    <%--<th data-breakpoints="xs sm md">Detalle</th>--%>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:Repeater ID="rpHistorialCobrosRechazados" runat="server">
+                                                    <ItemTemplate>
+                                                        <tr class="feed-element">
+                                                            <td><%# Eval("idAfiliadoPlan") %></td>
+                                                            <td><%# Eval("DocumentoAfiliado") %></td>
+                                                            <td><%# Eval("NombreCompletoAfiliado") %></td>
+                                                            <td><%# Eval("Intentos") %></td>
+                                                            <td><%# Eval("UltimoIntento") %></td>
+                                                            <td><%# Eval("Mensaje") %></td>
+                                                            <%--<td>
+                                                                <asp:Button ID="btnDetalle" runat="server" Text="Ver"
+                                                                    CssClass="btn btn-primary"
+                                                                    CommandArgument='<%# Eval("idAfiliadoPlan") %>'
+                                                                    OnCommand="btnDetalle_Command"
+                                                                    CommandName="mostrarDetalle"
+                                                                    Visible='<%# Eval("NombreMedioPago").ToString() == "Pago en línea" %>' />
+                                                            </td>--%>
+                                                        </tr>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </tbody>
+                                        </table>
+
+                                        <%--<p>Total registros: <span id="totalRegistros"></span></p>
+                                        <p>Registros visibles: <span id="registrosVisibles"></span></p>--%>
+                                    </div>
+                                </div>
+
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
                                         <h5>Gráficos <asp:Literal ID="ltMes5" runat="server"></asp:Literal>:</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">

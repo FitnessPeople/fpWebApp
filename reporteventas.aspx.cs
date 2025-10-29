@@ -215,6 +215,7 @@ namespace fpWebApp
             ltMes5.Text = ltMes1.Text;
 
             CalcularTotalesVentas();
+            HistorialCobrosRechazados();
 
             int annio = Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString());
             int mes = Convert.ToInt32(ddlMes.SelectedItem.Value.ToString());
@@ -391,6 +392,28 @@ namespace fpWebApp
 
             ltCuantos4.Text = "$ " + String.Format("{0:N0}", sumatoriaValor);
             ltRegistros4.Text = sumatoriaRegistros.ToString();
+        }
+
+        private void HistorialCobrosRechazados()
+        {
+            clasesglobales cg = new clasesglobales();
+
+            string strQuery = @"
+                SELECT ap.idAfiliadoPlan, a.DocumentoAfiliado, CONCAT(a.NombreAfiliado, "" "", a.ApellidoAfiliado) AS NombreCompletoAfiliado, 
+                COUNT(a.idAfiliado) AS Intentos, MAX(hcr.FechaIntento) AS UltimoIntento, MAX(hcr.MensajeEstado) AS Mensaje 
+                FROM HistorialCobrosRechazados AS hcr 
+                INNER JOIN AfiliadosPlanes AS ap ON ap.idAfiliadoPlan = hcr.idAfiliadoPlan 
+                INNER JOIN Afiliados AS a ON a.idAfiliado = ap.idAfiliado 
+                GROUP BY ap.idAfiliadoPlan, a.DocumentoAfiliado, NombreCompletoAfiliado;
+                ";
+
+
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            ltCuantos.Text = dt.Rows.Count.ToString();
+
+            rpHistorialCobrosRechazados.DataSource = dt;
+            rpHistorialCobrosRechazados.DataBind();
         }
 
         private void CrearGrafico1(string fechaIni)
