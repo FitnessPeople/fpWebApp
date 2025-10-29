@@ -9224,7 +9224,6 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_PREGESTION_ASESOR_CRM", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        //cmd.Parameters.AddWithValue("@p_fecha_hora", fecha));
                         cmd.Parameters.AddWithValue("@p_nombre_contacto", nombre);
                         cmd.Parameters.AddWithValue("@p_apellido_contacto", apellido);
                         cmd.Parameters.AddWithValue("@p_documento_contacto", documento);
@@ -9238,6 +9237,43 @@ namespace fpWebApp
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarIdAsesorPregestion(int idPregestion, int idAsesor, out string respuesta)
+        {
+            respuesta = string.Empty;
+            string _mensaje = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_ID_ASESOR_PREGESTION", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_pregestion", idPregestion);
+                        cmd.Parameters.AddWithValue("@p_id_asesor", idAsesor);
+
+                        // Parámetro de salida
+                        MySqlParameter mensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 300);
+                        mensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(mensaje);
+
+                        cmd.ExecuteNonQuery();
+                        _mensaje = mensaje.Value.ToString();
+
+                        respuesta = _mensaje;
                     }
                 }
             }

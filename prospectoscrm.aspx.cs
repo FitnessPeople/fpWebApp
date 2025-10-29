@@ -1,10 +1,12 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Configuration;
 using System.Data;
+using System.Linq;
 using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DocumentFormat.OpenXml.Office2010.PowerPoint;
+using MySql.Data.MySqlClient;
 
 namespace fpWebApp
 {
@@ -17,6 +19,9 @@ namespace fpWebApp
                 if (Session["idUsuario"] != null)
                 {
                     ValidarPermisos("Prospectos");
+                    int idPerfil = Convert.ToInt32(Session["idPerfil"].ToString());
+                    int idCanalVenta = Convert.ToInt32(Session["idCanalVenta"].ToString());
+
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -31,6 +36,7 @@ namespace fpWebApp
                         if (ViewState["Consulta"].ToString() == "1")
                         {
                             ListaProspectos();
+                            CargarAsesoresPorSede(idCanalVenta);
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
@@ -90,12 +96,48 @@ namespace fpWebApp
             string strQuery = "SELECT *, DATEDIFF(FechaHoraPregestion, CURDATE()) AS hacecuanto " +
                 "FROM pregestioncrm pg, tiposgestioncrm tg " +
                 "WHERE pg.idTipoGestion = 4 " +
-                "AND pg.idTipoGestion = tg.idTipoGestionCRM ";
+                "AND pg.idTipoGestion = tg.idTipoGestionCRM AND idAsesor =v0 ";
             DataTable dt = cg.TraerDatos(strQuery);
 
             gvProspectos.DataSource = dt;
             gvProspectos.DataBind();
             dt.Dispose();
+        }
+
+        private void CargarAsesoresPorSede(int idCanalVenta)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            try
+            {
+                int idSede = Convert.ToInt32(Session["idSede"].ToString());
+                DataTable dt = cg.ConsultaCargarAsesoresPorSede(idSede);
+
+                if (idCanalVenta > 0)
+                {
+                    var filteredRows = dt.AsEnumerable()
+                                         .Where(r => r.Field<int>("idCanalVenta") == idCanalVenta);
+
+                    if (filteredRows.Any())
+                    {
+                        dt = filteredRows.CopyToDataTable();
+                    }
+                    else
+                    {
+                        dt = dt.Clone();
+                    }
+                }
+                ddlAsesores.DataSource = dt;
+                ddlAsesores.DataTextField = "NombreUsuario";
+                ddlAsesores.DataValueField = "idUsuario";
+                ddlAsesores.DataBind();
+
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message.ToString();
+            }
         }
 
         private void CargarTipoDocumento()
@@ -179,10 +221,9 @@ namespace fpWebApp
                         string celular = txbCelular.Text.ToString();
                         int tipoGestion = 4;
 
-                        string rta = cg.InsertarPregestionCRM(nombre, apellido,
-                                        documento, idTipoDocumento, celular, tipoGestion, 
-                                        Convert.ToInt32(Session["idCanalVenta"].ToString()), 
-                                        Convert.ToInt32(Session["idUsuario"].ToString()));
+
+                        string rta = cg.InsertarPregestionAsesorCRM(nombre, apellido, documento, Convert.ToInt32(idTipoDocumento), celular, Convert.ToInt32(tipoGestion),
+                                           Convert.ToInt32(Session["idCanalVenta"].ToString()), Convert.ToInt32(Session["idUsuario"].ToString()), 0, "Pendiente");
 
                         if (rta == "OK")
                         {
@@ -273,7 +314,7 @@ namespace fpWebApp
             string strQuery = "SELECT *, DATEDIFF(FechaHoraPregestion, CURDATE()) AS hacecuanto " +
                 "FROM pregestioncrm pg, tiposgestioncrm tg " +
                 "WHERE pg.idTipoGestion = 4 " +
-                "AND pg.idTipoGestion = tg.idTipoGestionCRM ";
+                "AND pg.idTipoGestion = tg.idTipoGestionCRM  AND idAsesor=0";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
             DataView dv = dt.DefaultView;
@@ -322,9 +363,9 @@ namespace fpWebApp
                             case "CelularContacto":
                                 field.HeaderText = "Celular";
                                 break;
-                            case "hacecuanto":
-                                field.HeaderText = "Días plan";
-                                break;
+                            //case "hacecuanto":
+                            //    field.HeaderText = "Días plan";
+                            //    break;
                             //case "EstadoPlan":
                             //    field.HeaderText = "Estado";
                             //    break;
@@ -383,5 +424,87 @@ namespace fpWebApp
             get { return ViewState["SortDirection"] as string ?? "ASC"; }
             set { ViewState["SortDirection"] = value; }
         }
+
+        protected void lnkAsignar_Click(object sender, EventArgs e)
+        {
+            string mensaje = string.Empty;
+            string asesor = ddlAsesores.SelectedItem.Value;
+            bool haySeleccionados = false;
+            int totalAgregados = 0;
+            int totalErrores = 0;
+            int idPregestion = 0;
+            clasesglobales cg = new clasesglobales();
+
+            try
+            {
+                foreach (GridViewRow row in gvProspectos.Rows)
+                {
+                    if (row.RowType == DataControlRowType.DataRow)
+                    {
+                        var chk = row.FindControl("chkSeleccionar") as System.Web.UI.WebControls.CheckBox;
+
+                        if (chk != null && chk.Checked)
+                        {
+                            haySeleccionados = true;
+
+                            idPregestion = Convert.ToInt32(gvProspectos.DataKeys[row.RowIndex]["idPregestion"].ToString());
+                            string nombre = gvProspectos.DataKeys[row.RowIndex]["NombreContacto"].ToString();
+                            string apellido = gvProspectos.DataKeys[row.RowIndex]["ApellidoContacto"].ToString();
+                            string documento = gvProspectos.DataKeys[row.RowIndex]["DocumentoContacto"].ToString();
+                            string idTipoDocumento = gvProspectos.DataKeys[row.RowIndex]["idTipoDocumentoContacto"].ToString();
+                            string celular = gvProspectos.DataKeys[row.RowIndex]["CelularContacto"].ToString();
+
+                            string respuesta = cg.ActualizarIdAsesorPregestion(idPregestion, Convert.ToInt32(asesor), out respuesta);
+
+                            if (respuesta == "OK")
+                                totalAgregados++;
+                            else
+                                totalErrores++;
+                        }
+                    }
+                }
+
+                if (!haySeleccionados)
+                {
+                    string script = @"
+                        Swal.fire({
+                            title: 'Selecciona un registro',
+                            text: 'Debes elegir al menos uno para poder asignarlo a un asesor.',
+                            icon: 'warning'
+                        });
+                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "SeleccioneUno", script, true);
+                    return;
+                }
+
+                string scriptOk = $@"
+                    Swal.fire({{
+                        title: '¡Registros asignados!',
+                        text: 'Se agregaron {totalAgregados} registros correctamente.',
+                        icon: 'success',
+                        timer: 3000,
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    }}).then(() => {{
+                        window.location.href = 'prospectoscrm';
+                    }});
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", scriptOk, true);
+            }
+
+            catch (Exception ex)
+            {
+                string script = @"
+                    Swal.fire({
+                        title: 'Error inesperado',
+                        text: '" + ex.Message.Replace("'", "\\'") + @"',
+                        icon: 'error'
+                    });
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+            }
+        }
+
     }
+
 }
