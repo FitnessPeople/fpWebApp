@@ -25,6 +25,12 @@ namespace fpWebApp
         //static int idIntegracion = 1; // Pruebas
         static int idIntegracion = 4; // Producción
 
+        protected string EstadoCobroRechazado
+        {
+            get { return ViewState["MensajeEstadoCobroRechazado"]?.ToString(); }
+            set { ViewState["MensajeEstadoCobroRechazado"] = value; }
+        }
+
         protected string Url
         {
             get { return ViewState["urlWompi"]?.ToString(); }
@@ -303,6 +309,8 @@ namespace fpWebApp
                     descripcion
                 );
 
+                clasesglobales cg = new clasesglobales();
+
                 // Si fue exitoso, registramos el pago
                 if (pagoExitoso)
                 {
@@ -318,11 +326,18 @@ namespace fpWebApp
                         idSede
                     );
 
+                    cg.EliminarHistorialCobrosRechazados(idAfiliadoPlan);
+
                     MostrarAlerta("Éxito", "El cobro recurrente se procesó correctamente.", "success");
                     listaTransacciones(); // refresca la tabla
                 }
                 else
                 {
+                    cg.InsertarCobroRechazado(
+                        idAfiliadoPlan, 
+                        EstadoCobroRechazado
+                    );
+
                     MostrarAlerta("Error", "El cobro no fue aprobado por la pasarela.", "error");
                 }
             }
@@ -472,23 +487,22 @@ namespace fpWebApp
                     // ==============================
                     DataIdTransaccion = rObjetc.data.id;
 
-                    // Consultar estado (igual que en tu función actual)
                     string estado = null;
-                    string estadoMensaje = null;
+                    EstadoCobroRechazado = null;
                     int maxIntentos = 15;
                     int intentos = 0;
 
                     do
                     {
                         await Task.Delay(1000);
-                        (estado, estadoMensaje) = await ConsultarTransaccionPorReferencia(reference);
+                        (estado, EstadoCobroRechazado) = await ConsultarTransaccionPorReferencia(reference);
                         intentos++;
                     }
                     while (estado == "PENDING" && intentos < maxIntentos);
 
                     if (estado != "APPROVED")
                     {
-                        MostrarAlerta("Transacción rechazada", $"{estadoMensaje ?? "Error desconocido"}", "error");
+                        MostrarAlerta("Transacción rechazada", $"{EstadoCobroRechazado ?? "Error desconocido"}", "error");
                         return false;
                     }
 
@@ -529,8 +543,8 @@ namespace fpWebApp
                 }
 
                 string estado = data[0].status;
-                string estadoMensaje = data[0].status_message;
-                return (estado, estadoMensaje); // Ejemplo: "APPROVED", "DECLINED", "PENDING"
+                EstadoCobroRechazado = data[0].status_message;
+                return (estado, EstadoCobroRechazado); // Ejemplo: "APPROVED", "DECLINED", "PENDING"
             }
             catch (Exception ex)
             {
