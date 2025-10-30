@@ -10,7 +10,7 @@ namespace fpWebApp.controles
         {
             clasesglobales cg = new clasesglobales();
 
-            string etiqueta = Session["Cargo"].ToString();
+            string etiqueta =string.Empty;
             DataTable dt = cg.ConsultarUsuarioSedePerfilPorId(Convert.ToInt32(Session["idUsuario"]));
             if (dt.Rows.Count > 0)
             {
@@ -23,10 +23,13 @@ namespace fpWebApp.controles
                 else if (dt.Rows[0]["idCanalVenta"].ToString() == "12" || dt.Rows[0]["idCanalVenta"].ToString() == "13" || dt.Rows[0]["idCanalVenta"].ToString() == "14")
                 {
                     lblNombreSede.Text = dt.Rows[0]["NombreSede"].ToString();
-                    etiqueta = "Canal de ventas: " + dt.Rows[0]["NombreCanalVenta"].ToString();
+                    etiqueta = "Canal de ventas: " + dt.Rows[0]["NombreCanalVenta"].ToString() + " Cargo: " + dt.Rows[0]["NombreCargo"].ToString(); 
                 }
                 else
+                {
                     lblNombreSede.Text = dt.Rows[0]["NombreCanalVenta"].ToString();
+                    etiqueta = dt.Rows[0]["NombreCargo"].ToString();
+                }
             }
 
             if (Session["idUsuario"] != null)
