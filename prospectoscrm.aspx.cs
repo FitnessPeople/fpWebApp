@@ -91,13 +91,7 @@ namespace fpWebApp
         private void ListaProspectos()
         {
             clasesglobales cg = new clasesglobales();
-            //DataTable dt = cg.ConsultarProspectosCRM();
-
-            string strQuery = "SELECT *, DATEDIFF(FechaHoraPregestion, CURDATE()) AS hacecuanto " +
-                "FROM pregestioncrm pg, tiposgestioncrm tg " +
-                "WHERE pg.idTipoGestion = 4 " +
-                "AND pg.idTipoGestion = tg.idTipoGestionCRM AND idAsesor =v0 ";
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.CargarProspectosCRM();
 
             gvProspectos.DataSource = dt;
             gvProspectos.DataBind();
@@ -307,16 +301,9 @@ namespace fpWebApp
                 SortDirection = "ASC";
             }
 
-            // Obtener y ordenar datos
-            
-
-
-            string strQuery = "SELECT *, DATEDIFF(FechaHoraPregestion, CURDATE()) AS hacecuanto " +
-                "FROM pregestioncrm pg, tiposgestioncrm tg " +
-                "WHERE pg.idTipoGestion = 4 " +
-                "AND pg.idTipoGestion = tg.idTipoGestionCRM  AND idAsesor=0";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.CargarProspectosCRM();
+
             DataView dv = dt.DefaultView;
             dv.Sort = $"{SortExpression} {SortDirection}";
 

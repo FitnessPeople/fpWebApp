@@ -456,15 +456,14 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label>Sede</label>
-                                                            <asp:DropDownList ID="ddlSedes" runat="server" AppendDataBoundItems="true"
-                                                                DataTextField="NombreSede" DataValueField="idSede" CssClass="form-control input-sm">
+                                                            <label>Empresa FP</label>
+                                                            <asp:DropDownList ID="ddlEmpresasFP" runat="server" AppendDataBoundItems="true"
+                                                                DataTextField="NombreEmpresaFP" DataValueField="idEmpresaFP" CssClass="form-control input-sm">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
@@ -564,9 +563,9 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label>Empresa FP</label>
-                                                            <asp:DropDownList ID="ddlEmpresasFP" runat="server" AppendDataBoundItems="true"
-                                                                DataTextField="NombreEmpresaFP" DataValueField="idEmpresaFP" CssClass="form-control input-sm">
+                                                            <label>Sede</label>
+                                                            <asp:DropDownList ID="ddlSedes" runat="server" AppendDataBoundItems="true"
+                                                                DataTextField="NombreSede" DataValueField="idSede" CssClass="form-control input-sm">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
