@@ -5868,7 +5868,7 @@ namespace fpWebApp
         }
 
         public string InsertarMetaComercial(int idCanalVenta, int Mes, int Annio,
-            int Valor, int Deluxe, int Premium, int Elite, int Director, int Online, int idUsuario)
+            int Valor, int Senior, int Junior, int Elite, int Director, int idUsuario)
         {
             string respuesta = string.Empty;
             try
@@ -5884,11 +5884,10 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_mes", Mes);
                         cmd.Parameters.AddWithValue("@p_annio", Annio);
                         cmd.Parameters.AddWithValue("@p_valor", Valor);
-                        cmd.Parameters.AddWithValue("@p_deluxe", Deluxe);
-                        cmd.Parameters.AddWithValue("@p_premium", Premium);
+                        cmd.Parameters.AddWithValue("@p_senior", Senior);
+                        cmd.Parameters.AddWithValue("@p_junior", Junior);
                         cmd.Parameters.AddWithValue("@p_elite", Elite);
                         cmd.Parameters.AddWithValue("@p_director", Director);
-                        cmd.Parameters.AddWithValue("@p_online", Online);
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
 
                         cmd.ExecuteNonQuery();
@@ -5905,7 +5904,7 @@ namespace fpWebApp
         }
 
         public string ActualizarMetaComercial(int idMeta, int idCanalVenta, int Mes, int Annio, 
-            int Valor, int Deluxe, int Premium, int Elite, int Director, int Online,  int idUsuario)
+            int Valor, int Senior, int Junior, int Elite, int Director, int idUsuario)
         {
             string respuesta = string.Empty;
             try
@@ -5922,11 +5921,10 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_mes", Mes);
                         cmd.Parameters.AddWithValue("@p_annio", Annio);
                         cmd.Parameters.AddWithValue("@p_valor", Valor);
-                        cmd.Parameters.AddWithValue("@p_deluxe", Deluxe);
-                        cmd.Parameters.AddWithValue("@p_premium", Premium);
+                        cmd.Parameters.AddWithValue("@p_senior", Senior);
+                        cmd.Parameters.AddWithValue("@p_junior", Junior);
                         cmd.Parameters.AddWithValue("@p_elite", Elite);
                         cmd.Parameters.AddWithValue("@p_director", Director);
-                        cmd.Parameters.AddWithValue("@p_online", Online);
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
 
                         cmd.ExecuteNonQuery();

@@ -123,22 +123,22 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbPresupuesto;
 
         /// <summary>
-        /// Control txbAsesorDeluxe.
+        /// Control txbAsesorSenior.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbAsesorDeluxe;
+        protected global::System.Web.UI.WebControls.TextBox txbAsesorSenior;
 
         /// <summary>
-        /// Control txbAsesorPremium.
+        /// Control txbAsesorJunior.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbAsesorPremium;
+        protected global::System.Web.UI.WebControls.TextBox txbAsesorJunior;
 
         /// <summary>
         /// Control txbAsesorElite.
@@ -148,15 +148,6 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbAsesorElite;
-
-        /// <summary>
-        /// Control txbAsesorOnline.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbAsesorOnline;
 
         /// <summary>
         /// Control txbDirectorSede.

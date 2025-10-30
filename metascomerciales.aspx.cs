@@ -69,17 +69,16 @@ namespace fpWebApp
                                 ddlMes.SelectedIndex = Convert.ToInt16(ddlMes.Items.IndexOf(ddlMes.Items.FindByValue(dt.Rows[0]["mes"].ToString())));
                                 ddlAnnio.SelectedIndex = Convert.ToInt16(ddlAnnio.Items.IndexOf(ddlAnnio.Items.FindByValue(dt.Rows[0]["annio"].ToString())));
                                 int presupuesto = (dt.Rows[0]["Presupuesto"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["Presupuesto"]) : 0;
-                                int metaAsesorDeluxe = (dt.Rows[0]["MetaAsesorDeluxe"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["MetaAsesorDeluxe"]) : 0;
-                                int metaAsesorPremium  = (dt.Rows[0]["MetaAsesorPremium"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["MetaAsesorPremium"]) : 0;
+                                int metaAsesorSenior = (dt.Rows[0]["MetaAsesorSenior"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["MetaAsesorSenior"]) : 0;
+                                int metaAsesorJunior  = (dt.Rows[0]["MetaAsesorJunior"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["MetaAsesorJunior"]) : 0;
                                 int metaAsesorElite = (dt.Rows[0]["MetaAsesorElite"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["MetaAsesorElite"]) : 0;
                                 int metaDirectorSede = (dt.Rows[0]["MetaDirectorSede"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["MetaDirectorSede"]) : 0;
                                 int metaAsesorOnline = (dt.Rows[0]["MetaAsesorOnline"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["MetaAsesorOnline"]) : 0;
                                 txbPresupuesto.Text = presupuesto.ToString("C0", new CultureInfo("es-CO"));
-                                txbAsesorDeluxe.Text = metaAsesorDeluxe.ToString("C0", new CultureInfo("es-CO"));
-                                txbAsesorPremium.Text = metaAsesorPremium.ToString("C0", new CultureInfo("es-CO"));
+                                txbAsesorSenior.Text = metaAsesorSenior.ToString("C0", new CultureInfo("es-CO"));
+                                txbAsesorJunior.Text = metaAsesorJunior.ToString("C0", new CultureInfo("es-CO"));
                                 txbAsesorElite.Text = metaAsesorElite.ToString("C0", new CultureInfo("es-CO"));
                                 txbDirectorSede.Text = metaDirectorSede.ToString("C0", new CultureInfo("es-CO"));
-                                txbAsesorOnline.Text = metaAsesorOnline.ToString("C0", new CultureInfo("es-CO"));
                                 btnAgregar.Text = "Actualizar";
                                 ltTitulo.Text = "Actualizar meta comercial";
                             }
@@ -232,11 +231,10 @@ namespace fpWebApp
                             Convert.ToInt32(ddlMes.SelectedItem.Value.ToString()),
                             Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString()),
                             Convert.ToInt32(Regex.Replace(txbPresupuesto.Text, @"[^\d]", "")),
-                            Convert.ToInt32(Regex.Replace(txbAsesorDeluxe.Text, @"[^\d]", "")), 
-                            Convert.ToInt32(Regex.Replace(txbAsesorPremium.Text, @"[^\d]", "")), 
+                            Convert.ToInt32(Regex.Replace(txbAsesorSenior.Text, @"[^\d]", "")), 
+                            Convert.ToInt32(Regex.Replace(txbAsesorJunior.Text, @"[^\d]", "")), 
                             Convert.ToInt32(Regex.Replace(txbAsesorElite.Text, @"[^\d]", "")), 
                             Convert.ToInt32(Regex.Replace(txbDirectorSede.Text, @"[^\d]", "")), 
-                            Convert.ToInt32(Regex.Replace(txbAsesorOnline.Text, @"[^\d]", "")), 
                             Convert.ToInt32(Session["idUsuario"].ToString())
                             );
 
@@ -275,11 +273,10 @@ namespace fpWebApp
                                 i+1,
                                 Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString()),
                                 Convert.ToInt32(Regex.Replace(txbPresupuesto.Text, @"[^\d]", "")),
-                                Convert.ToInt32(Regex.Replace(txbAsesorDeluxe.Text, @"[^\d]", "")),
-                                Convert.ToInt32(Regex.Replace(txbAsesorPremium.Text, @"[^\d]", "")),
+                                Convert.ToInt32(Regex.Replace(txbAsesorSenior.Text, @"[^\d]", "")),
+                                Convert.ToInt32(Regex.Replace(txbAsesorJunior.Text, @"[^\d]", "")),
                                 Convert.ToInt32(Regex.Replace(txbAsesorElite.Text, @"[^\d]", "")),
                                 Convert.ToInt32(Regex.Replace(txbDirectorSede.Text, @"[^\d]", "")),
-                                Convert.ToInt32(Regex.Replace(txbAsesorOnline.Text, @"[^\d]", "")),
                                 Convert.ToInt32(Session["idUsuario"].ToString())
                                 );
                         }
@@ -316,11 +313,10 @@ namespace fpWebApp
                                 Convert.ToInt32(ddlMes.SelectedItem.Value.ToString()),
                                 Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString()),
                                 Convert.ToInt32(Regex.Replace(txbPresupuesto.Text, @"[^\d]", "")),
-                                Convert.ToInt32(Regex.Replace(txbAsesorDeluxe.Text, @"[^\d]", "")),
-                                Convert.ToInt32(Regex.Replace(txbAsesorPremium.Text, @"[^\d]", "")),
+                                Convert.ToInt32(Regex.Replace(txbAsesorSenior.Text, @"[^\d]", "")),
+                                Convert.ToInt32(Regex.Replace(txbAsesorJunior.Text, @"[^\d]", "")),
                                 Convert.ToInt32(Regex.Replace(txbAsesorElite.Text, @"[^\d]", "")),
                                 Convert.ToInt32(Regex.Replace(txbDirectorSede.Text, @"[^\d]", "")),
-                                Convert.ToInt32(Regex.Replace(txbAsesorOnline.Text, @"[^\d]", "")),
                                 Convert.ToInt32(Session["idUsuario"].ToString())
                                 );
 
