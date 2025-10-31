@@ -188,7 +188,8 @@ namespace fpWebApp
                             INNER JOIN AfiliadosPlanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan
                             INNER JOIN Afiliados a ON a.idAfiliado = ap.idAfiliado 
                             INNER JOIN Usuarios u ON u.idUsuario = ppa.idUsuario  
-                            INNER JOIN Planes p ON p.idPlan = ap.idPlan
+                            INNER JOIN Planes p ON p.idPlan = ap.idPlan 
+                            WHERE ap.estadoPlan <> 'Archivado' 
                             ORDER BY ppa.fechaHoraPago ASC;";
 
             DataTable dt = cg.TraerDatos(query);
