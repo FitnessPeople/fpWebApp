@@ -52,7 +52,7 @@ namespace fpWebApp.controles
 
         private void CuantosNuevosUltimoMes()
         {
-            string strQuery = "SELECT COUNT(*) AS cuantos FROM Afiliados WHERE EstadoAfiliado = 'Activo'";
+            string strQuery = "SELECT COUNT(*) AS cuantos FROM Afiliados WHERE EstadoAfiliado = 'Activo' AND MONTH(FechaAfiliacion) = " + DateTime.Now.Month.ToString();
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 

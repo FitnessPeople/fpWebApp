@@ -1,4 +1,4 @@
-﻿|<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="empleados.aspx.cs" Inherits="fpWebApp.empleados" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="empleados.aspx.cs" Inherits="fpWebApp.empleados" %>
 
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
