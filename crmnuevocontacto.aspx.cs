@@ -464,15 +464,50 @@ namespace fpWebApp
             ddlTiposAfiliado.DataBind();
             dt.Dispose();
         }
+        //private void CargarPlanes()
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarPlanesVigentesVisibleCRM();
+
+        //    ddlPlanes.DataSource = dt;
+        //    ddlPlanes.DataBind();
+        //    dt.Dispose();
+        //}
         private void CargarPlanes()
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarPlanesVigentesVisibleCRM();
+           
+            dt.DefaultView.Sort = "PrecioMinimo ASC, FechaFinal ASC";
+            dt = dt.DefaultView.ToTable();
+
+            dt.Columns.Add("TextoPlan", typeof(string));
+
+            foreach (DataRow row in dt.Rows)
+            {
+                string nombre = row["NombrePlan"].ToString().PadRight(25);
+                string valor = Convert
+                    .ToDecimal(row["PrecioMinimo"])
+                    .ToString("$#,0", System.Globalization.CultureInfo.CreateSpecificCulture("es-CO"))
+                    .PadLeft(10);
+
+                string fechaFinal = row["FechaFinal"] != DBNull.Value
+                    ? Convert.ToDateTime(row["FechaFinal"]).ToString("dd/MM/yy")
+                    : "";
+               
+                row["TextoPlan"] = $"{nombre}  Min: {valor}  Vence: {fechaFinal}";
+            }
 
             ddlPlanes.DataSource = dt;
+            ddlPlanes.DataTextField = "TextoPlan";
+            ddlPlanes.DataValueField = "idPlan";
             ddlPlanes.DataBind();
-            dt.Dispose();
+
+            ddlPlanes.Items.Insert(0, new ListItem("Seleccione", ""));
         }
+
+
+
         private void CargarPlanesAfiliadPregestion(string strIdAfiliado)
         {
             clasesglobales cg = new clasesglobales();

@@ -751,24 +751,24 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
-
                                                         <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                                                             <ContentTemplate>
                                                                 <div class="row" id="planesYValorMes">
-                                                                    <div class="col-sm-6">
+                                                                    <div class="col-sm-8">
                                                                         <div class="form-group">
                                                                             <i class="fa fa-ticket text-info"></i>
                                                                             <label for="Planes" class="col-form-label">Planes:</label>
-                                                                            <asp:DropDownList ID="ddlPlanes" DataTextField="NombrePlan" DataValueField="idPlan"
-                                                                                runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm" OnSelectedIndexChanged="ddlPlanes_SelectedIndexChanged" AutoPostBack="true">
-                                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                            </asp:DropDownList>
+                                                                                <asp:DropDownList ID="ddlPlanes"
+                                                                                    runat="server" CssClass="form-control input-sm" DataTextField="TextoPlan" DataValueField="idPlan"
+                                                                                    AutoPostBack="true" OnSelectedIndexChanged="ddlPlanes_SelectedIndexChanged"
+                                                                                    style="font-family:'Courier New', monospace; white-space:pre;">
+                                                                                </asp:DropDownList>
+
                                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="ddlPlanes"
                                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-sm-6">
+                                                                    <div class="col-sm-4">
                                                                         <div class="form-group">
                                                                             <i class="fa fa-dollar text-info"></i>
                                                                             <label for="ValorMes" class="col-form-label">Valor mes:</label>
