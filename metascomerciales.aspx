@@ -202,15 +202,15 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label>Asesor Deluxe:</label>
-                                                            <asp:TextBox ID="txbAsesorDeluxe" runat="server" CssClass="form-control input-sm" 
+                                                            <label>Asesor Senior:</label>
+                                                            <asp:TextBox ID="txbAsesorSenior" runat="server" CssClass="form-control input-sm" 
                                                                 onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label>Asesor Premium:</label>
-                                                            <asp:TextBox ID="txbAsesorPremium" runat="server" CssClass="form-control input-sm" 
+                                                            <label>Asesor Junior:</label>
+                                                            <asp:TextBox ID="txbAsesorJunior" runat="server" CssClass="form-control input-sm" 
                                                                 onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
                                                         </div>
                                                     </div>
@@ -226,8 +226,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label>Asesor Online:</label>
-                                                            <asp:TextBox ID="txbAsesorOnline" runat="server" CssClass="form-control input-sm" 
-                                                                onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -299,10 +298,9 @@
                                                     <th>Canal de venta</th>
                                                     <th>Mes / Año</th>
                                                     <th style="text-align: right;">Presupuesto</th>
-                                                    <th style="text-align: right;">Deluxe</th>
-                                                    <th style="text-align: right;">Premium</th>
+                                                    <th style="text-align: right;">Senior</th>
+                                                    <th style="text-align: right;">Junior</th>
                                                     <th style="text-align: right;">Elite</th>
-                                                    <th style="text-align: right;">Online</th>
                                                     <th style="text-align: right;">Dir. Sede</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
@@ -314,10 +312,9 @@
                                                             <td><%# Eval("NombreCanalVenta") %></td>
                                                             <td><%# ObtenerNombreMes(Eval("Mes")) %> - <%# Eval("Annio") %></td>
                                                             <td style="text-align: right;">$ <%# Eval("Presupuesto", "{0:N0}") %></td>
-                                                            <td style="text-align: right;">$ <%# Eval("MetaAsesorDeluxe", "{0:N0}") %></td>
-                                                            <td style="text-align: right;">$ <%# Eval("MetaAsesorPremium", "{0:N0}") %></td>
+                                                            <td style="text-align: right;">$ <%# Eval("MetaAsesorSenior", "{0:N0}") %></td>
+                                                            <td style="text-align: right;">$ <%# Eval("MetaAsesorJunior", "{0:N0}") %></td>
                                                             <td style="text-align: right;">$ <%# Eval("MetaAsesorElite", "{0:N0}") %></td>
-                                                            <td style="text-align: right;">$ <%# Eval("MetaAsesorOnline", "{0:N0}") %></td>
                                                             <td style="text-align: right;">$ <%# Eval("MetaDirectorSede", "{0:N0}") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"

@@ -294,13 +294,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbFechaFinal;
 
         /// <summary>
-        /// Control ddlSedes.
+        /// Control ddlempresasFP.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlSedes;
+        protected global::System.Web.UI.WebControls.DropDownList ddlempresasFP;
 
         /// <summary>
         /// Control txbSueldo.
@@ -375,13 +375,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlCanalVenta;
 
         /// <summary>
-        /// Control ddlempresasFP.
+        /// Control ddlSedes.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlempresasFP;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSedes;
 
         /// <summary>
         /// Control ltMensaje.
