@@ -29,7 +29,7 @@ namespace fpWebApp
                     {
                         
                         CargarCanalesVentaSedes();
-                        if (idPerfil==1 || idPerfil == 18 || idPerfil == 21 || idPerfil == 37) // Usuario Directivo
+                        if (idPerfil == 1 || idPerfil == 18 || idPerfil == 21 || idPerfil == 37) // Usuario Directivo
                         {
                             CargarAsesoresPorSede(idCanalVenta);
                             listaAfiliados("Todas");
@@ -41,7 +41,7 @@ namespace fpWebApp
                             {
                                 listaAfiliados("Todas");
                             }
-                            listaAfiliados(Session["idSede"].ToString());
+                            listaAfiliados(idCanalVenta.ToString());
                         }
 
                         if (ViewState["Exportar"].ToString() == "1")
@@ -204,7 +204,7 @@ namespace fpWebApp
             }
             else
             {
-                listaAfiliados(Session["idSede"].ToString());
+                listaAfiliados(Session["idCanalVenta"].ToString());
             }
         }
 
@@ -374,7 +374,7 @@ namespace fpWebApp
             }
             else
             {
-                listaAfiliados(Session["idSede"].ToString());
+                listaAfiliados(Session["idCanalVenta"].ToString());
             }
         }
 
