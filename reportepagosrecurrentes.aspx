@@ -224,13 +224,12 @@
                                             <asp:Repeater ID="rpPagos" runat="server">
                                                 <ItemTemplate>
                                                     <tr class="feed-element">
-                                                        <td><%# Eval("idAfiliadoPlan") %></td>
+                                                        <td><%# Eval("idPago") %></td>
                                                         <td><%# Eval("DocumentoAfiliado") %></td>
                                                         <td><%# Eval("NombreAfiliado") %></td>
                                                         <td><%# Eval("Valor", "{0:C0}") %></td>
                                                         <td><%# Eval("NombrePlan") %></td>
-                                                        <td><%# Eval("DataIdFuente") %></td>
-                                                        <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
+                                                        <td><%# Eval("fechaProximoCobro", "{0:dd MMM yyyy}") %></td>
                                                         <td>
                                                             <asp:Button ID="btnCobrar" runat="server" Text="Cobrar"
                                                                 CssClass="btn btn-primary"

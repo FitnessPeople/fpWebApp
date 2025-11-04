@@ -165,32 +165,19 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
 
             string query = @"SELECT 
-                                ppa.idPago, ppa.Valor, ppa.DataIdFuente, ppa.FechaHoraPago,
-                                ap.idAfiliadoPlan, 
-                                a.DocumentoAfiliado, a.NombreAfiliado, a.EmailAfiliado, a.idSede, 
-                                u.idUsuario, 
-                                p.idPlan, p.NombrePlan, p.CodSiigoPlan 
-                            FROM PagosPlanAfiliado ppa
-                            INNER JOIN (
-                                SELECT DataIdFuente, MAX(fechaHoraPago) AS UltimoPago
-                                FROM PagosPlanAfiliado
-                                WHERE MONTH(fechaHoraPago) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
-                                  AND YEAR(fechaHoraPago) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)
-                                  AND DataIdFuente NOT IN (
-                                      SELECT DataIdFuente
-                                      FROM PagosPlanAfiliado
-                                      WHERE fechaHoraPago >= DATE_ADD(LAST_DAY(CURRENT_DATE - INTERVAL 1 MONTH), INTERVAL 1 DAY)
-                                  )
-                                GROUP BY DataIdFuente
-                            ) ult 
-                                ON ppa.DataIdFuente = ult.DataIdFuente 
-                                AND ppa.fechaHoraPago = ult.UltimoPago
-                            INNER JOIN AfiliadosPlanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan
-                            INNER JOIN Afiliados a ON a.idAfiliado = ap.idAfiliado 
-                            INNER JOIN Usuarios u ON u.idUsuario = ppa.idUsuario  
-                            INNER JOIN Planes p ON p.idPlan = ap.idPlan 
-                            WHERE ap.estadoPlan <> 'Archivado' 
-                            ORDER BY ppa.fechaHoraPago ASC;";
+                                 ppa.idPago, ppa.Valor, ppa.DataIdFuente, ppa.FechaHoraPago, ap.fechaProximoCobro, 
+                                 ap.idAfiliadoPlan, 
+                                 a.DocumentoAfiliado, a.NombreAfiliado, a.EmailAfiliado, a.idSede, 
+                                 u.idUsuario, 
+                                 p.idPlan, p.NombrePlan, p.CodSiigoPlan
+                             FROM PagosPlanAfiliado ppa
+                             INNER JOIN AfiliadosPlanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan
+                             INNER JOIN Afiliados a ON a.idAfiliado = ap.idAfiliado 
+                             INNER JOIN Usuarios u ON u.idUsuario = ppa.idUsuario  
+                             INNER JOIN Planes p ON p.idPlan = ap.idPlan 
+                             WHERE ap.estadoPlan <> 'Archivado'
+                                 AND ap.fechaProximoCobro <= CURDATE()
+                             ORDER BY ap.fechaProximoCobro ASC;";
 
             DataTable dt = cg.TraerDatos(query);
             
@@ -203,35 +190,23 @@ namespace fpWebApp
         {
             try
             {
-                string consultaSQL = @"SELECT 
-                                            ppa.idPago, ppa.Valor, ppa.DataIdFuente, ppa.FechaHoraPago,
-                                            ap.idAfiliadoPlan, 
-                                            a.DocumentoAfiliado, a.NombreAfiliado, a.EmailAfiliado, a.idSede, 
-                                            u.idUsuario, 
-                                            p.idPlan, p.NombrePlan 
-                                        FROM PagosPlanAfiliado ppa
-                                        INNER JOIN (
-                                            SELECT DataIdFuente, MAX(fechaHoraPago) AS UltimoPago
-                                            FROM PagosPlanAfiliado
-                                            WHERE MONTH(fechaHoraPago) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
-                                              AND YEAR(fechaHoraPago) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)
-                                              AND DataIdFuente NOT IN (
-                                                  SELECT DataIdFuente
-                                                  FROM PagosPlanAfiliado
-                                                  WHERE fechaHoraPago >= DATE_ADD(LAST_DAY(CURRENT_DATE - INTERVAL 1 MONTH), INTERVAL 1 DAY)
-                                              )
-                                            GROUP BY DataIdFuente
-                                        ) ult 
-                                            ON ppa.DataIdFuente = ult.DataIdFuente 
-                                            AND ppa.fechaHoraPago = ult.UltimoPago
-                                        INNER JOIN AfiliadosPlanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan
-                                        INNER JOIN Afiliados a ON a.idAfiliado = ap.idAfiliado 
-                                        INNER JOIN Usuarios u ON u.idUsuario = ppa.idUsuario  
-                                        INNER JOIN Planes p ON p.idPlan = ap.idPlan
-                                        ORDER BY ppa.fechaHoraPago ASC;";
+                string query = @"SELECT 
+                                     ppa.idPago, ppa.Valor, ppa.DataIdFuente, ppa.FechaHoraPago, ap.fechaProximoCobro, 
+                                     ap.idAfiliadoPlan, 
+                                     a.DocumentoAfiliado, a.NombreAfiliado, a.EmailAfiliado, a.idSede, 
+                                     u.idUsuario, 
+                                     p.idPlan, p.NombrePlan, p.CodSiigoPlan
+                                 FROM PagosPlanAfiliado ppa
+                                 INNER JOIN AfiliadosPlanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan
+                                 INNER JOIN Afiliados a ON a.idAfiliado = ap.idAfiliado 
+                                 INNER JOIN Usuarios u ON u.idUsuario = ppa.idUsuario  
+                                 INNER JOIN Planes p ON p.idPlan = ap.idPlan 
+                                 WHERE ap.estadoPlan <> 'Archivado'
+                                     AND ap.fechaProximoCobro <= CURDATE()
+                                 ORDER BY ap.fechaProximoCobro ASC;";
 
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.TraerDatos(consultaSQL);
+                DataTable dt = cg.TraerDatos(query);
                 string nombreArchivo = $"PagosRecurrentes_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
@@ -391,6 +366,8 @@ namespace fpWebApp
                     null,
                     null
                 );
+
+                cg.ActualizarFechaProximoCobro(idAfiliadoPlan);
 
                 try
                 {
