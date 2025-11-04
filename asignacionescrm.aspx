@@ -222,11 +222,8 @@
                                                 <div class="form-group">
                                                     <label class="col-lg-2 control-label">Canal de venta:</label>
                                                     <div class="col-lg-10">
-                                                        <asp:DropDownList ID="ddlCanalVenta" runat="server"
-                                                            AppendDataBoundItems="true"
-                                                            CssClass="form-control input-sm m-b"
-                                                            OnSelectedIndexChanged="ddlCanalVenta_SelectedIndexChanged"
-                                                            AutoPostBack="true">
+                                                        <asp:DropDownList ID="ddlCanalVenta" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b"
+                                                            OnSelectedIndexChanged="ddlCanalVenta_SelectedIndexChanged" AutoPostBack="true">
                                                             <%--<asp:ListItem Text="Seleccione" Value=""></asp:ListItem>--%>
                                                         </asp:DropDownList>
                                                         <asp:RequiredFieldValidator ID="rfvCanalVenta" runat="server" 

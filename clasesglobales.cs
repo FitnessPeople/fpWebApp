@@ -10945,6 +10945,35 @@ namespace fpWebApp
             return respuesta;
         }
 
+        public string ActualizarFechaProximoCobro(int idAfiliadoPlan)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open(); // Abrir conexión antes de usarla
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_FECHA_PROXIMO_COBRO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Parámetros de entrada
+                        cmd.Parameters.AddWithValue("@p_id_afiliado_plan", idAfiliadoPlan);
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
 
         // Cobros recurrentes rechazados
         public string InsertarCobroRechazado(int idAfiliadoPlan, string mensajeEstado)

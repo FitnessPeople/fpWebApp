@@ -52,6 +52,7 @@ namespace fpWebApp.controles
                 int valorMetaAsesorMes = 0;
                 string tipoSedeUsuario = string.Empty;
                 int perfilUsuario = 0;
+                int cargoUsuario = 0;
 
                 ltNumContactos.Text = "$0";
                 ltNumNegociacionAceptada.Text = "$0";
@@ -101,6 +102,7 @@ namespace fpWebApp.controles
                 {
                     tipoSedeUsuario = dt6.Rows[0]["TipoSede"].ToString();
                     perfilUsuario = Convert.ToInt32(dt6.Rows[0]["IdPerfil"].ToString());
+                    cargoUsuario = Convert.ToInt32(dt6.Rows[0]["IdCargo"].ToString());
 
 
                     DataTable dt7 = cg.ConsultarMetaComercialMensual(idCanalVenta, mes, anio);
@@ -121,19 +123,19 @@ namespace fpWebApp.controles
 
                         if (filaHoy != null)
                         {
-                            if (perfilUsuario == 4 && tipoSedeUsuario == "Deluxe")
+                            if (perfilUsuario == 4 && cargoUsuario == 48)
                             {
-                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorDeluxeMes"]);
-                                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorDeluxeDia"]);
+                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorSeniorMes"]);
+                                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorSeniorDia"]);
                             }
 
-                            if (perfilUsuario == 4 && tipoSedeUsuario == "Premium")
+                            if (perfilUsuario == 4 && cargoUsuario == 49)
                             {
-                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorPremiumMes"]);
-                                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorPremiumDia"]);
+                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorJuniorMes"]);
+                                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorJuniorDia"]);
                             }
 
-                            if (perfilUsuario == 4 && tipoSedeUsuario == "Elite")
+                            if (perfilUsuario == 4 && cargoUsuario == 3)
                             {
                                 valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorEliteMes"]);
                                 valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorEliteDia"]);
@@ -145,11 +147,6 @@ namespace fpWebApp.controles
                                 valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaSedeDia"]);
                             }
 
-                            if (perfilUsuario == 4 && idCanalVenta == 12)
-                            {
-                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorOnlineMes"]);
-                                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorOnlineDia"]);
-                            }
 
                             if (perfilUsuario == 21 || perfilUsuario == 1 || perfilUsuario == 37 || perfilUsuario == 23)
                             {
@@ -254,6 +251,7 @@ namespace fpWebApp.controles
             int idCanalVenta = 0;
             string tipoSedeUsuario = string.Empty;
             int perfilUsuario = 0;
+            int cargoUsuario = 0;
             DateTime hoy = DateTime.Today;
             int _mes = hoy.Month;
             int _anio = hoy.Year;
@@ -267,10 +265,14 @@ namespace fpWebApp.controles
                 DataTable dt4 = cg.ConsultarUsuarioSedePerfilPorId(idUsuario);
                 if (dt4.Rows.Count > 0)
                 {
-                    idCanalVenta = Convert.ToInt32(dt4.Rows[0]["idCanalVenta"].ToString());
-                    tipoSedeUsuario = dt4.Rows[0]["TipoSede"].ToString();
-                    perfilUsuario = Convert.ToInt32(dt4.Rows[0]["IdPerfil"].ToString());
+                    var row = dt4.Rows[0];
+
+                    int.TryParse(row["idCanalVenta"]?.ToString(), out idCanalVenta);
+                    tipoSedeUsuario = row["TipoSede"]?.ToString() ?? string.Empty;
+                    int.TryParse(row["IdPerfil"]?.ToString(), out perfilUsuario);
+                    int.TryParse(row["IdCargo"]?.ToString(), out cargoUsuario);
                 }
+
 
                 DataTable dt = cg.ConsultarVentasVsMetasPorUusuarioCRM(idCanalVenta, _mes, _anio, idUsuario);
 
@@ -294,16 +296,14 @@ namespace fpWebApp.controles
                                 {
                                     int valorMetaHoy = 0;
 
-                                    if (perfilUsuario == 4 && tipoSedeUsuario == "Deluxe")
-                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorDeluxeDia"]);
-                                    else if (perfilUsuario == 4 && tipoSedeUsuario == "Premium")
-                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorPremiumDia"]);
-                                    else if (perfilUsuario == 4 && tipoSedeUsuario == "Elite")
+                                    if (perfilUsuario == 4 && cargoUsuario == 48)
+                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorSeniorDia"]);
+                                    else if (perfilUsuario == 4 && cargoUsuario == 49)
+                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorJuniorDia"]);
+                                    else if (perfilUsuario == 4 && cargoUsuario == 3)
                                         valorMetaHoy = Convert.ToInt32(fila["MetaAsesorEliteDia"]);
                                     else if (perfilUsuario == 2)
-                                        valorMetaHoy = Convert.ToInt32(fila["MetaDirectorSedeDia"]);
-                                    else if (perfilUsuario == 4 && idCanalVenta == 12)
-                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorOnlineDia"]);
+                                        valorMetaHoy = Convert.ToInt32(fila["MetaDirectorSedeDia"]);                                    
                                     else
                                         valorMetaHoy = Convert.ToInt32(fila["MetaSedeDia"]); //
 
