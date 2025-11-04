@@ -265,11 +265,14 @@ namespace fpWebApp.controles
                 DataTable dt4 = cg.ConsultarUsuarioSedePerfilPorId(idUsuario);
                 if (dt4.Rows.Count > 0)
                 {
-                    idCanalVenta = Convert.ToInt32(dt4.Rows[0]["idCanalVenta"].ToString());
-                    tipoSedeUsuario = dt4.Rows[0]["TipoSede"].ToString();
-                    perfilUsuario = Convert.ToInt32(dt4.Rows[0]["IdPerfil"].ToString());
-                    cargoUsuario = Convert.ToInt32(dt4.Rows[0]["IdCargo"].ToString());
+                    var row = dt4.Rows[0];
+
+                    int.TryParse(row["idCanalVenta"]?.ToString(), out idCanalVenta);
+                    tipoSedeUsuario = row["TipoSede"]?.ToString() ?? string.Empty;
+                    int.TryParse(row["IdPerfil"]?.ToString(), out perfilUsuario);
+                    int.TryParse(row["IdCargo"]?.ToString(), out cargoUsuario);
                 }
+
 
                 DataTable dt = cg.ConsultarVentasVsMetasPorUusuarioCRM(idCanalVenta, _mes, _anio, idUsuario);
 

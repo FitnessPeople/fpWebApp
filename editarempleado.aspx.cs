@@ -15,6 +15,7 @@ namespace fpWebApp
         {
             if (!IsPostBack)
             {
+                txbContrato.Attributes.Add("autocomplete", "off");
                 if (Session["idUsuario"] != null)
                 {
                     ValidarPermisos("Empleados");

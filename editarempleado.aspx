@@ -179,7 +179,7 @@
                                     </div>
 
                                     <div class="row">
-                                        <form role="form" id="form" enctype="multipart/form-data" runat="server">
+                                        <form role="form" id="form" enctype="multipart/form-data" runat="server" autocomplete="off">
                                             <div class="col-sm-6 b-r">
                                                 <div class="form-group">
                                                     <label>Nombre Completo</label>
