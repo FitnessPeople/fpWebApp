@@ -207,10 +207,10 @@ namespace fpWebApp
 
             string strFechaHoy = string.Format("{0:yyyy-MM-dd}", DateTime.Now);
 
-            parametro = "?from_date=2025-01-01&until_date=2025-03-11&page=1&page_size=50&order_by=created_at&order=DESC";
-            //parametro = "?from_date=" + strFechaHoy + "&until_date=" + strFechaHoy + "&page=1&page_size=10&order_by=created_at&order=DESC";
+            //parametro = "?from_date=2025-01-01&until_date=2025-03-11&page=1&page_size=50&order_by=created_at&order=DESC";
+            parametro = "?from_date=" + strFechaHoy + "&until_date=" + strFechaHoy + "&page=1&page_size=50&order_by=created_at&order=DESC";
 
-            string url = dti.Rows[0]["urlTest"].ToString() + parametro;
+            string url = dti.Rows[0]["urlTest"].ToString() + "transactions" + parametro + "&reference=" + ViewState["DocumentoAfiliado"].ToString();
             string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
             JToken token = JToken.Parse(respuesta[0]);
             string prettyJson = token.ToString(Formatting.Indented);
@@ -223,6 +223,7 @@ namespace fpWebApp
 
                 foreach (var item in jsonData["data"])
                 {
+                    var customerData = item["customer_data"] as JObject;
                     listaDatos.Add(new Datum
                     {
                         //id = item["id"]?.ToString(),
@@ -235,9 +236,10 @@ namespace fpWebApp
                         payment_method_type = item["payment_method_type"]?.ToString(),
                         status = item["status"]?.ToString(),
                         status_message = item["status_message"]?.ToString(),
-                        device_id = item["customer_data"]?["device_id"]?.ToString(),
-                        full_name = item["customer_data"]?["full_name"]?.ToString(),
-                        phone_number = item["customer_data"]?["phone_number"]?.ToString()
+
+                        device_id = customerData?["device_id"]?.ToString(),
+                        full_name = customerData?["full_name"]?.ToString(),
+                        phone_number = customerData?["phone_number"]?.ToString()
                     });
                 }
 
@@ -364,6 +366,7 @@ namespace fpWebApp
             ViewState["idPlan"] = dt.Rows[0]["idPlan"].ToString();
             ViewState["nombrePlan"] = dt.Rows[0]["NombrePlan"].ToString();
             ViewState["precioTotal"] = Convert.ToInt32(dt.Rows[0]["PrecioTotal"].ToString());
+            ViewState["precioMinimo"] = Convert.ToInt32(dt.Rows[0]["PrecioMinimo"].ToString());
             ViewState["precioBase"] = Convert.ToInt32(dt.Rows[0]["PrecioBase"].ToString());
             ViewState["meses"] = Convert.ToDouble(dt.Rows[0]["Meses"].ToString());
             ViewState["mesesCortesia"] = Convert.ToDouble(dt.Rows[0]["MesesCortesia"].ToString());
@@ -625,12 +628,13 @@ namespace fpWebApp
                         }
                         else
                         {
-                            if (ViewState["precioTotal"].ToString() != Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")).ToString())
+                            if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
+                                Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
                             {
                                 string script = @"
                                     Swal.fire({
                                         title: 'Error',
-                                        text: 'Precios no coinciden',
+                                        text: 'Precio incorrecto. Intenta nuevamente.',
                                         icon: 'error'
                                     }).then(() => {
                                     });
@@ -648,10 +652,14 @@ namespace fpWebApp
                                     fechafinal = fechafinal.AddDays(Convert.ToInt16(ViewState["DiasCortesia"].ToString()));
                                     int idAfiliadoPlan = 0;
 
-                                    string rta = cg.InsertarAfiliadoPlan(Convert.ToInt32(Session["IdAfiliado"].ToString()), Convert.ToInt32(ViewState["idPlan"].ToString()),
-                                        txbFechaInicio.Text.ToString(), String.Format("{0:yyyy-MM-dd}", fechafinal), Convert.ToInt32(ViewState["meses"].ToString()),
-                                        Convert.ToInt32(ViewState["precioTotal"].ToString()), ViewState["observaciones"].ToString(), "Activo");
-
+                                    string rta = cg.InsertarAfiliadoPlan(Convert.ToInt32(Session["IdAfiliado"].ToString()), 
+                                        Convert.ToInt32(ViewState["idPlan"].ToString()),
+                                        txbFechaInicio.Text.ToString(), 
+                                        String.Format("{0:yyyy-MM-dd}", fechafinal), 
+                                        Convert.ToInt32(ViewState["meses"].ToString()),
+                                        Convert.ToInt32(ViewState["precioTotal"].ToString()), 
+                                        ViewState["observaciones"].ToString(), 
+                                        "Activo");
 
                                     if (rta.StartsWith("OK"))
                                     {
@@ -692,17 +700,34 @@ namespace fpWebApp
                                             strBanco = "Ninguno";
                                         }
 
-                                        string respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, Convert.ToInt32(ViewState["precioTotal"].ToString()),
-                                            Convert.ToInt32(strTipoPago), strReferencia, strBanco, Convert.ToInt32(Session["idUsuario"].ToString()), "Aprobado", "", idCanalVenta, Convert.ToInt32(Session["idcrm"]));
+                                        string respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+                                            Convert.ToInt32(ViewState["precioTotal"].ToString()),
+                                            Convert.ToInt32(strTipoPago), 
+                                            strReferencia, 
+                                            strBanco, 
+                                            Convert.ToInt32(Session["idUsuario"].ToString()), 
+                                            "Aprobado", 
+                                            "", 
+                                            idCanalVenta, 
+                                            Convert.ToInt32(Session["idcrm"]));
 
                                         DataTable dt3 = cg.ConsultarAfiliadoEstadoActivo(int.Parse(Session["IdAfiliado"].ToString()));
-                                        string respuesta1 = cg.ActualizarEstadoCRMPagoPlan(Convert.ToInt32(Session["idcrm"].ToString()), dt3.Rows[0]["NombrePlan"].ToString(), Convert.ToInt32(dt3.Rows[0]["Valor"].ToString()), Convert.ToInt32(Session["idUsuario"].ToString()), 3);
+                                        string respuesta1 = cg.ActualizarEstadoCRMPagoPlan(Convert.ToInt32(Session["idcrm"].ToString()), 
+                                            dt3.Rows[0]["NombrePlan"].ToString(), 
+                                            Convert.ToInt32(dt3.Rows[0]["Valor"].ToString()), 
+                                            Convert.ToInt32(Session["idUsuario"].ToString()), 
+                                            3);
 
                                         if (respuesta == "OK" && respuesta1 == "OK")
                                         {
                                             DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(int.Parse(Session["IdAfiliado"].ToString()));
                                             DocAfiliado = dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString();
-                                            cg.InsertarLog(Session["idusuario"].ToString(), "afiliadosplanes", "Agrega", "El usuario agregó un nuevo plan al afiliado con documento: " + dt3.Rows[0]["Valor"].ToString() + ".", "", "");
+                                            cg.InsertarLog(Session["idusuario"].ToString(), 
+                                                "afiliadosplanes", 
+                                                "Agrega", 
+                                                "El usuario agregó un nuevo plan al afiliado con documento: " + dt3.Rows[0]["Valor"].ToString() + ".", 
+                                                "", 
+                                                "");
 
                                             string script = @"
                                             Swal.fire({
@@ -718,18 +743,14 @@ namespace fpWebApp
                                             ";
                                             ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
 
-                                            /////////////////////////////// ENVÍO DE CORREO ///////////////////////////////////////////////////////////////////////////////////////////
-
-                                            string strString = Convert.ToBase64String(Encoding.Unicode.GetBytes(dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString() + "_" + dt3.Rows[0]["Valor"].ToString()));
+                                            ////////////////////////// ENVÍO DE CORREO ////////////////////////////////////////
 
                                             string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
                                             strMensaje += "Descripción del plan.\r\n\r\n";
-                                            strMensaje += "Por favor, agradecemos realice el pago a través del siguiente enlace: \r\n";
-                                            strMensaje += "https://fitnesspeoplecolombia.com/wompiplan?code=" + strString;
-
+                                           
                                             //cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", dtAfiliado.Rows[0]["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
 
-                                            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                            //////////////////////////////////////////////////////////////////////////////////
 
                                         }
                                         else
@@ -834,6 +855,7 @@ namespace fpWebApp
                 ViewState["idPlan"] = dt.Rows[0]["idPlan"].ToString();
                 ViewState["nombrePlan"] = dt.Rows[0]["NombrePlan"].ToString();
                 ViewState["precioTotal"] = Convert.ToInt32(dt.Rows[0]["PrecioTotal"].ToString());
+                ViewState["precioMinimo"] = Convert.ToInt32(dt.Rows[0]["PrecioMinimo"].ToString());
                 ViewState["precioBase"] = Convert.ToInt32(dt.Rows[0]["PrecioBase"].ToString());
                 ViewState["meses"] = Convert.ToDouble(dt.Rows[0]["Meses"].ToString());
                 ViewState["mesesCortesia"] = Convert.ToDouble(dt.Rows[0]["MesesCortesia"].ToString());

@@ -428,7 +428,7 @@
                                                         <div class="form-group">
                                                             <div class="panel panel-default" runat="server" id="divPanelResumen">
                                                                 <div class="panel-heading">
-                                                                    <i class="fa fa-ticket"></i>
+                                                                    <i class="fa fa-ticket m-r-sm"></i>
                                                                     <asp:Literal ID="ltNombrePlan" runat="server"></asp:Literal>
                                                                 </div>
                                                                 <div class="panel-body">
@@ -460,9 +460,9 @@
                                                             </div>
                                                             <label><strong>Seleccione un método de pago:</strong></label>
                                                             <asp:RadioButtonList ID="rblMetodoPago" runat="server" RepeatDirection="Horizontal" CssClass="form-control input-sm" onchange="mostrarMetodoSeleccionado(this)">
-                                                                <asp:ListItem Text="Pago en línea" Value="wompi" />
-                                                                <asp:ListItem Text="Datafono" Value="datafono" />
-                                                                <asp:ListItem Text="Efectivo" Value="efectivo" />
+                                                                <asp:ListItem Text="Pago en línea&nbsp;&nbsp;&nbsp;" Value="wompi" />
+                                                                <asp:ListItem Text="Datafono&nbsp;&nbsp;&nbsp;" Value="datafono" />
+                                                                <asp:ListItem Text="Efectivo&nbsp;&nbsp;&nbsp;" Value="efectivo" />
                                                                 <asp:ListItem Text="Transferencia" Value="transferencia" />
                                                                 <%--<asp:ListItem Text="Pago mixto" Value="combinado" />--%>
                                                             </asp:RadioButtonList>
@@ -470,7 +470,7 @@
 
                                                         <!-- Contenedor Wompi -->
                                                         <div id="divWompi" class="form-group metodo-pago" style="display: none;">
-                                                            <label><i class="fa fa-credit-card"></i>Pago en línea:</label>
+                                                            <label><i class="fa fa-credit-card m-r-sm"></i>Pago en línea:</label>
                                                             <div class="row">
                                                                 <div class="col-lg-8">
                                                                     <a class="dropdown-toggle count-info" data-toggle="modal" href="#" data-target="#ModalDetalleWompi">Verificar pago...</a>
