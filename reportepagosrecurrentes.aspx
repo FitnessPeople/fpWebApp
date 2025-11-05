@@ -215,7 +215,6 @@
                                                 <th>Afiliado</th>
                                                 <th data-breakpoints="xs sm md">Valor</th>
                                                 <th data-breakpoints="xs sm md">Plan</th>
-                                                <th data-breakpoints="xs sm md">Fuente de Pago</th>
                                                 <th data-breakpoints="xs sm md">Fecha</th>
                                                 <th data-breakpoints="xs sm md">Acciones</th>
                                             </tr>
