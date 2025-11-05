@@ -143,14 +143,14 @@ namespace fpWebApp.controles
 
                             if (perfilUsuario == 2 || perfilUsuario == 11 || perfilUsuario == 36)
                             {
-                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["Presupuesto"]);
+                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["PresupuestoMes"]);
                                 valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaSedeDia"]);
                             }
 
 
                             if (perfilUsuario == 21 || perfilUsuario == 1 || perfilUsuario == 37 || perfilUsuario == 23)
                             {
-                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["Presupuesto"]);
+                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["PresupuestoMes"]);
                                 valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaSedeDia"]);
                             }
 
@@ -388,6 +388,7 @@ namespace fpWebApp.controles
                 var labels = new List<string>();
                 var metas = new List<decimal>();
                 var ventas = new List<decimal>();
+                int _valorMetaHoy = 0;
 
                 if (dt.Rows.Count > 0)
                 {
@@ -401,20 +402,24 @@ namespace fpWebApp.controles
                                 decimal metaAcumulada = 0;
                                 decimal ventasAcumuladas = 0;
                                 decimal valorMetaSede = 0;
-                                // decimal valorMetaSede = 0;
+                             
                                 foreach (var fila in g)
                                 {
                                     int valorMetaHoy = 0;
-
+                                   
 
                                     valorMetaHoy = Convert.ToInt32(fila["MetaSedeDia"]); //
                                     valorMetaSede = Convert.ToInt32(fila["Presupuesto"]); //
+                                    _valorMetaHoy = valorMetaHoy;
 
-                                    metaAcumulada += valorMetaHoy;
+                                   metaAcumulada += valorMetaHoy;
                                     ventasAcumuladas += Convert.ToDecimal(fila["VentaDia"]);
 
                                 }
                                 ltVendidoMes.Text = ventasAcumuladas.ToString("C0", new CultureInfo("es-CO"));
+
+                                ltValorMetaAsesorMes.Text = valorMetaSede.ToString("C0", new CultureInfo("es-CO"));
+                                ltValorMetaAsesorHoy.Text = _valorMetaHoy.ToString("C0", new CultureInfo("es-CO"));
 
                                 /////////////////////////////////////////BRECHAS////////////////////////////////////
 
