@@ -10808,7 +10808,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public string ActualizarIdSiigoFacturaDePagoPlanAfiliado(string idSiigoFactura, int idAfiliadoPlan)
+        public string ActualizarIdSiigoFacturaDePagoPlanAfiliado(int idPago, string idSiigoFactura)
         {
             string respuesta = string.Empty;
             try
@@ -10824,8 +10824,8 @@ namespace fpWebApp
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         // Parámetros de entrada
+                        cmd.Parameters.AddWithValue("@p_id_pago", idPago);
                         cmd.Parameters.AddWithValue("@p_id_siigo_factura", idSiigoFactura);
-                        cmd.Parameters.AddWithValue("@p_id_afiliado_plan", idAfiliadoPlan);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -10904,6 +10904,53 @@ namespace fpWebApp
             }
 
             return dt;
+        }
+
+        public int InsertarPagoPlanAfiliadoWebYDevolverId(int idAfiliadoPlan, int valor, int idMedioPago, string idReferencia, string banco, int idUsuario, string estado, string idSiigoFactura, string idDataToken, string idDataFuente, string idDataTransaccion, string codDatafono, string idTransaccionRRN, string numFacturaDatafono)
+        {
+            int idPago = 0;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_PAGO_PLAN_AFILIADO_WEB", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_afiliado_plan", idAfiliadoPlan);
+                        cmd.Parameters.AddWithValue("@p_valor", valor);
+                        cmd.Parameters.AddWithValue("@p_id_medio_pago", idMedioPago);
+                        cmd.Parameters.AddWithValue("@p_id_referencia", idReferencia);
+                        cmd.Parameters.AddWithValue("@p_banco", banco);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_estado", estado);
+                        cmd.Parameters.AddWithValue("@p_id_siigo_factura", idSiigoFactura);
+                        cmd.Parameters.AddWithValue("@p_id_data_token", idDataToken);
+                        cmd.Parameters.AddWithValue("@p_id_data_fuente", idDataFuente);
+                        cmd.Parameters.AddWithValue("@p_id_data_transaction", idDataTransaccion);
+                        cmd.Parameters.AddWithValue("@p_cod_datafono", codDatafono);
+                        cmd.Parameters.AddWithValue("@p_id_transaccion_RRN", idTransaccionRRN);
+                        cmd.Parameters.AddWithValue("@p_num_recibo_datafono", numFacturaDatafono);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                idPago = Convert.ToInt32(reader["idPago"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error en InsertarAfiliadoPlan: " + ex.Message);
+                idPago = -1; // -1 indica error
+            }
+
+            return idPago;
         }
 
         public string InsertarPagoPlanAfiliadoWeb(int idAfiliadoPlan, int valor, int idMedioPago, string idReferencia, string banco, int idUsuario, string estado, string idSiigoFactura, string idDataToken, string idDataFuente, string idDataTransaccion, string codDatafono, string idTransaccionRRN, string numFacturaDatafono)

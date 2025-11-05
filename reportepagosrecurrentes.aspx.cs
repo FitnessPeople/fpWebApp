@@ -175,8 +175,8 @@ namespace fpWebApp
                              INNER JOIN Afiliados a ON a.idAfiliado = ap.idAfiliado 
                              INNER JOIN Usuarios u ON u.idUsuario = ppa.idUsuario  
                              INNER JOIN Planes p ON p.idPlan = ap.idPlan 
-                             WHERE ap.estadoPlan <> 'Archivado'
-                                 AND ap.fechaProximoCobro <= CURDATE()
+                             WHERE ap.estadoPlan <> 'Archivado' 
+                                 AND ap.fechaProximoCobro <= CURDATE() 
                              ORDER BY ap.fechaProximoCobro ASC;";
 
             DataTable dt = cg.TraerDatos(query);
@@ -350,7 +350,7 @@ namespace fpWebApp
 
                 string idSiigoFactura = null;
 
-                cg.InsertarPagoPlanAfiliadoWeb(
+                int idPago = cg.InsertarPagoPlanAfiliadoWebYDevolverId(
                     idAfiliadoPlan,
                     valor,
                     4,
@@ -378,6 +378,12 @@ namespace fpWebApp
                     string partnerId = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["partnerId"].ToString() : "0";
                     dtIntegracion.Dispose();
 
+                    // PRUEBAS
+                    //string url = "https://api.siigo.com/";
+                    //string username = "sandbox@siigoapi.com";
+                    //string accessKey = "YmEzYTcyOGYtN2JhZi00OTIzLWE5ZjktYTgxNTVhNWUxZDM2Ojc0ODllKUZrSFM=";
+                    //string partnerId = "SandboxSiigoApi";
+
                     // Creación de factura
                     var siigoClient = new SiigoClient(
                         new HttpClient(),
@@ -395,8 +401,20 @@ namespace fpWebApp
                         idSede
                     );
 
+                    // PRUEBAS
+                    //string codSiigoPlanPruebas = "COD2433";
+                    //string nombrePlanPruebas = "Pago de suscripción";
+                    //int precioPlan = 10000;
+                    //idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
+                    //    documentoAfiliado,
+                    //    codSiigoPlanPruebas,
+                    //    nombrePlanPruebas,
+                    //    precioPlan,
+                    //    idSede
+                    //);
+
                     // Actualizar pago con id de factura
-                    cg.ActualizarIdSiigoFacturaDePagoPlanAfiliado(idSiigoFactura, idAfiliadoPlan);
+                    cg.ActualizarIdSiigoFacturaDePagoPlanAfiliado(idPago, idSiigoFactura);
                 }
                 catch (Exception siigoEx)
                 {
