@@ -226,10 +226,10 @@
                                                             OnSelectedIndexChanged="ddlCanalVenta_SelectedIndexChanged" AutoPostBack="true">
                                                             <%--<asp:ListItem Text="Seleccione" Value=""></asp:ListItem>--%>
                                                         </asp:DropDownList>
-                                                        <asp:RequiredFieldValidator ID="rfvCanalVenta" runat="server" 
+                                                        <%--<asp:RequiredFieldValidator ID="rfvCanalVenta" runat="server" 
                                                             ControlToValidate="ddlCanalVenta" ErrorMessage="* Campo requerido" InitialValue=""
                                                             EnableClientScript="true" CssClass="text-danger font-bold" ValidationGroup="asignar">
-                                                        </asp:RequiredFieldValidator>
+                                                        </asp:RequiredFieldValidator>--%>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -243,10 +243,10 @@
                                                             <asp:ListItem Text="Menos de 30 días vencido" Value="30"></asp:ListItem>
                                                             <asp:ListItem Text="Más de 30 días por vencer" Value="31"></asp:ListItem>
                                                         </asp:DropDownList>
-                                                        <asp:RequiredFieldValidator ID="rfvddlDias" runat="server" 
+                                                        <%--<asp:RequiredFieldValidator ID="rfvddlDias" runat="server" 
                                                             ControlToValidate="ddlDias" ErrorMessage="* Campo requerido" InitialValue=""
                                                             EnableClientScript="true" CssClass="text-danger font-bold" ValidationGroup="asignar">
-                                                        </asp:RequiredFieldValidator>
+                                                        </asp:RequiredFieldValidator>--%>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">

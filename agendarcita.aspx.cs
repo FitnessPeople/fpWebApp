@@ -78,7 +78,16 @@ namespace fpWebApp
 
             dt.Dispose();
 
+            string idSede = Session["idSede"].ToString(); // ejemplo
+
+            // Marca como seleccionado el ítem correspondiente
+            if (ddlSedes.Items.FindByValue(idSede) != null)
+            {
+                ddlSedes.SelectedValue = idSede;
+            }
+
             ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
+
             CargarAgenda();
         }
 

@@ -8,9 +8,11 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using WebPage.Services;
 
 namespace fpWebApp
 {
@@ -415,10 +417,18 @@ namespace fpWebApp
             ltValorTotal.Text = "($" + string.Format("{0:N0}", intPrecio) + ")";
 
             string strDataWompi = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + intPrecio.ToString()));
+
+            string payload = $"code={HttpUtility.UrlEncode(ViewState["DocumentoAfiliado"].ToString() + "_" + intPrecio.ToString())}";
+
+            TimeSpan ttl = TimeSpan.FromMinutes(40); // Token válido 10 minutos
+            string token = UrlEncryptor.Encrypt(payload, ttl);
+
             //lbEnlaceWompi.Text = "https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi;
             lbEnlaceWompi.Text = "<b>Enlace de pago Wompi:</b> <br />";
-            lbEnlaceWompi.Text += AcortarURL("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
-            hdEnlaceWompi.Value = AcortarURL("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
+            //lbEnlaceWompi.Text += AcortarURL("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
+            lbEnlaceWompi.Text += AcortarURL($"https://fitnesspeoplecolombia.com/wompiplan?data={HttpUtility.UrlEncode(token)}");
+            //hdEnlaceWompi.Value = AcortarURL("https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi);
+            hdEnlaceWompi.Value = AcortarURL($"https://fitnesspeoplecolombia.com/wompiplan?data={HttpUtility.UrlEncode(token)}");
             btnPortapaleles.Visible = true;
         }
 
@@ -443,18 +453,18 @@ namespace fpWebApp
                     return url;
                 }
 
-                var request = WebRequest.Create("http://tinyurl.com/api-create.php?url=" + url);
-                var res = request.GetResponse();
-                string text;
-                using (var reader = new StreamReader(res.GetResponseStream()))
+                string longUrl = url;
+                string apiUrl = "https://is.gd/create.php?format=simple&url=" + HttpUtility.UrlEncode(longUrl);
+
+                using (WebClient client = new WebClient())
                 {
-                    text = reader.ReadToEnd();
+                    string shortUrl = client.DownloadString(apiUrl);
+                    return shortUrl;
                 }
-                return text;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return url;
+                return ex.Message.ToString();
             }
         }
 
