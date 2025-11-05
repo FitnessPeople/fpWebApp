@@ -1176,7 +1176,7 @@ namespace fpWebApp
                             confirmButtonText: 'Entendido'
                         });";
                     ScriptManager.RegisterStartupScript(this, GetType(), "AfiliadoActivo", script, true);
-                    return; // 
+                  //  return; // 
                 }
             }
 

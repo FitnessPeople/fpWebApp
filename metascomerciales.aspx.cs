@@ -73,7 +73,6 @@ namespace fpWebApp
                                 int metaAsesorJunior  = (dt.Rows[0]["MetaAsesorJunior"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["MetaAsesorJunior"]) : 0;
                                 int metaAsesorElite = (dt.Rows[0]["MetaAsesorElite"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["MetaAsesorElite"]) : 0;
                                 int metaDirectorSede = (dt.Rows[0]["MetaDirectorSede"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["MetaDirectorSede"]) : 0;
-                                int metaAsesorOnline = (dt.Rows[0]["MetaAsesorOnline"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["MetaAsesorOnline"]) : 0;
                                 txbPresupuesto.Text = presupuesto.ToString("C0", new CultureInfo("es-CO"));
                                 txbAsesorSenior.Text = metaAsesorSenior.ToString("C0", new CultureInfo("es-CO"));
                                 txbAsesorJunior.Text = metaAsesorJunior.ToString("C0", new CultureInfo("es-CO"));

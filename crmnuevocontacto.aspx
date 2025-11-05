@@ -656,7 +656,7 @@
                                                                     <div class="col-sm-6" id="estrategia">
                                                                         <div class="form-group">
                                                                             <i class="fa-solid fa-arrows-to-eye text-info"></i>
-                                                                            <label for="Estrategia" class="col-form-label">Estrategia de marketing:</label>
+                                                                            <label for="Estrategia" class="col-form-label">Campaña de marketing:</label>
                                                                             <asp:DropDownList ID="ddlEstrategia" DataTextField="NombreEstrategia" DataValueField="idEstrategia"
                                                                                 runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
@@ -671,7 +671,7 @@
                                                                     <div class="col-sm-6">
                                                                         <div class="form-group">
                                                                             <i class="fa-brands fa-square-facebook text-info"></i>
-                                                                            <label for="Canales" class="col-form-label">Canal de marketing:</label>
+                                                                            <label for="Canales" class="col-form-label">Canal de contacto:</label>
                                                                             <asp:DropDownList ID="ddlCanalesMarketing" DataTextField="NombreCanalMarketing" DataValueField="idCanalMarketing"
                                                                                 runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
