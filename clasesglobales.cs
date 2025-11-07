@@ -11075,6 +11075,118 @@ namespace fpWebApp
             return dt;
         }
 
+        public DataTable ConsultarPlanPromocionPorId(int idPlan)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PROMOCION_PLAN_POR_ID", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public int ConsultarCantidadPagosPorIdAfiliadoPlan(int idAfiliadoPlan)
+        {
+            int cantidadPagos = 0;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CANTIDAD_PAGOS_POR_ID_AFILIADO_PLAN", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_afiliado_plan", idAfiliadoPlan);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                cantidadPagos = Convert.ToInt32(reader["CantidadPagos"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error en InsertarAfiliadoPlan: " + ex.Message);
+                cantidadPagos = -1; // -1 indica error
+            }
+
+            return cantidadPagos;
+        }
+
+        public int ObtenerValorPlanConPromocion(int idPlan, int idAfiliadoPlan)
+        {
+            try
+            {
+                DataTable promo = ConsultarPlanPromocionPorId(idPlan);
+
+                // Si hubo error en el procedimiento
+                if (promo == null || promo.Rows.Count == 0 || promo.Columns.Contains("Error"))
+                {
+                    System.Diagnostics.Debug.WriteLine($"[ObtenerValorPlanConPromocion] No se encontró promoción para plan {idPlan}");
+                    return 0; // valor por defecto, el que luego puedes reemplazar por PrecioTotal
+                }
+
+                DataRow row = promo.Rows[0];
+
+                // Validar campos con TryParse para evitar excepciones
+                int.TryParse(row["MesesDuracion"]?.ToString(), out int mesesPromo);
+                int.TryParse(row["PrecioProm"]?.ToString(), out int precioPromo);
+                int.TryParse(row["PrecioTotal"]?.ToString(), out int precioNormal);
+
+                // Si por alguna razón viene vacío, ponemos 0 para no romper
+                if (mesesPromo == 0 || (precioPromo == 0 && precioNormal == 0))
+                {
+                    System.Diagnostics.Debug.WriteLine($"[ObtenerValorPlanConPromocion] Datos de promoción incompletos para plan {idPlan}");
+                    return 0;
+                }
+
+                int cantidadPagos = ConsultarCantidadPagosPorIdAfiliadoPlan(idAfiliadoPlan);
+
+                if (cantidadPagos == -1)
+                {
+                    // Error al consultar los pagos
+                    return 0;
+                }
+
+                // Regla: si aún está dentro del número de meses promocionales, cobra precio promo
+                int valorFinal = (cantidadPagos < mesesPromo) ? precioPromo : precioNormal;
+                return valorFinal;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[ObtenerValorPlanConPromocion] Error: {ex.Message}");
+                return 0;
+            }
+        }
+
         public int InsertarPagoPlanAfiliadoWebYDevolverId(int idAfiliadoPlan, int valor, int idMedioPago, string idReferencia, string banco, int idUsuario, string estado, string idSiigoFactura, string idDataToken, string idDataFuente, string idDataTransaccion, string codDatafono, string idTransaccionRRN, string numFacturaDatafono)
         {
             int idPago = 0;
