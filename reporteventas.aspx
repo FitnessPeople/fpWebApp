@@ -400,7 +400,7 @@
                                     </div>
                                 </div>
 
-                                <div class="ibox float-e-margins" id="divPagosRechazados" runat="server" visible="false">
+                                <div class="ibox float-e-margins" id="divPagosRechazados" runat="server" visible="false"> 
                                     <div class="ibox-title">
                                         <h5>Reporte de pagos rechazados (<asp:Literal ID="ltCuantos" runat="server"></asp:Literal>):</h5>
                                         <div class="ibox-tools">

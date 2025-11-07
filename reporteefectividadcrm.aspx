@@ -46,13 +46,13 @@
     </script>
 
     <script>
-       $(document).ready(function () {
-           $('.datepicker').datepicker({
-               format: 'yyyy-mm-dd',
-               autoclose: true,
-               todayHighlight: true
-           });
-       });
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true
+            });
+        });
     </script>
 </head>
 
@@ -193,7 +193,8 @@
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-success pull-right">Mes actual</span>--%>
-                                                <h5>Ventas totales <asp:Literal ID="ltMes1" runat="server"></asp:Literal></h5>
+                                                <h5>Ventas totales
+                                                    <asp:Literal ID="ltMes1" runat="server"></asp:Literal></h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
@@ -210,7 +211,8 @@
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-info pull-right">Mes actual</span>--%>
-                                                <h5>Ventas Web <asp:Literal ID="ltMes2" runat="server"></asp:Literal></h5>
+                                                <h5>Ventas Web
+                                                    <asp:Literal ID="ltMes2" runat="server"></asp:Literal></h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
@@ -227,7 +229,8 @@
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-primary pull-right">Mes actual</span>--%>
-                                                <h5>Ventas Counter <asp:Literal ID="ltMes3" runat="server"></asp:Literal></h5>
+                                                <h5>Ventas Counter
+                                                    <asp:Literal ID="ltMes3" runat="server"></asp:Literal></h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
@@ -263,7 +266,8 @@
 
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Reporte de contactos <asp:Literal ID="ltMes4" runat="server"></asp:Literal>:</h5>
+                                        <h5>Reporte de contactos
+                                            <asp:Literal ID="ltMes4" runat="server"></asp:Literal>:</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -299,7 +303,7 @@
                                             <div class="col-lg-2">
                                                 <asp:DropDownList ID="ddlMes" runat="server" AppendDataBoundItems="true"
                                                     CssClass="form-control input-sm">
-                                                        <%--<asp:ListItem Text="Seleccione" Value=""></asp:ListItem>--%>
+                                                    <%--<asp:ListItem Text="Seleccione" Value=""></asp:ListItem>--%>
                                                     <asp:ListItem Text="Septiembre" Value="9"></asp:ListItem>
                                                     <asp:ListItem Text="Octubre" Value="10"></asp:ListItem>
                                                     <asp:ListItem Text="Noviembre" Value="11"></asp:ListItem>
@@ -309,7 +313,7 @@
                                             <div class="col-lg-2">
                                                 <asp:DropDownList ID="ddlAnnio" runat="server" AppendDataBoundItems="true"
                                                     CssClass="form-control input-sm">
-                                                        <%--<asp:ListItem Text="Seleccione" Value=""></asp:ListItem>--%>
+                                                    <%--<asp:ListItem Text="Seleccione" Value=""></asp:ListItem>--%>
                                                     <asp:ListItem Text="2025" Value="2025"></asp:ListItem>
                                                 </asp:DropDownList>
                                             </div>
@@ -322,7 +326,7 @@
                                             <div class="col-lg-1">
                                                 <asp:LinkButton ID="lbExportarExcel" runat="server"
                                                     CausesValidation="false"
-                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;" 
+                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
                                                     OnClick="lbExportarExcel_Click">
                                                     <i class="fa fa-file-excel"></i> EXCEL
                                                 </asp:LinkButton>
@@ -336,7 +340,7 @@
                                             data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados" id="miTabla">
                                             <thead>
                                                 <tr>
-                                                    <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">Id</th>                                                
+                                                    <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">Id</th>
                                                     <th data-breakpoints="xs sm md">Tipo</th>
                                                     <th data-breakpoints="xs sm md">Primer contacto</th>
                                                     <th data-breakpoints="xs sm md">Documento</th>
@@ -347,13 +351,13 @@
                                                     <th data-breakpoints="xs sm md">Canal de venta</th>
                                                     <th data-breakpoints="xs sm md">Asesor</th>
                                                     <th data-breakpoints="xs sm md">Fecha Próxima</th>
-                                                    <th data-breakpoints="xs sm md">Plan</th>                                                   
-                                                    <th data-breakpoints="xs sm md">Valor</th>                                                   
-                                                    <th data-breakpoints="xs sm md">Estado Lead</th>                                                   
+                                                    <th data-breakpoints="xs sm md">Plan</th>
+                                                    <th data-breakpoints="xs sm md">Valor</th>
+                                                    <th data-breakpoints="xs sm md">Estado Lead</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpPagos" runat="server">
+                                                <asp:Repeater ID="rpContactos" runat="server">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
                                                             <td><%# Eval("idContacto") %></td>
@@ -365,8 +369,8 @@
                                                             <td><%# Eval("NombreEstadoVenta") %></td>
                                                             <td><%# Eval("NombreCanalMarketing") %></td>
                                                             <td><%# Eval("NombreCanalVenta") %></td>
-                                                            <td><%# Eval("Asesor") %></td>                                                            
-                                                            <td><%# Eval("FechaProximoCon", "{0:dd MMM yyyy HH:mm}") %></td>                                                            
+                                                            <td><%# Eval("Asesor") %></td>
+                                                            <td><%# Eval("FechaProximoCon", "{0:dd MMM yyyy HH:mm}") %></td>
                                                             <td><%# Eval("NombrePlan") %></td>
                                                             <td><%# Eval("ValorPropuesta", "{0:C0}") %></td>
                                                             <td><%# Eval("NombreEstadoCRM") %></td>
@@ -380,11 +384,58 @@
                                         <p>Registros visibles: <span id="registrosVisibles"></span></p>--%>
                                     </div>
                                 </div>
+                                <div class="ibox float-e-margins" id="divPagosRechazados" runat="server">
+                                    <div class="ibox-title">
+                                        <h5>Reporte gestión asesores (<asp:Literal ID="ltCuantos" runat="server"></asp:Literal>):</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
 
-                                        
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                            data-paging="true" data-sorting="true"
+                                            data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
+                                            data-filtering="false" data-filter-delay="300"
+                                            data-empty="Sin resultados" id="miTabla2">
+                                            <thead>
+                                                <tr>
+                                                    <th>Canal de venta</th>
+                                                    <th>Asesor</th>
+                                                    <th>Total contactos</th>
+                                                    <th data-breakpoints="xs sm md">Total propuestas</th>
+                                                    <th data-breakpoints="xs sm md">Cierres</th>
+                                                    <th data-breakpoints="xs sm md">Efectividad</th>
+                                                    <%--<th data-breakpoints="xs sm md">Detalle</th>--%>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:Repeater ID="rpGestionAsesores" runat="server">
+                                                    <ItemTemplate>
+                                                        <tr class="feed-element">
+                                                            <td><%# Eval("CanalVenta") %></td>
+                                                            <td><%# Eval("Asesor") %></td>
+                                                            <td><%# Eval("TotalContactos") %></td>
+                                                            <td><%# Eval("TotalPropuestas") %></td>
+                                                            <td><%# Eval("Cierres") %></td>
+                                                            <td><%# Eval("Efectividad") %></td>
+
+                                                        </tr>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </tbody>
+                                        </table>
+
+                                        <%--<p>Total registros: <span id="totalRegistros"></span></p>
+                                        <p>Registros visibles: <span id="registrosVisibles"></span></p>--%>
+                                    </div>
+                                </div>
 
 
-   
+
+
 
                             </div>
                         </div>
@@ -454,7 +505,7 @@
         const ctx1 = document.getElementById('miGrafico1');
 
         const maxVentas1 = Math.max(...datos1.ventas);
-        const maxCantidad1 = Math.max(...datos1.cantidad); 
+        const maxCantidad1 = Math.max(...datos1.cantidad);
 
         const maxY11 = redondearSuperior(maxVentas1 * 1.1, 100000);
         const maxY12 = Math.ceil(maxCantidad1 * 1.2);
