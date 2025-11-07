@@ -1,6 +1,9 @@
-﻿using System;
+﻿using fpWebApp.Services;
+using NPOI.SS.Formula.Functions;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Web.Services.Description;
 using System.Web.UI;
 
@@ -115,11 +118,18 @@ namespace fpWebApp
 
                         // Lista de usuarios en línea
                         Application.Lock();
-                        var lista = (List<string>)Application["ListaUsuarios"];
-                        if (!lista.Contains(Session["NombreUsuario"].ToString()))
+                        var lista = (List<UsuarioOnline>)Application["ListaUsuarios"];
+
+                        if (!lista.Any(x => x.Usuario == Session["NombreUsuario"].ToString()))
                         {
-                            lista.Add(Session["NombreUsuario"].ToString());
+                            lista.Add(new UsuarioOnline
+                            {
+                                Usuario = Session["NombreUsuario"].ToString(),
+                                Cargo = Session["CargoUsuario"].ToString(),
+                                Foto = Session["Foto"].ToString()
+                            });
                         }
+
                         Application["ListaUsuarios"] = lista;
                         Application.UnLock();
 
