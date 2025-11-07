@@ -180,6 +180,26 @@
             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                 <i class="fa fa-user-tie"></i><span class="label label-warning1">
                     <asp:Literal ID="ltNroUsuarios" runat="server"></asp:Literal></span>
+                <ul class="dropdown-menu dropdown-messages">
+                <asp:Repeater ID="rpUsuariosEnLinea" runat="server">
+                    <ItemTemplate>
+                        <li>
+                            <div class="dropdown-messages-box">
+                                <a href="#" class="pull-left">
+                                    <img alt="image" class="img-circle" src="img/a7.jpg">
+                                </a>
+                                <div>
+                                    <small class="pull-right text-warning">Hace 40 min</small>
+                                    <strong><%# Container.DataItem %></strong>.
+                                    <br>
+                                    <small class="text-muted">Asunto: No enviaron comprobantes</small>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                    </ItemTemplate>
+                </asp:Repeater>
+                </ul>
             </a>
         </li>
 

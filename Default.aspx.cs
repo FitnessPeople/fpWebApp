@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Web.Services.Description;
 using System.Web.UI;
@@ -111,6 +112,17 @@ namespace fpWebApp
                             ? "12"   // Online
                             : dt.Rows[0]["idCanalVenta"].ToString();
                         Session["idEmpleado"] = dt.Rows[0]["idEmpleado"].ToString();
+
+                        // Lista de usuarios en línea
+                        Application.Lock();
+                        var lista = (List<string>)Application["ListaUsuarios"];
+                        if (!lista.Contains(Session["NombreUsuario"].ToString()))
+                        {
+                            lista.Add(Session["NombreUsuario"].ToString());
+                        }
+                        Application["ListaUsuarios"] = lista;
+                        Application.UnLock();
+
                         boolReturnValue = true;
                     }
                 }
