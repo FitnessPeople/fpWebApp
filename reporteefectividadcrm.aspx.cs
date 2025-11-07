@@ -48,6 +48,7 @@ namespace fpWebApp
                             divBotonesLista.Visible = true;
                             //CargarPlanes();
                             ListaCanalesDeVenta();
+                            listaGestionAesores();
                             //lbExportarExcel.Visible = false;
                         }
                         if (ViewState["Exportar"].ToString() == "1")
@@ -299,8 +300,8 @@ namespace fpWebApp
             try
             {
                 DataTable dt = cg.ConsultarEfectividadGestionCRM(idCanalVenta,FechaIni,FechaFin,idUsuario);
-                rpPagos.DataSource = dt;
-                rpPagos.DataBind();
+                rpContactos.DataSource = dt;
+                rpContactos.DataBind();
 
                 decimal sumatoriaValor = 0;
 
@@ -313,14 +314,39 @@ namespace fpWebApp
                 ltCuantos1.Text = "$ " + String.Format("{0:N0}", sumatoriaValor);
                 ltRegistros1.Text = dt.Rows.Count.ToString();
                 dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message.ToString();
+            }
 
-                //CrearGrafico1(ddlMes.SelectedItem.Value);
-                //CrearGrafico2(ddlMes.SelectedItem.Value);
-                //CrearGrafico3(ddlMes.SelectedItem.Value);
-                //CrearGrafico4(ddlMes.SelectedItem.Value);
-                //CrearGrafico5(ddlMes.SelectedItem.Value);
-                //CrearGrafico6(ddlMes.SelectedItem.Value);
+        }
 
+        private void listaGestionAesores()
+        {
+            clasesglobales cg = new clasesglobales();
+            int idCanalVenta = 0;
+            DateTime? FechaIni = null;
+            DateTime? FechaFin = null;
+            int idUsuario = 0;
+
+            try
+            {
+                DataTable dt = cg.ConsultarIndicadorGestionAsesorCRM(idCanalVenta, FechaIni, FechaFin, idUsuario);
+                rpGestionAsesores.DataSource = dt;
+                rpGestionAsesores.DataBind();
+
+                decimal sumatoriaValor = 0;
+
+                if (dt.Rows.Count > 0)
+                {
+                    object suma = "0";
+                    sumatoriaValor = suma != DBNull.Value ? Convert.ToDecimal(suma) : 0;
+                }
+
+                ltCuantos1.Text = "$ " + String.Format("{0:N0}", sumatoriaValor);
+                ltRegistros1.Text = dt.Rows.Count.ToString();
+                dt.Dispose();
             }
             catch (Exception ex)
             {
