@@ -990,6 +990,7 @@
     <Content Include="pruebaapiempresa.aspx" />
     <Content Include="recuperacionclave.aspx" />
     <Content Include="redactarcorreo.aspx" />
+    <Content Include="reporteefectividadcrm.aspx" />
     <Content Include="reporteestrategiascrmmarketing.aspx" />
     <Content Include="reportepagos.aspx" />
     <Content Include="reportepagosmulticanal.aspx" />
@@ -2070,6 +2071,13 @@
     </Compile>
     <Compile Include="redactarcorreo.aspx.designer.cs">
       <DependentUpon>redactarcorreo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="reporteefectividadcrm.aspx.cs">
+      <DependentUpon>reporteefectividadcrm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="reporteefectividadcrm.aspx.designer.cs">
+      <DependentUpon>reporteefectividadcrm.aspx</DependentUpon>
     </Compile>
     <Compile Include="reporteestrategiascrmmarketing.aspx.cs">
       <DependentUpon>reporteestrategiascrmmarketing.aspx</DependentUpon>
