@@ -138,7 +138,10 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Cargo</label>
-                                                    <asp:TextBox ID="txbCargo" CssClass="form-control input-sm" runat="server" placeholder="Cargo"></asp:TextBox>
+                                                    <asp:DropDownList ID="ddlCargo" runat="server" AppendDataBoundItems="true"
+                                                        DataTextField="NombreCargo" DataValueField="idCargo" CssClass="form-control input-sm">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                    </asp:DropDownList>
                                                 </div>
                                             </div>
                                         </div>

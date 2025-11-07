@@ -302,7 +302,8 @@ namespace fpWebApp
                         Convert.ToInt32(txbNroPersonasNucleo.Text.ToString()),
                         ddlActividadExtra.SelectedItem.Value.ToString(),
                         ddlConsumoLicor.SelectedItem.Value.ToString(),
-                        ddlMedioTransporte.SelectedItem.Value.ToString()
+                        ddlMedioTransporte.SelectedItem.Value.ToString(),
+                        ddlTipoSangre.SelectedItem.Value.ToString()
                         );
 
                     if (mensaje == "OK")

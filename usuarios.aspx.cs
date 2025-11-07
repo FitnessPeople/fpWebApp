@@ -90,6 +90,7 @@ namespace fpWebApp
                 "FROM Usuarios u " +
                 "LEFT JOIN Empleados e ON u.idEmpleado = e.DocumentoEmpleado " +
                 "LEFT JOIN Perfiles pf ON u.idPerfil = pf.idPerfil " +
+                "LEFT JOIN Cargos c ON u.idCargoUsuario = c.idCargo " +
                 "LEFT JOIN sedes s ON s.idSede = e.idSede " + strWhere +
                 "ORDER BY NombreUsuario";
             clasesglobales cg = new clasesglobales();

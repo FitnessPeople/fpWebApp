@@ -61,6 +61,14 @@ namespace fpWebApp
                             CargarPlanes();
                         }
                     }
+                    ddlMes.SelectedValue = DateTime.Now.Month.ToString();
+                    ddlAnnio.SelectedValue = DateTime.Now.Year.ToString();
+
+                    if (Session["idSede"].ToString() == "11")
+                    {
+                        divPagosRechazados.Visible = true;
+                    }
+
                     listaVentas();
                     //listaTransaccionesPorFecha(Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()),Convert.ToInt32(ddlPlanes.SelectedValue.ToString()),txbFechaIni.Value.ToString(),txbFechaFin.Value.ToString());
                     VentasWeb();
@@ -80,13 +88,19 @@ namespace fpWebApp
 
             string strQuery = "";
 
+            string filtroMedioPago = "";
+            if (ddlTipoPago.SelectedValue != "0") // 0 = Todos
+            {
+                filtroMedioPago = " AND ppa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue);
+            }
+
             if (ddlPlanes.SelectedValue.ToString() == "0")
             {
                 strQuery = @"SELECT ppa.valor 
                     FROM PagosPlanAfiliado ppa 
                     INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
                     WHERE ppa.idUsuario = 156 AND ap.idPlan IN (18,19) 
-	                    AND (ppa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()) + @") 
+	                    " + filtroMedioPago + @" 
 	                    AND MONTH(ppa.fechaHoraPago) = " + mes + @" 
                         AND YEAR(ppa.fechaHoraPago) = " + annio + @" 
                         AND MONTH(ap.FechaInicioPlan) IN (" + mes + @");";
@@ -97,7 +111,7 @@ namespace fpWebApp
                     FROM PagosPlanAfiliado ppa 
                     INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
                     WHERE ppa.idUsuario = 156 AND ap.idPlan IN (18,19) 
-	                    AND (ppa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()) + @") 
+	                    " + filtroMedioPago + @" 
 	                    AND MONTH(ppa.fechaHoraPago) = " + mes + @" 
                         AND YEAR(ppa.fechaHoraPago) = " + annio + @" 
                         AND MONTH(ap.FechaInicioPlan) IN (" + mes + @") 
@@ -127,13 +141,19 @@ namespace fpWebApp
             int mes = Convert.ToInt32(ddlMes.SelectedItem.Value.ToString());
             string strQuery = "";
 
+            string filtroMedioPago = "";
+            if (ddlTipoPago.SelectedValue != "0") // 0 = Todos
+            {
+                filtroMedioPago = " AND ppa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue);
+            }
+
             if (ddlPlanes.SelectedValue.ToString() == "0")
             {
                 strQuery = @"SELECT ppa.valor 
                     FROM PagosPlanAfiliado ppa 
                     INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
                     WHERE ppa.idUsuario NOT IN (156) AND ap.idPlan IN (1,17) 
-	                    AND (ppa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()) + @") 
+	                    " + filtroMedioPago + @" 
 	                    AND MONTH(ppa.fechaHoraPago) = " + mes + @" 
                         AND YEAR(ppa.fechaHoraPago) = " + annio + @" 
                         AND MONTH(ap.FechaInicioPlan) IN (" + mes + @");";
@@ -144,7 +164,7 @@ namespace fpWebApp
                     FROM PagosPlanAfiliado ppa 
                     INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
                     WHERE ppa.idUsuario NOT IN (156) AND ap.idPlan IN (1,17) 
-	                    AND (ppa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()) + @") 
+	                    " + filtroMedioPago + @" 
 	                    AND MONTH(ppa.fechaHoraPago) = " + mes + @" 
                         AND YEAR(ppa.fechaHoraPago) = " + annio + @" 
                         AND MONTH(ap.FechaInicioPlan) IN (" + mes + @") 
@@ -244,6 +264,12 @@ namespace fpWebApp
             //    AND YEAR(ap.FechaInicioPlan) = YEAR('" + txbFechaIni.Value.ToString() + @"') 
             //    ORDER BY ppa.idPago DESC;";
 
+            string filtroMedioPago = "";
+            if (ddlTipoPago.SelectedValue != "0") // 0 = Todos
+            {
+                filtroMedioPago = " AND ppa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue);
+            }
+
             string query = @"
                 SELECT ppa.idPago, ppa.idAfiliadoPlan, ppa.IdReferencia, ppa.FechaHoraPago, ppa.EstadoPago, ppa.Valor, 
                     a.DocumentoAfiliado,
@@ -259,7 +285,7 @@ namespace fpWebApp
                 INNER JOIN mediosdepago mp ON mp.idMedioPago = ppa.idMedioPago 
                 INNER JOIN planes p ON p.idPlan = ap.idPlan 
                 WHERE ppa.idUsuario NOT IN (156) 
-                AND (ppa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()) + @")
+                " + filtroMedioPago + @" 
                 AND ap.idPlan IN (1, 17) 
                 AND MONTH(ppa.fechaHoraPago) = " + mes + @" 
                 AND YEAR(ppa.fechaHoraPago) = " + annio + @" 
@@ -279,7 +305,7 @@ namespace fpWebApp
                 INNER JOIN mediosdepago mp ON mp.idMedioPago = ppa.idMedioPago 
                 INNER JOIN planes p ON p.idPlan = ap.idPlan 
                 WHERE ppa.idUsuario = 156 
-                AND (ppa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()) + @")
+                " + filtroMedioPago + @" 
                 AND ap.idPlan IN (18,19) 
                 AND MONTH(ppa.fechaHoraPago) = " + mes + @" 
                 AND YEAR(ppa.fechaHoraPago) = " + annio + @" 
@@ -336,6 +362,12 @@ namespace fpWebApp
 
             DataTable dt = cg.TraerDatos(strQuery);
 
+            string filtroMedioPago = "";
+            if (ddlTipoPago.SelectedValue != "0") // 0 = Todos
+            {
+                filtroMedioPago = " AND ppa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue);
+            }
+
             foreach (DataRow dr in dt.Rows)
             {
                 string query = @"
@@ -353,7 +385,7 @@ namespace fpWebApp
                 INNER JOIN mediosdepago mp ON mp.idMedioPago = ppa.idMedioPago 
                 INNER JOIN planes p ON p.idPlan = ap.idPlan 
                 WHERE ppa.idUsuario NOT IN (156) 
-                AND (ppa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()) + @")
+                " + filtroMedioPago + @" 
                 AND ap.idPlan IN (1, 17) 
                 AND MONTH(ppa.fechaHoraPago) = " + dr["Mes"].ToString() + @" 
                 AND YEAR(ppa.fechaHoraPago) = " + dr["Anio"].ToString() + @" 
@@ -373,7 +405,7 @@ namespace fpWebApp
                 INNER JOIN mediosdepago mp ON mp.idMedioPago = ppa.idMedioPago 
                 INNER JOIN planes p ON p.idPlan = ap.idPlan 
                 WHERE ppa.idUsuario = 156 
-                AND (ppa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()) + @")
+                " + filtroMedioPago + @" 
                 AND ap.idPlan IN (18,19) 
                 AND MONTH(ppa.fechaHoraPago) = " + dr["Mes"].ToString() + @" 
                 AND YEAR(ppa.fechaHoraPago) = " + dr["Anio"].ToString() + @" 

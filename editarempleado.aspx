@@ -310,7 +310,7 @@
                                                 </div>
 
                                                 <div class="row">
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Estado civil</label>
                                                             <asp:DropDownList ID="ddlEstadoCivil" runat="server" AppendDataBoundItems="true"
@@ -319,12 +319,29 @@
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Género</label>
                                                             <asp:DropDownList ID="ddlGenero" runat="server" AppendDataBoundItems="true"
                                                                 DataTextField="Genero" DataValueField="idGenero" CssClass="form-control input-sm">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Tipo de sangre:</label>
+                                                            <asp:DropDownList ID="ddlTipoSangre" runat="server" AppendDataBoundItems="true"
+                                                                CssClass="form-control input-sm">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:ListItem Text="A+" Value="A+"></asp:ListItem>
+                                                                <asp:ListItem Text="A-" Value="A-"></asp:ListItem>
+                                                                <asp:ListItem Text="B+" Value="B+"></asp:ListItem>
+                                                                <asp:ListItem Text="B-" Value="B-"></asp:ListItem>
+                                                                <asp:ListItem Text="AB+" Value="AB+"></asp:ListItem>
+                                                                <asp:ListItem Text="AB-" Value="AB-"></asp:ListItem>
+                                                                <asp:ListItem Text="0+" Value="O+"></asp:ListItem>
+                                                                <asp:ListItem Text="0-" Value="O-"></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
@@ -666,6 +683,9 @@
                     required: true
                 },
                 ddlGenero: {
+                    required: true
+                },
+                ddlTipoSangre: {
                     required: true
                 },
                 txbEstratoSocioeconomico: {

@@ -152,16 +152,16 @@
                                                     href="nuevoempleado" title="Agregar empleado"
                                                     runat="server" id="btnAgregar" visible="false"><i class="fa fa-square-plus m-r-xs"></i>NUEVO
                                                 </a>
-                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
+                                                <%--<asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
                                                     CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
                                                     OnClick="lbExportarExcel_Click">
                                                     <i class="fa fa-file-excel m-r-xs"></i>EXCEL
-                                                </asp:LinkButton>
+                                                </asp:LinkButton>--%>
                                             </div>
                                         </div>
                                     </form>
 
-                                    <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                    <table id="tabla" class="footable table table-striped list-group-item-text" data-paging-size="20"
                                         data-filter-min="3" data-filter-placeholder="Buscar"
                                         data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
                                         data-paging-limit="10" data-filtering="true"
@@ -171,13 +171,13 @@
                                         <thead>
                                             <tr>
                                                 <th data-breakpoints="xs"></th>
-                                                <th>Nombre</th>
+                                                <th data-breakpoints="xs" data-sortable="true" data-type="text">Nombre</th>
                                                 <th data-sortable="false">Documento</th>
                                                 <th data-breakpoints="xs">Teléfono corporativo</th>
                                                 <%--<th data-breakpoints="xs sm">Teléfono personal</th>--%>
                                                 <%--<th data-breakpoints="xs sm md">Correo</th>--%>
                                                 <%--<th data-breakpoints="xs sm">Cargo</th>--%>
-                                                <%--<th data-breakpoints="xs sm">Sede</th>--%>
+                                                <th data-breakpoints="xs sm">Sede</th>
                                                 <%--<th data-hide="phone,tablet">Cargo</th>--%>
                                                 <th data-type="date" data-breakpoints="xs sm">Cumpleaños</th>
                                                 <th class="text-nowrap" data-breakpoints="xs sm">Estado</th>
@@ -191,43 +191,16 @@
                                                     <tr>
                                                         <td class="client-avatar">
                                                             <img alt="image" src="img/empleados/<%# Eval("FotoEmpleado") %>"></td>
-                                                        <td><a data-toggle="tab" href='#contact-<%# Eval("DocumentoEmpleado") %>' class="client-link"><%# Eval("NombreEmpleado") %></a></td>
+                                                        <td><a data-toggle="tab" href='#contact-<%# Eval("NombreEmpleado").ToString().Substring(0,3).ToUpper() %><%# Eval("DocumentoEmpleado") %>' class="client-link"><%# Eval("NombreEmpleado") %></a></td>
                                                         <td><%# Eval("DocumentoEmpleado") %></td>
                                                         <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoCorporativo") %>" target="_blank"><%# Eval("TelefonoCorporativo") %></a></td>
                                                         <%--<td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoEmpleado") %>" target="_blank"><%# Eval("TelefonoEmpleado") %></a></td>--%>
                                                         <%--<td><i class="fa fa-envelope m-r-xs font-bold"></i><a href="mailto:<%# Eval("EmailCorporativo") %>" title="Enviar correo"><%# Eval("EmailCorporativo") %></a></td>--%>
                                                         <%--<td><a href="cargos" title="Ir a Cargos"><i class="fa fa-user-nurse m-r-xs font-bold"></i><%# Eval("Cargo") %></a></td>--%>
-                                                        <%--<td><%# Eval("NombreSede") %></td>--%>
+                                                        <td><%# Eval("NombreSede") %></td>
                                                         <%--<td><i class="fa fa-user-tie m-r-xs font-bold"></i><%# Eval("CargoEmpleado") %></td>--%>
                                                         <td><%# Eval("icono") %><%# Eval("FechaNacEmpleado", "{0:dd MMM}") %></td>
                                                         <td><span class="badge badge-<%# Eval("label") %>"><%# Eval("Estado") %></span></td>
-                                                        <%--<td class="table-bordered">
-                                                            <table class="table table-bordered">
-                                                                <tr>
-                                                                    <th width="34%"><i class="fa fa-map-location-dot m-r-xs"></i>Dirección</th>
-                                                                    <th width="33%"><i class="fa fa-city m-r-xs"></i>Ciudad</th>
-                                                                    <th width="33%"><i class="fa fa-user-tie m-r-xs"></i>Cargo</th>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><%# Eval("DireccionEmpleado") %></td>
-                                                                    <td><%# Eval("NombreCiudad") %> (<%# Eval("NombreEstado") %>)</td>
-                                                                    <td><%# Eval("Cargo") %></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th><i class="fa fa-hashtag m-r-xs"></i>Nro Contrato</th>
-                                                                    <th><i class="fa fa-file-lines m-r-xs"></i>Tipo Contrato</th>
-                                                                    <th><i class="fa fa-clock m-r-xs"></i>Duración</th>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><%# Eval("NroContrato") %></td>
-                                                                    <td><%# Eval("TipoContrato") %></td>
-                                                                    <td style="vertical-align: central;">
-                                                                        <span class="pie"><%# Eval("diastrabajados") %>/<%# Eval("diastotales") %></span>
-                                                                        <%# Eval("FechaInicio", "{0:dd MMM yyyy}") %> - <%# Eval("FechaFinal", "{0:dd MMM yyyy}") %>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>--%>
                                                         <td>
                                                             <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Eliminar"><i class="fa fa-trash"></i></a>
@@ -249,18 +222,19 @@
                                     <div class="tab-content">
                                         <asp:Repeater ID="rpTabEmpleados" runat="server" OnItemDataBound="rpTabEmpleados_ItemDataBound">
                                             <ItemTemplate>
-                                                <div id='contact-<%# Eval("DocumentoEmpleado") %>' class='tab-pane <%# Eval("DocumentoEmpleado").ToString() == ViewState["EmployeeDoc"]?.ToString() ? "active" : "" %>'>
+                                                <div id='contact-<%# Eval("NombreEmpleado").ToString().Substring(0,3).ToUpper() %><%# Eval("DocumentoEmpleado") %>' class='tab-pane <%# Eval("DocumentoEmpleado").ToString() == ViewState["EmployeeDoc"]?.ToString() ? "active" : "" %>'>
                                                     <div class="row m-b-lg">
                                                         <div class="ibox-content text-center">
                                                             <h2><%# Eval("NombreEmpleado") %></h2>
                                                             <div class="m-b-sm">
                                                                 <img alt="image" class="img-circle" src="img/empleados/<%# Eval("FotoEmpleado") %>" width="120">
+                                                                <span class="label label-danger">Rh: <%# Eval("TipoSangre") %></span>
                                                             </div>
                                                             <p class="font-bold"><%# Eval("Cargo") %></p>
 
                                                             <div class="text-center">
-                                                                <a class="btn btn-xs btn-white"><i class="fa fa-thumbs-up"></i>Like </a>
-                                                                <a class="btn btn-xs btn-primary"><i class="fa fa-heart"></i>Love</a>
+                                                                <a runat="server" id="btnEditarTab" href="#" class="btn btn-xs btn-primary"><i class="fa fa-edit m-r-xs"></i>Editar</a>
+                                                                <a class="btn btn-xs btn-warning"><i class="fa fa-rotate m-r-xs"></i>Cambiar estado</a>
                                                             </div>
                                                         </div>
                                                         <%--<div class="col-lg-4 text-center">
@@ -316,50 +290,59 @@
                                                                 <div class="feed-element">
                                                                     <div>
                                                                         <strong><i class="fa fa-map-marker m-r-xs"></i>Dirección</strong>
-                                                                        <div><%# Eval("DireccionEmpleado") %></div>
-                                                                        <small class="text-muted"><%# Eval("NombreCiudad") %></small>
+                                                                        <div class="text-info"><%# Eval("DireccionEmpleado") %></div>
+                                                                        <small class="text-muted"><i class="fa fa-city m-r-xs"></i><%# Eval("NombreCiudad") %></small>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="feed-element">
                                                                     <div>
-                                                                        <strong><i class="fab fa-whatsapp m-r-xs"></i>Teléfono personal</strong>
-                                                                        <div><%# Eval("TelefonoEmpleado") %></div>
+                                                                        <strong><i class="fab fa-whatsapp m-r-xs"></i>Teléfono corporativo</strong>
+                                                                        <div><a href="https://wa.me/57<%# Eval("TelefonoCorporativo") %>" target="_blank"><%# Eval("TelefonoCorporativo") %></a></div>
+                                                                        <small class="text-muted"><i class="fa fa-envelope m-r-xs"></i>Email corporativo: <%# Eval("EmailCorporativo") %></small>
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="feed-element">
+                                                                <%--<div class="feed-element">
                                                                     <div>
                                                                         <strong><i class="fa fa-envelope m-r-xs"></i>Email corporativo</strong>
                                                                         <div><%# Eval("EmailCorporativo") %></div>
                                                                     </div>
-                                                                </div>
+                                                                </div>--%>
 
                                                                 <div class="feed-element">
+                                                                    <div>
+                                                                        <strong><i class="fab fa-whatsapp m-r-xs"></i>Teléfono personal</strong>
+                                                                        <div><a href="https://wa.me/57<%# Eval("TelefonoEmpleado") %>" target="_blank"><%# Eval("TelefonoEmpleado") %></a></div>
+                                                                        <small class="text-muted"><i class="fa fa-envelope m-r-xs"></i>Email personal: <%# Eval("EmailEmpleado") %></small>
+                                                                    </div>
+                                                                </div>
+
+                                                                <%--<div class="feed-element">
                                                                     <div>
                                                                         <strong><i class="fa fa-envelope m-r-xs"></i>Email personal</strong>
                                                                         <div><%# Eval("EmailEmpleado") %></div>
                                                                     </div>
-                                                                </div>
+                                                                </div>--%>
 
                                                                 <div class="feed-element">
                                                                     <div>
                                                                         <strong><i class="fa fa-ring m-r-xs"></i>Estado civil</strong>
-                                                                        <div><%# Eval("EstadoCivil") %></div>
+                                                                        <div class="text-info"><%# Eval("EstadoCivil") %></div>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="feed-element">
                                                                     <div>
                                                                         <strong><i class="fa fa-file m-r-xs"></i>Tipo de contrato</strong>
-                                                                        <div><%# Eval("TipoContrato") %></div>
+                                                                        <div class="text-info"><%# Eval("TipoContrato") %></div>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="feed-element">
                                                                     <div>
                                                                         <strong><i class="fa fa-graduation-cap m-r-xs"></i>Nivel estudio</strong>
-                                                                        <div><%# Eval("NivelEstudio") %></div>
+                                                                        <div class="text-info"><%# Eval("NivelEstudio") %></div>
                                                                     </div>
                                                                 </div>
 
@@ -367,7 +350,7 @@
                                                                     <div>
                                                                         <small class="pull-right text-navy">Estrato: <%# Eval("EstratoSocioeconomico") %></small>
                                                                         <strong><i class="fa fa-house m-r-xs"></i>Tipo de vivienda</strong>
-                                                                        <div><%# Eval("TipoVivienda") %></div>
+                                                                        <div class="text-info"><%# Eval("TipoVivienda") %></div>
                                                                         <small class="text-muted">Personas nucleo familiar: <%# Eval("PersonasNucleoFamiliar") %></small>
                                                                     </div>
                                                                 </div>
@@ -375,32 +358,39 @@
                                                                 <div class="feed-element">
                                                                     <div>
                                                                         <strong><i class="fa fa-person-rays m-r-xs"></i>Actividad extra</strong>
-                                                                        <div><%# Eval("ActividadExtra") %></div>
+                                                                        <div class="text-info"><%# Eval("ActividadExtra") %></div>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="feed-element">
                                                                     <div>
                                                                         <strong><i class="fa fa-martini-glass m-r-xs"></i>Consume licor</strong>
-                                                                        <div><%# Eval("ConsumeLicor") %></div>
+                                                                        <div class="text-info"><%# Eval("ConsumeLicor") %></div>
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="feed-element">
                                                                     <div>
                                                                         <strong><i class="fa fa-car m-r-xs"></i>Medio de transporte</strong>
-                                                                        <div><%# Eval("MedioTransporte") %></div>
+                                                                        <div class="text-info"><%# Eval("MedioTransporte") %></div>
                                                                     </div>
                                                                 </div>
 
+                                                                <%--<div class="feed-element">
+                                                                    <div>
+                                                                        <strong><i class="fa fa-car m-r-xs"></i>Notas</strong>
+                                                                        <div>
+                                                                            <p>
+                                                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+                                                                                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                                                            </p>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>--%>
+
                                                             </div>
 
-                                                            <strong>Notas</strong>
-                                                            <p>
-                                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua.
-                                       
-                                                            </p>
                                                             <hr />
                                                             <strong>Última actividad</strong>
                                                             <div id="vertical-timeline" class="vertical-container dark-timeline">
@@ -413,6 +403,7 @@
                                                                             </div>
                                                                             <div class="vertical-timeline-content">
                                                                                 <p><%# Eval("Accion") %></p>
+                                                                                <p class="text-info"><%# Eval("DescripcionLog") %></p>
                                                                                 <span class="vertical-date small text-muted"><%# Eval("FechaHora") %></span>
                                                                             </div>
                                                                         </div>
@@ -510,9 +501,6 @@
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-    <!-- FooTable -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
-
     <!-- Peity -->
     <script src="js/plugins/peity/jquery.peity.min.js"></script>
     <script src="js/demo/peity-demo.js"></script>
@@ -533,9 +521,14 @@
     <script src="js/plugins/d3/d3.min.js"></script>
     <script src="js/plugins/c3/c3.min.js"></script>
 
+    <!-- FooTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
+
     <!-- Page-Level Scripts -->
     <script>
-        $('.footable').footable();
+        $(function () {
+            $('#tabla').footable();
+        });
     </script>
 
     <script>

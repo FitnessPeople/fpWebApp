@@ -94,7 +94,7 @@ namespace fpWebApp
                         Session["idUsuario"] = dt.Rows[0]["idUsuario"].ToString();
                         Session["NombreUsuario"] = dt.Rows[0]["NombreUsuario"].ToString();
                         Session["idEmpresa"] = dt.Rows[0]["idEmpresa"].ToString();
-                        Session["Cargo"] = dt.Rows[0]["CargoUsuario"].ToString();
+                        Session["idCargoUsuario"] = dt.Rows[0]["idCargoUsuario"].ToString();
                         Session["Foto"] = dt.Rows[0]["FotoEmpleado"].ToString();
                         Session["idPerfil"] = dt.Rows[0]["idPerfil"].ToString();
                         Session["emailUsuario"] = dt.Rows[0]["EmailUsuario"].ToString();

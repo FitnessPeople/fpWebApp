@@ -22,6 +22,7 @@ namespace fpWebApp
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
                         txbEmail.Attributes.Add("type", "email");
+                        CargarCargos();
                         CargarPerfiles();
                         CargarEmpleados();
                         CargarDatosUsuario();
@@ -63,6 +64,15 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        private void CargarCargos()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCargos();
+            ddlCargo.DataSource = dt;
+            ddlCargo.DataBind();
+            dt.Dispose();
+        }
+
         private void CargarPerfiles()
         {
             string strQuery = "SELECT * FROM Perfiles ORDER BY Perfil";
@@ -94,7 +104,10 @@ namespace fpWebApp
             DataTable dt = cg1.TraerDatos(strQuery);
 
             txbNombre.Text = dt.Rows[0]["NombreUsuario"].ToString();
-            txbCargo.Text = dt.Rows[0]["CargoUsuario"].ToString();
+            if (dt.Rows[0]["idCargoUsuario"].ToString() != "")
+            {
+                ddlCargo.SelectedIndex = Convert.ToInt32(ddlCargo.Items.IndexOf(ddlCargo.Items.FindByValue(dt.Rows[0]["idCargoUsuario"].ToString())));
+            }
             txbEmail.Text = dt.Rows[0]["EmailUsuario"].ToString();
             //txbClave.Text = dt.Rows[0]["ClaveUsuario"].ToString();
             ddlPerfiles.SelectedIndex = Convert.ToInt16(dt.Rows[0]["idPerfil"].ToString());
@@ -118,7 +131,7 @@ namespace fpWebApp
 
                 string strQuery = "UPDATE usuarios SET " +
                 "EmailUsuario = '" + txbEmail.Text.ToString() + "', ClaveUsuario = '" + strHashClave + "', " +
-                "NombreUsuario = '" + txbNombre.Text.ToString() + "', CargoUsuario = '" + txbCargo.Text.ToString() + "', " +
+                "NombreUsuario = '" + txbNombre.Text.ToString() + "', idCargoUsuario = " + ddlCargo.SelectedItem.Value.ToString() + ", " +
                 "idPerfil = " + ddlPerfiles.SelectedItem.Value.ToString() + ", idEmpleado = '" + ddlEmpleados.SelectedItem.Value.ToString() + "', " +
                 "EstadoUsuario = '" + rblEstado.SelectedItem.Value.ToString() + "' " +
                 "WHERE idUsuario = " + Request.QueryString["editid"].ToString();

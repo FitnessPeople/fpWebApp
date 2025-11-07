@@ -31,12 +31,12 @@ namespace fpWebApp
                         if (ViewState["Consulta"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            lbExportarExcel.Visible = false;
+                            //lbExportarExcel.Visible = false;
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            lbExportarExcel.Visible = true;
+                            //lbExportarExcel.Visible = true;
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
@@ -392,8 +392,23 @@ namespace fpWebApp
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
+                if (ViewState["CrearModificar"].ToString() == "1")
+                {
+                    HtmlAnchor btnEditarTab = (HtmlAnchor)e.Item.FindControl("btnEditarTab");
+                    btnEditarTab.Attributes.Add("href", "editarempleado?editid=" + ((DataRowView)e.Item.DataItem).Row["DocumentoEmpleado"].ToString());
+                    btnEditarTab.Visible = true;
+                }
+
                 DataRowView row = (DataRowView)e.Item.DataItem;
-                int idUsuario = Convert.ToInt32(row["idUsuario"]);
+                int idUsuario;
+                if (row["idUsuario"] is DBNull)
+                {
+                    idUsuario = 0;
+                }
+                else
+                {
+                    idUsuario = Convert.ToInt32(row["idUsuario"]);
+                }
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos("SELECT * FROM logs WHERE idUsuario = " + idUsuario.ToString());

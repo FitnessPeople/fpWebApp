@@ -295,6 +295,10 @@ namespace fpWebApp
             {
                 ddlTipoContrato.SelectedIndex = Convert.ToInt16(ddlTipoContrato.Items.IndexOf(ddlTipoContrato.Items.FindByText(dt.Rows[0]["TipoContrato"].ToString())));
             }
+            if (dt.Rows[0]["TipoSangre"].ToString() != "")
+            {
+                ddlTipoSangre.SelectedIndex = Convert.ToInt16(ddlTipoSangre.Items.IndexOf(ddlTipoSangre.Items.FindByText(dt.Rows[0]["TipoSangre"].ToString())));
+            }
             //DateTime dtFechaIni = Convert.ToDateTime(dt.Rows[0]["FechaInicio"].ToString());
 
             DateTime dtFechaIni = dt.Rows[0]["FechaInicio"] == DBNull.Value
@@ -441,7 +445,8 @@ namespace fpWebApp
                     Convert.ToInt32(txbNroPersonasNucleo.Text.ToString()), 
                     ddlActividadExtra.SelectedItem.Value.ToString(),
                     ddlConsumoLicor.SelectedItem.Value.ToString(),
-                    ddlMedioTransporte.SelectedItem.Value.ToString()
+                    ddlMedioTransporte.SelectedItem.Value.ToString(), 
+                    ddlTipoSangre.SelectedItem.Value.ToString()
                     );
 
                 if (rblEstado.Text.ToString() == "Inactivo")

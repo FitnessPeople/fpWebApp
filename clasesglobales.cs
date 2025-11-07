@@ -6595,12 +6595,14 @@ namespace fpWebApp
 
 
 
-        public string InsertarNuevoEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado, string telEmpleadoCorp,
-            string emailEmpleado, string emailEmpleadoCorp, string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato,
-            string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
-            int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo,
-            int idProfesion, string nivelEstudio, int estratoSocial, string tipoVivienda, int nroPersonas,
-            string actividadExtra, string consumeLicor, string medioTransporte)
+        public string InsertarNuevoEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado, 
+            string telEmpleadoCorp, string emailEmpleado, string emailEmpleadoCorp, string dirEmpleado, int idCiudadEmpleado, 
+            string fechaNacEmpleado, string fotoEmpleado, string nroContrato, string tipoContrato, int idEmpresaFP, 
+            int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps, 
+            int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, 
+            int idEstadoCivil, int idCanalVenta, int idCargo, int idProfesion, string nivelEstudio, 
+            int estratoSocial, string tipoVivienda, int nroPersonas, string actividadExtra, 
+            string consumeLicor, string medioTransporte, string tipoSangre)
         {
             string respuesta = string.Empty;
             try
@@ -6649,6 +6651,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_actividad_extra", actividadExtra);
                         cmd.Parameters.AddWithValue("@p_consume_licor", consumeLicor);
                         cmd.Parameters.AddWithValue("@p_medio_transporte", medioTransporte);
+                        cmd.Parameters.AddWithValue("@p_tipo_sangre", tipoSangre);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -6698,7 +6701,7 @@ namespace fpWebApp
             string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, int idSede, int idEps,
             int idFondo, int idArl, int idCajaCompensa, int idCesantias, int idGenero, int idEstadoCivil, int idCargo, string claveUsuario, 
             int idProfesion, string nivelEstudio, int estratoSocial, string tipoVivienda, int nroPersonas,
-            string actividadExtra, string consumeLicor, string medioTransporte)
+            string actividadExtra, string consumeLicor, string medioTransporte, string tipoSangre)
         {
             string respuesta = string.Empty;
             try
@@ -6741,6 +6744,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_actividad_extra", actividadExtra);
                         cmd.Parameters.AddWithValue("@p_consume_licor", consumeLicor);
                         cmd.Parameters.AddWithValue("@p_medio_transporte", medioTransporte);
+                        cmd.Parameters.AddWithValue("@p_tipo_sangre", tipoSangre);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -6761,7 +6765,7 @@ namespace fpWebApp
             string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
             int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, 
             int idCanalVenta, int idCargo, int idProfesion, string nivelEstudio, int estratoSocial, string tipoVivienda, int nroPersonas, 
-            string actividadExtra, string consumeLicor, string medioTransporte)
+            string actividadExtra, string consumeLicor, string medioTransporte, string tipoSangre)
         {
             string respuesta = string.Empty;
             try
@@ -6812,6 +6816,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_actividad_extra", actividadExtra);
                         cmd.Parameters.AddWithValue("@p_consume_licor", consumeLicor);
                         cmd.Parameters.AddWithValue("@p_medio_transporte", medioTransporte);
+                        cmd.Parameters.AddWithValue("@p_tipo_sangre", tipoSangre);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";

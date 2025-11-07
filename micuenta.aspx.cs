@@ -16,7 +16,7 @@ namespace fpWebApp
                 if (Session["idUsuario"] != null)
                 {
                     ltNombreUsuario.Text = Session["NombreUsuario"].ToString();
-                    ltCargo.Text = Session["Cargo"].ToString();
+                    ltCargo.Text = Session["idCargoUsuario"].ToString();
                     //ltFoto.Text = "<img src=\"img/empleados/" + Session["Foto"].ToString() + "\" class=\"img-circle circle-border m-b-md\" alt=\"profile\">";
 
                     if (Session["Foto"].ToString() != "")
@@ -297,6 +297,11 @@ namespace fpWebApp
                 ddlProfesion.SelectedIndex = Convert.ToInt32(ddlProfesion.Items.IndexOf(ddlProfesion.Items.FindByValue(dt.Rows[0]["idProfesion"].ToString())));
             }
 
+            if (dt.Rows[0]["TipoSangre"].ToString() != "")
+            {
+                ddlTipoSangre.SelectedIndex = Convert.ToInt16(ddlTipoSangre.Items.IndexOf(ddlTipoSangre.Items.FindByText(dt.Rows[0]["TipoSangre"].ToString())));
+            }
+
             ltFotoEmpleado.Text = "<img src=\"img/empleados/" + dt.Rows[0]["FotoEmpleado"].ToString() + "\" class=\"img-circle circle-border m-b-md\" width=\"220px\" alt=\"profile\" />";
 
             ViewState["FotoEmpleado"] = dt.Rows[0]["FotoEmpleado"].ToString();
@@ -376,7 +381,8 @@ namespace fpWebApp
                     Convert.ToInt32(txbNroPersonasNucleo.Text.ToString()),
                     ddlActividadExtra.SelectedItem.Value.ToString(),
                     ddlConsumoLicor.SelectedItem.Value.ToString(),
-                    ddlMedioTransporte.SelectedItem.Value.ToString());
+                    ddlMedioTransporte.SelectedItem.Value.ToString(),
+                    ddlTipoSangre.SelectedItem.Value.ToString());
 
                 string strNewData = TraerData();
 
