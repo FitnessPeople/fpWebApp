@@ -5733,6 +5733,170 @@ namespace fpWebApp
             return dt;
         }
 
+        public DataTable ConsultaCargarAsesoresActivos()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CARGAR_ASESORES_ACTIVOS", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarEfectividadGestionCRM(int idCanalVenta, DateTime? FechaIni, DateTime? FechaFin, int idUsuario)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_EFECTIVIDAD_GESTION_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);
+                        cmd.Parameters.AddWithValue("@p_fecha_inicio", FechaIni);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", FechaFin);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarIndicadorGeneroCRM(int idCanalVenta, DateTime? FechaIni, DateTime? FechaFin, int idUsuario)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INDICADOR_GENERO_GESTION_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);
+                        cmd.Parameters.AddWithValue("@p_fecha_inicio", FechaIni);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", FechaFin);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarIndicadorEdadesCRM(int idCanalVenta, DateTime? FechaIni, DateTime? FechaFin, int idUsuario)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INDICADOR_EDADES_GESTION_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);
+                        cmd.Parameters.AddWithValue("@p_fecha_inicio", FechaIni);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", FechaFin);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+        
+
+        public DataTable ConsultarIndicadorGestionAsesorCRM(int idCanalVenta, DateTime? FechaIni, DateTime? FechaFin, int idUsuario)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INDICADOR_ASESOR_GESTION_CRM", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);
+                        cmd.Parameters.AddWithValue("@p_fecha_inicio", FechaIni);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", FechaFin);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+
         #endregion
 
         #region Congelaciones
@@ -6595,12 +6759,14 @@ namespace fpWebApp
 
 
 
-        public string InsertarNuevoEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado, string telEmpleadoCorp,
-            string emailEmpleado, string emailEmpleadoCorp, string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato,
-            string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
-            int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo,
-            int idProfesion, string nivelEstudio, int estratoSocial, string tipoVivienda, int nroPersonas,
-            string actividadExtra, string consumeLicor, string medioTransporte)
+        public string InsertarNuevoEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado, 
+            string telEmpleadoCorp, string emailEmpleado, string emailEmpleadoCorp, string dirEmpleado, int idCiudadEmpleado, 
+            string fechaNacEmpleado, string fotoEmpleado, string nroContrato, string tipoContrato, int idEmpresaFP, 
+            int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps, 
+            int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, 
+            int idEstadoCivil, int idCanalVenta, int idCargo, int idProfesion, string nivelEstudio, 
+            int estratoSocial, string tipoVivienda, int nroPersonas, string actividadExtra, 
+            string consumeLicor, string medioTransporte, string tipoSangre)
         {
             string respuesta = string.Empty;
             try
@@ -6649,6 +6815,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_actividad_extra", actividadExtra);
                         cmd.Parameters.AddWithValue("@p_consume_licor", consumeLicor);
                         cmd.Parameters.AddWithValue("@p_medio_transporte", medioTransporte);
+                        cmd.Parameters.AddWithValue("@p_tipo_sangre", tipoSangre);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -6698,7 +6865,7 @@ namespace fpWebApp
             string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, int idSede, int idEps,
             int idFondo, int idArl, int idCajaCompensa, int idCesantias, int idGenero, int idEstadoCivil, int idCargo, string claveUsuario, 
             int idProfesion, string nivelEstudio, int estratoSocial, string tipoVivienda, int nroPersonas,
-            string actividadExtra, string consumeLicor, string medioTransporte)
+            string actividadExtra, string consumeLicor, string medioTransporte, string tipoSangre)
         {
             string respuesta = string.Empty;
             try
@@ -6741,6 +6908,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_actividad_extra", actividadExtra);
                         cmd.Parameters.AddWithValue("@p_consume_licor", consumeLicor);
                         cmd.Parameters.AddWithValue("@p_medio_transporte", medioTransporte);
+                        cmd.Parameters.AddWithValue("@p_tipo_sangre", tipoSangre);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -6761,7 +6929,7 @@ namespace fpWebApp
             string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
             int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, 
             int idCanalVenta, int idCargo, int idProfesion, string nivelEstudio, int estratoSocial, string tipoVivienda, int nroPersonas, 
-            string actividadExtra, string consumeLicor, string medioTransporte)
+            string actividadExtra, string consumeLicor, string medioTransporte, string tipoSangre)
         {
             string respuesta = string.Empty;
             try
@@ -6812,6 +6980,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_actividad_extra", actividadExtra);
                         cmd.Parameters.AddWithValue("@p_consume_licor", consumeLicor);
                         cmd.Parameters.AddWithValue("@p_medio_transporte", medioTransporte);
+                        cmd.Parameters.AddWithValue("@p_tipo_sangre", tipoSangre);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";

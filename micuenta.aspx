@@ -87,88 +87,72 @@
     </div>
     <div id="wrapper">
 
-        <uc1:navbar runat="server" ID="navbar" />
+        <form role="form" id="form" enctype="multipart/form-data" runat="server">
+            <asp:ScriptManager ID="ScriptManager1" runat="server" />
+            <uc1:navbar runat="server" ID="navbar" />
 
-        <div id="page-wrapper" class="gray-bg">
-            <div class="row border-bottom">
-                <uc1:header runat="server" ID="header" />
-            </div>
-            <div class="row wrapper border-bottom white-bg page-heading">
-
-                <%--Inicio Breadcrumb!!!--%>
-                <div class="col-sm-10">
-                    <h2><i class="fa fa-id-badge text-success m-r-sm"></i>Mi cuenta</h2>
-                    <ol class="breadcrumb">
-                        <li><a href="inicio">Inicio</a></li>
-                        <li class="active"><strong>Mi cuenta</strong></li>
-                    </ol>
+            <div id="page-wrapper" class="gray-bg">
+                <div class="row border-bottom">
+                    <uc1:header runat="server" ID="header" />
                 </div>
-                <div class="col-sm-2">
+                <div class="row wrapper border-bottom white-bg page-heading">
+
+                    <%--Inicio Breadcrumb!!!--%>
+                    <div class="col-sm-10">
+                        <h2><i class="fa fa-id-badge text-success m-r-sm"></i>Mi cuenta</h2>
+                        <ol class="breadcrumb">
+                            <li><a href="inicio">Inicio</a></li>
+                            <li class="active"><strong>Mi cuenta</strong></li>
+                        </ol>
+                    </div>
+                    <div class="col-sm-2">
+                    </div>
+                    <%--Fin Breadcrumb!!!--%>
                 </div>
-                <%--Fin Breadcrumb!!!--%>
-            </div>
-            <div class="wrapper wrapper-content animated fadeInRight">
-                <div class="row animated fadeInDown">
-                    <%--Inicio Contenido!!!!--%>
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="row animated fadeInDown">
+                        <%--Inicio Contenido!!!!--%>
 
-                    <div class="row m-b-lg m-t-lg">
-                        <div class="col-md-12">
+                        <div class="row m-b-lg m-t-lg">
+                            <div class="col-md-12">
 
-                            <div class="profile-image">
-                                <asp:Literal ID="ltFoto" runat="server"></asp:Literal>
-                            </div>
-                            <div class="profile-info">
-                                <div class="">
-                                    <div>
-                                        <h2 class="no-margins">
-                                            <asp:Literal ID="ltNombreUsuario" runat="server"></asp:Literal></h2>
-                                        <h4>
-                                            <asp:Literal ID="ltCargo" runat="server"></asp:Literal></h4>
-                                        <small class="text-danger">Por favor, diligencie el formulario de recolección de datos personales, 
+                                <div class="profile-image">
+                                    <asp:Literal ID="ltFoto" runat="server"></asp:Literal>
+                                </div>
+                                <div class="profile-info">
+                                    <div class="">
+                                        <div>
+                                            <h2 class="no-margins">
+                                                <asp:Literal ID="ltNombreUsuario" runat="server"></asp:Literal></h2>
+                                            <h4>
+                                                <asp:Literal ID="ltCargo" runat="server"></asp:Literal></h4>
+                                            <small class="text-danger">Por favor, diligencie el formulario de recolección de datos personales, 
                                             el cual es necesario para mantener actualizada nuestra base de información del personal de la empresa.<br />
-                                            <b>La información que nos proporcione será tratada de manera confidencial y utilizada exclusivamente para fines administrativos internos.</b><br />
-                                        </small>
-                                        <small class="text-success">Si tiene dudas o no aparece algúna opción, escriba a sistemas@fitnesspeoplecmd.com.
-                                        </small>
+                                                <b>La información que nos proporcione será tratada de manera confidencial y utilizada exclusivamente para fines administrativos internos.</b><br />
+                                            </small>
+                                            <small class="text-success">Si tiene dudas o no aparece algúna opción, escriba a sistemas@fitnesspeoplecmd.com.
+                                            </small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
-                    </div>
-
-                    <div class="ibox float-e-margins" runat="server">
-                        <div class="ibox-title">
-                            <h5>Formulario para la actualización de datos
-                            </h5>
-                            <div class="ibox-tools">
-                                <a class="collapse-link">
-                                    <i class="fa fa-chevron-up"></i>
-                                </a>
+                        <div class="ibox float-e-margins" runat="server">
+                            <div class="ibox-title">
+                                <h5>Formulario para la actualización de datos
+                                </h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="ibox-content">
+                            <div class="ibox-content">
 
-                            <div class="alert alert-danger alert-dismissable" runat="server" id="divMensaje1" visible="false">
-                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                                Un empleado con este documento ya existe!<br />
-                                <a class="alert-link" href="#">Intente nuevamente</a>.
-                            </div>
+                                <div class="row">
 
-                            <div class="alert alert-danger alert-dismissable" runat="server" id="divMensaje2" visible="false">
-                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                                Este correo ya existe.<br />
-                                <a class="alert-link" href="#">Intente nuevamente</a>.
-                            </div>
-
-                            <div class="alert alert-danger alert-dismissable" runat="server" id="divMensaje3" visible="false">
-                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                                Este teléfono ya existe.<br />
-                                <a class="alert-link" href="#">Intente nuevamente</a>.
-                            </div>
-
-                            <div class="row">
-                                <form role="form" id="form" enctype="multipart/form-data" runat="server">
                                     <div class="col-sm-6 b-r">
                                         <div class="row">
                                             <div class="col-sm-8">
@@ -324,7 +308,7 @@
                                     <div class="col-sm-6">
 
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-4">
                                                 <div class="form-group">
                                                     <label>Estado civil</label>
                                                     <asp:DropDownList ID="ddlEstadoCivil" runat="server" AppendDataBoundItems="true"
@@ -333,12 +317,29 @@
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-4">
                                                 <div class="form-group">
                                                     <label>Género</label>
                                                     <asp:DropDownList ID="ddlGenero" runat="server" AppendDataBoundItems="true"
                                                         DataTextField="Genero" DataValueField="idGenero" CssClass="form-control input-sm">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Tipo de sangre:</label>
+                                                    <asp:DropDownList ID="ddlTipoSangre" runat="server" AppendDataBoundItems="true"
+                                                        CssClass="form-control input-sm">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                        <asp:ListItem Text="A+" Value="A+"></asp:ListItem>
+                                                        <asp:ListItem Text="A-" Value="A-"></asp:ListItem>
+                                                        <asp:ListItem Text="B+" Value="B+"></asp:ListItem>
+                                                        <asp:ListItem Text="B-" Value="B-"></asp:ListItem>
+                                                        <asp:ListItem Text="AB+" Value="AB+"></asp:ListItem>
+                                                        <asp:ListItem Text="AB-" Value="AB-"></asp:ListItem>
+                                                        <asp:ListItem Text="0+" Value="O+"></asp:ListItem>
+                                                        <asp:ListItem Text="0-" Value="O-"></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
@@ -509,20 +510,22 @@
                                             <asp:Button ID="btnActualizar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Actualizar" OnClick="btnActualizar_Click" />
                                         </div>
                                     </div>
-                                </form>
+
+                                </div>
                             </div>
                         </div>
+
+
+                        <%--Fin Contenido!!!!--%>
                     </div>
-
-
-                    <%--Fin Contenido!!!!--%>
                 </div>
+
+                <uc1:footer runat="server" ID="footer" />
+
             </div>
+            <uc1:rightsidebar runat="server" ID="rightsidebar" />
 
-            <uc1:footer runat="server" ID="footer" />
-
-        </div>
-        <uc1:rightsidebar runat="server" ID="rightsidebar" />
+        </form>
     </div>
 
     <!-- Mainly scripts -->

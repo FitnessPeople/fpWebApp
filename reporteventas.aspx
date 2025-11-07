@@ -244,7 +244,7 @@
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-danger pull-right">Mes actual</span>--%>
-                                                <h5>Ventas Totales</h5>
+                                                <h5>Ventas Totales Acumuladas</h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
@@ -288,8 +288,8 @@
                                                 <div class="form-group">
                                                     <asp:DropDownList ID="ddlTipoPago" runat="server" AppendDataBoundItems="true"
                                                         DataTextField="TipoDocumento" DataValueField="idTipoDoc" CssClass="form-control input-sm">
-                                                        <%--<asp:ListItem Text="Seleccione" Value=""></asp:ListItem>--%>
-                                                        <asp:ListItem Text="Pago en línea" Value="4"></asp:ListItem>
+                                                        <asp:ListItem Text="Todos" Value="0"></asp:ListItem>
+                                                        <asp:ListItem Text="Pago en línea" Value="4" Selected="True"></asp:ListItem>
                                                         <asp:ListItem Text="Efectivo" Value="1"></asp:ListItem>
                                                         <asp:ListItem Text="Transferencia" Value="2"></asp:ListItem>
                                                         <asp:ListItem Text="Datafono" Value="3"></asp:ListItem>
@@ -299,7 +299,14 @@
                                             <div class="col-lg-2">
                                                 <asp:DropDownList ID="ddlMes" runat="server" AppendDataBoundItems="true"
                                                     CssClass="form-control input-sm">
-                                                        <%--<asp:ListItem Text="Seleccione" Value=""></asp:ListItem>--%>
+                                                    <asp:ListItem Text="Enero" Value="1"></asp:ListItem>
+                                                    <asp:ListItem Text="Febrero" Value="2"></asp:ListItem>
+                                                    <asp:ListItem Text="Marzo" Value="3"></asp:ListItem>
+                                                    <asp:ListItem Text="Abril" Value="4"></asp:ListItem>
+                                                    <asp:ListItem Text="Mayo" Value="5"></asp:ListItem>
+                                                    <asp:ListItem Text="Junio" Value="6"></asp:ListItem>
+                                                    <asp:ListItem Text="Julio" Value="7"></asp:ListItem>
+                                                    <asp:ListItem Text="Agosto" Value="8"></asp:ListItem>
                                                     <asp:ListItem Text="Septiembre" Value="9"></asp:ListItem>
                                                     <asp:ListItem Text="Octubre" Value="10"></asp:ListItem>
                                                     <asp:ListItem Text="Noviembre" Value="11"></asp:ListItem>
@@ -393,7 +400,7 @@
                                     </div>
                                 </div>
 
-                                <div class="ibox float-e-margins">
+                                <div class="ibox float-e-margins" id="divPagosRechazados" runat="server" visible="false"> 
                                     <div class="ibox-title">
                                         <h5>Reporte de pagos rechazados (<asp:Literal ID="ltCuantos" runat="server"></asp:Literal>):</h5>
                                         <div class="ibox-tools">

@@ -213,6 +213,7 @@
                                                 <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">Id Pago</th>
                                                 <th>Documento</th>
                                                 <th>Afiliado</th>
+                                                <th>Email</th>
                                                 <th data-breakpoints="xs sm md">Valor</th>
                                                 <th data-breakpoints="xs sm md">Plan</th>
                                                 <th data-breakpoints="xs sm md">Fecha</th>
@@ -225,7 +226,8 @@
                                                     <tr class="feed-element">
                                                         <td><%# Eval("idPago") %></td>
                                                         <td><%# Eval("DocumentoAfiliado") %></td>
-                                                        <td><%# Eval("NombreAfiliado") %></td>
+                                                        <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
+                                                        <td><%# Eval("EmailAfiliado") %></td>
                                                         <td><%# Eval("Valor", "{0:C0}") %></td>
                                                         <td><%# Eval("NombrePlan") %></td>
                                                         <td><%# Eval("fechaProximoCobro", "{0:dd MMM yyyy}") %></td>

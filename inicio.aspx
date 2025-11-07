@@ -58,322 +58,335 @@
 <body onload="changeClass()">
 
     <div id="wrapper">
+        <form runat="server" id="form1">
+            <asp:ScriptManager ID="ScriptManager1" runat="server" />
 
-        <uc1:navbar runat="server" ID="navbar1" />
+            <uc1:navbar runat="server" ID="navbar1" />
 
-        <div id="page-wrapper" class="gray-bg">
-            <div class="row border-bottom">
-                <uc1:header runat="server" ID="header1" />
-            </div>
-            <div class="row wrapper border-bottom white-bg page-heading">
-                <%--Inicio Breadcrumb!!!--%>
-                <div class="col-sm-10">
-                    <h2><i class="fa fa-gauge text-success m-r-sm"></i>Dashboard</h2>
-                    <ol class="breadcrumb">
-                        <li>
-                            <a href="inicio">Inicio</a>
-                        </li>
-                        <li class="active">
-                            <strong>Dashboard</strong><asp:Literal runat="server" ID="ltMsg"></asp:Literal>
-                        </li>
-                    </ol>
+            <div id="page-wrapper" class="gray-bg">
+                <div class="row border-bottom">
+                    <uc1:header runat="server" ID="header1" />
                 </div>
-                <form runat="server" id="form1">
-                    <asp:ScriptManager runat="server" />
-                </form>
-                <div class="col-sm-2">
+                <div class="row wrapper border-bottom white-bg page-heading">
+                    <%--Inicio Breadcrumb!!!--%>
+                    <div class="col-sm-10">
+                        <h2><i class="fa fa-gauge text-success m-r-sm"></i>Dashboard</h2>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a href="inicio">Inicio</a>
+                            </li>
+                            <li class="active">
+                                <strong>Dashboard</strong><asp:Literal runat="server" ID="ltMsg"></asp:Literal>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <div class="col-sm-2">
+                    </div>
+                    <%--Fin Breadcrumb!!!--%>
                 </div>
-                <%--Fin Breadcrumb!!!--%>
-            </div>
-            <div class="wrapper wrapper-content animated fadeInRight">
-            <div class="row animated fadeInDown">
-            <%--<div class="fh-breadcrumb">
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="row animated fadeInDown">
+                        <%--<div class="fh-breadcrumb">
                 <div class="full-height">
                     <div class="full-height-scroll border-left">
                         <div class="element-detail-box">--%>
-                            <%--Inicio Contenido!!!!--%>
-                            <asp:PlaceHolder ID="phIndicadores" runat="server"></asp:PlaceHolder>
-                            <%--<uc1:indicadores02 runat="server" ID="indicadores02" />--%>
+                        <%--Inicio Contenido!!!!--%>
+                        <asp:PlaceHolder ID="phIndicadores" runat="server"></asp:PlaceHolder>
+                        <%--<uc1:indicadores02 runat="server" ID="indicadores02" />--%>
 
-                            <uc1:grafico01 runat="server" ID="grafico01" />
+                        <uc1:grafico01 runat="server" ID="grafico01" />
 
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="ibox float-e-margins">
-                                        <div class="ibox-title">
-                                            <h5>Mensajes</h5>
-                                            <div class="ibox-tools">
-                                                <a class="collapse-link">
-                                                    <i class="fa fa-chevron-up"></i>
-                                                </a>
-                                                <a class="close-link">
-                                                    <i class="fa fa-times"></i>
-                                                </a>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Mensajes</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                            <a class="close-link">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content ibox-heading">
+                                        <h3><i class="fa fa-envelope-o"></i>Nuevos mensajes</h3>
+                                        <small><i class="fa fa-tim"></i>Tienes 22 mensajes nuevos y 16 en espera en la carpeta de borradores.</small>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="feed-activity-list">
+
+                                            <div class="feed-element">
+                                                <div>
+                                                    <small class="pull-right text-navy">Hace 1m</small>
+                                                    <strong>Monica Smith</strong>
+                                                    <div>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum</div>
+                                                    <small class="text-muted">Hoy 5:60 pm - 12.06.2024</small>
+                                                </div>
+                                            </div>
+
+                                            <div class="feed-element">
+                                                <div>
+                                                    <small class="pull-right">Hace 2m</small>
+                                                    <strong>Jogn Angel</strong>
+                                                    <div>There are many variations of passages of Lorem Ipsum available</div>
+                                                    <small class="text-muted">Hoy 2:23 pm - 11.06.2024</small>
+                                                </div>
+                                            </div>
+
+                                            <div class="feed-element">
+                                                <div>
+                                                    <small class="pull-right">Hace 5m</small>
+                                                    <strong>Jesica Ocean</strong>
+                                                    <div>Contrary to popular belief, Lorem Ipsum</div>
+                                                    <small class="text-muted">Hoy 1:00 pm - 08.06.2024</small>
+                                                </div>
+                                            </div>
+
+                                            <div class="feed-element">
+                                                <div>
+                                                    <small class="pull-right">Hace 5m</small>
+                                                    <strong>Monica Jackson</strong>
+                                                    <div>The generated Lorem Ipsum is therefore </div>
+                                                    <small class="text-muted">Ayer 8:48 pm - 10.06.2024</small>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="feed-element">
+                                                <div>
+                                                    <small class="pull-right">Hace 5m</small>
+                                                    <strong>Anna Legend</strong>
+                                                    <div>All the Lorem Ipsum generators on the Internet tend to repeat </div>
+                                                    <small class="text-muted">Ayer 8:48 pm - 10.06.2024</small>
+                                                </div>
+                                            </div>
+                                            <div class="feed-element">
+                                                <div>
+                                                    <small class="pull-right">Hace 5m</small>
+                                                    <strong>Damian Nowak</strong>
+                                                    <div>The standard chunk of Lorem Ipsum used </div>
+                                                    <small class="text-muted">Ayer 8:48 pm - 10.06.2024</small>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-8">
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title">
+                                                <span class="label label-warning pull-right">Datos actualizados</span>
+                                                <h5>Actividad del sistema</h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="row">
+                                                    <div class="col-xs-4">
+                                                        <small class="stats-label">Páginas / Visitas</small>
+                                                        <h4>236 321.80</h4>
+                                                    </div>
+
+                                                    <div class="col-xs-4">
+                                                        <small class="stats-label">% Nuevas Visitas</small>
+                                                        <h4>46.11%</h4>
+                                                    </div>
+                                                    <div class="col-xs-4">
+                                                        <small class="stats-label">Última semana</small>
+                                                        <h4>432.021</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="row">
+                                                    <div class="col-xs-4">
+                                                        <small class="stats-label">Páginas / Visitas</small>
+                                                        <h4>643 321.10</h4>
+                                                    </div>
+
+                                                    <div class="col-xs-4">
+                                                        <small class="stats-label">% Nuevas Visitas</small>
+                                                        <h4>92.43%</h4>
+                                                    </div>
+                                                    <div class="col-xs-4">
+                                                        <small class="stats-label">Última semana</small>
+                                                        <h4>564.554</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="row">
+                                                    <div class="col-xs-4">
+                                                        <small class="stats-label">Páginas / Visitas</small>
+                                                        <h4>436 547.20</h4>
+                                                    </div>
+
+                                                    <div class="col-xs-4">
+                                                        <small class="stats-label">% Nuevas Visitas</small>
+                                                        <h4>150.23%</h4>
+                                                    </div>
+                                                    <div class="col-xs-4">
+                                                        <small class="stats-label">Última semana</small>
+                                                        <h4>124.990</h4>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="ibox-content ibox-heading">
-                                            <h3><i class="fa fa-envelope-o"></i>Nuevos mensajes</h3>
-                                            <small><i class="fa fa-tim"></i>Tienes 22 mensajes nuevos y 16 en espera en la carpeta de borradores.</small>
-                                        </div>
-                                        <div class="ibox-content">
-                                            <div class="feed-activity-list">
-
-                                                <div class="feed-element">
-                                                    <div>
-                                                        <small class="pull-right text-navy">Hace 1m</small>
-                                                        <strong>Monica Smith</strong>
-                                                        <div>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum</div>
-                                                        <small class="text-muted">Hoy 5:60 pm - 12.06.2024</small>
-                                                    </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title">
+                                                <h5>Lista de Actividades</h5>
+                                                <div class="ibox-tools">
+                                                    <a class="collapse-link">
+                                                        <i class="fa fa-chevron-up"></i>
+                                                    </a>
+                                                    <a class="close-link">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
                                                 </div>
-
-                                                <div class="feed-element">
-                                                    <div>
-                                                        <small class="pull-right">Hace 2m</small>
-                                                        <strong>Jogn Angel</strong>
-                                                        <div>There are many variations of passages of Lorem Ipsum available</div>
-                                                        <small class="text-muted">Hoy 2:23 pm - 11.06.2024</small>
-                                                    </div>
-                                                </div>
-
-                                                <div class="feed-element">
-                                                    <div>
-                                                        <small class="pull-right">Hace 5m</small>
-                                                        <strong>Jesica Ocean</strong>
-                                                        <div>Contrary to popular belief, Lorem Ipsum</div>
-                                                        <small class="text-muted">Hoy 1:00 pm - 08.06.2024</small>
-                                                    </div>
-                                                </div>
-
-                                                <div class="feed-element">
-                                                    <div>
-                                                        <small class="pull-right">Hace 5m</small>
-                                                        <strong>Monica Jackson</strong>
-                                                        <div>The generated Lorem Ipsum is therefore </div>
-                                                        <small class="text-muted">Ayer 8:48 pm - 10.06.2024</small>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="feed-element">
-                                                    <div>
-                                                        <small class="pull-right">Hace 5m</small>
-                                                        <strong>Anna Legend</strong>
-                                                        <div>All the Lorem Ipsum generators on the Internet tend to repeat </div>
-                                                        <small class="text-muted">Ayer 8:48 pm - 10.06.2024</small>
-                                                    </div>
-                                                </div>
-                                                <div class="feed-element">
-                                                    <div>
-                                                        <small class="pull-right">Hace 5m</small>
-                                                        <strong>Damian Nowak</strong>
-                                                        <div>The standard chunk of Lorem Ipsum used </div>
-                                                        <small class="text-muted">Ayer 8:48 pm - 10.06.2024</small>
-                                                    </div>
-                                                </div>
-
+                                            </div>
+                                            <div class="ibox-content">
+                                                <ul class="todo-list m-t small-list">
+                                                    <li>
+                                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                        <span class="m-l-xs">idUsuario:
+                                                            <asp:Literal ID="ltIdUsuario" runat="server"></asp:Literal></span>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                        <span class="m-l-xs">NombreUsuario:
+                                                            <asp:Literal ID="ltNombreUsuario" runat="server"></asp:Literal></span>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                        <span class="m-l-xs">idEmpresa:
+                                                            <asp:Literal ID="ltIdEmpresa" runat="server"></asp:Literal></span>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                        <span class="m-l-xs">Cargo:
+                                                            <asp:Literal ID="ltCargo" runat="server"></asp:Literal></span>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                        <span class="m-l-xs">Foto:
+                                                            <asp:Literal ID="ltFoto" runat="server"></asp:Literal></span>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                        <span class="m-l-xs">idPerfil:
+                                                            <asp:Literal ID="ltIdPerfil" runat="server"></asp:Literal></span>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                        <span class="m-l-xs">emailUsuario:
+                                                            <asp:Literal ID="ltEmailUsuario" runat="server"></asp:Literal></span>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                        <span class="m-l-xs">fechaNac:
+                                                            <asp:Literal ID="ltFechaNac" runat="server"></asp:Literal></span>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                        <span class="m-l-xs">idSede:
+                                                            <asp:Literal ID="ltIdSede" runat="server"></asp:Literal></span>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                        <span class="m-l-xs">idCanalVenta:
+                                                            <asp:Literal ID="ltIdCanalVenta" runat="server"></asp:Literal></span>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
+                                                        <span class="m-l-xs">idEmpleado:
+                                                            <asp:Literal ID="ltIdEmpleado" runat="server"></asp:Literal></span>
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-lg-8">
-
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="ibox float-e-margins">
-                                                <div class="ibox-title">
-                                                    <span class="label label-warning pull-right">Datos actualizados</span>
-                                                    <h5>Actividad del sistema</h5>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-content">
+                                                <div>
+                                                    <span class="pull-right text-right">
+                                                        <small>Valor promedio de las ventas del ultimo mes: <strong>FP</strong></small>
+                                                        <br />
+                                                        Ventas totales: 162,862
+                                                    </span>
+                                                    <h3 class="font-bold no-margins">Margen de ingresos semestral
+                                                    </h3>
+                                                    <small>Marketing de ventas.</small>
                                                 </div>
-                                                <div class="ibox-content">
+
+                                                <div class="m-t-sm">
+
                                                     <div class="row">
-                                                        <div class="col-xs-4">
-                                                            <small class="stats-label">Páginas / Visitas</small>
-                                                            <h4>236 321.80</h4>
-                                                        </div>
-
-                                                        <div class="col-xs-4">
-                                                            <small class="stats-label">% Nuevas Visitas</small>
-                                                            <h4>46.11%</h4>
-                                                        </div>
-                                                        <div class="col-xs-4">
-                                                            <small class="stats-label">Última semana</small>
-                                                            <h4>432.021</h4>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="ibox-content">
-                                                    <div class="row">
-                                                        <div class="col-xs-4">
-                                                            <small class="stats-label">Páginas / Visitas</small>
-                                                            <h4>643 321.10</h4>
-                                                        </div>
-
-                                                        <div class="col-xs-4">
-                                                            <small class="stats-label">% Nuevas Visitas</small>
-                                                            <h4>92.43%</h4>
-                                                        </div>
-                                                        <div class="col-xs-4">
-                                                            <small class="stats-label">Última semana</small>
-                                                            <h4>564.554</h4>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="ibox-content">
-                                                    <div class="row">
-                                                        <div class="col-xs-4">
-                                                            <small class="stats-label">Páginas / Visitas</small>
-                                                            <h4>436 547.20</h4>
-                                                        </div>
-
-                                                        <div class="col-xs-4">
-                                                            <small class="stats-label">% Nuevas Visitas</small>
-                                                            <h4>150.23%</h4>
-                                                        </div>
-                                                        <div class="col-xs-4">
-                                                            <small class="stats-label">Última semana</small>
-                                                            <h4>124.990</h4>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="ibox float-e-margins">
-                                                <div class="ibox-title">
-                                                    <h5>Lista de Actividades</h5>
-                                                    <div class="ibox-tools">
-                                                        <a class="collapse-link">
-                                                            <i class="fa fa-chevron-up"></i>
-                                                        </a>
-                                                        <a class="close-link">
-                                                            <i class="fa fa-times"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="ibox-content">
-                                                    <ul class="todo-list m-t small-list">
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">idUsuario: <asp:Literal ID="ltIdUsuario" runat="server"></asp:Literal></span>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">NombreUsuario: <asp:Literal ID="ltNombreUsuario" runat="server"></asp:Literal></span>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">idEmpresa: <asp:Literal ID="ltIdEmpresa" runat="server"></asp:Literal></span>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">Cargo: <asp:Literal ID="ltCargo" runat="server"></asp:Literal></span>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">Foto: <asp:Literal ID="ltFoto" runat="server"></asp:Literal></span>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">idPerfil: <asp:Literal ID="ltIdPerfil" runat="server"></asp:Literal></span>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">emailUsuario: <asp:Literal ID="ltEmailUsuario" runat="server"></asp:Literal></span>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">fechaNac: <asp:Literal ID="ltFechaNac" runat="server"></asp:Literal></span>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">idSede: <asp:Literal ID="ltIdSede" runat="server"></asp:Literal></span>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">idCanalVenta: <asp:Literal ID="ltIdCanalVenta" runat="server"></asp:Literal></span>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                            <span class="m-l-xs">idEmpleado: <asp:Literal ID="ltIdEmpleado" runat="server"></asp:Literal></span>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="ibox float-e-margins">
-                                                <div class="ibox-content">
-                                                    <div>
-                                                        <span class="pull-right text-right">
-                                                            <small>Valor promedio de las ventas del ultimo mes: <strong>FP</strong></small>
-                                                            <br />
-                                                            Ventas totales: 162,862
-                        </span>
-                                                        <h3 class="font-bold no-margins">Margen de ingresos semestral
-            </h3>
-                                                        <small>Marketing de ventas.</small>
-                                                    </div>
-
-                                                    <div class="m-t-sm">
-
-                                                        <div class="row">
-                                                            <div class="col-md-8">
-                                                                <div>
-                                                                    <canvas id="lineChart" height="114"></canvas>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <ul class="stat-list m-t-lg">
-                                                                    <li>
-                                                                        <h2 class="no-margins">2,346</h2>
-                                                                        <small>Solicitudes del periodo</small>
-                                                                        <div class="progress progress-mini">
-                                                                            <div class="progress-bar" style="width: 48%;"></div>
-                                                                        </div>
-                                                                    </li>
-                                                                    <li>
-                                                                        <h2 class="no-margins ">4,422</h2>
-                                                                        <small>Solicitudes ultimo mes</small>
-                                                                        <div class="progress progress-mini">
-                                                                            <div class="progress-bar" style="width: 60%;"></div>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
+                                                        <div class="col-md-8">
+                                                            <div>
+                                                                <canvas id="lineChart" height="114"></canvas>
                                                             </div>
                                                         </div>
-
-                                                    </div>
-
-                                                    <div class="m-t-md">
-                                                        <small class="pull-right">
-                                                            <i class="fa fa-clock-o"></i>
-                                                            Actualizado el 03.10.2024
-            </small>
-                                                        <small>
-                                                            <strong>Analisis de venta:</strong> The value has been changed over time, and last month reached a level over $50,000.
-            </small>
+                                                        <div class="col-md-4">
+                                                            <ul class="stat-list m-t-lg">
+                                                                <li>
+                                                                    <h2 class="no-margins">2,346</h2>
+                                                                    <small>Solicitudes del periodo</small>
+                                                                    <div class="progress progress-mini">
+                                                                        <div class="progress-bar" style="width: 48%;"></div>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <h2 class="no-margins ">4,422</h2>
+                                                                    <small>Solicitudes ultimo mes</small>
+                                                                    <div class="progress progress-mini">
+                                                                        <div class="progress-bar" style="width: 60%;"></div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
                                                     </div>
 
                                                 </div>
+
+                                                <div class="m-t-md">
+                                                    <small class="pull-right">
+                                                        <i class="fa fa-clock-o"></i>
+                                                        Actualizado el 03.10.2024
+                                                    </small>
+                                                    <small>
+                                                        <strong>Analisis de venta:</strong> The value has been changed over time, and last month reached a level over $50,000.
+                                                    </small>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <%--Fin Contenido!!!!--%>
+                        </div>
+                        <%--Fin Contenido!!!!--%>
                         <%--</div>
                     </div>--%>
+                    </div>
                 </div>
+
+                <uc1:footer runat="server" ID="footer1" />
+
             </div>
+            <uc1:rightsidebar runat="server" ID="rightsidebar1" />
 
-            <uc1:footer runat="server" ID="footer1" />
-
-        </div>
-        <uc1:rightsidebar runat="server" ID="rightsidebar1" />
+        </form>
     </div>
 
     <!-- Mainly scripts -->

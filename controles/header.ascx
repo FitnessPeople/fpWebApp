@@ -12,7 +12,7 @@
         <li>
             <span class="m-r-sm text-muted welcome-message font-bold" id="demo"></span>
         </li>
-        <li class="dropdown">
+        <%--<li class="dropdown">
             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" runat="server" id="divCambioPerfil">
                 <i class="fa fa-people-arrows"></i>
             </a>
@@ -75,7 +75,7 @@
                     </div>
                 </li>
             </ul>
-        </li>
+        </li>--%>
         <li class="dropdown">
             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                 <i class="fa fa-envelope"></i><span class="label label-warning1">0</span>
@@ -177,6 +177,38 @@
         </li>
 
         <li class="dropdown">
+            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                <i class="fa fa-user-tie"></i><span class="label label-warning1">
+                    <asp:Literal ID="ltNroUsuarios" runat="server"></asp:Literal></span></a>
+                <ul class="dropdown-menu dropdown-messages">
+                    <%--<asp:UpdatePanel ID="upUsuariosOnline" runat="server" UpdateMode="Always" RenderMode="Inline">
+                        <ContentTemplate>--%>
+                            <asp:Repeater ID="rpUsuariosEnLinea" runat="server">
+                                <ItemTemplate>
+                                    <li>
+                                        <div class="dropdown-messages-box">
+                                            <a href="#" class="pull-left">
+                                                <img alt="image" class="img-circle" src="img/empleados/<%# Eval("Foto") %>">
+                                            </a>
+                                            <div>
+                                                <small class="pull-right text-navy">Online</small>
+                                                <strong><%# Eval("Usuario") %></strong>.
+                                            <br>
+                                                <small class="text-muted"><%# Eval("Cargo") %></small>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="divider"></li>
+                                </ItemTemplate>
+                            </asp:Repeater>
+                            <%--<asp:Timer ID="tmRefrescarUsuarios" runat="server" Interval="10000" OnTick="tmRefrescarUsuarios_Tick" />
+                        </ContentTemplate>
+                    </asp:UpdatePanel>--%>
+                </ul>
+            </a>
+        </li>
+
+        <li class="dropdown">
             <a class="dropdown-toggle count-info" data-toggle="modal" href="#" data-target="#myModal">
                 <i class="fa fa-circle-question text-success"></i>
             </a>
@@ -209,7 +241,7 @@
     }
     typeWriter();
 
-    const url = window.location.pathname.replace("/","");
+    const url = window.location.pathname.replace("/", "");
     //console.log(url);
 
     let teclasPresionadas = {}; // Objeto para guardar las teclas presionadas

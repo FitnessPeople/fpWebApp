@@ -23,7 +23,9 @@ namespace fpWebApp
                     {
                         txbEmail.Attributes.Add("type", "email");
                         clasesglobales cg1 = new clasesglobales();
-                        txbClave.Text = cg1.CreatePassword(8);
+                        //txbClave.Text = cg1.CreatePassword(8);
+                        txbClave.Text = "Fitness2025";
+                        CargarCargos();
                         CargarPerfiles();
                         CargarEmpleados();
                     }
@@ -61,6 +63,15 @@ namespace fpWebApp
                 ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
             }
 
+            dt.Dispose();
+        }
+
+        private void CargarCargos()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCargos();
+            ddlCargo.DataSource = dt;
+            ddlCargo.DataBind();
             dt.Dispose();
         }
 
@@ -149,9 +160,9 @@ namespace fpWebApp
                         string strHashClave = cg.ComputeSha256Hash(txbClave.Text.ToString());
 
                         string strQuery = "INSERT INTO usuarios " +
-                        "(EmailUsuario, ClaveUsuario, NombreUsuario, CargoUsuario, idPerfil, idEmpleado, idEmpresa, EstadoUsuario) " +
+                        "(EmailUsuario, ClaveUsuario, NombreUsuario, idCargoUsuario, idPerfil, idEmpleado, idEmpresa, EstadoUsuario) " +
                         "VALUES ('" + txbEmail.Text.ToString() + "', '" + strHashClave + "', " +
-                        "'" + txbNombre.Text.ToString() + "', '" + txbCargo.Text.ToString() + "', " +
+                        "'" + txbNombre.Text.ToString() + "', " + ddlCargo.SelectedItem.Value.ToString() + ", " +
                         "'" + ddlPerfiles.SelectedItem.Value.ToString() + "', '" + ddlEmpleados.SelectedItem.Value.ToString() + "', " +
                         "1, 'Activo') ";
 

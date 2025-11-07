@@ -1,5 +1,9 @@
-﻿using System;
+﻿using fpWebApp.Services;
+using NPOI.SS.Formula.Functions;
+using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Web.Services.Description;
 using System.Web.UI;
 
@@ -81,6 +85,7 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
+                //DataTable dt1 = cg.ValidarUsuario(UserName, Password);
                 DataTable dt = cg.ValidarUsuario(UserName, Password);
 
                 if (dt.Rows.Count > 0)
@@ -94,7 +99,8 @@ namespace fpWebApp
                         Session["idUsuario"] = dt.Rows[0]["idUsuario"].ToString();
                         Session["NombreUsuario"] = dt.Rows[0]["NombreUsuario"].ToString();
                         Session["idEmpresa"] = dt.Rows[0]["idEmpresa"].ToString();
-                        Session["Cargo"] = dt.Rows[0]["CargoUsuario"].ToString();
+                        Session["idCargoUsuario"] = dt.Rows[0]["idCargoUsuario"].ToString();
+                        Session["CargoUsuario"] = dt.Rows[0]["NombreCargo"].ToString();
                         Session["Foto"] = dt.Rows[0]["FotoEmpleado"].ToString();
                         Session["idPerfil"] = dt.Rows[0]["idPerfil"].ToString();
                         Session["emailUsuario"] = dt.Rows[0]["EmailUsuario"].ToString();
@@ -109,6 +115,24 @@ namespace fpWebApp
                             ? "12"   // Online
                             : dt.Rows[0]["idCanalVenta"].ToString();
                         Session["idEmpleado"] = dt.Rows[0]["idEmpleado"].ToString();
+
+                        // Lista de usuarios en línea
+                        Application.Lock();
+                        var lista = (List<UsuarioOnline>)Application["ListaUsuarios"];
+
+                        if (!lista.Any(x => x.Usuario == Session["NombreUsuario"].ToString()))
+                        {
+                            lista.Add(new UsuarioOnline
+                            {
+                                Usuario = Session["NombreUsuario"].ToString(),
+                                Cargo = Session["CargoUsuario"].ToString(),
+                                Foto = Session["Foto"].ToString()
+                            });
+                        }
+
+                        Application["ListaUsuarios"] = lista;
+                        Application.UnLock();
+
                         boolReturnValue = true;
                     }
                 }
@@ -152,6 +176,7 @@ namespace fpWebApp
         protected void btnIngresarCodigo_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
+            //DataTable dt = new DataTable();
             DataTable dt = cg.RevisarCodigo(Convert.ToInt32(Session["idUsuario"].ToString()), txbCodigo.Text.ToString());
 
             if (dt.Rows.Count > 0)

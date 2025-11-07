@@ -196,7 +196,7 @@
                                                     <tr>
                                                         <td><%# Eval("idUsuario") %></td>
                                                         <td><%# Eval("NombreUsuario") %></td>
-                                                        <td><%# Eval("CargoUsuario") %></td>
+                                                        <td><%# Eval("NombreCargo") %></td>
                                                         <td><a href="empleados" title="Ir a Empleados"><span class='badge badge-<%# Eval("label") %>'><%# Eval("Empleado") %></span></a></td>
                                                         <td><i class="fa fa-circle-user m-r-xs font-bold"></i><%# Eval("EmailUsuario") %></td>
                                                         <%--<td><i class="fa fa-unlock-keyhole m-r-xs font-bold"></i><%# Eval("ClaveUsuario") %></td>--%>
