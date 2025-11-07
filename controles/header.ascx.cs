@@ -8,7 +8,8 @@ namespace fpWebApp.controles
         {
             if (Session["idPerfil"].ToString() != "1")
             {
-                divCambioPerfil.Attributes.Add("style", "display: none;");
+                //divCambioPerfil.Attributes.Add("style", "display: none;");
+                ltNroUsuarios.Text = Application["VisitorsCount"].ToString();
             }
         }
     }

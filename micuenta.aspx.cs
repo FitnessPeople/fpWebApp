@@ -16,7 +16,7 @@ namespace fpWebApp
                 if (Session["idUsuario"] != null)
                 {
                     ltNombreUsuario.Text = Session["NombreUsuario"].ToString();
-                    ltCargo.Text = Session["idCargoUsuario"].ToString();
+                    ltCargo.Text = Session["CargoUsuario"].ToString();
                     //ltFoto.Text = "<img src=\"img/empleados/" + Session["Foto"].ToString() + "\" class=\"img-circle circle-border m-b-md\" alt=\"profile\">";
 
                     if (Session["Foto"].ToString() != "")

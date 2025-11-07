@@ -12,7 +12,7 @@
         <li>
             <span class="m-r-sm text-muted welcome-message font-bold" id="demo"></span>
         </li>
-        <li class="dropdown">
+        <%--<li class="dropdown">
             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" runat="server" id="divCambioPerfil">
                 <i class="fa fa-people-arrows"></i>
             </a>
@@ -75,7 +75,7 @@
                     </div>
                 </li>
             </ul>
-        </li>
+        </li>--%>
         <li class="dropdown">
             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                 <i class="fa fa-envelope"></i><span class="label label-warning1">0</span>
@@ -174,6 +174,13 @@
                     </div>
                 </li>
             </ul>
+        </li>
+
+        <li class="dropdown">
+            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                <i class="fa fa-user-tie"></i><span class="label label-warning1">
+                    <asp:Literal ID="ltNroUsuarios" runat="server"></asp:Literal></span>
+            </a>
         </li>
 
         <li class="dropdown">

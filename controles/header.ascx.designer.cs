@@ -15,12 +15,12 @@ namespace fpWebApp.controles
     {
 
         /// <summary>
-        /// Control divCambioPerfil.
+        /// Control ltNroUsuarios.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor divCambioPerfil;
+        protected global::System.Web.UI.WebControls.Literal ltNroUsuarios;
     }
 }

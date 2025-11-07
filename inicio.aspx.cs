@@ -17,7 +17,7 @@ namespace fpWebApp
                     ltIdUsuario.Text = Session["idUsuario"].ToString();
                     ltNombreUsuario.Text = Session["NombreUsuario"].ToString();
                     ltIdEmpresa.Text = Session["idEmpresa"].ToString();
-                    ltCargo.Text = Session["idCargoUsuario"].ToString();
+                    ltCargo.Text = Session["CargoUsuario"].ToString();
                     ltFoto.Text = Session["Foto"].ToString();
                     ltIdPerfil.Text = Session["idPerfil"].ToString();
                     ltEmailUsuario.Text = Session["emailUsuario"].ToString();

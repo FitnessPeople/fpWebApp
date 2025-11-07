@@ -49,40 +49,40 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-id-card modal-icon" style="color: #1C84C6;"></i>
-                    <h4 class="modal-title">Guía para visualizar los empleados registrados</h4>
+                    <i class="fa fa-user-tie modal-icon" style="color: #1C84C6;"></i>
+                    <h4 class="modal-title">Ayuda para la administración de Empleados</h4>
                     <small class="font-bold">¡Bienvenido! Te explicamos cómo gestionar el listado de forma rápida y sencilla.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>Paso 1: Busca y filtra afiliados</b><br />
-                        Usa el buscador para encontrar afiliados específicos.<br />
-                        <i class="fa-solid fa-magnifying-glass"></i>Filtra por: 
-                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i><b>Nombre</b>, 
-                        <i class="fa-solid fa-address-card" style="color: #0D6EFD;"></i><b>Cédula</b>, 
-                        <i class="fa-solid fa-envelope" style="color: #0D6EFD;"></i><b>Correo</b>, 
-                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i><b>Celular</b>,
-                        <i class="fa-solid fa-user-tie" style="color: #0D6EFD;"></i><b>Cargo</b> o 
-                        <i class="fa-solid fa-circle" style="color: #0D6EFD;"></i><b>Estado</b><br />
-                        <i class="fa-solid fa-star" style="color: #FECE32;"></i>Tip: ¡Combina filtros para resultados más precisos!
+                        <b>Paso 1: Busca y filtra empleados</b><br />
+                        Usa el buscador para encontrar empleados específicos.<br />
+                        <i class="fa-solid fa-magnifying-glass m-r-xs"></i>Filtra por: 
+                        <i class="fa-solid fa-user m-r-xs" style="color: #0D6EFD;"></i><b>Nombre</b>, 
+                        <i class="fa-solid fa-address-card m-r-xs" style="color: #0D6EFD;"></i><b>Cédula</b>, 
+                        <i class="fa-solid fa-envelope m-r-xs" style="color: #0D6EFD;"></i><b>Correo</b>, 
+                        <i class="fa-solid fa-mobile m-r-xs" style="color: #0D6EFD;"></i><b>Celular</b>,
+                        <i class="fa-solid fa-user-tie m-r-xs" style="color: #0D6EFD;"></i><b>Cargo</b> o 
+                        <i class="fa-solid fa-circle m-r-xs" style="color: #0D6EFD;"></i><b>Estado</b><br />
+                        <i class="fa-solid fa-star m-r-xs" style="color: #FECE32;"></i>Tip: ¡Combina filtros para resultados más precisos!
                     <br />
                         <br />
                         <b>Paso 2: Revisa la tabla de resultados</b><br />
-                        La tabla muestra toda la información clave de cada afiliado.<br />
+                        La tabla muestra toda la información clave de cada empleado.<br />
                         En la columna "Acciones" encontrarás estas opciones:<br />
-                        <i class="fa fa-edit" style="color: #1AB394;"></i><b>Editar:</b> Modifica los datos del afiliado.<br />
-                        <i class="fa fa-trash" style="color: #DC3545;"></i><b>Eliminar:</b> Da de baja al afiliado.
+                        <i class="fa fa-edit m-r-xs" style="color: #1AB394;"></i><b>Editar:</b> Modifica los datos del empleado.<br />
+                        <i class="fa fa-trash m-r-xs" style="color: #DC3545;"></i><s><b>Eliminar:</b> Da de baja al empleado.</s>
                     <br />
                         <br />
                         <b>Paso 3: Acciones adicionales</b><br />
                         Al lado opuesto del buscador encontrarás dos botones útiles:<br />
-                        <i class="fa-solid fa-file-export" style="color: #212529;"></i><b>Exportar a Excel:</b>
+                        <i class="fa-solid fa-file-export m-r-xs" style="color: #212529;"></i><b>Exportar a Excel:</b>
                         Genera un archivo Excel con los datos visibles en la tabla.<br />
-                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i><b>Crear Nuevo Empleado:</b>
+                        <i class="fa-solid fa-square-check fa-lg m-r-xs" style="color: #18A689;"></i><b>Crear Nuevo Empleado:</b>
                         Te lleva a un formulario para registrar un nuevo empleado.
                    <br />
                         <br />
-                        <i class="fa fa-exclamation-circle mr-2"></i>Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2 m-r-xs"></i>Si tienes dudas, consulta con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -161,7 +161,7 @@
                                         </div>
                                     </form>
 
-                                    <table id="tabla" class="footable table table-striped list-group-item-text" data-paging-size="20"
+                                    <table id="tabla" class="footable table table-striped list-group-item-text" data-paging-size="15"
                                         data-filter-min="3" data-filter-placeholder="Buscar"
                                         data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
                                         data-paging-limit="10" data-filtering="true"

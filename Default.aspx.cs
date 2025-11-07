@@ -81,6 +81,7 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
+                //DataTable dt1 = cg.ValidarUsuario(UserName, Password);
                 DataTable dt = cg.ValidarUsuario(UserName, Password);
 
                 if (dt.Rows.Count > 0)
@@ -95,6 +96,7 @@ namespace fpWebApp
                         Session["NombreUsuario"] = dt.Rows[0]["NombreUsuario"].ToString();
                         Session["idEmpresa"] = dt.Rows[0]["idEmpresa"].ToString();
                         Session["idCargoUsuario"] = dt.Rows[0]["idCargoUsuario"].ToString();
+                        Session["CargoUsuario"] = dt.Rows[0]["NombreCargo"].ToString();
                         Session["Foto"] = dt.Rows[0]["FotoEmpleado"].ToString();
                         Session["idPerfil"] = dt.Rows[0]["idPerfil"].ToString();
                         Session["emailUsuario"] = dt.Rows[0]["EmailUsuario"].ToString();
@@ -152,6 +154,7 @@ namespace fpWebApp
         protected void btnIngresarCodigo_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
+            //DataTable dt = new DataTable();
             DataTable dt = cg.RevisarCodigo(Convert.ToInt32(Session["idUsuario"].ToString()), txbCodigo.Text.ToString());
 
             if (dt.Rows.Count > 0)

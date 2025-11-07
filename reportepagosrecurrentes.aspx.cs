@@ -167,7 +167,7 @@ namespace fpWebApp
             string query = @"SELECT 
                                  ppa.idPago, ppa.Valor, ppa.DataIdFuente, ppa.FechaHoraPago, ap.fechaProximoCobro, 
                                  ap.idAfiliadoPlan, 
-                                 a.DocumentoAfiliado, a.NombreAfiliado, a.EmailAfiliado, a.idSede, 
+                                 a.DocumentoAfiliado, a.NombreAfiliado, a.ApellidoAfiliado, a.EmailAfiliado, a.idSede, 
                                  u.idUsuario, 
                                  p.idPlan, p.NombrePlan, p.CodSiigoPlan
                              FROM PagosPlanAfiliado ppa

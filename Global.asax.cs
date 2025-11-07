@@ -19,5 +19,12 @@ namespace fpWebApp
             Application["VisitorsCount"] = (int)Application["VisitorsCount"] + 1;
             Application.UnLock();
         }
+
+        void Session_End(object sender, EventArgs e)
+        {
+            Application.Lock();
+            Application["VisitorsCount"] = (int)Application["VisitorsCount"] - 1;
+            Application.UnLock();
+        }
     }
 }
