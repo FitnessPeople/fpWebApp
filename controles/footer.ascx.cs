@@ -1,4 +1,6 @@
-﻿using System;
+﻿using fpWebApp.Services;
+using System;
+using System.Collections.Generic;
 
 namespace fpWebApp.controles
 {
@@ -6,7 +8,9 @@ namespace fpWebApp.controles
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            lblCount.Text = Application["VisitorsCount"].ToString();
+            var lista = Application["ListaUsuarios"] as List<UsuarioOnline>;
+            lblCount.Text = lista != null ? lista.Count.ToString() : "0";
+
             lblAnho.Text = DateTime.Now.Year.ToString();
         }
     }

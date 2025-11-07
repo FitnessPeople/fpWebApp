@@ -16,9 +16,8 @@ namespace fpWebApp.controles
 
         private void CargarUsuariosOnline()
         {
-            ltNroUsuarios.Text = Application["UsuariosEnLinea"] != null
-                ? Application["UsuariosEnLinea"].ToString()
-                : "0";
+            var lista = Application["ListaUsuarios"] as List<UsuarioOnline>;
+            ltNroUsuarios.Text = lista != null ? lista.Count.ToString() : "0";
 
             var listaUsuarios = (List<UsuarioOnline>)Application["ListaUsuarios"];
             rpUsuariosEnLinea.DataSource = listaUsuarios;

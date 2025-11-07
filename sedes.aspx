@@ -96,25 +96,25 @@
                     <p>
                         <b>Paso 1: Crea una nueva sede</b><br />
                         Usa el formulario que está a la <b>izquierda</b> para digitar la información necesaria de la sede.<br />
-                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Agregar:</b> Guarda la información y finaliza el registro.<br />
-                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i><b>Agregar:</b> Guarda la información y finaliza el registro.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i><b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
                     <br />
                         <br />
                         <b>Paso 2: Visualiza las sedes existentes</b><br />
                         Usa el buscador que está a la <b>derecha</b> para encontrar lo que buscas.<br />
-                        <i class="fa-solid fa-magnifying-glass"></i> Filtra por 
-                        <i class="fa-solid fa-school-flag" style="color: #0D6EFD;"></i> <b>Sede</b>,
-                        <i class="fa-solid fa-location-dot" style="color: #0D6EFD;"></i> <b>Dirección</b> o
-                        <i class="fa-solid fa-school-flag" style="color: #0D6EFD;"></i> <b>Tipo de Sede</b>
-                    <br />
+                        <i class="fa-solid fa-magnifying-glass"></i>Filtra por 
+                        <i class="fa-solid fa-school-flag" style="color: #0D6EFD;"></i><b>Sede</b>,
+                        <i class="fa-solid fa-location-dot" style="color: #0D6EFD;"></i><b>Dirección</b> o
+                        <i class="fa-solid fa-school-flag" style="color: #0D6EFD;"></i><b>Tipo de Sede</b>
+                        <br />
                         <br />
                         <b>Paso 3: Gestiona las sedes</b><br />
                         En la columna "Acciones" encontrarás estas opciones:<br />
-                        <i class="fa fa-edit" style="color: #1AB394;"></i> <b>Editar:</b> Modifica los datos necesarios.<br />
-                        <i class="fa fa-trash" style="color: #DC3545;"></i> <b>Eliminar:</b> Borra lo que creas innecesario.
+                        <i class="fa fa-edit" style="color: #1AB394;"></i><b>Editar:</b> Modifica los datos necesarios.<br />
+                        <i class="fa fa-trash" style="color: #DC3545;"></i><b>Eliminar:</b> Borra lo que creas innecesario.
                    <br />
                         <br />
-                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i>Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -241,7 +241,7 @@
                                                     <asp:RadioButtonList ID="rblTipoSede" runat="server" CssClass="form-control input-sm" RepeatDirection="Horizontal">
                                                         <asp:ListItem Text="&nbsp;Deluxe&nbsp;&nbsp;&nbsp;&nbsp;" Value="Deluxe"></asp:ListItem>
                                                         <asp:ListItem Text="&nbsp;Premium&nbsp;&nbsp;&nbsp;&nbsp;" Value="Premium"></asp:ListItem>
-                                                        <asp:ListItem Text="&nbsp;N/A&nbsp;&nbsp;&nbsp;&nbsp;" Value=""></asp:ListItem>
+                                                        <asp:ListItem Text="&nbsp;N/A&nbsp;&nbsp;&nbsp;&nbsp;" Value="N/A"></asp:ListItem>
                                                     </asp:RadioButtonList>
                                                     <asp:RequiredFieldValidator ID="rfvTipoSede" runat="server" ErrorMessage="* Campo requerido"
                                                         ControlToValidate="rblTipoSede" ValidationGroup="agregar"
@@ -275,24 +275,24 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        
+
                                         <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
                                             <div class="col-lg-6 form-horizontal">
                                                 <div class="form-group">
                                                     <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                                 </div>
                                             </div>
- 
+
                                             <div class="col-lg-6 form-horizontal">
-                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false" 
-                                                    CssClass="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
+                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
                                                     OnClick="lbExportarExcel_Click">
                                                     <i class="fa fa-file-excel"></i> EXCEL
                                                 </asp:LinkButton>
                                             </div>
                                         </div>
-                                        
-                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="15"
                                             data-filter-min="3" data-filter-placeholder="Buscar"
                                             data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
                                             data-paging-limit="10" data-filtering="true"
