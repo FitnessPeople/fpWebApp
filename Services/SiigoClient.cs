@@ -156,19 +156,19 @@ namespace fpWebApp.Services
         public async Task<string> RegisterInvoiceAsync(string cedula, string codSiigoPlan, string nombrePlan, int precioPlan, int idSede)
         {
             // 1. Consultar información de integración en la BD
-            clasesglobales cg = new clasesglobales();
-            DataTable dtIntegracion = cg.ConsultarIntegracion(idSede);
-            int idTipoDocumento = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["idTipoDocumento"].ToString()) : 66444;
-            int costCenterDefault = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["costCenterDefault"].ToString()) : 13053;
-            int idVendedor = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["idVendedor"].ToString()) : 51883;
-            int idPayment = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["idPayment"].ToString()) : 59576;
-            dtIntegracion.Dispose();
+            //clasesglobales cg = new clasesglobales();
+            //DataTable dtIntegracion = cg.ConsultarIntegracion(idSede);
+            //int idTipoDocumento = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["idTipoDocumento"].ToString()) : 66444;
+            //int costCenterDefault = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["costCenterDefault"].ToString()) : 13053;
+            //int idVendedor = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["idVendedor"].ToString()) : 51883;
+            //int idPayment = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["idPayment"].ToString()) : 59576;
+            //dtIntegracion.Dispose();
 
             // Más Datos - Pruebas
-            //int idTipoDocumento = 28006;
-            //int costCenterDefault = 621;
-            //int idVendedor = 856;
-            //int idPayment = 9438;
+            int idTipoDocumento = 28006;
+            int costCenterDefault = 621;
+            int idVendedor = 856;
+            int idPayment = 9438;
 
             // 2. Obtener token
             string token = await GetTokenAsync();

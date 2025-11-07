@@ -22,8 +22,8 @@ namespace fpWebApp
 {
 	public partial class reportepagosrecurrentes : System.Web.UI.Page
 	{
-        //static int idIntegracion = 1; // Pruebas
-        static int idIntegracion = 4; // Producción
+        static int idIntegracion = 1; // Pruebas
+        //static int idIntegracion = 4; // Producción
 
         protected string EstadoCobroRechazado
         {
@@ -241,11 +241,11 @@ namespace fpWebApp
                 int idPlan = Convert.ToInt32(((HiddenField)item.FindControl("hfIdPlan")).Value);
                 string codSiigoPlan = ((HiddenField)item.FindControl("hfCodSiigoPlan")).Value;
                 string nombrePlan = ((HiddenField)item.FindControl("hfNombrePlan")).Value;
-                int valor = Convert.ToInt32(((HiddenField)item.FindControl("hfValor")).Value);
+                int valorPlan = Convert.ToInt32(((HiddenField)item.FindControl("hfValor")).Value);
                 string fuentePago = ((HiddenField)item.FindControl("hfFuentePago")).Value;
                 string documentoAfiliado = ((HiddenField)item.FindControl("hfDocumentoAfiliado")).Value;
                 string correo = ((HiddenField)item.FindControl("hfEmail")).Value;
-                
+
                 // Validaciones básicas
                 if (string.IsNullOrEmpty(fuentePago))
                 {
@@ -253,21 +253,36 @@ namespace fpWebApp
                     return;
                 }
 
+                clasesglobales cg = new clasesglobales();
+
+                int valorPromocion = cg.ObtenerValorPlanConPromocion(idPlan, idAfiliadoPlan);
+
+                if (valorPromocion > 0)
+                {
+                    valorPlan = valorPromocion;
+                }
+
                 if (idPlan == 12)
                 {
                     codSiigoPlan = "17-PlanImportadoClez";
 
-                    if (valor == 2000)
+                    if (valorPlan == 2000)
                     {
-                        valor = 89000 - valor;
+                        valorPlan = 89000 - valorPlan;
                     }
                     else
                     {
-                        valor = 89000;
+                        valorPlan = 89000;
                     }
                 }
 
-                int monto = valor * 100;
+                // DESCOMENTAR EL DÍA - 14-11-2025
+                //if (documentoAfiliado == "13568255")
+                //{
+                //    valor = 87000;
+                //}
+
+                int monto = valorPlan * 100;
                 string moneda = "COP";
                 string referencia = $"{documentoAfiliado}-{DateTime.Now.ToString("yyyyMMddHHmmss")}";
                 string descripcion = $"Cobro recurrente del plan {nombrePlan}";
@@ -285,8 +300,6 @@ namespace fpWebApp
                     descripcion
                 );
 
-                clasesglobales cg = new clasesglobales();
-
                 // Si fue exitoso, registramos el pago
                 if (pagoExitoso)
                 {
@@ -294,8 +307,8 @@ namespace fpWebApp
                         idAfiliadoPlan,
                         documentoAfiliado,
                         codSiigoPlan,
-                        nombrePlan, 
-                        valor,
+                        nombrePlan,
+                        valorPlan,
                         referencia,
                         idVendedor,
                         fuentePago, 
@@ -371,18 +384,18 @@ namespace fpWebApp
 
                 try
                 {
-                    DataTable dtIntegracion = cg.ConsultarIntegracion(idSede);
-                    string url = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["urlTest"].ToString() : "0";
-                    string username = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["username"].ToString() : "0";
-                    string accessKey = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["accessKey"].ToString() : "0";
-                    string partnerId = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["partnerId"].ToString() : "0";
-                    dtIntegracion.Dispose();
+                    //DataTable dtIntegracion = cg.ConsultarIntegracion(idSede);
+                    //string url = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["urlTest"].ToString() : "0";
+                    //string username = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["username"].ToString() : "0";
+                    //string accessKey = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["accessKey"].ToString() : "0";
+                    //string partnerId = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["partnerId"].ToString() : "0";
+                    //dtIntegracion.Dispose();
 
                     // PRUEBAS
-                    //string url = "https://api.siigo.com/";
-                    //string username = "sandbox@siigoapi.com";
-                    //string accessKey = "YmEzYTcyOGYtN2JhZi00OTIzLWE5ZjktYTgxNTVhNWUxZDM2Ojc0ODllKUZrSFM=";
-                    //string partnerId = "SandboxSiigoApi";
+                    string url = "https://api.siigo.com/";
+                    string username = "sandbox@siigoapi.com";
+                    string accessKey = "YmEzYTcyOGYtN2JhZi00OTIzLWE5ZjktYTgxNTVhNWUxZDM2Ojc0ODllKUZrSFM=";
+                    string partnerId = "SandboxSiigoApi";
 
                     // Creación de factura
                     var siigoClient = new SiigoClient(
@@ -393,25 +406,25 @@ namespace fpWebApp
                         partnerId
                     );
 
-                    idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
-                        documentoAfiliado,
-                        codSiigoPlan,
-                        nombrePlan,
-                        valor,
-                        idSede
-                    );
-
-                    // PRUEBAS
-                    //string codSiigoPlanPruebas = "COD2433";
-                    //string nombrePlanPruebas = "Pago de suscripción";
-                    //int precioPlan = 10000;
                     //idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
                     //    documentoAfiliado,
-                    //    codSiigoPlanPruebas,
-                    //    nombrePlanPruebas,
-                    //    precioPlan,
+                    //    codSiigoPlan,
+                    //    nombrePlan,
+                    //    valor,
                     //    idSede
                     //);
+
+                    // PRUEBAS
+                    string codSiigoPlanPruebas = "COD2433";
+                    string nombrePlanPruebas = "Pago de suscripción";
+                    int precioPlan = 10000;
+                    idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
+                        documentoAfiliado,
+                        codSiigoPlanPruebas,
+                        nombrePlanPruebas,
+                        precioPlan,
+                        idSede
+                    );
 
                     // Actualizar pago con id de factura
                     cg.ActualizarIdSiigoFacturaDePagoPlanAfiliado(idPago, idSiigoFactura);
