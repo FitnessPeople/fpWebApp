@@ -494,7 +494,7 @@
 
     </script>
 
-    <script>
+  <%--  <script> 
         function redondearSuperior(valor, base = 1000) {
             return Math.ceil(valor / base) * base;
         }
@@ -936,7 +936,7 @@
                 }
             }
         });
-    </script>
+    </script>--%>
 
 </body>
 
