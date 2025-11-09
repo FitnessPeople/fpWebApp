@@ -108,7 +108,7 @@
         <!-- Fila 2 de widgets -->
         <div class="row flex-fill">
             <div class="col-lg-4 d-flex">
-                <div class="widget style1 lazur-bg flex-fill w-100"
+                <div class="widget red-bg flex-fill w-100"
                     title="Cantidad de leads en caliente">
                     <div class="row vertical-align">
                         <div class="col-xs-3">
@@ -122,7 +122,7 @@
                 </div>
             </div>
             <div class="col-lg-4 d-flex">
-                <div class="widget style1 lazur-bg flex-fill w-100"
+                <div class="widget style1 navy-bg flex-fill w-100"
                     title="Cantidad de leads en tibio">
                     <div class="row vertical-align">
                         <div class="col-xs-3">
@@ -136,7 +136,7 @@
                 </div>
             </div>
             <div class="col-lg-4 d-flex">
-                <div class="widget style1 navy-bg flex-fill w-100"
+                <div class="widget style1 lazur-bg flex-fill w-100"
                     title="Cantidad de leads en frío">
                     <div class="row vertical-align">
                         <div class="col-xs-3">

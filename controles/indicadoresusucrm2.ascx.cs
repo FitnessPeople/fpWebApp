@@ -54,12 +54,12 @@ namespace fpWebApp.controles
                 int perfilUsuario = 0;
                 int cargoUsuario = 0;
 
-                ltNumContactos.Text = "$0";
-                ltNumNegociacionAceptada.Text = "$0";
-                ltNumEnNegociacion.Text = "$0";
-                ltNumCaliente.Text = "$0";
-                ltNumTibio.Text = "$0";
-                ltNumFrio.Text = "$0";
+                ltNumContactos.Text = "0";
+                ltNumNegociacionAceptada.Text = "0";
+                ltNumEnNegociacion.Text = "0";
+                ltNumCaliente.Text = "0";
+                ltNumTibio.Text = "0";
+                ltNumFrio.Text = "0";
                 ltVendidoMes.Text = "$0";
                 ltVendidoDia.Text = "$0";
                 ltValorMetaAsesorMes.Text = "$0";
