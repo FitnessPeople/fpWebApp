@@ -424,6 +424,28 @@ namespace fpWebApp
             }
         }
 
+        protected string GetIconoEstadoVenta(object nombreEstadoVenta, object descripcionEstadoVenta)
+        {
+            string estado = nombreEstadoVenta?.ToString()?.Trim() ?? "";
+            string descripcion = descripcionEstadoVenta?.ToString()?.Trim() ?? estado;
+
+            switch (estado)
+            {
+                case "Caliente":
+                    return $"<i class='fa-solid fa-fire fa-2x' style='color:#ED5565;' title='{HttpUtility.HtmlEncode(descripcion)}'></i>";
+
+                case "Tibio":
+                    return $"<i class='fa-solid fa-mug-hot fa-2x' style='color:#1AB394;' title='{HttpUtility.HtmlEncode(descripcion)}'></i>";
+
+                case "Frío":
+                    return $"<i class='fa-solid fa-snowflake fa-2x' style='color:#23C6C8;' title='{HttpUtility.HtmlEncode(descripcion)}'></i>";
+
+                default:
+                    return HttpUtility.HtmlEncode(estado);
+            }
+        }
+
+
 
         private void listaIndicadorPorGenero()
         {

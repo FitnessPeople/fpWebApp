@@ -356,14 +356,28 @@
                                                             <td><%# Eval("DocumentoAfiliado") %></td>
                                                             <td><%# Eval("Nombre") %></td>
                                                             <td><%# Eval("TelefonoContacto") %></td>
-                                                            <td><%# Eval("NombreEstadoVenta") %></td>
+                                                            <td>
+                                                                <asp:Literal 
+                                                                    ID="ltEstadoVenta" 
+                                                                    runat="server" 
+                                                                    Mode="PassThrough"
+                                                                    Text='<%# GetIconoEstadoVenta(Eval("NombreEstadoVenta"), Eval("DescripciónEstadoVenta")) %>'>
+                                                                </asp:Literal>
+                                                            </td>
+
                                                             <td><%# Eval("NombreCanalMarketing") %></td>
                                                             <td><%# Eval("NombreCanalVenta") %></td>
                                                             <td><%# Eval("Asesor") %></td>
                                                             <td><%# Eval("FechaProximoCon", "{0:dd MMM yyyy HH:mm}") %></td>
                                                             <td><%# Eval("NombrePlan") %></td>
                                                             <td><%# Eval("ValorPropuesta", "{0:C0}") %></td>
-                                                            <td><%# Eval("NombreEstadoCRM") %></td>
+                                                            <td>
+                                                                <span
+                                                                    title='<%# Eval("NombreEstadoCRM") %>'
+                                                                    style='color: <%# Eval("ColorHexaCRM") %>; font-size: 18px;'>
+                                                                    <%# Eval("IconoMinEstadoCRM") %>
+                                                                </span>
+                                                            </td>
                                                             <td>
                                                                 <table class="table table-bordered table-striped">
                                                                     <tr>
