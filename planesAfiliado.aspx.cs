@@ -421,7 +421,7 @@ namespace fpWebApp
 
             string strDataWompi = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + intPrecio.ToString()));
 
-            string payload = $"code={HttpUtility.UrlEncode(ViewState["DocumentoAfiliado"].ToString() + "_" + intPrecio.ToString())}";
+            string payload = $"code={HttpUtility.UrlEncode(ViewState["DocumentoAfiliado"].ToString() + "_" + intPrecio.ToString() + "_" + ViewState["idPlan"].ToString())}";
 
             TimeSpan ttl = TimeSpan.FromMinutes(40); // Token válido 10 minutos
             string token = UrlEncryptor.Encrypt(payload, ttl);
