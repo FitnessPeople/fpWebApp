@@ -240,7 +240,7 @@
                                                 <div class="stat-percent font-bold text-success">
                                                     <asp:Literal ID="ltRegistros3" runat="server"></asp:Literal>
                                                     registros
-                                                </div>                                             
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -343,6 +343,7 @@
                                                     <th data-breakpoints="xs sm md">Plan</th>
                                                     <th data-breakpoints="xs sm md">Valor</th>
                                                     <th data-breakpoints="xs sm md">Estado Lead</th>
+                                                    <th data-breakpoints="all" data-title="Info"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -355,21 +356,49 @@
                                                             <td><%# Eval("DocumentoAfiliado") %></td>
                                                             <td><%# Eval("Nombre") %></td>
                                                             <td><%# Eval("TelefonoContacto") %></td>
-                                                            <td><%# Eval("NombreEstadoVenta") %></td>
+                                                            <td>
+                                                                <asp:Literal 
+                                                                    ID="ltEstadoVenta" 
+                                                                    runat="server" 
+                                                                    Mode="PassThrough"
+                                                                    Text='<%# GetIconoEstadoVenta(Eval("NombreEstadoVenta"), Eval("DescripciónEstadoVenta")) %>'>
+                                                                </asp:Literal>
+                                                            </td>
+
                                                             <td><%# Eval("NombreCanalMarketing") %></td>
                                                             <td><%# Eval("NombreCanalVenta") %></td>
                                                             <td><%# Eval("Asesor") %></td>
                                                             <td><%# Eval("FechaProximoCon", "{0:dd MMM yyyy HH:mm}") %></td>
                                                             <td><%# Eval("NombrePlan") %></td>
                                                             <td><%# Eval("ValorPropuesta", "{0:C0}") %></td>
-                                                            <td><%# Eval("NombreEstadoCRM") %></td>
+                                                            <td>
+                                                                <span
+                                                                    title='<%# Eval("NombreEstadoCRM") %>'
+                                                                    style='color: <%# Eval("ColorHexaCRM") %>; font-size: 18px;'>
+                                                                    <%# Eval("IconoMinEstadoCRM") %>
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <table class="table table-bordered table-striped">
+                                                                    <tr>
+                                                                        <%-- <th width="25%"><i class="fa fa-city m-r-xs"></i>Ciudad</th>--%>
+                                                                        <th width="25%"><i class="fa fa-mobile m-r-xs"></i>Datos del contacto</th>
+                                                                        <th width="50%" class="text-nowrap"><i class="fa fa-clock m-r-xs"></i>Historial</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Identificación:<%# Eval("DocumentoAfiliado") %> Otros datos:
+                                                                                        <asp:Literal ID="ltInfoAfiliado" runat="server"></asp:Literal></td>
+                                                                        <td><%# Eval("HistorialHTML2") %></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
                                             </tbody>
                                         </table>
 
-<%--                                        <p>Total registros: <span id="totalRegistros"></span></p>
+                                        <%--                                        <p>Total registros: <span id="totalRegistros"></span></p>
                                         <p>Registros visibles: <span id="registrosVisibles"></span></p>--%>
                                     </div>
                                 </div>
@@ -397,7 +426,7 @@
                                                     <th data-breakpoints="xs sm md">Total propuestas</th>
                                                     <th data-breakpoints="xs sm md">Cierres</th>
                                                     <th data-breakpoints="xs sm md">Valor cierres</th>
-                                                    <th data-breakpoints="xs sm md">Efectividad</th>                                                   
+                                                    <th data-breakpoints="xs sm md">Efectividad</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
