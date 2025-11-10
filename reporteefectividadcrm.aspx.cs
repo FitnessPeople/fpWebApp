@@ -45,11 +45,28 @@ namespace fpWebApp
                         //btnAgregar.Visible = false;
                         if (ViewState["Consulta"].ToString() == "1")
                         {
+                            int idPerfil = 0;
+                            int idCanalVenta = Convert.ToInt32(Session["idCanalVenta"]);
                             divBotonesLista.Visible = true;
-                            
-                            ListaCanalesDeVenta();
-                            listaAsesoresActivos();
-                            listaGestionAesores();
+                            clasesglobales cg = new clasesglobales();
+                            DataTable dt_usu = cg.ConsultarUsuarioSedePerfilPorId(Convert.ToInt32(Session["idUsuario"]));
+                            if (dt_usu.Rows.Count > 0)
+                            {
+                                idPerfil = Convert.ToInt32(dt_usu.Rows[0]["idPerfil"].ToString());
+                            }
+
+                            if (idPerfil == 21 || idPerfil == 1 || idPerfil == 37 || idPerfil == 23 || idPerfil == 18) // Director comercial // CEO // Director operativo // Director marketing // Ingeniero desarrollo
+                            {
+                                ListaCanalesDeVenta();
+                                listaAsesoresActivos();
+                            }
+                            else
+                            {
+                                SoloCanalDeVenta(idCanalVenta);
+                                SoloAsesoresActivosCanal(idCanalVenta);
+                            }
+
+                           // listaGestionAesores();
                            
                         }
                         if (ViewState["Exportar"].ToString() == "1")
@@ -107,6 +124,8 @@ namespace fpWebApp
         private void listaGestionAesores()
         {
             clasesglobales cg = new clasesglobales();
+
+
             int idCanalVenta = Convert.ToInt32(ddlCanalesVenta.SelectedValue);
             int idUsuario = Convert.ToInt32(ddlAsesores.SelectedValue);
             ltCuantosAse.Text = "0";
@@ -153,6 +172,72 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        private void listaAsesoresActivos()
+        {
+            clasesglobales cg = new clasesglobales();
+
+            try
+            {
+                DataTable dt = cg.ConsultaCargarAsesoresActivos();
+                ddlAsesores.Items.Clear();
+                ddlAsesores.Items.Add(new ListItem("Todos los asesores", "0"));
+                ddlAsesores.DataSource = dt;
+                ddlAsesores.DataBind();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message.ToString();
+            }
+        }
+
+        private void SoloCanalDeVenta(int idCanalVenta)
+        {
+            ddlCanalesVenta.Items.Clear();
+
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCanalesVenta();
+            DataRow[] fila = dt.Select($"idCanalVenta = {idCanalVenta}");
+            dt = fila.Length > 0 ? fila.CopyToDataTable() : dt.Clone();
+
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                ddlCanalesVenta.DataSource = dt;
+                ddlCanalesVenta.DataTextField = "NombreCanalVenta"; // Ajusta al nombre real de tu columna
+                ddlCanalesVenta.DataValueField = "idCanalVenta";
+                ddlCanalesVenta.DataBind();
+            }
+
+            // Bloquea para evitar cambios
+            ddlCanalesVenta.Enabled = false;
+        }
+
+        private void SoloAsesoresActivosCanal(int idCanalVenta)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            try
+            {
+                DataTable dt = cg.ConsultaCargarAsesoresPorCanalVenta(idCanalVenta);
+
+                ddlAsesores.Items.Clear();
+                ddlAsesores.Items.Add(new ListItem("Todos los asesores", "0"));
+
+                ddlAsesores.DataSource = dt;
+                ddlAsesores.DataTextField = "NombreUsuario"; 
+                ddlAsesores.DataValueField = "IdUsuario";
+                ddlAsesores.DataBind();
+
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message.ToString();
+            }
+        }
+
+
         protected void ddlCanalesVenta_SelectedIndexChanged(object sender, EventArgs e)
         {
             int idCanalVenta = Convert.ToInt32(ddlCanalesVenta.SelectedValue);
@@ -188,25 +273,6 @@ namespace fpWebApp
             }
         }
 
-        private void listaAsesoresActivos()
-        {
-            clasesglobales cg = new clasesglobales();
-
-            try
-            {
-                DataTable dt = cg.ConsultaCargarAsesoresActivos();
-                ddlAsesores.Items.Clear();
-                ddlAsesores.Items.Add(new ListItem("Todos los asesores", "0"));
-                ddlAsesores.DataSource = dt;
-                ddlAsesores.DataBind();
-                dt.Dispose();
-            }
-            catch (Exception ex)
-            {
-                string mensaje = ex.Message.ToString();
-            }
-        }
-
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
             listaContactos();
@@ -217,13 +283,100 @@ namespace fpWebApp
             listaGestionAesores();
         }
 
+        //private void listaContactos()
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    int idPerfil = 0;
+        //    int idCanalVenta = 0;
+        //    int idUsuario = 0;
+
+
+        //    DateTime? FechaIni = null;
+        //    DateTime? FechaFin = null;
+
+        //    if (!string.IsNullOrEmpty(txbFechaIni.Value))
+        //        FechaIni = Convert.ToDateTime(txbFechaIni.Value);
+
+        //    if (!string.IsNullOrEmpty(txbFechaFin.Value))
+        //        FechaFin = Convert.ToDateTime(txbFechaFin.Value);
+
+        //    try
+        //    {
+        //        DataTable dt = cg.ConsultarEfectividadGestionCRM(idCanalVenta, FechaIni, FechaFin, idUsuario);
+
+        //        if (dt != null && dt.Rows.Count > 0)
+        //        {
+
+        //            rpContactos.DataSource = dt;
+        //            rpContactos.DataBind();
+
+
+        //            decimal sumatoriaValor = 0;
+        //            if (dt.Columns.Contains("ValorPropuesta"))
+        //            {
+        //                foreach (DataRow row in dt.Rows)
+        //                {
+        //                    if (row["ValorPropuesta"] != DBNull.Value)
+        //                        sumatoriaValor += Convert.ToDecimal(row["ValorPropuesta"]);
+        //                }
+        //            }
+
+        //            ltCantidadCon.Text = $"{dt.Rows.Count:N0} registros"; // Total de registros                    
+        //        }
+        //        else
+        //        {
+        //            rpContactos.DataSource = null;
+        //            rpContactos.DataBind();
+
+        //            ltCantidadCon.Text = "0 registros";
+
+        //        }
+
+        //        dt.Dispose();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ltCantidadCon.Text = "<p>Error al consultar los contactos.</p>";
+
+        //    }
+        //}
+
         private void listaContactos()
         {
             clasesglobales cg = new clasesglobales();
+            int idPerfil = 0;
+            int idCanalVenta = 0;
+            int idUsuario = 0;
 
-            int idCanalVenta = Convert.ToInt32(ddlCanalesVenta.SelectedValue);
-            int idUsuario = Convert.ToInt32(ddlAsesores.SelectedValue);
+            // Consultar perfil y canal del usuario actual
+            DataTable dt_usu = cg.ConsultarUsuarioSedePerfilPorId(Convert.ToInt32(Session["idUsuario"]));
+            if (dt_usu.Rows.Count > 0)
+            {
+                idPerfil = Convert.ToInt32(dt_usu.Rows[0]["idPerfil"].ToString());
+                idCanalVenta = Convert.ToInt32(dt_usu.Rows[0]["idCanalVenta"].ToString());
+            }
 
+            // 🔹 Control de acceso por rol
+            if (idPerfil == 21 || idPerfil == 1 || idPerfil == 37 || idPerfil == 23 || idPerfil == 18)
+            {
+                // Director comercial, CEO, Director operativo, Director marketing, Ingeniero desarrollo
+                idCanalVenta = Convert.ToInt32(ddlCanalesVenta.SelectedValue);
+                idUsuario = Convert.ToInt32(ddlAsesores.SelectedValue);
+            }
+            else if (idPerfil == 2)
+            {
+                // 🔹 Rol 2 → Solo puede ver su canal y asesores de ese canal
+                idCanalVenta = Convert.ToInt32(Session["idCanalVenta"]);
+                idUsuario = Convert.ToInt32(ddlAsesores.SelectedValue);
+            }
+            else
+            {
+                // Otros perfiles → usar canal y usuario en sesión
+                idCanalVenta = Convert.ToInt32(Session["idCanalVenta"]);
+                idUsuario = Convert.ToInt32(Session["idUsuario"]);
+            }
+
+            // 🔹 Fechas opcionales
             DateTime? FechaIni = null;
             DateTime? FechaFin = null;
 
@@ -235,15 +388,15 @@ namespace fpWebApp
 
             try
             {
+                // 🔹 Consulta CRM según canal y usuario válidos
                 DataTable dt = cg.ConsultarEfectividadGestionCRM(idCanalVenta, FechaIni, FechaFin, idUsuario);
 
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    
                     rpContactos.DataSource = dt;
                     rpContactos.DataBind();
 
-                    
+                    // 🔹 Sumatoria de valores
                     decimal sumatoriaValor = 0;
                     if (dt.Columns.Contains("ValorPropuesta"))
                     {
@@ -253,26 +406,24 @@ namespace fpWebApp
                                 sumatoriaValor += Convert.ToDecimal(row["ValorPropuesta"]);
                         }
                     }
-                    
-                    ltCantidadCon.Text = $"{dt.Rows.Count:N0} registros"; // Total de registros                    
+
+                    ltCantidadCon.Text = $"{dt.Rows.Count:N0} registros";
                 }
                 else
                 {
                     rpContactos.DataSource = null;
                     rpContactos.DataBind();
-
                     ltCantidadCon.Text = "0 registros";
-                  
                 }
 
                 dt.Dispose();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ltCantidadCon.Text = "<p>Error al consultar los contactos.</p>";
-               
             }
         }
+
 
         private void listaIndicadorPorGenero()
         {
