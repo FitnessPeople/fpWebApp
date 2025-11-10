@@ -22,8 +22,8 @@ namespace fpWebApp
 {
 	public partial class reportepagosrecurrentes : System.Web.UI.Page
 	{
-        static int idIntegracion = 1; // Pruebas
-        //static int idIntegracion = 4; // Producción
+        //static int idIntegracion = 1; // Pruebas
+        static int idIntegracion = 4; // Producción
 
         protected string EstadoCobroRechazado
         {
@@ -165,19 +165,24 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
 
             string query = @"SELECT 
-                                 ppa.idPago, ppa.Valor, ppa.DataIdFuente, ppa.FechaHoraPago, ap.fechaProximoCobro, 
-                                 ap.idAfiliadoPlan, 
-                                 a.DocumentoAfiliado, a.NombreAfiliado, a.ApellidoAfiliado, a.EmailAfiliado, a.idSede, 
-                                 u.idUsuario, 
-                                 p.idPlan, p.NombrePlan, p.CodSiigoPlan
-                             FROM PagosPlanAfiliado ppa
-                             INNER JOIN AfiliadosPlanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan
-                             INNER JOIN Afiliados a ON a.idAfiliado = ap.idAfiliado 
-                             INNER JOIN Usuarios u ON u.idUsuario = ppa.idUsuario  
-                             INNER JOIN Planes p ON p.idPlan = ap.idPlan 
-                             WHERE ap.estadoPlan <> 'Archivado' 
-                                 AND ap.fechaProximoCobro <= CURDATE() 
-                             ORDER BY ap.fechaProximoCobro ASC;";
+                                ppa.idPago, ppa.Valor, ppa.DataIdFuente, ppa.FechaHoraPago, 
+                                ap.fechaProximoCobro, ap.idAfiliadoPlan, 
+                                a.DocumentoAfiliado, a.NombreAfiliado, a.ApellidoAfiliado, a.EmailAfiliado, a.idSede, 
+                                u.idUsuario, 
+                                p.idPlan, p.NombrePlan, p.CodSiigoPlan
+                            FROM PagosPlanAfiliado ppa
+                            INNER JOIN (
+                                SELECT idAfiliadoPlan, MAX(idPago) AS idPagoUltimo
+                                FROM PagosPlanAfiliado
+                                GROUP BY idAfiliadoPlan
+                            ) ult ON ult.idPagoUltimo = ppa.idPago
+                            INNER JOIN AfiliadosPlanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan
+                            INNER JOIN Afiliados a ON a.idAfiliado = ap.idAfiliado 
+                            INNER JOIN Usuarios u ON u.idUsuario = ppa.idUsuario  
+                            INNER JOIN Planes p ON p.idPlan = ap.idPlan 
+                            WHERE ap.estadoPlan <> 'Archivado'
+                              AND ap.fechaProximoCobro <= CURDATE() 
+                            ORDER BY ap.fechaProximoCobro ASC;";
 
             DataTable dt = cg.TraerDatos(query);
             
@@ -191,19 +196,24 @@ namespace fpWebApp
             try
             {
                 string query = @"SELECT 
-                                     ppa.idPago, ppa.Valor, ppa.DataIdFuente, ppa.FechaHoraPago, ap.fechaProximoCobro, 
-                                     ap.idAfiliadoPlan, 
-                                     a.DocumentoAfiliado, a.NombreAfiliado, a.EmailAfiliado, a.idSede, 
-                                     u.idUsuario, 
-                                     p.idPlan, p.NombrePlan, p.CodSiigoPlan
-                                 FROM PagosPlanAfiliado ppa
-                                 INNER JOIN AfiliadosPlanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan
-                                 INNER JOIN Afiliados a ON a.idAfiliado = ap.idAfiliado 
-                                 INNER JOIN Usuarios u ON u.idUsuario = ppa.idUsuario  
-                                 INNER JOIN Planes p ON p.idPlan = ap.idPlan 
-                                 WHERE ap.estadoPlan <> 'Archivado'
-                                     AND ap.fechaProximoCobro <= CURDATE()
-                                 ORDER BY ap.fechaProximoCobro ASC;";
+                                    ppa.idPago, ppa.Valor, ppa.DataIdFuente, ppa.FechaHoraPago, 
+                                    ap.fechaProximoCobro, ap.idAfiliadoPlan, 
+                                    a.DocumentoAfiliado, a.NombreAfiliado, a.ApellidoAfiliado, a.EmailAfiliado, a.idSede, 
+                                    u.idUsuario, 
+                                    p.idPlan, p.NombrePlan, p.CodSiigoPlan
+                                FROM PagosPlanAfiliado ppa
+                                INNER JOIN (
+                                    SELECT idAfiliadoPlan, MAX(idPago) AS idPagoUltimo
+                                    FROM PagosPlanAfiliado
+                                    GROUP BY idAfiliadoPlan
+                                ) ult ON ult.idPagoUltimo = ppa.idPago
+                                INNER JOIN AfiliadosPlanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan
+                                INNER JOIN Afiliados a ON a.idAfiliado = ap.idAfiliado 
+                                INNER JOIN Usuarios u ON u.idUsuario = ppa.idUsuario  
+                                INNER JOIN Planes p ON p.idPlan = ap.idPlan 
+                                WHERE ap.estadoPlan <> 'Archivado'
+                                  AND ap.fechaProximoCobro <= CURDATE() 
+                                ORDER BY ap.fechaProximoCobro ASC;";
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(query);
@@ -264,8 +274,6 @@ namespace fpWebApp
 
                 if (idPlan == 12)
                 {
-                    codSiigoPlan = "17-PlanImportadoClez";
-
                     if (valorPlan == 2000)
                     {
                         valorPlan = 89000 - valorPlan;
@@ -384,18 +392,18 @@ namespace fpWebApp
 
                 try
                 {
-                    //DataTable dtIntegracion = cg.ConsultarIntegracion(idSede);
-                    //string url = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["urlTest"].ToString() : "0";
-                    //string username = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["username"].ToString() : "0";
-                    //string accessKey = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["accessKey"].ToString() : "0";
-                    //string partnerId = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["partnerId"].ToString() : "0";
-                    //dtIntegracion.Dispose();
+                    DataTable dtIntegracion = cg.ConsultarIntegracion(idSede);
+                    string url = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["urlTest"].ToString() : "0";
+                    string username = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["username"].ToString() : "0";
+                    string accessKey = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["accessKey"].ToString() : "0";
+                    string partnerId = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["partnerId"].ToString() : "0";
+                    dtIntegracion.Dispose();
 
                     // PRUEBAS
-                    string url = "https://api.siigo.com/";
-                    string username = "sandbox@siigoapi.com";
-                    string accessKey = "YmEzYTcyOGYtN2JhZi00OTIzLWE5ZjktYTgxNTVhNWUxZDM2Ojc0ODllKUZrSFM=";
-                    string partnerId = "SandboxSiigoApi";
+                    //string url = "https://api.siigo.com/";
+                    //string username = "sandbox@siigoapi.com";
+                    //string accessKey = "YmEzYTcyOGYtN2JhZi00OTIzLWE5ZjktYTgxNTVhNWUxZDM2Ojc0ODllKUZrSFM=";
+                    //string partnerId = "SandboxSiigoApi";
 
                     // Creación de factura
                     var siigoClient = new SiigoClient(
@@ -406,25 +414,25 @@ namespace fpWebApp
                         partnerId
                     );
 
-                    //idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
-                    //    documentoAfiliado,
-                    //    codSiigoPlan,
-                    //    nombrePlan,
-                    //    valor,
-                    //    idSede
-                    //);
-
-                    // PRUEBAS
-                    string codSiigoPlanPruebas = "COD2433";
-                    string nombrePlanPruebas = "Pago de suscripción";
-                    int precioPlan = 10000;
                     idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
                         documentoAfiliado,
-                        codSiigoPlanPruebas,
-                        nombrePlanPruebas,
-                        precioPlan,
+                        codSiigoPlan,
+                        nombrePlan,
+                        valor,
                         idSede
                     );
+
+                    // PRUEBAS
+                    //string codSiigoPlanPruebas = "COD2433";
+                    //string nombrePlanPruebas = "Pago de suscripción";
+                    //int precioPlan = 10000;
+                    //idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
+                    //    documentoAfiliado,
+                    //    codSiigoPlanPruebas,
+                    //    nombrePlanPruebas,
+                    //    precioPlan,
+                    //    idSede
+                    //);
 
                     // Actualizar pago con id de factura
                     cg.ActualizarIdSiigoFacturaDePagoPlanAfiliado(idPago, idSiigoFactura);
