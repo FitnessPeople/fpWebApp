@@ -252,7 +252,7 @@ namespace fpWebApp
             }
             else
             {
-                string strFilename = "";
+                string strFilename = "nofoto.png";
                 HttpPostedFile postedFile = Request.Files["fileFoto"];
 
                 if (postedFile != null && postedFile.ContentLength > 0)

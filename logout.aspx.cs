@@ -12,13 +12,13 @@ namespace fpWebApp
             {
                 clasesglobales cg = new clasesglobales();
                 cg.InsertarLog(Session["idusuario"].ToString(), "usuarios", "Logout", "El usuario cerró sesión.", "", "");
-            }
 
-            Application.Lock();
-            var lista = (List<UsuarioOnline>)Application["ListaUsuarios"];
-            lista.RemoveAll(x => x.Usuario == Session["NombreUsuario"].ToString());
-            Application["ListaUsuarios"] = lista;
-            Application.UnLock();
+                Application.Lock();
+                var lista = (List<UsuarioOnline>)Application["ListaUsuarios"];
+                lista.RemoveAll(x => x.Usuario == Session["NombreUsuario"].ToString());
+                Application["ListaUsuarios"] = lista;
+                Application.UnLock();
+            }
 
             Session.RemoveAll();
             Session.Abandon();

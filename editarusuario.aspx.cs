@@ -110,7 +110,11 @@ namespace fpWebApp
             }
             txbEmail.Text = dt.Rows[0]["EmailUsuario"].ToString();
             //txbClave.Text = dt.Rows[0]["ClaveUsuario"].ToString();
-            ddlPerfiles.SelectedIndex = Convert.ToInt16(dt.Rows[0]["idPerfil"].ToString());
+            if (dt.Rows[0]["idPerfil"].ToString() != "")
+            {
+                ddlPerfiles.SelectedIndex = Convert.ToInt32(ddlPerfiles.Items.IndexOf(ddlPerfiles.Items.FindByValue(dt.Rows[0]["idPerfil"].ToString())));
+            }
+            //ddlPerfiles.SelectedIndex = Convert.ToInt16(dt.Rows[0]["idPerfil"].ToString());
             if (dt.Rows[0]["idEmpleado"].ToString() != "")
             {
                 ddlEmpleados.SelectedIndex = Convert.ToInt32(ddlEmpleados.Items.IndexOf(ddlEmpleados.Items.FindByValue(dt.Rows[0]["idEmpleado"].ToString())));
