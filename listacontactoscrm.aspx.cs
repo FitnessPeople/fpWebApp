@@ -250,8 +250,8 @@ namespace fpWebApp
 
                             if (dtPlan.Rows.Count > 0)
                             {
-                                DiasRestantes = dtPlan.Rows[0]["DiasRestantes"].ToString();
-                                EstadoDias = dtPlan.Rows[0]["EstadoDias"].ToString();
+                                DiasRestantes = "" /*dtPlan.Rows[0]["DiasRestantes"].ToString()*/;
+                                EstadoDias = ""/* dtPlan.Rows[0]["EstadoDias"].ToString()*/;
 
                                 infoAfiliado = $"Le restan <strong>{DiasRestantes}</strong> días para finalizar su plan. <br/>Estado: <strong>{EstadoDias}</strong>.";
                             }
