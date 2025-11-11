@@ -225,53 +225,62 @@ namespace fpWebApp
         {
             bool respuesta = false;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out respuesta);
-            Session["contactoId"] = idContacto;
 
-            if (respuesta && dt.Rows.Count > 0)
+            try
             {
-                foreach (DataRow row in dt.Rows)
+                DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out respuesta);
+                Session["contactoId"] = idContacto;
+
+                if (respuesta && dt.Rows.Count > 0)
                 {
-                    string infoAfiliado = "Sin registro de planes activos o anteriores.";
-
-                    if (!string.IsNullOrEmpty(row["DocumentoAfiliado"].ToString()))
+                    foreach (DataRow row in dt.Rows)
                     {
-                        int idAfiliado = 0;
-                        string DiasRestantes = string.Empty;
-                        string EstadoDias = string.Empty;
+                        string infoAfiliado = "Sin registro de planes activos o anteriores.";
 
-                        // Consultar afiliado por documento
-                        DataTable dtAfiliado = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(row["DocumentoAfiliado"]));
-
-                        if (dtAfiliado.Rows.Count > 0)
+                        if (!string.IsNullOrEmpty(row["DocumentoAfiliado"].ToString()))
                         {
-                            idAfiliado = Convert.ToInt32(dtAfiliado.Rows[0]["idAfiliado"]);
-                            DataTable dtPlan = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+                            int idAfiliado = 0;
+                            string DiasRestantes = string.Empty;
+                            string EstadoDias = string.Empty;
 
-                            if (dtPlan.Rows.Count > 0)
-                            {
-                                DiasRestantes = "" /*dtPlan.Rows[0]["DiasRestantes"].ToString()*/;
-                                EstadoDias = ""/* dtPlan.Rows[0]["EstadoDias"].ToString()*/;
+                            // Consultar afiliado por documento
+                            DataTable dtAfiliado = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(row["DocumentoAfiliado"]));
 
-                                infoAfiliado = $"Le restan <strong>{DiasRestantes}</strong> días para finalizar su plan. <br/>Estado: <strong>{EstadoDias}</strong>.";
-                            }
-                            else
+                            if (dtAfiliado.Rows.Count > 0)
                             {
-                                infoAfiliado = "Sin registro de planes activos o anteriores.";
+                                idAfiliado = Convert.ToInt32(dtAfiliado.Rows[0]["idAfiliado"]);
+                                DataTable dtPlan = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+
+                                if (dtPlan.Rows.Count > 0)
+                                {
+                                    DiasRestantes = "" /*dtPlan.Rows[0]["DiasRestantes"].ToString()*/;
+                                    EstadoDias = ""/* dtPlan.Rows[0]["EstadoDias"].ToString()*/;
+
+                                    infoAfiliado = $"Le restan <strong>{DiasRestantes}</strong> días para finalizar su plan. <br/>Estado: <strong>{EstadoDias}</strong>.";
+                                }
+                                else
+                                {
+                                    infoAfiliado = "Sin registro de planes activos o anteriores.";
+                                }
                             }
                         }
+
+                        if (!dt.Columns.Contains("InfoAfiliado"))
+                            dt.Columns.Add("InfoAfiliado", typeof(string));
+
+                        row["InfoAfiliado"] = infoAfiliado;
                     }
-
-                    if (!dt.Columns.Contains("InfoAfiliado"))
-                        dt.Columns.Add("InfoAfiliado", typeof(string));
-
-                    row["InfoAfiliado"] = infoAfiliado;
                 }
+
+                // Ahora sí, enlazas el Repeater
+                rptContenido.DataSource = dt;
+                rptContenido.DataBind();
+            }
+            catch (Exception ex)
+            {
+               string mensaje = ex.Message.ToString();
             }
 
-            // Ahora sí, enlazas el Repeater
-            rptContenido.DataSource = dt;
-            rptContenido.DataBind();
         }
 
         protected void btnAgregar_Click(object sender, EventArgs e)
