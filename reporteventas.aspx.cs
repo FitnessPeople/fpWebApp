@@ -99,7 +99,7 @@ namespace fpWebApp
                 strQuery = @"SELECT ppa.valor 
                     FROM PagosPlanAfiliado ppa 
                     INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
-                    WHERE ppa.idUsuario = 156 AND ap.idPlan IN (18,19) 
+                    WHERE ppa.idUsuario = 156 AND ap.idPlan IN (18,19,20,21) 
 	                    " + filtroMedioPago + @" 
 	                    AND MONTH(ppa.fechaHoraPago) = " + mes + @" 
                         AND YEAR(ppa.fechaHoraPago) = " + annio + @" 
@@ -110,7 +110,7 @@ namespace fpWebApp
                 strQuery = @"SELECT ppa.valor 
                     FROM PagosPlanAfiliado ppa 
                     INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
-                    WHERE ppa.idUsuario = 156 AND ap.idPlan IN (18,19) 
+                    WHERE ppa.idUsuario = 156 AND ap.idPlan IN (18,19,20,21) 
 	                    " + filtroMedioPago + @" 
 	                    AND MONTH(ppa.fechaHoraPago) = " + mes + @" 
                         AND YEAR(ppa.fechaHoraPago) = " + annio + @" 
@@ -306,7 +306,7 @@ namespace fpWebApp
                 INNER JOIN planes p ON p.idPlan = ap.idPlan 
                 WHERE ppa.idUsuario = 156 
                 " + filtroMedioPago + @" 
-                AND ap.idPlan IN (18,19) 
+                AND ap.idPlan IN (18,19,20,21) 
                 AND MONTH(ppa.fechaHoraPago) = " + mes + @" 
                 AND YEAR(ppa.fechaHoraPago) = " + annio + @" 
                 AND MONTH(ap.FechaInicioPlan) IN (" + mes + @") 
@@ -465,7 +465,7 @@ namespace fpWebApp
 	                SUM(ppa.valor) AS sumatoria 
                 FROM PagosPlanAfiliado ppa 
                 INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
-                WHERE ((ppa.idUsuario = 156 AND ap.idPlan IN (18,19)) OR (ppa.idUsuario NOT IN (156) AND ap.idPlan IN (1,17))) 
+                WHERE ((ppa.idUsuario = 156 AND ap.idPlan IN (18,19,20,21)) OR (ppa.idUsuario NOT IN (156) AND ap.idPlan IN (1,17))) 
 	                AND (ppa.idMedioPago = 4)    
                     AND MONTH(ppa.FechaHoraPago) = " + mes.ToString() + @" 
                     AND YEAR(ap.FechaInicioPlan) = " + anio.ToString() + @" 
@@ -518,7 +518,7 @@ namespace fpWebApp
                 FROM pagosplanafiliado ppa  
                 INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
                 INNER JOIN Usuarios u ON ppa.idUsuario = u.idUsuario 
-                WHERE ((ppa.idUsuario = 156 AND ap.idPlan IN (18,19)) OR (ppa.idUsuario NOT IN (156) AND ap.idPlan IN (1,17))) 
+                WHERE ((ppa.idUsuario = 156 AND ap.idPlan IN (18,19,20,21)) OR (ppa.idUsuario NOT IN (156) AND ap.idPlan IN (1,17))) 
 	                AND (ppa.idMedioPago = 4)    
                     AND MONTH(ppa.FechaHoraPago) = " + mes.ToString() + @" 
                     AND YEAR(ap.FechaInicioPlan) = " + anio.ToString() + @" 
@@ -571,7 +571,7 @@ namespace fpWebApp
                 FROM pagosplanafiliado ppa 
                 INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
                 INNER JOIN CanalesVenta cv ON ppa.idCanalVenta = cv.idCanalVenta 
-                WHERE ((ppa.idUsuario = 156 AND ap.idPlan IN (18,19)) OR (ppa.idUsuario NOT IN (156) AND ap.idPlan IN (1,17))) 
+                WHERE ((ppa.idUsuario = 156 AND ap.idPlan IN (18,19,20,21)) OR (ppa.idUsuario NOT IN (156) AND ap.idPlan IN (1,17))) 
 	                AND (ppa.idMedioPago = 4)    
                     AND MONTH(ppa.FechaHoraPago) = " + mes.ToString() + @" 
                     AND YEAR(ap.FechaInicioPlan) = " + anio.ToString() + @" 
@@ -623,7 +623,7 @@ namespace fpWebApp
                     SUM(ppa.valor) AS sumatoria
                 FROM pagosplanafiliado ppa 
                 INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
-                WHERE ((ppa.idUsuario = 156 AND ap.idPlan IN (18,19)) OR (ppa.idUsuario NOT IN (156) AND ap.idPlan IN (1,17))) 
+                WHERE ((ppa.idUsuario = 156 AND ap.idPlan IN (18,19,20,21)) OR (ppa.idUsuario NOT IN (156) AND ap.idPlan IN (1,17))) 
 	                AND (ppa.idMedioPago = 4)    
                     AND MONTH(ppa.FechaHoraPago) = " + mes.ToString() + @" 
                     AND YEAR(ap.FechaInicioPlan) = " + anio.ToString() + @" 
@@ -676,7 +676,7 @@ namespace fpWebApp
                 FROM pagosplanafiliado ppa 
                 INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
                 INNER JOIN MediosdePago mp ON ppa.idMedioPago = mp.idMedioPago 
-                WHERE ((ppa.idUsuario = 156 AND ap.idPlan IN (18,19)) OR (ppa.idUsuario NOT IN (156) AND ap.idPlan IN (1,17))) 
+                WHERE ((ppa.idUsuario = 156 AND ap.idPlan IN (18,19,20,21)) OR (ppa.idUsuario NOT IN (156) AND ap.idPlan IN (1,17))) 
 	                AND (ppa.idMedioPago = 4)    
                     AND MONTH(ppa.FechaHoraPago) = " + mes.ToString() + @" 
                     AND YEAR(ap.FechaInicioPlan) = " + anio.ToString() + @" 
@@ -729,7 +729,7 @@ namespace fpWebApp
                 FROM pagosplanafiliado ppa 
                 INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
                 INNER JOIN planes p ON p.idPlan = ap.idPlan 
-                WHERE ((ppa.idUsuario = 156 AND ap.idPlan IN (18,19)) OR (ppa.idUsuario NOT IN (156) AND ap.idPlan IN (1,17))) 
+                WHERE ((ppa.idUsuario = 156 AND ap.idPlan IN (18,19,20,21)) OR (ppa.idUsuario NOT IN (156) AND ap.idPlan IN (1,17))) 
 	                AND (ppa.idMedioPago = 4)    
                     AND MONTH(ppa.FechaHoraPago) = " + mes.ToString() + @" 
                     AND YEAR(ap.FechaInicioPlan) = " + anio.ToString() + @" 

@@ -12,7 +12,7 @@ namespace fpWebApp
         {
             // Código que se ejecuta al iniciar la aplicación
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            Application["ListaUsuarios"] = new List<UsuarioOnline>();
+            Application["ListaUsuarios"] = new List<UsuarioOnline>(); 
         }
 
         void Session_Start(object sender, EventArgs e)

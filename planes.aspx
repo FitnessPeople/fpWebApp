@@ -20,7 +20,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -57,28 +57,28 @@
                     <p>
                         <b>Paso 1: Crea un nuevo plan</b><br />
                         Usa el formulario que está a la <b>izquierda</b> para digitar la información necesaria del plan.<br />
-                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Agregar:</b> Guarda la información y finaliza el registro.<br />
-                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i><b>Agregar:</b> Guarda la información y finaliza el registro.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i><b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
                     <br />
                         <br />
                         <b>Paso 2: Visualiza las sedes existentes</b><br />
                         Usa el buscador que está a la <b>derecha</b> para encontrar lo que buscas.<br />
-                        <i class="fa-solid fa-magnifying-glass"></i> Filtra por 
-                        <i class="fa-solid fa-ticket" style="color: #0D6EFD;"></i> <b>Nombre</b>,
-                        <i class="fa-solid fa-note-sticky" style="color: #0D6EFD;"></i> <b>Descripción</b>,
-                        <i class="fa-solid fa-money-bill-wave" style="color: #0D6EFD;"></i> <b>Precio</b>,
-                        <i class="fa-solid fa-circle-user" style="color: #0D6EFD;"></i> <b>Creado por</b> o
-                        <i class="fa-solid fa-circle" style="color: #0D6EFD;"></i> <b>Estado</b><br />
-                        <i class="fa-solid fa-star" style="color: #FECE32;"></i> Tip: ¡Combina filtros para resultados más precisos!
+                        <i class="fa-solid fa-magnifying-glass"></i>Filtra por 
+                        <i class="fa-solid fa-ticket" style="color: #0D6EFD;"></i><b>Nombre</b>,
+                        <i class="fa-solid fa-note-sticky" style="color: #0D6EFD;"></i><b>Descripción</b>,
+                        <i class="fa-solid fa-money-bill-wave" style="color: #0D6EFD;"></i><b>Precio</b>,
+                        <i class="fa-solid fa-circle-user" style="color: #0D6EFD;"></i><b>Creado por</b> o
+                        <i class="fa-solid fa-circle" style="color: #0D6EFD;"></i><b>Estado</b><br />
+                        <i class="fa-solid fa-star" style="color: #FECE32;"></i>Tip: ¡Combina filtros para resultados más precisos!
                     <br />
                         <br />
                         <b>Paso 3: Gestiona las sedes</b><br />
                         En la columna "Acciones" encontrarás estas opciones:<br />
-                        <i class="fa fa-edit" style="color: #1AB394;"></i> <b>Editar:</b> Modifica los datos necesarios.<br />
-                        <i class="fa fa-trash" style="color: #DC3545;"></i> <b>Eliminar:</b> Borra lo que creas innecesario.
+                        <i class="fa fa-edit" style="color: #1AB394;"></i><b>Editar:</b> Modifica los datos necesarios.<br />
+                        <i class="fa fa-trash" style="color: #DC3545;"></i><b>Eliminar:</b> Borra lo que creas innecesario.
                    <br />
                         <br />
-                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i>Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -160,12 +160,17 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-sm-5">
-                                                        <label>Precio base del mes</label>
-                                                        <asp:TextBox ID="txbPrecioBase" CssClass="form-control input-sm" runat="server"
+                                                        <label>Precio público</label>
+                                                        <asp:TextBox ID="txbPrecioTotal" CssClass="form-control input-sm" runat="server"
+                                                            placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
+                                                        <asp:RequiredFieldValidator ID="rfvPrecioTotal" runat="server" ErrorMessage="* Campo requerido"
+                                                            ControlToValidate="txbPrecioTotal" ValidationGroup="agregar"
+                                                            CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                        <%--<asp:TextBox ID="txbPrecioBase" CssClass="form-control input-sm" runat="server"
                                                             placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
                                                         <asp:RequiredFieldValidator ID="rfvPrecioBase" runat="server" ErrorMessage="* Campo requerido"
                                                             ControlToValidate="txbPrecioBase" ValidationGroup="agregar"
-                                                            CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
+                                                            CssClass="font-bold text-danger"></asp:RequiredFieldValidator>--%>
                                                     </div>
                                                     <div class="col-sm-7">
                                                         <label>Días de congelamiento x mes</label>
@@ -178,11 +183,11 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-sm-5">
-                                                        <label>Precio total</label>
-                                                        <asp:TextBox ID="txbPrecioTotal" CssClass="form-control input-sm" runat="server"
+                                                        <label>Precio mínimo</label>
+                                                        <asp:TextBox ID="txbPrecioMinimo" CssClass="form-control input-sm" runat="server"
                                                             placeholder="$0" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
-                                                        <asp:RequiredFieldValidator ID="rfvPrecioTotal" runat="server" ErrorMessage="* Campo requerido"
-                                                            ControlToValidate="txbPrecioTotal" ValidationGroup="agregar"
+                                                        <asp:RequiredFieldValidator ID="rfvPrecioMinimo" runat="server" ErrorMessage="* Campo requerido"
+                                                            ControlToValidate="txbPrecioMinimo" ValidationGroup="agregar"
                                                             CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                     </div>
                                                     <div class="col-sm-7">
@@ -214,7 +219,7 @@
                                                             <asp:ListItem Value="danger" data-color="#ed5565" data-icon="fa-stop">&nbsp;Danger</asp:ListItem>
                                                         </asp:DropDownList>
                                                         <asp:RequiredFieldValidator ID="rfvColor" runat="server" ErrorMessage="* Campo requerido"
-                                                            ControlToValidate="ddlColor" ValidationGroup="agregar" InitialValue="" 
+                                                            ControlToValidate="ddlColor" ValidationGroup="agregar" InitialValue=""
                                                             CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                     </div>
                                                 </div>
@@ -235,10 +240,16 @@
                                                     </div>
 
                                                     <div>
-                                                        <div class="col-sm-12">
+                                                        <div class="col-sm-6">
                                                             <div class="form-group">
-                                                                <label>Estado</label>
+                                                                <label>Periodo</label>
                                                                 <asp:CheckBox runat="server" ID="cbPermanente" Text="&nbsp;Permanente" CssClass="form-control" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label>Tipo de pago</label>
+                                                                <asp:CheckBox runat="server" ID="cbDebitoAutomatico" Text="&nbsp;Débito automático" CssClass="form-control" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -262,30 +273,38 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-
-                                                <div class="row">
                                                     <div>
-                                                        <div class="col-sm-12">
+                                                        <div class="col-sm-6">
                                                             <div class="form-group">
-                                                                <label>Tipo de pago</label>
-                                                                <asp:CheckBox runat="server" ID="cbDebitoAutomatico" Text="&nbsp;Débito automático" CssClass="form-control" />
+                                                                <label>Visible Web</label>
+                                                                <asp:CheckBox runat="server" ID="cbVisibleWeb" Text="&nbsp;Visible" CssClass="form-control" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group">
+                                                                <label>Visible CRM</label>
+                                                                <asp:CheckBox runat="server" ID="cbVisibleCRM" Text="&nbsp;Visible" CssClass="form-control" />
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="row">
+                                                    <div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
                                                     <div class="col-sm-12">
-                                                         <div class="form-group">
-                                                             <a href="planes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                             <%--<asp:Button ID="btnSimular" runat="server" Text="Simular"
+                                                        <div class="form-group">
+                                                            <a href="planes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                            <%--<asp:Button ID="btnSimular" runat="server" Text="Simular"
                                                                  CssClass="btn btn-sm btn-success pull-right m-t-n-xs m-l-md" OnClick="btnSimular_Click"
                                                                  Visible="true" ValidationGroup="agregar" />--%>
-                                                             <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
-                                                                 CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
-                                                                 OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
-                                                         </div>
+                                                            <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
+                                                                CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
+                                                                OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -328,7 +347,7 @@
                                             </div>
                                         </div>
 
-                                        <table class="footable table table-striped" data-paging-size="10"
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
                                             data-filter-min="3" data-filter-placeholder="Buscar"
                                             data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
                                             data-paging-limit="10" data-filtering="true"
@@ -338,13 +357,15 @@
                                             <thead>
                                                 <tr>
                                                     <th>Nombre</th>
-                                                    <th data-breakpoints="xs">Descripción</th>
+                                                    <%--<th data-breakpoints="xs">Descripción</th>--%>
                                                     <th data-breakpoints="xs">Tipo Pago</th>
                                                     <th data-breakpoints="xs">Meses</th>
                                                     <th data-breakpoints="xs">Vigencia</th>
-                                                    <th data-breakpoints="xs" class="text-right">Precio</th>
+                                                    <th data-breakpoints="xs" class="text-right">Precio Público</th>
+                                                    <th data-breakpoints="xs" class="text-right">Precio Mínimo</th>
                                                     <th data-breakpoints="xs sm md">Creado por</th>
-                                                    <th data-breakpoints="xs sm md" data-sortable="false">Estado</th>
+                                                    <th data-breakpoints="xs sm md">Estado</th>
+                                                    <th data-breakpoints="all" data-title="Info"></th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
@@ -352,14 +373,27 @@
                                                 <asp:Repeater ID="rpPlanes" runat="server" OnItemDataBound="rpPlanes_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
-                                                            <td><span class="btn btn-<%# Eval("NombreColorPlan") %> btn-outline btn-block btn-sm" style="font-size: 12px;"><%# Eval("NombrePlan") %></span></td>
-                                                            <td><i class="fa fa-note-sticky m-r-xs font-bold"></i><%# Eval("DescripcionPlan") %></td>
-                                                            <td><%# Eval("DebitoAutomatico") %></td>
+                                                            <td><span class="badge badge-<%# Eval("NombreColorPlan") %>" style="font-size: 12px;"><%# Eval("NombrePlan") %></span></td>
+                                                            <%--<td><i class="fa fa-note-sticky m-r-xs font-bold"></i><%# Eval("DescripcionPlan") %></td>--%>
+                                                            <td><%# Eval("tipopago") %></td>
                                                             <td><%# Eval("TotalMeses") %></td>
-                                                            <td><%# String.Format("{0:d MMM 'de' yyyy} a {1:d MMM 'de' yyyy}", Eval("FechaInicial"), Eval("FechaFinal")) %></td>
+                                                            <td><%# String.Format("{0:d MMM 'de' yyyy} <br>a {1:d MMM 'de' yyyy}", Eval("FechaInicial"), Eval("FechaFinal")) %></td>
                                                             <td style="text-align: right;">$<%# Eval("PrecioTotal","{0:N0}") %></td>
+                                                            <td style="text-align: right;">$<%# Eval("PrecioMinimo","{0:N0}") %></td>
                                                             <td style="white-space: nowrap;"><i class="fa fa-circle-user m-r-xs font-bold"></i><%# Eval("NombreUsuario") %></td>
                                                             <td><span class="badge badge-<%# Eval("label") %>"><%# Eval("EstadoPlan") %></span></td>
+
+                                                            <td>
+                                                                <table class="table table-bordered table-striped">
+                                                                    <tr>
+                                                                        <th width="100%"><i class="fa fa-note-sticky m-r-xs"></i>Descripción</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><%# Eval("DescripcionPlan") %></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>

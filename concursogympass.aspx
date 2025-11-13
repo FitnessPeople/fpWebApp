@@ -216,7 +216,7 @@
                                                     <td><%# Eval("sede") %></td>
                                                     <td><%# Eval("CodigoEmb") %></td>
                                                     <td style="text-align: center; vertical-align: middle;">
-                                                        <a href='<%# "https://fitnesspeoplecolombia.com/img/estudiafit/concurso-gympass/" + Eval("capturaArchivo") %>' 
+                                                        <a href='<%# "https://fitnesspeoplecmdcolombia.com/img/estudiafit/concurso-gympass/" + Eval("capturaArchivo") %>' 
                                                             target="_blank" class="btn btn-danger btn-outline m-r-xs"
                                                             style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"> 
                                                             <i class="fa-solid fa-camera"></i>

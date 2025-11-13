@@ -478,6 +478,7 @@
                 ddlCiudadAfiliado: "*",
                 ddlProfesiones: "*",
                 txbTelefono: "Maximo 14 números",
+                txbResponsable: "Ingrese al menos 10 caracteres.",
             }
         });
 

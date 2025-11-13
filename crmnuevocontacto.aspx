@@ -839,7 +839,7 @@
                                                                             <i class="fa-solid fa-phone text-info"></i>
                                                                             <label for="paginaWeb" class="col-form-label">Página web:</label>
                                                                             <input type="text" runat="server" class="form-control" id="txbPaginaWeb"
-                                                                                placeholder="ej: www.fitnesspeoplecolombia.com" spellcheck="false" autocomplete="off"
+                                                                                placeholder="ej: www.fitnesspeoplecmdcolombia.com" spellcheck="false" autocomplete="off"
                                                                                 style="text-transform: lowercase;">
                                                                             <asp:RequiredFieldValidator ID="fvPaginaWeb" runat="server" ControlToValidate="txbPaginaWeb"
                                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" ValidationGroup="agregarE" />

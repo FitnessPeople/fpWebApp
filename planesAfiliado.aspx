@@ -1,4 +1,4 @@
-﻿    <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="planesAfiliado.aspx.cs" Inherits="fpWebApp.planesAfiliado" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="planesAfiliado.aspx.cs" Inherits="fpWebApp.planesAfiliado" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
@@ -41,18 +41,10 @@
 
     <script>
         function changeClass() {
-            // Activa el menú principal
             var element1 = document.querySelector("#afiliados");
-            if (element1) {
-                element1.classList.add("active");
-            }
-
-            // Despliega el submenú
+            element1.classList.replace("old", "active");
             var element2 = document.querySelector("#afiliados2");
-            if (element2) {
-                element2.classList.add("show"); // en Bootstrap el desplegado es con "show"
-                element2.classList.remove("collapse");
-            }
+            element2.classList.remove("collapse");
         }
     </script>
 </head>
@@ -213,12 +205,14 @@
                                     <tr>
                                         <td><strong><i class="fa fa-building m-r-sm"></i></strong>Sede: 
                                             <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
-                                        <td><strong><asp:Literal ID="ltAsistencias" runat="server"></asp:Literal></strong> Asistencias</td>
+                                        <td><strong>
+                                            <asp:Literal ID="ltAsistencias" runat="server"></asp:Literal></strong> Asistencias</td>
                                     </tr>
                                     <tr>
                                         <td><strong><i class="fa fa-cake m-r-sm"></i></strong>
                                             <asp:Literal ID="ltCumple" runat="server"></asp:Literal></td>
-                                        <td><strong><asp:Literal ID="ltCongelaciones" runat="server"></asp:Literal></strong> Congelaciones</td>
+                                        <td><strong>
+                                            <asp:Literal ID="ltCongelaciones" runat="server"></asp:Literal></strong> Congelaciones</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -438,12 +432,6 @@
                                                                         <hr />
                                                                         <asp:Literal ID="ltCortesias" runat="server"></asp:Literal>
                                                                         <asp:Literal ID="ltRegalos" runat="server"></asp:Literal>
-                                                                        <asp:Label ID="lbEnlaceWompi" runat="server"></asp:Label>
-                                                                        <asp:HiddenField ID="hdEnlaceWompi" runat="server" />
-                                                                        <button class="btn btn-success btn-circle" visible="false" id="btnPortapaleles"
-                                                                            onclick="copyToClipboard()" runat="server" title="Copiar enlace">
-                                                                            <i class="fa fa-copy"></i>
-                                                                        </button>
                                                                     </p>
                                                                 </div>
                                                             </div>
@@ -460,19 +448,27 @@
                                                             </div>
                                                             <label><strong>Seleccione un método de pago:</strong></label>
                                                             <asp:RadioButtonList ID="rblMetodoPago" runat="server" RepeatDirection="Horizontal" CssClass="form-control input-sm" onchange="mostrarMetodoSeleccionado(this)">
-                                                                <asp:ListItem Text="Pago en línea&nbsp;&nbsp;&nbsp;" Value="wompi" />
-                                                                <asp:ListItem Text="Datafono&nbsp;&nbsp;&nbsp;" Value="datafono" />
-                                                                <asp:ListItem Text="Efectivo&nbsp;&nbsp;&nbsp;" Value="efectivo" />
-                                                                <asp:ListItem Text="Transferencia" Value="transferencia" />
+                                                                <asp:ListItem Text="&nbsp;Pago en línea&nbsp;&nbsp;&nbsp;" Value="wompi" />
+                                                                <asp:ListItem Text="&nbsp;Datafono&nbsp;&nbsp;&nbsp;" Value="datafono" />
+                                                                <asp:ListItem Text="&nbsp;Efectivo&nbsp;&nbsp;&nbsp;" Value="efectivo" />
+                                                                <asp:ListItem Text="&nbsp;Transferencia" Value="transferencia" />
                                                                 <%--<asp:ListItem Text="Pago mixto" Value="combinado" />--%>
                                                             </asp:RadioButtonList>
                                                         </div>
 
                                                         <!-- Contenedor Wompi -->
-                                                        <div id="divWompi" class="form-group metodo-pago" style="display: none;">
+                                                        <div id="divWompi" class="form-group metodo-pago">
                                                             <label><i class="fa fa-credit-card m-r-sm"></i>Pago en línea:</label>
                                                             <div class="row">
-                                                                <div class="col-lg-8">
+                                                                <div class="col-lg-4">
+                                                                    <asp:Label ID="lbEnlaceWompi" runat="server"></asp:Label>
+                                                                    <asp:HiddenField ID="hdEnlaceWompi" runat="server" />
+                                                                    <button class="btn btn-success btn-circle" visible="false" id="btnPortapaleles"
+                                                                        onclick="copyToClipboard()" runat="server" title="Copiar enlace">
+                                                                        <i class="fa fa-copy"></i>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="col-lg-4">
                                                                     <a class="dropdown-toggle count-info" data-toggle="modal" href="#" data-target="#ModalDetalleWompi">Verificar pago...</a>
                                                                 </div>
                                                                 <div class="col-lg-4">
@@ -545,7 +541,7 @@
                                                         </div>
 
                                                         <!-- Contenedor Pago Combinado -->
-<%--                                                        <div id="divCombinado" class="form-group metodo-pago" style="display: none;">
+                                                        <%--                                                        <div id="divCombinado" class="form-group metodo-pago" style="display: none;">
                                                             <label><i class="fa fa-random"></i>Seleccione los métodos y montos:</label>
 
                                                             <!-- Puedes incluir los métodos reutilizando los mismos controles o duplicando en este div -->
@@ -687,10 +683,10 @@
             navigator.clipboard.writeText(copyText.value);
         }
 
-        var ddlRegalos = document.getElementById("ddlRegalos");
-        var check15 = document.getElementById("check15");
-        ddlRegalos.setAttribute("disabled", true);
-        check15.setAttribute("checked", false);
+        //var ddlRegalos = document.getElementById("ddlRegalos");
+        //var check15 = document.getElementById("check15");
+        //ddlRegalos.setAttribute("disabled", true);
+        //check15.setAttribute("checked", false);
 
 
 
@@ -729,30 +725,30 @@
 
     </script>
 
-<script type="text/javascript">
-    function mostrarMetodoSeleccionado(radioList) {
-        // Obtener el valor seleccionado
-        const seleccion = radioList.querySelector('input[type=radio]:checked').value;
+    <script type="text/javascript">
+        function mostrarMetodoSeleccionado(radioList) {
+            // Obtener el valor seleccionado
+            const seleccion = radioList.querySelector('input[type=radio]:checked').value;
 
-        // Ocultar todos los contenedores de método de pago
-        document.querySelectorAll('.metodo-pago').forEach(div => {
-            div.style.display = 'none';
-        });
+            // Ocultar todos los contenedores de método de pago
+            document.querySelectorAll('.metodo-pago').forEach(div => {
+                div.style.display = 'none';
+            });
 
-        // Mostrar el contenedor correspondiente
-        const divId = 'div' + seleccion.charAt(0).toUpperCase() + seleccion.slice(1); // ej: 'combinado' -> 'divCombinado'
-        const selectedDiv = document.getElementById(divId);
-        if (selectedDiv) {
-            selectedDiv.style.display = 'block';
+            // Mostrar el contenedor correspondiente
+            const divId = 'div' + seleccion.charAt(0).toUpperCase() + seleccion.slice(1); // ej: 'combinado' -> 'divCombinado'
+            const selectedDiv = document.getElementById(divId);
+            if (selectedDiv) {
+                selectedDiv.style.display = 'block';
+            }
         }
-    }
 
-    // Ejecutar al cargar la página
-    window.onload = function () {
-        const rbl = document.getElementById('<%= rblMetodoPago.ClientID %>');
-        if (rbl) mostrarMetodoSeleccionado(rbl);
-    };
-</script>
+        // Ejecutar al cargar la página
+        window.onload = function () {
+            const rbl = document.getElementById('<%= rblMetodoPago.ClientID %>');
+            if (rbl) mostrarMetodoSeleccionado(rbl);
+        };
+    </script>
 
 
 

@@ -5037,9 +5037,9 @@ namespace fpWebApp
             return dt;
         }
 
-        public string InsertarPlan(string nombrePlan, string descripcionPlan, int precioTotal, int precioBase, int meses,
-            int mesesCortesia, string color, int idUsuario, double diasCongelamiento, string fechaInicio,
-            string fechaFinal, int permanente, int debitoAutomatico)
+        public string InsertarPlan(string nombrePlan, string descripcionPlan, int precioTotal, int precioMinimo, int precioBase, 
+            int meses, int mesesCortesia, string color, int idUsuario, double diasCongelamiento, string fechaInicio,
+            string fechaFinal, int permanente, int debitoAutomatico, int visibleWeb, int visibleCRM)
         {
             string respuesta = string.Empty;
             try
@@ -5054,6 +5054,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_nombre", nombrePlan);
                         cmd.Parameters.AddWithValue("@p_descripcion", descripcionPlan);
                         cmd.Parameters.AddWithValue("@p_precio_total", precioTotal);
+                        cmd.Parameters.AddWithValue("@p_precio_minimo", precioMinimo);
                         cmd.Parameters.AddWithValue("@p_precio_base", precioBase);
                         cmd.Parameters.AddWithValue("@p_meses", meses);
                         cmd.Parameters.AddWithValue("@p_meses_cortesia", mesesCortesia);
@@ -5064,6 +5065,8 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
                         cmd.Parameters.AddWithValue("@p_permanente", permanente);
                         cmd.Parameters.AddWithValue("@p_debito_automatico", debitoAutomatico);
+                        cmd.Parameters.AddWithValue("@p_visible_web", visibleWeb);
+                        cmd.Parameters.AddWithValue("@p_visible_CRM", visibleCRM);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -5078,8 +5081,9 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarPlan(int idPlan, string nombre, string descripcion, int precioTotal, int precioBase, int meses, int mesesCortesia,
-            string color, int idUsuario, int diasCongelamiento, string fechaInicial, string fechaFinal, int permanente, int debitoAutomatico)
+        public string ActualizarPlan(int idPlan, string nombre, string descripcion, int precioTotal, int precioMinimo, 
+            int precioBase, int meses, int mesesCortesia, string color, int idUsuario, int diasCongelamiento, 
+            string fechaInicial, string fechaFinal, int permanente, int debitoAutomatico, int visibleWeb, int visibleCRM)
         {
             string respuesta = string.Empty;
             try
@@ -5099,6 +5103,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_nombre", nombre);
                         cmd.Parameters.AddWithValue("@p_descripcion", descripcion);
                         cmd.Parameters.AddWithValue("@p_precio_total", precioTotal);
+                        cmd.Parameters.AddWithValue("@p_precio_minimo", precioMinimo);
                         cmd.Parameters.AddWithValue("@p_precio_base", precioBase);
                         cmd.Parameters.AddWithValue("@p_meses", meses);
                         cmd.Parameters.AddWithValue("@p_meses_cortesia", mesesCortesia);
@@ -5109,6 +5114,8 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
                         cmd.Parameters.AddWithValue("@p_permanente", permanente);
                         cmd.Parameters.AddWithValue("@p_debito_automatico", debitoAutomatico);
+                        cmd.Parameters.AddWithValue("@p_visible_web", visibleWeb);
+                        cmd.Parameters.AddWithValue("@p_visible_CRM", visibleCRM);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";

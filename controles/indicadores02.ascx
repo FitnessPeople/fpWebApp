@@ -10,7 +10,7 @@
 --%>
 <div class="row">
     <div class="col-lg-3">
-        <div class="widget style1 bg-success1">
+        <div class="widget style1 bg-success">
             <div class="row">
                 <div class="col-xs-4 text-center">
                     <i class="fa fa-id-card fa-5x"></i>
@@ -24,7 +24,7 @@
         </div>
     </div>
     <div class="col-lg-3">
-        <div class="widget style1 bg-info1">
+        <div class="widget style1 bg-info">
             <div class="row">
                 <div class="col-xs-4">
                     <i class="fa fa-user-slash fa-5x"></i>
@@ -39,7 +39,7 @@
         </div>
     </div>
     <div class="col-lg-3">
-        <div class="widget style1 bg-warning1">
+        <div class="widget style1 bg-warning">
             <div class="row">
                 <div class="col-xs-4">
                     <i class="fa fa-school-flag fa-5x"></i>
@@ -54,7 +54,7 @@
         </div>
     </div>
     <div class="col-lg-3">
-        <div class="widget style1 bg-primary1">
+        <div class="widget style1 bg-primary">
             <div class="row">
                 <div class="col-xs-4">
                     <i class="fa fa-user-plus fa-5x"></i>
