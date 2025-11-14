@@ -183,7 +183,8 @@
                                         <div class="space-25"></div>
                                         <h5>Carpetas</h5>
                                         <ul class="folder-list m-b-md" style="padding: 0">
-                                            <li><a href="correointerno"><i class="fa fa-inbox "></i>Bandeja de entrada<span class="label label-warning pull-right">16</span> </a></li>
+                                            <li><a href="correointerno"><i class="fa fa-inbox "></i>Bandeja de entrada<span class="label label-warning pull-right">
+                                                <asp:Literal ID="ltNroMensajes1" runat="server"></asp:Literal></span> </a></li>
                                             <li><a href="#"><i class="fa fa-envelope"></i>Enviados</a></li>
                                             <li><a href="#"><i class="fa fa-certificate"></i>Importantes</a></li>
                                             <li><a href="#"><i class="fa fa-file-text"></i>Documentos <span class="label label-danger pull-right">2</span></a></li>
@@ -191,19 +192,19 @@
                                         </ul>
                                         <h5>Categorías</h5>
                                         <ul class="category-list" style="padding: 0">
-                                            <li><a href="#"><i class="fa fa-circle text-navy"></i>Contabilidad </a></li>
-                                            <li><a href="#"><i class="fa fa-circle text-danger"></i>Sistemas</a></li>
-                                            <li><a href="#"><i class="fa fa-circle text-primary"></i>Recursos humanos</a></li>
-                                            <li><a href="#"><i class="fa fa-circle text-info"></i>Procesos</a></li>
-                                            <li><a href="#"><i class="fa fa-circle text-warning"></i>Gerencia</a></li>
+                                            <asp:Repeater ID="rpCategorias" runat="server">
+                                                <ItemTemplate>
+                                                    <li><a href="#"><i class="fa fa-circle text-<%# Eval("ColorCategoria") %>"></i><%# Eval("NombreCategoria") %></a></li>
+                                                </ItemTemplate>
+                                            </asp:Repeater>
                                         </ul>
                                         <h5 class="tag-title">Etiquetas</h5>
                                         <ul class="tag-list" style="padding: 0">
-                                            <li><a href=""><i class="fa fa-tag"></i>Afiliado</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i>Prospecto</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i>Pendiente</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i>Confirmado</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i>Festivo</a></li>
+                                            <li><a href=""><i class="fa fa-tag m-r-xs"></i>Urgente</a></li>
+                                            <li><a href=""><i class="fa fa-tag m-r-xs"></i>Alto impacto</a></li>
+                                            <li><a href=""><i class="fa fa-tag m-r-xs"></i>Confidencial</a></li>
+                                            <li><a href=""><i class="fa fa-tag m-r-xs"></i>Requiere aprobación</a></li>
+                                            <li><a href=""><i class="fa fa-tag m-r-xs"></i>Seguimiento</a></li>
                                         </ul>
                                         <div class="clearfix"></div>
                                     </div>
@@ -221,10 +222,14 @@
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label">Para:</label>
                                                 <div class="col-sm-10">
-                                                    <asp:DropDownList ID="ddlUsuarios" runat="server"
-                                                        CssClass="form-control select2_demo_2 form-control"
+                                                    <%--<asp:DropDownList ID="ddlUsuarios" runat="server"
+                                                        CssClass="form-control select2_demo_2"
                                                         multiple="multiple">
-                                                    </asp:DropDownList>
+                                                    </asp:DropDownList>--%>
+                                                    <asp:ListBox ID="ddlUsuarios" runat="server"
+                                                        CssClass="form-control select2_demo_2"
+                                                        SelectionMode="Multiple">
+                                                    </asp:ListBox>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -233,25 +238,35 @@
                                                     <asp:TextBox ID="txbAsunto" runat="server" CssClass="form-control"></asp:TextBox>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="mail-text h-200">
-                                        <div class="form-horizontal">
                                             <div class="form-group">
-                                                <div class="col-sm-12">
-                                                <div id="editor" cssclass="form-control input-sm">
-                                                    <p>&nbsp;</p>
-                                                    <p>&nbsp;</p>
-                                                    <p>&nbsp;</p>
-                                                    <p>&nbsp;</p>
-                                                    <p>&nbsp;</p>
-                                                </div>
-                                                <asp:HiddenField ID="hiddenEditor" runat="server" />
+                                                <label class="col-sm-2 control-label">Categoría:</label>
+                                                <div class="col-sm-10">
+                                                    <asp:DropDownList ID="ddlCategorias" runat="server" 
+                                                        DataTextField="NombreCategoria" DataValueField="idCategoriaCorreo" 
+                                                        CssClass="form-control">
+                                                    </asp:DropDownList>
                                                 </div>
                                             </div>
-                                            <div class="clearfix"></div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Mensaje:</label>
+                                                <div class="col-sm-10">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                        <div id="editor" cssclass="form-control input-sm">
+                                                            <p>&nbsp;</p>
+                                                            <p>&nbsp;</p>
+                                                            <p>&nbsp;</p>
+                                                            <p>&nbsp;</p>
+                                                            <p>&nbsp;</p>
+                                                        </div>
+                                                        <asp:HiddenField ID="hiddenEditor" runat="server" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+
                                     <div class="mail-body">
                                         <div class="form-horizontal">
                                             <div class="form-group m-b-n-xs">

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NPOI.OpenXmlFormats.Spreadsheet;
+using System;
 using System.Data;
 
 namespace fpWebApp
@@ -11,22 +12,40 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Afiliados");
-                    if (ViewState["SinPermiso"].ToString() == "1")
-                    {
-                        divMensaje.Visible = true;
-                        paginasperfil.Visible = true;
-                        divContenido.Visible = false;
-                    }
-                    if (ViewState["CrearModificar"].ToString() == "1")
-                    {
+                    CargarCategorias();
+                    clasesglobales cg = new clasesglobales();
+                    string strQuery = @"SELECT * 
+                        FROM correointerno ci 
+                        INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
+                        WHERE ci.idUsuarioPara = " + Session["idUsuario"].ToString() + @" 
+                        AND ci.Leido = 0 
+                        ORDER BY FechaHora DESC";
 
-                    }
-                    else
+                    DataTable dt1 = cg.TraerDatos(strQuery);
+
+                    ltNroMensajes1.Text = dt1.Rows.Count.ToString();
+
+                    dt1.Dispose();
+
+                    if (!string.IsNullOrEmpty(Request.QueryString["idCorreo"]))
                     {
-                        divMensaje.Visible = true;
-                        paginasperfil.Visible = true;
-                        divContenido.Visible = false;
+                        string idCorreo = Request.QueryString["idCorreo"];
+                        strQuery = @"SELECT *  
+                            FROM correointerno ci 
+                            INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
+                            WHERE ci.idUsuarioPara = " + Session["idUsuario"].ToString() + @" 
+                            AND ci.idCorreo = " + idCorreo;
+
+                        DataTable dt = cg.TraerDatos(strQuery);
+
+                        ltAsunto.Text = dt.Rows[0]["Asunto"].ToString();
+                        ltFechaHora.Text = Convert.ToDateTime(dt.Rows[0]["FechaHora"]).ToString("dd 'de' MM 'de' yyyy, HH:mm:ss");
+                        ltRemitente.Text = dt.Rows[0]["NombreUsuario"].ToString();
+                        ltMensaje.Text = dt.Rows[0]["Mensaje"].ToString();
+
+                        dt.Dispose();
+
+                        MarcarComoLeido(idCorreo);
                     }
                 }
                 else
@@ -36,27 +55,28 @@ namespace fpWebApp
             }
         }
 
-        private void ValidarPermisos(string strPagina)
+        private void CargarCategorias()
         {
-            ViewState["SinPermiso"] = "1";
-            ViewState["Consulta"] = "0";
-            ViewState["Exportar"] = "0";
-            ViewState["CrearModificar"] = "0";
-            ViewState["Borrar"] = "0";
+            string strQuery = @"SELECT * 
+                FROM categoriascorreo ";
 
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
+            DataTable dt = cg.TraerDatos(strQuery);
 
-            if (dt.Rows.Count > 0)
-            {
-                ViewState["SinPermiso"] = dt.Rows[0]["SinPermiso"].ToString();
-                ViewState["Consulta"] = dt.Rows[0]["Consulta"].ToString();
-                ViewState["Exportar"] = dt.Rows[0]["Exportar"].ToString();
-                ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
-                ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
-            }
+            rpCategorias.DataSource = dt;
+            rpCategorias.DataBind();
 
             dt.Dispose();
         }
+
+        private void MarcarComoLeido(string idCorreo)
+        {
+
+            string strQuery = @"UPDATE correointerno SET Leido = 1 WHERE idCorreo = " + idCorreo;
+
+            clasesglobales cg = new clasesglobales();
+            cg.TraerDatosStr(strQuery);
+        }
+
     }
 }

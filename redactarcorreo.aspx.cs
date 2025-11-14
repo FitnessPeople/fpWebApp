@@ -1,5 +1,8 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
@@ -11,52 +14,27 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Afiliados");
-                    if (ViewState["SinPermiso"].ToString() == "1")
-                    {
-                        divMensaje.Visible = true;
-                        paginasperfil.Visible = true;
-                        divContenido.Visible = false;
-                    }
-                    if (ViewState["CrearModificar"].ToString() == "1")
-                    {
-                        CargarUsuarios();
-                    }
-                    else
-                    {
-                        divMensaje.Visible = true;
-                        paginasperfil.Visible = true;
-                        divContenido.Visible = false;
-                    }
+                    CargarUsuarios();
+                    CargarCategorias();
+                    clasesglobales cg = new clasesglobales();
+                    string strQuery = @"SELECT * 
+                        FROM correointerno ci 
+                        INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
+                        WHERE ci.idUsuarioPara = " + Session["idUsuario"].ToString() + @" 
+                        AND ci.Leido = 0 
+                        ORDER BY FechaHora DESC";
+
+                    DataTable dt1 = cg.TraerDatos(strQuery);
+
+                    ltNroMensajes1.Text = dt1.Rows.Count.ToString();
+
+                    dt1.Dispose();
                 }
                 else
                 {
                     Response.Redirect("logout");
                 }
             }
-        }
-
-        private void ValidarPermisos(string strPagina)
-        {
-            ViewState["SinPermiso"] = "1";
-            ViewState["Consulta"] = "0";
-            ViewState["Exportar"] = "0";
-            ViewState["CrearModificar"] = "0";
-            ViewState["Borrar"] = "0";
-
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
-
-            if (dt.Rows.Count > 0)
-            {
-                ViewState["SinPermiso"] = dt.Rows[0]["SinPermiso"].ToString();
-                ViewState["Consulta"] = dt.Rows[0]["Consulta"].ToString();
-                ViewState["Exportar"] = dt.Rows[0]["Exportar"].ToString();
-                ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
-                ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
-            }
-
-            dt.Dispose();
         }
 
         private void CargarUsuarios()
@@ -74,9 +52,45 @@ namespace fpWebApp
             ddlUsuarios.DataBind();
         }
 
+        private void CargarCategorias()
+        {
+            string strQuery = @"SELECT * 
+                FROM categoriascorreo ";
+
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            rpCategorias.DataSource = dt;
+            rpCategorias.DataBind();
+
+            ddlCategorias.DataSource = dt;
+            ddlCategorias.DataBind();
+
+            dt.Dispose();
+        }
+
         protected void lbEnviar_Click(object sender, EventArgs e)
         {
+            List<string> seleccionados = new List<string>();
 
+            foreach (ListItem item in ddlUsuarios.Items)
+            {
+                if (item.Selected)
+                {
+                    seleccionados.Add(item.Value);
+                }
+            }
+
+            foreach (string id in seleccionados)
+            {
+                string strQuery = "INSERT INTO correointerno (idUsuarioDe, idUsuarioPara, idCategoriaCorreo, Asunto, Mensaje, FechaHora) " +
+                    "VALUES (" + Session["idUsuario"].ToString() + ", " + id + ", " + ddlCategorias.SelectedItem.Value.ToString() + ", " +
+                    "'" + txbAsunto.Text.ToString() + "', '" + hiddenEditor.Value.ToString() + "', NOW())";
+                clasesglobales cg = new clasesglobales();
+                cg.TraerDatosStr(strQuery);
+            }
+
+            Response.Redirect("correointerno");
         }
     }
 }

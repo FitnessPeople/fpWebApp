@@ -125,8 +125,8 @@
                 <li class="divider"></li>
                 <li>
                     <div class="text-center link-block">
-                        <%--<a href="correointerno">--%>
-                        <a href="#">
+                        <a href="correointerno">
+                        <%--<a href="#">--%>
                             <i class="fa fa-envelope m-r-sm"></i><strong>Leer todos los mensajes</strong>
                         </a>
                     </div>
