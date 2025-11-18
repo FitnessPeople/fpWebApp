@@ -20,7 +20,7 @@ namespace fpWebApp
                     string strQuery = @"SELECT * 
                         FROM correointerno ci 
                         INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
-                        WHERE ci.idUsuarioPara = " + Session["idUsuario"].ToString() + @" 
+                        WHERE ci.idsPara = '" + Session["idUsuario"].ToString() + @"' 
                         AND ci.Leido = 0 
                         ORDER BY FechaHora DESC";
 
@@ -81,14 +81,24 @@ namespace fpWebApp
                 }
             }
 
-            foreach (string id in seleccionados)
-            {
-                string strQuery = "INSERT INTO correointerno (idUsuarioDe, idUsuarioPara, idCategoriaCorreo, Asunto, Mensaje, FechaHora) " +
-                    "VALUES (" + Session["idUsuario"].ToString() + ", " + id + ", " + ddlCategorias.SelectedItem.Value.ToString() + ", " +
-                    "'" + txbAsunto.Text.ToString() + "', '" + hiddenEditor.Value.ToString() + "', NOW())";
-                clasesglobales cg = new clasesglobales();
-                cg.TraerDatosStr(strQuery);
-            }
+            string valoresComoString = string.Join(",", seleccionados);
+
+            string contenidoEditor = hiddenEditor.Value;
+            string strQuery = "INSERT INTO correointerno (idUsuarioDe, idsPara, idCategoriaCorreo, Asunto, Mensaje, FechaHora) " +
+                "VALUES (" + Session["idUsuario"].ToString() + ", '" + valoresComoString + "', " + ddlCategorias.SelectedItem.Value.ToString() + ", " +
+                "'" + txbAsunto.Text.ToString() + "', '" + contenidoEditor + "', NOW())";
+            clasesglobales cg = new clasesglobales();
+            cg.TraerDatosStr(strQuery);
+
+            //foreach (string id in seleccionados)
+            //{
+            //    string contenidoEditor = hiddenEditor.Value;
+            //    string strQuery = "INSERT INTO correointerno (idUsuarioDe, idsPara, idCategoriaCorreo, Asunto, Mensaje, FechaHora) " +
+            //        "VALUES (" + Session["idUsuario"].ToString() + ", " + id + ", " + ddlCategorias.SelectedItem.Value.ToString() + ", " +
+            //        "'" + txbAsunto.Text.ToString() + "', '" + contenidoEditor + "', NOW())";
+            //    clasesglobales cg = new clasesglobales();
+            //    cg.TraerDatosStr(strQuery);
+            //}
 
             Response.Redirect("correointerno");
         }

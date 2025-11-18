@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="redactarcorreo.aspx.cs" Inherits="fpWebApp.redactarcorreo" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="redactarcorreo.aspx.cs" Inherits="fpWebApp.redactarcorreo" ValidateRequest="false" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
@@ -14,65 +14,126 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Correo interno</title>
+    <title>Fitness People | Redactar correo</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
-    <link href="css/plugins/dropzone/basic.css" rel="stylesheet" />
-    <link href="css/plugins/dropzone/dropzone.css" rel="stylesheet" />
-    <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet" />
-    <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet" />
+    <!-- CSS de Quill -->
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+    <!-- JS de Quill -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+    <script>
+        var quill;
+
+        document.addEventListener("DOMContentLoaded", function () {
+            quill = new Quill("#editor", {
+                theme: "snow",
+                modules: {
+                    toolbar: {
+                        container: [
+                            [{ 'header': [1, 2, 3, false] }],
+                            ['bold', 'italic', 'underline'],
+                            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                            [{ 'align': [] }],
+                            ['image', 'link'],     // <-- imagen y link
+                            ['attachment']         // <-- botón custom
+                        ],
+                        handlers: {
+                            image: function () {
+                                selectLocalImage();
+                            },
+                            attachment: function () {
+                                selectAttachment();
+                            }
+                        }
+                    }
+                }
+            });
+
+            // ======================
+            // SUBIR IMAGEN
+            // ======================
+            function selectLocalImage() {
+                const input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+                input.click();
+
+                input.onchange = () => {
+                    const file = input.files[0];
+                    uploadFile(file, "UploadImage.ashx", true);
+                };
+            }
+
+            // ======================
+            // SUBIR ARCHIVO PDF / DOC
+            // ======================
+            function selectAttachment() {
+                const input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', '.pdf,.doc,.docx,.xls,.xlsx');
+                input.click();
+
+                input.onchange = () => {
+                    const file = input.files[0];
+                    uploadFile(file, "UploadFile.ashx", false);
+                };
+            }
+
+            // ======================================
+            // SUBIR ARCHIVO AL SERVIDOR (GENÉRICO)
+            // ======================================
+            function uploadFile(file, handler, isImage) {
+                const formData = new FormData();
+                formData.append("file", file);
+
+                fetch(handler, {
+                    method: "POST",
+                    body: formData
+                })
+                    .then(r => r.json())
+                    .then(result => {
+                        const range = quill.getSelection(true);
+
+                        if (isImage) {
+                            // Insertar imagen en el editor
+                            quill.insertEmbed(range.index, "image", result.url);
+                        } else {
+                            // Insertar link del archivo
+                            quill.insertText(range.index, file.name, "link", result.url);
+                        }
+                    });
+            }
+
+            quill.on('text-change', function (delta, oldDelta, source) {
+                var editorContenido = document.getElementById("editor");
+                if (source === 'user') {
+                    const scrollTop = editorContenido.scrollTop;
+                    requestAnimationFrame(() => {
+                        editorContenido.scrollTop = scrollTop;
+                    });
+                }
+            });
+
+            var contenidoGuardado = document.getElementById('<%= hiddenEditor.ClientID %>').value;
+            if (contenidoGuardado.trim() !== "") {
+                quill.root.innerHTML = contenidoGuardado;
+            }
+        });
+
+        function guardarContenidoEditor() {
+            var contenido = quill.root.innerHTML;
+            document.getElementById('<%= hiddenEditor.ClientID %>').value = contenido;
+        }
+    </script>
 
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
     <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
-
-    <!-- CSS de Quill -->
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
-    <!-- JS de Quill -->
-    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
-
-    <script>
-        var editorContenido = document.querySelector(".ql-editor");
-        console.log(editorContenido);
-        //editorContenido.style.height = "600";
-        //editorContenido.style.height = editorContenido.scrollHeight + "px";
-
-        var quill;
-        document.addEventListener("DOMContentLoaded", function () {
-            quill = new Quill("#editor", {
-                theme: "snow",
-                modules: {
-                    toolbar: [
-                        [{ 'header': [1, 2, 3, false] }],
-                        ['bold', 'strike'], // Negrita y Tachado
-                        ['italic', 'underline'],
-                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                        [{ 'align': [] }],
-                        ['link', 'image', 'video'],
-                    ]
-                }
-            });
-            //function ajustarAlturaEditor() {
-            //    var editorContenido = document.querySelector(".ql-editor");
-            //    editorContenido.style.height = "auto";
-            //    editorContenido.style.height = editorContenido.scrollHeight + "px";
-            //}
-            //quill.on("text-change", ajustarAlturaEditor);
-
-            var contenidoGuardado = document.getElementById('<%= hiddenEditor.ClientID %>').value;
-        if (contenidoGuardado.trim() !== "") {
-            quill.root.innerHTML = contenidoGuardado;
-        }
-    });
-    function guardarContenidoEditor() {
-        var contenido = quill.root.innerHTML;
-        document.getElementById('<%= hiddenEditor.ClientID %>').value = contenido;
-        }
-    </script>
 
     <style type="text/css" media="print">
         body {
@@ -187,7 +248,7 @@
                                                 <asp:Literal ID="ltNroMensajes1" runat="server"></asp:Literal></span> </a></li>
                                             <li><a href="#"><i class="fa fa-envelope"></i>Enviados</a></li>
                                             <li><a href="#"><i class="fa fa-certificate"></i>Importantes</a></li>
-                                            <li><a href="#"><i class="fa fa-file-text"></i>Documentos <span class="label label-danger pull-right">2</span></a></li>
+                                            <li><a href="#"><i class="fa fa-file-text"></i>Documentos</a></li>
                                             <li><a href="#"><i class="fa fa-trash"></i>Papelera</a></li>
                                         </ul>
                                         <h5>Categorías</h5>
@@ -252,13 +313,7 @@
                                                 <div class="col-sm-10">
                                                     <div class="form-group">
                                                         <div class="col-sm-12">
-                                                        <div id="editor" cssclass="form-control input-sm">
-                                                            <p>&nbsp;</p>
-                                                            <p>&nbsp;</p>
-                                                            <p>&nbsp;</p>
-                                                            <p>&nbsp;</p>
-                                                            <p>&nbsp;</p>
-                                                        </div>
+                                                        <div id="editor" cssclass="form-control input-sm"></div>
                                                         <asp:HiddenField ID="hiddenEditor" runat="server" />
                                                         </div>
                                                     </div>
@@ -294,7 +349,8 @@
                                     <div class="mail-body text-right tooltip-demo">
                                         <asp:LinkButton ID="lbEnviar" runat="server" 
                                             CssClass="btn btn-sm btn-primary" data-toggle="tooltip" 
-                                            data-placement="top" title="Enviar" OnClick="lbEnviar_Click"><i class="fa fa-reply"></i> Enviar</asp:LinkButton>
+                                            data-placement="top" title="Enviar" OnClick="lbEnviar_Click" 
+                                            OnClientClick="guardarContenidoEditor()"><i class="fa fa-reply"></i> Enviar</asp:LinkButton>
                                         <a href="correointerno" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Descartar"><i class="fa fa-times"></i> Descartar</a>
                                     </div>
                                     <div class="clearfix"></div>

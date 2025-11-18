@@ -11,7 +11,7 @@ namespace fpWebApp
 {
 
 
-    public partial class detallecorreo
+    public partial class correoenviado
     {
 
         /// <summary>
@@ -78,49 +78,40 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Repeater rpCategorias;
 
         /// <summary>
-        /// Control ltAsunto.
+        /// Control form1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltAsunto;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// Control ltFechaHora.
+        /// Control btnAnterior.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltFechaHora;
+        protected global::System.Web.UI.WebControls.LinkButton btnAnterior;
 
         /// <summary>
-        /// Control ltRemitente.
+        /// Control btnSiguiente.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltRemitente;
+        protected global::System.Web.UI.WebControls.LinkButton btnSiguiente;
 
         /// <summary>
-        /// Control ltDestinatarios.
+        /// Control rpMensajes.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltDestinatarios;
-
-        /// <summary>
-        /// Control ltMensaje.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltMensaje;
+        protected global::System.Web.UI.WebControls.Repeater rpMensajes;
 
         /// <summary>
         /// Control footer.

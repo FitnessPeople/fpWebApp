@@ -17,7 +17,7 @@ namespace fpWebApp
                     string strQuery = @"SELECT * 
                         FROM correointerno ci 
                         INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
-                        WHERE ci.idUsuarioPara = " + Session["idUsuario"].ToString() + @" 
+                        WHERE FIND_IN_SET(" + Session["idUsuario"].ToString() + @", ci.idsPara) > 0 
                         AND ci.Leido = 0 
                         ORDER BY FechaHora DESC";
 
@@ -30,17 +30,24 @@ namespace fpWebApp
                     if (!string.IsNullOrEmpty(Request.QueryString["idCorreo"]))
                     {
                         string idCorreo = Request.QueryString["idCorreo"];
-                        strQuery = @"SELECT *  
-                            FROM correointerno ci 
-                            INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
-                            WHERE ci.idUsuarioPara = " + Session["idUsuario"].ToString() + @" 
-                            AND ci.idCorreo = " + idCorreo;
+                        strQuery = @"
+                            SELECT 
+                                ci.*, 
+                                u.NombreUsuario AS Remitente,
+                                (SELECT GROUP_CONCAT(ud.NombreUsuario SEPARATOR ', ')
+                                 FROM usuarios ud
+                                 WHERE FIND_IN_SET(ud.idUsuario, ci.idsPara) > 0
+                                ) AS Destinatarios
+                            FROM correointerno ci
+                            INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe
+                            WHERE ci.idCorreo = " + idCorreo;
 
                         DataTable dt = cg.TraerDatos(strQuery);
 
                         ltAsunto.Text = dt.Rows[0]["Asunto"].ToString();
-                        ltFechaHora.Text = Convert.ToDateTime(dt.Rows[0]["FechaHora"]).ToString("dd 'de' MM 'de' yyyy, HH:mm:ss");
-                        ltRemitente.Text = dt.Rows[0]["NombreUsuario"].ToString();
+                        ltFechaHora.Text = Convert.ToDateTime(dt.Rows[0]["FechaHora"]).ToString("dd 'de' MMM 'de' yyyy, HH:mm:ss");
+                        ltRemitente.Text = dt.Rows[0]["Remitente"].ToString();
+                        ltDestinatarios.Text = dt.Rows[0]["Destinatarios"].ToString();
                         ltMensaje.Text = dt.Rows[0]["Mensaje"].ToString();
 
                         dt.Dispose();

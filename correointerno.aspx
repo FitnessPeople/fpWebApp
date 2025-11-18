@@ -86,7 +86,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-envelope text-success m-r-sm"></i>Correo interno</h2>
+                    <h2><i class="fa fa-inbox text-success m-r-sm"></i>Bandeja de entrada</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Menu principal</li>
@@ -125,9 +125,9 @@
                                             <li><a href="correointerno"><i class="fa fa-inbox "></i>Bandeja de entrada
                                                 <span class="label label-warning pull-right">
                                                     <asp:Literal ID="ltNroMensajes1" runat="server"></asp:Literal></span></a></li>
-                                            <li><a href="#"><i class="fa fa-envelope"></i>Enviados</a></li>
+                                            <li><a href="correoenviado"><i class="fa fa-envelope"></i>Enviados</a></li>
                                             <li><a href="#"><i class="fa fa-certificate"></i>Importantes</a></li>
-                                            <li><a href="#"><i class="fa fa-file-text"></i>Documentos <span class="label label-danger pull-right">2</span></a></li>
+                                            <li><a href="#"><i class="fa fa-file-text"></i>Documentos</a></li>
                                             <li><a href="#"><i class="fa fa-trash"></i>Papelera</a></li>
                                         </ul>
                                         <h5>Categorías</h5>

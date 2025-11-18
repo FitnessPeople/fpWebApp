@@ -295,6 +295,7 @@
     <Content Include="controles\navbar.ascx" />
     <Content Include="controles\paginasperfil.ascx" />
     <Content Include="controles\rightsidebar.ascx" />
+    <Content Include="correoenviado.aspx" />
     <Content Include="correointerno.aspx" />
     <Content Include="cortesias.aspx" />
     <Content Include="cortesiasAfil.aspx" />
@@ -1403,6 +1404,13 @@
     <Compile Include="controles\rightsidebar.ascx.designer.cs">
       <DependentUpon>rightsidebar.ascx</DependentUpon>
     </Compile>
+    <Compile Include="correoenviado.aspx.cs">
+      <DependentUpon>correoenviado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="correoenviado.aspx.designer.cs">
+      <DependentUpon>correoenviado.aspx</DependentUpon>
+    </Compile>
     <Compile Include="correointerno.aspx.cs">
       <DependentUpon>correointerno.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2180,6 +2188,12 @@
     <Compile Include="traspasosAfil.aspx.designer.cs">
       <DependentUpon>traspasosAfil.aspx</DependentUpon>
     </Compile>
+    <Compile Include="UploadFile.ashx.cs">
+      <DependentUpon>UploadFile.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="UploadImage.ashx.cs">
+      <DependentUpon>UploadImage.ashx</DependentUpon>
+    </Compile>
     <Compile Include="usuarios.aspx.cs">
       <DependentUpon>usuarios.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2205,6 +2219,7 @@
     <Folder Include="docs\incapacidades\" />
     <Folder Include="docs\traspasos\" />
     <Folder Include="img\contratos\" />
+    <Folder Include="img\correo\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\bootstrap.css.map" />
@@ -2230,6 +2245,8 @@
     <Content Include="js\plugins\justified-gallery\README.md" />
     <Content Include="js\plugins\topojson\LICENSE" />
     <None Include="packages.config" />
+    <Content Include="UploadImage.ashx" />
+    <Content Include="UploadFile.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

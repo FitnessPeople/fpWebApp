@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Data;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
-    public partial class correointerno : System.Web.UI.Page
+    public partial class correoenviado : System.Web.UI.Page
     {
         private int PageSize = 10; // cantidad de registros por página
         public int CurrentPage
@@ -39,13 +37,41 @@ namespace fpWebApp
 
         private void CargarMensajes()
         {
-            string strQuery = @"SELECT ci.idCorreo, u.NOmbreUsuario AS Remitente, ci.Asunto, 
-                ci.FechaHora, ci.Leido, cc.NombreCategoria, cc.ColorCategoria 
-                FROM correointerno ci 
-                INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
-                INNER JOIN categoriasCorreo cc ON cc.idCategoriaCorreo = ci.idCategoriaCorreo 
-                WHERE FIND_IN_SET(" + Session["idUsuario"].ToString() + @", ci.idsPara) > 0 
-                ORDER BY FechaHora DESC";
+            string strQuery = @"
+                SELECT 
+                    ci.idCorreo,
+                    (
+                        SELECT 
+                            CASE 
+                                -- Si hay MÁS de un destinatario
+                                WHEN COUNT(*) > 1 THEN 
+                                    CONCAT(
+                                        (SELECT NombreUsuario 
+                                         FROM usuarios 
+                                         WHERE idUsuario = SUBSTRING_INDEX(ci.idsPara, ',', 1)
+                                        ),
+                                        '...'
+                                    )
+                                -- Si solo hay uno, mostrarlo normal
+                                ELSE 
+                                    (SELECT NombreUsuario 
+                                     FROM usuarios 
+                                     WHERE idUsuario = ci.idsPara
+                                    )
+                            END
+                        FROM usuarios u
+                        WHERE FIND_IN_SET(u.idUsuario, ci.idsPara) > 0
+                    ) AS Destinatarios,
+                    ci.Asunto,
+                    ci.FechaHora,
+                    ci.Leido,
+                    cc.NombreCategoria,
+                    cc.ColorCategoria
+                FROM correointerno ci
+                INNER JOIN categoriasCorreo cc 
+                    ON cc.idCategoriaCorreo = ci.idCategoriaCorreo
+                WHERE ci.idUsuarioDe = " + Session["idUsuario"].ToString() + @"
+                ORDER BY ci.FechaHora DESC";
 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
@@ -68,14 +94,14 @@ namespace fpWebApp
             strQuery = @"SELECT ci.idCorreo, u.NOmbreUsuario AS Remitente, ci.Asunto, ci.FechaHora 
                 FROM correointerno ci 
                 INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
-                WHERE FIND_IN_SET(" + Session["idUsuario"].ToString() + @", ci.idsPara) > 0 
+                WHERE ci.idsPara = '" + Session["idUsuario"].ToString() + @"' 
                 AND ci.Leido = 0 
                 ORDER BY FechaHora DESC";
 
             DataTable dt1 = cg.TraerDatos(strQuery);
 
             ltNroMensajes1.Text = dt1.Rows.Count.ToString();
-            ltNroMensajes2.Text = dt1.Rows.Count.ToString();
+            //ltNroMensajes2.Text = dt1.Rows.Count.ToString();
 
             dt1.Dispose();
         }
@@ -119,16 +145,6 @@ namespace fpWebApp
                     if (ltTiempo != null)
                         ltTiempo.Text = leyenda;
                 }
-
-
-                // Obtener el valor del campo Leido
-                int leido = Convert.ToInt32(DataBinder.Eval(e.Item.DataItem, "Leido"));
-
-                // Buscar el <tr> del ItemTemplate
-                HtmlTableRow fila = (HtmlTableRow)e.Item.FindControl("fila");
-
-                // Asignar la clase según el valor
-                fila.Attributes["class"] = (leido == 1) ? "read" : "unread";
             }
         }
 
