@@ -996,6 +996,7 @@
     <Content Include="reportepagosmulticanal.aspx" />
     <Content Include="reportepagosrecurrentes.aspx" />
     <Content Include="reporteventas.aspx" />
+    <Content Include="reporteventasasesor.aspx" />
     <Content Include="respuestaautorizacion.aspx" />
     <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjax.js" />
     <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxApplicationServices.js" />
@@ -2113,6 +2114,13 @@
     </Compile>
     <Compile Include="reporteventas.aspx.designer.cs">
       <DependentUpon>reporteventas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="reporteventasasesor.aspx.cs">
+      <DependentUpon>reporteventasasesor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="reporteventasasesor.aspx.designer.cs">
+      <DependentUpon>reporteventasasesor.aspx</DependentUpon>
     </Compile>
     <Compile Include="respuestaautorizacion.aspx.cs">
       <DependentUpon>respuestaautorizacion.aspx</DependentUpon>
