@@ -603,11 +603,6 @@
                                                                     runat="server" ReadOnly Style="text-align: right;"></asp:TextBox>
                                                             </div>
                                                         </div>
-
-
-
-
-
                                                     </div>
                                                 </div>
 
@@ -615,9 +610,10 @@
                                                     <button id="btnCancelar" class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='afiliados'" runat="server"><strong>Cancelar</strong></button>
                                                     <button id="btnVolver" runat="server" type="button" class="btn btn-sm btn-info pull-right m-t-n-xs" onclick="window.location.href='agendacrm.aspx';">
                                                         Regresar a Agenda CRM</button>
-                                                    <asp:LinkButton ID="lbAgregarPlan" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" OnClick="lbAgregarPlan_Click">
-                                                        <i class="fa fa-ticket"></i> Agregar plan</asp:LinkButton>
-
+                                                    <asp:LinkButton ID="lbAgregarPlan" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
+                                                        OnClick="lbAgregarPlan_Click" OnClientClick="return confirmarVenta(event);">
+                                                        <i class="fa fa-ticket"></i> Agregar plan
+                                                    </asp:LinkButton>
                                                 </div>
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
@@ -749,6 +745,37 @@
             if (rbl) mostrarMetodoSeleccionado(rbl);
         };
     </script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function confirmarVenta(e) {
+
+        // Detener el postback por defecto
+        if (e) e.preventDefault();
+
+        Swal.fire({
+            title: 'Confirmar venta',
+            text: 'Esta acción generará la venta. ¿Desea continuar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, continuar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                // FORZAR el postback manualmente
+                __doPostBack('<%= lbAgregarPlan.UniqueID %>', '');
+            }
+        });
+
+        return false; // Evita que se ejecute el postback inmediato
+    }
+</script>
+
+
+
+
 
 
 

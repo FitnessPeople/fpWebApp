@@ -73,8 +73,8 @@ namespace fpWebApp
 
                     listaVentas();
                     //listaTransaccionesPorFecha(Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()),Convert.ToInt32(ddlPlanes.SelectedValue.ToString()),txbFechaIni.Value.ToString(),txbFechaFin.Value.ToString());
-                    VentasWeb();
-                    VentasCounter();
+                   // VentasWeb();
+                    //VentasCounter();
                 }
                 else
                 {
@@ -242,78 +242,9 @@ namespace fpWebApp
             int annio = Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString());
             int mes = Convert.ToInt32(ddlMes.SelectedItem.Value.ToString());
 
-            //string query = @"
-            //    SELECT  
-            //        ppa.*,
-            //        a.DocumentoAfiliado,
-            //        CONCAT_WS(' ', a.NombreAfiliado, a.ApellidoAfiliado) AS NombreAfiliado,
-            //        CONCAT('$', FORMAT(ppa.valor, 2)) AS Valor,
-            //        u.NombreUsuario AS Usuario,
-            //        cv.NombreCanalVenta AS CanalVenta, NombreMedioPago, p.NombrePlan  
-            //    FROM pagosplanafiliado ppa
-            //     INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan
-            //     INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
-            //     INNER JOIN usuarios u ON u.idUsuario = ppa.idUsuario  
-            //     INNER JOIN empleados e ON e.DocumentoEmpleado = u.idEmpleado
-            //     INNER JOIN canalesventa cv ON cv.idCanalVenta = e.idCanalVenta 
-            //     INNER JOIN mediosdepago mp ON mp.idMedioPago = ppa.idMedioPago 
-            //     INNER JOIN planes p ON p.idPlan = ap.idPlan 
-            //    WHERE (ppa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()) + @")
-            // AND DATE(ppa.FechaHoraPago) BETWEEN '" + txbFechaIni.Value.ToString() + @"' 
-            //        AND '" + txbFechaFin.Value.ToString() + @"' 
-            // AND ap.idPlan IN (1,17,18,19) 
-            //    AND MONTH(ap.FechaInicioPlan) = MONTH('" + txbFechaIni.Value.ToString() + @"') 
-            //    AND YEAR(ap.FechaInicioPlan) = YEAR('" + txbFechaIni.Value.ToString() + @"') 
-            //    ORDER BY ppa.idPago DESC;";
+            int  filtroMedioPago = Convert.ToInt32(ddlTipoPago.SelectedValue); 
 
-            int  filtroMedioPago = 0;
-            if (ddlTipoPago.SelectedValue != "0") // 0 = Todos
-            {
-                filtroMedioPago =  Convert.ToInt32(ddlTipoPago.SelectedValue);
-            }
-
-            //string query = @"
-            //    SELECT ppa.idPago, ppa.idAfiliadoPlan, ppa.IdReferencia, ppa.FechaHoraPago, ppa.EstadoPago, ppa.Valor, 
-            //        a.DocumentoAfiliado,
-            //        CONCAT_WS(' ', a.NombreAfiliado, a.ApellidoAfiliado) AS NombreAfiliado,
-            //        u.NombreUsuario AS Usuario,
-            //        cv.NombreCanalVenta AS CanalVenta, NombreMedioPago, p.NombrePlan  
-            //    FROM PagosPlanAfiliado ppa 
-            //    INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
-            //    INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
-            //    INNER JOIN usuarios u ON u.idUsuario = ppa.idUsuario  
-            //    INNER JOIN empleados e ON e.DocumentoEmpleado = u.idEmpleado
-            //    INNER JOIN canalesventa cv ON cv.idCanalVenta = e.idCanalVenta 
-            //    INNER JOIN mediosdepago mp ON mp.idMedioPago = ppa.idMedioPago 
-            //    INNER JOIN planes p ON p.idPlan = ap.idPlan 
-            //    WHERE ppa.idUsuario NOT IN (156) 
-            //    " + filtroMedioPago + @" 
-            //    AND ap.idPlan IN (1, 17) 
-            //    AND MONTH(ppa.fechaHoraPago) = " + mes + @" 
-            //    AND YEAR(ppa.fechaHoraPago) = " + annio + @" 
-            //    AND MONTH(ap.FechaInicioPlan) IN (" + mes + @") 
-            //    UNION ALL
-            //    SELECT ppa.idPago, ppa.idAfiliadoPlan, ppa.IdReferencia, ppa.FechaHoraPago, ppa.EstadoPago, ppa.Valor, 
-            //        a.DocumentoAfiliado,
-            //        CONCAT_WS(' ', a.NombreAfiliado, a.ApellidoAfiliado) AS NombreAfiliado, 
-            //        u.NombreUsuario AS Usuario,
-            //        cv.NombreCanalVenta AS CanalVenta, NombreMedioPago, p.NombrePlan  
-            //    FROM PagosPlanAfiliado ppa 
-            //    INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
-            //    INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
-            //    INNER JOIN usuarios u ON u.idUsuario = ppa.idUsuario  
-            //    INNER JOIN empleados e ON e.DocumentoEmpleado = u.idEmpleado
-            //    INNER JOIN canalesventa cv ON cv.idCanalVenta = e.idCanalVenta 
-            //    INNER JOIN mediosdepago mp ON mp.idMedioPago = ppa.idMedioPago 
-            //    INNER JOIN planes p ON p.idPlan = ap.idPlan 
-            //    WHERE ppa.idUsuario = 156 
-            //    " + filtroMedioPago + @" 
-            //    AND ap.idPlan IN (18,19,20,21) 
-            //    AND MONTH(ppa.fechaHoraPago) = " + mes + @" 
-            //    AND YEAR(ppa.fechaHoraPago) = " + annio + @" 
-            //    AND MONTH(ap.FechaInicioPlan) IN (" + mes + @") 
-            //    ORDER BY idPago DESC";
-            int val = 0;
+   
 
             DataTable dt = cg.ConsultarPagosPorTipoPorAsesor(Convert.ToInt32(Session["IdUsuario"].ToString()), filtroMedioPago,"2025-11-18","2025-11-18", out decimal valorTotal);
 

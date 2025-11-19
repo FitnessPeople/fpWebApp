@@ -20,6 +20,8 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            ScriptManager.RegisterClientScriptInclude(this, this.GetType(),
+                "SweetAlert", "https://cdn.jsdelivr.net/npm/sweetalert2@11/sweetalert2.all.min.js");
             if (!IsPostBack)
             {
                 if (Session["idUsuario"] != null)
