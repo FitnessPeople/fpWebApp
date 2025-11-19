@@ -128,7 +128,7 @@
                                             <li><a href="correoenviado"><i class="fa fa-envelope"></i>Enviados</a></li>
                                             <li><a href="#"><i class="fa fa-certificate"></i>Importantes</a></li>
                                             <li><a href="#"><i class="fa fa-file-text"></i>Documentos</a></li>
-                                            <li><a href="#"><i class="fa fa-trash"></i>Papelera</a></li>
+                                            <li><a href="correoeliminado"><i class="fa fa-trash"></i>Papelera</a></li>
                                         </ul>
                                         <h5>Categorías</h5>
                                         <ul class="category-list" style="padding: 0">
@@ -151,15 +151,21 @@
                                 </div>
                             </div>
                         </div>
+                        <form id="form1" runat="server">
                         <div class="col-lg-9 animated fadeInRight">
                             <div class="mail-box-header">
                                 <div class="pull-right tooltip-demo">
-                                    <a href="mail_compose.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Responder"><i class="fa fa-reply text-success m-r-xs"></i>Responder</a>
+                                    <%--<a href="mail_compose.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Responder"><i class="fa fa-reply text-success m-r-xs"></i>Responder</a>--%>
                                     <a href="#" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="fa fa-print text-info"></i></a>
-                                    <a href="mailbox.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mover a la papelera"><i class="fa fa-trash text-danger"></i></a>
+                                    <asp:LinkButton ID="lnkEliminarTop" runat="server" CssClass="btn btn-white btn-sm"
+                                        data-placement="top" data-toggle="tooltip"
+                                        data-original-title="Mover a la papelera"
+                                        OnClick="lkbEliminar_Click">
+                                    <i class="fa fa-trash text-danger"></i>
+                                    </asp:LinkButton>
                                 </div>
                                 <h2>Ver mensaje
-                </h2>
+                                </h2>
                                 <div class="mail-tools tooltip-demo m-t-md">
 
 
@@ -185,83 +191,23 @@
                                         <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                     </p>
                                 </div>
-                                <%--<div class="mail-attachment">
-                                    <p>
-                                        <span><i class="fa fa-paperclip"></i>2 adjuntos - </span>
-                                        <a href="#">Descargar todos</a>
-                                        |
-                           
-                                        <a href="#">Ver todas las imagenes</a>
-                                    </p>
-
-                                    <div class="attachment">
-                                        <div class="file-box">
-                                            <div class="file">
-                                                <a href="#">
-                                                    <span class="corner"></span>
-
-                                                    <div class="icon">
-                                                        <i class="fa fa-file"></i>
-                                                    </div>
-                                                    <div class="file-name">
-                                                        Document_2014.doc
-                                           
-                                                        <br />
-                                                        <small>Added: Jan 11, 2014</small>
-                                                    </div>
-                                                </a>
-                                            </div>
-
-                                        </div>
-                                        <div class="file-box">
-                                            <div class="file">
-                                                <a href="#">
-                                                    <span class="corner"></span>
-
-                                                    <div class="image">
-                                                        <img alt="image" class="img-responsive" src="img/p1.jpg">
-                                                    </div>
-                                                    <div class="file-name">
-                                                        Italy street.jpg
-                                           
-                                                        <br />
-                                                        <small>Added: Jan 6, 2014</small>
-                                                    </div>
-                                                </a>
-
-                                            </div>
-                                        </div>
-                                        <div class="file-box">
-                                            <div class="file">
-                                                <a href="#">
-                                                    <span class="corner"></span>
-
-                                                    <div class="image">
-                                                        <img alt="image" class="img-responsive" src="img/p2.jpg">
-                                                    </div>
-                                                    <div class="file-name">
-                                                        My feel.png
-                                           
-                                                        <br />
-                                                        <small>Added: Jan 7, 2014</small>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="clearfix"></div>
+                                    <div class="mail-body text-right tooltip-demo">
+                                        <%--<a class="btn btn-sm btn-white" href="#" data-toggle="tooltip" data-placement="top" title="Responder"><i class="fa fa-reply text-success m-r-xs"></i>Responder</a>
+                                        <a class="btn btn-sm btn-white" href="#" data-toggle="tooltip" data-placement="top" title="Reenviar"><i class="fa fa-share text-success m-r-xs"></i>Reenviar</a>
+                                        <button title="" data-placement="top" data-toggle="tooltip" type="button" data-original-title="Imprimir" class="btn btn-sm btn-white"><i class="fa fa-print text-info m-r-xs"></i>Imprimir</button>--%>
+                                        <asp:LinkButton ID="lkbEliminar" runat="server" CssClass="btn btn-sm btn-white"
+                                            data-placement="top" data-toggle="tooltip"
+                                            data-original-title="Mover a la papelera"
+                                            OnClick="lkbEliminar_Click">
+                                        <i class="fa fa-trash text-danger m-r-xs"></i>Eliminar
+                                        </asp:LinkButton>
                                     </div>
-                                </div>--%>
-                                <div class="mail-body text-right tooltip-demo">
-                                    <a class="btn btn-sm btn-white" href="#"><i class="fa fa-reply text-success m-r-xs"></i>Responder</a>
-                                    <a class="btn btn-sm btn-white" href="#"><i class="fa fa-share text-success m-r-xs"></i>Reenviar</a>
-                                    <button title="" data-placement="top" data-toggle="tooltip" type="button" data-original-title="Print" class="btn btn-sm btn-white"><i class="fa fa-print text-info m-r-xs"></i>Imprimir</button>
-                                    <button title="" data-placement="top" data-toggle="tooltip" data-original-title="Trash" class="btn btn-sm btn-white"><i class="fa fa-trash text-danger m-r-xs"></i>Eliminar</button>
-                                </div>
+                                
                                 <div class="clearfix"></div>
-
 
                             </div>
                         </div>
+                        </form>
                     </div>
                     <%--Fin Contenido!!!!--%>
                 </div>

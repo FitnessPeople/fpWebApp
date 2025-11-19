@@ -50,9 +50,19 @@ namespace fpWebApp
                         ltDestinatarios.Text = dt.Rows[0]["Destinatarios"].ToString();
                         ltMensaje.Text = dt.Rows[0]["Mensaje"].ToString();
 
-                        dt.Dispose();
+                        if (dt.Rows[0]["idUsuarioDe"].ToString() == Session["idUsuario"].ToString() || !string.IsNullOrEmpty(Request.QueryString["trash"]))
+                        {
+                            // No puede borrar el mensaje
+                            lnkEliminarTop.Visible = false;
+                            lkbEliminar.Visible = false;
+                        }
+                        else
+                        {
 
-                        MarcarComoLeido(idCorreo);
+                            MarcarComoLeido(idCorreo);
+                        }
+
+                        dt.Dispose();
                     }
                 }
                 else
@@ -79,11 +89,23 @@ namespace fpWebApp
         private void MarcarComoLeido(string idCorreo)
         {
 
-            string strQuery = @"UPDATE correointerno SET Leido = 1 WHERE idCorreo = " + idCorreo;
+            string strQuery = @"
+                UPDATE correointerno SET Leido = 1 WHERE idCorreo = " + idCorreo;
 
             clasesglobales cg = new clasesglobales();
             cg.TraerDatosStr(strQuery);
         }
 
+        protected void lkbEliminar_Click(object sender, EventArgs e)
+        {
+            string idCorreo = Request.QueryString["idCorreo"];
+            string strQuery = @"
+                UPDATE correointerno SET Papelera = 1 WHERE idCorreo = " + idCorreo;
+
+            clasesglobales cg = new clasesglobales();
+            cg.TraerDatosStr(strQuery);
+
+            Response.Redirect("correointerno");
+        }
     }
 }

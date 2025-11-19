@@ -38,7 +38,7 @@ namespace fpWebApp.controles
                 INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
                 INNER JOIN categoriasCorreo cc ON cc.idCategoriaCorreo = ci.idCategoriaCorreo 
                 INNER JOIN empleados e ON e.DocumentoEmpleado = u.idEmpleado 
-                WHERE ci.idsPara = '" + Session["idUsuario"].ToString() + @"' 
+                WHERE FIND_IN_SET(" + Session["idUsuario"].ToString() + @", ci.idsPara) > 0 
                 AND ci.Leido = 0 
                 ORDER BY FechaHora DESC 
                 LIMIT 4";

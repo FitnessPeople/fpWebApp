@@ -29,6 +29,9 @@ namespace fpWebApp
                     ltNroMensajes1.Text = dt1.Rows.Count.ToString();
 
                     dt1.Dispose();
+
+                    ltNombreUsuario.Text = Session["NombreUsuario"].ToString();
+                    ltCargo.Text = Session["CargoUsuario"].ToString();
                 }
                 else
                 {
@@ -81,26 +84,35 @@ namespace fpWebApp
                 }
             }
 
-            string valoresComoString = string.Join(",", seleccionados);
+            if (seleccionados.Count != 0 && txbAsunto.Text.ToString() != "")
+            {
+                //string valoresComoString = string.Join(",", seleccionados);
 
-            string contenidoEditor = hiddenEditor.Value;
-            string strQuery = "INSERT INTO correointerno (idUsuarioDe, idsPara, idCategoriaCorreo, Asunto, Mensaje, FechaHora) " +
-                "VALUES (" + Session["idUsuario"].ToString() + ", '" + valoresComoString + "', " + ddlCategorias.SelectedItem.Value.ToString() + ", " +
-                "'" + txbAsunto.Text.ToString() + "', '" + contenidoEditor + "', NOW())";
-            clasesglobales cg = new clasesglobales();
-            cg.TraerDatosStr(strQuery);
+                //string contenidoEditor = hiddenEditor.Value;
+                //string strQuery = "INSERT INTO correointerno (idUsuarioDe, idsPara, idCategoriaCorreo, Asunto, Mensaje, FechaHora) " +
+                //    "VALUES (" + Session["idUsuario"].ToString() + ", '" + valoresComoString + "', " + ddlCategorias.SelectedItem.Value.ToString() + ", " +
+                //    "'" + txbAsunto.Text.ToString() + "', '" + contenidoEditor + "', NOW())";
+                //clasesglobales cg = new clasesglobales();
+                //cg.TraerDatosStr(strQuery);
 
-            //foreach (string id in seleccionados)
-            //{
-            //    string contenidoEditor = hiddenEditor.Value;
-            //    string strQuery = "INSERT INTO correointerno (idUsuarioDe, idsPara, idCategoriaCorreo, Asunto, Mensaje, FechaHora) " +
-            //        "VALUES (" + Session["idUsuario"].ToString() + ", " + id + ", " + ddlCategorias.SelectedItem.Value.ToString() + ", " +
-            //        "'" + txbAsunto.Text.ToString() + "', '" + contenidoEditor + "', NOW())";
-            //    clasesglobales cg = new clasesglobales();
-            //    cg.TraerDatosStr(strQuery);
-            //}
+                string contenidoEditor = hiddenEditor.Value;
+                foreach (string id in seleccionados)
+                {
+                    string strQuery = "INSERT INTO correointerno (idUsuarioDe, idsPara, idCategoriaCorreo, Asunto, Mensaje, FechaHora) " +
+                        "VALUES (" + Session["idUsuario"].ToString() + ", " + id + ", " + ddlCategorias.SelectedItem.Value.ToString() + ", " +
+                        "'" + txbAsunto.Text.ToString() + "', '" + contenidoEditor + "', NOW())";
+                    clasesglobales cg = new clasesglobales();
+                    cg.TraerDatosStr(strQuery);
+                }
 
-            Response.Redirect("correointerno");
+                Response.Redirect("correointerno");
+            }
+            else
+            {
+
+            }
+
+            
         }
     }
 }

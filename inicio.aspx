@@ -271,7 +271,7 @@
                                                     </li>
                                                     <li>
                                                         <a href="#" class="check-link"><i class="fa fa-square-o"></i></a>
-                                                        <span class="m-l-xs">Cargo:
+                                                        <span class="m-l-xs">CargoUsuario:
                                                             <asp:Literal ID="ltCargo" runat="server"></asp:Literal></span>
                                                     </li>
                                                     <li>

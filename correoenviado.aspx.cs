@@ -104,6 +104,20 @@ namespace fpWebApp
             //ltNroMensajes2.Text = dt1.Rows.Count.ToString();
 
             dt1.Dispose();
+
+            strQuery = @"
+                SELECT ci.idCorreo, u.NOmbreUsuario AS Remitente, ci.Asunto, ci.FechaHora, ci.Leido 
+                FROM correointerno ci 
+                INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
+                WHERE FIND_IN_SET(" + Session["idUsuario"].ToString() + @", ci.idsPara) > 0 
+                AND Papelera = 1 
+                ORDER BY FechaHora DESC";
+
+            DataTable dt2 = cg.TraerDatos(strQuery);
+
+            ltNroMensajesPapelera.Text = dt2.Rows.Count.ToString();
+
+            dt2.Dispose();
         }
 
         private void CargarCategorias()

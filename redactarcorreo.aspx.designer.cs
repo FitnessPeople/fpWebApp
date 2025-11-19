@@ -114,6 +114,24 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlCategorias;
 
         /// <summary>
+        /// Control ltNombreUsuario.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltNombreUsuario;
+
+        /// <summary>
+        /// Control ltCargo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltCargo;
+
+        /// <summary>
         /// Control hiddenEditor.
         /// </summary>
         /// <remarks>
@@ -121,15 +139,6 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hiddenEditor;
-
-        /// <summary>
-        /// Control ltBanner.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltBanner;
 
         /// <summary>
         /// Control lbEnviar.

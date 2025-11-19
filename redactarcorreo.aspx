@@ -37,14 +37,14 @@
                             ['bold', 'italic', 'underline'],
                             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                             [{ 'align': [] }],
-                            ['image', 'link'],     // <-- imagen y link
-                            ['attachment']         // <-- botón custom
+                            ['image'],     // <-- imagen y link
+                            ['link']         // <-- botón custom
                         ],
                         handlers: {
                             image: function () {
                                 selectLocalImage();
                             },
-                            attachment: function () {
+                            link: function () {
                                 selectAttachment();
                             }
                         }
@@ -249,7 +249,7 @@
                                             <li><a href="#"><i class="fa fa-envelope"></i>Enviados</a></li>
                                             <li><a href="#"><i class="fa fa-certificate"></i>Importantes</a></li>
                                             <li><a href="#"><i class="fa fa-file-text"></i>Documentos</a></li>
-                                            <li><a href="#"><i class="fa fa-trash"></i>Papelera</a></li>
+                                            <li><a href="correoeliminado"><i class="fa fa-trash"></i>Papelera</a></li>
                                         </ul>
                                         <h5>Categorías</h5>
                                         <ul class="category-list" style="padding: 0">
@@ -308,41 +308,29 @@
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-2 control-label">Mensaje:</label>
-                                                <div class="col-sm-10">
-                                                    <div class="form-group">
-                                                        <div class="col-sm-12">
-                                                        <div id="editor" cssclass="form-control input-sm"></div>
-                                                        <asp:HiddenField ID="hiddenEditor" runat="server" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            
                                         </div>
                                     </div>
 
                                     <div class="mail-body">
                                         <div class="form-horizontal">
-                                            <div class="form-group m-b-n-xs">
-                                                <label>Adjunto:</label>
-                                                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                                                    <div class="form-control input-sm" data-trigger="fileinput">
-                                                        <i class="glyphicon glyphicon-file fileinput-exists"></i>
-                                                        <span class="fileinput-filename"></span>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">Mensaje:</label>
+                                                <div class="col-sm-10">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                        <div id="editor" cssclass="form-control input-sm">
+                                                            <br />
+                                                            <br />
+                                                            <br />
+                                                            --<br />
+                                                            <b><asp:Literal ID="ltNombreUsuario" runat="server"></asp:Literal></b><br />
+                                                            <span><asp:Literal ID="ltCargo" runat="server"></asp:Literal></span>
+                                                        </div>
+                                                        <asp:HiddenField ID="hiddenEditor" runat="server" />
+                                                        </div>
                                                     </div>
-                                                    <span class="input-group-addon btn btn-success btn-file input-sm">
-                                                        <span class="fileinput-new input-sm">Seleccionar banner</span>
-                                                        <span class="fileinput-exists input-sm">Cambiar</span>
-                                                        <input type="file" name="fileBanner" id="fileBanner" accept="image/*">
-                                                    </span>
-                                                    <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm" 
-                                                        data-dismiss="fileinput">Quitar</a>
                                                 </div>
-                                                <asp:Literal ID="ltBanner" runat="server"></asp:Literal>
-                                                <%--<asp:RequiredFieldValidator ID="rfvBanner" runat="server" ErrorMessage="* Campo requerido"
-                                                    ControlToValidate="txbDescripcion" ValidationGroup="agregar"
-                                                    CssClass="font-bold text-danger"></asp:RequiredFieldValidator>--%>
                                             </div>
                                         </div>
                                     </div>

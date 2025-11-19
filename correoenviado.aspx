@@ -124,11 +124,13 @@
                                         <ul class="folder-list m-b-md" style="padding: 0">
                                             <li><a href="correointerno"><i class="fa fa-inbox "></i>Bandeja de entrada
                                                 <span class="label label-warning pull-right">
-                                                    <asp:Literal ID="ltNroMensajes1" runat="server"></asp:Literal></span></a></li>
+                                                <asp:Literal ID="ltNroMensajes1" runat="server"></asp:Literal></span></a></li>
                                             <li><a href="correoenviado"><i class="fa fa-envelope"></i>Enviados</a></li>
                                             <li><a href="#"><i class="fa fa-certificate"></i>Importantes</a></li>
                                             <li><a href="#"><i class="fa fa-file-text"></i>Documentos</a></li>
-                                            <li><a href="#"><i class="fa fa-trash"></i>Papelera</a></li>
+                                            <li><a href="correoeliminado"><i class="fa fa-trash"></i>Papelera
+                                                <span class="label label-danger pull-right">
+                                                <asp:Literal ID="ltNroMensajesPapelera" runat="server"></asp:Literal></span></a></li>
                                         </ul>
                                         <h5>Categorías</h5>
                                         <ul class="category-list" style="padding: 0">
@@ -182,8 +184,8 @@
                                         </div>
                                         <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refrescar"><i class="fa fa-refresh m-r-xs"></i>Refrescar</button>
                                         <%--<button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Marcar como leído"><i class="fa fa-eye"></i></button>
-                                        <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Marcar como importante"><i class="fa fa-exclamation"></i></button>--%>
-                                        <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mover a la papelera"><i class="fa fa-trash"></i></button>
+                                        <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Marcar como importante"><i class="fa fa-exclamation"></i></button>
+                                        <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mover a la papelera"><i class="fa fa-trash"></i></button>--%>
 
                                     </div>
 

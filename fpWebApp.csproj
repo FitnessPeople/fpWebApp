@@ -295,6 +295,7 @@
     <Content Include="controles\navbar.ascx" />
     <Content Include="controles\paginasperfil.ascx" />
     <Content Include="controles\rightsidebar.ascx" />
+    <Content Include="correoeliminado.aspx" />
     <Content Include="correoenviado.aspx" />
     <Content Include="correointerno.aspx" />
     <Content Include="cortesias.aspx" />
@@ -1405,6 +1406,13 @@
     <Compile Include="controles\rightsidebar.ascx.designer.cs">
       <DependentUpon>rightsidebar.ascx</DependentUpon>
     </Compile>
+    <Compile Include="correoeliminado.aspx.cs">
+      <DependentUpon>correoeliminado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="correoeliminado.aspx.designer.cs">
+      <DependentUpon>correoeliminado.aspx</DependentUpon>
+    </Compile>
     <Compile Include="correoenviado.aspx.cs">
       <DependentUpon>correoenviado.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2227,7 +2235,8 @@
     <Folder Include="docs\incapacidades\" />
     <Folder Include="docs\traspasos\" />
     <Folder Include="img\contratos\" />
-    <Folder Include="img\correo\" />
+    <Folder Include="img\correo\docs\" />
+    <Folder Include="img\correo\images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\bootstrap.css.map" />

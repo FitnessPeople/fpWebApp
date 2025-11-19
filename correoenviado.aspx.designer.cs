@@ -69,6 +69,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltNroMensajes1;
 
         /// <summary>
+        /// Control ltNroMensajesPapelera.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltNroMensajesPapelera;
+
+        /// <summary>
         /// Control rpCategorias.
         /// </summary>
         /// <remarks>

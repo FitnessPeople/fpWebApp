@@ -22,7 +22,7 @@ namespace fpWebApp
                 return;
             }
 
-            string folder = context.Server.MapPath("~/img/correo/");
+            string folder = context.Server.MapPath("~/img/correo/docs/");
             if (!Directory.Exists(folder))
                 Directory.CreateDirectory(folder);
 
@@ -31,7 +31,7 @@ namespace fpWebApp
 
             file.SaveAs(filepath);
 
-            string url = "/img/correo/" + filename;
+            string url = "/img/correo/docs/" + filename;
 
             context.Response.ContentType = "application/json";
             context.Response.Write("{\"url\":\"" + url + "\"}");
