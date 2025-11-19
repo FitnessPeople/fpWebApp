@@ -293,7 +293,7 @@
                                                         <asp:ListItem Text="Transferencia" Value="2"></asp:ListItem>
                                                         <asp:ListItem Text="Datafono" Value="3"></asp:ListItem>
                                                         <asp:ListItem Text="Pago en línea" Value="4" Selected="True"></asp:ListItem>
-                                                        <asp:ListItem Text="Financiación" Value="5" Selected="True"></asp:ListItem>
+                                                        <asp:ListItem Text="Financiación" Value="5" ></asp:ListItem>
                                                         
                                                        
                                                     </asp:DropDownList>
