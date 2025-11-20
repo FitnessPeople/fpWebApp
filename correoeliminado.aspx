@@ -197,7 +197,7 @@
                                                         <td class="check-mail">
                                                             <input type="checkbox" class="i-checks">
                                                         </td>
-                                                        <td class="mail-ontact"><a href="detallecorreo?idCorreo=<%# Eval("idCorreo") %>">De: <%# Eval("Remitente") %></a>
+                                                        <td class="mail-ontact"><a href="detallecorreo?idCorreo=<%# Eval("idCorreo") %>">Para: <%# Eval("Destinatario") %></a>
                                                             <span class="label label-<%# Eval("ColorCategoria") %> pull-right"><%# Eval("NombreCategoria") %></span>
                                                         </td>
                                                         <td class="mail-subject"><a href="detallecorreo?idCorreo=<%# Eval("idCorreo") %>&trash=1"><%# Eval("Asunto") %></a></td>

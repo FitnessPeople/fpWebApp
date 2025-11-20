@@ -50,19 +50,23 @@ namespace fpWebApp
                             {
                                 btnVolver.Visible = false;
                                 DataTable dt1 = cg.ConsultarAfiliadoPlanPorDocumento(strDocumento);
-                                string strQuery = "SELECT * " +
-                                    "FROM AfiliadosPlanes ap, PagosPlanAfiliado ppa " +
-                                    "WHERE ap.idAfiliado = " + dt1.Rows[0]["idAfiliado"].ToString() + " " +
-                                    "AND ap.idAfiliadoPlan = ppa.idAfiliadoPlan " +
-                                    "AND ppa.EstadoPago = 'Aprobado'";
-                                DataTable dt2 = cg.TraerDatos(strQuery);
 
-                                if (dt2.Rows.Count > 0)
-                                { 
-                                    idcrm = dt2.Rows[0]["idContacto"].ToString();
+                                if (dt1.Rows.Count > 0)
+                                {
+                                    string strQuery = "SELECT * " +
+                                       "FROM AfiliadosPlanes ap, PagosPlanAfiliado ppa " +
+                                       "WHERE ap.idAfiliado = " + dt1.Rows[0]["idAfiliado"].ToString() + " " +
+                                       "AND ap.idAfiliadoPlan = ppa.idAfiliadoPlan " +
+                                       "AND ppa.EstadoPago = 'Aprobado'";
+                                    DataTable dt2 = cg.TraerDatos(strQuery);
+
+                                    if (dt2.Rows.Count > 0)
+                                    {
+                                        idcrm = dt2.Rows[0]["idContacto"].ToString();
+                                    }
+
+                                    if (!string.IsNullOrEmpty(idcrm)) ltCRM.Text = "No existen registros de CRM";
                                 }
-
-                                if (!string.IsNullOrEmpty(idcrm)) ltCRM.Text = "No existen registros de CRM";
                             }
 
                             Session["idcrm"] = idcrm;
@@ -307,17 +311,31 @@ namespace fpWebApp
 
         private void CargarPlanesAfiliado(string strIdAfiliado)
         {
-            string strQuery = "SELECT *, " +
-                "IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,'danger','info') AS label1, " +
-                "IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,CONCAT(DATEDIFF(FechaFinalPlan, CURDATE())*(-1),' días vencidos'),CONCAT(DATEDIFF(FechaFinalPlan, CURDATE()),' días disponibles')) AS diasquefaltan, " +
-                "DATEDIFF(CURDATE(), FechaInicioPlan) AS diasconsumidos, " +
-                "DATEDIFF(FechaFinalPlan, FechaInicioPlan) AS diastotales, " +
-                "ROUND(DATEDIFF(CURDATE(), FechaInicioPlan) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje1, " +
-                "ROUND(DATEDIFF(FechaFinalPlan, CURDATE()) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje2 " +
-                "FROM afiliadosPlanes ap, Afiliados a, Planes p " +
-                "WHERE a.idAfiliado = " + strIdAfiliado + " " +
-                "AND ap.idAfiliado = a.idAfiliado " +
-                "AND ap.idPlan = p.idPlan ";
+            string strQuery = @"
+                SELECT *, 
+                IF(ap.EstadoPlan='Archivado','danger',IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,'danger','info')) AS label1, 
+                IF(ap.EstadoPlan='Archivado','Archivado',IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,CONCAT(DATEDIFF(FechaFinalPlan, CURDATE())*(-1),' días vencidos'),CONCAT(DATEDIFF(FechaFinalPlan, CURDATE()),' días disponibles'))) AS diasquefaltan, 
+                DATEDIFF(CURDATE(), FechaInicioPlan) AS diasconsumidos, 
+                DATEDIFF(FechaFinalPlan, FechaInicioPlan) AS diastotales, 
+                ROUND(DATEDIFF(CURDATE(), FechaInicioPlan) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje1, 
+                ROUND(DATEDIFF(FechaFinalPlan, CURDATE()) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje2 
+                FROM afiliadosPlanes ap, Afiliados a, Planes p 
+                WHERE a.idAfiliado = " + strIdAfiliado + @" 
+                AND ap.idAfiliado = a.idAfiliado 
+                AND ap.idPlan = p.idPlan ";
+
+            //string strQuery = "SELECT *, " +
+            //    "IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,'danger','info') AS label1, " +
+            //    "IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,CONCAT(DATEDIFF(FechaFinalPlan, CURDATE())*(-1),' días vencidos'),CONCAT(DATEDIFF(FechaFinalPlan, CURDATE()),' días disponibles')) AS diasquefaltan, " +
+            //    "DATEDIFF(CURDATE(), FechaInicioPlan) AS diasconsumidos, " +
+            //    "DATEDIFF(FechaFinalPlan, FechaInicioPlan) AS diastotales, " +
+            //    "ROUND(DATEDIFF(CURDATE(), FechaInicioPlan) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje1, " +
+            //    "ROUND(DATEDIFF(FechaFinalPlan, CURDATE()) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje2 " +
+            //    "FROM afiliadosPlanes ap, Afiliados a, Planes p " +
+            //    "WHERE a.idAfiliado = " + strIdAfiliado + " " +
+            //    "AND ap.idAfiliado = a.idAfiliado " +
+            //    "AND ap.idPlan = p.idPlan " +
+            //    "AND ap.EstadoPlan NOT IN ('Archivado')";
             //"AND ap.EstadoPlan = 'Activo'";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);

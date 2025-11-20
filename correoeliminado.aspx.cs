@@ -38,12 +38,12 @@ namespace fpWebApp
         private void CargarMensajes()
         {
             string strQuery = @"
-                SELECT ci.idCorreo, u.NOmbreUsuario AS Remitente, ci.Asunto, 
+                SELECT ci.idCorreo, u.NombreUsuario AS Destinatario, ci.Asunto, 
                 ci.FechaHora, ci.Leido, cc.NombreCategoria, cc.ColorCategoria 
                 FROM correointerno ci 
-                INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
+                INNER JOIN usuarios u ON u.idUsuario = ci.idsPara 
                 INNER JOIN categoriasCorreo cc ON cc.idCategoriaCorreo = ci.idCategoriaCorreo 
-                WHERE ci.idsPara = " + Session["idUsuario"].ToString() + @" 
+                WHERE ci.idUsuarioDe = " + Session["idUsuario"].ToString() + @" 
                 AND Papelera = 1 
                 ORDER BY FechaHora DESC";
 

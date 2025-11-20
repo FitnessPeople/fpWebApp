@@ -42,7 +42,7 @@ namespace fpWebApp
                     ltNroMensajesTotal.Text = dt2.Rows.Count.ToString();
 
                     strQuery = @"
-                        SELECT ci.idCorreo, u.NOmbreUsuario AS Remitente, ci.Asunto, ci.FechaHora, ci.Leido 
+                        SELECT ci.idCorreo, u.NombreUsuario AS Remitente, ci.Asunto, ci.FechaHora, ci.Leido 
                         FROM correointerno ci 
                         INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
                         WHERE ci.idUsuarioDe = " + Session["idUsuario"].ToString() + @" 

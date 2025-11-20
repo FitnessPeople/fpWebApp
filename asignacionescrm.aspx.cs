@@ -433,11 +433,11 @@ namespace fpWebApp
 
         protected void gvAfiliados_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if (e.Row.RowType == DataControlRowType.DataRow)
-            {
-                e.Row.Attributes["onclick"] = "seleccionarCheckbox(this, event)";
-                e.Row.Attributes["style"] = "cursor:pointer;";
-            }
+            //if (e.Row.RowType == DataControlRowType.DataRow)
+            //{
+            //    e.Row.Attributes["onclick"] = "seleccionarCheckbox(this, event)";
+            //    e.Row.Attributes["style"] = "cursor:pointer;";
+            //}
 
             Label lblEstado = (Label)e.Row.FindControl("lblEstado");
             if (lblEstado != null)
