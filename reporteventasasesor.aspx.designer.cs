@@ -204,15 +204,6 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBotonesLista;
 
         /// <summary>
-        /// Control ddlPlanes.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPlanes;
-
-        /// <summary>
         /// Control ddlTipoPago.
         /// </summary>
         /// <remarks>
@@ -222,22 +213,22 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlTipoPago;
 
         /// <summary>
-        /// Control ddlMes.
+        /// Control txbFechaIni.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlMes;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbFechaIni;
 
         /// <summary>
-        /// Control ddlAnnio.
+        /// Control txbFechaFin.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlAnnio;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txbFechaFin;
 
         /// <summary>
         /// Control btnBuscar.

@@ -984,6 +984,7 @@
     <Content Include="plantilla.aspx" />
     <Content Include="procedimientosalmacenados.aspx" />
     <Content Include="procesarfechas.aspx" />
+    <Content Include="procesarfestivos.aspx" />
     <Content Include="productostienda.aspx" />
     <Content Include="profesiones.aspx" />
     <Content Include="prospectocorporativo.aspx" />
@@ -2031,6 +2032,13 @@
     </Compile>
     <Compile Include="procesarfechas.aspx.designer.cs">
       <DependentUpon>procesarfechas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="procesarfestivos.aspx.cs">
+      <DependentUpon>procesarfestivos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="procesarfestivos.aspx.designer.cs">
+      <DependentUpon>procesarfestivos.aspx</DependentUpon>
     </Compile>
     <Compile Include="productostienda.aspx.cs">
       <DependentUpon>productostienda.aspx</DependentUpon>

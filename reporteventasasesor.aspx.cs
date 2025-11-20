@@ -46,7 +46,7 @@ namespace fpWebApp
                         if (ViewState["Consulta"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            CargarPlanes();
+                            //CargarPlanes();
                             //lbExportarExcel.Visible = false;
                         }
                         if (ViewState["Exportar"].ToString() == "1")
@@ -56,15 +56,15 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-                            //txbFechaIni.Attributes.Add("type", "date");
-                            //txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
-                            //txbFechaFin.Attributes.Add("type", "date");
-                            //txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-                            CargarPlanes();
+                            txbFechaIni.Attributes.Add("type", "date");
+                            txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
+                            txbFechaFin.Attributes.Add("type", "date");
+                            txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
+                            //CargarPlanes();
                         }
                     }
-                    ddlMes.SelectedValue = DateTime.Now.Month.ToString();
-                    ddlAnnio.SelectedValue = DateTime.Now.Year.ToString();
+                   // ddlMes.SelectedValue = DateTime.Now.Month.ToString();
+                  //  ddlAnnio.SelectedValue = DateTime.Now.Year.ToString();
 
                     if (Session["idSede"].ToString() == "11")
                     {
@@ -83,112 +83,6 @@ namespace fpWebApp
             }
         }
 
-        private void VentasWeb()
-        {
-            int annio = Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString());
-            int mes = Convert.ToInt32(ddlMes.SelectedItem.Value.ToString());
-
-            string strQuery = "";
-
-            string filtroMedioPago = "";
-            if (ddlTipoPago.SelectedValue != "0") // 0 = Todos
-            {
-                filtroMedioPago = " AND ppa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue);
-            }
-
-            if (ddlPlanes.SelectedValue.ToString() == "0")
-            {
-                strQuery = @"SELECT ppa.valor 
-                    FROM PagosPlanAfiliado ppa 
-                    INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
-                    WHERE ppa.idUsuario = 156 AND ap.idPlan IN (18,19,20,21) 
-	                    " + filtroMedioPago + @" 
-	                    AND MONTH(ppa.fechaHoraPago) = " + mes + @" 
-                        AND YEAR(ppa.fechaHoraPago) = " + annio + @" 
-                        AND MONTH(ap.FechaInicioPlan) IN (" + mes + @");";
-            }
-            else
-            {
-                strQuery = @"SELECT ppa.valor 
-                    FROM PagosPlanAfiliado ppa 
-                    INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
-                    WHERE ppa.idUsuario = 156 AND ap.idPlan IN (18,19,20,21) 
-	                    " + filtroMedioPago + @" 
-	                    AND MONTH(ppa.fechaHoraPago) = " + mes + @" 
-                        AND YEAR(ppa.fechaHoraPago) = " + annio + @" 
-                        AND MONTH(ap.FechaInicioPlan) IN (" + mes + @") 
-                        AND ap.idPlan = " + ddlPlanes.SelectedValue.ToString();
-            }
-
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
-            decimal sumatoriaValor = 0;
-
-            if (dt.Rows.Count > 0)
-            {
-                object suma = dt.Compute("SUM(Valor)", "");
-                sumatoriaValor = suma != DBNull.Value ? Convert.ToDecimal(suma) : 0;
-            }
-
-            ltCuantos2.Text = "$ " + String.Format("{0:N0}", sumatoriaValor);
-            ltRegistros2.Text = dt.Rows.Count.ToString();
-
-            dt.Dispose();
-        }
-
-        private void VentasCounter()
-        {
-            int annio = Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString());
-            int mes = Convert.ToInt32(ddlMes.SelectedItem.Value.ToString());
-            string strQuery = "";
-
-            string filtroMedioPago = "";
-            if (ddlTipoPago.SelectedValue != "0") // 0 = Todos
-            {
-                filtroMedioPago = " AND ppa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue);
-            }
-
-            if (ddlPlanes.SelectedValue.ToString() == "0")
-            {
-                strQuery = @"SELECT ppa.valor 
-                    FROM PagosPlanAfiliado ppa 
-                    INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
-                    WHERE ppa.idUsuario NOT IN (156) AND ap.idPlan IN (1,17) 
-	                    " + filtroMedioPago + @" 
-	                    AND MONTH(ppa.fechaHoraPago) = " + mes + @" 
-                        AND YEAR(ppa.fechaHoraPago) = " + annio + @" 
-                        AND MONTH(ap.FechaInicioPlan) IN (" + mes + @");";
-            }
-            else
-            {
-                strQuery = @"SELECT ppa.valor 
-                    FROM PagosPlanAfiliado ppa 
-                    INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
-                    WHERE ppa.idUsuario NOT IN (156) AND ap.idPlan IN (1,17) 
-	                    " + filtroMedioPago + @" 
-	                    AND MONTH(ppa.fechaHoraPago) = " + mes + @" 
-                        AND YEAR(ppa.fechaHoraPago) = " + annio + @" 
-                        AND MONTH(ap.FechaInicioPlan) IN (" + mes + @") 
-                        AND ap.idPlan = " + ddlPlanes.SelectedValue.ToString();
-            }
-
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
-            decimal sumatoriaValor = 0;
-
-            if (dt.Rows.Count > 0)
-            {
-                object suma = dt.Compute("SUM(Valor)", "");
-                sumatoriaValor = suma != DBNull.Value ? Convert.ToDecimal(suma) : 0;
-            }
-
-            ltCuantos3.Text = "$ " + String.Format("{0:N0}", sumatoriaValor);
-            ltRegistros3.Text = dt.Rows.Count.ToString();
-
-            dt.Dispose();
-        }
 
         private void ValidarPermisos(string strPagina)
         {
@@ -213,24 +107,24 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void CargarPlanes()
-        {
-            ddlPlanes.Items.Clear();
-            ListItem li = new ListItem("Todos los planes", "0");
-            ddlPlanes.Items.Add(li);
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanesVigentes();
+        //private void CargarPlanes()
+        //{
+        //    ddlPlanes.Items.Clear();
+        //    ListItem li = new ListItem("Todos los planes", "0");
+        //    ddlPlanes.Items.Add(li);
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarPlanesVigentes();
 
-            ddlPlanes.DataSource = dt;
-            ddlPlanes.DataBind();
-            dt.Dispose();
-        }
+        //    ddlPlanes.DataSource = dt;
+        //    ddlPlanes.DataBind();
+        //    dt.Dispose();
+        //}
 
         private void listaVentas()
         {
             clasesglobales cg = new clasesglobales();
 
-            ltMes1.Text = ddlMes.SelectedItem.Text.ToString() + " " + ddlAnnio.SelectedItem.Text.ToString();
+
             ltMes2.Text = ltMes1.Text;
             ltMes3.Text = ltMes1.Text;
             ltMes4.Text = ltMes1.Text;
@@ -239,8 +133,7 @@ namespace fpWebApp
             CalcularTotalesVentas();
             HistorialCobrosRechazados();
 
-            int annio = Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString());
-            int mes = Convert.ToInt32(ddlMes.SelectedItem.Value.ToString());
+
 
             int  filtroMedioPago = Convert.ToInt32(ddlTipoPago.SelectedValue); 
 
@@ -263,19 +156,7 @@ namespace fpWebApp
             ltRegistros1.Text = dt.Rows.Count.ToString();
             dt.Dispose();
 
-            //CrearGrafico1(txbFechaIni.Value.ToString());
-            //CrearGrafico2(txbFechaIni.Value.ToString());
-            //CrearGrafico3(txbFechaIni.Value.ToString());
-            //CrearGrafico4(txbFechaIni.Value.ToString());
-            //CrearGrafico5(txbFechaIni.Value.ToString());
-            //CrearGrafico6(txbFechaIni.Value.ToString());
 
-            //CrearGrafico1(ddlMes.SelectedItem.Value);
-            //CrearGrafico2(ddlMes.SelectedItem.Value);
-            //CrearGrafico3(ddlMes.SelectedItem.Value);
-            //CrearGrafico4(ddlMes.SelectedItem.Value);
-            //CrearGrafico5(ddlMes.SelectedItem.Value);
-            //CrearGrafico6(ddlMes.SelectedItem.Value);
         }
 
         private void CalcularTotalesVentas()
@@ -702,8 +583,8 @@ namespace fpWebApp
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
             listaVentas();
-            VentasCounter();
-            VentasWeb();
+            //VentasCounter();
+            //VentasWeb();
         }
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
