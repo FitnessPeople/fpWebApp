@@ -17,15 +17,59 @@ namespace fpWebApp
                     string strQuery = @"SELECT * 
                         FROM correointerno ci 
                         INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
-                        WHERE FIND_IN_SET(" + Session["idUsuario"].ToString() + @", ci.idsPara) > 0 
+                        WHERE ci.idsPara = " + Session["idUsuario"].ToString() + @" 
                         AND ci.Leido = 0 
                         ORDER BY FechaHora DESC";
 
                     DataTable dt1 = cg.TraerDatos(strQuery);
 
-                    ltNroMensajes1.Text = dt1.Rows.Count.ToString();
+                    ltNroMensajesSinLeer.Text = dt1.Rows.Count.ToString();
 
                     dt1.Dispose();
+
+                    strQuery = @"
+                        SELECT ci.idCorreo, u.NOmbreUsuario AS Remitente, ci.Asunto, 
+                        ci.FechaHora, cc.NombreCategoria, cc.ColorCategoria, ci.Leido  
+                        FROM correointerno ci 
+                        INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
+                        INNER JOIN categoriasCorreo cc ON cc.idCategoriaCorreo = ci.idCategoriaCorreo 
+                        WHERE ci.idsPara = " + Session["idUsuario"].ToString() + @" 
+                        AND Papelera = 0 
+                        ORDER BY FechaHora DESC";
+
+                    DataTable dt2 = cg.TraerDatos(strQuery);
+
+                    ltNroMensajesTotal.Text = dt2.Rows.Count.ToString();
+
+                    strQuery = @"
+                        SELECT ci.idCorreo, u.NOmbreUsuario AS Remitente, ci.Asunto, ci.FechaHora, ci.Leido 
+                        FROM correointerno ci 
+                        INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
+                        WHERE ci.idUsuarioDe = " + Session["idUsuario"].ToString() + @" 
+                        AND Papelera = 1 
+                        ORDER BY FechaHora DESC";
+
+                    DataTable dt3 = cg.TraerDatos(strQuery);
+
+                    ltNroMensajesPapelera.Text = dt3.Rows.Count.ToString();
+
+                    dt3.Dispose();
+
+                    strQuery = @"
+                        SELECT ci.idCorreo, u.NombreUsuario AS Destinatario, ci.Asunto, 
+                        ci.FechaHora, cc.NombreCategoria, cc.ColorCategoria, ci.Leido 
+                        FROM correointerno ci 
+                        INNER JOIN usuarios u ON u.idUsuario = ci.idsPara 
+                        INNER JOIN categoriasCorreo cc ON cc.idCategoriaCorreo = ci.idCategoriaCorreo 
+                        WHERE ci.idUsuarioDe = " + Session["idUsuario"].ToString() + @" 
+                        AND Papelera = 0 
+                        ORDER BY FechaHora DESC";
+
+                    DataTable dt4 = cg.TraerDatos(strQuery);
+
+                    ltNroMensajesEnviados.Text = dt4.Rows.Count.ToString();
+
+                    dt4.Dispose();
 
                     if (!string.IsNullOrEmpty(Request.QueryString["idCorreo"]))
                     {

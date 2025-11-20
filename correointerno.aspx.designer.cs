@@ -78,6 +78,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltNroMensajesTotal;
 
         /// <summary>
+        /// Control ltNroMensajesEnviados.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltNroMensajesEnviados;
+
+        /// <summary>
         /// Control ltNroMensajesPapelera.
         /// </summary>
         /// <remarks>
@@ -105,13 +114,13 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// Control ltNroMensajes2.
+        /// Control ltNroMensajesSinLeer2.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltNroMensajes2;
+        protected global::System.Web.UI.WebControls.Literal ltNroMensajesSinLeer2;
 
         /// <summary>
         /// Control btnAnterior.

@@ -125,9 +125,9 @@
                                             <li><a href="correointerno"><i class="fa fa-inbox "></i>Bandeja de entrada
                                                 <span class="label label-warning pull-right">
                                                 <asp:Literal ID="ltNroMensajesSinLeer" runat="server"></asp:Literal>/<asp:Literal ID="ltNroMensajesTotal" runat="server"></asp:Literal></span></a></li>
-                                            <li><a href="correoenviado"><i class="fa fa-envelope"></i>Enviados</a></li>
-                                            <li><a href="#"><i class="fa fa-certificate"></i>Importantes</a></li>
-                                            <li><a href="#"><i class="fa fa-file-text"></i>Documentos</a></li>
+                                            <li><a href="correoenviado"><i class="fa fa-envelope"></i>Enviados
+                                                <span class="label label-default pull-right">
+                                                <asp:Literal ID="ltNroMensajesEnviados" runat="server"></asp:Literal></span></a></li>
                                             <li><a href="correoeliminado"><i class="fa fa-trash"></i>Papelera
                                                 <span class="label label-default pull-right">
                                                 <asp:Literal ID="ltNroMensajesPapelera" runat="server"></asp:Literal></span></a></li>
@@ -167,7 +167,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <h2>Bandeja de entrada (<asp:Literal ID="ltNroMensajes2" runat="server"></asp:Literal>)
+                                    <h2>Bandeja de entrada (<asp:Literal ID="ltNroMensajesSinLeer2" runat="server"></asp:Literal>)
                                     </h2>
                                     <div class="mail-tools tooltip-demo m-t-md">
                                         <div class="btn-group pull-right">

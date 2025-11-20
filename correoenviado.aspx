@@ -124,12 +124,12 @@
                                         <ul class="folder-list m-b-md" style="padding: 0">
                                             <li><a href="correointerno"><i class="fa fa-inbox "></i>Bandeja de entrada
                                                 <span class="label label-warning pull-right">
-                                                <asp:Literal ID="ltNroMensajes1" runat="server"></asp:Literal></span></a></li>
-                                            <li><a href="correoenviado"><i class="fa fa-envelope"></i>Enviados</a></li>
-                                            <li><a href="#"><i class="fa fa-certificate"></i>Importantes</a></li>
-                                            <li><a href="#"><i class="fa fa-file-text"></i>Documentos</a></li>
+                                                <asp:Literal ID="ltNroMensajesSinLeer" runat="server"></asp:Literal>/<asp:Literal ID="ltNroMensajesTotal" runat="server"></asp:Literal></span></a></li>
+                                            <li><a href="correoenviado"><i class="fa fa-envelope"></i>Enviados
+                                                <span class="label label-default pull-right">
+                                                <b><asp:Literal ID="ltNroMensajesEnviados" runat="server"></asp:Literal></b></span></a></li>
                                             <li><a href="correoeliminado"><i class="fa fa-trash"></i>Papelera
-                                                <span class="label label-danger pull-right">
+                                                <span class="label label-default pull-right">
                                                 <asp:Literal ID="ltNroMensajesPapelera" runat="server"></asp:Literal></span></a></li>
                                         </ul>
                                         <h5>Categorías</h5>
@@ -201,7 +201,7 @@
                                                         <td class="check-mail">
                                                             <input type="checkbox" class="i-checks">
                                                         </td>
-                                                        <td class="mail-ontact"><a href="detallecorreo?idCorreo=<%# Eval("idCorreo") %>">Para: <%# Eval("Destinatarios") %></a>
+                                                        <td class="mail-ontact"><a href="detallecorreo?idCorreo=<%# Eval("idCorreo") %>">Para: <%# Eval("Destinatario") %></a>
                                                             <span class="label label-<%# Eval("ColorCategoria") %> pull-right"><%# Eval("NombreCategoria") %></span>
                                                         </td>
                                                         <td class="mail-subject"><a href="detallecorreo?idCorreo=<%# Eval("idCorreo") %>"><%# Eval("Asunto") %></a></td>
