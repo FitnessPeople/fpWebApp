@@ -385,7 +385,7 @@
                                                                                 runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                             </asp:DropDownList>
-                                                                            <asp:RequiredFieldValidator ID="rfvGenero" runat="server" ControlToValidate="ddlEstadoVenta"
+                                                                            <asp:RequiredFieldValidator ID="rfvGenero" runat="server" ControlToValidate="ddlGenero"
                                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                                         </div>
                                                                     </div>
