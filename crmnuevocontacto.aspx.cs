@@ -584,24 +584,204 @@ namespace fpWebApp
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            clasesglobales cg = new clasesglobales();
-            Session["idcrm"] = string.Empty;
-            string idcrm = string.Empty;
-
-            if (Request.QueryString.Count > 0)
+            try
             {
-                idcrm = Request.QueryString["editid"];
-                Session["idcrm"] = idcrm;
-                string evento = Request.QueryString["evento"];
-                string documento = Request.QueryString["documento"];
+                clasesglobales cg = new clasesglobales();
+                Session["idcrm"] = string.Empty;
+                string idcrm = string.Empty;
 
-                if (Request.QueryString["editid"] != null)
+                if (Request.QueryString.Count > 0)
                 {
-                    bool salida = false;
-                    string mensaje = string.Empty;
-                    string respuesta = string.Empty;
-                    string mensajeValidacion = string.Empty;
+                    idcrm = Request.QueryString["editid"];
+                    Session["idcrm"] = idcrm;
+                    string evento = Request.QueryString["evento"];
+                    string documento = Request.QueryString["documento"];
 
+                    if (Request.QueryString["editid"] != null)
+                    {
+                        bool salida = false;
+                        string mensaje = string.Empty;
+                        string respuesta = string.Empty;
+                        string mensajeValidacion = string.Empty;
+
+                        DateTime fecNacCli;
+                        string textoEdad = txbEdad.Text.Trim();
+                        System.Text.RegularExpressions.Match match = Regex.Match(textoEdad, @"\d+");
+
+                        int edad;
+
+                        if (match.Success && int.TryParse(match.Value, out edad))
+                        {
+                            txbEdad.Text = edad.ToString(); // Deja solo el número limpio en la caja
+                        }
+                        else
+                        {
+                            edad = 0;
+                            txbEdad.Text = "0";
+                        }
+
+                        if (string.IsNullOrEmpty(txbFecNac.Text))
+                        {
+                            fecNacCli = new DateTime(1900, 1, 1);
+                            txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
+                        }
+                        else
+                        {
+                            fecNacCli = DateTime.Parse(txbFecNac.Text);
+                        }
+
+                        txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
+
+                        if (ddlEmpresa.SelectedItem.Value != "")
+                            ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
+                        else
+                            ddlEmpresa.SelectedItem.Value = "0";
+
+                        try
+                        {
+                            respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.ToString().Trim().ToUpper(),
+                                    txbApellidoContacto.Value.ToString().Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
+                                    txbCorreoContacto.Value.ToString().Trim().ToLower(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
+                                    Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(),
+                                    Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "", txaObservaciones.Value.Trim(),
+                                    Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
+                                    Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
+                                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
+                                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()),
+                                    Convert.ToInt32(txbEdad.Text), txbFecNac.Text, Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()),
+                                    Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()), out salida, out mensaje);
+
+                            if (salida)
+                            {
+                                string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
+
+                                string script = @"
+                                Swal.fire({
+                                    title: 'El contacto se actualizó correctamente',
+                                    text: '" + mensaje.Replace("'", "\\'") + @"',
+                                    icon: 'success',
+                                    timer: 3000, // 3 segundos
+                                    showConfirmButton: false,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    window.location.href = '" + urlRedirect + @"';
+                                });
+                                ";
+
+                                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                            }
+                            else
+                            {
+                                string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
+                                string script = @"
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: '" + mensaje.Replace("'", "\\'") + @"',
+                                    icon: 'error'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                       window.location.href = '"" + urlRedirect + @""';
+                                    }
+                                });
+                                ";
+                                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            //string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
+                            string script = @"
+                        Swal.fire({
+                        title: 'Error',
+                        text: 'Ha ocurrido un error inesperado. " + ex.Message.ToString() + @"',
+                        icon: 'error'
+                    });
+                ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                        }
+
+                    }
+                    if (Request.QueryString["deleteid"] != null)
+                    {
+
+                        bool respuesta = false;
+                        bool _respuesta = false;
+                        string mensaje = string.Empty;
+                        int idContacto = Convert.ToInt32(Request.QueryString["deleteid"].ToString());
+                        int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
+                        string Usuario = Session["NombreUsuario"].ToString();
+
+                        try
+                        {
+                            DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out _respuesta);
+                            Session["contactoId"] = idContacto;
+
+                            if (idContacto > 0)
+                            {
+                                cg.EliminarContactoCRM(idContacto, idUsuario, Usuario, out respuesta, out mensaje);
+
+                                if (respuesta)
+                                {
+                                    string tipoMensaje = respuesta ? "Fitness People" : "Error";
+                                    string tipoIcono = respuesta ? "success" : "error";
+                                    string script = @"
+                                Swal.fire({
+                                    title: '" + tipoMensaje + @"',
+                                    text: '" + mensaje + @"',
+                                    icon: '" + tipoIcono + @"'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = 'crmnuevocontacto';
+                                    }
+                                });
+                            ";
+
+                                    ScriptManager.RegisterStartupScript(this, GetType(), "EliminarYAlerta", script, true);
+                                }
+                                else
+                                {
+                                    string script = @"
+                                Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error',
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: true
+                            }).then(() => {
+                                Response.Redirect(Request.RawUrl);
+                            });
+                        ";
+                                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            mensaje = ex.Message;
+                            string script = @"
+                        Swal.fire({
+                        title: 'Error',                       
+                        text: '"" + mensaje.Replace(""'"", ""\\'"") + @""',
+                        icon: 'error'
+                    });
+                ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                        }
+                    }
+                }
+                else
+                {
+                    int segundosPasados = 0;
+                    //if (!ValidarSede(txbSede.Text.ToString()))
+                    //{
+                    bool salida = false;
+                    //ViewState["AbrirModal"] = true;
+                    string mensaje = string.Empty;
+                    string mensajeValidacion = string.Empty;
+                    string respuesta = string.Empty;
                     DateTime fecNacCli;
                     string textoEdad = txbEdad.Text.Trim();
                     System.Text.RegularExpressions.Match match = Regex.Match(textoEdad, @"\d+");
@@ -630,215 +810,37 @@ namespace fpWebApp
 
                     txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
 
-                    if (ddlEmpresa.SelectedItem.Value != "")
-                        ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
-                    else
-                        ddlEmpresa.SelectedItem.Value = "0";
+                    // Parseamos la fecha y la hora
+                    DateTime fecha = DateTime.Parse(txbFechaProx.Value);
+                    TimeSpan hora = TimeSpan.Parse(txbHoraIni.Value);
+                    DateTime fechaHora = fecha.Date + hora;
+                    string fechaHoraMySQL = fechaHora.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                    TimeSpan tiempo = TimeSpan.Zero;
+
+                    if (int.TryParse(hfContador.Value, out segundosPasados))
+                    {
+                        int minutos = segundosPasados / 60;
+                        int segundos = segundosPasados % 60;
+                        string tiempoFormateado = $"00:{minutos:D2}:{segundos:D2}";
+                        tiempo = TimeSpan.Parse(tiempoFormateado);
+                    }
 
                     try
                     {
-                        respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.ToString().Trim().ToUpper(),
-                                txbApellidoContacto.Value.ToString().Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
-                                txbCorreoContacto.Value.ToString().Trim().ToLower(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(),
-                                Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "", txaObservaciones.Value.Trim(),
-                                Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
-                                Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(txbEdad.Text), txbFecNac.Text, Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()), out salida, out mensaje);
+                        respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim().ToUpper(), txbApellidoContacto.Value.ToString().Trim().ToUpper(),
+                        Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), txbCorreoContacto.Value.ToString().Trim().ToLower(),
+                        Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
+                        fechaHoraMySQL.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
+                        txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
+                        Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, tiempo.ToString(), Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(txbEdad.Text), txbFecNac.Text, Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(Session["idPregestion"].ToString()), out salida, out mensaje);
 
                         if (salida)
                         {
-                            string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
-
                             string script = @"
-                                Swal.fire({
-                                    title: 'El contacto se actualizó correctamente',
-                                    text: '" + mensaje.Replace("'", "\\'") + @"',
-                                    icon: 'success',
-                                    timer: 3000, // 3 segundos
-                                    showConfirmButton: false,
-                                    timerProgressBar: true
-                                }).then(() => {
-                                    window.location.href = '" + urlRedirect + @"';
-                                });
-                                ";
-
-                            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                        }
-                        else
-                        {
-                            string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
-                            string script = @"
-                                Swal.fire({
-                                    title: 'Error',
-                                    text: '" + mensaje.Replace("'", "\\'") + @"',
-                                    icon: 'error'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                       window.location.href = '"" + urlRedirect + @""';
-                                    }
-                                });
-                                ";
-                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-                        }
-
-                    }
-                    catch (Exception ex)
-                    {
-                        //string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
-                        string script = @"
-                        Swal.fire({
-                        title: 'Error',
-                        text: 'Ha ocurrido un error inesperado. " + ex.Message.ToString() + @"',
-                        icon: 'error'
-                    });
-                ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                    }
-
-                }
-                if (Request.QueryString["deleteid"] != null)
-                {
-
-                    bool respuesta = false;
-                    bool _respuesta = false;
-                    string mensaje = string.Empty;
-                    int idContacto = Convert.ToInt32(Request.QueryString["deleteid"].ToString());
-                    int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
-                    string Usuario = Session["NombreUsuario"].ToString();
-
-                    try
-                    {
-                        DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out _respuesta);
-                        Session["contactoId"] = idContacto;
-
-                        if (idContacto > 0)
-                        {
-                            cg.EliminarContactoCRM(idContacto, idUsuario, Usuario, out respuesta, out mensaje);
-
-                            if (respuesta)
-                            {
-                                string tipoMensaje = respuesta ? "Fitness People" : "Error";
-                                string tipoIcono = respuesta ? "success" : "error";
-                                string script = @"
-                                Swal.fire({
-                                    title: '" + tipoMensaje + @"',
-                                    text: '" + mensaje + @"',
-                                    icon: '" + tipoIcono + @"'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = 'crmnuevocontacto';
-                                    }
-                                });
-                            ";
-
-                                ScriptManager.RegisterStartupScript(this, GetType(), "EliminarYAlerta", script, true);
-                            }
-                            else
-                            {
-                                string script = @"
-                                Swal.fire({
-                                title: 'Error',
-                                text: '" + mensaje.Replace("'", "\\'") + @"',
-                                icon: 'error',
-                                timer: 3000,
-                                timerProgressBar: true,
-                                showConfirmButton: true
-                            }).then(() => {
-                                Response.Redirect(Request.RawUrl);
-                            });
-                        ";
-                                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        mensaje = ex.Message;
-                        string script = @"
-                        Swal.fire({
-                        title: 'Error',                       
-                        text: '"" + mensaje.Replace(""'"", ""\\'"") + @""',
-                        icon: 'error'
-                    });
-                ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                    }
-                }
-            }
-            else
-            {
-                int segundosPasados = 0;
-                //if (!ValidarSede(txbSede.Text.ToString()))
-                //{
-                bool salida = false;
-                //ViewState["AbrirModal"] = true;
-                string mensaje = string.Empty;
-                string mensajeValidacion = string.Empty;
-                string respuesta = string.Empty;
-                DateTime fecNacCli;
-                string textoEdad = txbEdad.Text.Trim();
-                System.Text.RegularExpressions.Match match = Regex.Match(textoEdad, @"\d+");
-
-                int edad;
-
-                if (match.Success && int.TryParse(match.Value, out edad))
-                {
-                    txbEdad.Text = edad.ToString(); // Deja solo el número limpio en la caja
-                }
-                else
-                {
-                    edad = 0;
-                    txbEdad.Text = "0";
-                }
-
-                if (string.IsNullOrEmpty(txbFecNac.Text))
-                {
-                    fecNacCli = new DateTime(1900, 1, 1);
-                    txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
-                }
-                else
-                {
-                    fecNacCli = DateTime.Parse(txbFecNac.Text);
-                }
-
-                txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
-
-                // Parseamos la fecha y la hora
-                DateTime fecha = DateTime.Parse(txbFechaProx.Value);
-                TimeSpan hora = TimeSpan.Parse(txbHoraIni.Value);
-                DateTime fechaHora = fecha.Date + hora;
-                string fechaHoraMySQL = fechaHora.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                TimeSpan tiempo = TimeSpan.Zero;
-
-                if (int.TryParse(hfContador.Value, out segundosPasados))
-                {
-                    int minutos = segundosPasados / 60;
-                    int segundos = segundosPasados % 60;
-                    string tiempoFormateado = $"00:{minutos:D2}:{segundos:D2}";
-                    tiempo = TimeSpan.Parse(tiempoFormateado);
-                }
-
-                try
-                {
-                    respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim().ToUpper(), txbApellidoContacto.Value.ToString().Trim().ToUpper(),
-                    Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), txbCorreoContacto.Value.ToString().Trim().ToLower(),
-                    Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
-                    fechaHoraMySQL.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
-                    txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
-                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, tiempo.ToString(), Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(txbEdad.Text), txbFecNac.Text, Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(Session["idPregestion"].ToString()), out salida, out mensaje);
-
-                    if (salida)
-                    {
-                        string script = @"
                         Swal.fire({
                             title: '«¡Creado correctamente!»',
                             text: '" + mensaje.Replace("'", "\\'") + @"',
@@ -850,11 +852,11 @@ namespace fpWebApp
                             window.location.href = 'crmnuevocontacto';
                         });
                     ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                    }
-                    else
-                    {
-                        string script = @"
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                        }
+                        else
+                        {
+                            string script = @"
                             Swal.fire({
                                 title: 'Error',
                                 text: '" + mensaje.Replace("'", "\\'") + @"',
@@ -865,22 +867,34 @@ namespace fpWebApp
                                 }
                             });
                         ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    mensaje = ex.Message.ToString();
-                    string script = @"
+                    catch (Exception ex)
+                    {
+                        mensaje = ex.Message.ToString();
+                        string script = @"
                     Swal.fire({
                         title: 'Error',
                         text: '" + mensaje.Replace("'", "\\'") + @"',
                         icon: 'error'
                     });
                 ";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                    }
                 }
+
             }
+            catch (Exception ex)
+            {
+
+                ltMensaje.Text =
+                   "<div class='alert alert-danger alert-dismissable'>" +
+                   "<button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>" +
+                   "<strong>Error:</strong> " + ex.Message.ToString() +
+                   "</div>";
+            }
+
         }
 
 
