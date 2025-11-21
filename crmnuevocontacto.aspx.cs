@@ -1103,10 +1103,6 @@ namespace fpWebApp
                             ltInfoAfiliado.Text = "No se encontraron planes anteriores para este usuario.";
                         }
 
-                        // ⭐⭐⭐ IMPORTANTE ⭐⭐⭐
-                        // AHORA LOS BOTONES SIEMPRE SE MOSTRARÁN SIN IMPORTAR SI EL PLAN ESTÁ ACTIVO
-                        // ÚNICAMENTE SE RESPETA PERMISOS
-
                         if (ViewState["CrearModificar"].ToString() == "1" && btnEditar != null)
                         {
                             btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + row.Row[0].ToString());
