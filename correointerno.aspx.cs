@@ -87,8 +87,8 @@ namespace fpWebApp
             strQuery = @"
                 SELECT * 
                 FROM CorreoInterno
-                WHERE (idPara = " + Session["idUsuario"].ToString() + @" AND PapeleraPara = 1)
-                   OR (idUsuarioDe = " + Session["idUsuario"].ToString() + @" AND PapeleraDe = 1);";
+                WHERE (idUsuarioPara = " + Session["idUsuario"].ToString() + @" AND PapeleraPara = 1)
+                   OR (idUsuarioDe = " + Session["idUsuario"].ToString() + @" AND PapeleraDe = 1)";
 
             DataTable dt2 = cg.TraerDatos(strQuery);
 
@@ -151,7 +151,7 @@ namespace fpWebApp
 
 
                 // Obtener el valor del campo Leido
-                int leido = Convert.ToInt32(DataBinder.Eval(e.Item.DataItem, "Leido"));
+                int leido = Convert.ToInt32(DataBinder.Eval(e.Item.DataItem, "LeidoPara"));
 
                 // Buscar el <tr> del ItemTemplate
                 HtmlTableRow fila = (HtmlTableRow)e.Item.FindControl("fila");

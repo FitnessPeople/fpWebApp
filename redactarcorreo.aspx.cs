@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using NPOI.OpenXmlFormats.Spreadsheet;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -17,18 +18,55 @@ namespace fpWebApp
                     CargarUsuarios();
                     CargarCategorias();
                     clasesglobales cg = new clasesglobales();
-                    string strQuery = @"SELECT * 
-                        FROM correointerno ci 
-                        INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
-                        WHERE ci.idsPara = '" + Session["idUsuario"].ToString() + @"' 
-                        AND ci.Leido = 0 
-                        ORDER BY FechaHora DESC";
+
+                    string strQuery = @"
+                        SELECT *  
+                        FROM CorreoInterno 
+                        WHERE idUsuarioPara = " + Session["idUsuario"].ToString() + @" 
+                          AND LeidoPara = 0 
+                          AND PapeleraPara = 0";
 
                     DataTable dt1 = cg.TraerDatos(strQuery);
 
-                    ltNroMensajes1.Text = dt1.Rows.Count.ToString();
+                    ltNroMensajesSinLeer.Text = dt1.Rows.Count.ToString();
 
                     dt1.Dispose();
+
+                    strQuery = @"
+                        SELECT * 
+                        FROM CorreoInterno
+                        WHERE (idUsuarioPara = " + Session["idUsuario"].ToString() + @" AND PapeleraPara = 1)
+                           OR (idUsuarioDe = " + Session["idUsuario"].ToString() + @" AND PapeleraDe = 1);";
+
+                    DataTable dt2 = cg.TraerDatos(strQuery);
+
+                    ltNroMensajesPapelera.Text = dt2.Rows.Count.ToString();
+
+                    dt2.Dispose();
+
+                    strQuery = @"
+                        SELECT * 
+                        FROM CorreoInterno
+                        WHERE idUsuarioDe = " + Session["idUsuario"].ToString() + @" 
+                          AND PapeleraDe = 0";
+
+                    DataTable dt3 = cg.TraerDatos(strQuery);
+
+                    ltNroMensajesEnviados.Text = dt3.Rows.Count.ToString();
+
+                    dt3.Dispose();
+
+                    strQuery = @"
+                        SELECT * 
+                        FROM CorreoInterno 
+                        WHERE IdUsuarioPara = " + Session["idUsuario"].ToString() + @" 
+                          AND PapeleraPara = 0";
+
+                    DataTable dt4 = cg.TraerDatos(strQuery);
+
+                    ltNroMensajesTotal.Text = dt4.Rows.Count.ToString();
+
+                    dt4.Dispose();
 
                     ltNombreUsuario.Text = Session["NombreUsuario"].ToString();
                     ltCargo.Text = Session["CargoUsuario"].ToString();
@@ -98,7 +136,7 @@ namespace fpWebApp
                 string contenidoEditor = hiddenEditor.Value;
                 foreach (string id in seleccionados)
                 {
-                    string strQuery = "INSERT INTO correointerno (idUsuarioDe, idsPara, idCategoriaCorreo, Asunto, Mensaje, FechaHora) " +
+                    string strQuery = "INSERT INTO correointerno (idUsuarioDe, idUsuarioPara, idCategoriaCorreo, Asunto, Mensaje, FechaHora) " +
                         "VALUES (" + Session["idUsuario"].ToString() + ", " + id + ", " + ddlCategorias.SelectedItem.Value.ToString() + ", " +
                         "'" + txbAsunto.Text.ToString() + "', '" + contenidoEditor + "', NOW())";
                     clasesglobales cg = new clasesglobales();
@@ -107,12 +145,7 @@ namespace fpWebApp
 
                 Response.Redirect("correointerno");
             }
-            else
-            {
 
-            }
-
-            
         }
     }
 }

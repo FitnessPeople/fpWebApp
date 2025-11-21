@@ -125,7 +125,7 @@
                                             <li><a href="correointerno"><i class="fa fa-inbox "></i>Bandeja de entrada
                                                 <span class="label label-warning pull-right">
                                                 <asp:Literal ID="ltNroMensajesSinLeer" runat="server"></asp:Literal>/<asp:Literal ID="ltNroMensajesTotal" runat="server"></asp:Literal></span></a></li>
-                                            <li><a href="correoenviado"><i class="fa fa-envelope"></i>Enviados
+                                            <li><a href="correoenviado"><i class="fa fa-paper-plane"></i>Enviados
                                                 <span class="label label-default pull-right">
                                                 <asp:Literal ID="ltNroMensajesEnviados" runat="server"></asp:Literal></span></a></li>
                                             <li><a href="correoeliminado"><i class="fa fa-trash"></i>Papelera
@@ -167,7 +167,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <h2>Papelera
+                                    <h2><i class="fa fa-trash"></i> Papelera
                                     </h2>
                                     <div class="mail-tools tooltip-demo m-t-md">
                                         <div class="btn-group pull-right">
@@ -197,7 +197,7 @@
                                                         <td class="check-mail">
                                                             <input type="checkbox" class="i-checks">
                                                         </td>
-                                                        <td class="mail-ontact"><a href="detallecorreo?idCorreo=<%# Eval("idCorreo") %>">Para: <%# Eval("Destinatario") %></a>
+                                                        <td class="mail-ontact"><a href="detallecorreo?idCorreo=<%# Eval("idCorreo") %>">De: <%# Eval("Remitente") %><br />Para: <%# Eval("Destinatario") %></a>
                                                             <span class="label label-<%# Eval("ColorCategoria") %> pull-right"><%# Eval("NombreCategoria") %></span>
                                                         </td>
                                                         <td class="mail-subject"><a href="detallecorreo?idCorreo=<%# Eval("idCorreo") %>&trash=1"><%# Eval("Asunto") %></a></td>

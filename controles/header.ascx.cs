@@ -33,11 +33,14 @@ namespace fpWebApp.controles
         private void CargarMensajes()
         {
             string strQuery = @"
-                SELECT *  
-                FROM CorreoInterno 
-                WHERE idUsuarioPara = " + Session["idUsuario"].ToString() + @" 
-                  AND PapeleraPara = 0 
-                ORDER BY FechaHora DESC 
+                SELECT *, u.NombreUsuario AS Remitente 
+                FROM CorreoInterno ci 
+                INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
+                INNER JOIN empleados e ON e.DocumentoEmpleado = u.idEmpleado 
+                WHERE ci.idUsuarioPara = " + Session["idUsuario"].ToString() + @" 
+                  AND ci.PapeleraPara = 0 
+                  AND ci.LeidoPara = 0 
+                ORDER BY ci.FechaHora DESC 
                 LIMIT 4";
 
             clasesglobales cg = new clasesglobales();
@@ -68,9 +71,7 @@ namespace fpWebApp.controles
                     TimeSpan diferencia = DateTime.Now - fechaMensaje;
 
                     string leyenda = "";
-                    if (diferencia.TotalMinutes < 1)
-                        leyenda = "Hace menos de un minuto";
-                    else if (diferencia.TotalMinutes < 60)
+                    if (diferencia.TotalMinutes < 60)
                         leyenda = $"Hace {(int)diferencia.TotalMinutes} minuto{((int)diferencia.TotalMinutes == 1 ? "" : "s")}";
                     else if (diferencia.TotalHours < 24)
                         leyenda = $"Hace {(int)diferencia.TotalHours} hora{((int)diferencia.TotalHours == 1 ? "" : "s")}";

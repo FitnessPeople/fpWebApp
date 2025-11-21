@@ -56,6 +56,7 @@ namespace fpWebApp
                         ListaPlanes();
                         CargarAfiliado();
                         CargarPlanesAfiliado();
+                        ConsultarCodDatafono();
 
                         string strData = ListarDetalle();
                         ltDetalleWompi.Text = strData;
@@ -72,6 +73,29 @@ namespace fpWebApp
                     Response.Redirect("logout");
                 }
             }
+        }
+
+        private void ValidarPermisos(string strPagina)
+        {
+            ViewState["SinPermiso"] = "1";
+            ViewState["Consulta"] = "0";
+            ViewState["Exportar"] = "0";
+            ViewState["CrearModificar"] = "0";
+            ViewState["Borrar"] = "0";
+
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
+
+            if (dt.Rows.Count > 0)
+            {
+                ViewState["SinPermiso"] = dt.Rows[0]["SinPermiso"].ToString();
+                ViewState["Consulta"] = dt.Rows[0]["Consulta"].ToString();
+                ViewState["Exportar"] = dt.Rows[0]["Exportar"].ToString();
+                ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
+                ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
+            }
+
+            dt.Dispose();
         }
 
         private void ListaPlanes()
@@ -175,27 +199,32 @@ namespace fpWebApp
             }
         }
 
-        private void ValidarPermisos(string strPagina)
+        private void ConsultarCodDatafono()
         {
-            ViewState["SinPermiso"] = "1";
-            ViewState["Consulta"] = "0";
-            ViewState["Exportar"] = "0";
-            ViewState["CrearModificar"] = "0";
-            ViewState["Borrar"] = "0";
+            //if (Request.QueryString.Count > 0)
+            //{
+                clasesglobales cg = new clasesglobales();
 
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
+                //string codDatafonoQS = Request.QueryString["codDatafono"];
+                string codDatafonoQS = "LM9ZZ702";
 
-            if (dt.Rows.Count > 0)
-            {
-                ViewState["SinPermiso"] = dt.Rows[0]["SinPermiso"].ToString();
-                ViewState["Consulta"] = dt.Rows[0]["Consulta"].ToString();
-                ViewState["Exportar"] = dt.Rows[0]["Exportar"].ToString();
-                ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
-                ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
-            }
+                DataTable dt = cg.ConsultarDatafonoPorCodigo(codDatafonoQS);
 
-            dt.Dispose();
+                string codDatafono = dt != null && dt.Rows.Count > 0 ? dt.Rows[0]["codDatafono"].ToString() : "";
+
+                if (codDatafono != codDatafonoQS || codDatafono == "")
+                {
+                    Response.Redirect("default");
+                    return;
+                }
+
+                Session["codDatafono"] = codDatafono;
+            //}
+            //else
+            //{
+            //    Response.Redirect("default");
+
+            //}
         }
 
         private string ListarDetalle()
@@ -331,13 +360,16 @@ namespace fpWebApp
                 int intTotal = Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", ""));
                 txbTotal.Text = intTotal.ToString("C0", new CultureInfo("es-CO"));
 
+                // Llamar funcion que muestra la URL de pago de Wompi
+                MostrarURLWompi();
+
                 if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
                     Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
                 {
                     string script = @"
                                     Swal.fire({
-                                        title: 'Error',
-                                        text: 'Precio incorrecto. Intenta nuevamente.',
+                                        title: 'Precio total',
+                                        text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
                                         icon: 'error'
                                     }).then(() => {
                                     });
@@ -346,8 +378,6 @@ namespace fpWebApp
                     return;
                 }
 
-                // Llamar funcion que muestra la URL de pago de Wompi
-                MostrarURLWompi();
             }
         }
 
@@ -357,6 +387,21 @@ namespace fpWebApp
             {
                 int intTotal = Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", ""));
                 txbTotal.Text = intTotal.ToString("C0", new CultureInfo("es-CO"));
+
+                if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
+                    Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
+                {
+                    string script = @"
+                                    Swal.fire({
+                                        title: 'Precio total',
+                                        text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
+                                        icon: 'error'
+                                    }).then(() => {
+                                    });
+                                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                    return;
+                }
             }
         }
 
@@ -366,6 +411,21 @@ namespace fpWebApp
             {
                 int intTotal = Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", ""));
                 txbTotal.Text = intTotal.ToString("C0", new CultureInfo("es-CO"));
+
+                if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
+                    Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
+                {
+                    string script = @"
+                                    Swal.fire({
+                                        title: 'Precio total',
+                                        text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
+                                        icon: 'error'
+                                    }).then(() => {
+                                    });
+                                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                    return;
+                }
             }
         }
 
@@ -375,6 +435,21 @@ namespace fpWebApp
             {
                 int intTotal = Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", ""));
                 txbTotal.Text = intTotal.ToString("C0", new CultureInfo("es-CO"));
+
+                if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
+                    Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
+                {
+                    string script = @"
+                                    Swal.fire({
+                                        title: 'Precio total',
+                                        text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
+                                        icon: 'error'
+                                    }).then(() => {
+                                    });
+                                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                    return;
+                }
             }
         }
 
@@ -446,27 +521,42 @@ namespace fpWebApp
             double intPrecio = Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", ""));
             string strDataWompi = Convert.ToBase64String(Encoding.Unicode.GetBytes(ViewState["DocumentoAfiliado"].ToString() + "_" + intPrecio.ToString()));
 
-            string payload = $"code={HttpUtility.UrlEncode(ViewState["DocumentoAfiliado"].ToString() + "_" + intPrecio.ToString() + "_" + ViewState["idPlan"].ToString())}";
-
-            TimeSpan ttl = TimeSpan.FromMinutes(40); // Token válido 10 minutos
-            string token = UrlEncryptor.Encrypt(payload, ttl);
-
-            if (ViewState["DebitoAutomatico"].ToString() == "1")
+            if (ViewState["idPlan"] == null)
             {
-                lbEnlaceWompi.Text = "<b>Enlace de pago Wompi:</b> <br />";
-                lbEnlaceWompi.Text += AcortarURL($"https://fitnesspeoplecmdcolombia.com/register?idPlan=" + ViewState["idPlan"].ToString() + @"&idVendedor=" + Session["idUsuario"].ToString() + @"");
-                hdEnlaceWompi.Value = AcortarURL($"https://fitnesspeoplecmdcolombia.com/register?idPlan=" + ViewState["idPlan"].ToString() + @"&idVendedor=" + Session["idUsuario"].ToString() + @"");
-                btnPortapaleles.Visible = true;
+                string script = @"
+                                    Swal.fire({
+                                        title: 'Elije un plan',
+                                        text: 'Debes seleccionar un plan de la lista.',
+                                        icon: 'error'
+                                    }).then(() => {
+                                    });
+                                    ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                txbWompi.Text = "";
+                return;
             }
             else
             {
-                //lbEnlaceWompi.Text = "https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi;
-                lbEnlaceWompi.Text = "<b>Enlace de pago Wompi:</b> <br />";
-                //lbEnlaceWompi.Text += AcortarURL("https://fitnesspeoplecmdcolombia.com/wompiplan?code=" + strDataWompi);
-                lbEnlaceWompi.Text += AcortarURL($"https://fitnesspeoplecmdcolombia.com/wompiplan?data={HttpUtility.UrlEncode(token)}");
-                //hdEnlaceWompi.Value = AcortarURL("https://fitnesspeoplecmdcolombia.com/wompiplan?code=" + strDataWompi);
-                hdEnlaceWompi.Value = AcortarURL($"https://fitnesspeoplecmdcolombia.com/wompiplan?data={HttpUtility.UrlEncode(token)}");
-                btnPortapaleles.Visible = true;
+                string payload = $"code={HttpUtility.UrlEncode(ViewState["DocumentoAfiliado"].ToString() + "_" + intPrecio.ToString() + "_" + ViewState["idPlan"].ToString())}";
+
+                TimeSpan ttl = TimeSpan.FromMinutes(40); // Token válido 10 minutos
+                string token = UrlEncryptor.Encrypt(payload, ttl);
+
+                if (ViewState["DebitoAutomatico"].ToString() == "1")
+                {
+                    lbEnlaceWompi.Text = AcortarURL($"https://fitnesspeoplecmdcolombia.com/register?idPlan=" + ViewState["idPlan"].ToString() + @"&idVendedor=" + Session["idUsuario"].ToString() + @"");
+                    hdEnlaceWompi.Value = AcortarURL($"https://fitnesspeoplecmdcolombia.com/register?idPlan=" + ViewState["idPlan"].ToString() + @"&idVendedor=" + Session["idUsuario"].ToString() + @"");
+                    btnPortapaleles.Visible = true;
+                }
+                else
+                {
+                    //lbEnlaceWompi.Text = "https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi;
+                    //lbEnlaceWompi.Text += AcortarURL("https://fitnesspeoplecmdcolombia.com/wompiplan?code=" + strDataWompi);
+                    lbEnlaceWompi.Text = AcortarURL($"https://fitnesspeoplecmdcolombia.com/wompiplan?data={HttpUtility.UrlEncode(token)}");
+                    //hdEnlaceWompi.Value = AcortarURL("https://fitnesspeoplecmdcolombia.com/wompiplan?code=" + strDataWompi);
+                    hdEnlaceWompi.Value = AcortarURL($"https://fitnesspeoplecmdcolombia.com/wompiplan?data={HttpUtility.UrlEncode(token)}");
+                    btnPortapaleles.Visible = true;
+                }
             }
         }
 

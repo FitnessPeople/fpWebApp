@@ -244,12 +244,15 @@
                                         <div class="space-25"></div>
                                         <h5>Carpetas</h5>
                                         <ul class="folder-list m-b-md" style="padding: 0">
-                                            <li><a href="correointerno"><i class="fa fa-inbox "></i>Bandeja de entrada<span class="label label-warning pull-right">
-                                                <asp:Literal ID="ltNroMensajes1" runat="server"></asp:Literal></span> </a></li>
-                                            <li><a href="#"><i class="fa fa-envelope"></i>Enviados</a></li>
-                                            <li><a href="#"><i class="fa fa-certificate"></i>Importantes</a></li>
-                                            <li><a href="#"><i class="fa fa-file-text"></i>Documentos</a></li>
-                                            <li><a href="correoeliminado"><i class="fa fa-trash"></i>Papelera</a></li>
+                                            <li><a href="correointerno"><i class="fa fa-inbox "></i>Bandeja de entrada
+                                                <span class="label label-warning pull-right">
+                                                <asp:Literal ID="ltNroMensajesSinLeer" runat="server"></asp:Literal>/<asp:Literal ID="ltNroMensajesTotal" runat="server"></asp:Literal></span></a></li>
+                                            <li><a href="correoenviado"><i class="fa fa-paper-plane"></i>Enviados
+                                                <span class="label label-default pull-right">
+                                                <asp:Literal ID="ltNroMensajesEnviados" runat="server"></asp:Literal></span></a></li>
+                                            <li><a href="correoeliminado"><i class="fa fa-trash"></i>Papelera
+                                                <span class="label label-default pull-right">
+                                                <b><asp:Literal ID="ltNroMensajesPapelera" runat="server"></asp:Literal></b></span></a></li>
                                         </ul>
                                         <h5>Categorías</h5>
                                         <ul class="category-list" style="padding: 0">
@@ -274,7 +277,7 @@
                         </div>
                         <div class="col-lg-9 animated fadeInRight">
                             <div class="mail-box-header">
-                                <h2>Redactar mensaje</h2>
+                                <h2><i class="fa fa-pen-to-square"></i> Redactar mensaje</h2>
                             </div>
                             <form runat="server" id="form1">
                                 <div class="mail-box">
@@ -338,7 +341,7 @@
                                         <asp:LinkButton ID="lbEnviar" runat="server" 
                                             CssClass="btn btn-sm btn-primary" data-toggle="tooltip" 
                                             data-placement="top" title="Enviar" OnClick="lbEnviar_Click" 
-                                            OnClientClick="guardarContenidoEditor()"><i class="fa fa-reply"></i> Enviar</asp:LinkButton>
+                                            OnClientClick="guardarContenidoEditor()"><i class="fa fa-paper-plane"></i> Enviar</asp:LinkButton>
                                         <a href="correointerno" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Descartar"><i class="fa fa-times"></i> Descartar</a>
                                     </div>
                                     <div class="clearfix"></div>

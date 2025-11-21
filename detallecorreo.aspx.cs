@@ -14,12 +14,12 @@ namespace fpWebApp
                 {
                     CargarCategorias();
                     clasesglobales cg = new clasesglobales();
-                    string strQuery = @"SELECT * 
-                        FROM correointerno ci 
-                        INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
-                        WHERE ci.idsPara = " + Session["idUsuario"].ToString() + @" 
-                        AND ci.Leido = 0 
-                        ORDER BY FechaHora DESC";
+                    string strQuery = @"
+                        SELECT * 
+                        FROM CorreoInterno 
+                        WHERE IdUsuarioPara = " + Session["idUsuario"].ToString() + @" 
+                          AND LeidoPara = 0
+                          AND PapeleraPara = 0";
 
                     DataTable dt1 = cg.TraerDatos(strQuery);
 
@@ -28,26 +28,22 @@ namespace fpWebApp
                     dt1.Dispose();
 
                     strQuery = @"
-                        SELECT ci.idCorreo, u.NOmbreUsuario AS Remitente, ci.Asunto, 
-                        ci.FechaHora, cc.NombreCategoria, cc.ColorCategoria, ci.Leido  
-                        FROM correointerno ci 
-                        INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
-                        INNER JOIN categoriasCorreo cc ON cc.idCategoriaCorreo = ci.idCategoriaCorreo 
-                        WHERE ci.idsPara = " + Session["idUsuario"].ToString() + @" 
-                        AND Papelera = 0 
-                        ORDER BY FechaHora DESC";
+                        SELECT * 
+                        FROM CorreoInterno 
+                        WHERE IdUsuarioPara = " + Session["idUsuario"].ToString() + @" 
+                          AND PapeleraPara = 0";
 
                     DataTable dt2 = cg.TraerDatos(strQuery);
 
                     ltNroMensajesTotal.Text = dt2.Rows.Count.ToString();
 
+                    dt2.Dispose();
+
                     strQuery = @"
-                        SELECT ci.idCorreo, u.NombreUsuario AS Remitente, ci.Asunto, ci.FechaHora, ci.Leido 
-                        FROM correointerno ci 
-                        INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe 
-                        WHERE ci.idUsuarioDe = " + Session["idUsuario"].ToString() + @" 
-                        AND Papelera = 1 
-                        ORDER BY FechaHora DESC";
+                    SELECT * 
+                    FROM CorreoInterno
+                    WHERE (idUsuarioPara = " + Session["idUsuario"].ToString() + @" AND PapeleraPara = 1)
+                       OR (idUsuarioDe = " + Session["idUsuario"].ToString() + @" AND PapeleraDe = 1);";
 
                     DataTable dt3 = cg.TraerDatos(strQuery);
 
@@ -56,14 +52,10 @@ namespace fpWebApp
                     dt3.Dispose();
 
                     strQuery = @"
-                        SELECT ci.idCorreo, u.NombreUsuario AS Destinatario, ci.Asunto, 
-                        ci.FechaHora, cc.NombreCategoria, cc.ColorCategoria, ci.Leido 
-                        FROM correointerno ci 
-                        INNER JOIN usuarios u ON u.idUsuario = ci.idsPara 
-                        INNER JOIN categoriasCorreo cc ON cc.idCategoriaCorreo = ci.idCategoriaCorreo 
-                        WHERE ci.idUsuarioDe = " + Session["idUsuario"].ToString() + @" 
-                        AND Papelera = 0 
-                        ORDER BY FechaHora DESC";
+                    SELECT * 
+                    FROM CorreoInterno
+                    WHERE idUsuarioDe = " + Session["idUsuario"].ToString() + @" 
+                      AND PapeleraDe = 0";
 
                     DataTable dt4 = cg.TraerDatos(strQuery);
 
@@ -75,15 +67,12 @@ namespace fpWebApp
                     {
                         string idCorreo = Request.QueryString["idCorreo"];
                         strQuery = @"
-                            SELECT 
-                                ci.*, 
-                                u.NombreUsuario AS Remitente,
-                                (SELECT GROUP_CONCAT(ud.NombreUsuario SEPARATOR ', ')
-                                 FROM usuarios ud
-                                 WHERE FIND_IN_SET(ud.idUsuario, ci.idsPara) > 0
-                                ) AS Destinatarios
+                            SELECT ci.*, cc.*, 
+                                u1.NombreUsuario AS Remitente, u2.NombreUsuario AS Destinatario 
                             FROM correointerno ci
-                            INNER JOIN usuarios u ON u.idUsuario = ci.idUsuarioDe
+                            INNER JOIN usuarios u1 ON u1.idUsuario = ci.idUsuarioDe 
+                            INNER JOIN usuarios u2 ON u2.idUsuario = ci.idUsuarioPara 
+                            INNER JOIN categoriasCorreo cc ON cc.idCategoriaCorreo = ci.idCategoriaCorreo 
                             WHERE ci.idCorreo = " + idCorreo;
 
                         DataTable dt = cg.TraerDatos(strQuery);
@@ -91,7 +80,7 @@ namespace fpWebApp
                         ltAsunto.Text = dt.Rows[0]["Asunto"].ToString();
                         ltFechaHora.Text = Convert.ToDateTime(dt.Rows[0]["FechaHora"]).ToString("dd 'de' MMM 'de' yyyy, HH:mm:ss");
                         ltRemitente.Text = dt.Rows[0]["Remitente"].ToString();
-                        ltDestinatarios.Text = dt.Rows[0]["Destinatarios"].ToString();
+                        ltDestinatarios.Text = dt.Rows[0]["Destinatario"].ToString();
                         ltMensaje.Text = dt.Rows[0]["Mensaje"].ToString();
 
                         if (dt.Rows[0]["idUsuarioDe"].ToString() == Session["idUsuario"].ToString() || !string.IsNullOrEmpty(Request.QueryString["trash"]))
@@ -134,9 +123,20 @@ namespace fpWebApp
         {
 
             string strQuery = @"
-                UPDATE correointerno SET Leido = 1 WHERE idCorreo = " + idCorreo;
+                UPDATE CorreoInterno
+                SET LeidoDe = 1
+                WHERE idCorreo = " + idCorreo + @" 
+                AND idUsuarioDe = " + Session["idUsuario"].ToString();
 
             clasesglobales cg = new clasesglobales();
+            cg.TraerDatosStr(strQuery);
+
+            strQuery = @"
+                UPDATE CorreoInterno
+                SET LeidoPara = 1
+                WHERE idCorreo = " + idCorreo + @" 
+                AND idUsuarioPara = " + Session["idUsuario"].ToString();
+
             cg.TraerDatosStr(strQuery);
         }
 
@@ -144,9 +144,20 @@ namespace fpWebApp
         {
             string idCorreo = Request.QueryString["idCorreo"];
             string strQuery = @"
-                UPDATE correointerno SET Papelera = 1 WHERE idCorreo = " + idCorreo;
+                UPDATE CorreoInterno
+                SET PapeleraDe = 1
+                WHERE idCorreo = " + idCorreo + @" 
+                AND idUsuarioDe = " + Session["idUsuario"].ToString();
 
             clasesglobales cg = new clasesglobales();
+            cg.TraerDatosStr(strQuery);
+
+            strQuery = @"
+                UPDATE CorreoInterno
+                SET PapeleraPara = 1
+                WHERE idCorreo = " + idCorreo + @" 
+                AND idUsuarioPara = " + Session["idUsuario"].ToString();
+
             cg.TraerDatosStr(strQuery);
 
             Response.Redirect("correointerno");

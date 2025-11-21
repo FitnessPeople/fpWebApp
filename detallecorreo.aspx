@@ -125,7 +125,7 @@
                                             <li><a href="correointerno"><i class="fa fa-inbox "></i>Bandeja de entrada
                                                 <span class="label label-warning pull-right">
                                                 <asp:Literal ID="ltNroMensajesSinLeer" runat="server"></asp:Literal>/<asp:Literal ID="ltNroMensajesTotal" runat="server"></asp:Literal></span></a></li>
-                                            <li><a href="correoenviado"><i class="fa fa-envelope"></i>Enviados
+                                            <li><a href="correoenviado"><i class="fa fa-paper-plane"></i>Enviados
                                                 <span class="label label-default pull-right">
                                                 <asp:Literal ID="ltNroMensajesEnviados" runat="server"></asp:Literal></span></a></li>
                                             <li><a href="correoeliminado"><i class="fa fa-trash"></i>Papelera

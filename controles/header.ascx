@@ -93,8 +93,8 @@
                                 <div>
                                     <small class="pull-right text-warning">
                                         <asp:Literal ID="ltTiempoTranscurrido" runat="server"></asp:Literal></small>
-                                    Tienes un nuevo mensaje de <strong><%# Eval("Remitente") %></strong>.
-                                    <br>
+                                    Nuevo mensaje de <br /><strong><%# Eval("Remitente") %></strong>.
+                                    <br />
                                     <small class="text-muted">Asunto: <%# Eval("Asunto") %></small>
                                 </div>
                             </div>
