@@ -2434,6 +2434,35 @@ namespace fpWebApp
             return dt;
         }
 
+
+        public void InsertarFestivo(string titulo, DateTime fecha)
+        {
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection conn = new MySqlConnection(strConexion))
+                {
+                    conn.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_DIA_FESTIVO", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_Titulo", titulo);
+                        cmd.Parameters.AddWithValue("@p_Fecha", fecha.Date);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error insertando festivo: " + ex.Message);
+            }
+        }
+
+
         #endregion
 
         #region Perfiles

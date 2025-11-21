@@ -52,7 +52,7 @@ namespace fpWebApp
                         }
                     }
 
-                    //ListaPaginas();
+                    CargarAnios();
                     ListaFestivos();
                     ltTitulo.Text = "Insertar festivos";
 
@@ -161,7 +161,12 @@ namespace fpWebApp
         }
         public async Task<List<HolidayApi>> ObtenerFestivosPorAno(int ano)
         {
-            string url = $"https://api-colombia.com/api/v1/Holiday/year/{ano}";
+            clasesglobales cg = new clasesglobales();
+            string url = string.Empty;
+ 
+            DataTable dt = cg.ConsultarUrl(7);
+            url = dt.Rows[0]["urlTest"].ToString();
+            //url = $"https://api-colombia.com/api/v1/Holiday/year/{ano}";
 
             using (HttpClient client = new HttpClient())
             {
@@ -173,37 +178,10 @@ namespace fpWebApp
             }
         }
 
-
-        public void InsertarFestivo(string titulo, DateTime fecha)
-        {
-            try
-            {
-                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-
-                using (MySqlConnection conn = new MySqlConnection(strConexion))
-                {
-                    conn.Open();
-
-                    string sql = @"INSERT INTO festivos (Titulo, Fecha)
-                           SELECT @Titulo, @Fecha
-                           WHERE NOT EXISTS(SELECT 1 FROM festivos WHERE Fecha = @Fecha);";
-
-                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@Titulo", titulo);
-                        cmd.Parameters.AddWithValue("@Fecha", fecha.Date);
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error insertando festivo: " + ex.Message);
-            }
-        }
-
         public async Task ActualizarFestivos()
         {
+            clasesglobales cg = new clasesglobales();   
+
             for (int ano = 2025; ano <= 2026; ano++)
             {
                 List<HolidayApi> festivos = await ObtenerFestivosPorAno(ano);
@@ -212,7 +190,7 @@ namespace fpWebApp
                 {
                     DateTime fecha = DateTime.Parse(f.date);
 
-                    InsertarFestivo(f.name, fecha);
+                    cg.InsertarFestivo(f.name, fecha);
                 }
             }
         }
@@ -232,6 +210,19 @@ namespace fpWebApp
             }
         }
 
+        private void CargarAnios()
+        {
+            int anioActual = DateTime.Now.Year;
+            int anioFinal = 2051;
+
+            ddlAnio.Items.Clear();
+            ddlAnio.Items.Add(new ListItem("Todos", "0"));
+
+            for (int anio = anioActual; anio <= anioFinal; anio++)
+            {
+                ddlAnio.Items.Add(new ListItem(anio.ToString(), anio.ToString()));
+            }
+        }
 
 
 
@@ -334,6 +325,11 @@ namespace fpWebApp
                     btnEliminar.Visible = true;
                 }
             }
+        }
+
+        protected void ddlAnio_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

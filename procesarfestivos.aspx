@@ -142,47 +142,22 @@
                                     </div>
                                     <div class="ibox-content">
                                         <div class="row">
+
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4">Año:</label>
+                                                <div class="col-lg-8">
+                                                    <asp:DropDownList ID="ddlAnio" runat="server" CssClass="form-control input-sm"
+                                                        AutoPostBack="true" OnSelectedIndexChanged="ddlAnio_SelectedIndexChanged">
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+
                                             <div class="col-lg-12">
-<%--                                                <div class="form-group">
-                                                    <label>Categoría a la que pertenece la página:</label>
-                                                    <asp:DropDownList CssClass="form-control required" ID="ddlCategorias" runat="server"
-                                                                      DataValueField="idCategoriaPagina" DataTextField="NombreCategoriaPagina"
-                                                                      AppendDataBoundItems="true" />
-                                                </div>--%>
-<%--                                                <div class="form-group">
-                                                    <label>Nombre de la página:</label>
-                                                    <asp:TextBox ID="txbPagina" name="txbPagina" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="rfvPagina" runat="server" 
-                                                        ErrorMessage="* Campo requerido" ControlToValidate="txbPagina" 
-                                                        CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
-                                                </div>--%>
-<%--                                                <div class="form-group">
-                                                    <label>Nombre del ASPX:</label>
-                                                    <asp:TextBox ID="txbAspx" name="txbAspx" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="dfvAspx" runat="server" 
-                                                        ErrorMessage="* Campo requerido" ControlToValidate="txbAspx" 
-                                                        CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
-                                                </div>--%>
-<%--                                                <div class="form-group">
-                                                    <label>Icono Font Awesome (<a href="https://fontawesome.com/search?ic=free&o=r" target="_blank">Iconos</a>):</label>
-                                                    <asp:TextBox ID="txbIconoFA" name="txbAspx" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
-                                                        ErrorMessage="* Campo requerido" ControlToValidate="txbIconoFA" 
-                                                        CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
-                                                </div>--%>
-<%--                                                <div class="form-group">
-                                                    <a href="paginas" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar" 
-                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" 
-                                                        OnClick="btnAgregar_Click"  ValidationGroup="agregar" />
-                                                </div>--%>
 
                                                 <asp:Button ID="btnAgregar" runat="server" 
                                                     Text="Actualizar festivos" 
                                                     CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
                                                     OnClick="btnAgregar_Click" />
-
-
 
                                                 <br />
                                                 <br />
@@ -197,7 +172,7 @@
                             <div class="col-lg-8">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Lista de Páginas</h5>
+                                        <h5>Lista de días festivos</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
