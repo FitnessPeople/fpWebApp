@@ -36,19 +36,17 @@ namespace fpWebApp
                         btnAgregar.Visible = false;
                         if (ViewState["Consulta"].ToString() == "1")
                         {
-                            divBotonesLista.Visible = true;
-                            //lbExportarExcel.Visible = false;
+                            divBotonesLista.Visible = true;                           
                    
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            //lbExportarExcel.Visible = true;
+                           
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-                            btnAgregar.Visible = true;
-                            
+                            btnAgregar.Visible = true;                            
                         }
                     }
 
@@ -142,16 +140,24 @@ namespace fpWebApp
 
         public async Task ActualizarFestivos(int ano)
         {
-            clasesglobales cg = new clasesglobales();
-
-            List<HolidayApi> festivos = await ObtenerFestivosPorAno(ano);
-
-            foreach (var f in festivos)
+            try
             {
-                DateTime fecha = DateTime.Parse(f.date);
-                cg.InsertarFestivo(f.name, fecha);
+                clasesglobales cg = new clasesglobales();
+
+                List<HolidayApi> festivos = await ObtenerFestivosPorAno(ano);
+
+                foreach (var f in festivos)
+                {
+                    DateTime fecha = DateTime.Parse(f.date);
+                    cg.InsertarFestivo(f.name, fecha);
+                }
+            }
+            catch (Exception ex)
+            {
+                ltMensaje.Text = "<div class='alert alert-danger'>Error: " + ex.Message + "</div>";                
             }
         }
+
         protected async void btnAgregar_Click(object sender, EventArgs e)
         {
             try
@@ -208,34 +214,54 @@ namespace fpWebApp
 
         private void CargarAnios()
         {
-            int anioActual = DateTime.Now.Year;
-            int anioFinal = 2051;
-
-            ddlAnio.Items.Clear();
-            ddlAnio.Items.Add(new ListItem("Todos", "0"));
-
-            for (int anio = anioActual; anio <= anioFinal; anio++)
+            try
             {
-                ddlAnio.Items.Add(new ListItem(anio.ToString(), anio.ToString()));
+                int anioActual = DateTime.Now.Year;
+                int anioFinal = 2051;
+
+                ddlAnio.Items.Clear();
+                ddlAnio.Items.Add(new ListItem("Todos", "0"));
+
+                for (int anio = anioActual; anio <= anioFinal; anio++)
+                {
+                    ddlAnio.Items.Add(new ListItem(anio.ToString(), anio.ToString()));
+                }
+            }
+            catch (Exception ex)
+            {
+                ltMensaje.Text = "<div class='alert alert-danger'>Error: " + ex.Message + "</div>";
             }
         }
 
         protected async void ddlAnio_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ddlAnio.SelectedValue != "0")  // Ignora "Todos"
+            try
             {
-                int ano = int.Parse(ddlAnio.SelectedValue);
-                await ActualizarFestivos(ano);
+                if (ddlAnio.SelectedValue != "0")  // Ignora "Todos"
+                {
+                    int ano = int.Parse(ddlAnio.SelectedValue);
+                    await ActualizarFestivos(ano);
 
-                ltMensaje.Text = $"Festivos del año {ano} procesados.";
+                    ltMensaje.Text = $"Festivos del año {ano} procesados.";
+                }
+            }
+            catch (Exception ex)
+            {
+                ltMensaje.Text = "<div class='alert alert-danger'>Error: " + ex.Message + "</div>";
             }
         }
 
         protected void btnRefrescar_Click(object sender, EventArgs e)
         {
-            ListaFestivos();  // tu método que llena el Repeater
+            try
+            {
+                ListaFestivos(); 
+            }
+            catch (Exception ex)
+            {
+                ltMensaje.Text = "<div class='alert alert-danger'>Error: " + ex.Message + "</div>";
+            }
+           
         }
-
-
     }
 }
