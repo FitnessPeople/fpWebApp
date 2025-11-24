@@ -21,7 +21,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Páginas");
+                    ValidarPermisos("Días festivos");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -36,74 +36,23 @@ namespace fpWebApp
                         btnAgregar.Visible = false;
                         if (ViewState["Consulta"].ToString() == "1")
                         {
-                            divBotonesLista.Visible = true;
-                            lbExportarExcel.Visible = false;
-                           // CargarCategorias();
+                            divBotonesLista.Visible = true;                           
+                   
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            lbExportarExcel.Visible = true;
+                           
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-                            btnAgregar.Visible = true;
-                            //CargarCategorias();
+                            btnAgregar.Visible = true;                            
                         }
                     }
 
                     CargarAnios();
                     ListaFestivos();
                     ltTitulo.Text = "Insertar festivos";
-
-                    //if (Request.QueryString.Count > 0)
-                    //{
-                    //    rpPaginas.Visible = false;
-                    //    if (Request.QueryString["editid"] != null)
-                    //    {
-                    //        //Editar
-                    //        clasesglobales cg = new clasesglobales();
-                    //        DataTable dt = cg.ConsultarPaginaPorId(int.Parse(Request.QueryString["editid"].ToString()));
-                    //        if (dt.Rows.Count > 0)
-                    //        {
-                    //            txbPagina.Text = dt.Rows[0]["Pagina"].ToString();
-                    //            txbAspx.Text = dt.Rows[0]["NombreAspx"].ToString();
-                    //            txbIconoFA.Text = dt.Rows[0]["IconoFA"].ToString();
-                    //            ddlCategorias.SelectedIndex = Convert.ToInt16(ddlCategorias.Items.IndexOf(ddlCategorias.Items.FindByValue(dt.Rows[0]["idCategoria"].ToString())));
-
-                    //            btnAgregar.Text = "Actualizar";
-                    //            ltTitulo.Text = "Actualizar Página";
-                    //        }
-                    //        dt.Dispose();
-                    //    }
-                    //    if (Request.QueryString["deleteid"] != null)
-                    //    {
-                    //        //Las paginas no se pueden borrar
-                    //        ltMensaje.Text = "<div class=\"ibox-content\">" +
-                    //            "<div class=\"alert alert-danger alert-dismissable\">" +
-                    //            "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    //            "Esta página no se puede borrar." +
-                    //            "</div></div>";
-
-                    //        clasesglobales cg = new clasesglobales();
-                    //        DataTable dt = cg.ConsultarPaginaPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
-                    //        if (dt.Rows.Count > 0)
-                    //        {
-                    //            txbPagina.Text = dt.Rows[0]["Pagina"].ToString();
-                    //            txbPagina.Enabled = false;
-                    //            txbAspx.Text = dt.Rows[0]["NombreAspx"].ToString();
-                    //            txbAspx.Enabled = false;
-                    //            txbIconoFA.Text = dt.Rows[0]["IconoFA"].ToString();
-                    //            txbIconoFA.Enabled = false;
-                    //            ddlCategorias.SelectedIndex = Convert.ToInt16(ddlCategorias.Items.IndexOf(ddlCategorias.Items.FindByValue(dt.Rows[0]["idCategoria"].ToString())));
-                    //            ddlCategorias.Enabled = false;
-                    //            btnAgregar.Text = "⚠ Confirmar borrado ❗";
-                    //            btnAgregar.Enabled = false;
-                    //            ltTitulo.Text = "Borrar Página";
-                    //        }
-                    //        dt.Dispose();
-                    //    }
-                    //}
                 }
                 else
                 {
@@ -161,175 +110,158 @@ namespace fpWebApp
         }
         public async Task<List<HolidayApi>> ObtenerFestivosPorAno(int ano)
         {
-            clasesglobales cg = new clasesglobales();
-            string url = string.Empty;
- 
-            DataTable dt = cg.ConsultarUrl(7);
-            url = dt.Rows[0]["urlTest"].ToString();
-            //url = $"https://api-colombia.com/api/v1/Holiday/year/{ano}";
-
-            using (HttpClient client = new HttpClient())
+            try
             {
-                var response = await client.GetAsync(url);
-                response.EnsureSuccessStatusCode();
+                clasesglobales cg = new clasesglobales();
+                string url = string.Empty;
+                string urlBase = string.Empty;
 
-                string json = await response.Content.ReadAsStringAsync();
-                return Newtonsoft.Json.JsonConvert.DeserializeObject<List<HolidayApi>>(json);
+                DataTable dt = cg.ConsultarUrl(7);
+
+                urlBase = dt.Rows[0]["urlTest"].ToString();
+                url = urlBase + ano;
+
+                using (HttpClient client = new HttpClient())
+                {
+                    var response = await client.GetAsync(url);
+                    response.EnsureSuccessStatusCode();
+
+                    string json = await response.Content.ReadAsStringAsync();
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<List<HolidayApi>>(json);
+                }
+            }
+            catch (Exception ex)
+            {
+                ltMensaje.Text = "<div class='alert alert-danger'>Error: " + ex.Message + "</div>";
+                return new List<HolidayApi>();
             }
         }
 
-        public async Task ActualizarFestivos()
-        {
-            clasesglobales cg = new clasesglobales();   
 
-            for (int ano = 2025; ano <= 2026; ano++)
+        public async Task ActualizarFestivos(int ano)
+        {
+            try
             {
+                clasesglobales cg = new clasesglobales();
+
                 List<HolidayApi> festivos = await ObtenerFestivosPorAno(ano);
 
                 foreach (var f in festivos)
                 {
                     DateTime fecha = DateTime.Parse(f.date);
-
                     cg.InsertarFestivo(f.name, fecha);
                 }
             }
-        }
-        protected async void btnActualizarFestivos_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                await ActualizarFestivos();
-
-                ltMensaje.Text =
-                    "<div class='alert alert-success'>Festivos actualizados correctamente.</div>";
-            }
             catch (Exception ex)
             {
-                ltMensaje.Text =
-                    "<div class='alert alert-danger'>Error: " + ex.Message + "</div>";
+                ltMensaje.Text = "<div class='alert alert-danger'>Error: " + ex.Message + "</div>";                
             }
-        }
-
-        private void CargarAnios()
-        {
-            int anioActual = DateTime.Now.Year;
-            int anioFinal = 2051;
-
-            ddlAnio.Items.Clear();
-            ddlAnio.Items.Add(new ListItem("Todos", "0"));
-
-            for (int anio = anioActual; anio <= anioFinal; anio++)
-            {
-                ddlAnio.Items.Add(new ListItem(anio.ToString(), anio.ToString()));
-            }
-        }
-
-
-
-
-        protected void rpPaginas_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-
-        }
-
-        private bool ValidarPagina(string strNombre)
-        {
-            bool bExiste = false;
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPaginaPorNombre(strNombre);
-            if (dt.Rows.Count > 0)
-            {
-                bExiste = true;
-            }
-            dt.Dispose();
-            return bExiste;
         }
 
         protected async void btnAgregar_Click(object sender, EventArgs e)
         {
             try
             {
-                await ActualizarFestivos(); // <-- Llama el método que carga 2025–2050
+                if (string.IsNullOrEmpty(ddlAnio.SelectedValue) || ddlAnio.SelectedValue == "0")
+                {
+                    string warning = "Debe seleccionar un año válido.";
+                    string scriptWarning = $@"Swal.fire({{ title: 'Año no válido', text: '{HttpUtility.JavaScriptStringEncode(warning)}', icon: 'warning' }});";
 
-                ltMensaje.Text =
-                    "<div class='alert alert-success alert-dismissable'>" +
-                    "<button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>" +
-                    "Los festivos fueron actualizados correctamente." +
-                    "</div>";
+                    // Si tienes ScriptManager:
+                    if (ScriptManager.GetCurrent(this.Page) != null)
+                        ScriptManager.RegisterStartupScript(this, GetType(), "alert1", scriptWarning, true);
+                    else
+                        ClientScript.RegisterStartupScript(this.GetType(), "alert1", scriptWarning, true);
+
+                    return;
+                }
+
+                int ano = int.Parse(ddlAnio.SelectedValue);
+
+                await ActualizarFestivos(ano);
+
+
+                string mensaje = $"Festivos del año {ano} actualizados correctamente.";
+                string scriptSuccess = $@"
+                Swal.fire({{
+                    title: 'Proceso completado',
+                    text: '{HttpUtility.JavaScriptStringEncode(mensaje)}',
+                    icon: 'success'
+                }}).then(() => {{
+
+                    var btn = document.getElementById('{btnRefrescar.ClientID}');
+                    if(btn) btn.click();
+                    else __doPostBack('{btnRefrescar.UniqueID}','');
+                }});";
+
+                if (ScriptManager.GetCurrent(this.Page) != null)
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alertPostBack", scriptSuccess, true);
+                else
+                    ClientScript.RegisterStartupScript(this.GetType(), "alertPostBack", scriptSuccess, true);
             }
             catch (Exception ex)
             {
-                ltMensaje.Text =
-                    "<div class='alert alert-danger alert-dismissable'>" +
-                    "<button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>" +
-                    "Error: " + ex.Message +
-                    "</div>";
+                string err = HttpUtility.JavaScriptStringEncode(ex.Message);
+                string scriptError = $@"Swal.fire({{ title: 'Error', text: '{err}', icon: 'error' }});";
+
+                if (ScriptManager.GetCurrent(this.Page) != null)
+                    ScriptManager.RegisterStartupScript(this, GetType(), "errorAlert", scriptError, true);
+                else
+                    ClientScript.RegisterStartupScript(this.GetType(), "errorAlert", scriptError, true);
             }
         }
 
 
-
-
-        protected void lbExportarExcel_Click(object sender, EventArgs e)
+        private void CargarAnios()
         {
             try
             {
-                clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarPaginas();
-                string nombreArchivo = $"Paginas_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+                int anioActual = DateTime.Now.Year;
+                int anioFinal = 2051;
 
-                if (dt.Rows.Count > 0)
+                ddlAnio.Items.Clear();
+                ddlAnio.Items.Add(new ListItem("Todos", "0"));
+
+                for (int anio = anioActual; anio <= anioFinal; anio++)
                 {
-                    cg.ExportarExcel(dt, nombreArchivo);
-                }
-                else
-                {
-                    Response.Write("<script>alert('No existen registros para esta consulta');</script>");
+                    ddlAnio.Items.Add(new ListItem(anio.ToString(), anio.ToString()));
                 }
             }
             catch (Exception ex)
             {
-                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+                ltMensaje.Text = "<div class='alert alert-danger'>Error: " + ex.Message + "</div>";
             }
         }
 
-        private string TraerData()
+        protected async void ddlAnio_SelectedIndexChanged(object sender, EventArgs e)
         {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPaginaPorId(int.Parse(Request.QueryString["editid"].ToString()));
-
-            string strData = "";
-            foreach (DataColumn column in dt.Columns)
+            try
             {
-                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
-            }
-            dt.Dispose();
-
-            return strData;
-        }
-
-        protected void rpFestivos_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                if (ViewState["CrearModificar"].ToString() == "1")
+                if (ddlAnio.SelectedValue != "0")  // Ignora "Todos"
                 {
-                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "procesarfestivos?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    btnEditar.Visible = true;
-                }
-                if (ViewState["Borrar"].ToString() == "1")
-                {
-                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "procesarfestivos?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    btnEliminar.Visible = true;
+                    int ano = int.Parse(ddlAnio.SelectedValue);
+                    await ActualizarFestivos(ano);
+
+                    ltMensaje.Text = $"Festivos del año {ano} procesados.";
                 }
             }
+            catch (Exception ex)
+            {
+                ltMensaje.Text = "<div class='alert alert-danger'>Error: " + ex.Message + "</div>";
+            }
         }
 
-        protected void ddlAnio_SelectedIndexChanged(object sender, EventArgs e)
+        protected void btnRefrescar_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                ListaFestivos(); 
+            }
+            catch (Exception ex)
+            {
+                ltMensaje.Text = "<div class='alert alert-danger'>Error: " + ex.Message + "</div>";
+            }
+           
         }
     }
 }

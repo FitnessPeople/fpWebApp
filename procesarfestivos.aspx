@@ -15,7 +15,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Páginas</title>
+    <title>Fitness People | Días festivos</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
@@ -27,6 +27,9 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
     <style type="text/css" media="print">
         body {
             visibility: hidden;
@@ -36,9 +39,9 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#paginas");
+            var element1 = document.querySelector("#procesarfestivos");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#gestiontecnica");
+            var element2 = document.querySelector("#configuracion");
             element2.classList.remove("collapse");
         }
     </script>
@@ -104,7 +107,7 @@
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Gestión técnica</li>
-                        <li class="active"><strong>Páginas</strong></li>
+                        <li class="active"><strong>Días festivos</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -128,7 +131,9 @@
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
+
                     <form role="form" id="form" runat="server">
+                        <asp:ScriptManager ID="ScriptManager1" runat="server" />
                         <div class="row" id="divContenido" runat="server">
                             <div class="col-lg-4">
                                 <div class="ibox float-e-margins">
@@ -147,11 +152,12 @@
                                                 <label class="control-label col-lg-4">Año:</label>
                                                 <div class="col-lg-8">
                                                     <asp:DropDownList ID="ddlAnio" runat="server" CssClass="form-control input-sm"
-                                                        AutoPostBack="true" OnSelectedIndexChanged="ddlAnio_SelectedIndexChanged">
+                                                         OnSelectedIndexChanged="ddlAnio_SelectedIndexChanged">
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
-
+                                                <br />
+                                                <br />
                                             <div class="col-lg-12">
 
                                                 <asp:Button ID="btnAgregar" runat="server" 
@@ -187,14 +193,6 @@
                                                     <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 form-horizontal">
-                                                <asp:LinkButton ID="lbExportarExcel" runat="server" 
-                                                    CausesValidation="false" 
-                                                    CssClass="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
-                                                    OnClick="lbExportarExcel_Click">
-                                                    <i class="fa fa-file-excel"></i> EXCEL
-                                                </asp:LinkButton>
-                                            </div>
                                         </div>
 
 
@@ -207,27 +205,21 @@
                                                     <th width="5%" data-type="number">ID</th>
                                                     <th width="25%">Título</th>
                                                     <th width="25%">Fecha</th>
-                                                    <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpFestivos" runat="server" OnItemDataBound="rpFestivos_ItemDataBound">
+                                                <asp:Repeater ID="rpFestivos" runat="server">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
                                                             <td><%# Eval("idFestivo") %></td>
                                                             <td><%# Eval("Titulo") %></td>
-                                                            <td><%# Eval("Fecha") %></td>
-                                                            <td>
-                                                                <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
-                                                                <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
-                                                            </td>
+                                                            <td><%# Convert.ToDateTime(Eval("Fecha")).ToString("dddd dd 'de' MMMM yyyy", new System.Globalization.CultureInfo("es-CO")) %></td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
                                             </tbody>
                                         </table>
+                                        <asp:Button ID="btnRefrescar" runat="server" Style="display:none;" OnClick="btnRefrescar_Click" />
                                     </div>
                                 </div>
                             </div>
