@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="planesAfiliado.aspx.cs" Inherits="fpWebApp.planesAfiliado" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="planesAfiliado.aspx.cs" Inherits="fpWebApp.planesAfiliado" Async="true" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
@@ -268,6 +268,7 @@
                                                         <div class="form-group">
                                                             <%--<label>Tipo de plan:</label>--%>
                                                             <div class="form-group">
+                                                                <asp:Timer ID="tmrRespuesta" runat="server" Interval="4000" Enabled="false" OnTick="tmrRespuesta_Tick" />
                                                                 <%--<asp:PlaceHolder ID="phPlanes" runat="server"></asp:PlaceHolder>--%>
                                                                 <table class="footable table table-striped" data-paging-size="10"
                                                                     data-filter-min="3" data-filter-placeholder="Buscar"

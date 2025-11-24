@@ -627,7 +627,9 @@ namespace fpWebApp
                         }
                         else
                         {
-                            fecNacCli = DateTime.Parse(txbFecNac.Text);
+                            //fecNacCli = DateTime.Parse(txbFecNac.Text);
+                            fecNacCli = Convert.ToDateTime(txbFecNac.Text);
+
                         }
 
                         txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
@@ -639,17 +641,31 @@ namespace fpWebApp
 
                         try
                         {
-                            respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.ToString().Trim().ToUpper(),
-                                    txbApellidoContacto.Value.ToString().Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
-                                    txbCorreoContacto.Value.ToString().Trim().ToLower(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
-                                    Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(),
-                                    Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "", txaObservaciones.Value.Trim(),
-                                    Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
-                                    Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
-                                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
-                                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()),
-                                    Convert.ToInt32(txbEdad.Text), txbFecNac.Text, Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()),
-                                    Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()), out salida, out mensaje);
+                            respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), 
+                                txbNombreContacto.Value.ToString().Trim().ToUpper(),
+                                txbApellidoContacto.Value.ToString().Trim().ToUpper(), 
+                                Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
+                                txbCorreoContacto.Value.ToString().Trim().ToLower(), 
+                                Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), 
+                                txbFechaPrim.Value.ToString(), 
+                                txbFechaProx.Value.ToString(),
+                                Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "", 
+                                txaObservaciones.Value.Trim(),
+                                Convert.ToInt32(Session["idUsuario"]), 
+                                Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), 
+                                Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), 
+                                Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
+                                Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), 
+                                txbDocumento.Text, 
+                                Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(txbEdad.Text), txbFecNac.Text, 
+                                Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()), 
+                                out salida, 
+                                out mensaje);
 
                             if (salida)
                             {

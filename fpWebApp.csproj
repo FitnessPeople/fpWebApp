@@ -2160,6 +2160,7 @@
     <Compile Include="sedes.aspx.designer.cs">
       <DependentUpon>sedes.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Services\RedebanClient.cs" />
     <Compile Include="Services\SiigoClient.cs" />
     <Compile Include="Services\UrlEncryptor.cs" />
     <Compile Include="Services\UsuarioOnline.cs" />
