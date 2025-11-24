@@ -103,7 +103,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-file-code text-success m-r-sm"></i>Festivos Colombia</h2>
+                    <h2><i class="fa fa-champagne-glasses text-success m-r-sm"></i>Festivos Colombia</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Gestión técnica</li>

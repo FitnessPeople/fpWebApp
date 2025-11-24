@@ -1066,127 +1066,205 @@ namespace fpWebApp
 
         protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            try
             {
-                DataRowView row = (DataRowView)e.Item.DataItem;
-                Literal ltInfoAfiliado = (Literal)e.Item.FindControl("ltInfoAfiliado");
-
-                HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                HtmlAnchor btnNuevoAfiliado = (HtmlAnchor)e.Item.FindControl("btnNuevoAfiliado");
-
-                int documentoAfiliado;
-
-                if (int.TryParse(row["DocumentoAfiliado"].ToString(), out documentoAfiliado))
+                clasesglobales cg = new clasesglobales();
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
                 {
-                    clasesglobales cg = new clasesglobales();
-                    DataTable dtAfiliado = cg.ConsultarAfiliadoPorDocumento(documentoAfiliado);
+                    DataRowView row = (DataRowView)e.Item.DataItem;
+                    Literal ltInfoAfiliado = (Literal)e.Item.FindControl("ltInfoAfiliado");
 
-                    if (dtAfiliado.Rows.Count > 0)
+                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                    HtmlAnchor btnNuevoAfiliado = (HtmlAnchor)e.Item.FindControl("btnNuevoAfiliado");
+
+                    int documentoAfiliado;
+
+                    if (int.TryParse(row["DocumentoAfiliado"].ToString(), out documentoAfiliado))
                     {
-                        int idAfiliado = Convert.ToInt32(dtAfiliado.Rows[0]["idAfiliado"]);
-                        DataTable dtEstadoActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+                        
+                        DataTable dtAfiliado = cg.ConsultarAfiliadoPorDocumento(documentoAfiliado);
 
-                        // Siempre se mostrará la información de planes anteriores
-                        if (dtEstadoActivo.Rows.Count > 0)
+                        if (dtAfiliado.Rows.Count > 0)
                         {
-                            string nombrePlan = dtEstadoActivo.Rows[0]["NombrePlan"].ToString();
+                            int idAfiliado = Convert.ToInt32(dtAfiliado.Rows[0]["idAfiliado"]);
+                            DataTable dtEstadoActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
 
-                            DateTime fechaFinal;
-                            string fechaFormateada = "";
-                            if (DateTime.TryParse(dtEstadoActivo.Rows[0]["FechaFinalPlan"].ToString(), out fechaFinal))
+                            // Siempre se mostrará la información de planes anteriores
+                            if (dtEstadoActivo.Rows.Count > 0)
                             {
-                                fechaFormateada = fechaFinal.ToString("dd 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-ES"));
+                                string nombrePlan = dtEstadoActivo.Rows[0]["NombrePlan"].ToString();
+
+                                DateTime fechaFinal;
+                                string fechaFormateada = "";
+                                if (DateTime.TryParse(dtEstadoActivo.Rows[0]["FechaFinalPlan"].ToString(), out fechaFinal))
+                                {
+                                    fechaFormateada = fechaFinal.ToString("dd 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-ES"));
+                                }
+
+                                decimal valorPlan;
+                                string valorFormateado = "";
+                                if (decimal.TryParse(dtEstadoActivo.Rows[0]["Valor"].ToString(), out valorPlan))
+                                {
+                                    valorFormateado = valorPlan.ToString("C0", new System.Globalization.CultureInfo("es-CO"));
+                                }
+
+                                string infoExtra =
+                                    $"El cliente ha tenido planes anteriores <b>{nombrePlan}</b> " +
+                                    $"con fecha final el día <b>{fechaFormateada}</b> " +
+                                    $"por un valor de <b>{valorFormateado}</b>.";
+
+                                ltInfoAfiliado.Text = $"<span style='display:block; text-align:justify;'>{infoExtra}</span>";
+                            }
+                            else
+                            {
+                                ltInfoAfiliado.Text = "No se encontraron planes anteriores para este usuario.";
                             }
 
-                            decimal valorPlan;
-                            string valorFormateado = "";
-                            if (decimal.TryParse(dtEstadoActivo.Rows[0]["Valor"].ToString(), out valorPlan))
+                            if (ViewState["CrearModificar"].ToString() == "1" && btnEditar != null)
                             {
-                                valorFormateado = valorPlan.ToString("C0", new System.Globalization.CultureInfo("es-CO"));
+                                btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + row.Row[0].ToString());
+                                btnEditar.Visible = true;
                             }
 
-                            string infoExtra =
-                                $"El cliente ha tenido planes anteriores <b>{nombrePlan}</b> " +
-                                $"con fecha final el día <b>{fechaFormateada}</b> " +
-                                $"por un valor de <b>{valorFormateado}</b>.";
+                            if (ViewState["Borrar"].ToString() == "1" && btnEliminar != null)
+                            {
+                                btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + row.Row[0].ToString());
+                                btnEliminar.Visible = true;
+                            }
 
-                            ltInfoAfiliado.Text = $"<span style='display:block; text-align:justify;'>{infoExtra}</span>";
+                            if (btnNuevoAfiliado != null)
+                            {
+                                btnNuevoAfiliado.Visible = true;
+                            }
+
                         }
                         else
                         {
+                            //  si no es  afiliado 
                             ltInfoAfiliado.Text = "No se encontraron planes anteriores para este usuario.";
-                        }
 
-                        if (ViewState["CrearModificar"].ToString() == "1" && btnEditar != null)
-                        {
-                            btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + row.Row[0].ToString());
-                            btnEditar.Visible = true;
-                        }
+                            if (ViewState["CrearModificar"].ToString() == "1" && btnEditar != null)
+                            {
+                                btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + row.Row[0].ToString());
+                                btnEditar.Visible = true;
+                            }
 
-                        if (ViewState["Borrar"].ToString() == "1" && btnEliminar != null)
-                        {
-                            btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + row.Row[0].ToString());
-                            btnEliminar.Visible = true;
-                        }
+                            if (ViewState["Borrar"].ToString() == "1" && btnEliminar != null)
+                            {
+                                btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + row.Row[0].ToString());
+                                btnEliminar.Visible = true;
+                            }
 
-                        if (btnNuevoAfiliado != null)
-                        {
-                            btnNuevoAfiliado.Visible = true;
+                            if (btnNuevoAfiliado != null)
+                            {
+                                btnNuevoAfiliado.Visible = true;
+                            }
                         }
-
                     }
-                    else
+
+                    ///////////////////// Calcular tiempo transcurrido /////////////////////
+
+                    DataTable dt1  = new DataTable();
+                    dt1 = cg.ConsultarDiasFestivos();
+
+                    if (row["FechaGestion"] != DBNull.Value)
                     {
-                        // Caso sin afiliado previo
-                        ltInfoAfiliado.Text = "No se encontraron planes anteriores para este usuario.";
+                        DateTime fechaPrimerContacto = Convert.ToDateTime(row["FechaGestion"]);
+                        DateTime hoy = DateTime.Now;
 
-                        if (ViewState["CrearModificar"].ToString() == "1" && btnEditar != null)
-                        {
-                            btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + row.Row[0].ToString());
-                            btnEditar.Visible = true;
-                        }
+                        // Lista de festivos
+                        List<DateTime> festivos = dt1.AsEnumerable()
+                            .Select(r => r.Field<DateTime>("Fecha").Date)
+                            .ToList();
 
-                        if (ViewState["Borrar"].ToString() == "1" && btnEliminar != null)
-                        {
-                            btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + row.Row[0].ToString());
-                            btnEliminar.Visible = true;
-                        }
+                        // Obtener días hábiles
+                        int diasHabiles = ObtenerDiasHabiles(fechaPrimerContacto, hoy, festivos);
 
-                        if (btnNuevoAfiliado != null)
-                        {
-                            btnNuevoAfiliado.Visible = true;
-                        }
+                        // Obtener horas y minutos naturales (no hábiles)
+                        TimeSpan diferencia = hoy - fechaPrimerContacto;
+
+                        int totalMeta = 6;
+
+                        // Tamaño real de días hábiles
+                        int diaHabilReal = diasHabiles;
+
+                        // Mostrar máximo 6 de 6
+                        int diaHabilMostrar = Math.Min(diasHabiles, totalMeta);
+
+                        // Días restantes
+                        int diasRestantes = totalMeta - diasHabiles;
+                        if (diasRestantes < 0)
+                            diasRestantes = 0;
+
+                        // Texto base
+                        string leyendaBase = diasHabiles <= 0
+                            ? (diferencia.TotalMinutes < 1 ? "Hace menos de un minuto"
+                               : diferencia.TotalMinutes < 60 ? $"Hace {(int)diferencia.TotalMinutes} minutos"
+                               : diferencia.TotalHours < 24 ? $"Hace {(int)diferencia.TotalHours} horas"
+                               : "Hoy")
+                            : $"Hace {diasHabiles} días";
+
+                        // Tooltip con toda la info
+                        string tooltip = $"Día hábil real: {diaHabilReal}\n" +
+                                         $"Día hábil mostrado: {diaHabilMostrar} de {totalMeta}\n" +
+                                         $"Días restantes: {diasRestantes}";
+
+                        // Icono reloj (puede ser FontAwesome, Bootstrap, etc.)
+                        string icono = "<i class='fa fa-clock-o'></i>";
+
+                        // Texto visible UX/UI
+                        string textoVisible = diasRestantes == 0
+                            ? $"<b>Quedan 0 días</b>"      // alerta visual
+                            : $"Quedan {diasRestantes} días";
+
+                        string leyendaFinal =
+                            $"{icono} {leyendaBase} • Día hábil {diaHabilMostrar} de {totalMeta} • " +
+                            $"<span title='{tooltip}' style='cursor:pointer;'>{textoVisible}</span>";
+
+
+                        Literal ltTiempo = (Literal)e.Item.FindControl("ltTiempoTranscurrido");
+                        if (ltTiempo != null)
+                            ltTiempo.Text = leyendaFinal;
                     }
-                }
 
-                // Calcular tiempo transcurrido
-                if (row["FechaGestion"] != DBNull.Value)
-                {
-                    DateTime fechaPrimerContacto = Convert.ToDateTime(row["FechaGestion"]);
-                    TimeSpan diferencia = DateTime.Now - fechaPrimerContacto;
 
-                    string leyenda = "";
-
-                    if (diferencia.TotalMinutes < 1)
-                        leyenda = "Hace menos de un minuto";
-                    else if (diferencia.TotalMinutes < 60)
-                        leyenda = $"Hace {(int)diferencia.TotalMinutes} minuto{((int)diferencia.TotalMinutes == 1 ? "" : "s")}";
-                    else if (diferencia.TotalHours < 24)
-                        leyenda = $"Hace {(int)diferencia.TotalHours} hora{((int)diferencia.TotalHours == 1 ? "" : "s")}";
-                    else
-                        leyenda = $"Hace {(int)diferencia.TotalDays} día{((int)diferencia.TotalDays == 1 ? "" : "s")}";
-
-                    Literal ltTiempo = (Literal)e.Item.FindControl("ltTiempoTranscurrido");
-                    if (ltTiempo != null)
-                        ltTiempo.Text = leyenda;
+                    ////////////////////////////////////////////////////////////////////////
                 }
             }
+            catch (Exception ex)
+            {
+                ltMensaje.Text =
+                   "<div class='alert alert-danger alert-dismissable'>" +
+                   "<button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>" +
+                   "<strong>Error:</strong> " + ex.Message.ToString() +
+                   "</div>";
+                }
+        }
+
+        private int ObtenerDiasHabiles(DateTime inicio, DateTime fin, List<DateTime> festivos)
+        {
+            int diasHabiles = 0;
+
+            DateTime fechaActual = inicio.Date;
+
+            while (fechaActual.Date <= fin.Date)
+            {
+                bool esFinDeSemana = (fechaActual.DayOfWeek == DayOfWeek.Saturday ||
+                                      fechaActual.DayOfWeek == DayOfWeek.Sunday);
+
+                bool esFestivo = festivos.Contains(fechaActual.Date);
+
+                if (!esFinDeSemana && !esFestivo)
+                    diasHabiles++;
+
+                fechaActual = fechaActual.AddDays(1);
+            }
+
+            return diasHabiles - 1; // no contar el día de inicio
         }
 
 
-        
         protected void ddlPlanes_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(ddlPlanes.SelectedValue) || ddlPlanes.SelectedValue == "0")
