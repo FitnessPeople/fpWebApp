@@ -242,7 +242,7 @@
                     </div>
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                    <form role="form" id="form" runat="server">
+                    <form role="form" id="form" runat="server" autocomplete="off">
                         <asp:ScriptManager ID="ScriptManager1" runat="server" />
                         <div class="row" id="divContenido" runat="server">
 
@@ -359,8 +359,10 @@
                                                                         <div class="form-group">
                                                                             <i class="fa fa-user-tie text-info"></i>
                                                                             <label for="nombreContacto" class="col-form-label">Nombres:</label>
-                                                                            <input type="text" runat="server" id="txbNombreContacto" class="form-control"
-                                                                                oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
+                                                                           <asp:TextBox ID="txbNombreContacto" runat="server" CssClass="form-control" oninput="validarSoloLetras(this)" 
+                                                                                Style="text-transform: uppercase;" SpellCheck="false"
+                                                                                autocomplete="off">
+                                                                            </asp:TextBox>
                                                                             <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txbNombreContacto"
                                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                                         </div>
@@ -680,7 +682,7 @@
                                                                         <td>Caliente</td>
                                                                         <td><%# Eval("NombrePlan") %></td>
                                                                         <td>
-                                                                            <asp:Literal ID="ltTiempoTranscurrido" runat="server"></asp:Literal></td>
+                                                                            <span id="ltTiempoTranscurrido" runat="server"></span></td>
                                                                         <td>
                                                                             <span title='<%# Eval("NombreEstadoCRM") %>' style='color: <%# Eval("ColorHexaCRM") %>'>
                                                                                 <%# Eval("IconoMinEstadoCRM") %>

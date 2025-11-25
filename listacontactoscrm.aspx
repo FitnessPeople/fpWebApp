@@ -579,7 +579,7 @@
                                                                         <hr />
                                                                         <strong>Notas del cliente</strong>
                                                                         <p>
-                                                                            Contacto creado el <%# ((DateTime)Eval("FechaCreacion")).ToString("dddd d 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-ES")) %><hr />
+                                                                            Contacto creado el <%# ((DateTime)Eval("FechaGestion")).ToString("dddd d 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-ES")) %><hr />
                                                                             Preferencias Entreno por las noches, fines de semana y he completado N asistencias.
                                                                         </p>
 
