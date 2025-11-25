@@ -609,14 +609,14 @@ namespace fpWebApp
                         string mensajeValidacion = string.Empty;
 
                         DateTime fecNacCli;
-                        string textoEdad = txbEdad.Text.Trim();
-                        System.Text.RegularExpressions.Match match = Regex.Match(textoEdad, @"\d+");
 
+                        // --- LIMPIEZA DE EDAD ---
+                        System.Text.RegularExpressions.Match match = Regex.Match(txbEdad.Text, @"\d+");
                         int edad;
 
                         if (match.Success && int.TryParse(match.Value, out edad))
                         {
-                            txbEdad.Text = edad.ToString(); // Deja solo el número limpio en la caja
+                            txbEdad.Text = edad.ToString();
                         }
                         else
                         {
@@ -624,18 +624,52 @@ namespace fpWebApp
                             txbEdad.Text = "0";
                         }
 
-                        if (string.IsNullOrEmpty(txbFecNac.Text))
+                        // --- VALIDACIÓN FECHA ---
+                        string fechaTexto = txbFecNac.Text.Trim();
+
+                        // Si está vacía
+                        if (string.IsNullOrEmpty(fechaTexto))
                         {
                             fecNacCli = new DateTime(1900, 1, 1);
-                            txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
                         }
                         else
                         {
-                            //fecNacCli = DateTime.Parse(txbFecNac.Text);
-                            fecNacCli = Convert.ToDateTime(txbFecNac.Text);
+                            // Todos los formatos posibles (con y sin hora)
+                            string[] formatos = {
+                                                "dd/MM/yyyy",
+                                                "MM/dd/yyyy",
+                                                "yyyy-MM-dd",
+                                                "dd-MM-yyyy",
+                                                "MM-dd-yyyy",
+                                                "dd/MM/yyyy HH:mm:ss",
+                                                "MM/dd/yyyy HH:mm:ss",
+                                                "yyyy-MM-dd HH:mm:ss",
+                                                "dd-MM-yyyy HH:mm:ss",
+                                                "MM-dd-yyyy HH:mm:ss",
+                                                "dd/MM/yyyy hh:mm tt",
+                                                "MM/dd/yyyy hh:mm tt",
+                                                "yyyy-MM-dd hh:mm tt",
+                                                "dd-MM-yyyy hh:mm tt",
+                                                "MM-dd-yyyy hh:mm tt"
+                                            };
 
+                            // Intentar convertir con ParseExact
+                            if (!DateTime.TryParseExact(
+                                    fechaTexto,
+                                    formatos,
+                                    CultureInfo.InvariantCulture,
+                                    DateTimeStyles.AllowWhiteSpaces,
+                                    out fecNacCli))
+                            {
+                              
+                                if (!DateTime.TryParse(fechaTexto, out fecNacCli))
+                                {
+                                    throw new Exception($"La fecha '{fechaTexto}' no es válida.");
+                                }
+                            }
                         }
 
+                        // Formato final
                         txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
 
                         if (ddlEmpresa.SelectedItem.Value != "")
