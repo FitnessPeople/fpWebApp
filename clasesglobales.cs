@@ -2446,7 +2446,7 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_DIAS_FESTIVOS_POR_ANIO", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;                       
-                        cmd.Parameters.AddWithValue("@p_id_profesion", Annio);
+                        cmd.Parameters.AddWithValue("@p_anio", Annio);
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
                         {
                             mysqlConexion.Open();

@@ -129,197 +129,22 @@ namespace fpWebApp
 
         private string AgregarFestivos(string eventos, string anho)
         {
-            //https://www.festivos.com.co/calendario
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarDiasFestivosPorAnnio(Convert.ToInt16(anho));
+
             _strEventos = eventos;
 
-            if (anho == "2025")
+            foreach (DataRow row in dt.Rows)
             {
                 _strEventos += "{\r\n";
-                _strEventos += "start: '2025-01-01',\r\n";
-                _strEventos += "end: '2025-01-01',\r\n";
-                _strEventos += "title: 'Año nuevo',\r\n";
+                _strEventos += "start: '" + Convert.ToDateTime(row["Fecha"]).ToString("yyyy-MM-ddTHH:mm:ss") + "',\r\n";
+                _strEventos += "end: '" + Convert.ToDateTime(row["Fecha"]).ToString("yyyy-MM-ddTHH:mm:ss") + "',\r\n";
+                _strEventos += "title: '" + row["Titulo"].ToString() + "',\r\n";
                 _strEventos += "rendering: 'background',\r\n";
                 _strEventos += "color: '#ff9f89',\r\n";
                 _strEventos += "allDay: true,\r\n";
                 _strEventos += "display: 'background',\r\n";
                 _strEventos += "},\r\n";
-
-                _strEventos += "{\r\n";
-                _strEventos += "start: '2025-01-06',\r\n";
-                _strEventos += "end: '2025-01-06',\r\n";
-                _strEventos += "title: 'Reyes magos',\r\n";
-                _strEventos += "rendering: 'background',\r\n";
-                _strEventos += "color: '#ff9f89',\r\n";
-                _strEventos += "allDay: true,\r\n";
-                _strEventos += "display: 'background',\r\n";
-                _strEventos += "},\r\n";
-
-                _strEventos += "{\r\n";
-                _strEventos += "start: '2025-03-24',\r\n";
-                _strEventos += "end: '2025-03-24',\r\n";
-                _strEventos += "title: 'Día de San José',\r\n";
-                _strEventos += "rendering: 'background',\r\n";
-                _strEventos += "color: '#ff9f89',\r\n";
-                _strEventos += "allDay: true,\r\n";
-                _strEventos += "display: 'background',\r\n";
-                _strEventos += "},\r\n";
-
-                _strEventos += "{\r\n";
-                _strEventos += "start: '2025-04-17',\r\n";
-                _strEventos += "end: '2025-04-17',\r\n";
-                _strEventos += "title: 'Jueves Santo',\r\n";
-                _strEventos += "rendering: 'background',\r\n";
-                _strEventos += "color: '#ff9f89',\r\n";
-                _strEventos += "allDay: true,\r\n";
-                _strEventos += "display: 'background',\r\n";
-                _strEventos += "},\r\n";
-
-                _strEventos += "{\r\n";
-                _strEventos += "start: '2025-04-18',\r\n";
-                _strEventos += "end: '2025-04-18',\r\n";
-                _strEventos += "title: 'Viernes Santo',\r\n";
-                _strEventos += "rendering: 'background',\r\n";
-                _strEventos += "color: '#ff9f89',\r\n";
-                _strEventos += "allDay: true,\r\n";
-                _strEventos += "display: 'background',\r\n";
-                _strEventos += "},\r\n";
-
-                _strEventos += "{\r\n";
-                _strEventos += "start: '2025-05-01',\r\n";
-                _strEventos += "end: '2025-05-01',\r\n";
-                _strEventos += "title: 'Día del Trabajo',\r\n";
-                _strEventos += "rendering: 'background',\r\n";
-                _strEventos += "color: '#ff9f89',\r\n";
-                _strEventos += "allDay: true,\r\n";
-                _strEventos += "display: 'background',\r\n";
-                _strEventos += "},\r\n";
-
-                _strEventos += "{\r\n";
-                _strEventos += "start: '2025-06-02',\r\n";
-                _strEventos += "end: '2025-06-02',\r\n";
-                _strEventos += "title: 'Ascensión de Jesús',\r\n";
-                _strEventos += "rendering: 'background',\r\n";
-                _strEventos += "color: '#ff9f89',\r\n";
-                _strEventos += "allDay: true,\r\n";
-                _strEventos += "display: 'background',\r\n";
-                _strEventos += "},\r\n";
-
-                _strEventos += "{\r\n";
-                _strEventos += "start: '2025-06-23',\r\n";
-                _strEventos += "end: '2025-06-23',\r\n";
-                _strEventos += "title: 'Corpus Christi',\r\n";
-                _strEventos += "rendering: 'background',\r\n";
-                _strEventos += "color: '#ff9f89',\r\n";
-                _strEventos += "allDay: true,\r\n";
-                _strEventos += "display: 'background',\r\n";
-                _strEventos += "},\r\n";
-
-                _strEventos += "{\r\n";
-                _strEventos += "start: '2025-06-30',\r\n";
-                _strEventos += "end: '2025-06-30',\r\n";
-                _strEventos += "title: 'Sagrado Corazón de Jesús',\r\n";
-                _strEventos += "rendering: 'background',\r\n";
-                _strEventos += "color: '#ff9f89',\r\n";
-                _strEventos += "allDay: true,\r\n";
-                _strEventos += "display: 'background',\r\n";
-                _strEventos += "},\r\n";
-
-                _strEventos += "{\r\n";
-                _strEventos += "start: '2025-07-19',\r\n";
-                _strEventos += "end: '2025-07-19',\r\n";
-                _strEventos += "title: 'Día Zero',\r\n";
-                _strEventos += "rendering: 'background',\r\n";
-                _strEventos += "color: '#FF0000',\r\n";
-                _strEventos += "allDay: true,\r\n";
-                _strEventos += "display: 'background',\r\n";
-                _strEventos += "},\r\n";
-
-                _strEventos += "{\r\n";
-                _strEventos += "start: '2025-07-20',\r\n";
-                _strEventos += "end: '2025-07-20',\r\n";
-                _strEventos += "title: 'Día de la Independencia',\r\n";
-                _strEventos += "rendering: 'background',\r\n";
-                _strEventos += "color: '#ff9f89',\r\n";
-                _strEventos += "allDay: true,\r\n";
-                _strEventos += "display: 'background',\r\n";
-                _strEventos += "},\r\n";
-
-                _strEventos += "{\r\n";
-                _strEventos += "start: '2025-08-07',\r\n";
-                _strEventos += "end: '2025-08-07',\r\n";
-                _strEventos += "title: 'Batalla de Boyacá',\r\n";
-                _strEventos += "rendering: 'background',\r\n";
-                _strEventos += "color: '#ff9f89',\r\n";
-                _strEventos += "allDay: true,\r\n";
-                _strEventos += "display: 'background',\r\n";
-                _strEventos += "},\r\n";
-
-                _strEventos += "{\r\n";
-                _strEventos += "start: '2025-08-18',\r\n";
-                _strEventos += "end: '2025-08-18',\r\n";
-                _strEventos += "title: 'Asunción de la virgen',\r\n";
-                _strEventos += "rendering: 'background',\r\n";
-                _strEventos += "color: '#ff9f89',\r\n";
-                _strEventos += "allDay: true,\r\n";
-                _strEventos += "display: 'background',\r\n";
-                _strEventos += "},\r\n";
-
-                _strEventos += "{\r\n";
-                _strEventos += "start: '2025-10-13',\r\n";
-                _strEventos += "end: '2025-10-13',\r\n";
-                _strEventos += "title: 'Día de la raza',\r\n";
-                _strEventos += "rendering: 'background',\r\n";
-                _strEventos += "color: '#ff9f89',\r\n";
-                _strEventos += "allDay: true,\r\n";
-                _strEventos += "display: 'background',\r\n";
-                _strEventos += "},\r\n";
-
-                _strEventos += "{\r\n";
-                _strEventos += "start: '2025-11-03',\r\n";
-                _strEventos += "end: '2025-11-03',\r\n";
-                _strEventos += "title: 'Todos los santos',\r\n";
-                _strEventos += "rendering: 'background',\r\n";
-                _strEventos += "color: '#ff9f89',\r\n";
-                _strEventos += "allDay: true,\r\n";
-                _strEventos += "display: 'background',\r\n";
-                _strEventos += "},\r\n";
-
-                _strEventos += "{\r\n";
-                _strEventos += "start: '2025-11-17',\r\n";
-                _strEventos += "end: '2025-11-17',\r\n";
-                _strEventos += "title: 'Independencia de Cartagena',\r\n";
-                _strEventos += "rendering: 'background',\r\n";
-                _strEventos += "color: '#ff9f89',\r\n";
-                _strEventos += "allDay: true,\r\n";
-                _strEventos += "display: 'background',\r\n";
-                _strEventos += "},\r\n";
-
-                _strEventos += "{\r\n";
-                _strEventos += "start: '2025-12-08',\r\n";
-                _strEventos += "end: '2025-12-08',\r\n";
-                _strEventos += "title: 'Inmaculada concepción',\r\n";
-                _strEventos += "rendering: 'background',\r\n";
-                _strEventos += "color: '#ff9f89',\r\n";
-                _strEventos += "allDay: true,\r\n";
-                _strEventos += "display: 'background',\r\n";
-                _strEventos += "},\r\n";
-
-                _strEventos += "{\r\n";
-                _strEventos += "start: '2025-12-25',\r\n";
-                _strEventos += "end: '2025-12-25',\r\n";
-                _strEventos += "title: 'Navidad',\r\n";
-                _strEventos += "rendering: 'background',\r\n";
-                _strEventos += "color: '#ff9f89',\r\n";
-                _strEventos += "allDay: true,\r\n";
-                _strEventos += "display: 'background',\r\n";
-                _strEventos += "},\r\n";
-
-                _strEventos += "],\r\n";
-            }
-
-            if (anho == "2026")
-            {
-
             }
 
             return eventos;

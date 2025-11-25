@@ -560,8 +560,8 @@
 
         const ctx1 = document.getElementById('miGrafico1');
 
-        const maxVentas1 = Math.max(...datos1.ventas);
-        const maxCantidad1 = Math.max(...datos1.cantidad); 
+        const maxVentas1 = Math.max(...datos1.ventas_web, ...datos1.ventas_counter);
+        const maxCantidad1 = Math.max(...datos1.cantidad_web, ...datos1.cantidad_counter); 
 
         const maxY11 = redondearSuperior(maxVentas1 * 1.1, 100000);
         const maxY12 = Math.ceil(maxCantidad1 * 1.2);
@@ -571,20 +571,39 @@
             datasets: [
                 {
                     type: 'bar',                // Tipo: Barras
-                    label: 'Ventas',
-                    data: datos1.ventas,
+                    label: 'Ventas Web',
+                    data: datos1.ventas_web,
                     yAxisID: 'y1',              // Asociado al eje Y izquierdo
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
                     borderColor: 'rgb(54, 162, 235)',
                     borderWidth: 1
                 },
                 {
+                    type: 'bar',                // Tipo: Barras
+                    label: 'Ventas Counter',
+                    data: datos1.ventas_counter,
+                    yAxisID: 'y1',              // Asociado al eje Y izquierdo
+                    backgroundColor: 'rgba(255, 206, 86, 0.6)',
+                    borderColor: 'rgb(255, 206, 86)',
+                    borderWidth: 1
+                },
+                {
                     type: 'line',               // Tipo: Línea
-                    label: 'Cantidad',
-                    data: datos1.cantidad,
+                    label: 'Cantidad Web',
+                    data: datos1.cantidad_web,
                     yAxisID: 'y2',              // Asociado al eje Y derecho
                     borderColor: 'rgb(255, 99, 132)',
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    tension: 0,
+                    fill: false
+                },
+                {
+                    type: 'line',               // Tipo: Línea
+                    label: 'Cantidad Counter',
+                    data: datos1.cantidad_counter,
+                    yAxisID: 'y2',              // Asociado al eje Y derecho
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     tension: 0,
                     fill: false
                 }
@@ -926,8 +945,8 @@
 
         const ctx6 = document.getElementById('miGrafico6');
 
-        const maxVentas6 = Math.max(...datos6.ventas);
-        const maxCantidad6 = Math.max(...datos6.cantidad);
+        const maxVentas6 = Math.max(...datos6.ventas_web, ...datos6.ventas_counter);
+        const maxCantidad6 = Math.max(...datos6.cantidad_web, ...datos6.cantidad_counter);
 
         const maxY61 = redondearSuperior(maxVentas6 * 1.1, 100000);
         const maxY62 = Math.ceil(maxCantidad6 * 1.2);
@@ -937,20 +956,39 @@
             datasets: [
                 {
                     type: 'bar',                // Tipo: Barras
-                    label: 'Ventas',
-                    data: datos6.ventas,
+                    label: 'Ventas Web',
+                    data: datos6.ventas_web,
                     yAxisID: 'y1',              // Asociado al eje Y izquierdo
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
                     borderColor: 'rgb(54, 162, 235)',
                     borderWidth: 1
                 },
                 {
+                    type: 'bar',                // Tipo: Barras
+                    label: 'Ventas Counter',
+                    data: datos6.ventas_counter,
+                    yAxisID: 'y1',              // Asociado al eje Y izquierdo
+                    backgroundColor: 'rgba(255, 206, 86, 0.6)',
+                    borderColor: 'rgb(255, 206, 86)',
+                    borderWidth: 1
+                },
+                {
                     type: 'line',               // Tipo: Línea
-                    label: 'Cantidad',
-                    data: datos6.cantidad,
+                    label: 'Cantidad Web',
+                    data: datos6.cantidad_web,
                     yAxisID: 'y2',              // Asociado al eje Y derecho
                     borderColor: 'rgb(255, 99, 132)',
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    tension: 0,
+                    fill: false
+                },
+                {
+                    type: 'line',               // Tipo: Línea
+                    label: 'Cantidad Counter',
+                    data: datos6.cantidad_counter,
+                    yAxisID: 'y2',              // Asociado al eje Y derecho
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     tension: 0,
                     fill: false
                 }

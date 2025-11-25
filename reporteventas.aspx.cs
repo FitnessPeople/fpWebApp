@@ -460,13 +460,17 @@ namespace fpWebApp
 
             string query = @"
                 SELECT 
-	                COUNT(DISTINCT ppa.idAfiliadoPlan) AS cuantos, 
-	                DATE(ppa.FechaHoraPago) AS dia,
-	                SUM(ppa.valor) AS sumatoria 
+                    COUNT(DISTINCT ppa.idAfiliadoPlan) AS cuantos, 
+                    COUNT(DISTINCT CASE WHEN ppa.idUsuario = 156 THEN ppa.idAfiliadoPlan END) AS cuantos_ventas_web,
+                    COUNT(DISTINCT CASE WHEN ppa.idUsuario = 152 THEN ppa.idAfiliadoPlan END) AS cuantos_ventas_counter,
+                    DATE(ppa.FechaHoraPago) AS dia,
+                    SUM(ppa.valor) AS sumatoria, 
+                    SUM(CASE WHEN ppa.idUsuario = 156 THEN ppa.valor ELSE 0 END) AS ventas_web,
+                    SUM(CASE WHEN ppa.idUsuario = 152 THEN ppa.valor ELSE 0 END) AS ventas_counter
                 FROM PagosPlanAfiliado ppa 
                 INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
                 WHERE ((ppa.idUsuario = 156 AND ap.idPlan IN (18,19,20,21)) OR (ppa.idUsuario NOT IN (156) AND ap.idPlan IN (1,17))) 
-	                AND (ppa.idMedioPago = 4)    
+                    AND (ppa.idMedioPago = 4) 
                     AND MONTH(ppa.FechaHoraPago) = " + mes.ToString() + @" 
                     AND YEAR(ap.FechaInicioPlan) = " + anio.ToString() + @" 
                     AND MONTH(ap.FechaInicioPlan) = " + mes.ToString() + @" 
@@ -477,22 +481,28 @@ namespace fpWebApp
 
             // Convertir los datos a listas para Chart.js
             var labels = new System.Collections.Generic.List<string>();
-            var ventas = new System.Collections.Generic.List<decimal>();
-            var cantidad = new System.Collections.Generic.List<decimal>();
+            var ventas_web = new System.Collections.Generic.List<decimal>();
+            var ventas_counter = new System.Collections.Generic.List<decimal>();
+            var cantidad_web = new System.Collections.Generic.List<decimal>();
+            var cantidad_counter = new System.Collections.Generic.List<decimal>();
 
             foreach (DataRow row in dt.Rows)
             {
                 labels.Add(((DateTime)row["dia"]).ToString("dd MMM"));
-                ventas.Add(Convert.ToDecimal(row["sumatoria"]));
-                cantidad.Add(Convert.ToDecimal(row["cuantos"]));
+                ventas_web.Add(Convert.ToDecimal(row["ventas_web"]));
+                ventas_counter.Add(Convert.ToDecimal(row["ventas_counter"]));
+                cantidad_web.Add(Convert.ToDecimal(row["cuantos_ventas_web"]));
+                cantidad_counter.Add(Convert.ToDecimal(row["cuantos_ventas_counter"]));
             }
 
             // Crear objeto para enviar a JS
             var datos = new
             {
                 labels = labels,
-                ventas = ventas,
-                cantidad = cantidad
+                ventas_web = ventas_web,
+                ventas_counter = ventas_counter,
+                cantidad_web = cantidad_web,
+                cantidad_counter = cantidad_counter
             };
 
             dt.Dispose();
@@ -725,12 +735,16 @@ namespace fpWebApp
                 SELECT 
                     p.NombrePlan, 
                     COUNT(*) AS cuantos,
-                    SUM(ppa.valor) AS sumatoria
-                FROM pagosplanafiliado ppa 
+                    SUM(ppa.valor) AS sumatoria,
+                    COUNT(CASE WHEN ppa.idUsuario = 156 THEN 1 END) AS cantidad_web,
+                    COUNT(CASE WHEN ppa.idUsuario = 152 THEN 1 END) AS cantidad_counter,
+                    SUM(CASE WHEN ppa.idUsuario = 156 THEN ppa.valor ELSE 0 END) AS ventas_web,
+                    SUM(CASE WHEN ppa.idUsuario = 152 THEN ppa.valor ELSE 0 END) AS ventas_counter 
+                FROM pagosplanafiliado ppa
                 INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
                 INNER JOIN planes p ON p.idPlan = ap.idPlan 
                 WHERE ((ppa.idUsuario = 156 AND ap.idPlan IN (18,19,20,21)) OR (ppa.idUsuario NOT IN (156) AND ap.idPlan IN (1,17))) 
-	                AND (ppa.idMedioPago = 4)    
+                    AND (ppa.idMedioPago = 4)    
                     AND MONTH(ppa.FechaHoraPago) = " + mes.ToString() + @" 
                     AND YEAR(ap.FechaInicioPlan) = " + anio.ToString() + @" 
                     AND MONTH(ap.FechaInicioPlan) = " + mes.ToString() + @" 
@@ -741,14 +755,18 @@ namespace fpWebApp
 
             // Convertir los datos a listas para Chart.js
             var labels = new System.Collections.Generic.List<string>();
-            var ventas = new System.Collections.Generic.List<decimal>();
-            var cantidad = new System.Collections.Generic.List<decimal>();
+            var ventas_web = new System.Collections.Generic.List<decimal>();
+            var ventas_counter = new System.Collections.Generic.List<decimal>();
+            var cantidad_web = new System.Collections.Generic.List<decimal>();
+            var cantidad_counter = new System.Collections.Generic.List<decimal>();
 
             foreach (DataRow row in dt.Rows)
             {
                 labels.Add((row["NombrePlan"]).ToString());
-                ventas.Add(Convert.ToDecimal(row["sumatoria"]));
-                cantidad.Add(Convert.ToDecimal(row["cuantos"]));
+                ventas_web.Add(Convert.ToDecimal(row["ventas_web"]));
+                ventas_counter.Add(Convert.ToDecimal(row["ventas_counter"]));
+                cantidad_web.Add(Convert.ToDecimal(row["cantidad_web"]));
+                cantidad_counter.Add(Convert.ToDecimal(row["cantidad_counter"]));
             }
 
             dt.Dispose();
@@ -757,8 +775,10 @@ namespace fpWebApp
             var datos = new
             {
                 labels = labels,
-                ventas = ventas,
-                cantidad = cantidad
+                ventas_web = ventas_web,
+                ventas_counter = ventas_counter,
+                cantidad_web = cantidad_web,
+                cantidad_counter = cantidad_counter
             };
 
             Grafico6 = JsonConvert.SerializeObject(datos);

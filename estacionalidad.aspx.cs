@@ -105,9 +105,9 @@ namespace fpWebApp
         {
             List<Feriado> lista = new List<Feriado>();
 
-            string strQuery = "SELECT * FROM festivos";
+            //string strQuery = "SELECT * FROM festivos";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarDiasFestivos();
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
