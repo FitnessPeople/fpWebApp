@@ -28,15 +28,6 @@
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
-
-    <script>
-        function changeClass() {
-            var element1 = document.querySelector("#usuarios");
-            element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#configuracion");
-            element2.classList.remove("collapse");
-        }
-    </script>
 </head>
 
 <body onload="changeClass()">
@@ -131,157 +122,101 @@
                                         <div class="space-25"></div>
                                         <h5>Carpetas</h5>
                                         <ul class="folder-list m-b-md" style="padding: 0">
-                                            <li><a href="mailbox.html"><i class="fa fa-inbox "></i>Bandeja de entrada<span class="label label-warning pull-right">16</span> </a></li>
-                                            <li><a href="mailbox.html"><i class="fa fa-envelope"></i>Enviados</a></li>
-                                            <li><a href="mailbox.html"><i class="fa fa-certificate"></i>Importantes</a></li>
-                                            <li><a href="mailbox.html"><i class="fa fa-file-text"></i>Documentos <span class="label label-danger pull-right">2</span></a></li>
-                                            <li><a href="mailbox.html"><i class="fa fa-trash"></i>Papelera</a></li>
+                                            <li><a href="correointerno"><i class="fa fa-inbox "></i>Bandeja de entrada
+                                                <span class="label label-warning pull-right">
+                                                <asp:Literal ID="ltNroMensajesSinLeer" runat="server"></asp:Literal>/<asp:Literal ID="ltNroMensajesTotal" runat="server"></asp:Literal></span></a></li>
+                                            <li><a href="correoenviado"><i class="fa fa-paper-plane"></i>Enviados
+                                                <span class="label label-default pull-right">
+                                                <asp:Literal ID="ltNroMensajesEnviados" runat="server"></asp:Literal></span></a></li>
+                                            <li><a href="correoeliminado"><i class="fa fa-trash"></i>Papelera
+                                                <span class="label label-default pull-right">
+                                                <asp:Literal ID="ltNroMensajesPapelera" runat="server"></asp:Literal></span></a></li>
                                         </ul>
                                         <h5>Categorías</h5>
                                         <ul class="category-list" style="padding: 0">
-                                            <li><a href="#"><i class="fa fa-circle text-navy"></i>Contabilidad </a></li>
-                                            <li><a href="#"><i class="fa fa-circle text-danger"></i>Sistemas</a></li>
-                                            <li><a href="#"><i class="fa fa-circle text-primary"></i>Recursos humanos</a></li>
-                                            <li><a href="#"><i class="fa fa-circle text-info"></i>Procesos</a></li>
-                                            <li><a href="#"><i class="fa fa-circle text-warning"></i>Gerencia</a></li>
+                                            <asp:Repeater ID="rpCategorias" runat="server">
+                                                <ItemTemplate>
+                                                    <li><a href="#"><i class="fa fa-circle text-<%# Eval("ColorCategoria") %>"></i><%# Eval("NombreCategoria") %></a></li>
+                                                </ItemTemplate>
+                                            </asp:Repeater>
                                         </ul>
-
                                         <h5 class="tag-title">Etiquetas</h5>
                                         <ul class="tag-list" style="padding: 0">
-                                            <li><a href=""><i class="fa fa-tag"></i>Afiliado</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i>Prospecto</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i>Pendiente</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i>Confirmado</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i>Festivo</a></li>
+                                            <li><a href=""><i class="fa fa-tag m-r-xs"></i>Urgente</a></li>
+                                            <li><a href=""><i class="fa fa-tag m-r-xs"></i>Alto impacto</a></li>
+                                            <li><a href=""><i class="fa fa-tag m-r-xs"></i>Confidencial</a></li>
+                                            <li><a href=""><i class="fa fa-tag m-r-xs"></i>Requiere aprobación</a></li>
+                                            <li><a href=""><i class="fa fa-tag m-r-xs"></i>Seguimiento</a></li>
                                         </ul>
                                         <div class="clearfix"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <form id="form1" runat="server">
                         <div class="col-lg-9 animated fadeInRight">
-
                             <div class="mail-box-header">
                                 <div class="pull-right tooltip-demo">
-                                    <a href="mail_compose.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Reply"><i class="fa fa-reply"></i> Responder</a>
-                                    <a href="#" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="fa fa-print"></i></a>
-                                    <a href="#" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mover a la papelera"><i class="fa fa-trash"></i></a>
+                                    <%--<a href="mail_compose.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Responder"><i class="fa fa-reply text-success m-r-xs"></i>Responder</a>--%>
+                                    <a href="#" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Imprimir"><i class="fa fa-print text-info"></i></a>
+                                    <asp:LinkButton ID="lnkEliminarTop" runat="server" CssClass="btn btn-white btn-sm"
+                                        data-placement="top" data-toggle="tooltip"
+                                        data-original-title="Mover a la papelera"
+                                        OnClick="lkbEliminar_Click">
+                                    <i class="fa fa-trash text-danger"></i>
+                                    </asp:LinkButton>
                                 </div>
-                                <%--<h2>View Message</h2>--%>
+                                <h2>Ver mensaje
+                                </h2>
                                 <div class="mail-tools tooltip-demo m-t-md">
-                                    <h3><span class="font-normal">Asunto: </span>Aldus PageMaker including versions of Lorem Ipsum.</h3>
+
+
+                                    <h3>
+                                        <span class="font-normal">Asunto: </span>
+                                        <asp:Literal ID="ltAsunto" runat="server"></asp:Literal>
+                                    </h3>
                                     <h5>
-                                        <span class="pull-right font-normal">10:15AM 02 FEB 2014</span>
-                                        <span class="font-normal">De: </span>alex.smith@corporation.com
+                                        <span class="pull-right font-normal">
+                                            <asp:Literal ID="ltFechaHora" runat="server"></asp:Literal></span>
+                                        <span class="font-normal">De: </span>
+                                        <asp:Literal ID="ltRemitente" runat="server"></asp:Literal>
+                                        <br />
+                                        <span class="font-normal">Para: </span>
+                                        <asp:Literal ID="ltDestinatarios" runat="server"></asp:Literal>
                                     </h5>
                                 </div>
                             </div>
                             <div class="mail-box">
+
                                 <div class="mail-body">
                                     <p>
-                                        Hello Jonathan!
-                       
-                                        <br />
-                                        <br />
-                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer
-                                        took a galley of type and scrambled it to make a type <strong>specimen book.</strong>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. It has survived not only five centuries, but also the leap into electronic typesetting, remaining
-                                        essentially unchanged.
-                                    </p>
-                                    <p>
-                                        It was popularised in the 1960s with the release <a href="#" class="text-navy">Letraset sheets</a>  containing Lorem Ipsum passages, and more recently with desktop publishing software
-                                        like Aldus PageMaker including versions of Lorem Ipsum.
-                                    </p>
-                                    <p>
-                                        There are many variations of passages of <strong>Lorem Ipsum</strong>Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of.
+                                        <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                     </p>
                                 </div>
-                                <div class="mail-attachment">
-                                    <p>
-                                        <span><i class="fa fa-paperclip"></i> 2 adjuntos - </span>
-                                        <a href="#">Descargar todo</a> | <a href="#">Ver imágenes</a>
-                                    </p>
-
-                                    <div class="attachment">
-                                        <div class="file-box">
-                                            <div class="file">
-                                                <a href="#">
-                                                    <span class="corner"></span>
-
-                                                    <div class="icon">
-                                                        <i class="fa fa-file"></i>
-                                                    </div>
-                                                    <div class="file-name">
-                                                        Document_2014.doc
-                                           
-                                                        <br />
-                                                        <small>Agregado: Jan 11, 2014</small>
-                                                    </div>
-                                                </a>
-                                            </div>
-
-                                        </div>
-                                        <div class="file-box">
-                                            <div class="file">
-                                                <a href="#">
-                                                    <span class="corner"></span>
-
-                                                    <div class="image">
-                                                        <img alt="image" class="img-responsive" src="img/p1.jpg">
-                                                    </div>
-                                                    <div class="file-name">
-                                                        Italy street.jpg
-                                           
-                                                        <br />
-                                                        <small>Agregado: Jan 6, 2014</small>
-                                                    </div>
-                                                </a>
-
-                                            </div>
-                                        </div>
-                                        <div class="file-box">
-                                            <div class="file">
-                                                <a href="#">
-                                                    <span class="corner"></span>
-
-                                                    <div class="image">
-                                                        <img alt="image" class="img-responsive" src="img/p2.jpg">
-                                                    </div>
-                                                    <div class="file-name">
-                                                        My feel.png
-                                           
-                                                        <br />
-                                                        <small>Agregado: Jan 7, 2014</small>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div class="clearfix"></div>
+                                    <div class="mail-body text-right tooltip-demo">
+                                        <%--<a class="btn btn-sm btn-white" href="#" data-toggle="tooltip" data-placement="top" title="Responder"><i class="fa fa-reply text-success m-r-xs"></i>Responder</a>
+                                        <a class="btn btn-sm btn-white" href="#" data-toggle="tooltip" data-placement="top" title="Reenviar"><i class="fa fa-share text-success m-r-xs"></i>Reenviar</a>
+                                        <button title="" data-placement="top" data-toggle="tooltip" type="button" data-original-title="Imprimir" class="btn btn-sm btn-white"><i class="fa fa-print text-info m-r-xs"></i>Imprimir</button>--%>
+                                        <asp:LinkButton ID="lkbEliminar" runat="server" CssClass="btn btn-sm btn-white"
+                                            data-placement="top" data-toggle="tooltip"
+                                            data-original-title="Mover a la papelera"
+                                            OnClick="lkbEliminar_Click">
+                                        <i class="fa fa-trash text-danger m-r-xs"></i>Eliminar
+                                        </asp:LinkButton>
                                     </div>
-                                </div>
-                                <div class="mail-body text-right tooltip-demo">
-                                    <a class="btn btn-sm btn-white" href="mail_compose.html"><i class="fa fa-reply text-success"></i> Responder</a>
-                                    <a class="btn btn-sm btn-white" href="mail_compose.html"><i class="fa fa-share text-success"></i> Reenviar</a>
-                                    <button title="" data-placement="top" data-toggle="tooltip" type="button" data-original-title="Print" class="btn btn-sm btn-white"><i class="fa fa-print text-info"></i> Imprimir</button>
-                                    <button title="" data-placement="top" data-toggle="tooltip" data-original-title="Trash" class="btn btn-sm btn-white"><i class="fa fa-trash text-danger"></i> Eliminar</button>
-                                </div>
+                                
                                 <div class="clearfix"></div>
-
 
                             </div>
                         </div>
-
+                        </form>
                     </div>
-
+                    <%--Fin Contenido!!!!--%>
                 </div>
-
-                <%--Fin Contenido!!!!--%>
             </div>
+            <uc1:footer runat="server" ID="footer" />
         </div>
-
-        <uc1:footer runat="server" ID="footer" />
-
-    </div>
-    <uc1:rightsidebar runat="server" ID="rightsidebar" />
+        <uc1:rightsidebar runat="server" ID="rightsidebar" />
     </div>
 
     <!-- Mainly scripts -->

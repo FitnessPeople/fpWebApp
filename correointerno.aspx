@@ -28,15 +28,6 @@
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
-
-    <script>
-        function changeClass() {
-            var element1 = document.querySelector("#usuarios");
-            element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#configuracion");
-            element2.classList.remove("collapse");
-        }
-    </script>
 </head>
 
 <body onload="changeClass()">
@@ -95,7 +86,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-envelope text-success m-r-sm"></i>Correo interno</h2>
+                    <h2><i class="fa fa-inbox text-success m-r-sm"></i>Bandeja de entrada</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Menu principal</li>
@@ -131,27 +122,31 @@
                                         <div class="space-25"></div>
                                         <h5>Carpetas</h5>
                                         <ul class="folder-list m-b-md" style="padding: 0">
-                                            <li><a href="correointerno"><i class="fa fa-inbox "></i>Bandeja de entrada<span class="label label-warning pull-right">16</span> </a></li>
-                                            <li><a href="#"><i class="fa fa-envelope"></i>Enviados</a></li>
-                                            <li><a href="#"><i class="fa fa-certificate"></i>Importantes</a></li>
-                                            <li><a href="#"><i class="fa fa-file-text"></i>Documentos <span class="label label-danger pull-right">2</span></a></li>
-                                            <li><a href="#"><i class="fa fa-trash"></i>Papelera</a></li>
+                                            <li><a href="correointerno"><i class="fa fa-inbox "></i>Bandeja de entrada
+                                                <span class="label label-warning pull-right">
+                                                <asp:Literal ID="ltNroMensajesSinLeer" runat="server"></asp:Literal>/<asp:Literal ID="ltNroMensajesTotal" runat="server"></asp:Literal></span></a></li>
+                                            <li><a href="correoenviado"><i class="fa fa-paper-plane"></i>Enviados
+                                                <span class="label label-default pull-right">
+                                                <asp:Literal ID="ltNroMensajesEnviados" runat="server"></asp:Literal></span></a></li>
+                                            <li><a href="correoeliminado"><i class="fa fa-trash"></i>Papelera
+                                                <span class="label label-default pull-right">
+                                                <asp:Literal ID="ltNroMensajesPapelera" runat="server"></asp:Literal></span></a></li>
                                         </ul>
                                         <h5>Categorías</h5>
                                         <ul class="category-list" style="padding: 0">
-                                            <li><a href="#"><i class="fa fa-circle text-navy"></i>Contabilidad </a></li>
-                                            <li><a href="#"><i class="fa fa-circle text-danger"></i>Sistemas</a></li>
-                                            <li><a href="#"><i class="fa fa-circle text-primary"></i>Recursos humanos</a></li>
-                                            <li><a href="#"><i class="fa fa-circle text-info"></i>Procesos</a></li>
-                                            <li><a href="#"><i class="fa fa-circle text-warning"></i>Gerencia</a></li>
+                                            <asp:Repeater ID="rpCategorias" runat="server">
+                                                <ItemTemplate>
+                                                    <li><a href="#"><i class="fa fa-circle text-<%# Eval("ColorCategoria") %>"></i><%# Eval("NombreCategoria") %></a></li>
+                                                </ItemTemplate>
+                                            </asp:Repeater>
                                         </ul>
                                         <h5 class="tag-title">Etiquetas</h5>
                                         <ul class="tag-list" style="padding: 0">
-                                            <li><a href=""><i class="fa fa-tag"></i>Afiliado</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i>Prospecto</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i>Pendiente</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i>Confirmado</a></li>
-                                            <li><a href=""><i class="fa fa-tag"></i>Festivo</a></li>
+                                            <li><a href=""><i class="fa fa-tag m-r-xs"></i>Urgente</a></li>
+                                            <li><a href=""><i class="fa fa-tag m-r-xs"></i>Alto impacto</a></li>
+                                            <li><a href=""><i class="fa fa-tag m-r-xs"></i>Confidencial</a></li>
+                                            <li><a href=""><i class="fa fa-tag m-r-xs"></i>Requiere aprobación</a></li>
+                                            <li><a href=""><i class="fa fa-tag m-r-xs"></i>Seguimiento</a></li>
                                         </ul>
                                         <div class="clearfix"></div>
                                     </div>
@@ -159,136 +154,70 @@
                             </div>
                         </div>
                         <div class="col-lg-9 animated fadeInRight">
-                            <div class="mail-box-header">
-                                <form class="pull-right mail-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control input-sm" name="search" placeholder="Buscar correo">
-                                        <div class="input-group-btn">
-                                            <button type="submit" class="btn btn-sm btn-primary">
-                                                Buscar
-                                            </button>
+                            <form runat="server" id="form1">
+                                <div class="mail-box-header">
+
+                                    <div class="pull-right mail-search">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control input-sm" name="search" placeholder="Buscar correo">
+                                            <div class="input-group-btn">
+                                                <button type="submit" class="btn btn-sm btn-primary">
+                                                    Buscar
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </form>
-                                <h2>Bandeja de entrada (16)
-                                </h2>
-                                <div class="mail-tools tooltip-demo m-t-md">
-                                    <div class="btn-group pull-right">
-                                        <button class="btn btn-white btn-sm"><i class="fa fa-arrow-left"></i></button>
-                                        <button class="btn btn-white btn-sm"><i class="fa fa-arrow-right"></i></button>
+                                    <h2><i class="fa fa-inbox"></i> Bandeja de entrada (<asp:Literal ID="ltNroMensajesSinLeer2" runat="server"></asp:Literal>)
+                                    </h2>
+                                    <div class="mail-tools tooltip-demo m-t-md">
+                                        <div class="btn-group pull-right">
+                                            <%--<button class="btn btn-white btn-sm"><i class="fa fa-arrow-left"></i></button>
+                                        <button class="btn btn-white btn-sm"><i class="fa fa-arrow-right"></i></button>--%>
+                                            <asp:LinkButton ID="btnAnterior" runat="server" CssClass="btn btn-white btn-sm"
+                                                OnClick="btnAnterior_Click" ToolTip="Anterior">
+                                                <i class="fa fa-arrow-left"></i>
+                                            </asp:LinkButton>
+                                            <asp:LinkButton ID="btnSiguiente" runat="server" CssClass="btn btn-white btn-sm"
+                                                OnClick="btnSiguiente_Click">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </asp:LinkButton>
+                                        </div>
+                                        <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refrescar"><i class="fa fa-refresh m-r-xs"></i>Refrescar</button>
+                                        <button class="btn btn-white btn-sm text-info" data-toggle="tooltip" data-placement="top" title="Marcar como leído"><i class="fa fa-eye"></i></button>
+                                        <button class="btn btn-white btn-sm text-warning" data-toggle="tooltip" data-placement="top" title="Marcar como importante"><i class="fa fa-exclamation"></i></button>
+                                        <button class="btn btn-white btn-sm text-danger" data-toggle="tooltip" data-placement="top" title="Mover a la papelera"><i class="fa fa-trash"></i></button>
+
                                     </div>
-                                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refrescar"><i class="fa fa-refresh"></i>Refrescar</button>
-                                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Marcar como leído"><i class="fa fa-eye"></i></button>
-                                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Marcar como importante"><i class="fa fa-exclamation"></i></button>
-                                    <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mover a la papelera"><i class="fa fa-trash"></i></button>
 
                                 </div>
-                            </div>
-                            <div class="mail-box">
-                                <table class="table table-hover table-mail">
-                                    <tbody>
-                                        <tr class="unread">
-                                            <td class="check-mail">
-                                                <input type="checkbox" class="i-checks">
-                                            </td>
-                                            <td class="mail-ontact"><a href="detallecorreo">Anna Smith</a></td>
-                                            <td class="mail-subject"><a href="detallecorreo">Lorem ipsum dolor noretek imit set.</a></td>
-                                            <td class=""><i class="fa fa-paperclip"></i></td>
-                                            <td class="text-right mail-date">Hoy, 6:10 AM</td>
-                                        </tr>
-                                        <tr class="unread">
-                                            <td class="check-mail">
-                                                <input type="checkbox" class="i-checks">
-                                            </td>
-                                            <td class="mail-ontact"><a href="detallecorreo">Jack Nowak</a></td>
-                                            <td class="mail-subject"><a href="detallecorreo">Aldus PageMaker including versions of Lorem Ipsum.</a></td>
-                                            <td class=""></td>
-                                            <td class="text-right mail-date">Hoy, 8:22 PM</td>
-                                        </tr>
-                                        <tr class="read">
-                                            <td class="check-mail">
-                                                <input type="checkbox" class="i-checks">
-                                            </td>
-                                            <td class="mail-ontact"><a href="detallecorreo">Facebook</a> <span class="label label-warning pull-right">Clients</span> </td>
-                                            <td class="mail-subject"><a href="detallecorreo">Many desktop publishing packages and web page editors.</a></td>
-                                            <td class=""></td>
-                                            <td class="text-right mail-date">Ene 16, 8:40 am</td>
-                                        </tr>
-                                        <tr class="read">
-                                            <td class="check-mail">
-                                                <input type="checkbox" class="i-checks">
-                                            </td>
-                                            <td class="mail-ontact"><a href="detallecorreo">Mailchip</a></td>
-                                            <td class="mail-subject"><a href="detallecorreo">There are many variations of passages of Lorem Ipsum.</a></td>
-                                            <td class=""></td>
-                                            <td class="text-right mail-date">Ene 16, 8:40 am</td>
-                                        </tr>
-                                        <tr class="read">
-                                            <td class="check-mail">
-                                                <input type="checkbox" class="i-checks">
-                                            </td>
-                                            <td class="mail-ontact"><a href="detallecorreo">Alex T.</a> <span class="label label-danger pull-right">Documents</span></td>
-                                            <td class="mail-subject"><a href="detallecorreo">Lorem ipsum dolor noretek imit set.</a></td>
-                                            <td class=""><i class="fa fa-paperclip"></i></td>
-                                            <td class="text-right mail-date">Ene 16, 8:40 am</td>
-                                        </tr>
-                                        <tr class="read">
-                                            <td class="check-mail">
-                                                <input type="checkbox" class="i-checks">
-                                            </td>
-                                            <td class="mail-ontact"><a href="detallecorreo">Monica Ryther</a></td>
-                                            <td class="mail-subject"><a href="detallecorreo">The standard chunk of Lorem Ipsum used.</a></td>
-                                            <td class=""></td>
-                                            <td class="text-right mail-date">Ene 16, 8:40 am</td>
-                                        </tr>
-                                        <tr class="read">
-                                            <td class="check-mail">
-                                                <input type="checkbox" class="i-checks">
-                                            </td>
-                                            <td class="mail-ontact"><a href="detallecorreo">Sandra Derick</a></td>
-                                            <td class="mail-subject"><a href="detallecorreo">Contrary to popular belief.</a></td>
-                                            <td class=""></td>
-                                            <td class="text-right mail-date">Ene 16, 8:40 am</td>
-                                        </tr>
-                                        <tr class="read">
-                                            <td class="check-mail">
-                                                <input type="checkbox" class="i-checks">
-                                            </td>
-                                            <td class="mail-ontact"><a href="detallecorreo">Patrick Pertners</a> <span class="label label-info pull-right">Adv</span></td>
-                                            <td class="mail-subject"><a href="detallecorreo">If you are going to use a passage of Lorem </a></td>
-                                            <td class=""></td>
-                                            <td class="text-right mail-date">Ene 16, 8:40 am</td>
-                                        </tr>
-                                        <tr class="read">
-                                            <td class="check-mail">
-                                                <input type="checkbox" class="i-checks">
-                                            </td>
-                                            <td class="mail-ontact"><a href="detallecorreo">Michael Fox</a></td>
-                                            <td class="mail-subject"><a href="detallecorreo">Humour, or non-characteristic words etc.</a></td>
-                                            <td class=""></td>
-                                            <td class="text-right mail-date">Ene 16, 8:40 am</td>
-                                        </tr>
-                                        <tr class="read">
-                                            <td class="check-mail">
-                                                <input type="checkbox" class="i-checks">
-                                            </td>
-                                            <td class="mail-ontact"><a href="detallecorreo">Mailchip</a></td>
-                                            <td class="mail-subject"><a href="detallecorreo">There are many variations of passages of Lorem Ipsum.</a></td>
-                                            <td class=""></td>
-                                            <td class="text-right mail-date">Ene 16, 8:40 am</td>
-                                        </tr>
-                                        <tr class="read">
-                                            <td class="check-mail">
-                                                <input type="checkbox" class="i-checks">
-                                            </td>
-                                            <td class="mail-ontact"><a href="detallecorreo">Alex T.</a> <span class="label label-warning pull-right">Clients</span></td>
-                                            <td class="mail-subject"><a href="detallecorreo">Lorem ipsum dolor noretek imit set.</a></td>
-                                            <td class=""><i class="fa fa-paperclip"></i></td>
-                                            <td class="text-right mail-date">Ene 16, 8:40 am</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                <div class="mail-box">
+                                    <table class="table table-hover table-mail">
+                                        <tbody>
+                                            <asp:Repeater ID="rpMensajes" runat="server" OnItemDataBound="rpMensajes_ItemDataBound">
+                                                <ItemTemplate>
+
+                                                    <%--<tr class="read">--%>
+                                                    <tr id="fila" runat="server">
+                                                        <td class="check-mail">
+                                                            <input type="checkbox" class="i-checks">
+                                                        </td>
+                                                        <td class="mail-ontact"><a href="detallecorreo?idCorreo=<%# Eval("idCorreo") %>">De: <%# Eval("Remitente") %></a>
+                                                            <span class="label label-<%# Eval("ColorCategoria") %> pull-right"><%# Eval("NombreCategoria") %></span>
+                                                        </td>
+                                                        <td class="mail-subject"><a href="detallecorreo?idCorreo=<%# Eval("idCorreo") %>"><%# Eval("Asunto") %></a></td>
+                                                        <td class=""></td>
+                                                        <td class="text-right mail-date">
+                                                            <asp:Literal ID="ltTiempoTranscurrido" runat="server"></asp:Literal>
+                                                        </td>
+                                                    </tr>
+
+                                                </ItemTemplate>
+                                            </asp:Repeater>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <%--Fin Contenido!!!!--%>

@@ -82,15 +82,19 @@ namespace fpWebApp
                                 txbPlan.Text = dt.Rows[0]["NombrePlan"].ToString();
                                 txbDescripcion.Text = dt.Rows[0]["DescripcionPlan"].ToString();
                                 int intPrecioBase = Convert.ToInt32(dt.Rows[0]["PrecioBase"]);
-                                txbPrecioBase.Text = intPrecioBase.ToString("C0", new CultureInfo("es-CO"));
+                                //txbPrecioBase.Text = intPrecioBase.ToString("C0", new CultureInfo("es-CO"));
                                 txbDiasCongelamiento.Text = dt.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
                                 int intPrecioTotal = Convert.ToInt32(dt.Rows[0]["PrecioTotal"]);
                                 txbPrecioTotal.Text = intPrecioTotal.ToString("C0", new CultureInfo("es-CO"));
+                                int intPrecioMinimo = Convert.ToInt32(dt.Rows[0]["PrecioMinimo"]);
+                                txbPrecioMinimo.Text = intPrecioMinimo.ToString("C0", new CultureInfo("es-CO"));
                                 txbMeses.Text = dt.Rows[0]["Meses"].ToString();
                                 txbMesesCortesia.Text = dt.Rows[0]["MesesCortesia"].ToString();
                                 ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
                                 cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                 cbDebitoAutomatico.Checked = Convert.ToBoolean(dt.Rows[0]["DebitoAutomatico"]);
+                                cbVisibleWeb.Checked = Convert.ToBoolean(dt.Rows[0]["VisibleWeb"]);
+                                cbVisibleCRM.Checked = Convert.ToBoolean(dt.Rows[0]["VisibleCRM"]);
                                 btnAgregar.Text = "Actualizar";
 
                                 //if (dt.Rows[0]["BannerWeb"].ToString() != "")
@@ -130,18 +134,22 @@ namespace fpWebApp
 
                                     txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
                                     txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
-                                    txbPrecioBase.Text = dt1.Rows[0]["PrecioBase"].ToString();
+                                    //txbPrecioBase.Text = dt1.Rows[0]["PrecioBase"].ToString();
                                     txbPrecioTotal.Text = dt.Rows[0]["PrecioTotal"].ToString();
+                                    txbPrecioMinimo.Text = dt.Rows[0]["PrecioMinimo"].ToString();
                                     txbMeses.Text = dt.Rows[0]["Meses"].ToString();
                                     txbDiasCongelamiento.Text = dt1.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
                                     ddlColor.SelectedValue = dt1.Rows[0]["NombreColorPlan"].ToString();
                                     //ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt1.Rows[0]["NombreColorPlan"].ToString())));
                                     cbPermanente.Checked = Convert.ToBoolean(dt.Rows[0]["Permanente"]);
                                     cbDebitoAutomatico.Checked = Convert.ToBoolean(dt.Rows[0]["DebitoAutomatico"]);
+                                    cbVisibleWeb.Checked = Convert.ToBoolean(dt.Rows[0]["VisibleWeb"]);
+                                    cbVisibleCRM.Checked = Convert.ToBoolean(dt.Rows[0]["VisibleCRM"]);
                                     txbPlan.Enabled = false;
                                     txbDescripcion.Enabled = false;
-                                    txbPrecioBase.Enabled = false;
+                                    //txbPrecioBase.Enabled = false;
                                     txbPrecioTotal.Enabled = false;
+                                    txbPrecioMinimo.Enabled = false;
                                     txbMeses.Enabled = false;
                                     txbMesesCortesia.Enabled = false;
                                     txbDiasCongelamiento.Enabled = false;
@@ -150,6 +158,8 @@ namespace fpWebApp
                                     txbFechaFinal.Enabled = false;
                                     cbPermanente.Enabled = false;
                                     cbDebitoAutomatico.Enabled = false;
+                                    cbVisibleWeb.Enabled = false;
+                                    cbVisibleCRM.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     btnAgregar.Enabled = false;
                                     ltTitulo.Text = "Borrar Plan";
@@ -177,18 +187,22 @@ namespace fpWebApp
 
                                     txbPlan.Text = dt1.Rows[0]["NombrePlan"].ToString();
                                     txbDescripcion.Text = dt1.Rows[0]["DescripcionPlan"].ToString();
-                                    txbPrecioBase.Text = dt1.Rows[0]["PrecioBase"].ToString();
+                                    //txbPrecioBase.Text = dt1.Rows[0]["PrecioBase"].ToString();
                                     txbPrecioTotal.Text = dt1.Rows[0]["PrecioTotal"].ToString();
+                                    txbPrecioMinimo.Text = dt1.Rows[0]["PrecioMinimo"].ToString();
                                     txbMeses.Text = dt1.Rows[0]["Meses"].ToString();
                                     txbDiasCongelamiento.Text = dt1.Rows[0]["DiasCongelamientoMes"].ToString().Replace(',', '.');
                                     ddlColor.SelectedValue = dt1.Rows[0]["NombreColorPlan"].ToString();
                                     //ddlColor.SelectedIndex = Convert.ToInt16(ddlColor.Items.IndexOf(ddlColor.Items.FindByValue(dt.Rows[0]["NombreColorPlan"].ToString())));
                                     cbPermanente.Checked = Convert.ToBoolean(dt1.Rows[0]["Permanente"]);
                                     cbDebitoAutomatico.Checked = Convert.ToBoolean(dt1.Rows[0]["DebitoAutomatico"]);
+                                    cbVisibleWeb.Checked = Convert.ToBoolean(dt1.Rows[0]["VisibleWeb"]);
+                                    cbVisibleCRM.Checked = Convert.ToBoolean(dt1.Rows[0]["VisibleCRM"]);
                                     txbPlan.Enabled = false;
                                     txbDescripcion.Enabled = false;
-                                    txbPrecioBase.Enabled = false;
+                                    //txbPrecioBase.Enabled = false;
                                     txbPrecioTotal.Enabled = false;
+                                    txbPrecioMinimo.Enabled = false;
                                     txbMeses.Enabled = false;
                                     txbMesesCortesia.Enabled = false;
                                     txbDiasCongelamiento.Enabled = false;
@@ -197,6 +211,8 @@ namespace fpWebApp
                                     txbFechaFinal.Enabled = false;
                                     cbPermanente.Enabled = false;
                                     cbDebitoAutomatico.Enabled = false;
+                                    cbVisibleWeb.Enabled = false;
+                                    cbVisibleCRM.Enabled = false;
                                     btnAgregar.Text = "⚠ Confirmar borrado ❗";
                                     ltTitulo.Text = "Borrar Plan";
                                 }
@@ -241,7 +257,8 @@ namespace fpWebApp
         private void ListaPlanes()
         {
             clasesglobales cg = new clasesglobales();
-            string strQuery = "SELECT *, IF(pm.EstadoPlan='Activo','primary','danger') AS label " +
+            string strQuery = "SELECT *, IF(pm.EstadoPlan='Activo','primary','danger') AS label, " +
+                "IF(pm.DebitoAutomatico=1,'Débito automático','Pago único') tipopago " +
                 "FROM Planes pm " +
                 "LEFT JOIN Usuarios u ON pm.idUsuario = u.idUsuario ";
             DataTable dt = cg.TraerDatos(strQuery);
@@ -270,6 +287,8 @@ namespace fpWebApp
         {
             int intPermanente = cbPermanente.Checked ? 1 : 0;
             int intDebitoAutomatico = cbDebitoAutomatico.Checked ? 1 : 0;
+            int intVisibleWeb = cbVisibleWeb.Checked ? 1 : 0;
+            int intVisibleCRM = cbVisibleCRM.Checked ? 1 : 0;
             string fechaInicial = cbPermanente.Checked ? null : txbFechaInicial.Text.ToString();
             string fechaFinal = cbPermanente.Checked ? null : txbFechaFinal.Text.ToString();
 
@@ -285,7 +304,8 @@ namespace fpWebApp
                         txbPlan.Text.ToString().Trim(),
                         txbDescripcion.Text.ToString(),
                         Convert.ToInt32(Regex.Replace(txbPrecioTotal.Text, @"[^\d]", "")),
-                        Convert.ToInt32(Regex.Replace(txbPrecioBase.Text, @"[^\d]", "")),
+                        Convert.ToInt32(Regex.Replace(txbPrecioMinimo.Text, @"[^\d]", "")),
+                        190000,
                         int.Parse(txbMeses.Text.ToString()),
                         int.Parse(txbMesesCortesia.Text.ToString()),
                         ddlColor.SelectedItem.Value.ToString(),
@@ -294,7 +314,9 @@ namespace fpWebApp
                         fechaInicial,
                         fechaFinal,
                         intPermanente,
-                        intDebitoAutomatico);
+                        intDebitoAutomatico, 
+                        intVisibleWeb, 
+                        intVisibleCRM);
 
                     string strNewData = TraerData(requestQuery);
 
@@ -316,7 +338,8 @@ namespace fpWebApp
                         string respuesta = cg.InsertarPlan(txbPlan.Text.ToString().Trim(),
                         txbDescripcion.Text.ToString(),
                         Convert.ToInt32(Regex.Replace(txbPrecioTotal.Text, @"[^\d]", "")),
-                        Convert.ToInt32(Regex.Replace(txbPrecioBase.Text, @"[^\d]", "")),
+                        Convert.ToInt32(Regex.Replace(txbPrecioMinimo.Text, @"[^\d]", "")),
+                        190000,
                         int.Parse(txbMeses.Text.ToString()),
                         int.Parse(txbMesesCortesia.Text.ToString()),
                         ddlColor.SelectedItem.Value.ToString(),
@@ -325,7 +348,9 @@ namespace fpWebApp
                         fechaInicial,
                         fechaFinal,
                         intPermanente,
-                        intDebitoAutomatico);
+                        intDebitoAutomatico,
+                        intVisibleWeb,
+                        intVisibleCRM);
 
                         cg.InsertarLog(Session["idusuario"].ToString(), "planes", "Agrega", "El usuario agregó un nuevo plan: " + txbPlan.Text.ToString() + ".", "", "");
                     }

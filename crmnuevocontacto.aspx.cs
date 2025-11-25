@@ -21,7 +21,11 @@ namespace fpWebApp
         {
             if (!IsPostBack)
             {
-
+                txbDocumento.Attributes.Add("autocomplete", "off");
+                txbNombreContacto.Attributes.Add("autocomplete", "off");
+                txbApellidoContacto.Attributes.Add("autocomplete", "off");
+                txbCorreoContacto.Attributes.Add("autocomplete", "off");               
+                txbTelefonoContacto.Attributes.Add("autocomplete", "off");
 
                 if (Session["idUsuario"] != null)
                 {
@@ -47,7 +51,7 @@ namespace fpWebApp
                         btnAgregar.Text = "Agregar";
 
                         ddlAfiliadoOrigen.Enabled = true;
-                        txbNombreContacto.Disabled = false;
+                        txbNombreContacto.Enabled = true;
                         txbApellidoContacto.Disabled = false;
                         txbDocumento.Enabled = true;
                         ddlTipoDocumento.Enabled = true;
@@ -96,7 +100,7 @@ namespace fpWebApp
                         {
                             //Editar
                             ddlAfiliadoOrigen.Enabled = false;
-                            txbNombreContacto.Disabled = false;
+                            txbNombreContacto.Enabled = true;
                             txbApellidoContacto.Disabled = false;
                             txbDocumento.Enabled = false;
                             //ddlTipoDocumento.Enabled = false;
@@ -118,7 +122,7 @@ namespace fpWebApp
                                     DataRow row = dt.Rows[0];
                                     ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDoc"].ToString())));
                                     txbDocumento.Text = row["DocumentoAfiliado"].ToString();
-                                    txbNombreContacto.Value = row["NombreContacto"].ToString();
+                                    txbNombreContacto.Text = row["NombreContacto"].ToString();
                                     txbApellidoContacto.Value = row["ApellidoContacto"].ToString();
                                     ltNombreContacto.Text = row["NombreContacto"].ToString() + " " + row["ApellidoContacto"].ToString();
                                     imgFoto.ImageUrl = row["Foto"].ToString();
@@ -231,7 +235,7 @@ namespace fpWebApp
                             else
                             {
                                 DataRow row = dt.Rows[0];
-                                txbNombreContacto.Value = row["Error"].ToString(); ;
+                                txbNombreContacto.Text = row["Error"].ToString(); ;
                             }
                         }
                         if (Request.QueryString["deleteid"] != null)
@@ -248,7 +252,7 @@ namespace fpWebApp
                                 ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt1.Rows[0]["idTipoDoc"].ToString())));
                                 txbDocumento.Text = row["DocumentoAfiliado"].ToString();
 
-                                txbNombreContacto.Value = row["NombreContacto"].ToString();
+                                txbNombreContacto.Text = row["NombreContacto"].ToString();
 
                                 txbApellidoContacto.Value = row["ApellidoContacto"].ToString();
                                 if (row["idGenero"].ToString() != "")
@@ -311,7 +315,7 @@ namespace fpWebApp
                                 //Inactivar controles
                                 txbDocumento.Enabled = false;
                                 ddlTipoDocumento.Enabled = false;
-                                txbNombreContacto.Disabled = true;
+                                txbNombreContacto.Enabled = false;
                                 txbApellidoContacto.Disabled = true;
                                 ddlGenero.Enabled = false;
                                 txbTelefonoContacto.Disabled = true;
@@ -584,24 +588,254 @@ namespace fpWebApp
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            clasesglobales cg = new clasesglobales();
-            Session["idcrm"] = string.Empty;
-            string idcrm = string.Empty;
-
-            if (Request.QueryString.Count > 0)
+            try
             {
-                idcrm = Request.QueryString["editid"];
-                Session["idcrm"] = idcrm;
-                string evento = Request.QueryString["evento"];
-                string documento = Request.QueryString["documento"];
+                clasesglobales cg = new clasesglobales();
+                Session["idcrm"] = string.Empty;
+                string idcrm = string.Empty;
 
-                if (Request.QueryString["editid"] != null)
+                if (Request.QueryString.Count > 0)
                 {
-                    bool salida = false;
-                    string mensaje = string.Empty;
-                    string respuesta = string.Empty;
-                    string mensajeValidacion = string.Empty;
+                    idcrm = Request.QueryString["editid"];
+                    Session["idcrm"] = idcrm;
+                    string evento = Request.QueryString["evento"];
+                    string documento = Request.QueryString["documento"];
 
+                    if (Request.QueryString["editid"] != null)
+                    {
+                        bool salida = false;
+                        string mensaje = string.Empty;
+                        string respuesta = string.Empty;
+                        string mensajeValidacion = string.Empty;
+
+                        DateTime fecNacCli;
+
+                        // --- LIMPIEZA DE EDAD ---
+                        System.Text.RegularExpressions.Match match = Regex.Match(txbEdad.Text, @"\d+");
+                        int edad;
+
+                        if (match.Success && int.TryParse(match.Value, out edad))
+                        {
+                            txbEdad.Text = edad.ToString();
+                        }
+                        else
+                        {
+                            edad = 0;
+                            txbEdad.Text = "0";
+                        }
+
+                        // --- VALIDACIÓN FECHA ---
+                        string fechaTexto = txbFecNac.Text.Trim();
+
+                        // Si está vacía
+                        if (string.IsNullOrEmpty(fechaTexto))
+                        {
+                            fecNacCli = new DateTime(1900, 1, 1);
+                        }
+                        else
+                        {
+                            // Todos los formatos posibles (con y sin hora)
+                            string[] formatos = {
+                                                "dd/MM/yyyy",
+                                                "MM/dd/yyyy",
+                                                "yyyy-MM-dd",
+                                                "dd-MM-yyyy",
+                                                "MM-dd-yyyy",
+                                                "dd/MM/yyyy HH:mm:ss",
+                                                "MM/dd/yyyy HH:mm:ss",
+                                                "yyyy-MM-dd HH:mm:ss",
+                                                "dd-MM-yyyy HH:mm:ss",
+                                                "MM-dd-yyyy HH:mm:ss",
+                                                "dd/MM/yyyy hh:mm tt",
+                                                "MM/dd/yyyy hh:mm tt",
+                                                "yyyy-MM-dd hh:mm tt",
+                                                "dd-MM-yyyy hh:mm tt",
+                                                "MM-dd-yyyy hh:mm tt"
+                                            };
+
+                            // Intentar convertir con ParseExact
+                            if (!DateTime.TryParseExact(
+                                    fechaTexto,
+                                    formatos,
+                                    CultureInfo.InvariantCulture,
+                                    DateTimeStyles.AllowWhiteSpaces,
+                                    out fecNacCli))
+                            {
+                              
+                                if (!DateTime.TryParse(fechaTexto, out fecNacCli))
+                                {
+                                    throw new Exception($"La fecha '{fechaTexto}' no es válida.");
+                                }
+                            }
+                        }
+
+                        // Formato final
+                        txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
+
+                        if (ddlEmpresa.SelectedItem.Value != "")
+                            ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
+                        else
+                            ddlEmpresa.SelectedItem.Value = "0";
+
+                        try
+                        {
+                            respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), 
+                                txbNombreContacto.Text.ToString().Trim().ToUpper(),
+                                txbApellidoContacto.Value.ToString().Trim().ToUpper(), 
+                                Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
+                                txbCorreoContacto.Value.ToString().Trim().ToLower(), 
+                                Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), 
+                                txbFechaPrim.Value.ToString(), 
+                                txbFechaProx.Value.ToString(),
+                                Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "", 
+                                txaObservaciones.Value.Trim(),
+                                Convert.ToInt32(Session["idUsuario"]), 
+                                Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), 
+                                Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), 
+                                Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
+                                Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), 
+                                txbDocumento.Text, 
+                                Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(txbEdad.Text), txbFecNac.Text, 
+                                Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()),
+                                Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()), 
+                                out salida, 
+                                out mensaje);
+
+                            if (salida)
+                            {
+                                string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
+
+                                string script = @"
+                                Swal.fire({
+                                    title: 'El contacto se actualizó correctamente',
+                                    text: '" + mensaje.Replace("'", "\\'") + @"',
+                                    icon: 'success',
+                                    timer: 3000, // 3 segundos
+                                    showConfirmButton: false,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    window.location.href = '" + urlRedirect + @"';
+                                });
+                                ";
+
+                                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                            }
+                            else
+                            {
+                                string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
+                                string script = @"
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: '" + mensaje.Replace("'", "\\'") + @"',
+                                    icon: 'error'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                       window.location.href = '"" + urlRedirect + @""';
+                                    }
+                                });
+                                ";
+                                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            //string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
+                            string script = @"
+                        Swal.fire({
+                        title: 'Error',
+                        text: 'Ha ocurrido un error inesperado. " + ex.Message.ToString() + @"',
+                        icon: 'error'
+                    });
+                ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                        }
+
+                    }
+                    if (Request.QueryString["deleteid"] != null)
+                    {
+
+                        bool respuesta = false;
+                        bool _respuesta = false;
+                        string mensaje = string.Empty;
+                        int idContacto = Convert.ToInt32(Request.QueryString["deleteid"].ToString());
+                        int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
+                        string Usuario = Session["NombreUsuario"].ToString();
+
+                        try
+                        {
+                            DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out _respuesta);
+                            Session["contactoId"] = idContacto;
+
+                            if (idContacto > 0)
+                            {
+                                cg.EliminarContactoCRM(idContacto, idUsuario, Usuario, out respuesta, out mensaje);
+
+                                if (respuesta)
+                                {
+                                    string tipoMensaje = respuesta ? "Fitness People" : "Error";
+                                    string tipoIcono = respuesta ? "success" : "error";
+                                    string script = @"
+                                Swal.fire({
+                                    title: '" + tipoMensaje + @"',
+                                    text: '" + mensaje + @"',
+                                    icon: '" + tipoIcono + @"'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = 'crmnuevocontacto';
+                                    }
+                                });
+                            ";
+
+                                    ScriptManager.RegisterStartupScript(this, GetType(), "EliminarYAlerta", script, true);
+                                }
+                                else
+                                {
+                                    string script = @"
+                                Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error',
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: true
+                            }).then(() => {
+                                Response.Redirect(Request.RawUrl);
+                            });
+                        ";
+                                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            mensaje = ex.Message;
+                            string script = @"
+                        Swal.fire({
+                        title: 'Error',                       
+                        text: '"" + mensaje.Replace(""'"", ""\\'"") + @""',
+                        icon: 'error'
+                    });
+                ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                        }
+                    }
+                }
+                else
+                {
+                    int segundosPasados = 0;
+                    //if (!ValidarSede(txbSede.Text.ToString()))
+                    //{
+                    bool salida = false;
+                    //ViewState["AbrirModal"] = true;
+                    string mensaje = string.Empty;
+                    string mensajeValidacion = string.Empty;
+                    string respuesta = string.Empty;
                     DateTime fecNacCli;
                     string textoEdad = txbEdad.Text.Trim();
                     System.Text.RegularExpressions.Match match = Regex.Match(textoEdad, @"\d+");
@@ -630,215 +864,37 @@ namespace fpWebApp
 
                     txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
 
-                    if (ddlEmpresa.SelectedItem.Value != "")
-                        ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
-                    else
-                        ddlEmpresa.SelectedItem.Value = "0";
+                    // Parseamos la fecha y la hora
+                    DateTime fecha = DateTime.Parse(txbFechaProx.Value);
+                    TimeSpan hora = TimeSpan.Parse(txbHoraIni.Value);
+                    DateTime fechaHora = fecha.Date + hora;
+                    string fechaHoraMySQL = fechaHora.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                    TimeSpan tiempo = TimeSpan.Zero;
+
+                    if (int.TryParse(hfContador.Value, out segundosPasados))
+                    {
+                        int minutos = segundosPasados / 60;
+                        int segundos = segundosPasados % 60;
+                        string tiempoFormateado = $"00:{minutos:D2}:{segundos:D2}";
+                        tiempo = TimeSpan.Parse(tiempoFormateado);
+                    }
 
                     try
                     {
-                        respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.ToString().Trim().ToUpper(),
-                                txbApellidoContacto.Value.ToString().Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
-                                txbCorreoContacto.Value.ToString().Trim().ToLower(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(),
-                                Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "", txaObservaciones.Value.Trim(),
-                                Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
-                                Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(txbEdad.Text), txbFecNac.Text, Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()),
-                                Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()), out salida, out mensaje);
+                        respuesta = cg.InsertarContactoCRM(txbNombreContacto.Text.ToString().Trim().ToUpper(), txbApellidoContacto.Value.ToString().Trim().ToUpper(),
+                        Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), txbCorreoContacto.Value.ToString().Trim().ToLower(),
+                        Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
+                        fechaHoraMySQL.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
+                        txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
+                        Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, tiempo.ToString(), Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(txbEdad.Text), txbFecNac.Text, Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(Session["idPregestion"].ToString()), out salida, out mensaje);
 
                         if (salida)
                         {
-                            string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
-
                             string script = @"
-                                Swal.fire({
-                                    title: 'El contacto se actualizó correctamente',
-                                    text: '" + mensaje.Replace("'", "\\'") + @"',
-                                    icon: 'success',
-                                    timer: 3000, // 3 segundos
-                                    showConfirmButton: false,
-                                    timerProgressBar: true
-                                }).then(() => {
-                                    window.location.href = '" + urlRedirect + @"';
-                                });
-                                ";
-
-                            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                        }
-                        else
-                        {
-                            string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
-                            string script = @"
-                                Swal.fire({
-                                    title: 'Error',
-                                    text: '" + mensaje.Replace("'", "\\'") + @"',
-                                    icon: 'error'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                       window.location.href = '"" + urlRedirect + @""';
-                                    }
-                                });
-                                ";
-                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-                        }
-
-                    }
-                    catch (Exception ex)
-                    {
-                        //string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
-                        string script = @"
-                        Swal.fire({
-                        title: 'Error',
-                        text: 'Ha ocurrido un error inesperado. " + ex.Message.ToString() + @"',
-                        icon: 'error'
-                    });
-                ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                    }
-
-                }
-                if (Request.QueryString["deleteid"] != null)
-                {
-
-                    bool respuesta = false;
-                    bool _respuesta = false;
-                    string mensaje = string.Empty;
-                    int idContacto = Convert.ToInt32(Request.QueryString["deleteid"].ToString());
-                    int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
-                    string Usuario = Session["NombreUsuario"].ToString();
-
-                    try
-                    {
-                        DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out _respuesta);
-                        Session["contactoId"] = idContacto;
-
-                        if (idContacto > 0)
-                        {
-                            cg.EliminarContactoCRM(idContacto, idUsuario, Usuario, out respuesta, out mensaje);
-
-                            if (respuesta)
-                            {
-                                string tipoMensaje = respuesta ? "Fitness People" : "Error";
-                                string tipoIcono = respuesta ? "success" : "error";
-                                string script = @"
-                                Swal.fire({
-                                    title: '" + tipoMensaje + @"',
-                                    text: '" + mensaje + @"',
-                                    icon: '" + tipoIcono + @"'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = 'crmnuevocontacto';
-                                    }
-                                });
-                            ";
-
-                                ScriptManager.RegisterStartupScript(this, GetType(), "EliminarYAlerta", script, true);
-                            }
-                            else
-                            {
-                                string script = @"
-                                Swal.fire({
-                                title: 'Error',
-                                text: '" + mensaje.Replace("'", "\\'") + @"',
-                                icon: 'error',
-                                timer: 3000,
-                                timerProgressBar: true,
-                                showConfirmButton: true
-                            }).then(() => {
-                                Response.Redirect(Request.RawUrl);
-                            });
-                        ";
-                                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        mensaje = ex.Message;
-                        string script = @"
-                        Swal.fire({
-                        title: 'Error',                       
-                        text: '"" + mensaje.Replace(""'"", ""\\'"") + @""',
-                        icon: 'error'
-                    });
-                ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                    }
-                }
-            }
-            else
-            {
-                int segundosPasados = 0;
-                //if (!ValidarSede(txbSede.Text.ToString()))
-                //{
-                bool salida = false;
-                //ViewState["AbrirModal"] = true;
-                string mensaje = string.Empty;
-                string mensajeValidacion = string.Empty;
-                string respuesta = string.Empty;
-                DateTime fecNacCli;
-                string textoEdad = txbEdad.Text.Trim();
-                System.Text.RegularExpressions.Match match = Regex.Match(textoEdad, @"\d+");
-
-                int edad;
-
-                if (match.Success && int.TryParse(match.Value, out edad))
-                {
-                    txbEdad.Text = edad.ToString(); // Deja solo el número limpio en la caja
-                }
-                else
-                {
-                    edad = 0;
-                    txbEdad.Text = "0";
-                }
-
-                if (string.IsNullOrEmpty(txbFecNac.Text))
-                {
-                    fecNacCli = new DateTime(1900, 1, 1);
-                    txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
-                }
-                else
-                {
-                    fecNacCli = DateTime.Parse(txbFecNac.Text);
-                }
-
-                txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
-
-                // Parseamos la fecha y la hora
-                DateTime fecha = DateTime.Parse(txbFechaProx.Value);
-                TimeSpan hora = TimeSpan.Parse(txbHoraIni.Value);
-                DateTime fechaHora = fecha.Date + hora;
-                string fechaHoraMySQL = fechaHora.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                TimeSpan tiempo = TimeSpan.Zero;
-
-                if (int.TryParse(hfContador.Value, out segundosPasados))
-                {
-                    int minutos = segundosPasados / 60;
-                    int segundos = segundosPasados % 60;
-                    string tiempoFormateado = $"00:{minutos:D2}:{segundos:D2}";
-                    tiempo = TimeSpan.Parse(tiempoFormateado);
-                }
-
-                try
-                {
-                    respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim().ToUpper(), txbApellidoContacto.Value.ToString().Trim().ToUpper(),
-                    Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), txbCorreoContacto.Value.ToString().Trim().ToLower(),
-                    Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
-                    fechaHoraMySQL.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
-                    txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlTipoPago.SelectedItem.Value.ToString()), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()), 0,
-                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), txbDocumento.Text, tiempo.ToString(), Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(txbEdad.Text), txbFecNac.Text, Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(Session["idPregestion"].ToString()), out salida, out mensaje);
-
-                    if (salida)
-                    {
-                        string script = @"
                         Swal.fire({
                             title: '«¡Creado correctamente!»',
                             text: '" + mensaje.Replace("'", "\\'") + @"',
@@ -850,11 +906,11 @@ namespace fpWebApp
                             window.location.href = 'crmnuevocontacto';
                         });
                     ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                    }
-                    else
-                    {
-                        string script = @"
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                        }
+                        else
+                        {
+                            string script = @"
                             Swal.fire({
                                 title: 'Error',
                                 text: '" + mensaje.Replace("'", "\\'") + @"',
@@ -865,111 +921,244 @@ namespace fpWebApp
                                 }
                             });
                         ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    mensaje = ex.Message.ToString();
-                    string script = @"
+                    catch (Exception ex)
+                    {
+                        mensaje = ex.Message.ToString();
+                        string script = @"
                     Swal.fire({
                         title: 'Error',
                         text: '" + mensaje.Replace("'", "\\'") + @"',
                         icon: 'error'
                     });
                 ";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                    }
                 }
+
             }
+            catch (Exception ex)
+            {
+
+                ltMensaje.Text =
+                   "<div class='alert alert-danger alert-dismissable'>" +
+                   "<button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>" +
+                   "<strong>Error:</strong> " + ex.Message.ToString() +
+                   "</div>";
+            }
+
         }
 
 
+        //protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        //{
+
+        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        //    {
+        //        DataRowView row = (DataRowView)e.Item.DataItem;
+        //        Literal ltInfoAfiliado = (Literal)e.Item.FindControl("ltInfoAfiliado");
+
+        //        HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+        //        HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+
+
+        //        int documentoAfiliado;
+        //        if (int.TryParse(row["DocumentoAfiliado"].ToString(), out documentoAfiliado))
+        //        {
+        //            clasesglobales cg = new clasesglobales();
+        //            DataTable dtAfiliado = cg.ConsultarAfiliadoPorDocumento(documentoAfiliado);
+
+        //            if (dtAfiliado.Rows.Count > 0)
+        //            {
+        //                int idAfiliado = Convert.ToInt32(dtAfiliado.Rows[0]["idAfiliado"]);
+        //                DataTable dtEstadoActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+
+        //                // Encontrar los tres botones
+        //                btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+        //                btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+        //                HtmlAnchor btnNuevoAfiliado = (HtmlAnchor)e.Item.FindControl("btnNuevoAfiliado");
+
+        //                // Si el afiliado tiene plan activo, ocultar todos los botones
+        //                if (dtEstadoActivo.Rows.Count > 0)
+        //                {
+        //                    string nombrePlan = dtEstadoActivo.Rows[0]["NombrePlan"].ToString();
+        //                    DateTime fechaFinal;
+        //                    string fechaFormateada = string.Empty;
+        //                    if (DateTime.TryParse(dtEstadoActivo.Rows[0]["FechaFinalPlan"].ToString(), out fechaFinal))
+        //                    {
+        //                        fechaFormateada = fechaFinal.ToString("dd 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-ES"));
+        //                    }
+
+        //                    decimal valorPlan;
+        //                    string valorFormateado = string.Empty;
+        //                    if (decimal.TryParse(dtEstadoActivo.Rows[0]["Valor"].ToString(), out valorPlan))
+        //                    {
+        //                        valorFormateado = valorPlan.ToString("C0", new System.Globalization.CultureInfo("es-CO"));
+        //                    }
+
+        //                    string infoExtra = $"El cliente ha tenido planes anteriores <b>{nombrePlan}</b> " +
+        //                                       $"con fecha final el día <b>{fechaFormateada}</b> " +
+        //                                       $"por un valor de <b>{valorFormateado}</b>.";
+
+        //                    ltInfoAfiliado.Text = $"<span style='display:block; text-align:justify;'>{infoExtra}</span>";
+
+
+
+        //                    if (dtEstadoActivo.Rows[0]["EstadoPlan"].ToString() == "Activo")
+        //                    {
+        //                        if (btnEditar != null) btnEditar.Visible = false;
+        //                        if (btnEliminar != null) btnEliminar.Visible = false;
+        //                        if (btnNuevoAfiliado != null) btnNuevoAfiliado.Visible = false;
+        //                    }
+        //                    else {
+
+        //                        // Mostrar botones solo si no tiene plan activo y según permisos
+        //                        if (ViewState["CrearModificar"].ToString() == "1" && btnEditar != null)
+        //                        {
+        //                            btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + row.Row[0].ToString());
+        //                            btnEditar.Visible = true;
+        //                        }
+
+        //                        if (ViewState["Borrar"].ToString() == "1" && btnEliminar != null)
+        //                        {
+        //                            btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + row.Row[0].ToString());
+        //                            btnEliminar.Visible = true;
+        //                        }
+
+        //                        if (btnNuevoAfiliado != null)
+        //                        {
+        //                            // Este botón se muestra sin permisos adicionales
+        //                            btnNuevoAfiliado.Visible = true;
+        //                        }
+
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    // Mostrar botones solo si no tiene plan activo y según permisos
+        //                    if (ViewState["CrearModificar"].ToString() == "1" && btnEditar != null)
+        //                    {
+        //                        btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + row.Row[0].ToString());
+        //                        btnEditar.Visible = true;
+        //                    }
+
+        //                    if (ViewState["Borrar"].ToString() == "1" && btnEliminar != null)
+        //                    {
+        //                        btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + row.Row[0].ToString());
+        //                        btnEliminar.Visible = true;
+        //                    }
+
+        //                    if (btnNuevoAfiliado != null)
+        //                    {
+        //                        // Este botón se muestra sin permisos adicionales
+        //                        btnNuevoAfiliado.Visible = true;
+        //                    }
+        //                }                        
+        //            }
+        //            else
+        //            {
+        //                // Mostrar botones solo si no tiene plan activo y según permisos
+        //                if (ViewState["CrearModificar"].ToString() == "1" && btnEditar != null)
+        //                {
+        //                    btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + row.Row[0].ToString());
+        //                    btnEditar.Visible = true;
+        //                }
+
+        //                if (ViewState["Borrar"].ToString() == "1" && btnEliminar != null)
+        //                {
+        //                    btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + row.Row[0].ToString());
+        //                    btnEliminar.Visible = true;
+        //                }
+        //                ltInfoAfiliado.Text = "No se encontraron planes anteriores para este usuario.";
+        //                //if (btnNuevoAfiliado != null)
+        //                //{
+        //                //    // Este botón se muestra sin permisos adicionales
+        //                //    btnNuevoAfiliado.Visible = true;
+        //                //}
+        //            }
+        //        }
+
+        //        if (row["FechaGestion"] != DBNull.Value)
+        //        {
+        //            DateTime fechaPrimerContacto = Convert.ToDateTime(row["FechaGestion"]);
+        //            TimeSpan diferencia = DateTime.Now - fechaPrimerContacto;
+
+        //            string leyenda = "";
+        //            if (diferencia.TotalMinutes < 1)
+        //                leyenda = "Hace menos de un minuto";
+        //            else if (diferencia.TotalMinutes < 60)
+        //                leyenda = $"Hace {(int)diferencia.TotalMinutes} minuto{((int)diferencia.TotalMinutes == 1 ? "" : "s")}";
+        //            else if (diferencia.TotalHours < 24)
+        //                leyenda = $"Hace {(int)diferencia.TotalHours} hora{((int)diferencia.TotalHours == 1 ? "" : "s")}";
+        //            else
+        //                leyenda = $"Hace {(int)diferencia.TotalDays} día{((int)diferencia.TotalDays == 1 ? "" : "s")}";
+
+        //            Literal ltTiempo = (Literal)e.Item.FindControl("ltTiempoTranscurrido");
+        //            if (ltTiempo != null)
+        //                ltTiempo.Text = leyenda;
+        //        }
+        //    }
+        //}
+
         protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-           
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            try
             {
-                DataRowView row = (DataRowView)e.Item.DataItem;
-                Literal ltInfoAfiliado = (Literal)e.Item.FindControl("ltInfoAfiliado");
-
-                HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-
-
-                int documentoAfiliado;
-                if (int.TryParse(row["DocumentoAfiliado"].ToString(), out documentoAfiliado))
+                clasesglobales cg = new clasesglobales();
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
                 {
-                    clasesglobales cg = new clasesglobales();
-                    DataTable dtAfiliado = cg.ConsultarAfiliadoPorDocumento(documentoAfiliado);
+                    DataRowView row = (DataRowView)e.Item.DataItem;
+                    Literal ltInfoAfiliado = (Literal)e.Item.FindControl("ltInfoAfiliado");
 
-                    if (dtAfiliado.Rows.Count > 0)
+                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                    HtmlAnchor btnNuevoAfiliado = (HtmlAnchor)e.Item.FindControl("btnNuevoAfiliado");
+
+                    int documentoAfiliado;
+
+                    if (int.TryParse(row["DocumentoAfiliado"].ToString(), out documentoAfiliado))
                     {
-                        int idAfiliado = Convert.ToInt32(dtAfiliado.Rows[0]["idAfiliado"]);
-                        DataTable dtEstadoActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+                        
+                        DataTable dtAfiliado = cg.ConsultarAfiliadoPorDocumento(documentoAfiliado);
 
-                        // Encontrar los tres botones
-                        btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                        btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                        HtmlAnchor btnNuevoAfiliado = (HtmlAnchor)e.Item.FindControl("btnNuevoAfiliado");
-
-                        // Si el afiliado tiene plan activo, ocultar todos los botones
-                        if (dtEstadoActivo.Rows.Count > 0)
+                        if (dtAfiliado.Rows.Count > 0)
                         {
-                            string nombrePlan = dtEstadoActivo.Rows[0]["NombrePlan"].ToString();
-                            DateTime fechaFinal;
-                            string fechaFormateada = string.Empty;
-                            if (DateTime.TryParse(dtEstadoActivo.Rows[0]["FechaFinalPlan"].ToString(), out fechaFinal))
+                            int idAfiliado = Convert.ToInt32(dtAfiliado.Rows[0]["idAfiliado"]);
+                            DataTable dtEstadoActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+
+                            // Siempre se mostrará la información de planes anteriores
+                            if (dtEstadoActivo.Rows.Count > 0)
                             {
-                                fechaFormateada = fechaFinal.ToString("dd 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-ES"));
-                            }
+                                string nombrePlan = dtEstadoActivo.Rows[0]["NombrePlan"].ToString();
 
-                            decimal valorPlan;
-                            string valorFormateado = string.Empty;
-                            if (decimal.TryParse(dtEstadoActivo.Rows[0]["Valor"].ToString(), out valorPlan))
-                            {
-                                valorFormateado = valorPlan.ToString("C0", new System.Globalization.CultureInfo("es-CO"));
-                            }
-
-                            string infoExtra = $"El cliente ha tenido planes anteriores <b>{nombrePlan}</b> " +
-                                               $"con fecha final el día <b>{fechaFormateada}</b> " +
-                                               $"por un valor de <b>{valorFormateado}</b>.";
-
-                            ltInfoAfiliado.Text = $"<span style='display:block; text-align:justify;'>{infoExtra}</span>";
-
-
-
-                            if (dtEstadoActivo.Rows[0]["EstadoPlan"].ToString() == "Activo")
-                            {
-                                if (btnEditar != null) btnEditar.Visible = false;
-                                if (btnEliminar != null) btnEliminar.Visible = false;
-                                if (btnNuevoAfiliado != null) btnNuevoAfiliado.Visible = false;
-                            }
-                            else {
-
-                                // Mostrar botones solo si no tiene plan activo y según permisos
-                                if (ViewState["CrearModificar"].ToString() == "1" && btnEditar != null)
+                                DateTime fechaFinal;
+                                string fechaFormateada = "";
+                                if (DateTime.TryParse(dtEstadoActivo.Rows[0]["FechaFinalPlan"].ToString(), out fechaFinal))
                                 {
-                                    btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + row.Row[0].ToString());
-                                    btnEditar.Visible = true;
+                                    fechaFormateada = fechaFinal.ToString("dd 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-ES"));
                                 }
 
-                                if (ViewState["Borrar"].ToString() == "1" && btnEliminar != null)
+                                decimal valorPlan;
+                                string valorFormateado = "";
+                                if (decimal.TryParse(dtEstadoActivo.Rows[0]["Valor"].ToString(), out valorPlan))
                                 {
-                                    btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + row.Row[0].ToString());
-                                    btnEliminar.Visible = true;
+                                    valorFormateado = valorPlan.ToString("C0", new System.Globalization.CultureInfo("es-CO"));
                                 }
 
-                                if (btnNuevoAfiliado != null)
-                                {
-                                    // Este botón se muestra sin permisos adicionales
-                                    btnNuevoAfiliado.Visible = true;
-                                }
+                                string infoExtra =
+                                    $"El cliente ha tenido planes anteriores <b>{nombrePlan}</b> " +
+                                    $"con fecha final el día <b>{fechaFormateada}</b> " +
+                                    $"por un valor de <b>{valorFormateado}</b>.";
 
+                                ltInfoAfiliado.Text = $"<span style='display:block; text-align:justify;'>{infoExtra}</span>";
                             }
-                        }
-                        else
-                        {
-                            // Mostrar botones solo si no tiene plan activo y según permisos
+                            else
+                            {
+                                ltInfoAfiliado.Text = "No se encontraron planes anteriores para este usuario.";
+                            }
+
                             if (ViewState["CrearModificar"].ToString() == "1" && btnEditar != null)
                             {
                                 btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + row.Row[0].ToString());
@@ -984,104 +1173,206 @@ namespace fpWebApp
 
                             if (btnNuevoAfiliado != null)
                             {
-                                // Este botón se muestra sin permisos adicionales
                                 btnNuevoAfiliado.Visible = true;
                             }
-                        }                        
+
+                        }
+                        else
+                        {
+                            //  si no es  afiliado 
+                            ltInfoAfiliado.Text = "No se encontraron planes anteriores para este usuario.";
+
+                            if (ViewState["CrearModificar"].ToString() == "1" && btnEditar != null)
+                            {
+                                btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + row.Row[0].ToString());
+                                btnEditar.Visible = true;
+                            }
+
+                            if (ViewState["Borrar"].ToString() == "1" && btnEliminar != null)
+                            {
+                                btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + row.Row[0].ToString());
+                                btnEliminar.Visible = true;
+                            }
+
+                            if (btnNuevoAfiliado != null)
+                            {
+                                btnNuevoAfiliado.Visible = true;
+                            }
+                        }
                     }
-                    else
+
+                    ///////////////////// Calcular tiempo transcurrido /////////////////////
+
+                    DataTable dt1  = new DataTable();
+                    dt1 = cg.ConsultarDiasFestivos();
+
+                    if (row["FechaGestion"] != DBNull.Value)
                     {
-                        // Mostrar botones solo si no tiene plan activo y según permisos
-                        if (ViewState["CrearModificar"].ToString() == "1" && btnEditar != null)
-                        {
-                            btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + row.Row[0].ToString());
-                            btnEditar.Visible = true;
-                        }
+                        DateTime fechaPrimerContacto = Convert.ToDateTime(row["FechaGestion"]);
+                        DateTime hoy = DateTime.Now;
 
-                        if (ViewState["Borrar"].ToString() == "1" && btnEliminar != null)
+                        // Lista de festivos
+                        List<DateTime> festivos = dt1.AsEnumerable()
+                            .Select(r => r.Field<DateTime>("Fecha").Date)
+                            .ToList();
+
+                    
+                        int diasHabiles = ObtenerDiasHabiles(fechaPrimerContacto, hoy, festivos);              
+                        TimeSpan diferencia = hoy - fechaPrimerContacto;
+                        int totalMeta = 6;
+
+                        // Tamaño real de días hábiles
+                        int diaHabilReal = diasHabiles;
+
+                        // Mostrar máximo 6 de 6
+                        int diaHabilMostrar = Math.Min(diasHabiles, totalMeta);
+
+                        // Días restantes
+                        int diasRestantes = totalMeta - diasHabiles;
+                        if (diasRestantes < 0)
+                            diasRestantes = 0;
+
+                        // Texto base
+                        string leyendaBase = diasHabiles <= 0
+                            ? (diferencia.TotalMinutes < 1 ? "Hace menos de un minuto"
+                               : diferencia.TotalMinutes < 60 ? $"Hace {(int)diferencia.TotalMinutes} minutos"
+                               : diferencia.TotalHours < 24 ? $"Hace {(int)diferencia.TotalHours} horas"
+                               : "Hoy")
+                            : $"Hace {diasHabiles} días";
+
+                        string fechaInicial = Convert.ToDateTime(row["FechaGestion"]).ToString("dd/MM/yyyy");
+
+                        string tooltip = $"Día inicial: {fechaInicial}&#10;" +
+                                         $"Días calendario: {diferencia.Days}&#10;" +
+                                         $"Día hábil real: {diaHabilReal}&#10;" +
+                                         $"Día hábil mostrado: {diaHabilMostrar} de {totalMeta}&#10;";
+                                         //$"Días restantes: {diasRestantes}";
+
+                        // Icono reloj
+                        string icono = "<i class='fa fa-clock-o'></i>";
+
+                        // Texto visible
+                        string textoVisible = diasRestantes == 0
+                            ? $"<b>Quedan 0 días</b>"
+                            : $"Quedan {diasRestantes} días";
+
+                        // Construcción final
+                        string leyendaFinal =
+                            //$"{icono} {leyendaBase} • Día hábil {diaHabilMostrar} de {totalMeta} • " +
+                            $"<span title='{tooltip}' style='cursor:pointer;'>{textoVisible}</span>";
+
+                        HtmlGenericControl ltTiempo = (HtmlGenericControl)e.Item.FindControl("ltTiempoTranscurrido");
+                        if (ltTiempo != null)
                         {
-                            btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + row.Row[0].ToString());
-                            btnEliminar.Visible = true;
-                        }
-                        ltInfoAfiliado.Text = "No se encontraron planes anteriores para este usuario.";
-                        //if (btnNuevoAfiliado != null)
-                        //{
-                        //    // Este botón se muestra sin permisos adicionales
-                        //    btnNuevoAfiliado.Visible = true;
-                        //}
+                            ltTiempo.InnerHtml = leyendaFinal;       
+                            ltTiempo.Attributes["title"] = tooltip;                           }
                     }
+                    ////////////////////////////////////////////////////////////////////////
                 }
+            }
+            catch (Exception ex)
+            {
+                ltMensaje.Text =
+                   "<div class='alert alert-danger alert-dismissable'>" +
+                   "<button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>" +
+                   "<strong>Error:</strong> " +"Contacte al administrador del sistema "+ ex.Message.ToString() +
+                   "</div>";
+                }
+        }
 
-                if (row["FechaGestion"] != DBNull.Value)
+        private int ObtenerDiasHabiles(DateTime inicio, DateTime fin, List<DateTime> festivos)
+        {
+            try
+            {
+                int diasHabiles = 0;
+
+                DateTime fechaActual = inicio.Date;
+
+                while (fechaActual.Date <= fin.Date)
                 {
-                    DateTime fechaPrimerContacto = Convert.ToDateTime(row["FechaGestion"]);
-                    TimeSpan diferencia = DateTime.Now - fechaPrimerContacto;
+                    bool esFinDeSemana = (fechaActual.DayOfWeek == DayOfWeek.Saturday ||
+                                          fechaActual.DayOfWeek == DayOfWeek.Sunday);
 
-                    string leyenda = "";
-                    if (diferencia.TotalMinutes < 1)
-                        leyenda = "Hace menos de un minuto";
-                    else if (diferencia.TotalMinutes < 60)
-                        leyenda = $"Hace {(int)diferencia.TotalMinutes} minuto{((int)diferencia.TotalMinutes == 1 ? "" : "s")}";
-                    else if (diferencia.TotalHours < 24)
-                        leyenda = $"Hace {(int)diferencia.TotalHours} hora{((int)diferencia.TotalHours == 1 ? "" : "s")}";
-                    else
-                        leyenda = $"Hace {(int)diferencia.TotalDays} día{((int)diferencia.TotalDays == 1 ? "" : "s")}";
+                    bool esFestivo = festivos.Contains(fechaActual.Date);
 
-                    Literal ltTiempo = (Literal)e.Item.FindControl("ltTiempoTranscurrido");
-                    if (ltTiempo != null)
-                        ltTiempo.Text = leyenda;
+                    if (!esFinDeSemana && !esFestivo)
+                        diasHabiles++;
+
+                    fechaActual = fechaActual.AddDays(1);
                 }
+
+                return diasHabiles - 1; // no contar el día de inicio
+            }
+            catch (Exception ex)
+            {
+                ltMensaje.Text =
+                               "<div class='alert alert-danger alert-dismissable'>" +
+                               "<button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>" +
+                               "<strong>Error:</strong> " + ex.Message.ToString() +
+                               "</div>";
+                return 0;
             }
         }
 
 
         protected void ddlPlanes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(ddlPlanes.SelectedValue) || ddlPlanes.SelectedValue == "0")
+            try
             {
-                txbValorPropuesta.Text = "Por favor selecciona un plan válido.";
-                ViewState["precioBase"] = null;
-                ViewState["Meses"] = null;
-                ViewState["MesesCortesia"] = null;
-                ViewState["DebitoAutomatico"] = null;
-                return;
-            }
-
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanes();
-            var fila = dt.Select("IdPlan = " + ddlPlanes.SelectedValue);
-            if (fila.Length > 0)
-            {
-                ViewState["precioBase"] = fila[0]["PrecioBase"];
-                ViewState["precioTotal"] = fila[0]["precioTotal"];
-                ViewState["Meses"] = fila[0]["Meses"];
-                ViewState["MesesCortesia"] = fila[0]["MesesCortesia"];
-                ViewState["DebitoAutomatico"] = fila[0]["DebitoAutomatico"];
-
-                int meses = Convert.ToInt32(ViewState["Meses"]);
-                int cortesia = Convert.ToInt32(ViewState["MesesCortesia"]);
-                int totalMeses = meses + cortesia;
-                double total = Convert.ToDouble(ViewState["precioTotal"]);
-                int precioBase = Convert.ToInt32(ViewState["precioBase"]);
-                int DebitoAutomatico = Convert.ToInt32(ViewState["DebitoAutomatico"]);
-
-                int ValorMes = Convert.ToInt32(fila[0]["PrecioBase"]);
-                txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
-                txbValorMes.Enabled = false;
-
-                string observaciones = fila[0]["DescripcionPlan"].ToString();
-                //txaObservaciones.InnerText = observaciones;
-
-                int mesesPlan = Convert.ToInt32(fila[0]["Meses"]); // Asegúrate que esta columna está en tu tabla
-
-                if (ViewState["DebitoAutomatico"] != null && int.TryParse(ViewState["DebitoAutomatico"].ToString(), out DebitoAutomatico))
+                if (string.IsNullOrEmpty(ddlPlanes.SelectedValue) || ddlPlanes.SelectedValue == "0")
                 {
-                    if (DebitoAutomatico == 1)
-                    {
-                        total = precioBase * 12;
-                    }
+                    txbValorPropuesta.Text = "Por favor selecciona un plan válido.";
+                    ViewState["precioBase"] = null;
+                    ViewState["Meses"] = null;
+                    ViewState["MesesCortesia"] = null;
+                    ViewState["DebitoAutomatico"] = null;
+                    return;
                 }
-                txbValorPropuesta.Text = $"${total:N0}";
+
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarPlanes();
+                var fila = dt.Select("IdPlan = " + ddlPlanes.SelectedValue);
+                if (fila.Length > 0)
+                {
+                    ViewState["precioBase"] = fila[0]["PrecioBase"];
+                    ViewState["precioTotal"] = fila[0]["precioTotal"];
+                    ViewState["Meses"] = fila[0]["Meses"];
+                    ViewState["MesesCortesia"] = fila[0]["MesesCortesia"];
+                    ViewState["DebitoAutomatico"] = fila[0]["DebitoAutomatico"];
+
+                    int meses = Convert.ToInt32(ViewState["Meses"]);
+                    int cortesia = Convert.ToInt32(ViewState["MesesCortesia"]);
+                    int totalMeses = meses + cortesia;
+                    double total = Convert.ToDouble(ViewState["precioTotal"]);
+                    int precioBase = Convert.ToInt32(ViewState["precioBase"]);
+                    int DebitoAutomatico = Convert.ToInt32(ViewState["DebitoAutomatico"]);
+
+                    int ValorMes = Convert.ToInt32(fila[0]["PrecioBase"]);
+                    txbValorMes.Text = ValorMes.ToString("C0", new CultureInfo("es-CO"));
+                    txbValorMes.Enabled = false;
+
+                    string observaciones = fila[0]["DescripcionPlan"].ToString();
+                    //txaObservaciones.InnerText = observaciones;
+
+                    int mesesPlan = Convert.ToInt32(fila[0]["Meses"]); // Asegúrate que esta columna está en tu tabla
+
+                    if (ViewState["DebitoAutomatico"] != null && int.TryParse(ViewState["DebitoAutomatico"].ToString(), out DebitoAutomatico))
+                    {
+                        if (DebitoAutomatico == 1)
+                        {
+                            total = precioBase * 12;
+                        }
+                    }
+                    txbValorPropuesta.Text = $"${total:N0}";
+                }
+            }
+            catch (Exception ex)
+            {
+                ltMensaje.Text =
+                "<div class='alert alert-danger alert-dismissable'>" +
+                "<button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>" +
+                "<strong>Error:</strong> " + ex.Message.ToString() +
+                "</div>";
             }
         }
 
@@ -1133,8 +1424,7 @@ namespace fpWebApp
             string icono = esCelular ? "fab fa-whatsapp" : "fas fa-phone";
             string color = esCelular ? "forestgreen" : "#007bff";
             string enlace = esCelular ? $"https://wa.me/57{telefonoLimpio}" : $"tel:{telefonoLimpio}";
-
-            // 4. Devolver HTML
+            
             return $"<a href='{enlace}' target='_blank'>" +
                    $"<i class='{icono} m-r-xs font-bold' style='color:{color};'></i> {telefonoFormateado}</a>";
         }
@@ -1143,115 +1433,161 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
 
-            bool rta = false;
-            int idAfil = 0;
-            int idcrm = Convert.ToInt32(Request.QueryString["editid"]);
-            Session["idcrm"] = idcrm;
-            string evento = Request.QueryString["evento"];
-            string documento = Request.QueryString["documento"];
-
-            DataTable dt1 = cg.ConsultarContactosCRMPorId(idcrm, out rta);
-            DataTable dt2 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(dt1.Rows[0]["DocumentoAfiliado"].ToString()));
-            if (dt2.Rows.Count > 0)
-                idAfil = Convert.ToInt32(dt2.Rows[0]["IdAfiliado"].ToString());
-
-            // VALIDACIÓN: si ya tiene plan activo, no continuar
-            if (idAfil > 0)
+            try
             {
-                DataTable dtActivo = cg.ConsultarAfiliadoEstadoActivo(idAfil);
-                if (dtActivo.Rows.Count > 0)
-                {
-                    btnAgregar.Enabled = false;
-                    txaObservaciones.Disabled = true;
-                    txbFechaProx.Disabled = true;
-                    txbHoraIni.Disabled = true;
-                    ddlStatusLead.Enabled = false;
-                    hfContador.Visible = false;
 
-                    string script = @"
+                bool rta = false;
+                int idAfil = 0;
+                int idcrm = Convert.ToInt32(Request.QueryString["editid"]);
+                Session["idcrm"] = idcrm;
+                string evento = Request.QueryString["evento"];
+                string documento = Request.QueryString["documento"];
+
+                DataTable dt1 = cg.ConsultarContactosCRMPorId(idcrm, out rta);
+                DataTable dt2 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(dt1.Rows[0]["DocumentoAfiliado"].ToString()));
+                if (dt2.Rows.Count > 0)
+                    idAfil = Convert.ToInt32(dt2.Rows[0]["IdAfiliado"].ToString());
+
+                // VALIDACIÓN: si ya tiene plan activo, no continuar
+                if (idAfil > 0)
+                {
+                    DataTable dtActivo = cg.ConsultarAfiliadoEstadoActivo(idAfil);
+                    if (dtActivo.Rows.Count > 0)
+                    {
+                        btnAgregar.Enabled = false;
+                        txaObservaciones.Disabled = true;
+                        txbFechaProx.Disabled = true;
+                        txbHoraIni.Disabled = true;
+                        ddlStatusLead.Enabled = false;
+                        hfContador.Visible = false;
+
+                        string script = @"
                         Swal.fire({
                             title: 'Afiliado ya tiene plan activo',
                             text: 'No se puede redirigir al proceso de afiliación.',
                             icon: 'warning',
                             confirmButtonText: 'Entendido'
                         });";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "AfiliadoActivo", script, true);
-                  //  return; // 
-                }
-            }
-
-            if (idcrm > 0)
-            {
-                bool salida = false;
-                string mensaje = string.Empty;
-                string respuesta = string.Empty;
-                string mensajeValidacion = string.Empty;
-                if (txaObservaciones.Value == "") txaObservaciones.Value = "Se redirige a proceso de afiliaciones";
-
-
-                if (ddlEmpresa.SelectedItem.Value != "")
-                    ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
-                else
-                    ddlEmpresa.SelectedItem.Value = "0";
-
-                DateTime fecNacCli;
-                System.Text.RegularExpressions.Match match = Regex.Match(txbEdad.Text, @"\d+");
-
-                int edad;
-
-                if (match.Success && int.TryParse(match.Value, out edad))
-                {
-                    txbEdad.Text = edad.ToString(); // Deja solo el número limpio en la caja
-                }
-                else
-                {
-                    edad = 0;
-                    txbEdad.Text = "0";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "AfiliadoActivo", script, true);
+                        //  return; // 
+                    }
                 }
 
-                if (string.IsNullOrEmpty(txbFecNac.Text))
+                if (idcrm > 0)
                 {
-                    fecNacCli = new DateTime(1900, 1, 1);
-                    txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
-                }
-                else
-                {
-                    fecNacCli = DateTime.Parse(txbFecNac.Text);
-                }
-
-                txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
+                    bool salida = false;
+                    string mensaje = string.Empty;
+                    string respuesta = string.Empty;
+                    string mensajeValidacion = string.Empty;
+                    if (txaObservaciones.Value == "") txaObservaciones.Value = "Se redirige a proceso de afiliaciones";
 
 
+                    if (ddlEmpresa.SelectedItem.Value != "")
+                        ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
+                    else
+                        ddlEmpresa.SelectedItem.Value = "0";
 
+                    //DateTime fecNacCli;
+                    //System.Text.RegularExpressions.Match match = Regex.Match(txbEdad.Text, @"\d+");
 
-                try
-                {
-                    respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.Trim().ToUpper(),
-                        txbApellidoContacto.Value.Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.Trim(), @"\D", ""),
-                        txbCorreoContacto.Value.Trim().ToLower(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value),
-                        Convert.ToInt32(ddlStatusLead.SelectedItem.Value), txbFechaPrim.Value, txbFechaProx.Value,
-                        Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "", txaObservaciones.Value.Trim(),
-                        Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value),
-                        Convert.ToInt32(ddlTipoPago.SelectedItem.Value), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value),
-                        Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value), Convert.ToInt32(ddlPlanes.SelectedItem.Value), 0,
-                        Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value), txbDocumento.Text, Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()),
-                        Convert.ToInt32(txbEdad.Text), txbFecNac.Text, Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()),
-                        Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()), out salida, out mensaje);
+                    //int edad;
 
-                    if (salida)
+                    //if (match.Success && int.TryParse(match.Value, out edad))
+                    //{
+                    //    txbEdad.Text = edad.ToString(); // Deja solo el número limpio en la caja
+                    //}
+                    //else
+                    //{
+                    //    edad = 0;
+                    //    txbEdad.Text = "0";
+                    //}
+
+                    //if (string.IsNullOrEmpty(txbFecNac.Text))
+                    //{
+                    //    fecNacCli = new DateTime(1900, 1, 1);
+                    //    txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
+                    //}
+                    //else
+                    //{
+                    //    fecNacCli = DateTime.Parse(txbFecNac.Text);
+                    //}
+
+                    //txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
+
+                    DateTime fecNacCli;
+
+                    // 1. EXTRAER SOLO EL NÚMERO DE LA EDAD
+                    System.Text.RegularExpressions.Match match = Regex.Match(txbEdad.Text, @"\d+");
+                    int edad;
+
+                    if (match.Success && int.TryParse(match.Value, out edad))
                     {
-                        bool existe = false;
+                        txbEdad.Text = edad.ToString();
+                    }
+                    else
+                    {
+                        edad = 0;
+                        txbEdad.Text = "0";
+                    }
 
-                        if (!string.IsNullOrEmpty(documento))
+                    string fechaTexto = txbFecNac.Text.Trim();
+
+                    // Si viene vacía → asignar 1900-01-01
+                    if (string.IsNullOrEmpty(fechaTexto))
+                    {
+                        fecNacCli = new DateTime(1900, 1, 1);
+                    }
+                    else
+                    {
+                        // Formatos permitidos
+                        string[] formatosAceptados = {
+                        "dd/MM/yyyy",   // Colombia
+                        "MM/dd/yyyy",   // USA
+                        "yyyy-MM-dd",   // ISO (input date HTML)
+                        "dd-MM-yyyy",
+                        "MM-dd-yyyy"
+                    };
+
+                        bool ok = DateTime.TryParseExact(fechaTexto, formatosAceptados, CultureInfo.InvariantCulture, DateTimeStyles.None, out fecNacCli);
+
+                        if (!ok)
                         {
-                            DataTable dt = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(documento));
-                            existe = dt.Rows.Count > 0;
+                            // Si no se pudo interpretar, evita reventar el sistema
+                            throw new Exception($"La fecha '{fechaTexto}' no es válida.");
                         }
+                    }
 
-                        string urlRedirect = (existe) ? "editarafiliado" : "nuevoafiliado";
-                        string formulario = (existe) ? "de edición" : "nuevo afiliado";
+                    // 3. Formato final estándar
+                    txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
 
-                        string script = @"
+                    try
+                    {
+                        respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Text.Trim().ToUpper(),
+                            txbApellidoContacto.Value.Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.Trim(), @"\D", ""),
+                            txbCorreoContacto.Value.Trim().ToLower(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value),
+                            Convert.ToInt32(ddlStatusLead.SelectedItem.Value), txbFechaPrim.Value, txbFechaProx.Value,
+                            Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "", txaObservaciones.Value.Trim(),
+                            Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value),
+                            Convert.ToInt32(ddlTipoPago.SelectedItem.Value), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value),
+                            Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value), Convert.ToInt32(ddlPlanes.SelectedItem.Value), 0,
+                            Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value), txbDocumento.Text, Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()),
+                            Convert.ToInt32(txbEdad.Text), txbFecNac.Text, Convert.ToInt32(ddlEstadoVenta.SelectedItem.Value.ToString()),
+                            Convert.ToInt32(ddlEstrategia.SelectedItem.Value.ToString()), out salida, out mensaje);
+
+                        if (salida)
+                        {
+                            bool existe = false;
+
+                            if (!string.IsNullOrEmpty(documento))
+                            {
+                                DataTable dt = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(documento));
+                                existe = dt.Rows.Count > 0;
+                            }
+
+                            string urlRedirect = (existe) ? "editarafiliado" : "nuevoafiliado";
+                            string formulario = (existe) ? "de edición" : "nuevo afiliado";
+
+                            string script = @"
                             Swal.fire({
                                 title: 'Serás redirigido al formulario " + formulario + @"',
                                 text: 'Espera un momento...',
@@ -1263,12 +1599,12 @@ namespace fpWebApp
                                 window.location.href = '" + urlRedirect + @"?idcrm=" + idcrm + @"';
                             });";
 
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                    }
-                    else
-                    {
-                        string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
-                        string script = @"
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                        }
+                        else
+                        {
+                            string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
+                            string script = @"
                             Swal.fire({
                                 title: 'Error',
                                 text: '" + mensaje.Replace("'", "\\'") + @"',
@@ -1278,90 +1614,110 @@ namespace fpWebApp
                                     window.location.href = '" + urlRedirect + @"';
                                 }
                             });";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    //string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
-                    string script = @"
+                    catch (Exception ex)
+                    {
+                        //string urlRedirect = (evento == "1") ? "agendacrm" : "crmnuevocontacto";
+                        string script = @"
                         Swal.fire({
                             title: 'Error',
                             text: 'Ha ocurrido un error inesperado." + ex.Message.ToString() + @"',
                             icon: 'error'
                         });";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                ltMensaje.Text =
+                   "<div class='alert alert-danger alert-dismissable'>" +
+                   "<button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>" +
+                   "<strong>Error:</strong> " + ex.Message.ToString() +
+                   "</div>";
             }
         }
 
 
         protected void ddlAfiliadoOrigen_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ddlAfiliadoOrigen.SelectedItem.Value.ToString() != "")
+            try
             {
-                clasesglobales cg = new clasesglobales();
-                DataTable dt = new DataTable();
-                DataTable dt1 = new DataTable();
-
-                var map = ViewState["DocToIdPreg"] as Dictionary<string, int>;
-                if (map != null && map.TryGetValue(ddlAfiliadoOrigen.SelectedValue, out int idPregestion))
+                if (ddlAfiliadoOrigen.SelectedItem.Value.ToString() != "")
                 {
-                    Session["idPregestion"] = idPregestion;
-                }
+                    clasesglobales cg = new clasesglobales();
+                    DataTable dt = new DataTable();
+                    DataTable dt1 = new DataTable();
 
-                bool esAfiliado = false;
-                Session["esAfiliado"] = esAfiliado.ToString();
-
-
-                int documento = 0;
-                string[] strDocumento = ddlAfiliadoOrigen.SelectedItem.Value.ToString().Split('-');
-                if (int.TryParse(strDocumento[0], out documento))
-                {
-                    dt = cg.ConsultarAfiliadoPorDocumento(documento);
-                }
-
-                dt1 = cg.ConsultarTipoAfiliadoBasico();
-
-                try
-                {
-                    if (dt.Rows.Count > 0)
+                    var map = ViewState["DocToIdPreg"] as Dictionary<string, int>;
+                    if (map != null && map.TryGetValue(ddlAfiliadoOrigen.SelectedValue, out int idPregestion))
                     {
-                        esAfiliado = true;
-                        Session["esAfiliado"] = esAfiliado.ToString();
-                        txbDocumento.Text = documento.ToString();
-                        ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
-                        txbNombreContacto.Value = dt.Rows[0]["NombreAfiliado"].ToString();
-                        txbApellidoContacto.Value = dt.Rows[0]["ApellidoAfiliado"].ToString();
-                        if (dt.Rows[0]["idGenero"].ToString() != "")
-                            ddlGenero.SelectedIndex = Convert.ToInt32(ddlGenero.Items.IndexOf(ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString())));
-                        else
-                            ddlGenero.SelectedItem.Value = "0";
-
-                        DateTime fechaNacimiento = Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]);
-                        DateTime hoy = DateTime.Today;
-
-                        int edad = hoy.Year - fechaNacimiento.Year;
-                        if (fechaNacimiento.Date > hoy.AddYears(-edad))
-                        {
-                            edad--;
-                        }
-
-                        txbFecNac.Text = fechaNacimiento.ToString("dd/MM/yyyy");
-                        txbEdad.Text = edad.ToString() + " años";
-                        txbTelefonoContacto.Value = dt.Rows[0]["CelularAfiliado"].ToString();
-                        txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString();
-                        ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString())));
-                        ddlTiposAfiliado.SelectedValue = "2";//Afiliado en renovación
-
-                        CargarPlanesAfiliadPregestion(dt.Rows[0]["idAfiliado"].ToString());
+                        Session["idPregestion"] = idPregestion;
                     }
-                    dt.Dispose();
+
+                    bool esAfiliado = false;
+                    Session["esAfiliado"] = esAfiliado.ToString();
+
+
+                    int documento = 0;
+                    string[] strDocumento = ddlAfiliadoOrigen.SelectedItem.Value.ToString().Split('-');
+                    if (int.TryParse(strDocumento[0], out documento))
+                    {
+                        dt = cg.ConsultarAfiliadoPorDocumento(documento);
+                    }
+
+                    dt1 = cg.ConsultarTipoAfiliadoBasico();
+
+                    try
+                    {
+                        if (dt.Rows.Count > 0)
+                        {
+                            esAfiliado = true;
+                            Session["esAfiliado"] = esAfiliado.ToString();
+                            txbDocumento.Text = documento.ToString();
+                            ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
+                            txbNombreContacto.Text = dt.Rows[0]["NombreAfiliado"].ToString();
+                            txbApellidoContacto.Value = dt.Rows[0]["ApellidoAfiliado"].ToString();
+                            if (dt.Rows[0]["idGenero"].ToString() != "")
+                                ddlGenero.SelectedIndex = Convert.ToInt32(ddlGenero.Items.IndexOf(ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString())));
+                            else
+                                ddlGenero.SelectedItem.Value = "0";
+
+                            DateTime fechaNacimiento = Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]);
+                            DateTime hoy = DateTime.Today;
+
+                            int edad = hoy.Year - fechaNacimiento.Year;
+                            if (fechaNacimiento.Date > hoy.AddYears(-edad))
+                            {
+                                edad--;
+                            }
+
+                            txbFecNac.Text = fechaNacimiento.ToString("dd/MM/yyyy");
+                            txbEdad.Text = edad.ToString() + " años";
+                            txbTelefonoContacto.Value = dt.Rows[0]["CelularAfiliado"].ToString();
+                            txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString();
+                            ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString())));
+                            ddlTiposAfiliado.SelectedValue = "2";//Afiliado en renovación
+
+                            CargarPlanesAfiliadPregestion(dt.Rows[0]["idAfiliado"].ToString());
+                        }
+                        dt.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        string mensaje = ex.Message.ToString();
+                    }
                 }
-                catch (Exception ex)
-                {
-                    string mensaje = ex.Message.ToString();
-                }
+            }
+            catch (Exception ex)
+            {
+                ltMensaje.Text =
+                   "<div class='alert alert-danger alert-dismissable'>" +
+                   "<button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>" +
+                   "<strong>Error:</strong> " + ex.Message.ToString() +
+                   "</div>";
             }
         }
 
@@ -1369,47 +1725,54 @@ namespace fpWebApp
         public static string ValidarContacto(string documento, int idUsuario)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt2 = cg.ConsultarPoliticaTiempoLeadCRM(documento, 6);
 
-            if (dt2.Rows.Count > 0)
+            try
             {
-                bool tienePlanVendido = false;
-                bool esPropio = false;
-                bool bloqueadoPorOtro = false;
+                DataTable dt2 = cg.ConsultarPoliticaTiempoLeadCRM(documento, 6);
 
-                foreach (DataRow row in dt2.Rows)
+                if (dt2.Rows.Count > 0)
                 {
-                    int idEstadoCRM = Convert.ToInt32(row["idEstadoCRM"]);
-                    int dias = Convert.ToInt32(row["DiasTranscurridos"]);
-                    int idUsuarioCreaCRM = Convert.ToInt32(row["idUsuario"]);
+                    bool tienePlanVendido = false;
+                    bool esPropio = false;
+                    bool bloqueadoPorOtro = false;
 
-                    if (idEstadoCRM == 3)
+                    foreach (DataRow row in dt2.Rows)
                     {
-                        tienePlanVendido = true;
-                        continue;
+                        int idEstadoCRM = Convert.ToInt32(row["idEstadoCRM"]);
+                        int dias = Convert.ToInt32(row["DiasTranscurridos"]);
+                        int idUsuarioCreaCRM = Convert.ToInt32(row["idUsuario"]);
+
+                        if (idEstadoCRM == 3)
+                        {
+                            tienePlanVendido = true;
+                            continue;
+                        }
+                        if (idUsuarioCreaCRM == idUsuario)
+                        {
+                            esPropio = true;
+                        }
+                        if (idUsuarioCreaCRM != idUsuario && dias <= 6)
+                        {
+                            bloqueadoPorOtro = true;
+                        }
                     }
-                    if (idUsuarioCreaCRM == idUsuario)
-                    {
-                        esPropio = true;
-                    }
-                    if (idUsuarioCreaCRM != idUsuario && dias <= 6)
-                    {
-                        bloqueadoPorOtro = true;
-                    }
+
+                    if (tienePlanVendido)
+                        return "planVendido";
+                    else if (esPropio)
+                        return "propio";
+                    else if (bloqueadoPorOtro)
+                        return "bloqueado";
                 }
 
-                if (tienePlanVendido)
-                    return "planVendido";
-                else if (esPropio)
-                    return "propio";
-                else if (bloqueadoPorOtro)
-                    return "bloqueado";
+                return "ok";
             }
 
-            return "ok";
+            catch (Exception ex)
+            {
+                return "Error, contácte al administrador del sistema - " + ex.Message;
+            }
         }
-
-
 
     }
 }

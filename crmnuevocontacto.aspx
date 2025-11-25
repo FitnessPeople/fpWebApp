@@ -242,7 +242,7 @@
                     </div>
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                    <form role="form" id="form" runat="server">
+                    <form role="form" id="form" runat="server" autocomplete="off">
                         <asp:ScriptManager ID="ScriptManager1" runat="server" />
                         <div class="row" id="divContenido" runat="server">
 
@@ -359,8 +359,10 @@
                                                                         <div class="form-group">
                                                                             <i class="fa fa-user-tie text-info"></i>
                                                                             <label for="nombreContacto" class="col-form-label">Nombres:</label>
-                                                                            <input type="text" runat="server" id="txbNombreContacto" class="form-control"
-                                                                                oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
+                                                                           <asp:TextBox ID="txbNombreContacto" runat="server" CssClass="form-control" oninput="validarSoloLetras(this)" 
+                                                                                Style="text-transform: uppercase;" SpellCheck="false"
+                                                                                autocomplete="off">
+                                                                            </asp:TextBox>
                                                                             <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txbNombreContacto"
                                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                                         </div>
@@ -385,7 +387,7 @@
                                                                                 runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                             </asp:DropDownList>
-                                                                            <asp:RequiredFieldValidator ID="rfvGenero" runat="server" ControlToValidate="ddlEstadoVenta"
+                                                                            <asp:RequiredFieldValidator ID="rfvGenero" runat="server" ControlToValidate="ddlGenero"
                                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                                         </div>
                                                                     </div>
@@ -680,7 +682,7 @@
                                                                         <td>Caliente</td>
                                                                         <td><%# Eval("NombrePlan") %></td>
                                                                         <td>
-                                                                            <asp:Literal ID="ltTiempoTranscurrido" runat="server"></asp:Literal></td>
+                                                                            <span id="ltTiempoTranscurrido" runat="server"></span></td>
                                                                         <td>
                                                                             <span title='<%# Eval("NombreEstadoCRM") %>' style='color: <%# Eval("ColorHexaCRM") %>'>
                                                                                 <%# Eval("IconoMinEstadoCRM") %>
@@ -839,7 +841,7 @@
                                                                             <i class="fa-solid fa-phone text-info"></i>
                                                                             <label for="paginaWeb" class="col-form-label">Página web:</label>
                                                                             <input type="text" runat="server" class="form-control" id="txbPaginaWeb"
-                                                                                placeholder="ej: www.fitnesspeoplecolombia.com" spellcheck="false" autocomplete="off"
+                                                                                placeholder="ej: www.fitnesspeoplecmdcolombia.com" spellcheck="false" autocomplete="off"
                                                                                 style="text-transform: lowercase;">
                                                                             <asp:RequiredFieldValidator ID="fvPaginaWeb" runat="server" ControlToValidate="txbPaginaWeb"
                                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" ValidationGroup="agregarE" />

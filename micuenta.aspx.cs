@@ -213,7 +213,10 @@ namespace fpWebApp
             txbEmail.Text = dt.Rows[0]["EmailEmpleado"].ToString();
             txbEmailCorp.Text = dt.Rows[0]["EmailCorporativo"].ToString();
             txbDireccion.Text = dt.Rows[0]["DireccionEmpleado"].ToString();
-            ddlCiudadEmpleado.SelectedIndex = Convert.ToInt32(ddlCiudadEmpleado.Items.IndexOf(ddlCiudadEmpleado.Items.FindByValue(dt.Rows[0]["idCiudadEmpleado"].ToString())));
+            if (dt.Rows[0]["idCiudadEmpleado"].ToString() != "")
+            {
+                ddlCiudadEmpleado.SelectedIndex = Convert.ToInt16(ddlCiudadEmpleado.Items.IndexOf(ddlCiudadEmpleado.Items.FindByText(dt.Rows[0]["idCiudadEmpleado"].ToString())));
+            }
             DateTime dt14 = DateTime.Now.AddYears(-14);
             DateTime dt80 = DateTime.Now.AddYears(-80);
             txbFechaNac.Attributes.Add("min", dt80.Year.ToString() + "-" + String.Format("{0:MM}", dt80) + "-" + String.Format("{0:dd}", dt80));

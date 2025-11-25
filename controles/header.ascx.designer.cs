@@ -15,6 +15,24 @@ namespace fpWebApp.controles
     {
 
         /// <summary>
+        /// Control ltNroMensajes.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltNroMensajes;
+
+        /// <summary>
+        /// Control rpMensajes.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpMensajes;
+
+        /// <summary>
         /// Control ltNroUsuarios.
         /// </summary>
         /// <remarks>

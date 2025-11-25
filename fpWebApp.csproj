@@ -295,6 +295,8 @@
     <Content Include="controles\navbar.ascx" />
     <Content Include="controles\paginasperfil.ascx" />
     <Content Include="controles\rightsidebar.ascx" />
+    <Content Include="correoeliminado.aspx" />
+    <Content Include="correoenviado.aspx" />
     <Content Include="correointerno.aspx" />
     <Content Include="cortesias.aspx" />
     <Content Include="cortesiasAfil.aspx" />
@@ -982,6 +984,7 @@
     <Content Include="plantilla.aspx" />
     <Content Include="procedimientosalmacenados.aspx" />
     <Content Include="procesarfechas.aspx" />
+    <Content Include="procesarfestivos.aspx" />
     <Content Include="productostienda.aspx" />
     <Content Include="profesiones.aspx" />
     <Content Include="prospectocorporativo.aspx" />
@@ -996,6 +999,7 @@
     <Content Include="reportepagosmulticanal.aspx" />
     <Content Include="reportepagosrecurrentes.aspx" />
     <Content Include="reporteventas.aspx" />
+    <Content Include="reporteventasasesor.aspx" />
     <Content Include="respuestaautorizacion.aspx" />
     <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjax.js" />
     <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxApplicationServices.js" />
@@ -1402,6 +1406,20 @@
     </Compile>
     <Compile Include="controles\rightsidebar.ascx.designer.cs">
       <DependentUpon>rightsidebar.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="correoeliminado.aspx.cs">
+      <DependentUpon>correoeliminado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="correoeliminado.aspx.designer.cs">
+      <DependentUpon>correoeliminado.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="correoenviado.aspx.cs">
+      <DependentUpon>correoenviado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="correoenviado.aspx.designer.cs">
+      <DependentUpon>correoenviado.aspx</DependentUpon>
     </Compile>
     <Compile Include="correointerno.aspx.cs">
       <DependentUpon>correointerno.aspx</DependentUpon>
@@ -2015,6 +2033,13 @@
     <Compile Include="procesarfechas.aspx.designer.cs">
       <DependentUpon>procesarfechas.aspx</DependentUpon>
     </Compile>
+    <Compile Include="procesarfestivos.aspx.cs">
+      <DependentUpon>procesarfestivos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="procesarfestivos.aspx.designer.cs">
+      <DependentUpon>procesarfestivos.aspx</DependentUpon>
+    </Compile>
     <Compile Include="productostienda.aspx.cs">
       <DependentUpon>productostienda.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2114,6 +2139,13 @@
     <Compile Include="reporteventas.aspx.designer.cs">
       <DependentUpon>reporteventas.aspx</DependentUpon>
     </Compile>
+    <Compile Include="reporteventasasesor.aspx.cs">
+      <DependentUpon>reporteventasasesor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="reporteventasasesor.aspx.designer.cs">
+      <DependentUpon>reporteventasasesor.aspx</DependentUpon>
+    </Compile>
     <Compile Include="respuestaautorizacion.aspx.cs">
       <DependentUpon>respuestaautorizacion.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2128,6 +2160,7 @@
     <Compile Include="sedes.aspx.designer.cs">
       <DependentUpon>sedes.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Services\RedebanClient.cs" />
     <Compile Include="Services\SiigoClient.cs" />
     <Compile Include="Services\UrlEncryptor.cs" />
     <Compile Include="Services\UsuarioOnline.cs" />
@@ -2180,6 +2213,12 @@
     <Compile Include="traspasosAfil.aspx.designer.cs">
       <DependentUpon>traspasosAfil.aspx</DependentUpon>
     </Compile>
+    <Compile Include="UploadFile.ashx.cs">
+      <DependentUpon>UploadFile.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="UploadImage.ashx.cs">
+      <DependentUpon>UploadImage.ashx</DependentUpon>
+    </Compile>
     <Compile Include="usuarios.aspx.cs">
       <DependentUpon>usuarios.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2205,6 +2244,8 @@
     <Folder Include="docs\incapacidades\" />
     <Folder Include="docs\traspasos\" />
     <Folder Include="img\contratos\" />
+    <Folder Include="img\correo\docs\" />
+    <Folder Include="img\correo\images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\bootstrap.css.map" />
@@ -2230,6 +2271,8 @@
     <Content Include="js\plugins\justified-gallery\README.md" />
     <Content Include="js\plugins\topojson\LICENSE" />
     <None Include="packages.config" />
+    <Content Include="UploadImage.ashx" />
+    <Content Include="UploadFile.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

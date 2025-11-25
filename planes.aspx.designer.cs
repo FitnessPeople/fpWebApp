@@ -114,22 +114,22 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDescripcion;
 
         /// <summary>
-        /// Control txbPrecioBase.
+        /// Control txbPrecioTotal.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbPrecioBase;
+        protected global::System.Web.UI.WebControls.TextBox txbPrecioTotal;
 
         /// <summary>
-        /// Control rfvPrecioBase.
+        /// Control rfvPrecioTotal.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPrecioBase;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPrecioTotal;
 
         /// <summary>
         /// Control txbDiasCongelamiento.
@@ -150,22 +150,22 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDiasCongelamiento;
 
         /// <summary>
-        /// Control txbPrecioTotal.
+        /// Control txbPrecioMinimo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbPrecioTotal;
+        protected global::System.Web.UI.WebControls.TextBox txbPrecioMinimo;
 
         /// <summary>
-        /// Control rfvPrecioTotal.
+        /// Control rfvPrecioMinimo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPrecioTotal;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPrecioMinimo;
 
         /// <summary>
         /// Control txbMeses.
@@ -231,6 +231,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.CheckBox cbPermanente;
 
         /// <summary>
+        /// Control cbDebitoAutomatico.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbDebitoAutomatico;
+
+        /// <summary>
         /// Control txbFechaInicial.
         /// </summary>
         /// <remarks>
@@ -267,13 +276,22 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvFechaFinal;
 
         /// <summary>
-        /// Control cbDebitoAutomatico.
+        /// Control cbVisibleWeb.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbDebitoAutomatico;
+        protected global::System.Web.UI.WebControls.CheckBox cbVisibleWeb;
+
+        /// <summary>
+        /// Control cbVisibleCRM.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbVisibleCRM;
 
         /// <summary>
         /// Control btnAgregar.

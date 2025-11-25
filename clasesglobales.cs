@@ -2403,6 +2403,98 @@ namespace fpWebApp
 
         #endregion
 
+        #region Festivos
+
+        public DataTable ConsultarDiasFestivos()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_DIAS_FESTIVOS", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+            return dt;
+        }
+
+        public DataTable ConsultarDiasFestivosPorAnnio(int Annio)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_DIAS_FESTIVOS_POR_ANIO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;                       
+                        cmd.Parameters.AddWithValue("@p_anio", Annio);
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+            return dt;
+        }
+
+
+        public void InsertarFestivo(string titulo, DateTime fecha)
+        {
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection conn = new MySqlConnection(strConexion))
+                {
+                    conn.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_DIA_FESTIVO", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_Titulo", titulo);
+                        cmd.Parameters.AddWithValue("@p_Fecha", fecha.Date);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error insertando festivo: " + ex.Message);
+            }
+        }
+
+
+        #endregion
+
         #region Perfiles
         public DataTable ConsultarPerfiles()
         {
@@ -4907,6 +4999,55 @@ namespace fpWebApp
             return date;
         }
 
+
+        public DataTable ConsultarPagosPorTipoPorAsesor(int idUsuario, int tipoPago,  string fechaIni, string fechaFin, out decimal valorTotal)
+        {
+            DataTable dt = new DataTable();
+            valorTotal = 0;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PAGOS_ASESOR", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Parámetros de entrada
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_tipo_pago", tipoPago);
+                        cmd.Parameters.AddWithValue("@p_fecha_ini", fechaIni);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", fechaFin);
+
+                        // Parámetro de salida
+                        MySqlParameter ValorTotal = new MySqlParameter("@p_total_valor", MySqlDbType.Decimal);
+                        ValorTotal.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(ValorTotal);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+
+                            if (ValorTotal.Value != DBNull.Value)
+                            {
+                                valorTotal = Convert.ToDecimal(ValorTotal.Value);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
         #endregion
 
         #region Planes
@@ -5037,9 +5178,9 @@ namespace fpWebApp
             return dt;
         }
 
-        public string InsertarPlan(string nombrePlan, string descripcionPlan, int precioTotal, int precioBase, int meses,
-            int mesesCortesia, string color, int idUsuario, double diasCongelamiento, string fechaInicio,
-            string fechaFinal, int permanente, int debitoAutomatico)
+        public string InsertarPlan(string nombrePlan, string descripcionPlan, int precioTotal, int precioMinimo, int precioBase, 
+            int meses, int mesesCortesia, string color, int idUsuario, double diasCongelamiento, string fechaInicio,
+            string fechaFinal, int permanente, int debitoAutomatico, int visibleWeb, int visibleCRM)
         {
             string respuesta = string.Empty;
             try
@@ -5054,6 +5195,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_nombre", nombrePlan);
                         cmd.Parameters.AddWithValue("@p_descripcion", descripcionPlan);
                         cmd.Parameters.AddWithValue("@p_precio_total", precioTotal);
+                        cmd.Parameters.AddWithValue("@p_precio_minimo", precioMinimo);
                         cmd.Parameters.AddWithValue("@p_precio_base", precioBase);
                         cmd.Parameters.AddWithValue("@p_meses", meses);
                         cmd.Parameters.AddWithValue("@p_meses_cortesia", mesesCortesia);
@@ -5064,6 +5206,8 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
                         cmd.Parameters.AddWithValue("@p_permanente", permanente);
                         cmd.Parameters.AddWithValue("@p_debito_automatico", debitoAutomatico);
+                        cmd.Parameters.AddWithValue("@p_visible_web", visibleWeb);
+                        cmd.Parameters.AddWithValue("@p_visible_CRM", visibleCRM);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -5078,8 +5222,9 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarPlan(int idPlan, string nombre, string descripcion, int precioTotal, int precioBase, int meses, int mesesCortesia,
-            string color, int idUsuario, int diasCongelamiento, string fechaInicial, string fechaFinal, int permanente, int debitoAutomatico)
+        public string ActualizarPlan(int idPlan, string nombre, string descripcion, int precioTotal, int precioMinimo, 
+            int precioBase, int meses, int mesesCortesia, string color, int idUsuario, int diasCongelamiento, 
+            string fechaInicial, string fechaFinal, int permanente, int debitoAutomatico, int visibleWeb, int visibleCRM)
         {
             string respuesta = string.Empty;
             try
@@ -5099,6 +5244,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_nombre", nombre);
                         cmd.Parameters.AddWithValue("@p_descripcion", descripcion);
                         cmd.Parameters.AddWithValue("@p_precio_total", precioTotal);
+                        cmd.Parameters.AddWithValue("@p_precio_minimo", precioMinimo);
                         cmd.Parameters.AddWithValue("@p_precio_base", precioBase);
                         cmd.Parameters.AddWithValue("@p_meses", meses);
                         cmd.Parameters.AddWithValue("@p_meses_cortesia", mesesCortesia);
@@ -5109,6 +5255,8 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_fecha_final", fechaFinal);
                         cmd.Parameters.AddWithValue("@p_permanente", permanente);
                         cmd.Parameters.AddWithValue("@p_debito_automatico", debitoAutomatico);
+                        cmd.Parameters.AddWithValue("@p_visible_web", visibleWeb);
+                        cmd.Parameters.AddWithValue("@p_visible_CRM", visibleCRM);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -10738,6 +10886,37 @@ namespace fpWebApp
             }
             return dt;
         }
+
+        public DataTable ConsultarIdAfiliadoPlanPorIdAfiliado(int idAfiliado)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_ID_AFILIADO_PLAN_POR_ID_AFILIADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_afiliado", idAfiliado);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+            return dt;
+        }
         #endregion
 
         #region Medios de pago
@@ -11617,6 +11796,42 @@ namespace fpWebApp
                 dt.Rows.Add(ex.Message);
             }
 
+            return dt;
+        }
+
+        #endregion
+
+        #region Redeban
+
+        // Redeban - Datáfonos
+        public DataTable ConsultarDatafonoPorCodigo(string codDatafono)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_DATAFONO_POR_CODIGO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_cod_datafono", codDatafono);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
             return dt;
         }
 

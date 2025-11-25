@@ -341,12 +341,17 @@
 
                                                 <%--Otras columnas--%>
                                                 <asp:BoundField DataField="IdAfiliado" HeaderText="ID" Visible="false" />
+                                                <asp:BoundField DataField="DocumentoAfiliado" HeaderText="DocumentoAfiliado" Visible="false" />
                                                 <asp:BoundField DataField="NombreAfiliado" HeaderText="Nombres"
                                                     SortExpression="NombreAfiliado" />
                                                 <asp:BoundField DataField="ApellidoAfiliado" HeaderText="Apellidos"
                                                     SortExpression="ApellidoAfiliado" />
-                                                <asp:BoundField DataField="DocumentoAfiliado" HeaderText="Documento"
-                                                    SortExpression="DocumentoAfiliado" />
+                                                <%--<asp:BoundField DataField="DocumentoAfiliado" HeaderText="Documento"
+                                                    SortExpression="DocumentoAfiliado" />--%>
+                                                <asp:HyperLinkField 
+                                                    DataTextField="DocumentoAfiliado"
+                                                    DataNavigateUrlFields="DocumentoAfiliado"
+                                                    DataNavigateUrlFormatString="~/detalleafiliado.aspx?search={0}" />
                                                 <asp:BoundField DataField="idTipoDocumento" HeaderText="TipoDocumento"
                                                     SortExpression="idTipoDocumento" Visible="False" />
                                                 <asp:BoundField DataField="CelularAfiliado" HeaderText="Celular"

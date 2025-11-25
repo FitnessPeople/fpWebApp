@@ -186,7 +186,7 @@
             </li>--%>
             <asp:Literal ID="ltMenuCalendario" runat="server"></asp:Literal>
             <li class="special_link">
-                <a href="https://fitnesspeoplecolombia.com" target="_blank"><i class="fa fa-star"></i><span class="nav-label">Fitness People WebPage</span></a>
+                <a href="https://fitnesspeoplecmdcolombia.com" target="_blank"><i class="fa fa-star"></i><span class="nav-label">Fitness People WebPage</span></a>
             </li>
         </ul>
 

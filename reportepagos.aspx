@@ -267,6 +267,8 @@
                                     <div class="ibox-title">
                                         <h5>Reporte de ingresos por afiliado:</h5>
                                         <div class="ibox-tools">
+                                            <span class='badge badge-info'><i class="fa fa-star"></i> Nuevo</span>
+                                            <span class='badge badge-warning'><i class="fa fa-rotate"></i> Renovado</span>
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
                                             </a>
@@ -338,7 +340,7 @@
                                                     <th data-breakpoints="xs sm md">Plan</th>
                                                     <th data-breakpoints="xs sm md">Referencia</th>
                                                     <th data-breakpoints="xs sm md">Fecha</th>
-                                                    <th data-breakpoints="xs sm md">Estado</th>
+                                                    <%--<th data-breakpoints="xs sm md">Estado</th>--%>
                                                     <th data-breakpoints="xs sm md">Usuario</th>
                                                     <th data-breakpoints="xs sm md">Canal</th>
                                                     <th data-breakpoints="xs sm md">Detalle</th>
@@ -353,15 +355,15 @@
                                                             <td><%# Eval("NombreAfiliado") %></td>
                                                             <td><%# Eval("Valor", "{0:C0}") %></td>
                                                             <td><%# Eval("NombreMedioPago") %></td>
-                                                            <td><%# Eval("NombrePlan") %></td>
+                                                            <td><i class='fa fa-<%# Eval("icono") %> text-<%# Eval("badge") %>'></i> <%# Eval("NombrePlan") %></td>
                                                             <td><%# Eval("IdReferencia") %></td>
                                                             <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
-                                                            <td><%# Eval("EstadoPago") %></td>
+                                                            <%--<td><%# Eval("EstadoPago") %></td>--%>
                                                             <td><%# Eval("Usuario") %></td>
                                                             <td><%# Eval("CanalVenta") %></td>
                                                             <td>
                                                                 <asp:Button ID="btnDetalle" runat="server" Text="Ver"
-                                                                    CssClass="btn btn-primary"
+                                                                    CssClass="btn btn-primary btn-sm"
                                                                     CommandArgument='<%# Eval("idAfiliadoPlan") %>'
                                                                     OnCommand="btnDetalle_Command"
                                                                     CommandName="mostrarDetalle"

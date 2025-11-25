@@ -106,20 +106,20 @@ namespace fpWebApp
                 strLimit = "1000";
             }
             
-            if (ddlDias.SelectedItem.Value.ToString() == "-30")
-            {
-                strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) <= -30 ";
-            }
+            //if (ddlDias.SelectedItem.Value.ToString() == "-30")
+            //{
+            //    strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) <= -30 ";
+            //}
 
-            if (ddlDias.SelectedItem.Value.ToString() == "30")
-            {
-                strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) > -30 AND DATEDIFF(FechaFinalPlan, CURDATE()) < 30 ";
-            }
+            //if (ddlDias.SelectedItem.Value.ToString() == "30")
+            //{
+            //    strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) > -30 AND DATEDIFF(FechaFinalPlan, CURDATE()) < 30 ";
+            //}
 
-            if (ddlDias.SelectedItem.Value.ToString() == "31")
-            {
-                strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) > 31 ";
-            }
+            //if (ddlDias.SelectedItem.Value.ToString() == "31")
+            //{
+            //    strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) > 31 ";
+            //}
 
             string strQuery = "SELECT *, " +
                 "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) IS NOT NULL, CONCAT('(',TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()),')'),'<i class=\"fa fa-circle-question m-r-lg m-l-lg\"></i>') AS edad, " +
@@ -141,7 +141,7 @@ namespace fpWebApp
                 "WHERE (DocumentoAfiliado like '%" + strParam + "%' " +
                 "OR NombreAfiliado like '%" + strParam + "%' " +
                 "OR EmailAfiliado like '%" + strParam + "%' " +
-                "OR CelularAfiliado like '%" + strParam + "%') " + strQueryAdd + " " + strQueryAdd2 + " " +
+                "OR CelularAfiliado like '%" + strParam + "%') " + strQueryAdd + " " +
                 "ORDER BY a.idAfiliado DESC " +
                 "LIMIT " + strLimit + "";
             clasesglobales cg = new clasesglobales();

@@ -191,7 +191,7 @@
                                                 </asp:DropDownList>
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <%--<div class="form-group">
                                             <label class="col-lg-2 control-label">Días:</label>
                                             <div class="col-lg-10">
                                                 <asp:DropDownList ID="ddlDias" runat="server" AppendDataBoundItems="true"
@@ -203,7 +203,7 @@
                                                     <asp:ListItem Text="Más de 30 días por vencer" Value="31"></asp:ListItem>
                                                 </asp:DropDownList>
                                             </div>
-                                        </div>
+                                        </div>--%>
                                     </div>
 
                                     <div class="col-lg-4 form-horizontal">
@@ -218,11 +218,11 @@
                                             href="imprimirafiliados" visible="false" title="Exportar">
                                             <i class="fa fa-file-excel m-r-xs"></i>EXCEL
                                         </a>
-                                        <asp:LinkButton ID="lnkAsignar" runat="server" Style="font-size: 12px;"
+                                        <%--<asp:LinkButton ID="lnkAsignar" runat="server" Style="font-size: 12px;"
                                             CssClass="btn btn-primary pull-right dim m-l-md" Visible="true"
                                             OnClick="lnkAsignar_Click">
                                             <i class="fa fa-user-plus m-r-xs"></i>ASIGNAR
-                                        </asp:LinkButton>
+                                        </asp:LinkButton>--%>
                                     </div>
 
                                 </div>

@@ -1,4 +1,4 @@
-﻿    <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="planesAfiliado.aspx.cs" Inherits="fpWebApp.planesAfiliado" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="planesAfiliado.aspx.cs" Inherits="fpWebApp.planesAfiliado" Async="true" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
@@ -41,18 +41,10 @@
 
     <script>
         function changeClass() {
-            // Activa el menú principal
             var element1 = document.querySelector("#afiliados");
-            if (element1) {
-                element1.classList.add("active");
-            }
-
-            // Despliega el submenú
+            element1.classList.replace("old", "active");
             var element2 = document.querySelector("#afiliados2");
-            if (element2) {
-                element2.classList.add("show"); // en Bootstrap el desplegado es con "show"
-                element2.classList.remove("collapse");
-            }
+            element2.classList.remove("collapse");
         }
     </script>
 </head>
@@ -213,12 +205,14 @@
                                     <tr>
                                         <td><strong><i class="fa fa-building m-r-sm"></i></strong>Sede: 
                                             <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
-                                        <td><strong><asp:Literal ID="ltAsistencias" runat="server"></asp:Literal></strong> Asistencias</td>
+                                        <td><strong>
+                                            <asp:Literal ID="ltAsistencias" runat="server"></asp:Literal></strong> Asistencias</td>
                                     </tr>
                                     <tr>
                                         <td><strong><i class="fa fa-cake m-r-sm"></i></strong>
                                             <asp:Literal ID="ltCumple" runat="server"></asp:Literal></td>
-                                        <td><strong><asp:Literal ID="ltCongelaciones" runat="server"></asp:Literal></strong> Congelaciones</td>
+                                        <td><strong>
+                                            <asp:Literal ID="ltCongelaciones" runat="server"></asp:Literal></strong> Congelaciones</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -274,6 +268,7 @@
                                                         <div class="form-group">
                                                             <%--<label>Tipo de plan:</label>--%>
                                                             <div class="form-group">
+                                                                <asp:Timer ID="tmrRespuesta" runat="server" Interval="4000" Enabled="false" OnTick="tmrRespuesta_Tick" />
                                                                 <%--<asp:PlaceHolder ID="phPlanes" runat="server"></asp:PlaceHolder>--%>
                                                                 <table class="footable table table-striped" data-paging-size="10"
                                                                     data-filter-min="3" data-filter-placeholder="Buscar"
@@ -438,12 +433,6 @@
                                                                         <hr />
                                                                         <asp:Literal ID="ltCortesias" runat="server"></asp:Literal>
                                                                         <asp:Literal ID="ltRegalos" runat="server"></asp:Literal>
-                                                                        <asp:Label ID="lbEnlaceWompi" runat="server"></asp:Label>
-                                                                        <asp:HiddenField ID="hdEnlaceWompi" runat="server" />
-                                                                        <button class="btn btn-success btn-circle" visible="false" id="btnPortapaleles"
-                                                                            onclick="copyToClipboard()" runat="server" title="Copiar enlace">
-                                                                            <i class="fa fa-copy"></i>
-                                                                        </button>
                                                                     </p>
                                                                 </div>
                                                             </div>
@@ -458,94 +447,131 @@
                                                                 <label>Fecha de inicio:</label>
                                                                 <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm" runat="server" name="txbFechaInicio"></asp:TextBox>
                                                             </div>
-                                                            <label><strong>Seleccione un método de pago:</strong></label>
-                                                            <asp:RadioButtonList ID="rblMetodoPago" runat="server" RepeatDirection="Horizontal" CssClass="form-control input-sm" onchange="mostrarMetodoSeleccionado(this)">
-                                                                <asp:ListItem Text="Pago en línea&nbsp;&nbsp;&nbsp;" Value="wompi" />
-                                                                <asp:ListItem Text="Datafono&nbsp;&nbsp;&nbsp;" Value="datafono" />
-                                                                <asp:ListItem Text="Efectivo&nbsp;&nbsp;&nbsp;" Value="efectivo" />
-                                                                <asp:ListItem Text="Transferencia" Value="transferencia" />
+                                                            <%--<label><strong>Seleccione un método de pago:</strong></label>--%>
+                                                            <asp:RadioButtonList ID="rblMetodoPago" runat="server" RepeatDirection="Horizontal" CssClass="form-control input-sm" onchange="mostrarMetodoSeleccionado(this)" Visible="false">
+                                                                <asp:ListItem Text="&nbsp;Pago en línea&nbsp;&nbsp;&nbsp;" Value="wompi" />
+                                                                <asp:ListItem Text="&nbsp;Datafono&nbsp;&nbsp;&nbsp;" Value="datafono" />
+                                                                <asp:ListItem Text="&nbsp;Efectivo&nbsp;&nbsp;&nbsp;" Value="efectivo" />
+                                                                <asp:ListItem Text="&nbsp;Transferencia" Value="transferencia" />
                                                                 <%--<asp:ListItem Text="Pago mixto" Value="combinado" />--%>
                                                             </asp:RadioButtonList>
                                                         </div>
 
+                                                        <ul class="sortable-list connectList agile-list" id="todo">
+                                                            <li class="warning-element" id="task1">
+                                                                <label><i class="fa fa-laptop m-r-xs"></i>Pago en línea:</label>
+                                                                <div class="agile-detail">
+                                                                    <div class="row">
+                                                                        <div class="col-lg-5">
+                                                                            Enlace de pago: 
+                                                                            <asp:Label ID="lbEnlaceWompi" runat="server"></asp:Label>
+                                                                            <asp:HiddenField ID="hdEnlaceWompi" runat="server" />
+                                                                            <button class="btn btn-success btn-circle" visible="false" id="btnPortapaleles"
+                                                                                onclick="copyToClipboard()" runat="server" title="Copiar enlace">
+                                                                                <i class="fa fa-copy"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="col-lg-3">
+                                                                            <a class="dropdown-toggle count-info" data-toggle="modal" href="#" data-target="#ModalDetalleWompi">Verificar pago...</a>
+                                                                        </div>
+                                                                        <div class="col-lg-4">
+                                                                            <asp:TextBox ID="txbWompi" CssClass="form-control input-sm"
+                                                                            runat="server" OnTextChanged="txbWompi_TextChanged" Text="$0"
+                                                                            onclick="if(this.value === '$0') this.value=''" placeholder="$0"
+                                                                            onkeyup="formatCurrency(this)" autocomplete="off"
+                                                                            onblur="if(this.value.replace(/\D/g, '') === '') this.value = '$0'; else keepFormatted(this);"
+                                                                            AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li class="success-element" id="task2">
+                                                               <label><i class="fa fa-credit-card m-r-xs"></i>Pago por Datafono:</label>
+                                                                <div class="row">
+                                                                    <div class="col-lg-8">
+                                                                        <asp:TextBox ID="txbNroAprobacion" CssClass="form-control input-sm"
+                                                                            runat="server" placeholder="Ref."></asp:TextBox>
+                                                                    </div>
+                                                                    <div class="col-lg-4">
+                                                                        <asp:TextBox ID="txbDatafono" CssClass="form-control input-sm"
+                                                                            runat="server" OnTextChanged="txbDatafono_TextChanged" Text="$0"
+                                                                            onclick="if(this.value === '$0') this.value=''" placeholder="$0"
+                                                                            onkeyup="formatCurrency(this)" autocomplete="off"
+                                                                            onblur="if(this.value.replace(/\D/g, '') === '') this.value = '$0'; else keepFormatted(this);"
+                                                                            AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li class="info-element" id="task3">
+                                                                <label><i class="fa fa-money-bill-wave m-r-xs"></i>Pago en Efectivo:</label>
+                                                                <div class="row">
+                                                                    <div class="col-lg-8"></div>
+                                                                    <div class="col-lg-4">
+                                                                        <asp:TextBox ID="txbEfectivo" CssClass="form-control input-sm"
+                                                                            runat="server" OnTextChanged="txbEfectivo_TextChanged" Text="$0"
+                                                                            onclick="if(this.value === '$0') this.value=''" placeholder="$0"
+                                                                            onkeyup="formatCurrency(this)" autocomplete="off"
+                                                                            onblur="if(this.value.replace(/\D/g, '') === '') this.value = '$0'; else keepFormatted(this);"
+                                                                            AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li class="danger-element" id="task4">
+                                                                <label><i class="fa fa-university m-r-xs"></i>Pago por Transferencia:</label>
+                                                                <div class="row">
+                                                                    <div class="col-lg-8">
+                                                                        <asp:RadioButtonList ID="rblBancos" runat="server"
+                                                                            RepeatDirection="Horizontal" CssClass="form-control input-sm">
+                                                                            <asp:ListItem Text="&nbsp;&nbsp;Bancolombia" Value="Bancolombia" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                                            <asp:ListItem Text="&nbsp;&nbsp;Davivienda" Value="Davivienda" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                                            <asp:ListItem Text="&nbsp;&nbsp;BBVA" Value="BBVA" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                                        </asp:RadioButtonList>
+                                                                    </div>
+                                                                    <div class="col-lg-4">
+                                                                        <asp:TextBox ID="txbTransferencia" CssClass="form-control input-sm"
+                                                                            runat="server" OnTextChanged="txbTransferencia_TextChanged" Text="$0"
+                                                                            onclick="if(this.value === '$0') this.value=''" placeholder="$0"
+                                                                            onkeyup="formatCurrency(this)" autocomplete="off"
+                                                                            onblur="if(this.value.replace(/\D/g, '') === '') this.value = '$0'; else keepFormatted(this);"
+                                                                            AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+
                                                         <!-- Contenedor Wompi -->
-                                                        <div id="divWompi" class="form-group metodo-pago" style="display: none;">
-                                                            <label><i class="fa fa-credit-card m-r-sm"></i>Pago en línea:</label>
+                                                        <%--<div id="divWompi" class="form-group metodo-pago">
+                                                            <label><i class="fa fa-credit-card m-r-xs"></i>Pago en línea:</label>
                                                             <div class="row">
-                                                                <div class="col-lg-8">
-                                                                    <a class="dropdown-toggle count-info" data-toggle="modal" href="#" data-target="#ModalDetalleWompi">Verificar pago...</a>
+                                                                <div class="col-lg-4">
+                                                                    
                                                                 </div>
                                                                 <div class="col-lg-4">
-                                                                    <asp:TextBox ID="txbWompi" CssClass="form-control input-sm"
-                                                                        runat="server" OnTextChanged="txbWompi_TextChanged" Text="$0"
-                                                                        onclick="if(this.value === '$0') this.value=''" placeholder="$0"
-                                                                        onkeyup="formatCurrency(this)" autocomplete="off"
-                                                                        onblur="if(this.value.replace(/\D/g, '') === '') this.value = '$0'; else keepFormatted(this);"
-                                                                        AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
+                                                                    
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div>--%>
 
                                                         <!-- Contenedor Datafono -->
-                                                        <div id="divDatafono" class="form-group metodo-pago" style="display: none;">
-                                                            <label><i class="fa fa-credit-card"></i>Pago por Datafono:</label>
-                                                            <div class="row">
-                                                                <div class="col-lg-8">
-                                                                    <asp:TextBox ID="txbNroAprobacion" CssClass="form-control input-sm"
-                                                                        runat="server" placeholder="Ref."></asp:TextBox>
-                                                                </div>
-                                                                <div class="col-lg-4">
-                                                                    <asp:TextBox ID="txbDatafono" CssClass="form-control input-sm"
-                                                                        runat="server" OnTextChanged="txbDatafono_TextChanged" Text="$0"
-                                                                        onclick="if(this.value === '$0') this.value=''" placeholder="$0"
-                                                                        onkeyup="formatCurrency(this)" autocomplete="off"
-                                                                        onblur="if(this.value.replace(/\D/g, '') === '') this.value = '$0'; else keepFormatted(this);"
-                                                                        AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        <%--<div id="divDatafono" class="form-group metodo-pago" style="display: none;">
+                                                            
+                                                        </div>--%>
 
                                                         <!-- Contenedor Efectivo -->
-                                                        <div id="divEfectivo" class="form-group metodo-pago" style="display: none;">
-                                                            <label><i class="fa fa-money-bill-wave"></i>Pago en Efectivo:</label>
-                                                            <div class="row">
-                                                                <div class="col-lg-8"></div>
-                                                                <div class="col-lg-4">
-                                                                    <asp:TextBox ID="txbEfectivo" CssClass="form-control input-sm"
-                                                                        runat="server" OnTextChanged="txbEfectivo_TextChanged" Text="$0"
-                                                                        onclick="if(this.value === '$0') this.value=''" placeholder="$0"
-                                                                        onkeyup="formatCurrency(this)" autocomplete="off"
-                                                                        onblur="if(this.value.replace(/\D/g, '') === '') this.value = '$0'; else keepFormatted(this);"
-                                                                        AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        <%--<div id="divEfectivo" class="form-group metodo-pago">
+                                                            
+                                                        </div>--%>
 
                                                         <!-- Contenedor Transferencia -->
-                                                        <div id="divTransferencia" class="form-group metodo-pago" style="display: none;">
-                                                            <label><i class="fa fa-university"></i>Pago por Transferencia:</label>
-                                                            <div class="row">
-                                                                <div class="col-lg-8">
-                                                                    <asp:RadioButtonList ID="rblBancos" runat="server"
-                                                                        RepeatDirection="Horizontal" CssClass="form-control input-sm">
-                                                                        <asp:ListItem Text="Bancolombia" Value="Bancolombia" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                        <asp:ListItem Text="Davivienda" Value="Davivienda" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                        <asp:ListItem Text="BBVA" Value="BBVA" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                    </asp:RadioButtonList>
-                                                                </div>
-                                                                <div class="col-lg-4">
-                                                                    <asp:TextBox ID="txbTransferencia" CssClass="form-control input-sm"
-                                                                        runat="server" OnTextChanged="txbTransferencia_TextChanged" Text="$0"
-                                                                        onclick="if(this.value === '$0') this.value=''" placeholder="$0"
-                                                                        onkeyup="formatCurrency(this)" autocomplete="off"
-                                                                        onblur="if(this.value.replace(/\D/g, '') === '') this.value = '$0'; else keepFormatted(this);"
-                                                                        AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        <%--<div id="divTransferencia" class="form-group metodo-pago">
+                                                            
+                                                        </div>--%>
 
                                                         <!-- Contenedor Pago Combinado -->
-<%--                                                        <div id="divCombinado" class="form-group metodo-pago" style="display: none;">
+                                                        <%--                                                        <div id="divCombinado" class="form-group metodo-pago" style="display: none;">
                                                             <label><i class="fa fa-random"></i>Seleccione los métodos y montos:</label>
 
                                                             <!-- Puedes incluir los métodos reutilizando los mismos controles o duplicando en este div -->
@@ -607,11 +633,6 @@
                                                                     runat="server" ReadOnly Style="text-align: right;"></asp:TextBox>
                                                             </div>
                                                         </div>
-
-
-
-
-
                                                     </div>
                                                 </div>
 
@@ -619,9 +640,10 @@
                                                     <button id="btnCancelar" class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='afiliados'" runat="server"><strong>Cancelar</strong></button>
                                                     <button id="btnVolver" runat="server" type="button" class="btn btn-sm btn-info pull-right m-t-n-xs" onclick="window.location.href='agendacrm.aspx';">
                                                         Regresar a Agenda CRM</button>
-                                                    <asp:LinkButton ID="lbAgregarPlan" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" OnClick="lbAgregarPlan_Click">
-                                                        <i class="fa fa-ticket"></i> Agregar plan</asp:LinkButton>
-
+                                                    <asp:LinkButton ID="lbAgregarPlan" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right"
+                                                        OnClick="lbAgregarPlan_Click" OnClientClick="return confirmarVenta(event);">
+                                                        <i class="fa fa-ticket"></i> Agregar plan
+                                                    </asp:LinkButton>
                                                 </div>
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
@@ -687,10 +709,10 @@
             navigator.clipboard.writeText(copyText.value);
         }
 
-        var ddlRegalos = document.getElementById("ddlRegalos");
-        var check15 = document.getElementById("check15");
-        ddlRegalos.setAttribute("disabled", true);
-        check15.setAttribute("checked", false);
+        //var ddlRegalos = document.getElementById("ddlRegalos");
+        //var check15 = document.getElementById("check15");
+        //ddlRegalos.setAttribute("disabled", true);
+        //check15.setAttribute("checked", false);
 
 
 
@@ -729,30 +751,61 @@
 
     </script>
 
-<script type="text/javascript">
-    function mostrarMetodoSeleccionado(radioList) {
-        // Obtener el valor seleccionado
-        const seleccion = radioList.querySelector('input[type=radio]:checked').value;
+    <script type="text/javascript">
+        function mostrarMetodoSeleccionado(radioList) {
+            // Obtener el valor seleccionado
+            const seleccion = radioList.querySelector('input[type=radio]:checked').value;
 
-        // Ocultar todos los contenedores de método de pago
-        document.querySelectorAll('.metodo-pago').forEach(div => {
-            div.style.display = 'none';
+            // Ocultar todos los contenedores de método de pago
+            document.querySelectorAll('.metodo-pago').forEach(div => {
+                div.style.display = 'none';
+            });
+
+            // Mostrar el contenedor correspondiente
+            const divId = 'div' + seleccion.charAt(0).toUpperCase() + seleccion.slice(1); // ej: 'combinado' -> 'divCombinado'
+            const selectedDiv = document.getElementById(divId);
+            if (selectedDiv) {
+                selectedDiv.style.display = 'block';
+            }
+        }
+
+        // Ejecutar al cargar la página
+        window.onload = function () {
+            const rbl = document.getElementById('<%= rblMetodoPago.ClientID %>');
+            if (rbl) mostrarMetodoSeleccionado(rbl);
+        };
+    </script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function confirmarVenta(e) {
+
+        // Detener el postback por defecto
+        if (e) e.preventDefault();
+
+        Swal.fire({
+            title: 'Confirmar venta',
+            text: 'Esta acción generará la venta. ¿Desea continuar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, continuar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                // FORZAR el postback manualmente
+                __doPostBack('<%= lbAgregarPlan.UniqueID %>', '');
+            }
         });
 
-        // Mostrar el contenedor correspondiente
-        const divId = 'div' + seleccion.charAt(0).toUpperCase() + seleccion.slice(1); // ej: 'combinado' -> 'divCombinado'
-        const selectedDiv = document.getElementById(divId);
-        if (selectedDiv) {
-            selectedDiv.style.display = 'block';
-        }
+        return false; // Evita que se ejecute el postback inmediato
     }
-
-    // Ejecutar al cargar la página
-    window.onload = function () {
-        const rbl = document.getElementById('<%= rblMetodoPago.ClientID %>');
-        if (rbl) mostrarMetodoSeleccionado(rbl);
-    };
 </script>
+
+
+
+
 
 
 
