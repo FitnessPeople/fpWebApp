@@ -182,7 +182,7 @@ namespace fpWebApp
                             INNER JOIN Planes p ON p.idPlan = ap.idPlan 
                             WHERE ap.estadoPlan <> 'Archivado'
                               AND ap.fechaProximoCobro <= CURDATE() 
-                            ORDER BY ap.fechaProximoCobro ASC;";
+                            ORDER BY ap.fechaProximoCobro DESC;";
 
             DataTable dt = cg.TraerDatos(query);
             
